@@ -3,7 +3,7 @@
 Imported CleanYourTV's launcher subtree at `ddc3b2cdce299a5f30aa2da2437edc40f3cf6f2e` into a new local Git repository.
 This is a source-derived project, not a full-history GitHub fork. The read-only-intended
 `upstream` remote identifies the original repository; it is not this project's publication remote.
-There is no `origin` or hosted repository yet.
+The public Homeboard repository is `https://github.com/wbniv/homeboard-tv`, configured as `origin`.
 
 `provenance.json` records original SHA-256 values before Homeboard changes. Upstream's MIT
 license and font license are retained. The reference instruction files document upstream's

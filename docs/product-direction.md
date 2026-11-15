@@ -41,8 +41,10 @@ larger dashboard and integrations can evolve in this repository. Preserve proven
 check the applicable contribution rules, and do not imply official endorsement.
 
 The [upstream strategy](upstream/README.md) and [research](investigations/2026-11-15-tv-dashboard-launcher-comparison.md)
-record the basis for this approach. Listing acceptance and upstream merges are
-maintainer decisions; neither has been requested yet.
+record the basis for this approach. The public Homeboard repository is
+[github.com/wbniv/homeboard-tv](https://github.com/wbniv/homeboard-tv). Listing
+acceptance and upstream merges remain maintainer decisions; neither has been
+requested yet.
 
 ## Publication path
 
@@ -50,11 +52,11 @@ maintainer decisions; neither has been requested yet.
 - [x] Implement widget Home, All Apps and the first public-data widget.
 - [x] Write an illustrated quick start and record the product direction.
 - [ ] Finish device acceptance checks and document remaining limitations.
-- [ ] Prepare the public repository, release artifacts and attribution.
-- [ ] Publish Homeboard under its own brand when authorized.
+- [x] Create the public repository at [github.com/wbniv/homeboard-tv](https://github.com/wbniv/homeboard-tv).
+- [ ] Prepare release artifacts and attribution.
+- [ ] Publish a production release under the Homeboard brand.
 - [ ] Submit a CleanYourTV gallery/showcase listing and suitable upstream contributions when authorized.
 - [ ] Evaluate Google Play distribution, including current TV requirements, signing and provider terms.
 
 Google Play is an intended distribution option, not yet an approved or completed
-release route. No public repository, store release or upstream submission has been
-created as part of writing this direction document.
+release route. No store release or upstream submission has happened.
