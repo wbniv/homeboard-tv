@@ -1,0 +1,12 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 23,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 12, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 15, "capture": "responsive-all-apps"},
+    {"at": 18, "key": "DPAD_LEFT", "action": "hold", "ms": 80},
+    {"at": 21, "capture": "home-restored"}
+  ]
+}

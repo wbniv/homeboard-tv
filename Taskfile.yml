@@ -1,0 +1,28 @@
+version: '3'
+includes:
+  chromecast: Taskfile.chromecast.yml
+tasks:
+  fixture:
+    desc: Build the disposable Android UI test app in the container
+    cmds: ['dev/container.sh run ./gradlew --no-daemon :fixture:assembleDebug']
+  build-image:
+    desc: Build the shared local and CI toolchain image
+    cmds: ['dev/container.sh image']
+  dev-shell:
+    desc: Open a shell in the build container
+    cmds: ['dev/container.sh run bash']
+  run:
+    desc: Run a command inside the build container
+    cmds: ['dev/container.sh run {{.CLI_ARGS}}']
+  check:
+    desc: Run Java tests and Android lint
+    cmds: ['dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest :app:lintDebug']
+  build:
+    desc: Build the Homeboard debug APK without installing
+    cmds: ['dev/container.sh run ./gradlew --no-daemon :app:assembleDebug']
+  bundle:
+    desc: Build an unsigned release App Bundle
+    cmds: ['dev/container.sh run ./gradlew --no-daemon :app:bundleRelease']
+  md:
+    desc: Render project Markdown in the established browser renderer
+    cmds: ['task --taskfile /home/will/Taskfile.yml md -- {{.CLI_ARGS}}']

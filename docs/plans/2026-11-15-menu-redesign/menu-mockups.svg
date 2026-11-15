@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="980" viewBox="0 0 1600 980">
+  <rect width="1600" height="980" fill="#101723"/>
+  <g font-family="sans-serif" fill="#edf3ff">
+    <text x="54" y="58" font-size="30" font-weight="700">Homeboard TV · Remote-first menus</text>
+    <text x="54" y="92" font-size="18" fill="#aabbd0">Every action has an icon and a label · all choices fit without scrolling</text>
+
+    <!-- App context -->
+    <text x="54" y="150" font-size="21" font-weight="700">1 · App actions</text>
+    <rect x="50" y="172" width="480" height="650" rx="24" fill="#1b293b" stroke="#40536d" stroke-width="2"/>
+    <rect x="76" y="196" width="428" height="578" rx="20" fill="#24364c" stroke="#6887aa" stroke-width="2"/>
+    <text x="102" y="236" font-size="24" font-weight="700">YouTube</text>
+    <text x="102" y="262" font-size="15" fill="#b6c5d8">Choose what to do with this app</text>
+    <!-- buttons -->
+    <g font-size="17" font-weight="600">
+      <rect x="95" y="286" width="182" height="106" rx="14" fill="#30465f" stroke="#91caff" stroke-width="3"/>
+      <path d="M118 323h36m-18-18v36m-12-12 12 12 12-12" fill="none" stroke="#dcecff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="118" y="370">Move</text>
+      <rect x="291" y="286" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <path d="M315 315h33v34h-33zM321 307h21m-16 15 6 6 13-14" fill="none" stroke="#dcecff" stroke-width="3" stroke-linejoin="round"/>
+      <text x="315" y="370">Unfavorite</text>
+      <rect x="95" y="407" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <path d="M120 435h32m-27 0 2 30h18l2-30m-19-7h14" fill="none" stroke="#dcecff" stroke-width="3" stroke-linecap="round"/>
+      <text x="118" y="491">Delete tile</text>
+      <rect x="291" y="407" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <rect x="316" y="433" width="31" height="30" rx="3" fill="none" stroke="#dcecff" stroke-width="3"/><path d="M321 426v7m20-7v7m-20 10h20m-20 7h14" stroke="#dcecff" stroke-width="3"/>
+      <text x="315" y="491">Uninstall app</text>
+      <rect x="95" y="528" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <circle cx="136" cy="562" r="17" fill="none" stroke="#dcecff" stroke-width="3"/><text x="131" y="569" font-size="19">i</text>
+      <text x="118" y="612">App info</text>
+      <rect x="291" y="528" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <path d="M317 548h33m-27 8h21m-16 8h13" stroke="#dcecff" stroke-width="3" stroke-linecap="round"/>
+      <text x="315" y="612">Home settings</text>
+    </g>
+    <text x="102" y="710" font-size="14" fill="#b6c5d8">OK Select · Back Close</text>
+    <text x="54" y="858" font-size="16" fill="#aabbd0">2 × 3 fixed grid · clear action names · focus never moves the item</text>
+
+    <!-- Settings groups -->
+    <text x="570" y="150" font-size="21" font-weight="700">2 · Home settings</text>
+    <rect x="566" y="172" width="480" height="650" rx="24" fill="#1b293b" stroke="#40536d" stroke-width="2"/>
+    <rect x="592" y="196" width="428" height="578" rx="20" fill="#24364c" stroke="#6887aa" stroke-width="2"/>
+    <text x="618" y="236" font-size="24" font-weight="700">Home settings</text>
+    <text x="618" y="262" font-size="15" fill="#b6c5d8">Choose an area to customize</text>
+    <g font-size="17" font-weight="600" fill="#edf3ff">
+      <rect x="611" y="286" width="182" height="106" rx="14" fill="#30465f" stroke="#91caff" stroke-width="3"/>
+      <path d="M633 317h34v28h-34zM640 309h20v8m-17 15h9m-9 6h17" fill="none" stroke="#dcecff" stroke-width="3" stroke-linejoin="round"/>
+      <text x="634" y="370">Widgets &amp; restore</text>
+      <rect x="807" y="286" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <circle cx="847" cy="332" r="18" fill="none" stroke="#dcecff" stroke-width="3"/><path d="M847 314v36m-18-18h36" stroke="#dcecff" stroke-width="3"/>
+      <text x="830" y="370">Appearance</text>
+      <rect x="611" y="407" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <rect x="636" y="431" width="32" height="34" rx="3" fill="none" stroke="#dcecff" stroke-width="3"/><path d="M642 439h20m-20 7h20m-20 7h13" stroke="#dcecff" stroke-width="2"/>
+      <text x="634" y="491">App artwork</text>
+      <rect x="807" y="407" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <path d="M832 434h34m-34 10h34m-34 10h21" stroke="#dcecff" stroke-width="3" stroke-linecap="round"/><circle cx="839" cy="434" r="4" fill="#dcecff"/><circle cx="859" cy="444" r="4" fill="#dcecff"/>
+      <text x="830" y="491">Home behavior</text>
+      <rect x="611" y="528" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <path d="M637 548h30v25h-30zm6-7v7m18-7v7m-24 8h30" fill="none" stroke="#dcecff" stroke-width="3"/>
+      <text x="634" y="612">Default Home app</text>
+      <rect x="807" y="528" width="182" height="106" rx="14" fill="#2a3d54"/>
+      <circle cx="847" cy="558" r="18" fill="none" stroke="#dcecff" stroke-width="3"/><text x="842" y="565" font-size="20">i</text>
+      <text x="830" y="612">About</text>
+    </g>
+    <text x="618" y="710" font-size="14" fill="#b6c5d8">OK Open · Back Home</text>
+    <text x="570" y="858" font-size="16" fill="#aabbd0">Six outcome-based groups · related controls live one level down</text>
+
+    <!-- Restore pages -->
+    <text x="1086" y="150" font-size="21" font-weight="700">3 · Restore deleted tiles</text>
+    <rect x="1082" y="172" width="468" height="650" rx="24" fill="#1b293b" stroke="#40536d" stroke-width="2"/>
+    <rect x="1108" y="196" width="416" height="578" rx="20" fill="#24364c" stroke="#6887aa" stroke-width="2"/>
+    <text x="1134" y="236" font-size="24" font-weight="700" fill="#edf3ff">Restore app tile</text>
+    <text x="1134" y="262" font-size="15" fill="#b6c5d8">Choose an app to show in All Apps again</text>
+    <g font-family="sans-serif" font-size="15" fill="#edf3ff" text-anchor="middle">
+      <rect x="1128" y="286" width="114" height="100" rx="13" fill="#30465f" stroke="#91caff" stroke-width="3"/>
+      <circle cx="1185" cy="323" r="20" fill="#de3d32"/><text x="1185" y="329" font-size="20" font-weight="700">Y</text><text x="1185" y="366">YouTube</text>
+      <rect x="1255" y="286" width="108" height="100" rx="13" fill="#2a3d54"/><circle cx="1309" cy="323" r="20" fill="#5589cf"/><text x="1309" y="330" font-size="19">N</text><text x="1309" y="366">Netflix</text>
+      <rect x="1376" y="286" width="124" height="100" rx="13" fill="#2a3d54"/><circle cx="1438" cy="323" r="20" fill="#55aa8a"/><text x="1438" y="330" font-size="19">P</text><text x="1438" y="366">Plex</text>
+      <rect x="1128" y="401" width="114" height="100" rx="13" fill="#2a3d54"/><circle cx="1185" cy="438" r="20" fill="#c6a448"/><text x="1185" y="445" font-size="19">M</text><text x="1185" y="481">Maps</text>
+      <rect x="1255" y="401" width="108" height="100" rx="13" fill="#2a3d54"/><circle cx="1309" cy="438" r="20" fill="#d56b43"/><text x="1309" y="445" font-size="19">G</text><text x="1309" y="481">Games</text>
+      <rect x="1376" y="401" width="124" height="100" rx="13" fill="#2a3d54"/><circle cx="1438" cy="438" r="20" fill="#7d71bf"/><text x="1438" y="445" font-size="19">M</text><text x="1438" y="481">Music</text>
+    </g>
+    <rect x="1128" y="535" width="104" height="49" rx="12" fill="#31465e"/><path d="m1171 559-9-8 9-8m-8 8h30" fill="none" stroke="#b7c8dc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="1181" y="604" text-anchor="middle" font-size="13" fill="#b6c5d8">Previous</text>
+    <text x="1316" y="566" text-anchor="middle" font-size="17" fill="#edf3ff">1 of 3</text>
+    <rect x="1406" y="535" width="94" height="49" rx="12" fill="#31465e"/><path d="m1442 543 9 8-9 8m8-8h-30" fill="none" stroke="#b7c8dc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="1453" y="604" text-anchor="middle" font-size="13" fill="#b6c5d8">Next</text>
+    <text x="1134" y="710" font-size="14" fill="#b6c5d8">Arrows Move · OK Restore · Back Close</text>
+    <text x="1086" y="858" font-size="16" fill="#aabbd0">Up to 6 shown · paging stays visible · no hidden rows</text>
+
+    <rect x="54" y="892" width="1492" height="2" fill="#40536d"/>
+    <text x="54" y="934" font-size="16" fill="#aabbd0">Design intent: recognize the goal, see the current choice, act confidently, and return without losing place.</text>
+  </g>
+</svg>

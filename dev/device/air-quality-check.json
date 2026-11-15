@@ -1,0 +1,98 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 55,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 12,
+      "capture": "initial-saved-station"
+    },
+    {
+      "at": 14,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 16,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 18,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 22,
+      "capture": "after-refresh"
+    },
+    {
+      "at": 25,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 27,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 29,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 32,
+      "capture": "station-picker"
+    },
+    {
+      "at": 35,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 37,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 40,
+      "capture": "selected-station"
+    },
+    {
+      "at": 43,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 46,
+      "capture": "dock-focus"
+    },
+    {
+      "at": 48,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 49,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 51,
+      "capture": "top-controls"
+    }
+  ]
+}

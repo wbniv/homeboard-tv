@@ -1,0 +1,260 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 129,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 8,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 11,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 14,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 17,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 20,
+      "capture": "apps-move-preview"
+    },
+    {
+      "at": 23,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 26,
+      "capture": "apps-move-saved"
+    },
+    {
+      "at": 29,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 32,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 35,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 38,
+      "capture": "apps-cancel-preview"
+    },
+    {
+      "at": 41,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 44,
+      "capture": "apps-move-canceled"
+    },
+    {
+      "at": 47,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 50,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 53,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 55,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 57,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 60,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 63,
+      "capture": "compact-air"
+    },
+    {
+      "at": 66,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 69,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 71,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 73,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 76,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 78,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 80,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 83,
+      "capture": "forest-palette"
+    },
+    {
+      "at": 86,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 89,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 91,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 93,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 95,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 98,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 101,
+      "capture": "reduced-motion-enabled"
+    },
+    {
+      "at": 104,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 107,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 110,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 112,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 114,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 116,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 117.5,
+      "capture": "delete-widget-review"
+    },
+    {
+      "at": 119,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 121,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 124,
+      "capture": "saved-empty-home"
+    }
+  ]
+}

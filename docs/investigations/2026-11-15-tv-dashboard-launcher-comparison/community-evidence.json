@@ -1,0 +1,65 @@
+{
+  "collected_at": "2026-11-15T17:16:26+07:00",
+  "method": "GitHub REST API via gh; combined open_issues_count includes PRs; PR search window from 2026-11-08 through collection time",
+  "projects": {
+    "Gathin23/cleanyourtv": {
+      "stars": 58030,
+      "forks": 7552,
+      "subscribers": 159,
+      "open_issues_and_prs": 233,
+      "created_at": "2026-10-17T08:12:35Z",
+      "pushed_at": "2026-11-15T04:49:54Z",
+      "merged_prs_since_2026_11_08": 316
+    },
+    "CVasilakis/luncher": {
+      "stars": 46,
+      "forks": 9,
+      "subscribers": 3,
+      "open_issues_and_prs": 3,
+      "created_at": "2026-10-08T20:08:42Z",
+      "pushed_at": "2026-11-08T19:06:10Z",
+      "merged_prs_since_2026_11_08": 0
+    }
+  },
+  "queries": [
+    "repos/{owner}/{repo}",
+    "search/issues?q=repo:{owner}/{repo} is:pr is:merged merged:>=2026-11-08"
+  ],
+  "precedents": {
+    "618": {
+      "title": "Companion bridge: opt-in read-only protocol v1 provider (#597)",
+      "html_url": "https://github.com/Gathin23/cleanyourtv/pull/618",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null
+    },
+    "1473": {
+      "title": "Launcher: add system taskbar button and real-time task manager dashboard",
+      "html_url": "https://github.com/Gathin23/cleanyourtv/pull/1473",
+      "state": "closed",
+      "merged": false,
+      "merged_at": null
+    },
+    "2953": {
+      "title": "SHOWCASE: add TV Air Dashboard weather and Dyson fork",
+      "html_url": "https://github.com/Gathin23/cleanyourtv/pull/2953",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-11-02T05:28:47Z"
+    },
+    "2298": {
+      "title": "Showcase: Today, a dashboard, screensaver and alerts app for Fire TV",
+      "html_url": "https://github.com/Gathin23/cleanyourtv/pull/2298",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-28T02:57:51Z"
+    },
+    "2510": {
+      "title": "SHOWCASE: Chill for Realme TV (Changhong DVB91RM, Android TV 11)",
+      "html_url": "https://github.com/Gathin23/cleanyourtv/pull/2510",
+      "state": "closed",
+      "merged": true,
+      "merged_at": "2026-10-29T12:11:43Z"
+    }
+  }
+}

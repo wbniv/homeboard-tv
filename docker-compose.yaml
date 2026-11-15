@@ -1,0 +1,17 @@
+services:
+  build:
+    image: ${BUILD_IMAGE:-homeboard-tv-build:local}
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    platform: linux/amd64
+    user: "${BUILD_UID:-1000}:${BUILD_GID:-1000}"
+    environment:
+      GRADLE_USER_HOME: /cache/gradle
+      JAVA_TOOL_OPTIONS: -Duser.home=/cache/gradle
+    volumes:
+      - .:/workspace
+      - gradle-cache:/cache/gradle
+    working_dir: /workspace/launcher
+volumes:
+  gradle-cache:

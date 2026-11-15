@@ -1,0 +1,26 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 38,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 1, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 2, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 4, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 7, "capture": "home-settings"},
+    {"at": 9, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 12, "capture": "widgets-and-restore"},
+    {"at": 14, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 16, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 18, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 21, "capture": "appearance"},
+    {"at": 23, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 26, "capture": "background-and-wallpaper"},
+    {"at": 28, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 30, "capture": "appearance-restored"},
+    {"at": 32, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 34, "capture": "home-settings-restored"},
+    {"at": 35, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 37, "capture": "home-restored"}
+  ]
+}

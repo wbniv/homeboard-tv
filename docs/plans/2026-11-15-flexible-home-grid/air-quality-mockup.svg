@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="530" viewBox="0 0 1200 530">
+  <rect width="1200" height="530" fill="#101723"/>
+  <g font-family="sans-serif" fill="#edf3ff">
+    <text x="55" y="48" font-size="28" font-weight="700">Home tile · Bangkok air quality</text>
+    <text x="55" y="78" font-size="17" fill="#aabbd0">Two time scales, one station, one condition color</text>
+    <rect x="55" y="105" width="1090" height="380" rx="24" fill="#4b2818" stroke="#ff995e" stroke-width="2"/>
+    <text x="91" y="146" font-size="18" fill="#b9c9db">BANGKOK · LUMPINI PARK</text>
+    <text x="91" y="194" font-size="37" font-weight="700">PM2.5  42.8 µg/m³</text>
+    <rect x="91" y="210" width="472" height="40" rx="13" fill="#522f26" stroke="#ff995e" stroke-width="2"/>
+    <text x="111" y="237" font-size="17" font-weight="700" fill="#ffb37f">▲ HIGH · LIMIT OUTDOOR TIME</text>
+    <text x="91" y="280" font-size="13" fill="#b9c9db">24H · 24-hour averages from the last day</text>
+    <line x1="130" y1="319" x2="1108" y2="319" stroke="#85634f" stroke-width="1"/>
+    <path d="M132 298 L245 308 L358 291 L471 302 L584 282 L697 289 L810 270 L923 280 L1036 258 L1106 262" fill="none" stroke="#ff995e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="1106" cy="262" r="6" fill="#ff995e" stroke="#fff1e8" stroke-width="2"/>
+    <text x="91" y="353" font-size="13" fill="#b9c9db">30D · up to 720 hourly 24-hour averages</text>
+    <line x1="130" y1="393" x2="1108" y2="393" stroke="#85634f" stroke-width="1"/>
+    <path d="M132 377 L245 362 L358 368 L471 349 L584 355 L697 339 L810 347 L923 327 L1036 340 L1106 314" fill="none" stroke="#ff995e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="1106" cy="314" r="6" fill="#ff995e" stroke="#fff1e8" stroke-width="2"/>
+    <text x="91" y="430" font-size="14" fill="#b9c9db">24-hour average · AirBKK / BMA · Updated 15 Nov 23:00 Bangkok time</text>
+    <text x="91" y="458" font-size="13" fill="#b9c9db">OK: refresh or choose station</text>
+  </g>
+</svg>

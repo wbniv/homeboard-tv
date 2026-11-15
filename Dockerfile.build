@@ -1,0 +1,19 @@
+FROM eclipse-temurin:17-jdk-jammy@sha256:76751c16a2a07ec0960e659a2603491f8c79d95592173f6c0df8bf8ebab257cc
+ENV ANDROID_HOME=/opt/android-sdk \
+    ANDROID_SDK_ROOT=/opt/android-sdk \
+    GRADLE_USER_HOME=/cache/gradle
+RUN apt-get update && apt-get install -y --no-install-recommends curl unzip git \
+    && rm -rf /var/lib/apt/lists/*
+ARG ANDROID_TOOLS=11076708
+ARG ANDROID_TOOLS_SHA256=2d2d50857e4eb553af5a6dc3ad507a17adf43d115264b1afc116f95c92e5e258
+RUN curl -fsSL "https://dl.google.com/android/repository/commandlinetools-linux-${ANDROID_TOOLS}_latest.zip" -o /tmp/tools.zip \
+    && echo "${ANDROID_TOOLS_SHA256}  /tmp/tools.zip" | sha256sum -c - \
+    && mkdir -p /opt/android-sdk/cmdline-tools \
+    && unzip -q /tmp/tools.zip -d /opt/android-sdk/cmdline-tools \
+    && mv /opt/android-sdk/cmdline-tools/cmdline-tools /opt/android-sdk/cmdline-tools/12.0 \
+    && rm /tmp/tools.zip
+RUN yes | /opt/android-sdk/cmdline-tools/12.0/bin/sdkmanager --licenses >/dev/null
+RUN /opt/android-sdk/cmdline-tools/12.0/bin/sdkmanager 'platforms;android-34' 'build-tools;34.0.0' 'platform-tools' \
+    && mkdir -p /cache/gradle && chmod 1777 /cache/gradle
+WORKDIR /workspace/launcher
+CMD ["bash"]

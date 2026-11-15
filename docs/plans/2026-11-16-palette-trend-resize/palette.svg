@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="414" viewBox="0 0 960 414">
+<rect width="960" height="414" rx="24" fill="#241c25"/>
+<text x="40" y="38" fill="#fff7fb" font-family="sans-serif" font-size="24" font-weight="700">Color palette</text>
+<text x="40" y="62" fill="#d8c8da" font-family="sans-serif" font-size="13">20 compact choices · five rows · one screen</text>
+<g font-family="sans-serif" font-size="13" fill="#fff7fb" text-anchor="middle">
+<g transform="translate(40 76)"><rect width="208" height="56" rx="10" fill="#101723" stroke="#f1d7aa" stroke-width="3"/><circle cx="30" cy="28" r="13" fill="#101723" stroke="#f1d7aa" stroke-width="2"/><text x="130" y="33">Midnight</text></g>
+<g transform="translate(264 76)"><rect width="208" height="56" rx="10" fill="#0c1e1a" stroke="#526d63"/><circle cx="30" cy="28" r="13" fill="#0c1e1a"/><text x="130" y="33">Forest</text></g>
+<g transform="translate(488 76)"><rect width="208" height="56" rx="10" fill="#08253d" stroke="#496985"/><circle cx="30" cy="28" r="13" fill="#08253d"/><text x="130" y="33">Ocean</text></g>
+<g transform="translate(712 76)"><rect width="208" height="56" rx="10" fill="#2e1836" stroke="#765b7e"/><circle cx="30" cy="28" r="13" fill="#2e1836"/><text x="130" y="33">Plum</text></g>
+<g transform="translate(40 140)"><rect width="208" height="56" rx="10" fill="#3d2f1d" stroke="#806d4e"/><circle cx="30" cy="28" r="13" fill="#3d2f1d"/><text x="130" y="33">Sand</text></g>
+<g transform="translate(264 140)"><rect width="208" height="56" rx="10" fill="#3c1d27" stroke="#714b55"/><circle cx="30" cy="28" r="13" fill="#3c1d27"/><text x="130" y="33">Rose</text></g>
+<g transform="translate(488 140)"><rect width="208" height="56" rx="10" fill="#0a3030" stroke="#4a7474"/><circle cx="30" cy="28" r="13" fill="#0a3030"/><text x="130" y="33">Teal</text></g>
+<g transform="translate(712 140)"><rect width="208" height="56" rx="10" fill="#232a36" stroke="#5c6576"/><circle cx="30" cy="28" r="13" fill="#232a36"/><text x="130" y="33">Slate</text></g>
+<g transform="translate(40 204)"><rect width="208" height="56" rx="10" fill="#42231e" stroke="#76584e"/><circle cx="30" cy="28" r="13" fill="#42231e"/><text x="130" y="33">Sunset</text></g>
+<g transform="translate(264 204)"><rect width="208" height="56" rx="10" fill="#000000" stroke="#626262"/><circle cx="30" cy="28" r="13" fill="#000000"/><text x="130" y="33">Black</text></g>
+<g transform="translate(488 204)"><rect width="208" height="56" rx="10" fill="#202224" stroke="#55595b"/><circle cx="30" cy="28" r="13" fill="#202224"/><text x="130" y="33">Charcoal</text></g>
+<g transform="translate(712 204)"><rect width="208" height="56" rx="10" fill="#141d35" stroke="#465579"/><circle cx="30" cy="28" r="13" fill="#141d35"/><text x="130" y="33">Indigo</text></g>
+<g transform="translate(40 268)"><rect width="208" height="56" rx="10" fill="#163438" stroke="#4e6d70"/><circle cx="30" cy="28" r="13" fill="#163438"/><text x="130" y="33">Lagoon</text></g>
+<g transform="translate(264 268)"><rect width="208" height="56" rx="10" fill="#2b3525" stroke="#626c57"/><circle cx="30" cy="28" r="13" fill="#2b3525"/><text x="130" y="33">Moss</text></g>
+<g transform="translate(488 268)"><rect width="208" height="56" rx="10" fill="#39271e" stroke="#775845"/><circle cx="30" cy="28" r="13" fill="#39271e"/><text x="130" y="33">Cedar</text></g>
+<g transform="translate(712 268)"><rect width="208" height="56" rx="10" fill="#392b19" stroke="#776644"/><circle cx="30" cy="28" r="13" fill="#392b19"/><text x="130" y="33">Amber</text></g>
+<g transform="translate(40 332)"><rect width="208" height="56" rx="10" fill="#0d2743" stroke="#4b6682"/><circle cx="30" cy="28" r="13" fill="#0d2743"/><text x="130" y="33">Cobalt</text></g>
+<g transform="translate(264 332)"><rect width="208" height="56" rx="10" fill="#122b20" stroke="#536b5d"/><circle cx="30" cy="28" r="13" fill="#122b20"/><text x="130" y="33">Pine</text></g>
+<g transform="translate(488 332)"><rect width="208" height="56" rx="10" fill="#0c2f27" stroke="#4d736a"/><circle cx="30" cy="28" r="13" fill="#0c2f27"/><text x="130" y="33">Emerald</text></g>
+<g transform="translate(712 332)"><rect width="208" height="56" rx="10" fill="#3e2218" stroke="#78543d"/><circle cx="30" cy="28" r="13" fill="#3e2218"/><text x="130" y="33">Copper</text></g>
+</g></svg>

@@ -1,0 +1,4 @@
+<resources>
+    <item name="airQualityCondition" type="id" />
+    <item name="airQualityTrend" type="id" />
+</resources>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430">
+  <rect width="1200" height="430" fill="#101723"/>
+  <g font-family="sans-serif" fill="#edf3ff">
+    <text x="55" y="58" font-size="30" font-weight="700">App focus follows the icon mask</text>
+    <text x="55" y="91" font-size="17" fill="#aabbd0">One screen pixel of clearance · animated focus stays the icon's shape</text>
+    <text x="315" y="150" font-size="20" text-anchor="middle">Circular icon mask · On</text>
+    <circle cx="315" cy="260" r="76" fill="none" stroke="#e5f3ff" stroke-width="3"/>
+    <circle cx="315" cy="260" r="72" fill="#347ca1"/>
+    <text x="315" y="273" font-size="34" text-anchor="middle" font-weight="700">A</text>
+    <text x="885" y="150" font-size="20" text-anchor="middle">Rounded-square icon · Off</text>
+    <rect x="809" y="184" width="152" height="152" rx="24" fill="none" stroke="#e5f3ff" stroke-width="3"/>
+    <rect x="813" y="188" width="144" height="144" rx="22" fill="#347ca1"/>
+    <text x="885" y="273" font-size="34" text-anchor="middle" font-weight="700">A</text>
+    <text x="600" y="390" font-size="17" text-anchor="middle" fill="#aabbd0">Focus rim is a tiny breathing margin around the icon, never a tile-sized box.</text>
+  </g>
+</svg>

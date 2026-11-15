@@ -1,0 +1,68 @@
+# Homeboard TV
+
+A personal Google TV home screen, with scheduled dashboard scenes planned, built from CleanYourTV's
+Java launcher. Start with small native cards backed directly by public APIs; evaluate
+a dashboard engine or custom bridge when a feature actually needs one.
+
+**Current state: native widget Home and All Apps.** A Bangkok air-quality card reads AirBKK's
+public station feed directly, with no account, Home Assistant, MagicMirror or custom
+server. PM2.5 is labeled as a 24-hour station average. Choose from five Bangkok
+stations using the remote; Lumpini Park is the default. See the
+[air-quality implementation plan](docs/plans/2026-11-15-air-quality.md).
+
+The broader dashboard engine remains undecided. Calendar, traffic and other
+integrations are future work. Device validation status is recorded in the plan.
+
+## Home interaction
+
+[Widgets-first Home plan and mockups](docs/plans/2026-11-15-widget-home.md):
+custom widgets and app favorites, including an entirely empty dashboard; moving
+right reveals All Apps. Hold OK offers Move, Favorite, Delete tile and Uninstall app.
+The native implementation supports saved empty Home, app favorites, separate app ordering,
+move previews, tile deletion/restoration, Android uninstall confirmation, palettes and reduced motion.
+See the plan for device validation and remaining limits.
+
+## Start here
+
+- [Product direction: our brand and the CleanYourTV community](docs/product-direction.md)
+
+- [User quick start with illustrations](docs/how-to/quick-start.md)
+
+- [Existing dashboard integration comparison](docs/investigations/2026-11-15-dashboard-systems-for-homeboard.md)
+
+- [Project plan and mockups](docs/plans/2026-11-15-project-foundation.md)
+- [Investigation and community strategy](docs/investigations/2026-11-15-tv-dashboard-launcher-comparison.md)
+- [Build instructions](docs/how-to/build.md)
+- [Shared Chromecast workflow](docs/how-to/chromecast.md)
+- [Upstream source and contribution strategy](docs/upstream/README.md)
+- [Bridge boundary](bridge/README.md)
+
+```sh
+task build-image
+task check
+task build
+task --list
+```
+
+Docker with Compose and Task are the host requirements. Java 17 and Android SDK
+platform 34/build-tools 34.0.0 live in `Dockerfile.build`; compilation, tests and
+packaging run in that container locally and in CI. Dependencies persist in a named
+volume. See the build how-to for image overrides and rootless Docker behavior.
+
+The application ID is `net.biohack.homeboard`; debug builds use
+`net.biohack.homeboard.debug`. The imported Java namespace remains `com.gathin.tvhome`
+to keep upstream diffs focused. Release output is unsigned until production signing is designed.
+The name and package identity are provisional until publication.
+
+## Community contributions
+
+Keep Homeboard-specific features here. Contribute independently reproducible launcher
+fixes upstream; prepare a showcase entry once a public, usable project is ready.
+The Hebrew-layout correction fixes our card addition and needs no upstream patch.
+See the [contribution strategy](docs/upstream/README.md).
+
+## License
+
+The imported CleanYourTV source is MIT-licensed, copyright 2026 Gathin; see [LICENSE](LICENSE).
+New Homeboard TV code is offered under the same MIT terms. Bundled font terms and other notices
+remain in their original files; see [third-party notices](THIRD_PARTY_NOTICES.md).

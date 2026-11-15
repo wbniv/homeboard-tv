@@ -1,0 +1,74 @@
+version: '3'
+vars:
+  CC_CLIENT: '{{.CC_CLIENT | default "/opt/wf-device-coordinator/bin/chromecast"}}'
+env:
+  WF_CC_REPLACE: '{{.REPLACE | default ""}}'
+  WF_CC_RECIPE: '{{.RECIPE | default ""}}'
+  WF_CC_DEVICE: '{{.DEVICE | default ""}}'
+  WF_CC_POOL: '{{.POOL | default ""}}'
+  WF_CC_POOL_MODE: '{{.POOL_MODE | default ""}}'
+  WF_CC_SELECTOR: '{{.SELECTOR | default ""}}'
+  WF_CC_JOB: '{{.JOB | default ""}}'
+  WF_CC_BATCH: '{{.BATCH | default ""}}'
+  WF_CC_OUT: '{{.OUT | default ""}}'
+  WF_CC_APP: '{{.APP | default ""}}'
+  WF_CC_APK: '{{.APK | default ""}}'
+  WF_CC_ACTIVITY: '{{.ACTIVITY | default ""}}'
+  WF_CC_WORKFLOW: '{{.WORKFLOW | default ""}}'
+  WF_CC_VALIDATOR: '{{.VALIDATOR | default ""}}'
+  WF_CC_DURATION: '{{.DURATION | default ""}}'
+  WF_CC_DRY_RUN: '{{.DRY_RUN | default ""}}'
+  WF_CC_TEXT: '{{.TEXT | default ""}}'
+  WF_CC_RETRY: '{{.RETRY | default ""}}'
+  WF_CC_SCENE: '{{.SCENE | default ""}}'
+  WF_CC_REINSTALL: '{{.REINSTALL | default ""}}'
+  WF_CC_APK_ARGS: '{{.CLI_ARGS | default ""}}'
+tasks:
+  verify-evidence:
+    desc: Run Homeboard's offline OCR assertions on coordinator evidence
+    cmds: ['python3 dev/verify-device-evidence.py {{.EVIDENCE}}']
+  version:
+    desc: Installed coordinator version and capabilities
+    cmds: ['"{{.CC_CLIENT}}" version']
+  support:
+    desc: Effective workflow support for a device
+    cmds: ['"{{.CC_CLIENT}}" support']
+  app-register:
+    desc: Register Homeboard APK metadata with the shared coordinator
+    cmds: ['"{{.CC_CLIENT}}" app-register']
+  devices:
+    desc: 'Coordinator devices'
+    cmds: ['"{{.CC_CLIENT}}" devices']
+  queue:
+    desc: 'Coordinator queue'
+    cmds: ['"{{.CC_CLIENT}}" queue']
+  submit:
+    desc: 'Coordinator submit'
+    cmds: ['"{{.CC_CLIENT}}" submit']
+  check:
+    desc: 'Coordinator check'
+    cmds: ['"{{.CC_CLIENT}}" check']
+  profile:
+    desc: 'Coordinator profile'
+    cmds: ['"{{.CC_CLIENT}}" profile']
+  record:
+    desc: 'Coordinator record'
+    cmds: ['"{{.CC_CLIENT}}" record']
+  capture:
+    desc: 'Coordinator capture'
+    cmds: ['"{{.CC_CLIENT}}" capture']
+  readd:
+    desc: 'Coordinator readd'
+    cmds: ['"{{.CC_CLIENT}}" readd']
+  watch:
+    desc: 'Coordinator watch'
+    cmds: ['"{{.CC_CLIENT}}" watch']
+  evidence:
+    desc: 'Coordinator evidence'
+    cmds: ['"{{.CC_CLIENT}}" evidence']
+  message:
+    desc: 'Coordinator message'
+    cmds: ['"{{.CC_CLIENT}}" message']
+  cancel:
+    desc: 'Coordinator cancel'
+    cmds: ['"{{.CC_CLIENT}}" cancel']

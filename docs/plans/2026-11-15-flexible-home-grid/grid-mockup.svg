@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="960" viewBox="0 0 1600 960">
+  <rect width="1600" height="960" fill="#101723"/>
+  <g font-family="sans-serif" fill="#edf3ff">
+    <text x="70" y="64" font-size="32" font-weight="700">Homeboard TV · Flexible Home grid</text>
+    <text x="70" y="101" font-size="19" fill="#aabbd0">Manual · 10 columns × 4 rows · compact favorites · widgets can span cells</text>
+    <circle cx="1430" cy="78" r="31" fill="#1e2c3e" stroke="#41556e" stroke-width="2"/>
+    <path d="M1415 68h30m-30 10h30m-30 10h30" stroke="#edf3ff" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="1422" cy="68" r="4" fill="#91caff"/><circle cx="1437" cy="78" r="4" fill="#91caff"/><circle cx="1427" cy="88" r="4" fill="#91caff"/>
+    <circle cx="1510" cy="78" r="31" fill="#1e2c3e" stroke="#41556e" stroke-width="2"/>
+    <path d="M1495 83l15-14 15 14v15h-30z" fill="none" stroke="#edf3ff" stroke-width="3"/>
+
+    <rect x="70" y="145" width="1460" height="690" rx="26" fill="#0b111a" stroke="#34465b" stroke-width="2"/>
+    <!-- spanning widget: four columns by two rows -->
+    <rect x="94" y="169" width="708" height="327" rx="20" fill="#1e2c3e" stroke="#b3dcff" stroke-width="4"/>
+    <text x="122" y="210" font-size="21" fill="#b9c9db">BANGKOK · BENCHASIRI PARK</text>
+    <text x="122" y="275" font-size="54" font-weight="600">PM2.5  25.9 µg/m³</text>
+    <text x="122" y="313" font-size="19" fill="#b9c9db">24-hour average · AirBKK / BMA</text>
+    <text x="122" y="350" font-size="17" fill="#b9c9db">OK: refresh or choose station</text>
+
+    <!-- Row zero apps in remaining five columns -->
+    <g text-anchor="middle" font-size="15" fill="#edf3ff">
+      <circle cx="870" cy="250" r="27" fill="#417c9c"/><text x="870" y="256">M</text><text x="870" y="292">Maps</text>
+      <circle cx="1010" cy="250" r="27" fill="#a24e44"/><text x="1010" y="256">N</text><text x="1010" y="292">Netflix</text>
+      <circle cx="1150" cy="250" r="27" fill="#6e619f"/><text x="1150" y="256">P</text><text x="1150" y="292">Photos</text>
+      <circle cx="1290" cy="250" r="27" fill="#b17b3e"/><text x="1290" y="256">T</text><text x="1290" y="292">Ticket to Ride</text>
+      <circle cx="1430" cy="250" r="27" fill="#5472b4"/><text x="1430" y="256">F</text><text x="1430" y="292">Flashcards</text>
+    </g>
+    <!-- remaining three rows of compact icons -->
+    <g text-anchor="middle" font-size="15" fill="#edf3ff">
+      <circle cx="870" cy="414" r="27" fill="#6e619f"/><text x="870" y="420">C</text><text x="870" y="456">Calendar</text>
+      <circle cx="1010" cy="414" r="27" fill="#478266"/><text x="1010" y="420">H</text><text x="1010" y="456">Home</text>
+      <circle cx="1150" cy="414" r="27" fill="#b17b3e"/><text x="1150" y="420">B</text><text x="1150" y="456">Books</text>
+      <circle cx="1290" cy="414" r="27" fill="#417c9c"/><text x="1290" y="420">P</text><text x="1290" y="456">Plex</text>
+      <rect x="1368" y="371" width="124" height="112" rx="28" fill="#24364c" stroke="#91caff" stroke-width="4"/>
+      <circle cx="1430" cy="414" r="27" fill="#5472b4"/><text x="1430" y="420">T</text><text x="1430" y="456">TV</text>
+
+      <circle cx="170" cy="577" r="27" fill="#6e619f"/><text x="170" y="583">A</text><text x="170" y="619">Art</text>
+      <circle cx="310" cy="577" r="27" fill="#478266"/><text x="310" y="583">D</text><text x="310" y="619">Drive</text>
+      <circle cx="450" cy="577" r="27" fill="#b17b3e"/><text x="450" y="583">F</text><text x="450" y="619">Files</text>
+      <circle cx="590" cy="577" r="27" fill="#417c9c"/><text x="590" y="583">P</text><text x="590" y="619">Podcasts</text>
+      <circle cx="730" cy="577" r="27" fill="#a24e44"/><text x="730" y="583">N</text><text x="730" y="619">News</text>
+      <circle cx="870" cy="577" r="27" fill="#5472b4"/><text x="870" y="583">S</text><text x="870" y="619">Sports</text>
+      <circle cx="1010" cy="577" r="27" fill="#478266"/><text x="1010" y="583">L</text><text x="1010" y="619">Learning</text>
+      <circle cx="1150" cy="577" r="27" fill="#6e619f"/><text x="1150" y="583">E</text><text x="1150" y="619">Exercise</text>
+      <circle cx="1290" cy="577" r="27" fill="#b17b3e"/><text x="1290" y="583">C</text><text x="1290" y="619">Camera</text>
+      <circle cx="1430" cy="577" r="27" fill="#417c9c"/><text x="1430" y="583">W</text><text x="1430" y="619">Watch</text>
+
+      <circle cx="170" cy="741" r="27" fill="#5472b4"/><text x="170" y="747">A</text><text x="170" y="783">App 31</text>
+      <circle cx="310" cy="741" r="27" fill="#a24e44"/><text x="310" y="747">A</text><text x="310" y="783">App 32</text>
+      <circle cx="450" cy="741" r="27" fill="#478266"/><text x="450" y="747">A</text><text x="450" y="783">App 33</text>
+      <circle cx="590" cy="741" r="27" fill="#6e619f"/><text x="590" y="747">A</text><text x="590" y="783">App 34</text>
+      <circle cx="730" cy="741" r="27" fill="#b17b3e"/><text x="730" y="747">A</text><text x="730" y="783">App 35</text>
+      <circle cx="870" cy="741" r="27" fill="#417c9c"/><text x="870" y="747">A</text><text x="870" y="783">App 36</text>
+      <circle cx="1010" cy="741" r="27" fill="#a24e44"/><text x="1010" y="747">A</text><text x="1010" y="783">App 37</text>
+      <circle cx="1150" cy="741" r="27" fill="#5472b4"/><text x="1150" y="747">A</text><text x="1150" y="783">App 38</text>
+      <circle cx="1290" cy="741" r="27" fill="#478266"/><text x="1290" y="747">A</text><text x="1290" y="783">App 39</text>
+      <circle cx="1430" cy="741" r="27" fill="#6e619f"/><text x="1430" y="747">A</text><text x="1430" y="783">App 40</text>
+    </g>
+    <text x="70" y="895" font-size="18" fill="#aabbd0">Compact 48 dp icons · 16 sp labels · 30 favorites plus one spanning widget · Right edge slides to All Apps</text>
+  </g>
+</svg>

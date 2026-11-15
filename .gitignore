@@ -1,0 +1,12 @@
+**/.gradle/
+**/.kotlin/
+**/build/
+**/local.properties
+.idea/
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+artifacts/
+evidence/

@@ -1,0 +1,140 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 76,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 12,
+      "capture": "widget-home"
+    },
+    {
+      "at": 14,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 17,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 19,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 22,
+      "capture": "station-panel"
+    },
+    {
+      "at": 25,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 27,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 30,
+      "capture": "after-station-panel"
+    },
+    {
+      "at": 33,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 36,
+      "capture": "all-apps"
+    },
+    {
+      "at": 39,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 42,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 45,
+      "capture": "widget-menu"
+    },
+    {
+      "at": 47,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 48,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 49,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 51,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 53,
+      "capture": "delete-review"
+    },
+    {
+      "at": 55,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 57,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 60,
+      "capture": "empty-home"
+    },
+    {
+      "at": 63,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 66,
+      "capture": "apps-from-empty"
+    },
+    {
+      "at": 69,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 72,
+      "capture": "empty-return"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300">
+<rect width="900" height="300" rx="24" fill="#171b24"/>
+<rect x="145" y="28" width="610" height="244" rx="22" fill="#272d3a" stroke="#677285" stroke-width="2"/>
+<text x="190" y="77" fill="#f5f3fa" font-family="sans-serif" font-size="28" font-weight="700">Background and wallpaper</text>
+<text x="190" y="105" fill="#bbc4d2" font-family="sans-serif" font-size="17">Choose a solid background color</text>
+<rect x="190" y="132" width="520" height="88" rx="16" fill="#323b4b" stroke="#aebbd0" stroke-width="2"/>
+<circle cx="246" cy="176" r="22" fill="#2e1836" stroke="#f1d7aa" stroke-width="3"/>
+<text x="458" y="184" text-anchor="middle" fill="#f5f3fa" font-family="sans-serif" font-size="20">Choose color palette…</text>
+<text x="190" y="250" fill="#aab4c4" font-family="sans-serif" font-size="15">The swatch shows the currently selected color</text>
+</svg>

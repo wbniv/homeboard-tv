@@ -1,0 +1,54 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 35,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 5,
+      "capture": "empty-after-relaunch"
+    },
+    {
+      "at": 8,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 11,
+      "capture": "apps-from-empty"
+    },
+    {
+      "at": 14,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 17,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 20,
+      "capture": "empty-home-settings"
+    },
+    {
+      "at": 23,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 26,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 30,
+      "capture": "air-restored"
+    }
+  ]
+}

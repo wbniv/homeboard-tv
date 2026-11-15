@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img">
+<title>Review scene changes</title>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101c32"/><stop offset="1" stop-color="#172c35"/></linearGradient></defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<g font-family="DejaVu Sans, sans-serif">
+<text x="48" y="53" fill="#f5f8ff" font-size="27" font-weight="bold">Review scene changes</text>
+<text x="48" y="86" fill="#b2c6d6" font-size="18">School morning · draft     •     Nothing applied until Save</text>
+<rect x="48" y="112" width="575" height="282" rx="16" fill="#23374c" stroke="#365168" stroke-width="1"/>
+<text x="70" y="147" fill="#7be0cb" font-size="18" font-weight="bold">WHEN THIS SCENE APPLIES</text>
+<text x="70" y="184" fill="#edf3fa" font-size="21">Days: Monday–Friday</text>
+<text x="70" y="217" fill="#edf3fa" font-size="21">Window: 07:00–09:30</text>
+<text x="70" y="250" fill="#edf3fa" font-size="21">Require: Thai class calendar event</text>
+<text x="70" y="283" fill="#edf3fa" font-size="21">Override: until next scheduled scene</text>
+<text x="70" y="316" fill="#edf3fa" font-size="21">Timezone: Asia/Bangkok</text>
+<rect x="645" y="112" width="587" height="282" rx="16" fill="#23374c" stroke="#365168" stroke-width="1"/>
+<text x="667" y="147" fill="#7be0cb" font-size="18" font-weight="bold">CARDS AND CONNECTIONS</text>
+<text x="667" y="184" fill="#edf3fa" font-size="21">Route + agenda + hourly forecast</text>
+<text x="667" y="217" fill="#edf3fa" font-size="21">Home sensors + practice + movement</text>
+<text x="667" y="250" fill="#edf3fa" font-size="21">Calendar: integration bridge connected</text>
+<text x="667" y="283" fill="#edf3fa" font-size="21">Missing provider: show status, keep dock</text>
+<text x="667" y="316" fill="#edf3fa" font-size="21">Focus: route card first</text>
+<rect x="48" y="416" width="1184" height="184" rx="16" fill="#23374c" stroke="#7be0cb" stroke-width="3"/>
+<text x="70" y="451" fill="#7be0cb" font-size="18" font-weight="bold">RESULT AFTER SAVE</text>
+<text x="70" y="488" fill="#edf3fa" font-size="21">Save scene → persist rules and layout; apply when idle</text>
+<text x="70" y="521" fill="#edf3fa" font-size="21">Preview with sample data     |     Save scene     |     Discard draft</text>
+<text x="70" y="554" fill="#edf3fa" font-size="21">Back with unsaved changes → discard confirmation</text>
+<rect x="48" y="626" width="1184" height="52" rx="12" fill="#0b1626"/>
+<text x="70" y="660" fill="#d7e6ed" font-size="20">Preview     [ Save scene ]     Discard     Return to dashboard</text>
+<text x="48" y="704" fill="#9cb0be" font-size="14">Concept mockup · illustrative values · no live personal data</text>
+</g></svg>

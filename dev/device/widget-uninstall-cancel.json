@@ -1,0 +1,150 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 90,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 8,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 11,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 14,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 17,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 20,
+      "capture": "app-move-preview"
+    },
+    {
+      "at": 23,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 26,
+      "capture": "app-move-saved"
+    },
+    {
+      "at": 29,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 32,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 35,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 38,
+      "capture": "app-move-cancel-preview"
+    },
+    {
+      "at": 41,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 44,
+      "capture": "app-move-canceled"
+    },
+    {
+      "at": 47,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 50,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 53,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 56,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 59,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 61,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 63,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 66,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 70,
+      "capture": "android-uninstall-review"
+    },
+    {
+      "at": 74,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 78,
+      "capture": "uninstall-canceled"
+    },
+    {
+      "at": 81,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 85,
+      "capture": "favorite-retained-after-cancel"
+    }
+  ]
+}

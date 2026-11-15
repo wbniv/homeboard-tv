@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img">
+<title>Monday 07:30 · School morning</title>
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101c32"/><stop offset="1" stop-color="#172c35"/></linearGradient></defs>
+<rect width="1280" height="720" fill="url(#bg)"/>
+<g font-family="DejaVu Sans, sans-serif">
+<text x="48" y="53" fill="#f5f8ff" font-size="27" font-weight="bold">Monday 07:30 · School morning</text>
+<text x="48" y="86" fill="#b2c6d6" font-size="18">Scene: class today + morning window     •     Manual scene override available</text>
+<rect x="48" y="112" width="710" height="236" rx="16" fill="#23374c" stroke="#7be0cb" stroke-width="3"/>
+<text x="70" y="147" fill="#7be0cb" font-size="18" font-weight="bold">THAI SOLUTIONS · ROUTE</text>
+<text x="70" y="184" fill="#edf3fa" font-size="21">[Map and traffic layer]</text>
+<text x="70" y="217" fill="#edf3fa" font-size="21">Transit / driving mode configured per route</text>
+<text x="70" y="250" fill="#edf3fa" font-size="21">28 min · updated 07:29     → Route details</text>
+<rect x="780" y="112" width="452" height="236" rx="16" fill="#23374c" stroke="#365168" stroke-width="1"/>
+<text x="802" y="147" fill="#7be0cb" font-size="18" font-weight="bold">TODAY</text>
+<text x="802" y="184" fill="#edf3fa" font-size="21">09:00  Thai class</text>
+<text x="802" y="217" fill="#edf3fa" font-size="21">16:00  Calendar event</text>
+<text x="802" y="250" fill="#edf3fa" font-size="21">School closure: separate calendar</text>
+<rect x="48" y="370" width="1184" height="96" rx="16" fill="#23374c" stroke="#365168" stroke-width="1"/>
+<text x="70" y="405" fill="#7be0cb" font-size="18" font-weight="bold">HOURLY WEATHER</text>
+<text x="70" y="442" fill="#edf3fa" font-size="21">08:00   29°C    |    09:00   30°C    |    Rain · humidity · PM2.5</text>
+<rect x="48" y="488" width="378" height="112" rx="16" fill="#23374c" stroke="#365168" stroke-width="1"/>
+<text x="70" y="523" fill="#7be0cb" font-size="18" font-weight="bold">HOME</text>
+<text x="70" y="560" fill="#edf3fa" font-size="21">Indoor readings · updated now</text>
+<rect x="448" y="488" width="378" height="112" rx="16" fill="#23374c" stroke="#365168" stroke-width="1"/>
+<text x="470" y="523" fill="#7be0cb" font-size="18" font-weight="bold">DAILY PRACTICE</text>
+<text x="470" y="560" fill="#edf3fa" font-size="21">Preview → open practice handoff</text>
+<rect x="848" y="488" width="384" height="112" rx="16" fill="#23374c" stroke="#365168" stroke-width="1"/>
+<text x="870" y="523" fill="#7be0cb" font-size="18" font-weight="bold">MOVEMENT</text>
+<text x="870" y="560" fill="#edf3fa" font-size="21">10 minute routine → start</text>
+<rect x="48" y="626" width="1184" height="52" rx="12" fill="#0b1626"/>
+<text x="70" y="660" fill="#d7e6ed" font-size="20">Apps     Calendar     Home     Practice     Scene     Settings</text>
+<text x="48" y="704" fill="#9cb0be" font-size="14">Concept mockup · illustrative values · no live personal data</text>
+</g></svg>

@@ -1,0 +1,17 @@
+{
+  "workflow": "record",
+  "app": "homeboard-tv",
+  "apk": "/home/will/homeboard-tv/artifacts/validation/homeboard-cast1-iteration-2026-11-15-r6.apk",
+  "warmup": 3,
+  "duration": 22,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 1, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 4, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 7, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 10, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 13, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 16, "key": "DPAD_LEFT", "action": "hold", "ms": 80},
+    {"at": 19, "capture": "settled-grid-highlight"}
+  ]
+}
