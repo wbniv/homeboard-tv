@@ -29,6 +29,7 @@ final class PieMenuView extends ViewGroup {
     private String breadcrumb = "";
     private String centerAction = "Back";
     private String pageHint = "";
+    private boolean emptyState;
     private int highlighted = -1;
     private Listener listener;
 
@@ -59,10 +60,13 @@ final class PieMenuView extends ViewGroup {
         this.centerAction = centerAction == null ? "Back" : centerAction;
         this.pageHint = pageHint == null ? "" : pageHint;
         this.listener = listener;
+        emptyState = true;
         StringBuilder description = new StringBuilder(this.title).append(". ");
         String[] compass = {"Up", "Right", "Down", "Left"};
         for (int i = 0; i < 4; i++) {
             labels[i] = choices != null && i < choices.length ? choices[i] : "";
+            if (!labels[i].isEmpty()) emptyState = false;
+            icons[i].setVisibility(labels[i].isEmpty() ? INVISIBLE : VISIBLE);
             current[i] = selected != null && i < selected.length && selected[i];
             if (kinds != null && i < kinds.length && kinds[i] != null)
                 icons[i] = replaceIcon(i, kinds[i]);
@@ -153,18 +157,20 @@ final class PieMenuView extends ViewGroup {
         canvas.drawCircle(cx, cy, inner - dp(3), paint);
         paint.setStyle(Paint.Style.FILL);
         labelPaint.setColor(palette.text);
-        labelPaint.setTextSize(dp(title.length() > 20 ? 15 : 18));
+        labelPaint.setTextSize(dp(emptyState ? 17 : title.length() > 20 ? 15 : 18));
         labelPaint.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText(ellipsize(title, dp(170), labelPaint), cx, cy - dp(20), labelPaint);
+        canvas.drawText(ellipsize(title, dp(170), labelPaint), cx, cy - dp(emptyState ? 37 : 20), labelPaint);
         smallPaint.setTextAlign(Paint.Align.CENTER);
-        smallPaint.setColor(palette.muted);
-        canvas.drawText(ellipsize(breadcrumb, dp(172), smallPaint), cx, cy + dp(1), smallPaint);
+        smallPaint.setColor(emptyState ? palette.text : palette.muted);
+        if (emptyState) smallPaint.setTextSize(dp(14));
+        canvas.drawText(ellipsize(breadcrumb, dp(172), smallPaint), cx, cy + dp(emptyState ? -8 : 1), smallPaint);
         labelPaint.setTextSize(dp(13));
         labelPaint.setColor(palette.focus);
-        canvas.drawText(ellipsize(centerAction, dp(168), labelPaint), cx, cy + dp(28), labelPaint);
+        canvas.drawText(ellipsize(centerAction, dp(168), labelPaint), cx, cy + dp(emptyState ? 23 : 28), labelPaint);
         if (!pageHint.isEmpty()) {
             smallPaint.setColor(palette.muted);
-            canvas.drawText(pageHint, cx, cy + dp(47), smallPaint);
+            if (emptyState) smallPaint.setTextSize(dp(12));
+            canvas.drawText(ellipsize(pageHint, dp(176), smallPaint), cx, cy + dp(emptyState ? 48 : 47), smallPaint);
         }
     }
 

@@ -75,8 +75,7 @@ final class HomeLayout {
                         Math.max(0, p.optInt("row", 0)), Math.max(0, p.optInt("column", 0))));
         }
         int homeColumns = j.optInt("homeColumns", 0);
-        s.homeColumns = homeColumns == 4 || homeColumns == 6 || homeColumns == 8 || homeColumns == 9
-                || homeColumns == 10 || homeColumns == 12 ? homeColumns : 0;
+        s.homeColumns = homeColumns >= 4 && homeColumns <= 12 ? homeColumns : 0;
         int homeRows = j.optInt("homeRows", 0);
         s.homeRows = homeRows == 0 ? 0 : Math.max(2, homeRows);
         s.appBanners = j.optBoolean("appBanners", true);

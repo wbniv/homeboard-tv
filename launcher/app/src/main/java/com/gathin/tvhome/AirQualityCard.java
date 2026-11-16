@@ -48,8 +48,10 @@ final class AirQualityCard {
     private final Activity activity;
     interface Menus { void show(String title, String[] labels, java.util.function.IntConsumer action); }
     interface LocationProvider { void request(java.util.function.Consumer<Location> callback); }
+    interface UndoRecorder { void record(String widgetKey, String previousConfiguration, String label); }
     private final Menus menus;
     private final LocationProvider locations;
+    private final UndoRecorder undoRecorder;
     private final String widgetKey;
     private TextView value, detail, stationLabel;
     private TextView conditionLabel;
@@ -79,10 +81,11 @@ final class AirQualityCard {
         }
     };
 
-    AirQualityCard(Activity activity, Menus menus, String widgetKey, LocationProvider locations) {
+    AirQualityCard(Activity activity, Menus menus, String widgetKey, LocationProvider locations,
+                   UndoRecorder undoRecorder) {
         this.activity = activity;
         this.menus = menus;
-        this.widgetKey = widgetKey; this.locations = locations;
+        this.widgetKey = widgetKey; this.locations = locations; this.undoRecorder = undoRecorder;
         String preferenceName = "air-quality-widget-" + widgetKey.replaceAll("[^A-Za-z0-9_-]", "_");
         prefs = activity.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
         source = prefs.getString("source", "model");
@@ -152,6 +155,7 @@ final class AirQualityCard {
             else configureWidget();
         });
     }
+    void refreshNow() { refresh(true); }
     void configureWidget() {
         menus.show("Air quality location · each widget is independent",
                 new String[]{"Nearest model grid · use this device", "Enter coordinates for a model grid", "Bangkok monitoring station"}, choice -> {
@@ -223,13 +227,63 @@ final class AirQualityCard {
         form.addView(input, new LinearLayout.LayoutParams(-1, dp(54)));
         return input;
     }
-    private void saveConfiguration() {
+    private void saveConfiguration() { saveConfiguration(true); }
+    private void saveConfiguration(boolean userChange) {
+        String before = configurationFromPreferences().toString();
+        String after = configurationFromFields().toString();
+        if (userChange && !before.equals(after) && undoRecorder != null)
+            undoRecorder.record(widgetKey, before, "Air quality location");
+        persistConfiguration();
+    }
+    private void persistConfiguration() {
         SharedPreferences.Editor editor = prefs.edit().putString("source", source).putString("location-mode", locationMode)
-                .putString("location-name", locationName);
+                .putString("location-name", locationName).putString("station", IDS[selected]);
         if (Double.isFinite(latitude) && Double.isFinite(longitude))
             editor.putLong("latitude", Double.doubleToLongBits(latitude)).putLong("longitude", Double.doubleToLongBits(longitude));
         else editor.remove("latitude").remove("longitude");
         editor.apply();
+    }
+    private JSONObject configurationFromPreferences() {
+        JSONObject config = new JSONObject();
+        try {
+            config.put("source", prefs.getString("source", "model"));
+            config.put("location-mode", prefs.getString("location-mode", "auto"));
+            config.put("location-name", prefs.getString("location-name", "Near me"));
+            config.put("station", prefs.getString("station", IDS[0]));
+            if (prefs.contains("latitude") && prefs.contains("longitude")) {
+                config.put("latitude", Double.longBitsToDouble(prefs.getLong("latitude", 0)));
+                config.put("longitude", Double.longBitsToDouble(prefs.getLong("longitude", 0)));
+            }
+        } catch (Exception ignored) { }
+        return config;
+    }
+    private JSONObject configurationFromFields() {
+        JSONObject config = new JSONObject();
+        try {
+            config.put("source", source).put("location-mode", locationMode).put("location-name", locationName)
+                    .put("station", IDS[selected]);
+            if (Double.isFinite(latitude) && Double.isFinite(longitude))
+                config.put("latitude", latitude).put("longitude", longitude);
+        } catch (Exception ignored) { }
+        return config;
+    }
+    void restoreConfigurationSnapshot(String encoded) {
+        try {
+            JSONObject config = new JSONObject(encoded);
+            source = config.optString("source", "model");
+            locationMode = config.optString("location-mode", "auto");
+            locationName = config.optString("location-name", "Near me");
+            String station = config.optString("station", IDS[0]);
+            selected = 0;
+            for (int i = 0; i < IDS.length; i++) if (IDS[i].equals(station)) selected = i;
+            if (config.has("latitude") && config.has("longitude")) {
+                latitude = config.getDouble("latitude"); longitude = config.getDouble("longitude");
+            } else { latitude = Double.NaN; longitude = Double.NaN; }
+            locationRequested = false;
+            persistConfiguration(); readHistory(); readCache(); render();
+            if ("model".equals(source) && "auto".equals(locationMode)) ensureModelLocation();
+            else if (active) refresh(true);
+        } catch (Exception ignored) { }
     }
     private void ensureModelLocation() {
         if (!"model".equals(source) || !"auto".equals(locationMode) || locationRequested) return;
@@ -241,7 +295,7 @@ final class AirQualityCard {
             else {
                 latitude = location.getLatitude(); longitude = location.getLongitude();
                 locationName = String.format(Locale.US, "Near me · %.2f°, %.2f°", latitude, longitude);
-                saveConfiguration(); reading = null; readHistory(); readCache();
+                saveConfiguration(false); reading = null; readHistory(); readCache();
             }
             render(); if (location != null && active) refresh(false);
         }));
@@ -252,9 +306,7 @@ final class AirQualityCard {
     }
     void chooseStation() {
         menus.show("Bangkok monitoring station · " + NAMES[selected], NAMES, index -> {
-            source = "airbkk"; saveConfiguration();
-            selected = index;
-            prefs.edit().putString("station", IDS[index]).apply();
+            source = "airbkk"; selected = index; saveConfiguration();
             readHistory();
             readCache(); render(); refresh(true);
         });
@@ -341,7 +393,7 @@ final class AirQualityCard {
                     failed = false;
                     latitude = result.gridLatitude; longitude = result.gridLongitude;
                     locationName = String.format(Locale.US, "Grid %.2f°, %.2f°", latitude, longitude);
-                    saveConfiguration();
+                    saveConfiguration(false);
                     try {
                         prefs.edit().putString("feed-model-" + modelSuffix(), response)
                                 .putString("history-model-" + modelSuffix(), history.encode())

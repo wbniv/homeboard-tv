@@ -158,24 +158,24 @@ def pie_screen(x, y, title, choices, center, w=850, h=420):
         return "".join(out)
     if title in {"Grid columns", "Grid rows"}:
         is_columns = title == "Grid columns"
-        values = ["Auto", "4", "6", "8", "Fit"] if is_columns else ["Auto", "2", "3", "4", "Fit"]
-        current_value = "8" if is_columns else "3"
+        values = ["Auto", "4", "6", "8", "10", "12"] if is_columns else ["Auto", "2", "3", "4", "5", "6"]
+        current_value = "Auto"
+        current_index = values.index(current_value)
+        previous = "‹   " + (values[current_index - 1] if current_index > 0 else "End")
+        following = (values[current_index + 1] if current_index + 1 < len(values) else "End") + "   ›"
         out = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="#15212b" stroke="#4a5967"/>',
                text(x + 28, y + 42, f"Home behavior  ›  {title}", 22, "#f2f5f7", "700"),
-               text(x + 28, y + 74, "Choose a value supported by this TV. Endpoints stop; choices do not wrap.", 15, "#aebcc7")]
-        cy = y + 225
-        out += [f'<path d="M {x+55} {cy} H {x+w-55}" stroke="#536777" stroke-width="4"/>',
-                f'<path d="M {x+50} {cy} l 18 -12 v 24 z" fill="#9fb1c1"/>',
-                f'<path d="M {x+w-50} {cy} l -18 -12 v 24 z" fill="#9fb1c1"/>']
-        spacing = 112
-        start = x + w / 2 - spacing * (len(values)-1) / 2
-        for i, value in enumerate(values):
-            vx = start + i * spacing
-            selected = value == current_value
-            out.append(f'<circle cx="{vx}" cy="{cy}" r="{37 if selected else 26}" fill="{"#37556b" if selected else "#1d2b36"}" stroke="{"#91bdd6" if selected else "#536777"}" stroke-width="{3 if selected else 1.5}"/>')
-            out.append(text(vx, cy + 8, value, 17 if selected else 14, "#ffffff" if selected else "#c1ccd4", "700" if selected else "400", "middle"))
-        fit_text = "Fit is the largest supported value" if is_columns else "Fit is the largest supported row count"
-        out += [text(x + w/2, cy + 76, f"Current: {current_value}  ·  {fit_text}", 16, "#80bce3", "700", "middle"),
+               text(x + 28, y + 74, "Only values that fit this TV are available. Endpoints stop; choices do not wrap.", 15, "#aebcc7")]
+        cy = y + 220
+        card_w = 230
+        positions = [x + 65, x + w/2 - card_w/2, x + w - 65 - card_w]
+        for i, value in enumerate([previous, current_value, following]):
+            selected = i == 1
+            out.append(f'<rect x="{positions[i]}" y="{cy-45}" width="{card_w}" height="90" rx="12" fill="{"#37556b" if selected else "#1d2b36"}" stroke="{"#91bdd6" if selected else "#536777"}" stroke-width="{3 if selected else 1.5}"/>')
+            out.append(text(positions[i]+card_w/2, cy+8, value, 19 if selected else 15,
+                            "#ffffff" if selected else "#c1ccd4", "700" if selected else "400", "middle"))
+        choices_hint = "Auto · 4 · 6 · 8 · 10 · 12 columns" if is_columns else "Auto · supported rows through this TV's fit"
+        out += [text(x + w/2, cy + 76, choices_hint, 15, "#80bce3", "700", "middle"),
                 text(x + w/2, y + h - 28, "← / → change · OK apply · Back cancel · Undo after apply", 14, "#91a1ae", anchor="middle")]
         return "".join(out)
     if title == "About Homeboard TV":

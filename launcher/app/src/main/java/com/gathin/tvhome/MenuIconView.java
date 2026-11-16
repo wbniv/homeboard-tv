@@ -12,7 +12,7 @@ final class MenuIconView extends View {
         APP, MOVE, FAVORITE, DELETE, UNINSTALL, INFO, SETTINGS, AIR, RESIZE, ADD,
         RESTORE, WIDGET, GRID, APPEARANCE, ARTWORK, BEHAVIOR, HOME, WALLPAPER, THEME, MOON,
         FOREST, PALETTE, CIRCLE, MOTION, BANNER, CANCEL, CONFIRM, LOCATION, CLOSE,
-        NEXT, PREVIOUS, LICENSE
+        NEXT, PREVIOUS, LICENSE, UNDO
     }
 
     private final Kind kind;
@@ -90,6 +90,9 @@ final class MenuIconView extends View {
             case RESTORE:
                 path(canvas, 5, 9, 7, 5, 12, 4, 18, 7, 20, 12, 18, 18, 13, 20, 8, 19);
                 path(canvas, 5, 9, 5, 4, 10, 5); path(canvas, 12, 8, 12, 12, 16, 14); break;
+            case UNDO:
+                path(canvas, 9, 7, 5, 7, 5, 11); path(canvas, 5, 7, 9, 3);
+                path(canvas, 5, 7, 14, 7, 19, 11, 19, 16, 15, 19, 10, 19); break;
             case WIDGET:
                 rect(canvas, 3, 4, 21, 20); line(canvas, 3, 9, 21, 9);
                 rect(canvas, 6, 12, 10, 16); rect(canvas, 13, 12, 18, 16); break;

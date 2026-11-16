@@ -1,6 +1,6 @@
 # Homeboard TV menu redesign: compass pies and color cards
 
-**Status: first pie-menu pass installed on Cast1; undo-first and bounded-selector revision in design review · 16 November 2026**
+**Status: implementation complete and exercised on Cast1; Will's full remote review remains open · 16 November 2026**
 
 Redesign Homeboard's complete remote-operated menu experience: its entry points,
 hierarchy, interaction, layout, typography, color, icons, focus feedback and exit
@@ -78,8 +78,10 @@ prompts; its uninstall confirmation remains because Homeboard cannot reverse it.
   Move/resize remain direct grid-edit modes with the existing bottom help strip
   and OK/Back behavior.
 - **Grid controls:** Home behavior opens bounded selectors for columns and rows.
-  Show the current value and only the finite values supported by this TV. Left
-  and Right step without wrapping; endpoints stop. `Auto` remains available.
+  Show the current value and only the finite values supported by this TV. The
+  column selector offers `Auto`, 4, 6, 8, 10 and 12 columns, filtered by the
+  TV's measured fit. Rows offer `Auto` and supported row counts up to the same
+  fit. Left and Right step without wrapping; endpoints stop.
   This is a bounded value control, not a scrollable menu.
 - **Restore wording:** call the destination **Restore hidden app** and explain
   that it returns the app's shortcut to All Apps; it does not reinstall the app.
@@ -192,24 +194,26 @@ they should remain outside the menu tree.
 - [x] Restyle the Quick Settings panel to the shared compass language.
 - [x] Redesign coordinate entry, About, and transient move/resize help to fit
       the same visual system while preserving their required controls.
-- [ ] Review with the Alan Cooper filter and ensure every option is actionable,
+- [x] Review with the Alan Cooper filter and ensure every option is actionable,
       every reversible action has Undo, irreversible actions are confirmed, and every menu has a clear
       Back path.
 - [x] Build in the container, install on Cast1 through the coordinator, and
-      inspect the returned screenshot and job receipt; see
+      inspect Cast1 screenshots for the selector/Undo round-trip, About and
+      Restore empty state; see
       [the Cast1 run record](../testing/2026-11-16-pie-menu-redesign.md).
 - [x] Exercise the Mermaid fallback guard on each `task md` render: its detector
       first proves it catches raw `flowchart` and `pie` code blocks, then rejects rendered
       HTML containing that fallback.
-- [ ] Review revised mockups for Undo banner/history, bounded grid selectors,
+- [x] Review revised mockups for Undo banner/history, bounded grid selectors,
       Restore hidden app and About before implementation.
-- [ ] Add persistent, bounded Undo for Homeboard-owned layout and widget settings;
+- [x] Add persistent, bounded Undo for Homeboard-owned layout and widget settings;
       retain Android confirmation for uninstall and other system-owned actions.
       Store up to 20 recent changes, including widget configuration but excluding
       sensor history and cache data.
-- [ ] Replace grid row/column option menus with bounded, non-wrapping selectors
-      that show only values supported by the device.
-- [ ] Redesign Restore hidden app and About from the paired mockups.
+- [x] Replace grid row/column option menus with bounded, non-wrapping selectors
+      that show only values supported by the device; columns are Auto, 4, 6, 8,
+      10 or 12, filtered by measured fit.
+- [x] Redesign Restore hidden app and About from the paired mockups.
 - [ ] Will's Cast1 remote review confirms directional activation, center paging,
       submenu Back behavior and palette focus preview.
 
@@ -226,14 +230,14 @@ they should remain outside the menu tree.
       directly.
 - [x] Palette remains a single-screen 4 × 5 grid; each card is itself a large
       color swatch with legible name and visible current state.
-- [ ] Homeboard-owned changes can be undone; Android-owned destructive actions
+- [x] Homeboard-owned changes can be undone; Android-owned destructive actions
       retain Android's confirmation flow;
       move/resize retain preview, save and cancel behavior.
-- [ ] Grid row and column controls show finite, TV-supported values and stop at
+- [x] Grid row and column controls show finite, TV-supported values and stop at
       both ends without wrapping.
-- [ ] Restore hidden app clearly restores only the shortcut to All Apps and has
+- [x] Restore hidden app clearly restores only the shortcut to All Apps and has
       a helpful empty state.
-- [ ] About shows product/version, purpose, upstream attribution and licenses in
+- [x] About shows product/version, purpose, upstream attribution and licenses in
       a content-first layout with an easy Back action.
 - [x] Homeboard settings are identified by the sliders icon; the gear remains
       Android device settings.
