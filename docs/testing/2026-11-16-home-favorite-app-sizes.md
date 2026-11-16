@@ -1,5 +1,17 @@
 # Home favorite sizes · 16 November 2026
 
+## Combined deployment · 0.1.13
+
+- [x] Merged Home favorites/dense grids and Projectivy hosting together in main at `2e37f02`.
+- [x] Passed 373 JVM tests, debug lint, minified release packaging and the new numbered deployment.
+- [x] J‑5125d95ff359 installed the frozen 0.1.13 APK on Cast1 and verified its hash.
+- [x] J‑b4cb7b34139c shows Home Small icons and Undo restoring Banners, with both AirBKK widgets and all nine favorites retained.
+- [x] J‑861c0dbe9aae shows dense All Apps, independent Icons branches and opacity preview/cancel/save/Undo.
+
+See the [combined record and screenshots](2026-11-16-projectivy-plugin-host.md).
+The earlier pending handoff below is resolved. A no-focused-window launch ANR
+on the first Appearance attempt remains recorded; the identical APK passed retry.
+
 ## Dense style-specific grids · 0.1.8
 
 Commit `6a0366b` adds separate icon and banner grid sizing to both Home and All

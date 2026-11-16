@@ -40,10 +40,11 @@ wider cards and taller rows. Their artwork settings are independent. Auto fits
 the available space while retaining readable labels and focus clearance; Undo
 restores Home's previous style and placement.
 
-The [validation record](docs/testing/2026-11-16-home-favorite-app-sizes.md) distinguishes
-source implementation from installed builds: 0.1.8 contained these changes,
-but a separate Projectivy 0.1.9 build replaced it on Cast1 without them. The
-combined merge and Home banner visual verification remain pending.
+The combined **0.1.13** deployment includes Home favorite sizes, dense icon/banner
+grids, Projectivy wallpaper hosting and independent UI opacity. Cast1 checks
+confirmed both Home styles and Undo, All Apps density, Appearance controls and
+the six-media wallpaper probe. See the [combined validation record](docs/testing/2026-11-16-projectivy-plugin-host.md),
+including the recorded cold-launch timeout and successful retry.
 
 ## Start here
 

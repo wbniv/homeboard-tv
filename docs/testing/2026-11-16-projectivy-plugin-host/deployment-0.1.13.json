@@ -1,0 +1,48 @@
+{
+  "versionName": "0.1.13",
+  "versionCode": 13,
+  "device": "chromecast-test-01",
+  "apk": "/home/will/homeboard-tv/artifacts/deployments/0.1.13/homeboard.apk",
+  "sha256": "ca1ec267c35690edfc73a31c68c89d8b169bb889073e895e9fee75d6c8eb89fd",
+  "base_commit": "2e37f025f811108040e0e23d09a991211d9b45a7",
+  "job": "J-5125d95ff359",
+  "status": "succeeded",
+  "health": "ready",
+  "source_local_changes": [
+    "version.properties: version_code=13 (deployment bump)"
+  ],
+  "checks": {
+    "tests": 373,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "lint": "passed",
+    "minified_release": "passed on combined source before version bump"
+  },
+  "wallpaper_probe": {
+    "job": "J-d7b647dfdb7e",
+    "status": "succeeded",
+    "health": "ready",
+    "expected_text": "ALL CHECKS PASSED",
+    "text_found": true,
+    "ocr": "WALLPAPER PROBE\n\nPASS opacity: Ul 75%, pie 95%\n\nPASS provider discovery\n\nPASS cross-process API and all\n\nevent parcels\n\nPASS render 5: Fixture color\n\nPASS render 5: Fixture color\n\nPASS render 5: Fixture color Up\n\nPASS render 0: image\n\nPASS render 1: drawable Do\n\nPASS render 2: animated\n\nPASS render 3: lottie a0 Opacity a0\n9 UI|75% - pie 95%\n\nPASS render 4: video L... Do P 00 R...\n\nPASS all six media types Probes\n\nPASS hung provider timeout; Ul bevicl Bation\n\nalive\n\nALL CHECKS PASSED D\n",
+    "passed": true
+  },
+  "appearance": {
+    "job": "J-861c0dbe9aae",
+    "status": "succeeded",
+    "health": "ready",
+    "menu_grouping": "passed",
+    "dense_all_apps": "10 columns, 21 apps on one page",
+    "opacity_preview_cancel_save_undo": "passed",
+    "earlier_attempt": "J-dcbe2e196bce had a no-focused-window launch ANR; coordinator automatic readd J-ce7707e21fbe restored ready health"
+  },
+  "home_styles": {
+    "job": "J-b4cb7b34139c",
+    "status": "succeeded",
+    "health": "ready",
+    "small_icons": "visually confirmed",
+    "undo_to_banners": "visually confirmed, with original widgets/favorites",
+    "catalog_restored": "com.gathin.tvhome.MainActivity"
+  }
+}

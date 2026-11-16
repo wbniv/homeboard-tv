@@ -1,6 +1,7 @@
 # Projectivy wallpaper host validation
 
-Branch: `feature/projectivy-wallpaper-host` in `/home/will/homeboard-tv-projectivy`.
+Merged from `feature/projectivy-wallpaper-host` into `main` at `2e37f02`.
+The source worktree remains at `/home/will/homeboard-tv-projectivy`.
 
 - [x] Combined source with main bed1ea1: 373 JVM tests, zero failures/errors/skips, debug lint and minified release packaging passed in the container.
 - [x] Debug lint passed and minified 0.1.12 release APK packaged in the container.
@@ -10,8 +11,25 @@ Branch: `feature/projectivy-wallpaper-host` in `/home/will/homeboard-tv-projecti
 - [x] J‑849cc7af5234: nine-column All Apps with all 21 installed apps on one page; Icons contains Circular icon mask; opacity 75% → preview 100% → cancel → save 70% → Undo restored 75%.
 - [x] Unmodified Overflight rendering passed in J‑f9b793cee5cc on 0.1.12, including an actual first video frame. Original 4K/HDR preferences restored and visually verified in J‑02433595f75d.
 
-The final deployment version, coordinator job IDs, evidence and actual results
-will be added after completion. Prior build success does not establish device behavior.
+## Combined main deployment · 0.1.13
+
+- [x] `task deploy DEVICE=chromecast-test-01` passed 373 JVM tests, lint and debug packaging from merged main.
+- [x] J‑5125d95ff359 installed and briefly launched 0.1.13, with installed SHA-256 verified and device health ready. App data and default Home were preserved.
+- [x] J‑d7b647dfdb7e displayed ALL CHECKS PASSED on 0.1.13; the OCR oracle independently passed. This includes actual video first-frame readiness, all six media types and hung-provider timeout.
+
+Frozen APK: `artifacts/deployments/0.1.13/homeboard.apk`, SHA-256
+`ca1ec267c35690edfc73a31c68c89d8b169bb889073e895e9fee75d6c8eb89fd`.
+Source: `2e37f02` plus the deployment version bump to 13. It includes main's Home
+favorite sizes and separate font-aware icon/banner grids. The machine-readable
+[deployment record](2026-11-16-projectivy-plugin-host/deployment-0.1.13.json)
+links the build and probe results.
+
+![Combined 0.1.13 wallpaper probe](2026-11-16-projectivy-plugin-host/offline-probe-0.1.13.png)
+
+The first Home recipe J‑3b46f1711798 was cancelled before scripted input because
+the saved Home already used banners, contrary to that recipe's Small-icons
+precondition. Cleanup returned ready health. A recipe for the actual starting
+state replaces it; the cancelled job is not acceptance evidence.
 
 ## Cast1 evidence
 
@@ -104,3 +122,38 @@ older no-media results above. The scoped Apple HTTP policy, rather than a broad
 cleartext allowance, is required by the published feed.
 
 ![Unmodified Overflight playing Mountains on Cast1](2026-11-16-projectivy-plugin-host/overflight-playing.png)
+
+## Combined Appearance check · 0.1.13
+
+J‑861c0dbe9aae passed the complete remote-driven Appearance recipe with ready
+health. The captured All Apps screen has ten icon columns and all 21 installed
+apps on one page. Icons contains independent Home favorites and All Apps choices,
+plus Circular icon mask. UI opacity starts at 75%, previews 100%, cancels back to
+75%, saves 70% and returns to 75% through Undo. Pie alpha remains independent.
+
+The earlier attempt J‑dcbe2e196bce encountered an Android no-focused-window ANR
+during launch; the input helper then exited 137. Automatic readd J‑ce7707e21fbe
+restored ready health. The identical frozen APK passed the retry. This does not
+establish reliable cold-start latency; that launch timeout remains a limitation.
+
+![Combined Icons branches](2026-11-16-projectivy-plugin-host/icons-menu-0.1.13.png)
+
+![Combined dense All Apps](2026-11-16-projectivy-plugin-host/dense-all-apps-0.1.13.png)
+
+![Combined opacity default](2026-11-16-projectivy-plugin-host/opacity-75-0.1.13.png)
+
+![Combined opacity preview](2026-11-16-projectivy-plugin-host/opacity-preview-100-0.1.13.png)
+
+![Combined opacity Undo](2026-11-16-projectivy-plugin-host/opacity-undo-0.1.13.png)
+
+## Combined Home styles · 0.1.13
+
+J‑b4cb7b34139c completed with ready health. The actual captures show Home using
+Small icons, then Undo restoring Banners and the prior placement. Both AirBKK
+widgets and all nine favorites remain. The first capture labeled “banners before”
+actually shows All Apps; that label is not used as Home acceptance evidence.
+The final registration was restored to `com.gathin.tvhome.MainActivity`.
+
+![Home Small icons on 0.1.13](2026-11-16-projectivy-plugin-host/home-small-icons-0.1.13.png)
+
+![Undo restores Home banners on 0.1.13](2026-11-16-projectivy-plugin-host/home-banners-undo-0.1.13.png)

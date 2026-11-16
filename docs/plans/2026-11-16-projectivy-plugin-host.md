@@ -1,6 +1,6 @@
 # Homeboard TV as a host for Projectivy wallpaper plugins
 
-**Status: implemented in feature/projectivy-wallpaper-host; fixture and launcher UI checks passed; unmodified Overflight video playback passed on Cast1 · 16 November 2026**
+**Status: merged into main; fixture and launcher UI checks passed; unmodified Overflight video playback passed on Cast1 · 16 November 2026**
 
 Make Homeboard TV a compatible host for existing Projectivy wallpaper-provider
 plugins. Will installs a provider APK, selects it in Homeboard, and sees its
@@ -319,11 +319,11 @@ not a reason to change Homeboard's application ID.
 - [ ] Verify timer-cache expiry, independent rotation, empty results, refresh hints, settings return and stale-result rejection with a deterministic provider fixture.
 - [ ] Verify crashes, a deliberately hung call, malformed parcels/media, oversized results, package replacement/removal and host process recreation without losing Home navigation.
 - [ ] Exercise all display modes and supported URI schemes with offline fixture media; verify attribution and explicit link opening.
-- [ ] Demonstrate unmodified Overflight image output, then video output after the motion milestone; record any hard-coded Projectivy assumptions.
+- [x] Demonstrate unmodified Overflight video output with first-frame readiness on Cast1; no hard-coded launcher-package restriction was encountered. Independent Overflight still-image output remains unverified.
 - [x] Verify mapped app-focus and idle events in the device probe; unavailable now-playing/program sources are exposed in provider readiness.
 - [ ] Measure first frame, D-pad responsiveness, memory and decoder release on Cast1; proposed targets are a cached first frame within one second and no visible focus stalls relative to the palette baseline.
 - [ ] Keep air-quality widgets, saved empty Home, All Apps, palette changes, menu readability, RTL and reduced motion working over plugin backgrounds.
-- [ ] Finish the six-media-type sample matrix before describing media support as complete; record codec and event-source limitations separately.
+- [x] All six sample media types passed the device probe; codec, display-mode and event-source limitations remain documented separately.
 
 Run compilation, fixtures, tests, lint and packaging only through the build container:
 `task check`, `task build`, `task fixture`, and the appropriate containerized API
@@ -334,7 +334,7 @@ job, `task chromecast:watch`, then `task chromecast:evidence`. Use `task deploy`
 for every new Homeboard APK so its version advances. Include fixture/plugin APKs
 and evidence steps in the complete job. Keep iterative work on Cast1 until Will
 says Homeboard is usable; preserve app data and do not change default Home merely
-to install a build. This planning task does not deploy anything.
+to install a build. Deploy only after Will explicitly requests it.
 
 ## Dated agenda
 
@@ -380,7 +380,7 @@ testing record for frozen APK hashes, receipts and remaining verification.
 The full provider preview/options/Back/apply/Undo workflow passed on build 0.1.10
 in J‑70428b927d44. Its coordinator deployment was subsequently confirmed successful
 and healthy. A quiet Overflight retry produced an explicit no-usable-media result;
-this is retained as an open real-provider check, not a successful compatibility claim.
+that earlier result is superseded by the successful 0.1.12 playback check below.
 
 Overflight's failed 0.1.10 preview was traced through Background details to plain
 HTTP video URLs rejected before playback. The public default feed contains Apple
@@ -401,3 +401,14 @@ The real-plugin gate passed in J‑f9b793cee5cc: unmodified Overflight 1.20 supp
 Mountains and Homeboard rendered the video with first-frame readiness. The Cast1
 check used HD/SDR. Merge and the next deployment must include the latest main
 branch's dashboard styles as well as this host implementation.
+
+The combined merge is `2e37f02`, including the latest Home favorite sizes and
+font-aware icon/banner grids from main. Its 373 JVM tests, debug lint and
+minified release packaging passed in the build container.
+
+Deployment **0.1.13** from combined main succeeded on Cast1 in J‑5125d95ff359.
+The same frozen APK passed the offline media/IPC probe (J‑d7b647dfdb7e),
+Appearance/opacity/All Apps checks (J‑861c0dbe9aae), and Home Small icons with Undo
+to banners (J‑b4cb7b34139c). The first Appearance attempt encountered a
+no-focused-window launch timeout; the identical APK passed retry. See the testing
+record for exact hashes, captures and remaining performance/display-mode limits.
