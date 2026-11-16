@@ -18,6 +18,7 @@ missing rows on commit.*
 | [Palette-driven surfaces, condition trends and directional panel resizing](2026-11-16-palette-trend-resize.md) | Tracks palette-derived UI, condition-colored PM2.5 trends, panel resize and current Cast2 verification blocker. | [`b2c5553`](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | Feature |
 | [PM2.5 30-day history and sparklines](2026-11-16-pm25-30-day-sparkline.md) | Adds a bounded 30-day history and condition-colored 24-hour and 30-day traces. | [`b2c5553`](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | Feature |
 | [Compass pie menu redesign](2026-11-16-pie-menu-redesign.md) | Replaces card menus with compass choices, then revises reversible actions around Undo, bounded grid controls, clearer Restore wording and an About page. | [`9cb567a`](https://github.com/wbniv/homeboard-tv/commit/9cb567a) | Feature |
+| [Google TV app icons and glowing focus](2026-11-16-google-tv-app-focus.md) | Matches circular app artwork, focus geometry and halo to Cast2's reference and records numbered deployments and device validation. | [`531779b`](https://github.com/wbniv/homeboard-tv/commit/531779b) | Feature |
 
 ---
 
@@ -28,3 +29,4 @@ missing rows on commit.*
 - **Summaries / categories** are concise editorial descriptions of each plan.
 - **Seeded** 2026-11-15 via `seed-plan-index.sh` — eight plan rows, with summaries
   and categories filled by hand.
+- **Updated** 2026-11-16 to ten plans, including the Google TV app focus implementation.
