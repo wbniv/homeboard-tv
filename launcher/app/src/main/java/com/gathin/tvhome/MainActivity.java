@@ -75,6 +75,7 @@ public class MainActivity extends Activity {
         final int pageCount;
         final int pageSize, gridColumns;
         final boolean compactCards, paletteGrid;
+        final Runnable panelRenderer;
         int page, focusedChoice;
         MenuSpec(String title, String subtitle, String[] labels,
                  java.util.function.IntConsumer action, int selectedIndex) {
@@ -83,8 +84,17 @@ public class MainActivity extends Activity {
         MenuSpec(String title, String subtitle, String[] labels,
                  java.util.function.IntConsumer action, int selectedIndex,
                  int pageSize, int gridColumns, boolean compactCards, boolean paletteGrid) {
+            this(title, subtitle, labels, action, selectedIndex, pageSize, gridColumns, compactCards, paletteGrid, null);
+        }
+        MenuSpec(String title, Runnable panelRenderer) {
+            this(title, "", new String[0], ignored -> {}, -1, MENU_PAGE_SIZE, 4, false, false, panelRenderer);
+        }
+        private MenuSpec(String title, String subtitle, String[] labels,
+                 java.util.function.IntConsumer action, int selectedIndex,
+                 int pageSize, int gridColumns, boolean compactCards, boolean paletteGrid, Runnable panelRenderer) {
             this.title = title; this.subtitle = subtitle; this.labels = labels;
             this.action = action; this.selectedIndex = selectedIndex;
+            this.panelRenderer = panelRenderer;
             this.pageSize = pageSize; this.gridColumns = gridColumns; this.compactCards = compactCards;
             this.paletteGrid = paletteGrid;
             pageCount = Math.max(1, (labels.length + pageSize - 1) / pageSize);
@@ -138,6 +148,7 @@ public class MainActivity extends Activity {
     private FrameLayout undoBanner;
     private TextView undoButton;
     private TextView aboutBackButton;
+    private TextView backgroundStatusText;
     private SharedPreferences preferences;
     private HomeLayout layout;
     private String lastSavedLayout;
@@ -1678,6 +1689,14 @@ public class MainActivity extends Activity {
         }, selected);
     }
 
+    private void solidColorSettings() {
+        cancelWallpaperPreview();
+        beginUndoGroup("Changed solid background");
+        layout.wallpaper.component = ""; layout.wallpaper.uuid = "";
+        save("Background: solid color"); syncBackground(); render(0);
+        colorPaletteSettings();
+    }
+
     private void applyBackgroundChoice() {
         background = paletteColor(); paletteColors = PaletteColors.from(background);
         setAirPalette();
@@ -2096,7 +2115,7 @@ public class MainActivity extends Activity {
         openMenu(new MenuSpec(title, subtitle, labels, action, selectedIndex, labels.length, 4, true, true));
     }
     private void openMenu(MenuSpec spec) {
-        if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
+        if (activeMenu != null && (invokingMenuAction || activeMenu.panelRenderer != null)) menuStack.add(activeMenu);
         else menuStack.clear();
         dismissMenu(); cancelOk();
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
@@ -2112,6 +2131,7 @@ public class MainActivity extends Activity {
         String[] labels = spec.labels;
         int selectedIndex = spec.selectedIndex, pageCount = spec.pageCount;
         spec.page = page;
+        if (spec.panelRenderer != null) { spec.panelRenderer.run(); return; }
         if (!spec.paletteGrid) {
             showPieMenuPage(spec, page, focusChoice);
             return;
@@ -2473,6 +2493,7 @@ public class MainActivity extends Activity {
     }
     private void dismissMenu() {
         backgroundInfo = false;
+        backgroundStatusText = null;
         if (overlay == null) return;
         if (activeMenu != null && activeMenu.paletteGrid) finishUndoGroup();
         root.removeView(overlay); overlay = null;
@@ -2495,6 +2516,7 @@ public class MainActivity extends Activity {
         if (!menuStack.isEmpty()) {
             dismissMenu();
             activeMenu = menuStack.remove(menuStack.size() - 1);
+            if ("Background".equals(activeMenu.title)) activeMenu = backgroundMenuSpec();
             showMenuPage(activeMenu, activeMenu.page, activeMenu.focusedChoice);
         } else {
             dismissMenu(); activeMenu = null;
@@ -2543,15 +2565,22 @@ public class MainActivity extends Activity {
         wallpaperHost.appFocused(app.label, app.component.getPackageName(), light, dark);
     }
     private void backgroundSettings() {
-        menu("Background", layout.wallpaper.solid() ? "Solid color" : "Projectivy wallpaper provider selected",
-                new String[]{"Solid color", "Projectivy plugins", "Background details", "Retry provider"}, choice -> {
-                    if (choice == 0) {
-                        cancelWallpaperPreview(); layout.wallpaper.component = ""; layout.wallpaper.uuid = "";
-                        save("Background: solid color"); syncBackground(); render(0);
-                    } else if (choice == 1) providerList();
+        openMenu(backgroundMenuSpec());
+    }
+    private MenuSpec backgroundMenuSpec() {
+        String[] choices = layout.wallpaper.solid()
+                ? new String[]{"Solid color", "Projectivy plugins", "Background details"}
+                : new String[]{"Solid color", "Projectivy plugins", "Background details", "Retry provider"};
+        return new MenuSpec("Background", layout.wallpaper.solid() ? "Solid color" : "Projectivy wallpaper provider selected",
+                choices, choice -> {
+                    if (choice == 0) solidColorSettings();
+                    else if (choice == 1) providerList();
                     else if (choice == 2) backgroundDetails();
-                    else { wallpaperHost.refresh(); backgroundDetails(); }
-                });
+                    else {
+                        if (layout.wallpaper.solid()) { providerList(); return; }
+                        cancelWallpaperPreview(); syncBackground(); wallpaperHost.refresh(); backgroundDetails();
+                    }
+                }, -1);
     }
     private void providerList() {
         List<ProjectivyProviderRegistry.Provider> providers = new ProjectivyProviderRegistry(this).discover();
@@ -2606,6 +2635,7 @@ public class MainActivity extends Activity {
         } else openMenu(spec);
     }
     private void refreshProviderDetails() {
+        if (backgroundInfo && backgroundStatusText != null) backgroundStatusText.setText(backgroundInfoText());
         if (!closed && activeMenu != null && "Provider background".equals(activeMenu.title)
                 && overlay != null && wallpaperProvider != null) providerDetails(wallpaperProvider, true);
     }
@@ -2626,9 +2656,33 @@ public class MainActivity extends Activity {
                 });
     }
     private void backgroundDetails() {
+        openMenu(new MenuSpec("Background details", this::drawBackgroundDetails));
+    }
+    private String backgroundInfoText() {
+        WallpaperSettings selected = wallpaperDraft != null && wallpaperPreviewStarted ? wallpaperDraft : layout.wallpaper;
+        String info;
+        if (selected.solid()) {
+            info = "Source: Solid color\nPalette: " + layout.palette + String.format(java.util.Locale.ROOT, " · #%06X", background & 0xffffff);
+        } else {
+            ProjectivyProviderRegistry.Provider provider = wallpaperProvider;
+            if (provider == null || !provider.component.flattenToString().equals(selected.component))
+                provider = new ProjectivyProviderRegistry(this).find(selected);
+            info = "Source: " + (provider == null ? "Missing provider" : provider.name)
+                    + "\n" + wallpaperStatus;
+            if (provider != null && !provider.usable()) info += "\n" + provider.readiness();
+        }
+        info += "\nUI background opacity: " + layout.uiOpacityPercent + "%";
+        if (!selected.solid() && layout.uiOpacityPercent == 100) info += " · covers wallpaper";
         tv.projectivy.plugin.wallpaperprovider.api.Wallpaper item = displayedWallpaper;
-        if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
-        dismissMenu(); activeMenu = null; menuGeneration++; backgroundInfo = true;
+        if (item != null && !selected.solid()) info += "\nTitle: " + (item.getTitle() == null ? "Untitled" : item.getTitle())
+                + "\nAuthor: " + (item.getAuthor() == null ? "Not provided" : item.getAuthor())
+                + "\nSource: " + (item.getSource() == null ? "Not provided" : item.getSource());
+        return info;
+    }
+    private void drawBackgroundDetails() {
+        tv.projectivy.plugin.wallpaperprovider.api.Wallpaper item = displayedWallpaper;
+        if (overlay != null) root.removeView(overlay);
+        backgroundInfo = true;
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         overlay = new FrameLayout(this); overlay.setBackgroundColor(paletteColors.scrim);
         LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL);
@@ -2637,19 +2691,16 @@ public class MainActivity extends Activity {
         panelFill.setFillOpacity(WallpaperSettings.PIE_BACKGROUND_OPACITY);
         panel.setBackground(panelFill);
         panel.addView(text("Background details", 24), new LinearLayout.LayoutParams(-1, -2));
-        String info = wallpaperStatus;
-        if (wallpaperProvider != null) info += "\n" + wallpaperProvider.name + " · " + wallpaperProvider.readiness();
-        if (item != null) info += "\nTitle: " + (item.getTitle() == null ? "Untitled" : item.getTitle())
-                + "\nAuthor: " + (item.getAuthor() == null ? "Not provided" : item.getAuthor())
-                + "\nSource: " + (item.getSource() == null ? "Not provided" : item.getSource());
-        TextView details = text(info, 18); details.setMaxLines(8); details.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        TextView details = text(backgroundInfoText(), 18); details.setMaxLines(8); details.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        backgroundStatusText = details;
         LinearLayout.LayoutParams detailLp = new LinearLayout.LayoutParams(-1, -2); detailLp.topMargin = dp(16); panel.addView(details, detailLp);
         LinearLayout buttons = new LinearLayout(this); buttons.setGravity(Gravity.CENTER_VERTICAL);
         if (item != null && item.getActionUri() != null) {
             TextView link = infoButton("Open wallpaper link", () -> openWallpaperLink(item.getActionUri()));
             buttons.addView(link, new LinearLayout.LayoutParams(0, dp(60), 1));
         }
-        buttons.addView(infoButton("Choose background", this::backgroundSettings), new LinearLayout.LayoutParams(0, dp(60), 1));
+        buttons.addView(infoButton("Choose color", this::solidColorSettings), new LinearLayout.LayoutParams(0, dp(60), 1));
+        buttons.addView(infoButton("Choose provider", this::providerList), new LinearLayout.LayoutParams(0, dp(60), 1));
         aboutBackButton = infoButton("Back", this::backMenu);
         buttons.addView(aboutBackButton, new LinearLayout.LayoutParams(0, dp(60), 1));
         LinearLayout.LayoutParams buttonsLp = new LinearLayout.LayoutParams(-1, dp(64)); buttonsLp.topMargin = dp(16); panel.addView(buttons, buttonsLp);
@@ -2675,7 +2726,7 @@ public class MainActivity extends Activity {
     }
     private void startAdjustment(String title, int original, java.util.function.IntConsumer preview,
                                  java.util.function.IntConsumer commit) {
-        dismissMenu(); menuStack.clear(); activeMenu = null; menuGeneration++;
+        dismissMenu(); activeMenu = null; menuGeneration++;
         adjustmentTitle = title; adjustmentValue = original; adjustmentPreview = preview; adjustmentCommit = commit;
         adjustmentCancel = () -> { preview.accept(original); };
         adjustmentArm = arm -> {

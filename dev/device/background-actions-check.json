@@ -1,0 +1,84 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 27,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 1,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 3,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 5,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 7,
+      "capture": "background-root"
+    },
+    {
+      "at": 8,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 10,
+      "capture": "background-details"
+    },
+    {
+      "at": 12,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 14,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 17,
+      "capture": "retry-provider-result"
+    },
+    {
+      "at": 19,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 21,
+      "capture": "background-after-back"
+    },
+    {
+      "at": 22,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 23,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 24,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    }
+  ]
+}

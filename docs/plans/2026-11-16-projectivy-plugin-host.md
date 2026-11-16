@@ -412,3 +412,41 @@ Appearance/opacity/All Apps checks (J‑861c0dbe9aae), and Home Small icons with
 to banners (J‑b4cb7b34139c). The first Appearance attempt encountered a
 no-focused-window launch timeout; the identical APK passed retry. See the testing
 record for exact hashes, captures and remaining performance/display-mode limits.
+
+## Background menu repair · 16 November 2026
+
+The 0.1.14 code treats Solid color as a source switch with no picker. Details
+opens a sparse status panel; Retry is exposed even for a solid source and does
+nothing. Keep the existing Projectivy provider workflow while making each root
+choice lead to a useful, tested screen.
+
+![Background destinations, color picker and details](2026-11-16-projectivy-plugin-host/background-menus.svg)
+
+- Solid color opens the existing palette picker, switches off provider output and
+  groups the source/color changes into one Undo entry. Back returns to Background.
+- Details shows the actual source, palette, UI-background opacity and relevant
+  status/credits, with Choose color, Choose provider and Back actions. Child
+  screens return to Details, whose Back returns to the invoking menu.
+- Retry appears only when a provider is saved. It refreshes that provider and
+  opens Details, whose status updates when loading succeeds or fails.
+- Device regressions drive real key events on Home and All Apps, using isolated
+  Homeboard test preferences and the offline provider. Cover source switching,
+  palette preview, parent navigation, Undo, provider preview/apply/options and
+  retry status without modifying Will's settings or real provider preferences.
+
+```mermaid
+flowchart TD
+    A[Background] -->|Solid color| C[Palette picker]
+    C --> P[Move to preview solid color]
+    P -->|Back or OK| A
+    A -->|Background details| D[Source, palette, opacity, status and credits]
+    D -->|Choose color| C
+    D -->|Choose provider| L[Installed Projectivy providers]
+    C -->|Return when invoked from Details| D
+    L -->|Back when invoked from Details| D
+    D -->|Back| A
+    A -->|Projectivy plugins| L
+    A -->|Retry: provider selected| R[Refresh selected provider]
+    R --> D
+    A --> U[Undo restores previous source and palette together]
+```

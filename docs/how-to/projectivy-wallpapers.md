@@ -7,6 +7,15 @@ Background → Projectivy plugins**. Choose a provider, select **Preview**, and
 choose **Use background** after usable media appears. Back discards the preview.
 Undo restores the previous Homeboard background selection.
 
+**Background → Solid color** opens the palette picker. Move to preview a solid
+color; OK or Back returns to the invoking screen. Source and color changes share
+one Undo entry, so Undo can restore a previous provider and its palette together.
+**Background details** shows the active source, palette or provider status/credits,
+and UI-background opacity. Its Choose color and Choose provider buttons open
+those screens; Back returns to Details and then the invoking Background menu.
+**Retry provider** appears only with a saved provider. It refreshes that source
+and opens Details, which updates when loading succeeds or fails.
+
 **Plugin settings** opens the provider's own exported settings activity when it
 has one. Homeboard refreshes on return. Provider preferences belong to that app;
 Homeboard does not import, reset or back them up. **More options** controls
@@ -126,3 +135,13 @@ backdrop pixels, panel fills, foreground alpha, focus borders and inactive focus
 state without saving an opacity or layout draft. Run `dev/device/ui-background-probe.json`
 with this debug entry point, inspect **ALL CHECKS PASSED**, export evidence, and
 restore the normal MainActivity registration.
+
+`BackgroundMenuProbeActivity` exercises the actual Home/All Apps menus using
+Activity key dispatch, Android focus search for unhandled native navigation, and
+the offline provider. It isolates launcher and air-widget preferences, leaving
+Will's saved configuration and real providers untouched. The suite covers the
+color picker, native Details buttons and child screens, grouped Undo, provider
+preview/apply, rotation/dimming return paths and Retry status. Use
+`dev/device/background-menu-probe.json`, export evidence, check the assertion
+screen and restore MainActivity registration. Physical remote recipes separately
+verify the visible menu destinations.
