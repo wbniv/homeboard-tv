@@ -19,7 +19,7 @@ missing rows on commit.*
 | [PM2.5 30-day history and sparklines](2026-11-16-pm25-30-day-sparkline.md) | Adds a bounded 30-day history and condition-colored 24-hour and 30-day traces. | [`b2c5553`](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | Feature |
 | [Compass pie menu redesign](2026-11-16-pie-menu-redesign.md) | Replaces card menus with compass choices, then revises reversible actions around Undo, bounded grid controls, clearer Restore wording and an About page. | [`9cb567a`](https://github.com/wbniv/homeboard-tv/commit/9cb567a) | Feature |
 | [Google TV app icons and glowing focus](2026-11-16-google-tv-app-focus.md) | Matches circular app artwork, focus geometry and halo to Cast2's reference and records numbered deployments and device validation. | [`531779b`](https://github.com/wbniv/homeboard-tv/commit/531779b) | Feature |
-| [Home favorite app sizes](2026-11-16-home-favorite-app-sizes.md) | Adds independent Small icons and Banners choices for Home favorites, with grid reflow, matching focus and Undo. | Implementation, pending commit | Feature |
+| [Home favorite app sizes](2026-11-16-home-favorite-app-sizes.md) | Adds independent Small icons and Banners choices for Home favorites, with grid reflow, matching focus and Undo. | [`be49bd7`](https://github.com/wbniv/homeboard-tv/commit/be49bd7) | Feature |
 
 ---
 

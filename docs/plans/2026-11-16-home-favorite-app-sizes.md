@@ -1,6 +1,10 @@
 # Home favorite app sizes
 
-**Status: implementation complete; container checks running and device acceptance pending · 16 November 2026**
+**Status: implemented, container checks passed, installed and launch-verified on Cast1; Cast2 queued and visual acceptance pending · 16 November 2026**
+
+[Deployment and validation record](../testing/2026-11-16-home-favorite-app-sizes.md)
+records the exact 0.1.7 APK, successful Cast1 launch, scripted-input failure and
+the coordinator-owned Cast2 job deferred during personal use.
 
 Let Will display favorited apps on Home as **Small icons** or **Banners**.
 This is one setting for all Home app favorites, independent of the existing
@@ -145,11 +149,12 @@ focus without a circular mask or glass overlay.
 - [x] Specify the independent Home size setting, mockups and action flow.
 - [x] Implement persistence, shared span resolution and size-change Undo.
 - [x] Implement the menu branches, banner layout and focus integration.
-- [ ] Add regression tests and run `task check` and `task build` in containers.
+- [x] Add regression tests and run `task check` and `task build` in containers (357 tests, zero failures; lint has zero errors).
 
 ### Device acceptance after implementation
 
-- [ ] Deploy a newly numbered APK through the coordinator, preserving app data.
+- [x] Deploy a newly numbered APK through the coordinator, preserving app data
+  (0.1.7 installed and launch-verified on Cast1; identical APK queued for Cast2).
 - [ ] Capture Small icons, Banners, fallback artwork, focus movement and Undo.
 - [ ] Verify favorite ordering, widget positions, collisions, page overflow,
   moving a wide tile and returning from an app.

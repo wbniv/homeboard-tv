@@ -1,6 +1,14 @@
 # Compass pie menu redesign · 16 November 2026
 
-## Current local build and pending Cast1 regression
+## 0.1.7 deployment update
+
+The artwork fix is included with Home favorite sizes in 0.1.7, installed and
+launch-verified on Cast1. The longer input job failed before artwork acceptance,
+so the expanded About/palette/All Apps assertions remain pending. The shared
+network is available again. See the [deployment record](2026-11-16-home-favorite-app-sizes.md)
+for exact jobs, installed hash, evidence and the queued Cast2 deployment.
+
+## Earlier 0.1.6 local build and pending Cast1 regression
 
 The local artwork-setting change now preserves All Apps when the user switches
 between dense launcher icons and TV banners. After the grid changes size, it

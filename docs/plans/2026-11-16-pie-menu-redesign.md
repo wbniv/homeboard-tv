@@ -1,6 +1,6 @@
 # Homeboard TV menu redesign: compass pies and color cards
 
-**Status: local implementation and container checks complete; Cast1 artwork regression check waiting for shared network · 16 November 2026**
+**Status: implementation and container checks complete; 0.1.7 installed on Cast1, expanded visual regression pending scripted-input recovery · 16 November 2026**
 
 Redesign Homeboard's complete remote-operated menu experience: its entry points,
 hierarchy, interaction, layout, typography, color, icons, focus feedback and exit
@@ -234,7 +234,7 @@ they should remain outside the menu tree.
       of the direction icons, across representative TV sizes and densities.
 - [x] When either artwork choice is selected inside All Apps, stay on All Apps,
       reflow to the selected grid and restore focus to a visible app.
-- [ ] On the next shared-network session, install the current APK on Cast1 and
+- [ ] On the next working scripted-input session, use the installed APK on Cast1 and
       run the expanded `pie-artwork-about-check.json` acceptance recipe and
       inspect palette preview/reset, About source-link focus and both All Apps
       artwork choices, including both directions of the style switch.
@@ -267,7 +267,7 @@ they should remain outside the menu tree.
 - [ ] On Cast1, selecting TV banners from All Apps keeps the page open, changes
       the 10-across icon grid to the 4 × 2 banner grid and leaves a visible app
       focused. Switching back restores the dense icon grid. Local implementation
-      and container checks pass; device verification awaits the shared network.
+      and container checks pass; device verification awaits a working scripted-input run.
 - [ ] Complete Will's TV viewing review of contrast, focus distinction and
       revised compass labels. Captures establish visible layout; the earlier
       run record predates the latest label geometry and source-link changes.

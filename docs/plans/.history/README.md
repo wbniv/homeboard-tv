@@ -1,11 +1,16 @@
 | Date | Change |
 |------|--------|
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/be49bd7) | Add independent Small icons and Banners for Home favorites |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/290e675) | docs: index Google TV app focus plan |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/3588efb) | docs: index compass menu redesign plan |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/9cb567a) | feat: add compass menus and document undo-first revision |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+be49bd7	author	Will Norris
+be49bd7	added	2
+be49bd7	deleted	0
+be49bd7	files	1
 290e675	author	Will Norris
 290e675	added	2
 290e675	deleted	0
