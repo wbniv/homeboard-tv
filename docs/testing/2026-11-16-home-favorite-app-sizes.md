@@ -1,5 +1,51 @@
 # Home favorite sizes · 16 November 2026
 
+## Dense style-specific grids · 0.1.8
+
+Commit `6a0366b` adds separate icon and banner grid sizing to both Home and All
+Apps. At 960 × 540 dp with a 20 dp label height, Auto fits 11 × 4 small icons
+or six wider banners across three taller rows. Home banners use two placement
+columns per card; changing style resolves against the new grid. The regression
+suite now has 362 passing tests, including readable pitch, maximum fit, larger
+text and restoring Home placement across a style-dependent grid change.
+Container lint passed with zero errors, 194 warnings and 96 informational findings.
+
+`task deploy` built and froze **0.1.8** at
+`artifacts/deployments/0.1.8/homeboard.apk`, SHA-256
+`3971e4def28158712819cd909095623e56a02cdf6d39eca4efbe5365d71d35fa`.
+Cast1 job **J‑9e1052196a58** installed and launch-verified it successfully, with
+ready health. The screenshot shows six All Apps banners across three rows,
+including icon fallback and rectangular focus. It is not a Home screenshot.
+
+![0.1.8 All Apps: six banners across three rows](../../artifacts/deployments/0.1.8/evidence/screenshot.png)
+
+Cast2 background-install job **J‑12a621b7a7fc** was admitted during personal use
+but returned `personal-install-unverified`; installation is not claimed. Its
+evidence is at `artifacts/deployments/0.1.8/cast2-install/`. Personal use itself
+does not prevent background-install admission.
+
+Before the Home visual recipe could run, separate Projectivy work deployed
+**0.1.9** on Cast1 in **J‑fb03bd528d6a**. Its receipt verifies replacement of
+the 0.1.8 hash above with
+`2396809ac2fff4935bfb67d913597cb14aafb52f8e26ee62aecd4201118eaf39`.
+That worktree is based on `290e675` and does not include the Home favorite size
+or dense Home implementation on `main`. Will confirmed About showed 0.1.9;
+this explains the unchanged dashboard. Evidence is at
+`artifacts/evidence/cast1-installed-0.1.9/`.
+
+The Home recipe `dev/device/dense-home-style-check.json` remains unexecuted.
+It returns from All Apps with one Back press, captures Home, selects Banners,
+captures the result, then uses Undo and captures the restored layout. Verify
+that Home is using Small icons at the start. No Home banner visual acceptance
+is claimed from the All Apps screenshot or the unit tests.
+
+Will assigned the other agent to merge its Projectivy work into `main` before
+the next combined APK. Home favorites are in `be49bd7`; dense style-specific
+grids are in `6a0366b`. Preserve both changes and use a deployment code greater
+than 9. No further older-APK install or scripted navigation was submitted here.
+
+## Earlier 0.1.7 validation
+
 Small icons and Banners are implemented independently of All Apps artwork.
 Implementation commit: `be49bd7`. `task deploy` advanced the APK to **0.1.7**
 (version code 7), passed container tests/lint and built the debug APK. All 357

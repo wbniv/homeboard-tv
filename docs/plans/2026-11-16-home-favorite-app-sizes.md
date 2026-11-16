@@ -1,11 +1,15 @@
 # Home favorite app sizes
 
-**Status: dense style-specific layout revision implemented; container checks running; earlier 0.1.7 device evidence predates this revision · 16 November 2026**
+**Status: dense style-specific layouts implemented and container-checked; 0.1.8 deployed, then replaced by the separate Projectivy 0.1.9 build; combined integration pending · 16 November 2026**
 
 [Deployment and validation record](../testing/2026-11-16-home-favorite-app-sizes.md)
 records the exact 0.1.7 APK, successful Cast1 launch, scripted-input failure and
 the earlier coordinator-owned Cast2 job deferred during personal use. That queued
 0.1.7 job was cancelled when the density revision superseded it.
+The density implementation is committed on `main` as `6a0366b`, after the Home
+favorites implementation `be49bd7`. Will assigned the other agent to merge its
+Projectivy work into `main` before the next combined deployment. Do not reinstall
+0.1.8 over 0.1.9; the next deployment needs a version code greater than 9.
 
 Let Will display favorited apps on Home as **Small icons** or **Banners**.
 This is one setting for all Home app favorites, independent of the existing
@@ -192,6 +196,8 @@ focus without a circular mask or glass overlay.
 - [x] Implement persistence, shared span resolution and size-change Undo.
 - [x] Implement the menu branches, banner layout and focus integration.
 - [x] Add regression tests and run `task check` and `task build` in containers (357 tests, zero failures; lint has zero errors).
+- [x] Implement separate dense Home and All Apps grids for icons and banners,
+  including style-dependent Home reflow and Undo; 362 tests and container lint pass.
 
 ### Device acceptance after implementation
 
