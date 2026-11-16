@@ -10,7 +10,7 @@ public class WallpaperSettingsTest {
         layout.uiOpacityPercent = 0; layout.wallpaper.dimPercent = 100;
         HomeLayout restored = HomeLayout.parse(layout.encode());
         assertEquals(0, restored.uiOpacityPercent); assertEquals(100, restored.wallpaper.dimPercent);
-        assertEquals(.95f, WallpaperSettings.PIE_ALPHA, 0);
+        assertEquals(95, WallpaperSettings.PIE_BACKGROUND_OPACITY);
     }
     @Test public void savedSelectionAndOpacityRoundTripWithoutAlteringWidgets() throws Exception {
         HomeLayout layout = HomeLayout.firstRun();

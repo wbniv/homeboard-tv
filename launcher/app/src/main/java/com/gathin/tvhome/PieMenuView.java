@@ -139,7 +139,8 @@ final class PieMenuView extends ViewGroup {
             wedge.arcTo(innerOval, end, -82);
             wedge.close();
             paint.setStyle(Paint.Style.FILL);
-            paint.setColor(i == highlighted ? palette.focus : palette.raised);
+            paint.setColor(UiBackgroundDrawable.colorWithOpacity(
+                    i == highlighted ? palette.focus : palette.raised, WallpaperSettings.PIE_BACKGROUND_OPACITY));
             canvas.drawPath(wedge, paint);
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(dp(i == highlighted ? 2.5f : 1.25f));
@@ -149,7 +150,7 @@ final class PieMenuView extends ViewGroup {
         }
 
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(palette.background);
+        paint.setColor(UiBackgroundDrawable.colorWithOpacity(palette.background, WallpaperSettings.PIE_BACKGROUND_OPACITY));
         canvas.drawCircle(cx, cy, inner - dp(3), paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(dp(1.5f));

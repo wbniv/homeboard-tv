@@ -6,7 +6,7 @@ import org.json.JSONObject;
 /** Host-owned background preferences; independent from a provider's private preferences. */
 final class WallpaperSettings {
     static final int SUPPORTED_EVENTS = 1 | 4 | 16;
-    static final float PIE_ALPHA = .95f;
+    static final int PIE_BACKGROUND_OPACITY = 95;
     String component = "", uuid = "";
     int rotationMinutes = 15, dimPercent = 35;
 

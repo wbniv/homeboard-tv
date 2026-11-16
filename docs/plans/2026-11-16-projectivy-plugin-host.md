@@ -23,7 +23,8 @@ a reusable wallpaper foundation while providers supply the actual content.
 Local image selection could use the same surface later; it is not a prerequisite.
 
 Compose the screen in this order, from back to front: palette fallback,
-provider wallpaper, adjustable dimming, native widgets and app favorites,
+provider wallpaper, adjustable dimming, adjustable palette backdrop and panel fills,
+native widgets and app favorites,
 focus decoration, then menus and Undo. An empty Home can show just the background
 without adding a compulsory widget. Home and All Apps share one background
 session so moving between them does not reset playback.
@@ -87,34 +88,33 @@ input from Homeboard tiles. Resolve a link only after that action is chosen.
 
 ## UI opacity in the Appearance pie menu
 
-Ship **Home settings → Appearance → UI opacity** with the first wallpaper-host
-milestone. Default the dashboard UI to **75% opacity**. This controls Home and
-All Apps UI elements, including widgets, app tiles and dashboard controls;
-the wallpaper and its separate dimming control are unaffected.
-**Pie menus always use 95% opacity**, including the Appearance pie and opacity
-adjustment pie, regardless of the saved dashboard value. Apply that fixed value
-when rendering pie menus; it is not another adjustable setting.
+Ship **Home settings → Appearance → UI opacity**, default **75%**. As clarified
+by Will, this controls only the colored backdrop and panel fills under the UI.
+Text, app artwork, widget readings, focus rings and controls retain their normal
+opacity. A full-screen palette layer sits above wallpaper and below content:
+**0%** removes the colored fills and reveals wallpaper, **75%** blends them, and
+**100%** covers wallpaper everywhere. Wallpaper dimming remains independent.
+Card borders and focus indicators remain visible at every value.
+**Pie backgrounds stay at 95%**, with opaque labels and icons.
 
-![UI opacity adjustment and independent pie menu opacity](2026-11-16-projectivy-plugin-host/opacity.svg)
+![Background fill opacity at 0, 75 and 100 percent](2026-11-16-projectivy-plugin-host/opacity.svg)
 
-Show the current percentage on the Appearance choice. The adjustment pie uses
-**Up: +5%**, **Down: −5%**, **Left: Reset to 75%**, **Right: 100%**, and
-**Center/OK: Done**. Clamp values to 0–100%. Preview each change immediately on
-the dashboard behind the pie while the pie itself stays at 95%. Done persists
-one undoable appearance change and returns to the invoking surface; Back cancels
-the draft and restores the preceding opacity. Merely opening the control creates
-no change. Undo restores the previous dashboard opacity without altering the
-wallpaper, palette, provider configuration or fixed pie opacity.
+Keep the existing remote controls: **Up +5%**, **Down −5%**, **Left reset 75%**,
+**Right 100%**, **OK Done**, **Back cancel**. Clamp to 0–100 and preview fills
+live without changing any view's alpha. Done saves one undoable change; Back
+restores the original fills; Undo restores the saved percentage. Retain the
+existing global `uiOpacityPercent` setting and saved values.
 
-Apply alpha once per UI rendering group rather than multiplying it through
-nested views. Keep pie menus on an independent overlay outside the dashboard
-alpha group so a dashboard at 0% cannot hide the controls needed to restore it.
-The appearance-entry remote action must remain reachable even at 0%, and the
-Undo recovery control uses the independent overlay. Pie menu opacity must stay
-95% during transitions and previews as well as after saving or restarting.
-Persist a global `uiOpacityPercent` integer in Homeboard appearance settings,
-validated to 0–100 with 75 as the default when absent. This applies with both
-solid backgrounds and plugin wallpapers and is independent of provider selection.
+```mermaid
+flowchart LR
+    A[Wallpaper image or video] --> B[Palette backdrop: selected opacity]
+    B --> C[Panel fills: selected opacity]
+    C --> D[Text, artwork and focus: normal opacity]
+    D --> E[Pie background: 95 percent; labels opaque]
+    E --> F[Adjust fill opacity]
+    F -->|OK| G[Save with Undo]
+    F -->|Back| H[Restore previous fills]
+```
 
 ## All Apps density and Icons grouping
 
@@ -143,7 +143,7 @@ flowchart TD
     IC --> IA[All Apps artwork: dense icons or TV banners]
     IC --> IS[Circular icon mask]
     AP --> U[UI opacity: default 75 percent]
-    U --> V[Preview dashboard opacity with pie fixed at 95 percent]
+    U --> V[Preview background fills; content opaque; pie fill 95 percent]
     V -->|Done| W[Save opacity with Undo]
     V -->|Back| X[Restore previous opacity]
     W --> N
@@ -230,7 +230,7 @@ removing that layer; grid re-renders must not restart playback or fetch a new ba
 | `ProjectivyWallpaperHost` | Bind only active/preview provider, schedule requests off the UI thread, track generations, cache batches and handle death/retry. |
 | `ProjectivyEventMapper` | Translate actual app focus, timer and idle into unmodified API objects; dispatch only requested supported events. |
 | `WallpaperSurface` | Decode and render media, apply display mode and dimming, retain last good output, stop motion when hidden. |
-| Appearance UI rendering | Separate dashboard alpha from the pie overlay; persist global UI opacity and render all pie menus at a fixed 95%. |
+| Appearance UI rendering | Apply opacity to palette/panel fills only; content stays opaque, and pie fills remain fixed at 95%. |
 | `BackgroundSettings` | Provider list, details, preview, apply/Undo and focus restoration using existing menu conventions. |
 | `HomeLayout` extension | Store source kind, service component, UUID, rotation and dimming as one background setting; global UI opacity defaults to 75%, with pie opacity fixed at 95%. Never key providers by display name. |
 

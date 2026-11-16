@@ -71,6 +71,7 @@ final class AirQualityCard {
     private AirQualityReading reading;
     private AirQualityHistory history = new AirQualityHistory();
     private PaletteColors palette = PaletteColors.from(0xff101010);
+    private int backgroundOpacity = 75;
 
     private final Runnable tick = new Runnable() {
         @Override public void run() {
@@ -111,6 +112,11 @@ final class AirQualityCard {
         render();
     }
     void setPalette(PaletteColors colors) { palette = colors; applyTileBackground(); render(); }
+    void setBackgroundOpacity(int percent) {
+        backgroundOpacity = WallpaperSettings.percent(percent);
+        applyTileBackground();
+        UiBackgroundDrawable.apply(conditionLabel, backgroundOpacity);
+    }
     void unbind() { tile = null; tileFocused = false; value = null; detail = null; stationLabel = null; conditionLabel = null; trend = null; }
     void setTileFocused(boolean focused) { tileFocused = focused; applyTileBackground(); }
 
@@ -584,8 +590,8 @@ final class AirQualityCard {
         conditionLabel.setTextColor(color);
         conditionLabel.setVisibility(reading == null ? View.GONE : View.VISIBLE);
         if (reading != null) {
-            GradientDrawable badge = new GradientDrawable();
-            badge.setColor(palette.raised);
+            UiBackgroundDrawable badge = new UiBackgroundDrawable(palette.raised);
+            badge.setFillOpacity(backgroundOpacity);
             badge.setCornerRadius(activity.getResources().getDisplayMetrics().density * 8);
             badge.setStroke(Math.max(1, Math.round(activity.getResources().getDisplayMetrics().density)), color);
             conditionLabel.setBackground(badge);
@@ -644,8 +650,8 @@ final class AirQualityCard {
     }
 
     private GradientDrawable tileSurface(int color, int stroke, int width) {
-        GradientDrawable surface = new GradientDrawable();
-        surface.setColor(color);
+        UiBackgroundDrawable surface = new UiBackgroundDrawable(color);
+        surface.setFillOpacity(backgroundOpacity);
         surface.setCornerRadius(activity.getResources().getDisplayMetrics().density * 14);
         surface.setStroke(Math.max(1, Math.round(activity.getResources().getDisplayMetrics().density * width)), stroke);
         return surface;
