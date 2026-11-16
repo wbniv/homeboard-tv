@@ -7,8 +7,10 @@ Cast2 after Will says the app is usable. Cast2 is currently reserved for persona
 use; its earlier status does not change the active Cast1 test target.
 
 Replace the fixed 2 × 2 dashboard placement with a responsive, configurable grid.
-Home favorites should pack like launcher icons instead of reserving a quarter of
-the screen apiece. Widgets can span multiple cells and rows so they remain useful.
+Home favorites use one cell for Small icons or two columns for Banners, selected
+independently of All Apps in Appearance → Icons. See the
+[Home favorite sizes plan](2026-11-16-home-favorite-app-sizes.md) and its mockups
+for reflow and Undo. Widgets can span multiple cells and rows so they remain useful.
 
 ## Design decisions
 
@@ -18,18 +20,16 @@ the screen apiece. Widgets can span multiple cells and rows so they remain usefu
 - Rows offer **Auto** or any count from 2 through the number that fits on the TV.
   A page contains one configured grid; usable height and legibility determine the
   maximum instead of a short, arbitrary preset list.
-- App favorites occupy 1 × 1 cells and keep 48 dp circular launcher icons, 16 sp
-  labels, transparent cell backgrounds and a matching-shape glass focus highlight
-  with one physical screen pixel of clear space between the focused icon mask
-  and highlight rim. The focus tile scales to 108%, so size the circle around
-  that scaled icon and add one physical pixel for the gap.
+- Small app favorites occupy 1 × 1 cells with circular or original launcher icons.
+  Banners occupy 2 × 1 cells with 16:9 artwork, an icon fallback and rectangular
+  focus. Both reserve label and focus clearance inside the measured cell.
 - The air-quality widget spans two rows by default. Small, Medium and Large adjust
   widget spans relative to the selected grid; the placement algorithm packs
   favorites around each panel.
 - Panels have three configurable sizes. Home behavior sets the default for newly
   added panels; existing panels keep their own size and expose a Resize action.
   Small, Medium and Large use roughly one third, one half and three quarters of
-  the grid width; Large also uses a third row when available. App favorites stay 1 × 1.
+  the grid width; Large also uses a third row when available. App favorites use their selected span.
 - Hold OK → Move changes ordering; tiles reflow into the configured grid. Arrows
   follow the nearest cell in the requested direction. Right/left page transitions
   remain animated; the last Home page still opens All Apps.

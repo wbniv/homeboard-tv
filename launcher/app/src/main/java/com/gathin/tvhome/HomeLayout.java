@@ -26,6 +26,8 @@ final class HomeLayout {
     int homeRows;
     boolean reducedMotion;
     boolean appBanners = true;
+    static final String APP_SMALL = "small", APP_BANNER = "banner";
+    String homeAppSize = APP_SMALL;
     boolean circularIcons = true;
     String customWallpaper = "";
     String palette = "midnight";
@@ -79,6 +81,7 @@ final class HomeLayout {
         int homeRows = j.optInt("homeRows", 0);
         s.homeRows = homeRows == 0 ? 0 : Math.max(2, homeRows);
         s.appBanners = j.optBoolean("appBanners", true);
+        s.homeAppSize = APP_BANNER.equals(j.optString("homeAppSize", APP_SMALL)) ? APP_BANNER : APP_SMALL;
         s.circularIcons = j.optBoolean("circularIcons", true);
         s.customWallpaper = j.optString("customWallpaper", "");
         s.reducedMotion = j.optBoolean("reducedMotion", false);
@@ -101,13 +104,31 @@ final class HomeLayout {
                     .put("panelSpans", encodedSpans())
                     .put("homePositions", encodedHomePositions())
                     .put("homeColumns", homeColumns).put("homeRows", homeRows)
-                    .put("appBanners", appBanners).put("circularIcons", circularIcons)
+                    .put("appBanners", appBanners).put("homeAppSize", homeAppSize).put("circularIcons", circularIcons)
                     .put("customWallpaper", customWallpaper)
                     .put("reducedMotion", reducedMotion).put("palette", palette).toString();
         } catch (JSONException e) { throw new IllegalStateException(e); }
     }
 
     void favorite(String key) { if (!widgets.contains(key)) widgets.add(key); }
+    boolean appUsesBanner(boolean dashboard) { return dashboard ? APP_BANNER.equals(homeAppSize) : appBanners; }
+
+    /** Freeze widgets first, then resolve app origins in logical order at the new size. */
+    boolean setHomeAppSize(String size, int columns, int rows) {
+        if (!APP_SMALL.equals(size) && !APP_BANNER.equals(size)) throw new IllegalArgumentException("Unknown Home app size");
+        if (size.equals(homeAppSize)) return false;
+        List<Cell> before = cells(widgets, columns, rows);
+        homeAppSize = size;
+        Map<String, HomePosition> requested = new LinkedHashMap<>();
+        for (Cell cell : before) if (cell.key.startsWith("widget:"))
+            requested.put(cell.key, new HomePosition(cell.page, cell.row, cell.column));
+        for (Cell cell : before) if (cell.key.startsWith("app:"))
+            requested.put(cell.key, new HomePosition(cell.page, cell.row, cell.column));
+        List<Cell> resolved = cells(widgets, columns, rows, requested);
+        homePositions.clear();
+        for (Cell cell : resolved) homePositions.put(cell.key, new HomePosition(cell.page, cell.row, cell.column));
+        return true;
+    }
     void addPanel(String key) {
         if (!key.startsWith("widget:")) throw new IllegalArgumentException("Panel keys must start with widget:");
         favorite(key);
@@ -212,17 +233,8 @@ final class HomeLayout {
         int page = 0, cursor = 0;
         boolean[][] occupied = new boolean[rows][columns];
         for (String key : items) {
-            int smallSpan = Math.max(2, columns / 3);
-            int mediumSpan = Math.max(2, (columns + 1) / 2);
-            int largeSpan = Math.max(mediumSpan + 1, (columns * 3 + 3) / 4);
-            int size = panelSize(key);
-            int width = key.startsWith("widget:")
-                    ? size == PANEL_SMALL ? smallSpan : size == PANEL_MEDIUM ? mediumSpan : largeSpan : 1;
-            int height = key.startsWith("widget:") ? (size == PANEL_LARGE ? Math.min(3, rows) : Math.min(2, rows)) : 1;
-            PanelSpan exact = panelSpans.get(key);
-            if (key.startsWith("widget:") && exact != null) { width = exact.width; height = exact.height; }
-            width = Math.min(width, columns);
-            height = Math.min(height, rows);
+            int[] dimensions = span(key, columns, rows);
+            int width = dimensions[0], height = dimensions[1];
             int position = -1;
             while (position < 0) {
                 for (int slot = cursor; slot < rows * columns; slot++) {
@@ -286,7 +298,8 @@ final class HomeLayout {
         int width = key.startsWith("widget:")
                 ? size == PANEL_SMALL ? Math.max(2, columns / 3)
                 : size == PANEL_MEDIUM ? Math.max(2, (columns + 1) / 2)
-                : Math.max(Math.max(2, (columns + 1) / 2) + 1, (columns * 3 + 3) / 4) : 1;
+                : Math.max(Math.max(2, (columns + 1) / 2) + 1, (columns * 3 + 3) / 4)
+                : APP_BANNER.equals(homeAppSize) ? 2 : 1;
         int height = key.startsWith("widget:") ? (size == PANEL_LARGE ? Math.min(3, rows) : Math.min(2, rows)) : 1;
         PanelSpan exact = panelSpans.get(key);
         if (key.startsWith("widget:") && exact != null) { width = exact.width; height = exact.height; }

@@ -19,4 +19,12 @@ final class AppAppearance {
         int available = Math.max(0, Math.min(width, height - labelHeight - gap));
         return Math.max(0, Math.min(preferred, (int) (available / FOCUS_SCALE)));
     }
+
+    /** 16:9 artwork, with label and rectangular focus clearance reserved before scaling. */
+    static int[] fitBanner(int width, int height, int labelHeight, int gap, int clearance) {
+        int availableWidth = Math.max(0, width - clearance * 2);
+        int availableHeight = Math.max(0, height - labelHeight - gap - clearance * 2);
+        int imageWidth = (int) (Math.min(availableWidth, availableHeight * 16f / 9f) / FOCUS_SCALE);
+        return new int[]{imageWidth, imageWidth * 9 / 16};
+    }
 }

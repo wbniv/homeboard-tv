@@ -50,20 +50,23 @@ and is still available in All Apps. Favoriting twice does not create duplicate t
 
 ## Choose app density and artwork
 
-Open **Home settings → App artwork** and choose **Launcher icons** or **TV banners**.
-**Launcher icons** keeps 48 dp circular launcher icons and 16 sp labels, with four rows
-and as many columns as fit the screen. The glass highlight springs between tiles
-and the focused card grows slightly; the other icons sit directly on the background
-without separate blue tile backgrounds. That gives more than six columns on common
-TV resolutions without shrinking the artwork. Each installed app appears once,
-even when it publishes multiple launcher activities. **TV banners** uses the
-larger 4 × 2 layout in All Apps; banners without artwork fall back to the normal
-icon. Home favorites always stay compact: the same 48 dp launcher icon and 16 sp
-label as compact All Apps, with the optional circular mask and small animated glass
-highlight. This prevents a favorite from expanding into a banner-sized dashboard
-tile. The separate **Circular icon mask** choice clips launcher icons to a circle
-without changing their displayed size. TV banners remain rectangular. Log utility
-entries are filtered out of All Apps.
+Open **Home settings → Appearance → Icons**. The two branches are independent:
+
+- **Home favorites → Small icons / Banners** changes all favorite apps on Home.
+  Small icons use one grid cell; Banners use two columns and one row. Widgets keep
+  their positions, while apps may move to another row or page. **Undo** restores
+  the previous size, positions and Home page. Selecting the current size changes nothing.
+- **All Apps → Launcher icons / TV banners** changes the app library. Launcher icons
+  use a dense grid; TV banners use a 4 × 2 grid. Changing artwork keeps All Apps open.
+
+Banner artwork keeps its 16:9 proportions, with a rounded rectangular focus ring
+and a label below. Apps without a banner show their icon centered on a neutral
+plate. Small circular icons retain their round ring and halo; the icon shape
+choice affects small icons only. Artwork fits the configured grid and text size.
+Each installed app appears once, even when it publishes multiple launcher
+activities. Log utility entries are filtered out of All Apps.
+
+![Home favorites: size choice, Small icons, Banners and Undo — design mockup](../plans/2026-11-16-home-favorite-app-sizes/mockups.svg)
 
 ![App artwork, icon shape and dense grid — design mockup](../plans/2026-11-15-widget-home/compact-grid-settings.svg)
 

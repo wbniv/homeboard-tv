@@ -1,6 +1,6 @@
 # Homeboard TV menu redesign: compass pies and color cards
 
-**Status: implementation complete; expanded artwork and palette acceptance pending · 16 November 2026**
+**Status: local implementation and container checks complete; Cast1 artwork regression check waiting for shared network · 16 November 2026**
 
 Redesign Homeboard's complete remote-operated menu experience: its entry points,
 hierarchy, interaction, layout, typography, color, icons, focus feedback and exit
@@ -124,13 +124,28 @@ reviewed before implementation.
 
 ![Current and proposed Background, palette, icon mask, and Icons menus](2026-11-16-pie-menu-redesign/mockups/paired-03.svg)
 
+Changing the All Apps artwork is a presentation change within the current
+screen. It keeps All Apps open, reflows the same app collection, and restores
+focus to a visible app. Home favorites have their own independent Small icons
+or Banners choice, described in the [Home favorite sizes plan](2026-11-16-home-favorite-app-sizes.md).
+
+```mermaid
+flowchart LR
+    A[All Apps · dense launcher icons] -->|Open Home settings → Appearance → Icons| B[Choose TV banners]
+    B --> C[All Apps stays open · 4 × 2 banner grid]
+    C -->|Open Icons again| D[Choose launcher icons]
+    D --> A
+    B -.->|After either choice| F[Restore focus to a visible app]
+    D -.-> F
+```
+
 | Current menu | Proposed behavior |
 |---|---|
 | Appearance | Background, Icon shape and Icons. |
 | Background and wallpaper | Remove this misleading one-choice menu; rename it Background and open the palette directly. |
 | Color palette | Keep the 4 × 5 grid, with the entire card filled by the color, legible name, current marker and immediate preview. |
 | Circular icon mask | Original shape or Circular mask; show which is current. |
-| App artwork | Move inside Appearance and rename Icons; preserve launcher icons and TV banners as the choices. |
+| App artwork | Appearance → Icons branches into Home favorites (Small icons / Banners) and All Apps (Launcher icons / TV banners). Changing All Apps artwork reflows that same page and focuses a visible app. Home size changes preserve widgets and offer layout Undo. |
 
 ### Behavior and data-choice menus
 
@@ -217,10 +232,12 @@ they should remain outside the menu tree.
 - [x] Redesign Restore hidden app and About from the paired mockups.
 - [x] Add and run unit tests that keep compass-arm labels inside the ring, clear
       of the direction icons, across representative TV sizes and densities.
-- [ ] Run the expanded `pie-artwork-about-check.json` acceptance recipe and
+- [x] When either artwork choice is selected inside All Apps, stay on All Apps,
+      reflow to the selected grid and restore focus to a visible app.
+- [ ] On the next shared-network session, install the current APK on Cast1 and
+      run the expanded `pie-artwork-about-check.json` acceptance recipe and
       inspect palette preview/reset, About source-link focus and both All Apps
-      artwork choices. Earlier grid/Undo/About navigation passed; the expanded
-      source-link and artwork checks need their own completed run record.
+      artwork choices, including both directions of the style switch.
 
 ## Acceptance
 
@@ -247,6 +264,10 @@ they should remain outside the menu tree.
       projects; license context and a compact Back action are visible.
 - [x] Homeboard settings are identified by the sliders icon; the gear remains
       Android device settings.
+- [ ] On Cast1, selecting TV banners from All Apps keeps the page open, changes
+      the 10-across icon grid to the 4 × 2 banner grid and leaves a visible app
+      focused. Switching back restores the dense icon grid. Local implementation
+      and container checks pass; device verification awaits the shared network.
 - [ ] Complete Will's TV viewing review of contrast, focus distinction and
       revised compass labels. Captures establish visible layout; the earlier
       run record predates the latest label geometry and source-link changes.

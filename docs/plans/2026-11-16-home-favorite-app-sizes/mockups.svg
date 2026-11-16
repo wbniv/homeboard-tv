@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1108" viewBox="0 0 1200 1108">
+  <rect width="1200" height="1108" fill="#101d24"/>
+  <g font-family="sans-serif" fill="#e5edf4">
+    <text x="32" y="42" font-size="26">Home favorites: Small icons or Banners</text>
+    <text x="32" y="72" font-size="16" fill="#afbecb">Proposed screens · placeholder artwork · one setting for all Home favorites</text>
+    <rect x="28" y="98" width="1144" height="350" rx="16" fill="#1c303d" stroke="#536c7c"/>
+    <text x="52" y="134" font-size="18">Home settings → Appearance → Icons → Home favorites</text>
+    <text x="55" y="210" font-size="21">Choose a Home size</text>
+    <text x="55" y="249" font-size="16" fill="#bbccd7">↑ applies Small icons</text>
+    <text x="55" y="278" font-size="16" fill="#bbccd7">→ applies Banners</text>
+    <text x="55" y="307" font-size="16" fill="#bbccd7">Back returns without changing</text>
+    <path d="M388 203 A130 130 0 0 1 572 203 L515 260 A50 50 0 0 0 445 260 Z" fill="#314f60" stroke="#c3e4f5" stroke-width="2"/>
+    <path d="M576 203 A134 134 0 0 1 576 387 L518 330 A54 54 0 0 0 518 260 Z" fill="#253e4d" stroke="#6a8597" stroke-width="2"/>
+    <circle cx="480" cy="295" r="49" fill="#132a29" stroke="#6a8597"/>
+    <text x="480" y="290" text-anchor="middle" font-size="17">Home</text>
+    <text x="480" y="312" text-anchor="middle" font-size="17">favorites</text>
+    <text x="480" y="199" text-anchor="middle" font-size="18">Small icons</text>
+    <text x="480" y="223" text-anchor="middle" font-size="14" fill="#bbccd7">Current ↑</text>
+    <text x="567" y="285" text-anchor="middle" font-size="16">Banners</text>
+    <text x="573" y="319" text-anchor="middle" font-size="23">→</text>
+    <text x="815" y="216" font-size="20">All Apps: TV banners</text>
+    <text x="815" y="247" font-size="16" fill="#afbecb">Separate setting under Icons</text>
+    <text x="55" y="424" font-size="17" fill="#bbccd7">Banners use two Home columns. Apps may move to another row or page.</text>
+    <g transform="translate(0 108)">
+    <text x="34" y="382" font-size="22">Home · Small icons</text>
+    <text x="626" y="382" font-size="22">Home · Banners</text>
+    <rect x="28" y="400" width="552" height="382" rx="14" fill="#132a29" stroke="#536c7c"/>
+    <rect x="620" y="400" width="552" height="382" rx="14" fill="#132a29" stroke="#536c7c"/>
+    <g fill="none" stroke="#354946" stroke-dasharray="3 5">
+      <path d="M42 420H566M42 528H566M42 636H566M42 744H566M42 420V744M129 420V744M216 420V744M303 420V744M390 420V744M477 420V744M566 420V744"/>
+      <path d="M634 420H1158M634 528H1158M634 636H1158M634 744H1158M634 420V744M721 420V744M808 420V744M895 420V744M982 420V744M1069 420V744M1158 420V744"/>
+    </g>
+    <rect x="47" y="426" width="162" height="201" rx="13" fill="#29463f" stroke="#6b9083"/>
+    <rect x="639" y="426" width="162" height="201" rx="13" fill="#29463f" stroke="#6b9083"/>
+    <g font-size="15"><text x="60" y="454">Air quality</text><text x="60" y="493" font-size="26" fill="#ffd06d">PM2.5</text><text x="60" y="527" fill="#ffd06d">26.1 µg/m³</text><text x="60" y="566" fill="#bed0c4">Widget stays</text><text x="60" y="589" fill="#bed0c4">in position</text>
+      <text x="652" y="454">Air quality</text><text x="652" y="493" font-size="26" fill="#ffd06d">PM2.5</text><text x="652" y="527" fill="#ffd06d">26.1 µg/m³</text><text x="652" y="566" fill="#bed0c4">Same widget</text><text x="652" y="589" fill="#bed0c4">and position</text></g>
+    <circle cx="259" cy="466" r="36" fill="#53616a"/><circle cx="259" cy="466" r="31" fill="#fff"/><rect x="239" y="453" width="40" height="26" rx="8" fill="#eb2525"/><path d="M254 459L254 473L267 466Z" fill="#fff"/>
+    <circle cx="346" cy="466" r="31" fill="#48775c"/><path d="M326 482L344 446L367 482Z" fill="#aac260"/>
+    <circle cx="433" cy="466" r="31" fill="#255f7b"/><path d="M413 466Q434 445 453 466Q434 486 413 466Z" fill="#7bd4cb"/>
+    <circle cx="521" cy="466" r="31" fill="#514361"/><text x="521" y="475" text-anchor="middle" font-size="23">TV</text>
+    <g font-size="13" text-anchor="middle"><text x="259" y="519">Video</text><text x="346" y="519">Plants</text><text x="433" y="519">Aquarium</text><text x="521" y="519">Media</text></g>
+    <rect x="810" y="423" width="172" height="101" rx="12" fill="#4a6573"/>
+    <rect x="815" y="428" width="162" height="91" rx="9" fill="#92352d"/>
+    <path d="M880 448L880 488L916 468Z" fill="#fff"/>
+    <rect x="989" y="428" width="162" height="91" rx="9" fill="#345b44"/>
+    <path d="M1008 498L1042 441L1080 498L1106 457L1136 498Z" fill="#83a84c"/>
+    <rect x="815" y="551" width="162" height="91" rx="9" fill="#25556e"/>
+    <path d="M850 591Q894 557 941 591Q894 625 850 591Z" fill="#73cfc7"/>
+    <rect x="989" y="551" width="162" height="91" rx="9" fill="#35434b"/>
+    <circle cx="1070" cy="592" r="26" fill="#514361"/><text x="1070" y="600" font-size="22" text-anchor="middle">TV</text>
+    <g font-size="13" text-anchor="middle"><text x="896" y="536">Video</text><text x="1070" y="536">Plants</text><text x="896" y="655">Aquarium</text><text x="1070" y="655">Media · icon fallback</text></g>
+    <g fill="#afbecb" font-size="14"><text x="48" y="768">1 × 1 cell per favorite · selected icon and halo</text><text x="640" y="768">2 × 1 cells per favorite · selected rectangular rim</text></g>
+    <rect x="28" y="810" width="1144" height="151" rx="14" fill="#1c303d" stroke="#536c7c"/>
+    <text x="52" y="847" font-size="21">After choosing Banners</text>
+    <text x="52" y="884" font-size="19">Home favorites: Banners</text>
+    <rect x="805" y="849" width="325" height="55" rx="12" fill="#36596d" stroke="#a4d4ef"/>
+    <text x="967" y="884" text-anchor="middle" font-size="20">Undo</text>
+    <text x="52" y="933" font-size="16" fill="#bbccd7">Undo restores the previous size, app positions and page. All Apps keeps its own artwork choice.</text>
+    </g>
+  </g>
+</svg>

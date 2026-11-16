@@ -1,5 +1,10 @@
 # Google TV app icons and glowing focus
 
+Home now also supports [Banners for favorites](2026-11-16-home-favorite-app-sizes.md),
+independent of All Apps artwork. The circular geometry below applies to Small icons.
+Banners use aspect-preserving 16:9 plates and their own rectangular rim and halo;
+changing size rebuilds focus and Undo restores the prior layout and Home navigation.
+
 **Status: deployed on Cast1 as 0.1.4; Cast2 coordinator install preflight failed · 16 November 2026**
 
 Match the app artwork, circular mask, focused enlargement, gray focus ring,
