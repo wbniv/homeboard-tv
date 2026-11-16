@@ -1,0 +1,39 @@
+{
+  "versionName": "0.1.14",
+  "versionCode": 14,
+  "device": "chromecast-test-01",
+  "apk": "/home/will/homeboard-tv-ui-background-opacity/artifacts/deployments/0.1.14/homeboard.apk",
+  "sha256": "8c4c3450879dd246d6062e1dee6cbbdf2ee074f69bac2df1009aa54b09b97ad4",
+  "base_commit": "eec2d099346157c96dca5aa44199ba15cc173c4d",
+  "job": "J-f61d778733eb",
+  "status": "failed",
+  "health": "ready",
+  "launch_reason": "target-left-foreground",
+  "installed_sha256": "8c4c3450879dd246d6062e1dee6cbbdf2ee074f69bac2df1009aa54b09b97ad4",
+  "tests": {
+    "tests": 373,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "probe": {
+    "job": "J-e7f342ed6d0b",
+    "status": "succeeded",
+    "health": "ready",
+    "expected_text": "ALL CHECKS PASSED",
+    "text_found": true,
+    "ocr": "ALL CHECKS PASSED - background fills only\n0%: wallpaper visible - 75%: blend - 100%: wallpaper covered\nText/artwork/focus stay opaque - saved settings unchanged\nHOME: 0% 75% 100%\nZ se So\nALL APPS: 0% 75% 100%\nAll Apps z All Apps = & All Apps = 8\nna 8 0 FR SE: Gs Be es + SB Bs Be > #4\n= =S8 > 8 Re ee eee eee oe ie\n7\n",
+    "passed": true
+  },
+  "local_source_changes": [
+    "version.properties: version_code=14"
+  ],
+  "lint": "passed",
+  "minified_release": "passed on correction source before version bump",
+  "scope": "Opacity affects colored backdrop and panel fills; foreground alpha remains unchanged; pie fills fixed at 95%",
+  "normal_launch": {
+    "job": "J-cab4995b0d08",
+    "status": "succeeded",
+    "health": "ready"
+  }
+}
