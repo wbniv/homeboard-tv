@@ -84,24 +84,24 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
         cancelPreparing();
         result = callback;
         if (wallpaper.getType() < 0 || wallpaper.getType() > 5 || wallpaper.getDisplayMode() < 0 || wallpaper.getDisplayMode() > 5) {
-            callback.accept(false, "Unsupported wallpaper format or display mode"); return;
+            callback.accept(false, getContext().getString(R.string.hb_status_unsupported_wallpaper_format_or_display_mode)); return;
         }
         if (wallpaper.getType() == 5) {
             try {
                 FrameLayout next = new FrameLayout(getContext()); next.setBackgroundColor(Color.parseColor(wallpaper.getUri()));
-                install(next, wallpaper); callback.accept(true, "Preview ready");
-            } catch (IllegalArgumentException invalid) { callback.accept(false, "Invalid wallpaper color"); }
+                install(next, wallpaper); callback.accept(true, getContext().getString(R.string.hb_status_preview_ready));
+            } catch (IllegalArgumentException invalid) { callback.accept(false, getContext().getString(R.string.hb_status_invalid_wallpaper_color)); }
             return;
         }
         if (wallpaper.getType() == 3 && (wallpaper.getDisplayMode() == 5 || wallpaper.getDisplayMode() == 3 && Build.VERSION.SDK_INT < 31)) {
-            callback.accept(false, "This animation display mode is unsupported on this device"); return;
+            callback.accept(false, getContext().getString(R.string.hb_status_this_animation_display_mode_is_unsupported_on_this_device)); return;
         }
         if (wallpaper.getType() == 4) { video(wallpaper, token, callback); return; }
         int width = Math.min(1920, Math.max(1, getResources().getDisplayMetrics().widthPixels));
         int height = Math.min(1080, Math.max(1, getResources().getDisplayMetrics().heightPixels));
         main.postDelayed(() -> {
             if (token == generation && !closed) {
-                generation++; callback.accept(false, "Wallpaper decoding timed out; retaining previous background");
+                generation++; callback.accept(false, getContext().getString(R.string.hb_status_wallpaper_decoding_timed_out_retaining_previous_background));
             }
         }, 10_000);
         DECODER.execute(() -> {
@@ -167,7 +167,7 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
                     install(next, wallpaper);
                     if (image instanceof Animatable) { animated = (Animatable) image; if (active && !reduced) animated.start(); }
                     if (animation != null) { lottie = (LottieAnimationView) next.getChildAt(0); if (active && !reduced) lottie.playAnimation(); }
-                    callback.accept(true, "Preview ready");
+                    callback.accept(true, getContext().getString(R.string.hb_status_preview_ready));
                 });
             } catch (Exception | OutOfMemoryError invalid) {
                 main.post(() -> { if (token == generation && !closed) { generation++; callback.accept(false, "Cannot load wallpaper; check its format, URI or permissions"); } });
@@ -220,21 +220,21 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
     private void video(Wallpaper w, long token, BiConsumer<Boolean, String> callback) {
         Uri uri;
         try { uri = Uri.parse(MediaUris.secure(w.getUri())); }
-        catch (IllegalArgumentException invalid) { callback.accept(false, "Video needs HTTPS or an accessible content/resource URI"); return; }
+        catch (IllegalArgumentException invalid) { callback.accept(false, getContext().getString(R.string.hb_status_video_needs_https_or_an_accessible_content_resource_uri)); return; }
         String scheme = uri.getScheme();
         if (!"https".equals(scheme) && !MediaUris.appleHttp(uri.toString()) && !"content".equals(scheme) && !"android.resource".equals(scheme)) {
-            callback.accept(false, "Video needs HTTPS or an accessible content/resource URI"); return;
+            callback.accept(false, getContext().getString(R.string.hb_status_video_needs_https_or_an_accessible_content_resource_uri)); return;
         }
-        if (reduced) { solid(); callback.accept(false, "Video paused for reduced motion; using solid color"); return; }
+        if (reduced) { solid(); callback.accept(false, getContext().getString(R.string.hb_status_video_paused_for_reduced_motion_using_solid_color)); return; }
         if (w.getDisplayMode() == 5 || w.getDisplayMode() == 3 && Build.VERSION.SDK_INT < 31) {
-            callback.accept(false, "This video display mode is unsupported on this device"); return;
+            callback.accept(false, getContext().getString(R.string.hb_status_this_video_display_mode_is_unsupported_on_this_device)); return;
         }
         FrameLayout next = new FrameLayout(getContext()); TextureView texture = new TextureView(getContext());
         texture.setOpaque(false); next.addView(texture, new LayoutParams(-1, -1));
         MediaPlayer pendingPlayer = new MediaPlayer(); preparing = pendingPlayer; preparingView = next;
         preparingDeadline = () -> {
             if (token == generation && preparing == pendingPlayer) {
-                cancelPreparing(); callback.accept(false, "Video preparation timed out");
+                cancelPreparing(); callback.accept(false, getContext().getString(R.string.hb_status_video_preparation_timed_out));
             }
         };
         main.postDelayed(preparingDeadline, 10_000);
@@ -263,13 +263,13 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
                         boolean[] rendered = {false};
                         mp.setOnInfoListener((playing, what, extra) -> {
                             if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START && token == generation && !closed) {
-                                rendered[0] = true; callback.accept(true, "Preview ready"); return true;
+                                rendered[0] = true; callback.accept(true, getContext().getString(R.string.hb_status_preview_ready)); return true;
                             }
                             return false;
                         });
                         main.postDelayed(() -> {
                             if (token == generation && player == mp && !rendered[0] && !closed) {
-                                releaseMotion(); callback.accept(false, "Video produced no frame");
+                                releaseMotion(); callback.accept(false, getContext().getString(R.string.hb_status_video_produced_no_frame));
                             }
                         }, 10_000);
                         if (active) mp.start();
@@ -277,13 +277,13 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
                     pendingPlayer.setOnErrorListener((mp, what, extra) -> {
                         if (token == generation && !closed) {
                             if (preparing == mp) cancelPreparing(); else releaseMotion();
-                            callback.accept(false, "Video playback is unavailable");
+                            callback.accept(false, getContext().getString(R.string.hb_status_video_playback_is_unavailable));
                         }
                         return true;
                     });
                     pendingPlayer.setDataSource(getContext(), uri); pendingPlayer.prepareAsync();
                 } catch (Exception invalid) {
-                    cancelPreparing(); if (token == generation && !closed) callback.accept(false, "Video source is unavailable");
+                    cancelPreparing(); if (token == generation && !closed) callback.accept(false, getContext().getString(R.string.hb_status_video_source_is_unavailable));
                 }
             }
             @Override public void onSurfaceTextureSizeChanged(SurfaceTexture st, int w, int h) { }

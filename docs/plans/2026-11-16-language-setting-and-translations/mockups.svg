@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="880" viewBox="0 0 1600 880" role="img" aria-labelledby="title desc">
+  <title id="title">Homeboard language setting: entry, choice and Thai result</title>
+  <desc id="desc">Three TV interface mockups show the Language branch in Home settings, a compass with English, Thai, Follow device and Back, and the resulting Thai settings with Undo. Directional key release applies a choice immediately. Thai copy is a draft for review.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1">
+      <stop stop-color="#102337"/>
+      <stop offset="1" stop-color="#111724"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <style>
+      text { font-family: 'Noto Sans Thai', 'DejaVu Sans', sans-serif; fill: #eef4ff; }
+      .kicker { font-size: 16px; letter-spacing: 2px; fill: #95c5d7; }
+      .heading { font-size: 26px; font-weight: 650; }
+      .label { font-size: 19px; font-weight: 550; }
+      .small { font-size: 16px; fill: #bacbd9; }
+      .note { font-size: 19px; fill: #bbcbd9; }
+      .card { fill: #26384b; stroke: #42586b; stroke-width: 1.5; }
+      .focus { fill: #234754; stroke: #85e0d8; stroke-width: 3; }
+      .arrow { fill: #85e0d8; font-size: 22px; }
+    </style>
+  </defs>
+  <rect width="1600" height="880" fill="#0b1220"/>
+  <text x="38" y="45" class="kicker">HOMEBOARD TV / PROPOSED LANGUAGE WORKFLOW</text>
+  <text x="38" y="88" font-size="34" font-weight="650">A local language choice, with a clear way back</text>
+  <text x="38" y="123" class="note">English and Thai first · Existing compass interaction · Immediate apply and Undo · Draft Thai copy</text>
+
+  <g transform="translate(32 159)">
+    <rect width="496" height="588" rx="22" fill="url(#bg)" stroke="#42586b"/>
+    <text x="25" y="38" class="kicker">01 / ENTRY</text>
+    <text x="25" y="78" class="heading">Home settings</text>
+    <text x="25" y="108" class="small">Choose an area to customize</text>
+    <rect class="card" x="132" y="146" width="230" height="82" rx="18"/>
+    <text x="247" y="175" text-anchor="middle" class="arrow">↑</text>
+    <text x="247" y="205" text-anchor="middle" class="label">Widgets &amp; restore</text>
+    <rect x="16" y="248" width="176" height="112" rx="18" fill="#85e0d8" opacity=".15" filter="url(#glow)"/>
+    <rect class="focus" x="16" y="248" width="176" height="112" rx="18"/>
+    <text x="104" y="278" text-anchor="middle" class="arrow">←</text>
+    <text x="104" y="309" text-anchor="middle" class="label">Language / ภาษา</text>
+    <text x="104" y="338" text-anchor="middle" class="small">English</text>
+    <circle cx="248" cy="305" r="44" fill="#142333" stroke="#526b80"/>
+    <text x="248" y="301" text-anchor="middle" class="label">More</text>
+    <text x="248" y="324" text-anchor="middle" class="small">OK · 1/2</text>
+    <rect class="card" x="304" y="248" width="176" height="112" rx="18"/>
+    <text x="392" y="279" text-anchor="middle" class="arrow">→</text>
+    <text x="392" y="317" text-anchor="middle" class="label">Appearance</text>
+    <rect class="card" x="132" y="382" width="230" height="82" rx="18"/>
+    <text x="247" y="410" text-anchor="middle" class="arrow">↓</text>
+    <text x="247" y="441" text-anchor="middle" class="label">Home behavior</text>
+    <text x="25" y="510" class="small">Press Left to open Language.</text>
+    <text x="25" y="539" class="small">More keeps Undo history, default Home</text>
+    <text x="25" y="564" class="small">and About on the next page.</text>
+  </g>
+
+  <g transform="translate(552 159)">
+    <rect width="496" height="588" rx="22" fill="url(#bg)" stroke="#42586b"/>
+    <text x="25" y="38" class="kicker">02 / CHOICES AND CURRENT STATE</text>
+    <text x="25" y="78" class="heading">Language / ภาษา</text>
+    <text x="25" y="108" class="small">Current: English · Changes only Homeboard</text>
+    <rect class="card" x="132" y="146" width="230" height="82" rx="18"/>
+    <text x="247" y="175" text-anchor="middle" class="arrow">↑</text>
+    <text x="247" y="205" text-anchor="middle" class="label">English ✓ Current</text>
+    <rect class="card" x="16" y="248" width="176" height="112" rx="18"/>
+    <text x="104" y="279" text-anchor="middle" class="arrow">←</text>
+    <text x="104" y="317" text-anchor="middle" class="label">Back</text>
+    <circle cx="248" cy="305" r="44" fill="#142333" stroke="#526b80"/>
+    <text x="248" y="301" text-anchor="middle" class="label">Back</text>
+    <text x="248" y="324" text-anchor="middle" class="small">OK</text>
+    <rect x="304" y="248" width="176" height="112" rx="18" fill="#85e0d8" opacity=".2" filter="url(#glow)"/>
+    <rect class="focus" x="304" y="248" width="176" height="112" rx="18"/>
+    <text x="392" y="279" text-anchor="middle" class="arrow">→</text>
+    <text x="392" y="317" text-anchor="middle" font-size="27">ไทย</text>
+    <text x="392" y="343" text-anchor="middle" class="small">Release → to apply</text>
+    <rect class="card" x="132" y="382" width="230" height="82" rx="18"/>
+    <text x="247" y="410" text-anchor="middle" class="arrow">↓</text>
+    <text x="247" y="441" text-anchor="middle" class="label">Follow device</text>
+    <text x="25" y="510" class="small">A direction applies its choice on release.</text>
+    <text x="25" y="539" class="small">Back makes no new selection.</text>
+    <text x="25" y="564" class="small">Fixed endonyms remain easy to recognize.</text>
+  </g>
+
+  <g transform="translate(1072 159)">
+    <rect width="496" height="588" rx="22" fill="url(#bg)" stroke="#42586b"/>
+    <text x="25" y="38" class="kicker">03 / APPLIED IN THAI</text>
+    <text x="25" y="78" class="heading">การตั้งค่าหน้าหลัก</text>
+    <text x="25" y="108" class="small">เลือกสิ่งที่ต้องการปรับแต่ง</text>
+    <rect class="card" x="132" y="146" width="230" height="82" rx="18"/>
+    <text x="247" y="175" text-anchor="middle" class="arrow">↑</text>
+    <text x="247" y="205" text-anchor="middle" class="label">วิดเจ็ตและการกู้คืน</text>
+    <rect class="focus" x="16" y="248" width="176" height="112" rx="18"/>
+    <text x="104" y="278" text-anchor="middle" class="arrow">←</text>
+    <text x="104" y="309" text-anchor="middle" class="label">Language / ภาษา</text>
+    <text x="104" y="338" text-anchor="middle" class="small">ไทย</text>
+    <circle cx="248" cy="305" r="44" fill="#142333" stroke="#526b80"/>
+    <text x="248" y="301" text-anchor="middle" class="label">เพิ่มเติม</text>
+    <text x="248" y="324" text-anchor="middle" class="small">OK · 1/2</text>
+    <rect class="card" x="304" y="248" width="176" height="112" rx="18"/>
+    <text x="392" y="279" text-anchor="middle" class="arrow">→</text>
+    <text x="392" y="317" text-anchor="middle" class="label">รูปลักษณ์</text>
+    <rect class="card" x="132" y="382" width="230" height="82" rx="18"/>
+    <text x="247" y="410" text-anchor="middle" class="arrow">↓</text>
+    <text x="247" y="441" text-anchor="middle" class="label">การทำงานหน้าหลัก</text>
+    <rect x="16" y="490" width="464" height="70" rx="15" fill="#234754" stroke="#85e0d8"/>
+    <text x="32" y="533" class="label">เปลี่ยนภาษาเป็นไทยแล้ว</text>
+    <rect x="340" y="502" width="126" height="45" rx="10" fill="#85e0d8"/>
+    <text x="403" y="532" text-anchor="middle" font-size="19" style="fill:#102337">เลิกทำ</text>
+  </g>
+
+  <text x="38" y="792" class="note">Result: local preference saved, interface rebuilt, Language focus restored, existing app data preserved.</text>
+  <text x="38" y="827" class="note">Undo restores the previous mode. Follow device resolves to the first supported language; otherwise English.</text>
+  <text x="38" y="858" class="small">Design illustration only · Not a device screenshot or proof of Thai typography · No APK deployed</text>
+</svg>

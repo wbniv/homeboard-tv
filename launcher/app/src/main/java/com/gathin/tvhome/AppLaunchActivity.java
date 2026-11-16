@@ -9,6 +9,10 @@ import android.os.Bundle;
 /** Handles market://launch?id=<package> (Android TV Remote "launch app" by package name), which the
  *  stock launcher normally serves: opens the app's TV launch intent, then the phone launch intent. */
 public class AppLaunchActivity extends Activity {
+    @Override protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(AppLanguage.wrap(base));
+    }
+
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);

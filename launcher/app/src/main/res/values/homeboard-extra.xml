@@ -1,0 +1,33 @@
+<resources>
+    <string name="hb_hint_home_layout">"Home layout"</string>
+    <string name="hb_hint_home">"Home "</string>
+    <string name="hb_hint_hold_ok_to_remove">"; hold OK to remove"</string>
+    <string name="hb_hint_hold_ok_for_menu">"; hold OK for menu"</string>
+    <string name="hb_hint_left_edge_back_home_hold_ok_menu_page">"Left edge / Back → Home    Hold OK → menu    Page "</string>
+    <string name="hb_hint_more_air_quality">"More · Air quality"</string>
+    <string name="hb_hint_app">"App"</string>
+    <string name="hb_hint_removed">"Removed "</string>
+    <string name="hb_hint_from_home">" from Home"</string>
+    <string name="hb_hint_hid">"Hid "</string>
+    <string name="hb_hint_from_all_apps">" from All Apps"</string>
+    <string name="hb_hint_ui_opacity">"UI opacity: "</string>
+    <string name="hb_hint_circular_icon_mask">"Circular icon mask · "</string>
+    <string name="hb_hint_uses">"Uses "</string>
+    <string name="hb_hint_home_favorites_use">" · Home favorites use "</string>
+    <string name="hb_hint_resize">"Resize "</string>
+    <string name="hb_hint_bounded_to_this_tv_s_fit">"Bounded to this TV\'s fit: "</string>
+    <string name="hb_hint_change_ok_apply_back_cancel">"← / → change · OK apply · Back cancel"</string>
+    <string name="hb_hint_your_apps_and_widgets_arranged_your_way">" · Your apps and widgets, arranged your way"</string>
+    <string name="hb_hint_back">"←  BACK"</string>
+    <string name="hb_hint_open_source_link">". Open source link."</string>
+    <string name="hb_hint_restored">"Restored "</string>
+    <string name="hb_hint_to_all_apps">" to All Apps"</string>
+    <string name="hb_hint_apps_stay_installed_back_returns">"Apps stay installed · Back returns"</string>
+    <string name="hb_hint_background_solid_color">"Background: solid color"</string>
+    <string name="hb_hint_ntitle">"\nTitle: "</string>
+    <string name="hb_hint_nauthor">"\nAuthor: "</string>
+    <string name="hb_hint_nsource">"\nSource: "</string>
+    <string name="hb_hint_data">"Data: "</string>
+    <string name="hb_hint_local">" local"</string>
+    <string name="hb_hint_bangkok">" Bangkok"</string>
+</resources>

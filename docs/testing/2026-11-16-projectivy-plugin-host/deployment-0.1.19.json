@@ -1,0 +1,36 @@
+{
+  "versionName": "0.1.19",
+  "versionCode": 19,
+  "device": "chromecast-test-01",
+  "apk": "/home/will/homeboard-tv-background-menus/artifacts/deployments/0.1.19/homeboard.apk",
+  "sha256": "e33e6f7ed57fefbcc6ad1d6dae930322bacce87060e2e80d0362e04291c9932c",
+  "base_commit": "2215f73303e896e7a6f6d1ecd7d4af036d869da6",
+  "job": "J-fa2912d4e7a1",
+  "status": "succeeded",
+  "health": "ready",
+  "tests": {
+    "tests": 380,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": "passed",
+  "translation_structural_gate": "passed; linguistic and full bilingual UI acceptance remain pending",
+  "local_source_changes": [
+    "version.properties: version_code=19"
+  ],
+  "menu_probe": {
+    "job": "J-cc2c28ed312a",
+    "cases": 53,
+    "status": "succeeded",
+    "health": "ready",
+    "oracle_passed": true,
+    "evidence": "/home/will/homeboard-tv-background-menus/artifacts/deployments/0.1.19/menu-probe"
+  },
+  "catalog_activity": "com.gathin.tvhome.MainActivity",
+  "preserved": [
+    "app data and saved layout",
+    "app language",
+    "default Home app"
+  ]
+}

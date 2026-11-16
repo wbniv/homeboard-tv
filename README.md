@@ -40,13 +40,18 @@ wider cards and taller rows. Their artwork settings are independent. Auto fits
 the available space while retaining readable labels and focus clearance; Undo
 restores Home's previous style and placement.
 
-The combined **0.1.14** deployment includes Home favorite sizes, dense icon/banner
-grids, Projectivy wallpaper hosting and independent UI opacity. Cast1 checks
-confirmed both Home styles and Undo, All Apps density, Appearance controls and
-the six-media wallpaper probe. UI opacity now changes colored backgrounds only;
-text and artwork remain opaque. The 0.1.14 comparison verifies 0%, 75% and 100%
-on both Home and All Apps. See the [combined validation record](docs/testing/2026-11-16-projectivy-plugin-host.md),
-including the recorded cold-launch timeout and successful retry.
+The combined **0.1.19** deployment includes wallpaper hosting, independent UI
+background opacity, Home favorite sizes, dense icon/banner grids and English/Thai
+language selection. Solid color opens the palette picker; Background details
+shows the saved source and live provider status. Retry refreshes a selected
+provider. About links show a full address and phone QR code, plus a TV browser
+action when available. All 53 menu regressions and 380 JVM tests passed. See the
+[combined validation record](docs/testing/2026-11-16-projectivy-plugin-host.md).
+
+**Home settings → Language / ภาษา** supports English, Thai and Follow device,
+with independent persistence and Undo. Full bilingual UI and Thai copy acceptance
+remain pending; see the [language plan](docs/plans/2026-11-16-language-setting-and-translations.md)
+and [validation limits](docs/testing/2026-11-16-thai-language.md).
 
 ## Start here
 

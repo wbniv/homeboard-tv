@@ -185,3 +185,32 @@ media compatibility are unchanged by this correction; this probe uses a still
 image to check compositing deterministically.
 
 ![Actual Home and All Apps at 0, 75 and 100 percent background-fill opacity](2026-11-16-projectivy-plugin-host/ui-backgrounds-0.1.14.png)
+
+
+## Background actions and About links · 0.1.19
+
+The combined source at `2215f73` includes the Background/About repairs and the
+English/Thai language setting. Only the deployment version changed before the
+frozen APK was built. The [machine-readable record](2026-11-16-projectivy-plugin-host/deployment-0.1.19.json)
+identifies the APK hash and coordinator evidence directories.
+
+- [x] 380 JVM tests, debug lint and the structural translation gate passed in the container. Four tests independently decode the bundled About QR images to the exact intended URLs.
+- [x] J‑fa2912d4e7a1 installed 0.1.19 on Cast1, verified the frozen SHA-256 and completed with ready health.
+- [x] J‑cc2c28ed312a passed all 53 assertions through the actual Activity key dispatch and native view focus. The exported report passed the independent OCR oracle.
+- [x] Home and All Apps: Solid color opens the picker, palette preview persists, Back retains its parent and Undo restores the original color.
+- [x] Details shows the real source, palette/hex, opacity and provider status/credits. Its color/provider buttons and Back work. Provider preview, rotation, dimming cancellation, Apply, Retry, source changes and grouped Undo passed.
+- [x] Every About card opens through remote OK; all four panels display the correct full URL and QR resource, fit the TV viewport and return to About. Browser capability controls the optional TV action. About returns to the same Home settings page.
+- [x] The probe uses private layout/air-quality preferences and an offline provider fixture. Real layout preferences and the app language are asserted unchanged. Normal MainActivity catalog registration was restored afterward.
+
+Earlier 0.1.15 and 0.1.16 probe attempts failed because the harness sent a second
+native action before Android laid out its newly opened panel. The actions now
+wait across frames. A separate 0.1.16 cold launch lost the foreground; it is not
+counted as acceptance. The successful 0.1.19 result above includes the complete
+suite, rather than relying on coordinator completion alone.
+
+The TV browser branch verifies the resolved HTTPS/BROWSABLE intent without
+leaving the isolated probe. External browser rendering and full English/Thai
+linguistic/device acceptance are outside this result. Existing wallpaper media
+and long-run compatibility limits remain as recorded above.
+
+![All 53 menu assertions passed on Cast1](2026-11-16-projectivy-plugin-host/menu-regressions-0.1.19.png)

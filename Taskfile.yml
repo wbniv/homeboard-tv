@@ -39,3 +39,6 @@ tasks:
   wallpaper-fixture:
     desc: Build the debug-only offline wallpaper provider library
     cmds: ['dev/container.sh run ./gradlew --no-daemon :wallpaper-fixture:assembleDebug']
+  i18n:check:
+    desc: Validate English/Thai Homeboard resource parity in the build container
+    cmds: ['dev/container.sh run ./gradlew --no-daemon :app:checkTranslations']

@@ -23,6 +23,8 @@ missing rows on commit.*
 | [Projectivy wallpaper plugin host](2026-11-16-projectivy-plugin-host.md) | Hosts the public wallpaper-provider v1 API, adds independent UI opacity and groups dense All Apps artwork and circular masking under Icons. | [`ad798a2`](https://github.com/wbniv/homeboard-tv/commit/ad798a2), [`81a9270`](https://github.com/wbniv/homeboard-tv/commit/81a9270) | Feature |
 | [Government-office holidays and Buddhist flower-work calendar](2026-11-16-thai-calendar-widgets.md) | Plans twice-daily official closure updates and local Thai-lunisolar Wan Phra calculation with private flower-work availability. | Plan in progress | Feature |
 
+| [Language setting and English/Thai translation](2026-11-16-language-setting-and-translations.md) | Implements a native language compass and core English/Thai resources; tracks remaining review and acceptance gates. | Worktree implementation | Feature |
+
 ---
 
 ## How this index was derived
