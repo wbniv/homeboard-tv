@@ -1,21 +1,45 @@
 | Date | Change |
 |------|--------|
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/ad798a2) | Host Projectivy wallpaper providers with independent UI opacity |
-| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/531779b) | Match Google TV app focus and version each deployment |
-| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/bed1ea1) | Document dashboard styles and coordinated deployment handoff |
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/9b2da17) | Record 0.1.7 Cast1 deployment and queued Cast2 install |
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/be49bd7) | Add independent Small icons and Banners for Home favorites |
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/290e675) | docs: index Google TV app focus plan |
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/3588efb) | docs: index compass menu redesign plan |
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/9cb567a) | feat: add compass menus and document undo-first revision |
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
 ad798a2	author	Will Norris
-ad798a2	added	6
+ad798a2	added	1
 ad798a2	deleted	0
 ad798a2	files	1
-531779b	author	Will Norris
-531779b	added	5
-531779b	deleted	0
-531779b	files	1
-531779b	body	Add circular adaptive artwork, independent icon and label focus, and a cached\nring and halo with lifecycle and reduced-motion handling. Preserve Home layout\nwhile allowing larger circular icons in All Apps.\n\nPolish compass label geometry and About source links. Generate APK versionName\nfrom major.minor.versionCode and add containerized bump/deploy tasks with frozen\nartifacts and coordinator evidence.\n\nValidation: 348 unit tests, lint with zero errors, and debug APK assembly.\nDeploy 0.1.4 on Cast1 and verify focus, halo cleanup and the installed About\nversion. Submit the same APK to Cast2; its coordinator preflight fails with\npersonal-install-unverified. Reference motion calibration remains open.
-b2c5553	author	Will Norris
-b2c5553	added	68
-b2c5553	deleted	0
-b2c5553	files	1
+bed1ea1	author	Will Norris
+bed1ea1	added	1
+bed1ea1	deleted	1
+bed1ea1	files	1
+9b2da17	author	Will Norris
+9b2da17	added	1
+9b2da17	deleted	1
+9b2da17	files	1
+be49bd7	author	Will Norris
+be49bd7	added	2
+be49bd7	deleted	0
+be49bd7	files	1
+290e675	author	Will Norris
+290e675	added	2
+290e675	deleted	0
+290e675	files	1
+3588efb	author	Will Norris
+3588efb	added	1
+3588efb	deleted	1
+3588efb	files	1
+9cb567a	author	Will Norris
+9cb567a	added	1
+9cb567a	deleted	0
+9cb567a	files	1
+8e2d390	author	Will Norris
+8e2d390	added	29
+8e2d390	deleted	0
+8e2d390	files	1
 -->

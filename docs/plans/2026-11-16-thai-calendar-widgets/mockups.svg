@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860">
+  <rect width="1200" height="860" fill="#102c27"/>
+  <g font-family="sans-serif" fill="#e4f3ff">
+    <text x="32" y="40" font-size="25">Two calendars · office logistics and flower work</text>
+    <text x="32" y="68" font-size="15" fill="#a8bcbf">Design mockup · November/December 2026 examples · Bangkok time · live closures / locally calculated Wan Phra</text>
+    <g fill="#203e37" stroke="#638378" stroke-width="2">
+      <rect x="32" y="96" width="550" height="240" rx="15"/>
+      <rect x="610" y="96" width="558" height="240" rx="15"/>
+      <rect x="32" y="364" width="550" height="230" rx="15"/>
+      <rect x="610" y="364" width="558" height="230" rx="15"/>
+    </g>
+    <text x="54" y="130" font-size="17">GOVERNMENT OFFICES · NATIONWIDE</text>
+    <text x="54" y="170" font-size="25">Next holiday: 5 December</text>
+    <text x="54" y="205" font-size="19">Father’s Day / National Day</text>
+    <text x="54" y="236" font-size="17">Substitute closure: Monday 7 December</text>
+    <text x="54" y="268" font-size="16">No listed holiday today</text>
+    <text x="54" y="307" font-size="13" fill="#a8bcbf">Sample last check: 16 Nov 06:00 · OK: dates / refresh / sources</text>
+    <text x="632" y="130" font-size="17">FLOWER WORK · WAN PHRA</text>
+    <text x="632" y="170" font-size="25">Selling · mostly unavailable</text>
+    <text x="632" y="205" font-size="19">16–17 November</text>
+    <text x="632" y="236" font-size="17">Approximate break 11:00–16:00 each day</text>
+    <text x="632" y="268" font-size="16">Wan Phra: Tuesday 17 November</text>
+    <text x="632" y="307" font-size="13" fill="#a8bcbf">Thai lunar calendar · calculated locally · Bangkok time</text>
+    <text x="54" y="402" font-size="17">FLOWER WORK · PREPARATION</text>
+    <text x="54" y="444" font-size="24">Making flowers</text>
+    <text x="54" y="478" font-size="19">14–15 November · somewhat available</text>
+    <text x="54" y="514" font-size="17">Next selling block: 16–17 November</text>
+    <text x="54" y="562" font-size="13" fill="#a8bcbf">Colors support the wording; no color-only availability</text>
+    <text x="632" y="402" font-size="17">FLOWER WORK · SELLING-DAY BREAK</text>
+    <text x="632" y="444" font-size="24">Approximate break now</text>
+    <text x="632" y="478" font-size="19">Until about 16:00 · selling day</text>
+    <text x="632" y="514" font-size="17">Mostly unavailable outside the break</text>
+    <text x="632" y="562" font-size="13" fill="#a8bcbf">Personal label configured on device; sample label only</text>
+    <text x="32" y="636" font-size="18">OK → Upcoming dates → Date details / source</text>
+    <text x="32" y="670" font-size="18">Hold OK → Configure · Move · Resize · More / Delete → Undo</text>
+    <text x="32" y="708" font-size="15" fill="#a8bcbf">Outside verified coverage: “Calendar update needed”. No school closures or unknown availability inferred.</text>
+    <rect x="32" y="738" width="1136" height="90" rx="12" fill="#3c3825" stroke="#d5bc7b"/>
+    <text x="52" y="771" font-size="18">Government closures: check at 06:00 and 18:00 · Refresh now · Catch up after sleep</text>
+    <text x="52" y="804" font-size="16">Failed check: keep known closures and show last successful check + stale / partial-source status.</text>
+  </g>
+</svg>

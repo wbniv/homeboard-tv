@@ -21,6 +21,7 @@ missing rows on commit.*
 | [Google TV app icons and glowing focus](2026-11-16-google-tv-app-focus.md) | Matches circular app artwork, focus geometry and halo to Cast2's reference and records numbered deployments and device validation. | [`531779b`](https://github.com/wbniv/homeboard-tv/commit/531779b) | Feature |
 | [Home favorite app sizes](2026-11-16-home-favorite-app-sizes.md) | Adds independent Home artwork, separate dense icon/banner grids on both surfaces, reflow and Undo; records the combined-build handoff. | [`be49bd7`](https://github.com/wbniv/homeboard-tv/commit/be49bd7), [`9b2da17`](https://github.com/wbniv/homeboard-tv/commit/9b2da17), [`6a0366b`](https://github.com/wbniv/homeboard-tv/commit/6a0366b), [`4f3dd10`](https://github.com/wbniv/homeboard-tv/commit/4f3dd10) | Feature |
 | [Projectivy wallpaper plugin host](2026-11-16-projectivy-plugin-host.md) | Hosts the public wallpaper-provider v1 API, adds independent UI opacity and groups dense All Apps artwork and circular masking under Icons. | [`ad798a2`](https://github.com/wbniv/homeboard-tv/commit/ad798a2), [`81a9270`](https://github.com/wbniv/homeboard-tv/commit/81a9270) | Feature |
+| [Government-office holidays and Buddhist flower-work calendar](2026-11-16-thai-calendar-widgets.md) | Plans twice-daily official closure updates and local Thai-lunisolar Wan Phra calculation with private flower-work availability. | Plan in progress | Feature |
 
 ---
 
