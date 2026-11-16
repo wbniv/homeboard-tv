@@ -44,3 +44,22 @@ not numbered deployments. Any installation must use a fresh `task deploy` bump.
 The unit tests exercise supported-mode validation, ordered device-locale
 resolution/fallback and preservation of station-label/feed identity across
 English/Thai resources. They do not prove Android recreation or rendering.
+
+## Combined deployment attempts
+
+The Thai worktree merged the committed Background-menu and About QR fixes from
+`fix/background-menus` in `1622657`; unfinished calendar work in main is excluded.
+The combined candidate passed 380 tests, lint and the 315-resource structural gate.
+
+- [x] Attempt 0.1.17 through coordinator job J‑75ba5585e758; evidence exported.
+- [x] Diagnose `INSTALL_FAILED_UPDATE_INCOMPATIBLE`: the nested worktree's new
+  Gradle volume generated a different debug signing key. Coordinator evidence
+  confirms the previous installed APK stayed unchanged and device health is ready.
+- [x] Verify the existing project cache certificate matches the installed APK
+  (`87884e9c…`); name the shared cache explicitly in Compose for worktrees.
+- [ ] Deploy the corrected build with a fresh number and verify launch/evidence.
+
+The failed 0.1.17 APK SHA-256 is
+`14b30d083a909c49fc23f75864ef6e3d6bca3170f42f78b19b054f32ce57ac38`.
+The complete failed evidence and source patch are retained under
+`artifacts/deployments/0.1.17/`. No uninstall or settings reset was performed.
