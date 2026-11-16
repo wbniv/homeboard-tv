@@ -27,6 +27,18 @@ documents the circular artwork, focus ring and halo reference, implementation
 and device evidence. Use `task deploy` for a newly numbered APK deployment;
 the About dialog displays the installed APK version.
 
+[Home favorite sizes and dense layouts](docs/plans/2026-11-16-home-favorite-app-sizes.md)
+adds **Home settings → Appearance → Icons → Home favorites → Small icons / Banners**.
+Home and All Apps each use a compact icon grid or a separate banner grid with
+wider cards and taller rows. Their artwork settings are independent. Auto fits
+the available space while retaining readable labels and focus clearance; Undo
+restores Home's previous style and placement.
+
+The [validation record](docs/testing/2026-11-16-home-favorite-app-sizes.md) distinguishes
+source implementation from installed builds: 0.1.8 contained these changes,
+but a separate Projectivy 0.1.9 build replaced it on Cast1 without them. The
+combined merge and Home banner visual verification remain pending.
+
 ## Start here
 
 - [Product direction: our brand and the CleanYourTV community](docs/product-direction.md)

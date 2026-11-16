@@ -56,8 +56,8 @@ previews and banner fitting with large labels.
 
 Frozen APK: `artifacts/deployments/0.1.7/homeboard.apk`.
 SHA-256: `99efd1edae62c2871b82fe5c257b242f3071fa9f3ae30f8cfd885faabfac065e`.
-Both target devices use this identical file. No app data was cleared and the
-default Home app was not changed.
+This identical file was submitted for both target devices. No app data was
+cleared and the default Home app was not changed.
 
 ## Cast1
 
@@ -90,7 +90,8 @@ allow a background install. Background-install job **J‑408789084372** returned
 `unverified`, so installation is not claimed. Evidence is at
 `artifacts/deployments/0.1.7/cast2-install/`.
 
-Complete install-and-check job **J‑619e5c575044** is queued for the same frozen
-APK. The coordinator is deferring it during personal use. Its eventual install,
-launch and cleanup outcomes must be recorded separately. No personal-use marker
-was removed or bypassed.
+Complete install-and-check job **J‑619e5c575044** was queued for the same frozen
+APK and deferred during personal use. It was subsequently cancelled when 0.1.8
+superseded that deployment; it is no longer a pending install. The 0.1.8
+background-install result is recorded above. No personal-use marker was removed
+or bypassed. No successful Cast2 installation is established by either run.

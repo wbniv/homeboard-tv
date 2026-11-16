@@ -68,6 +68,20 @@ choice affects small icons only. Artwork fits the configured grid and text size.
 Each installed app appears once, even when it publishes multiple launcher
 activities. Log utility entries are filtered out of All Apps.
 
+For the densest automatic dashboard, open **Home settings → Home behavior**
+and set both **Grid columns** and **Grid rows** to **Auto**. Explicit grid choices
+remain respected, within the readable fit for the selected style. A typical
+960 × 540 dp TV can fit 11 × 4 small icons or six banners across three taller
+rows; larger text can reduce those counts. Home banners and icons have separate
+grid sizing. Changing All Apps artwork alone does not change the dashboard.
+
+To check the installed version, open **Home settings**, press **OK** to show the
+second menu page, then choose **About Homeboard TV**. About reads the installed
+APK version. A higher version number alone does not establish which branch's
+features it contains: the separate Projectivy 0.1.9 build lacked the Home changes
+present in 0.1.8. See the [build validation record](../testing/2026-11-16-home-favorite-app-sizes.md)
+for the combined-merge status and what has actually been verified on the TV.
+
 ![Home favorites: size choice, Small icons, Banners and Undo — design mockup](../plans/2026-11-16-home-favorite-app-sizes/mockups.svg)
 
 ![App artwork, icon shape and dense grid — design mockup](../plans/2026-11-15-widget-home/compact-grid-settings.svg)
@@ -87,11 +101,11 @@ does not honor the default Home app for that key.
 
 ## Color palette
 
-Open **Home settings → Appearance → Background and wallpaper**. Its only action,
-**Choose color palette…**, shows the currently selected color as a swatch. Open it
-to choose from twenty compact colors arranged in five rows on one screen. The
-selected color generates the launcher surfaces, text tones, and focus highlight.
-Photo selection and theme wallpaper actions are not offered.
+On `main`, open **Home settings → Appearance → Background** to choose from twenty
+colors arranged in five rows on one screen. The focused color previews immediately;
+the current selection is marked. The selected color generates the launcher
+surfaces, text tones, and focus highlight.
+Projectivy wallpaper controls are a separate workstream pending the combined merge.
 
 ![Background and wallpaper menu with the current-color swatch](../plans/2026-11-16-palette-trend-resize/background.svg)
 
