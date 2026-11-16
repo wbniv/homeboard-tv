@@ -15,8 +15,8 @@ for reflow and Undo. Widgets can span multiple cells and rows so they remain use
 ## Design decisions
 
 - The Home grid uses a selectable column count: **Auto**, 4, 6, 8, 10 or 12. Auto
-  chooses up to 9 columns according to the TV's usable width; fixed choices are
-  capped at the device's measured fit.
+  fills the TV's usable width, up to 12 placement columns; fixed choices are
+  capped at the readable fit for the selected icon or banner style.
 - Rows offer **Auto** or any count from 2 through the number that fits on the TV.
   A page contains one configured grid; usable height and legibility determine the
   maximum instead of a short, arbitrary preset list.
@@ -38,8 +38,8 @@ for reflow and Undo. Widgets can span multiple cells and rows so they remain use
 - Store grid choices with the existing Home layout. Changing density reflows items
   without deleting, hiding or uninstalling anything.
 
-The responsive placement and grid selectors are implemented. Auto defaults to nine
-columns to leave some breathing room; selectable fixed choices are 4, 6, 8, 10 and
+The responsive placement and grid selectors are implemented. Auto fills the
+available width; selectable fixed choices are 4, 6, 8, 10 and
 12. Rows default to Auto, with manual values from two through the measured display
 fit. This iteration adds per-panel size and defaults, a condition-tinted PM2.5
 surface, historical trend backfill and an icon-shaped focus highlight. Container

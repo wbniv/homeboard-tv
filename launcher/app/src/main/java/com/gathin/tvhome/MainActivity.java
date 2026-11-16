@@ -583,22 +583,42 @@ public class MainActivity extends Activity {
     }
     private List<String> dashboardItems() { return moving && !moveInApps ? preview : layout.widgets; }
     private int homeGridColumns() {
-        int fit = homeGridFitColumns();
-        return layout.homeColumns == 0 ? Math.min(9, fit) : Math.min(layout.homeColumns, fit);
+        return homeGridColumnsFor(layout.homeAppSize);
+    }
+    private int homeGridColumnsFor(String size) {
+        int fit = homeGridFitColumnsFor(size);
+        return layout.homeColumns == 0 ? fit : Math.min(layout.homeColumns, fit);
+    }
+    private int appLabelHeightDp() {
+        android.graphics.Paint paint = new android.graphics.Paint();
+        android.util.DisplayMetrics metrics = getResources().getDisplayMetrics();
+        paint.setTextSize(16 * metrics.scaledDensity);
+        android.graphics.Paint.FontMetricsInt font = paint.getFontMetricsInt();
+        return (int) Math.ceil((font.bottom - font.top) / metrics.density);
     }
     private int homeGridFitColumns() {
+        return homeGridFitColumnsFor(layout.homeAppSize);
+    }
+    private int homeGridFitColumnsFor(String size) {
         int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
                 / getResources().getDisplayMetrics().density);
-        return Math.max(4, Math.min(12, Math.max(1, screenWidthDp - 88) / 108));
+        return AppGridSizing.homeColumns(screenWidthDp - AppGridSizing.SIDE_MARGIN * 2,
+                appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size));
     }
     private int homeGridFitRows() {
+        return homeGridFitRowsFor(layout.homeAppSize);
+    }
+    private int homeGridFitRowsFor(String size) {
         int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
                 / getResources().getDisplayMetrics().density);
-        // Keep 48 dp icons and a 16 sp label readable, with room for the top and bottom chrome.
-        return Math.max(2, (screenHeightDp - 168) / 80);
+        return Math.max(2, AppGridSizing.rows(screenHeightDp - AppGridSizing.HOME_TOP
+                - AppGridSizing.BOTTOM_MARGIN, appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size)));
     }
     private int homeGridRows() {
-        int fit = homeGridFitRows();
+        return homeGridRowsFor(layout.homeAppSize);
+    }
+    private int homeGridRowsFor(String size) {
+        int fit = homeGridFitRowsFor(size);
         return layout.homeRows == 0 ? fit : Math.min(layout.homeRows, fit);
     }
     private List<HomeLayout.Cell> homeCells(List<String> items) {
@@ -924,7 +944,8 @@ public class MainActivity extends Activity {
         if (items.isEmpty()) { focused = ""; return; } // Truly empty: no compulsory header, hint or dock.
         TileGrid grid = new TileGrid(this, columns, rows);
         FrameLayout.LayoutParams gp = new FrameLayout.LayoutParams(-1, -1);
-        gp.setMargins(dp(44), dp(104), dp(44), dp(64));
+        gp.setMargins(dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.HOME_TOP),
+                dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.BOTTOM_MARGIN));
         surface.addView(grid, gp);
         boolean hasAppTile = false;
         for (HomeLayout.Cell cell : homeCells(items)) {
@@ -1026,7 +1047,8 @@ public class MainActivity extends Activity {
         tp.setMargins(dp(50), dp(22), 0, 0); surface.addView(title, tp);
         TileGrid grid = new TileGrid(this, columns, rows);
         FrameLayout.LayoutParams gp = new FrameLayout.LayoutParams(-1, -1);
-        gp.setMargins(dp(44), dp(compactApps() ? 78 : 86), dp(44), dp(54)); surface.addView(grid, gp);
+        gp.setMargins(dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.APPS_TOP),
+                dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.BOTTOM_MARGIN)); surface.addView(grid, gp);
         int start = appsPage * pageSize;
         for (int i = start; i < Math.min(start + pageSize, items.size()); i++) {
             String key = items.get(i); View tile = appTile(key, false); configureTile(tile, key);
@@ -1040,20 +1062,17 @@ public class MainActivity extends Activity {
         fp.setMargins(dp(50), 0, dp(50), dp(10)); surface.addView(footer, fp);
     }
     /** Measures each cell once before layout; never requests another layout while laying out. */
-    private boolean compactApps() { return !layout.appBanners; }
     private int appColumns() {
-        if (!compactApps()) return 4;
         int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
                 / getResources().getDisplayMetrics().density);
-        int gridWidthDp = Math.max(1, screenWidthDp - 88);
-        return Math.max(1, gridWidthDp / (layout.circularIcons ? 96 : 108));
+        return AppGridSizing.columns(screenWidthDp - AppGridSizing.SIDE_MARGIN * 2,
+                appLabelHeightDp(), layout.appBanners);
     }
     private int appRows() {
-        if (!compactApps()) return 2;
-        if (!layout.circularIcons) return 4;
         int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
                 / getResources().getDisplayMetrics().density);
-        return Math.max(1, (screenHeightDp - 132) / 128);
+        return AppGridSizing.rows(screenHeightDp - AppGridSizing.APPS_TOP - AppGridSizing.BOTTOM_MARGIN,
+                appLabelHeightDp(), layout.appBanners);
     }
     private int appPageSize() { return appColumns() * appRows(); }
     private final class TileGrid extends ViewGroup {
@@ -1076,8 +1095,8 @@ public class MainActivity extends Activity {
             setMeasuredDimension(width, height);
             for (int i = 0; i < getChildCount(); i++) {
                 int[] cell = positions.get(i);
-                int childWidth = Math.max(0, width * cell[2] / columns - dp(12));
-                int childHeight = Math.max(0, height * cell[3] / rows - dp(8));
+                int childWidth = Math.max(0, width * cell[2] / columns - dp(AppGridSizing.COLUMN_GAP));
+                int childHeight = Math.max(0, height * cell[3] / rows - dp(AppGridSizing.ROW_GAP));
                 getChildAt(i).measure(View.MeasureSpec.makeMeasureSpec(childWidth, View.MeasureSpec.EXACTLY),
                         View.MeasureSpec.makeMeasureSpec(childHeight, View.MeasureSpec.EXACTLY));
             }
@@ -1087,8 +1106,8 @@ public class MainActivity extends Activity {
             for (int i = 0; i < getChildCount(); i++) {
                 int[] cell = positions.get(i);
                 View child = getChildAt(i);
-                int x = width * cell[0] / columns + dp(6);
-                int y = height * cell[1] / rows + dp(4);
+                int x = width * cell[0] / columns + dp(AppGridSizing.COLUMN_GAP / 2f);
+                int y = height * cell[1] / rows + dp(AppGridSizing.ROW_GAP / 2f);
                 child.layout(x, y, x + child.getMeasuredWidth(), y + child.getMeasuredHeight());
             }
         }
@@ -1603,7 +1622,7 @@ public class MainActivity extends Activity {
         return HomeLayout.APP_BANNER.equals(layout.homeAppSize) ? "Banners" : "Small icons";
     }
     private void homeAppSizeSettings() {
-        menu("Home favorites", "Banners use two Home columns. Apps may move to another row or page.",
+        menu("Home favorites", "Banners use wider cells and taller rows. Tiles may move to another row or page.",
                 new String[]{"Small icons", "Banners"}, choice -> changeHomeAppSize(
                         choice == 0 ? HomeLayout.APP_SMALL : HomeLayout.APP_BANNER),
                 HomeLayout.APP_BANNER.equals(layout.homeAppSize) ? 1 : 0);
@@ -1614,7 +1633,8 @@ public class MainActivity extends Activity {
             snapshot = new JSONObject().put("layout", layout.encode()).put("page", homePage)
                     .put("focus", allApps ? homeFocus : focused).toString();
         } catch (org.json.JSONException invalid) { throw new IllegalStateException(invalid); }
-        if (!layout.setHomeAppSize(size, homeGridColumns(), homeGridRows())) return;
+        if (!layout.setHomeAppSize(size, homeGridColumns(), homeGridRows(),
+                homeGridColumnsFor(size), homeGridRowsFor(size))) return;
         String label = "Home favorites: " + homeAppSizeLabel();
         pushUndo("home-app-size", "", snapshot, label);
         saveWithoutUndo();
@@ -1626,12 +1646,12 @@ public class MainActivity extends Activity {
     }
     private void allAppsArtworkSettings() {
         boolean returnToAllApps = allApps;
-        menu("All Apps", "Uses " + (layout.appBanners ? "TV banners · 4 × 2" : "launcher icons · dense grid")
+        menu("All Apps", "Uses " + (layout.appBanners ? "TV banners · responsive grid" : "launcher icons · dense grid")
                         + " · Home favorites use " + homeAppSizeLabel(),
-                new String[]{"Launcher icons · dense grid", "TV banners · 4 × 2"}, artwork -> {
+                new String[]{"Launcher icons · dense grid", "TV banners · responsive grid"}, artwork -> {
                     layout.appBanners = artwork == 1;
                     if (returnToAllApps) {
-                        // The grid can change page size (dense icons versus 4 × 2 banners). Keep
+                        // The grid can change page size between icons and banners. Keep
                         // the user in All Apps and focus a tile that belongs to the new visible page.
                         allApps = true;
                         List<String> items = appItems();

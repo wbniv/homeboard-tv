@@ -1,10 +1,11 @@
 # Home favorite app sizes
 
-**Status: implemented, container checks passed, installed and launch-verified on Cast1; Cast2 queued and visual acceptance pending · 16 November 2026**
+**Status: dense style-specific layout revision implemented; container checks running; earlier 0.1.7 device evidence predates this revision · 16 November 2026**
 
 [Deployment and validation record](../testing/2026-11-16-home-favorite-app-sizes.md)
 records the exact 0.1.7 APK, successful Cast1 launch, scripted-input failure and
-the coordinator-owned Cast2 job deferred during personal use.
+the earlier coordinator-owned Cast2 job deferred during personal use. That queued
+0.1.7 job was cancelled when the density revision superseded it.
 
 Let Will display favorited apps on Home as **Small icons** or **Banners**.
 This is one setting for all Home app favorites, independent of the existing
@@ -30,8 +31,8 @@ two branches, each showing its current value:
 | All Apps · TV banners | Launcher icons / TV banners | The existing All Apps view |
 
 The Home favorites submenu shows **Small icons · Current** and **Banners**,
-or the reverse current marker. Its subtitle explains: “Banners use two Home
-columns. Apps may move to another row or page.” Use the existing compass menu:
+or the reverse current marker. Its subtitle explains that banners use wider
+cells and taller rows, and tiles may move to another row or page. Use the existing compass menu:
 Up chooses Small icons, Right chooses Banners, OK performs the displayed center
 action, and Back returns without selecting a new value. Merely opening the
 submenu changes nothing.
@@ -47,6 +48,46 @@ This first version is a global Home setting. It does not introduce per-app size
 overrides, arbitrary app resizing, or another grid-density control.
 
 ## Tile appearance and layout
+
+### Dense layout revision
+
+Will requested the densest reasonable layout after 0.1.7. Use 48 dp small icons,
+16 sp labels and measured text height. Reduce side margins to 32 dp, Home's top
+margin to 88 dp and bottom margin to 52 dp; use 8 dp horizontal and 6 dp vertical
+cell gaps. Auto Home fills all columns that fit, up to the existing limit of 12,
+instead of stopping at nine. Explicit row/column choices remain respected.
+
+All Apps uses the same measured small-icon pitch. Banners also use a responsive
+grid, with a minimum 144 dp column pitch and room for a 96 × 54 dp image, focus
+clearance and a label. Larger text increases the minimum pitch automatically.
+At a representative 960 × 540 dp TV size this gives 11 × 4 small icons and
+6 × 3 All Apps banners, compared with 8 × 4 Home icons, 9 × 3 All Apps icons
+and 4 × 2 All Apps banners previously. Counts vary with display and font metrics.
+Home uses the selected style too: icons use a compact 11 × 4 grid in that
+example; banners use six wider cards across three taller rows. Internally, a
+Home banner still spans two placement columns, so its Auto grid has 12 placement
+columns and three rows. Explicit grid choices are capped at the readable fit
+for the selected style. Switching style resolves positions against the new grid;
+widgets keep their origins where they fit, and otherwise move without losing
+their configuration. Undo restores the previous style, grid fit and positions.
+
+![Dense icon and banner grids with focus and readable labels](2026-11-16-home-favorite-app-sizes/dense-layout.svg)
+
+```mermaid
+flowchart LR
+    A[Display size and measured 16 sp label height] --> B[Reserve controls, footer and focus space]
+    B --> C[Compute readable icon or banner pitch]
+    C --> D[Fill style-specific rows and columns on Home and All Apps]
+    D --> E[Honor explicit Home grid choices]
+    E --> F[Pack tiles and preserve saved placement]
+    F --> G[Fit artwork with a stationary label and matching focus]
+```
+
+Verify that another row or column would violate the minimum pitch, that larger
+text reduces density when needed, and that 720p/1080p/4K displays use their dp
+dimensions consistently. This revision changes spacing and automatic grid fit;
+the Home size and artwork selection workflow stays the same. The former shared
+Home grid between icon and banner styles is superseded by this revision.
 
 | Property | Small icons | Banners |
 |---|---|---|
@@ -64,11 +105,12 @@ Keep focus enlargement inside the available image area and leave the label
 stationary. Preserve the full app name in the tile's accessibility description.
 
 Changing size must preserve favorites membership, logical ordering, widget
-configuration and grid dimensions. Resolve enlarged tiles against the Home
-grid before rendering:
+configuration. The dense layout revision computes a separate grid fit for each
+style. Resolve tiles against the selected style's grid before rendering:
 
 1. Capture the current resolved positions and full layout snapshot for Undo.
-2. Keep widgets at their resolved positions and spans.
+2. Keep widgets at their resolved positions and spans where they fit the new
+   grid; resolve positions outside the new bounds without changing configuration.
 3. Place favorites in their existing logical order. Keep each app's prior origin
    if the new span fits without overlap; otherwise use the existing deterministic
    placement search for the next available position, including another page.
@@ -79,7 +121,7 @@ grid before rendering:
 
 Shrinking banners to small icons keeps their current origins; it does not silently
 repack every gap. Undo restores the entire preceding layout, including exact
-positions, page and size. Changing the setting to Small icons later is a new
+positions, page, style-dependent grid fit and size. Changing the setting to Small icons later is a new
 layout change, rather than a hidden restoration of an earlier arrangement.
 An empty Home stays empty. Newly favorited apps use the current Home size.
 

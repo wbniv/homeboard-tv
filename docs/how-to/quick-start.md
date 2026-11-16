@@ -53,11 +53,13 @@ and is still available in All Apps. Favoriting twice does not create duplicate t
 Open **Home settings → Appearance → Icons**. The two branches are independent:
 
 - **Home favorites → Small icons / Banners** changes all favorite apps on Home.
-  Small icons use one grid cell; Banners use two columns and one row. Widgets keep
-  their positions, while apps may move to another row or page. **Undo** restores
+  Small icons use a compact grid; Banners use wider cards and taller rows.
+  The layout adapts to the chosen style and text size. Tiles may move to another
+  row or page; widget configuration is preserved. **Undo** restores
   the previous size, positions and Home page. Selecting the current size changes nothing.
 - **All Apps → Launcher icons / TV banners** changes the app library. Launcher icons
-  use a dense grid; TV banners use a 4 × 2 grid. Changing artwork keeps All Apps open.
+  use a dense icon grid; TV banners use their own responsive grid with wider
+  cards and taller rows. Changing artwork keeps All Apps open.
 
 Banner artwork keeps its 16:9 proportions, with a rounded rectangular focus ring
 and a label below. Apps without a banner show their icon centered on a neutral

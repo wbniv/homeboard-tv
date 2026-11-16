@@ -220,7 +220,7 @@ public class HomeLayoutTest {
         layout.homePositions.put(HomeLayout.AIR, new HomeLayout.HomePosition(0, 0, 1));
         layout.homePositions.put(B, new HomeLayout.HomePosition(0, 0, 3));
         layout.homeColumns = 4; layout.homeRows = 2;
-        assertTrue(layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2));
+        assertTrue(layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2, 4, 2));
         List<HomeLayout.Cell> cells = layout.cells(layout.widgets, 4, 2);
         assertCell(cells, HomeLayout.AIR, 0, 0, 1);
         assertEquals(2, cells.get(1).width); assertEquals(2, cells.get(1).height);
@@ -236,7 +236,7 @@ public class HomeLayoutTest {
         String before = layout.encode();
         List<HomeLayout.Cell> original = layout.cells(layout.widgets, 4, 2);
         assertEquals(1, layout.pageCount(layout.widgets, 4, 2));
-        assertTrue(layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2));
+        assertTrue(layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2, 4, 2));
         assertTrue(layout.pageCount(layout.widgets, 4, 2) > 1);
         assertNonoverlapping(layout.cells(layout.widgets, 4, 2), 4, 2);
         HomeLayout undo = HomeLayout.parse(before);
@@ -251,19 +251,19 @@ public class HomeLayoutTest {
 
     @Test public void shrinkingKeepsBannerOriginsAndReselectingDoesNotReflow() {
         HomeLayout layout = new HomeLayout(); layout.widgets.addAll(Arrays.asList(A, B, C));
-        layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2);
+        layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2, 4, 2);
         List<HomeLayout.Cell> banners = layout.cells(layout.widgets, 4, 2);
-        layout.setHomeAppSize(HomeLayout.APP_SMALL, 4, 2);
+        layout.setHomeAppSize(HomeLayout.APP_SMALL, 4, 2, 4, 2);
         for (HomeLayout.Cell cell : banners)
             assertCell(layout.cells(layout.widgets, 4, 2), cell.key, cell.page, cell.row, cell.column);
         String before = layout.encode();
-        assertFalse(layout.setHomeAppSize(HomeLayout.APP_SMALL, 4, 2));
+        assertFalse(layout.setHomeAppSize(HomeLayout.APP_SMALL, 4, 2, 4, 2));
         assertEquals(before, layout.encode());
     }
 
     @Test public void emptyHomeAndNewFavoritesUseTheSelectedSize() {
         HomeLayout layout = new HomeLayout();
-        layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2);
+        layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2, 4, 2);
         assertTrue(layout.widgets.isEmpty()); assertTrue(layout.homePositions.isEmpty());
         layout.favorite(A); assertEquals(2, layout.cells(layout.widgets, 4, 2).get(0).width);
         layout.delete(A, true); layout.favorite(A);
@@ -273,7 +273,7 @@ public class HomeLayoutTest {
 
     @Test public void wideMovePreviewClaimsItsWholeSpanWithoutMutatingSavedPositions() {
         HomeLayout layout = new HomeLayout(); layout.widgets.addAll(Arrays.asList(A, B, C));
-        layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2);
+        layout.setHomeAppSize(HomeLayout.APP_BANNER, 4, 2, 4, 2);
         String saved = layout.encode();
         java.util.Map<String, HomeLayout.HomePosition> preview = new java.util.LinkedHashMap<>();
         preview.put(A, new HomeLayout.HomePosition(0, 0, 2));
@@ -290,7 +290,7 @@ public class HomeLayoutTest {
             layout.setPanelSize(HomeLayout.AIR, HomeLayout.PANEL_SMALL);
             for (int i = 0; i < 32; i++) layout.favorite("app:density/" + i);
             HomeLayout.Cell widget = layout.cells(layout.widgets, columns, rows).get(0);
-            layout.setHomeAppSize(HomeLayout.APP_BANNER, columns, rows);
+            layout.setHomeAppSize(HomeLayout.APP_BANNER, columns, rows, columns, rows);
             List<HomeLayout.Cell> cells = layout.cells(layout.widgets, columns, rows);
             assertCell(cells, HomeLayout.AIR, widget.page, widget.row, widget.column);
             assertEquals(2, cells.get(0).width); assertEquals(2, cells.get(0).height);
@@ -311,5 +311,30 @@ public class HomeLayoutTest {
                 for (int x = cell.column; x < cell.column + cell.width; x++)
                     assertTrue("Overlapping " + cell.key, occupied.add(cell.page + ":" + y + ":" + x));
         }
+    }
+
+    @Test public void switchingStyleResolvesAgainstItsOwnGridAndUndoRestoresTheOriginalGridLayout() throws Exception {
+        HomeLayout layout = HomeLayout.firstRun();
+        layout.addPanel("widget:air:2"); layout.favorite(A); layout.favorite(B);
+        layout.setPanelSpan(HomeLayout.AIR, 2, 1);
+        layout.setPanelSpan("widget:air:2", 2, 1);
+        layout.homePositions.put(HomeLayout.AIR, new HomeLayout.HomePosition(0, 3, 9));
+        layout.homePositions.put("widget:air:2", new HomeLayout.HomePosition(0, 2, 2));
+        layout.homePositions.put(A, new HomeLayout.HomePosition(0, 0, 10));
+        layout.homePositions.put(B, new HomeLayout.HomePosition(0, 3, 0));
+        String before = layout.encode();
+        assertTrue(layout.setHomeAppSize(HomeLayout.APP_BANNER, 11, 4, 12, 3));
+        List<HomeLayout.Cell> banners = layout.cells(layout.widgets, 12, 3);
+        assertCell(banners, "widget:air:2", 0, 2, 2); // Still fits, so it stays fixed.
+        assertCell(banners, HomeLayout.AIR, 1, 0, 9); // Fourth row moves to the next page.
+        assertNonoverlapping(banners, 12, 3);
+        assertEquals(2, layout.panelSpan(HomeLayout.AIR).width);
+        HomeLayout restored = HomeLayout.parse(before);
+        assertEquals(HomeLayout.APP_SMALL, restored.homeAppSize);
+        List<HomeLayout.Cell> icons = restored.cells(restored.widgets, 11, 4);
+        assertCell(icons, HomeLayout.AIR, 0, 3, 9);
+        assertCell(icons, A, 0, 0, 10);
+        assertCell(icons, B, 0, 3, 0);
+        assertNonoverlapping(icons, 11, 4);
     }
 }

@@ -2,7 +2,7 @@ package com.gathin.tvhome;
 
 /** Ratios measured in the 1920 x 1080 Google TV reference; arguments use physical pixels. */
 final class AppAppearance {
-    static final int ICON_DIAMETER_DP = 76;
+    static final int ICON_DIAMETER_DP = 48;
     static final float FOCUS_SCALE = 168f / 152f;
     static final int TRANSITION_MS = 180; // Provisional until reference motion is recorded.
     static final int SELECTED_LABEL = 0xffe4f3ff;

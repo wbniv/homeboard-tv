@@ -114,10 +114,10 @@ final class HomeLayout {
     boolean appUsesBanner(boolean dashboard) { return dashboard ? APP_BANNER.equals(homeAppSize) : appBanners; }
 
     /** Freeze widgets first, then resolve app origins in logical order at the new size. */
-    boolean setHomeAppSize(String size, int columns, int rows) {
+    boolean setHomeAppSize(String size, int beforeColumns, int beforeRows, int columns, int rows) {
         if (!APP_SMALL.equals(size) && !APP_BANNER.equals(size)) throw new IllegalArgumentException("Unknown Home app size");
         if (size.equals(homeAppSize)) return false;
-        List<Cell> before = cells(widgets, columns, rows);
+        List<Cell> before = cells(widgets, beforeColumns, beforeRows);
         homeAppSize = size;
         Map<String, HomePosition> requested = new LinkedHashMap<>();
         for (Cell cell : before) if (cell.key.startsWith("widget:"))

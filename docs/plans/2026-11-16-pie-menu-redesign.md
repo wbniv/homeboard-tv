@@ -132,7 +132,7 @@ or Banners choice, described in the [Home favorite sizes plan](2026-11-16-home-f
 ```mermaid
 flowchart LR
     A[All Apps · dense launcher icons] -->|Open Home settings → Appearance → Icons| B[Choose TV banners]
-    B --> C[All Apps stays open · 4 × 2 banner grid]
+    B --> C[All Apps stays open · responsive wider banner grid]
     C -->|Open Icons again| D[Choose launcher icons]
     D --> A
     B -.->|After either choice| F[Restore focus to a visible app]
@@ -265,7 +265,7 @@ they should remain outside the menu tree.
 - [x] Homeboard settings are identified by the sliders icon; the gear remains
       Android device settings.
 - [ ] On Cast1, selecting TV banners from All Apps keeps the page open, changes
-      the 10-across icon grid to the 4 × 2 banner grid and leaves a visible app
+      the dense icon grid to its separate wider-card, taller-row banner grid and leaves a visible app
       focused. Switching back restores the dense icon grid. Local implementation
       and container checks pass; device verification awaits a working scripted-input run.
 - [ ] Complete Will's TV viewing review of contrast, focus distinction and

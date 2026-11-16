@@ -1,11 +1,16 @@
 | Date | Change |
 |------|--------|
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/9b2da17) | Record 0.1.7 Cast1 deployment and queued Cast2 install |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/be49bd7) | Add independent Small icons and Banners for Home favorites |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/531779b) | Match Google TV app focus and version each deployment |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/cf1dba5) | Finish undo-first compass menu redesign |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/9cb567a) | feat: add compass menus and document undo-first revision |
 
 <!--history-meta v1
+9b2da17	author	Will Norris
+9b2da17	added	3
+9b2da17	deleted	3
+9b2da17	files	1
 be49bd7	author	Will Norris
 be49bd7	added	26
 be49bd7	deleted	5
