@@ -39,7 +39,7 @@ public class WallpaperSettingsTest {
         assertEquals(75, WallpaperSettings.opacityStep(0, 3));
         assertEquals(100, WallpaperSettings.opacityStep(75, 1));
     }
-    @Test public void savingOpacityPreservesOtherWorktreesNewerSettings() throws Exception {
+    @Test public void savingOpacityPreservesHomeFavoriteStyle() throws Exception {
         JSONObject current = new JSONObject(HomeLayout.firstRun().encode()).put("homeAppSize", "banner");
         HomeLayout branch = HomeLayout.parse(current.toString()); branch.uiOpacityPercent = 70;
         JSONObject saved = new JSONObject(branch.encode());

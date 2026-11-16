@@ -1,9 +1,14 @@
 | Date | Change |
 |------|--------|
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/ad798a2) | Host Projectivy wallpaper providers with independent UI opacity |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/531779b) | Match Google TV app focus and version each deployment |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+ad798a2	author	Will Norris
+ad798a2	added	6
+ad798a2	deleted	0
+ad798a2	files	1
 531779b	author	Will Norris
 531779b	added	5
 531779b	deleted	0

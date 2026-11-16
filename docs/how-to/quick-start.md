@@ -50,20 +50,39 @@ and is still available in All Apps. Favoriting twice does not create duplicate t
 
 ## Choose app density and artwork
 
-Open **Home settings → App artwork** and choose **Launcher icons** or **TV banners**.
-**Launcher icons** keeps 48 dp circular launcher icons and 16 sp labels, with four rows
-and as many columns as fit the screen. The glass highlight springs between tiles
-and the focused card grows slightly; the other icons sit directly on the background
-without separate blue tile backgrounds. That gives more than six columns on common
-TV resolutions without shrinking the artwork. Each installed app appears once,
-even when it publishes multiple launcher activities. **TV banners** uses the
-larger 4 × 2 layout in All Apps; banners without artwork fall back to the normal
-icon. Home favorites always stay compact: the same 48 dp launcher icon and 16 sp
-label as compact All Apps, with the optional circular mask and small animated glass
-highlight. This prevents a favorite from expanding into a banner-sized dashboard
-tile. The separate **Circular icon mask** choice clips launcher icons to a circle
-without changing their displayed size. TV banners remain rectangular. Log utility
-entries are filtered out of All Apps.
+Open **Home settings → Appearance → Icons**. The two branches are independent:
+
+- **Home favorites → Small icons / Banners** changes all favorite apps on Home.
+  Small icons use a compact grid; Banners use wider cards and taller rows.
+  The layout adapts to the chosen style and text size. Tiles may move to another
+  row or page; widget configuration is preserved. **Undo** restores
+  the previous size, positions and Home page. Selecting the current size changes nothing.
+- **All Apps → Launcher icons / TV banners** changes the app library. Launcher icons
+  use a dense icon grid; TV banners use their own responsive grid with wider
+  cards and taller rows. Changing artwork keeps All Apps open.
+
+Banner artwork keeps its 16:9 proportions, with a rounded rectangular focus ring
+and a label below. Apps without a banner show their icon centered on a neutral
+plate. Small circular icons retain their round ring and halo; the icon shape
+choice affects small icons only. Artwork fits the configured grid and text size.
+Each installed app appears once, even when it publishes multiple launcher
+activities. Log utility entries are filtered out of All Apps.
+
+For the densest automatic dashboard, open **Home settings → Home behavior**
+and set both **Grid columns** and **Grid rows** to **Auto**. Explicit grid choices
+remain respected, within the readable fit for the selected style. A typical
+960 × 540 dp TV can fit 11 × 4 small icons or six banners across three taller
+rows; larger text can reduce those counts. Home banners and icons have separate
+grid sizing. Changing All Apps artwork alone does not change the dashboard.
+
+To check the installed version, open **Home settings**, press **OK** to show the
+second menu page, then choose **About Homeboard TV**. About reads the installed
+APK version. A higher version number alone does not establish which branch's
+features it contains: the separate Projectivy 0.1.9 build lacked the Home changes
+present in 0.1.8. See the [build validation record](../testing/2026-11-16-home-favorite-app-sizes.md)
+for the combined-merge status and what has actually been verified on the TV.
+
+![Home favorites: size choice, Small icons, Banners and Undo — design mockup](../plans/2026-11-16-home-favorite-app-sizes/mockups.svg)
 
 ![App artwork, icon shape and dense grid — design mockup](../plans/2026-11-15-widget-home/compact-grid-settings.svg)
 
@@ -82,11 +101,11 @@ does not honor the default Home app for that key.
 
 ## Color palette
 
-Open **Home settings → Appearance → Background and wallpaper**. Its only action,
-**Choose color palette…**, shows the currently selected color as a swatch. Open it
-to choose from twenty compact colors arranged in five rows on one screen. The
-selected color generates the launcher surfaces, text tones, and focus highlight.
-Photo selection and theme wallpaper actions are not offered.
+On `main`, open **Home settings → Appearance → Background** to choose from twenty
+colors arranged in five rows on one screen. The focused color previews immediately;
+the current selection is marked. The selected color generates the launcher
+surfaces, text tones, and focus highlight.
+Projectivy wallpaper controls are a separate workstream pending the combined merge.
 
 ![Background and wallpaper menu with the current-color swatch](../plans/2026-11-16-palette-trend-resize/background.svg)
 

@@ -34,4 +34,15 @@ public class AppAppearanceTest {
         assertEquals(0, AppAppearance.fitIcon(96, 0, 0, 20, 8));
         assertEquals(0, AppAppearance.fitIcon(96, 100, 18, 20, 8));
     }
+
+    @Test public void bannersKeepAspectLabelAndFocusClearanceOnDenseAndLargeTextGrids() {
+        for (int width : new int[]{0, 90, 180, 400}) for (int height : new int[]{0, 64, 96, 220})
+            for (int labelHeight : new int[]{20, 38, 48}) {
+                int[] size = AppAppearance.fitBanner(width, height, labelHeight, 6, 8);
+                assertTrue(size[0] >= 0 && size[1] >= 0);
+                assertEquals(size[0] * 9f / 16f, size[1], 1f);
+                assertTrue(size[0] * AppAppearance.FOCUS_SCALE <= Math.max(0, width - 16));
+                assertTrue(size[1] * AppAppearance.FOCUS_SCALE <= Math.max(0, height - labelHeight - 6 - 16));
+            }
+    }
 }

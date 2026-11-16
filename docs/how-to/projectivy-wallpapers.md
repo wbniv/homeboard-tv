@@ -20,9 +20,9 @@ chooses 100%; OK saves one undoable change. Back cancels. Pie menus always use
 remote's Menu key to reopen settings if dashboard controls are invisible.
 Wallpaper dimming and UI opacity are independent.
 
-**Appearance → Icons** contains **All Apps artwork** and **Circular icon mask**.
-New layouts use dense icons: a typical 960 × 540 dp TV viewport fits 36 app slots,
-compared with eight TV banners. An explicitly saved banner preference is retained;
+**Appearance → Icons** contains **Home favorites**, **All Apps artwork** and **Circular icon mask**.
+New layouts use dense icons: a typical TV viewport fits at least 36 icon slots, with the exact count
+adapting to font metrics. Banners use their own wider, taller responsive grid. An explicitly saved banner preference is retained;
 choose Launcher icons under All Apps artwork to change it. Grid dimensions adapt
 to the viewport and artwork shape. Saved Home widgets and app ordering are retained.
 

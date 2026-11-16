@@ -44,3 +44,9 @@ and About dialog must use `major.minor.version_code`. Never reuse an earlier
 deployment number, including after a failed attempt. See the Chromecast how-to.
 Additional target devices in the same deployment use the identical frozen APK
 and version; a new build or source revision requires a new number.
+
+Parallel worktrees replace the same installed application. Merge the intended
+features before a combined build and use one deployment owner; compare version
+codes across all participating worktrees. See the parallel-worktree and
+background-install sections in the Chromecast how-to. A higher About version
+does not establish that another branch's features were included.

@@ -94,6 +94,45 @@ not an extra agent-side gate. Installation does not select Homeboard as the
 default Home app. Additional targets in one deployment receive the same frozen
 APK/version; rebuilds and new revisions need a fresh number.
 
+### Parallel worktrees and one deployed application
+
+Worktrees using `net.biohack.homeboard.debug` replace the same installed app;
+their features do not accumulate on the TV. Merge the intended feature branches
+before building the combined APK. Will assigned the Projectivy agent to merge
+its work into `main` and own the next combined deployment after 0.1.9. This
+workstream must not reinstall its older 0.1.8 artifact during that handoff.
+
+Before the next bump, compare version codes and frozen deployments across the
+participating worktrees. Use a code greater than every attempted deployment,
+including failures. Preserve the Home favorites and density commits `be49bd7`
+and `6a0366b` in the combined source. Record source revision, local changes,
+frozen APK hash, coordinator job and installed-hash evidence. About's number
+identifies an APK version; the source revision establishes its feature contents.
+
+### Background install and foreground verification
+
+For an additional target receiving an already frozen deployment, submit a
+complete background install after devices/queue checks:
+
+```sh
+task chromecast:submit DEVICE=chromecast-test-02 APP=homeboard-tv APK=/absolute/frozen/homeboard.apk WORKFLOW=install
+task chromecast:watch JOB=<job>
+task chromecast:evidence JOB=<job> OUT=/absolute/evidence-directory
+```
+
+An install-and-launch `check` job is foreground work and can be deferred in its
+entirety during personal use. An `install` job can be admitted in the background;
+let the coordinator enforce its package/process checks. Submit launch verification
+separately when required and let the coordinator defer that foreground job.
+Keep install, launch and visual acceptance outcomes separate.
+
+`personal-install-unverified` is a failed background verification, not merely a
+queued install waiting for personal use to end. Export its evidence and report
+that installation is unconfirmed. Do not substitute an older APK, remove the
+personal-use marker, alter the default Home app, or fall back to direct device
+commands. If a deferred job is superseded, cancel only the job owned by this
+session before submitting its replacement.
+
 Use `dev/device/iteration-check.json` for the current install/brief-launch cycle
 while Will tests interactively. It sends no scripted navigation. Historical menu
 recipes need revision before replaying after the App artwork row was added.

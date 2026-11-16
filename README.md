@@ -33,6 +33,18 @@ the public v1 API; it does not need Projectivy Launcher. See the
 [implementation plan](docs/plans/2026-11-16-projectivy-plugin-host.md) for
 compatibility scope and validation status.
 
+[Home favorite sizes and dense layouts](docs/plans/2026-11-16-home-favorite-app-sizes.md)
+adds **Home settings → Appearance → Icons → Home favorites → Small icons / Banners**.
+Home and All Apps each use a compact icon grid or a separate banner grid with
+wider cards and taller rows. Their artwork settings are independent. Auto fits
+the available space while retaining readable labels and focus clearance; Undo
+restores Home's previous style and placement.
+
+The [validation record](docs/testing/2026-11-16-home-favorite-app-sizes.md) distinguishes
+source implementation from installed builds: 0.1.8 contained these changes,
+but a separate Projectivy 0.1.9 build replaced it on Cast1 without them. The
+combined merge and Home banner visual verification remain pending.
+
 ## Start here
 
 - [Product direction: our brand and the CleanYourTV community](docs/product-direction.md)

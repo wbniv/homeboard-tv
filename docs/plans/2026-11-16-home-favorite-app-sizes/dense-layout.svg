@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="610" viewBox="0 0 1100 610">
+  <defs>
+    <pattern id="icons" width="88" height="96" patternUnits="userSpaceOnUse" patternTransform="translate(36 118)">
+      <circle cx="44" cy="34" r="24" fill="#5f8792"/>
+      <rect x="16" y="68" width="56" height="7" rx="3" fill="#a8bcbf"/>
+    </pattern>
+    <pattern id="banners" width="160" height="112" patternUnits="userSpaceOnUse" patternTransform="translate(36 370)">
+      <rect x="22" y="9" width="116" height="65" rx="6" fill="#5f8792"/>
+      <rect x="40" y="88" width="80" height="7" rx="3" fill="#a8bcbf"/>
+    </pattern>
+  </defs>
+  <rect width="1100" height="610" fill="#102c27"/>
+  <g font-family="sans-serif" fill="#e4f3ff">
+    <text x="36" y="38" font-size="24">Dense grids · measured artwork, labels and focus clearance</text>
+    <text x="36" y="66" font-size="15">Illustrative mockup · placeholder artwork · 16 sp labels retained</text>
+    <text x="36" y="102" font-size="19">Small icons · fill available width · 48 dp artwork</text>
+    <rect x="36" y="118" width="968" height="192" fill="url(#icons)"/>
+    <circle cx="168" cy="152" r="30" fill="none" stroke="#b5cfe4" stroke-width="2"/>
+    <text x="36" y="350" font-size="19">Home and All Apps banners · fewer columns, taller rows · 16:9 artwork</text>
+    <rect x="36" y="370" width="960" height="112" fill="url(#banners)"/>
+    <rect x="211" y="372" width="130" height="79" rx="8" fill="none" stroke="#b5cfe4" stroke-width="2"/>
+    <text x="36" y="524" font-size="16">Auto uses every column that fits; explicit Home grid choices remain respected.</text>
+    <text x="36" y="552" font-size="16">Larger text increases pitch. Labels remain stationary while artwork gains focus.</text>
+    <text x="36" y="580" font-size="16">Changing style reflows Home against its own grid. Widget configuration and layout Undo are preserved.</text>
+  </g>
+</svg>

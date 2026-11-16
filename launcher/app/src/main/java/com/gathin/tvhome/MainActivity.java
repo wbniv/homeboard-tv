@@ -242,7 +242,7 @@ public class MainActivity extends Activity {
                     appTarget = true; break;
                 }
             }
-            if (!active || overlay != null || !appTarget || (allApps && layout.appBanners))
+            if (!active || overlay != null || !appTarget)
                 hideAppFocusHighlight();
         });
         if (savedInstanceState != null) {
@@ -285,7 +285,7 @@ public class MainActivity extends Activity {
         root.post(() -> {
             if (active && overlay == null) {
                 restoreFocus();
-                snapDenseAppHighlight();
+                snapAppHighlight();
             }
         });
     }
@@ -303,6 +303,7 @@ public class MainActivity extends Activity {
         for (View tile : tiles.values()) {
             tile.animate().cancel();
             if (tile instanceof CircularAppTile) ((CircularAppTile) tile).stopAppearanceAnimation();
+            if (tile instanceof BannerAppTile) ((BannerAppTile) tile).setAppFocused(tile.isFocused(), false);
         }
         saveNavigationState();
         for (AirQualityCard widget : airWidgets.values()) widget.stop();
@@ -469,6 +470,12 @@ public class MainActivity extends Activity {
             for (int i = entries.size() - 1; i >= targetIndex; i--) {
                 UndoEntry entry = entries.get(entries.size() - 1 - i);
                 if ("layout".equals(entry.kind)) layout = HomeLayout.parse(entry.state);
+                else if ("home-app-size".equals(entry.kind)) {
+                    JSONObject state = new JSONObject(entry.state);
+                    layout = HomeLayout.parse(state.getString("layout"));
+                    homePage = state.getInt("page"); homeFocus = state.getString("focus");
+                    if (!allApps) focused = homeFocus;
+                }
                 else if ("air".equals(entry.kind)) airFor(entry.key).restoreConfigurationSnapshot(entry.state);
             }
             JSONArray stored = storedUndoEntries();
@@ -490,7 +497,7 @@ public class MainActivity extends Activity {
         menuStack.clear(); activeMenu = null; gridSelector = null;
         if (overlay != null) { root.removeView(overlay); overlay = null; }
         syncBackground();
-        render(0);
+        render(0); saveNavigationState();
         showUndoBanner(displayedIndex == 0 ? "Undid " + restoredLabel
                 : "Undid " + restoredLabel + " and newer changes");
     }
@@ -618,22 +625,42 @@ public class MainActivity extends Activity {
     }
     private List<String> dashboardItems() { return moving && !moveInApps ? preview : layout.widgets; }
     private int homeGridColumns() {
-        int fit = homeGridFitColumns();
-        return layout.homeColumns == 0 ? Math.min(9, fit) : Math.min(layout.homeColumns, fit);
+        return homeGridColumnsFor(layout.homeAppSize);
+    }
+    private int homeGridColumnsFor(String size) {
+        int fit = homeGridFitColumnsFor(size);
+        return layout.homeColumns == 0 ? fit : Math.min(layout.homeColumns, fit);
+    }
+    private int appLabelHeightDp() {
+        android.graphics.Paint paint = new android.graphics.Paint();
+        android.util.DisplayMetrics metrics = getResources().getDisplayMetrics();
+        paint.setTextSize(16 * metrics.scaledDensity);
+        android.graphics.Paint.FontMetricsInt font = paint.getFontMetricsInt();
+        return (int) Math.ceil((font.bottom - font.top) / metrics.density);
     }
     private int homeGridFitColumns() {
+        return homeGridFitColumnsFor(layout.homeAppSize);
+    }
+    private int homeGridFitColumnsFor(String size) {
         int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
                 / getResources().getDisplayMetrics().density);
-        return Math.max(4, Math.min(12, Math.max(1, screenWidthDp - 88) / 108));
+        return AppGridSizing.homeColumns(screenWidthDp - AppGridSizing.SIDE_MARGIN * 2,
+                appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size));
     }
     private int homeGridFitRows() {
+        return homeGridFitRowsFor(layout.homeAppSize);
+    }
+    private int homeGridFitRowsFor(String size) {
         int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
                 / getResources().getDisplayMetrics().density);
-        // Keep 48 dp icons and a 16 sp label readable, with room for the top and bottom chrome.
-        return Math.max(2, (screenHeightDp - 168) / 80);
+        return Math.max(2, AppGridSizing.rows(screenHeightDp - AppGridSizing.HOME_TOP
+                - AppGridSizing.BOTTOM_MARGIN, appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size)));
     }
     private int homeGridRows() {
-        int fit = homeGridFitRows();
+        return homeGridRowsFor(layout.homeAppSize);
+    }
+    private int homeGridRowsFor(String size) {
+        int fit = homeGridFitRowsFor(size);
         return layout.homeRows == 0 ? fit : Math.min(layout.homeRows, fit);
     }
     private List<HomeLayout.Cell> homeCells(List<String> items) {
@@ -696,7 +723,7 @@ public class MainActivity extends Activity {
         }
         FrameLayout renderedSurface = surface;
         root.post(() -> {
-            if (active && overlay == null && renderedSurface == surface) snapDenseAppHighlight();
+            if (active && overlay == null && renderedSurface == surface) snapAppHighlight();
         });
     }
     private void updateAir() {
@@ -843,16 +870,19 @@ public class MainActivity extends Activity {
         tiles.put(key, button);
     }
     private void configureTile(View view, String key) {
-        boolean denseApp = key.startsWith("app:") && (!allApps || !layout.appBanners);
+        boolean appTile = key.startsWith("app:");
+        boolean denseApp = appTile && !layout.appUsesBanner(!allApps);
         view.setFocusable(true);
-        view.setBackground(denseApp ? null : tileBackground());
-        view.setPadding(dp(denseApp ? 2 : 16), dp(denseApp ? 2 : 12),
-                dp(denseApp ? 2 : 16), dp(denseApp ? 2 : 12));
+        view.setBackground(appTile ? null : tileBackground());
+        view.setPadding(dp(appTile ? 2 : 16), dp(appTile ? 2 : 12),
+                dp(appTile ? 2 : 16), dp(appTile ? 2 : 12));
         view.setOnFocusChangeListener((v, hasFocus) -> {
             if (isAirWidgetKey(key)) airFor(key).setTileFocused(hasFocus);
             boolean animateTile = denseApp && !restoringSurface && !reducedMotion();
             if (view instanceof CircularAppTile) {
                 ((CircularAppTile) view).setAppFocused(hasFocus, animateTile);
+            } else if (view instanceof BannerAppTile) {
+                ((BannerAppTile) view).setAppFocused(hasFocus, !restoringSurface && !reducedMotion());
             } else {
                 view.animate().cancel();
                 view.animate().scaleX(hasFocus && denseApp ? APP_FOCUS_SCALE : 1f)
@@ -863,7 +893,7 @@ public class MainActivity extends Activity {
             if (hasFocus) {
                 focused = key; if (allApps) appsFocus = key; else homeFocus = key;
                 sendWallpaperFocus(key);
-                if (denseApp) moveAppFocusHighlight(appHighlightTarget(view), !restoringSurface);
+                if (appTile) moveAppFocusHighlight(appHighlightTarget(view), !restoringSurface);
             }
         });
         view.setOnClickListener(v -> activate(key));
@@ -871,7 +901,11 @@ public class MainActivity extends Activity {
         tiles.put(key, view);
     }
     private void createAppFocusHighlight() {
-        if (layout.circularIcons) {
+        boolean banners = layout.appUsesBanner(!allApps);
+        boolean circular = !banners && layout.circularIcons;
+        if (banners) {
+            appFocusHighlight = new BannerFocusView(this);
+        } else if (circular) {
             appFocusHighlight = new AppFocusView(this);
         } else {
             GlassView glass = new GlassView(this, null);
@@ -883,7 +917,7 @@ public class MainActivity extends Activity {
         appFocusHighlight.setClickable(false);
         appFocusHighlight.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         // Circular fill/halo belongs behind artwork; existing glass stays above unmasked artwork.
-        surface.addView(appFocusHighlight, layout.circularIcons ? 0 : surface.getChildCount(),
+        surface.addView(appFocusHighlight, banners || circular ? 0 : surface.getChildCount(),
                 new FrameLayout.LayoutParams(dp(100), dp(100)));
         FloatPropertyCompat<View> x = new FloatPropertyCompat<View>("appFocusX") {
             @Override public float getValue(View view) { return view.getTranslationX(); }
@@ -895,7 +929,7 @@ public class MainActivity extends Activity {
         };
         appFocusX = new SpringAnimation(appFocusHighlight, x);
         appFocusY = new SpringAnimation(appFocusHighlight, y);
-        float damping = layout.circularIcons ? 1f : 0.58f;
+        float damping = banners || circular ? 1f : 0.58f;
         SpringForce spring = new SpringForce().setStiffness(260f).setDampingRatio(damping);
         appFocusX.setSpring(spring);
         appFocusY.setSpring(new SpringForce().setStiffness(260f).setDampingRatio(damping));
@@ -911,6 +945,9 @@ public class MainActivity extends Activity {
         if (appFocusHighlight instanceof AppFocusView) {
             ((AppFocusView) appFocusHighlight).setIconDiameter(card.getWidth());
             width = height = AppAppearance.focusExtent(card.getWidth());
+        } else if (appFocusHighlight instanceof BannerFocusView) {
+            width = (int) Math.ceil(card.getWidth() * APP_FOCUS_SCALE) + dp(20);
+            height = (int) Math.ceil(card.getHeight() * APP_FOCUS_SCALE) + dp(20);
         } else {
             int padding = 1;
             width = (int) Math.ceil(card.getWidth() * APP_FOCUS_SCALE) + padding * 2;
@@ -952,7 +989,8 @@ public class MainActivity extends Activity {
         if (items.isEmpty()) { focused = ""; return; } // Truly empty: no compulsory header, hint or dock.
         TileGrid grid = new TileGrid(this, columns, rows);
         FrameLayout.LayoutParams gp = new FrameLayout.LayoutParams(-1, -1);
-        gp.setMargins(dp(44), dp(104), dp(44), dp(64));
+        gp.setMargins(dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.HOME_TOP),
+                dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.BOTTOM_MARGIN));
         surface.addView(grid, gp);
         boolean hasAppTile = false;
         for (HomeLayout.Cell cell : homeCells(items)) {
@@ -1000,7 +1038,20 @@ public class MainActivity extends Activity {
     }
     private View appTile(String key, boolean dashboard) {
         App app = apps.get(key);
-        if (layout.circularIcons && (dashboard || !layout.appBanners)) {
+        if (layout.appUsesBanner(dashboard)) {
+            Drawable banner = null, icon = null;
+            if (app != null) {
+                try { banner = app.info.activityInfo.loadBanner(getPackageManager()); }
+                catch (RuntimeException ignored) { }
+                if (banner == null) try { icon = app.info.loadIcon(getPackageManager()); }
+                catch (RuntimeException ignored) { }
+            }
+            String label = app == null ? "Unavailable app" : app.label;
+            BannerAppTile tile = new BannerAppTile(this, banner == null ? icon : banner, banner == null, label);
+            tile.setContentDescription(label + (app == null ? "; hold OK to remove" : "; hold OK for menu"));
+            return tile;
+        }
+        if (layout.circularIcons) {
             Drawable artwork = null;
             try { if (app != null) artwork = app.info.loadIcon(getPackageManager()); }
             catch (RuntimeException ignored) { }
@@ -1014,41 +1065,19 @@ public class MainActivity extends Activity {
         if (app != null) {
             ImageView icon = new ImageView(this);
             icon.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-            boolean compact = dashboard || !layout.appBanners;
-            boolean useBanner = !dashboard && layout.appBanners;
             try {
-                android.graphics.drawable.Drawable image = useBanner
-                        ? app.info.activityInfo.loadBanner(getPackageManager()) : null;
-                if (image == null) image = app.info.loadIcon(getPackageManager());
-                icon.setImageDrawable(image);
+                icon.setImageDrawable(app.info.loadIcon(getPackageManager()));
             } catch (RuntimeException ignored) { }
             icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            if (useBanner) {
-                tile.addView(icon, new LinearLayout.LayoutParams(-1, 0, 1));
-            } else {
-                int iconSize = dp(compact ? 48 : 76);
-                LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams(iconSize, iconSize);
-                iconLp.bottomMargin = dp(compact ? 3 : 8);
-                tile.addView(icon, iconLp);
-                if (layout.circularIcons) {
-                    icon.setClipToOutline(true);
-                    icon.setOutlineProvider(new android.view.ViewOutlineProvider() {
-                        @Override public void getOutline(View view, android.graphics.Outline outline) {
-                            outline.setOval(0, 0, view.getWidth(), view.getHeight());
-                        }
-                    });
-                }
-            }
+            int iconSize = dp(48);
+            LinearLayout.LayoutParams iconLp = new LinearLayout.LayoutParams(iconSize, iconSize);
+            iconLp.bottomMargin = dp(3);
+            tile.addView(icon, iconLp);
         }
         String label = app == null ? "Unavailable app" : app.label;
-        boolean compact = dashboard || !layout.appBanners;
         TextView name = text(label, 16);
-        name.setGravity(Gravity.CENTER); name.setMaxLines(compact ? 1 : 2);
-        if (compact) {
-            name.setSingleLine(true);
-            name.setEllipsize(android.text.TextUtils.TruncateAt.END);
-            tile.setPadding(dp(2), dp(1), dp(2), dp(1));
-        }
+        name.setGravity(Gravity.CENTER); name.setSingleLine(true);
+        name.setEllipsize(android.text.TextUtils.TruncateAt.END);
         tile.addView(name, new LinearLayout.LayoutParams(-1, -2));
         tile.setContentDescription(label + (app == null ? "; hold OK to remove" : "; hold OK for menu"));
         return tile;
@@ -1063,13 +1092,14 @@ public class MainActivity extends Activity {
         tp.setMargins(dp(50), dp(22), 0, 0); surface.addView(title, tp);
         TileGrid grid = new TileGrid(this, columns, rows);
         FrameLayout.LayoutParams gp = new FrameLayout.LayoutParams(-1, -1);
-        gp.setMargins(dp(44), dp(compactApps() ? 78 : 86), dp(44), dp(54)); surface.addView(grid, gp);
+        gp.setMargins(dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.APPS_TOP),
+                dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.BOTTOM_MARGIN)); surface.addView(grid, gp);
         int start = appsPage * pageSize;
         for (int i = start; i < Math.min(start + pageSize, items.size()); i++) {
             String key = items.get(i); View tile = appTile(key, false); configureTile(tile, key);
             grid.addTile(tile, (i - start) % columns, (i - start) / columns, 1);
         }
-        if (compactApps()) createAppFocusHighlight();
+        if (start < items.size()) createAppFocusHighlight();
         footer = text(moving ? "Move preview · arrows reposition · OK saves · Back cancels"
                 : "Left edge / Back → Home    Hold OK → menu    Page " + (appsPage + 1)
                     + "    " + items.size() + " apps", 13);
@@ -1077,14 +1107,17 @@ public class MainActivity extends Activity {
         fp.setMargins(dp(50), 0, dp(50), dp(10)); surface.addView(footer, fp);
     }
     /** Measures each cell once before layout; never requests another layout while laying out. */
-    private boolean compactApps() { return !layout.appBanners; }
     private int appColumns() {
-        int widthDp = Math.round(getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density);
-        return AppGrid.columns(widthDp, layout.appBanners, layout.circularIcons);
+        int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
+                / getResources().getDisplayMetrics().density);
+        return AppGridSizing.columns(screenWidthDp - AppGridSizing.SIDE_MARGIN * 2,
+                appLabelHeightDp(), layout.appBanners);
     }
     private int appRows() {
-        int heightDp = Math.round(getResources().getDisplayMetrics().heightPixels / getResources().getDisplayMetrics().density);
-        return AppGrid.rows(heightDp, layout.appBanners);
+        int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
+                / getResources().getDisplayMetrics().density);
+        return AppGridSizing.rows(screenHeightDp - AppGridSizing.APPS_TOP - AppGridSizing.BOTTOM_MARGIN,
+                appLabelHeightDp(), layout.appBanners);
     }
     private int appPageSize() { return appColumns() * appRows(); }
     private final class TileGrid extends ViewGroup {
@@ -1107,8 +1140,8 @@ public class MainActivity extends Activity {
             setMeasuredDimension(width, height);
             for (int i = 0; i < getChildCount(); i++) {
                 int[] cell = positions.get(i);
-                int childWidth = Math.max(0, width * cell[2] / columns - dp(12));
-                int childHeight = Math.max(0, height * cell[3] / rows - dp(8));
+                int childWidth = Math.max(0, width * cell[2] / columns - dp(AppGridSizing.COLUMN_GAP));
+                int childHeight = Math.max(0, height * cell[3] / rows - dp(AppGridSizing.ROW_GAP));
                 getChildAt(i).measure(View.MeasureSpec.makeMeasureSpec(childWidth, View.MeasureSpec.EXACTLY),
                         View.MeasureSpec.makeMeasureSpec(childHeight, View.MeasureSpec.EXACTLY));
             }
@@ -1118,8 +1151,8 @@ public class MainActivity extends Activity {
             for (int i = 0; i < getChildCount(); i++) {
                 int[] cell = positions.get(i);
                 View child = getChildAt(i);
-                int x = width * cell[0] / columns + dp(6);
-                int y = height * cell[1] / rows + dp(4);
+                int x = width * cell[0] / columns + dp(AppGridSizing.COLUMN_GAP / 2f);
+                int y = height * cell[1] / rows + dp(AppGridSizing.ROW_GAP / 2f);
                 child.layout(x, y, x + child.getMeasuredWidth(), y + child.getMeasuredHeight());
             }
         }
@@ -1157,21 +1190,22 @@ public class MainActivity extends Activity {
         }
     }
     /** Resume may retain Android focus without dispatching another focus-change callback. */
-    private void snapDenseAppHighlight() {
-        if ((allApps && layout.appBanners) || focused == null || !focused.startsWith("app:")) return;
+    private void snapAppHighlight() {
+        if (focused == null || !focused.startsWith("app:")) return;
         View target = tiles.get(focused);
         if (target == null) return;
         target.post(() -> {
-            if (!active || overlay != null || (allApps && layout.appBanners)
+            if (!active || overlay != null
                     || target != tiles.get(focused) || !target.hasFocus() || appFocusHighlight == null) return;
             View icon = appHighlightTarget(target);
             if (icon.getWidth() <= 0 || icon.getHeight() <= 0) {
                 // A laid-out cell may have no artwork room at large text sizes; do not spin forever.
-                if (!icon.isLaidOut()) icon.postOnAnimation(this::snapDenseAppHighlight);
+                if (!icon.isLaidOut()) icon.postOnAnimation(this::snapAppHighlight);
                 else hideAppFocusHighlight();
                 return;
             }
             if (target instanceof CircularAppTile) ((CircularAppTile) target).setAppFocused(true, false);
+            if (target instanceof BannerAppTile) ((BannerAppTile) target).setAppFocused(true, false);
             moveAppFocusHighlight(icon, false);
         });
     }
@@ -1321,7 +1355,7 @@ public class MainActivity extends Activity {
         else if (root != null) root.post(() -> {
             if (active && overlay == null) {
                 restoreFocus();
-                snapDenseAppHighlight();
+                snapAppHighlight();
             }
         });
     }
@@ -1642,15 +1676,12 @@ public class MainActivity extends Activity {
     }
 
     private void appArtworkSettings() {
-        menu("Icons", "Choose app artwork and icon shape",
-                new String[]{"All Apps artwork · " + (layout.appBanners ? "TV banners" : "Dense icons"),
+        menu("Icons", "Choose artwork and icon shape",
+                new String[]{"Home favorites · " + homeAppSizeLabel(),
+                        "All Apps · " + (layout.appBanners ? "TV banners" : "Dense icons"),
                         "Circular icon mask · " + (layout.circularIcons ? "On" : "Off")}, choice -> {
-                    if (choice == 0) menu("All Apps artwork", "Dense icons fit more apps on each page",
-                            new String[]{"Launcher icons · dense grid", "TV banners · 4 × 2"}, artwork -> {
-                                layout.appBanners = artwork == 1;
-                                appsPage = Math.max(0, appItems().indexOf(focused) / appPageSize());
-                                save("Changed All Apps artwork"); render(0);
-                            }, layout.appBanners ? 1 : 0);
+                    if (choice == 0) homeAppSizeSettings();
+                    else if (choice == 1) allAppsArtworkSettings();
                     else menu("Circular icon mask", "The icon keeps the same size",
                             new String[]{"Original icon shape", "Circular mask"}, mask -> {
                                 layout.circularIcons = mask == 1;
@@ -1658,6 +1689,54 @@ public class MainActivity extends Activity {
                                 save("Changed app icon shape"); render(0);
                             }, layout.circularIcons ? 1 : 0);
                 });
+    }
+    private String homeAppSizeLabel() {
+        return HomeLayout.APP_BANNER.equals(layout.homeAppSize) ? "Banners" : "Small icons";
+    }
+    private void homeAppSizeSettings() {
+        menu("Home favorites", "Banners use wider cells and taller rows. Tiles may move to another row or page.",
+                new String[]{"Small icons", "Banners"}, choice -> changeHomeAppSize(
+                        choice == 0 ? HomeLayout.APP_SMALL : HomeLayout.APP_BANNER),
+                HomeLayout.APP_BANNER.equals(layout.homeAppSize) ? 1 : 0);
+    }
+    private void changeHomeAppSize(String size) {
+        String snapshot;
+        try {
+            snapshot = new JSONObject().put("layout", layout.encode()).put("page", homePage)
+                    .put("focus", allApps ? homeFocus : focused).toString();
+        } catch (org.json.JSONException invalid) { throw new IllegalStateException(invalid); }
+        if (!layout.setHomeAppSize(size, homeGridColumns(), homeGridRows(),
+                homeGridColumnsFor(size), homeGridRowsFor(size))) return;
+        String label = "Home favorites: " + homeAppSizeLabel();
+        pushUndo("home-app-size", "", snapshot, label);
+        saveWithoutUndo();
+        String initiatingFocus = allApps ? homeFocus : focused;
+        if (layout.widgets.contains(initiatingFocus)) homePage = homePageOf(initiatingFocus, layout.widgets);
+        else homePage = Math.min(homePage, homePageCount(layout.widgets) - 1);
+        saveNavigationState();
+        render(0); showUndoBanner(label);
+    }
+    private void allAppsArtworkSettings() {
+        boolean returnToAllApps = allApps;
+        menu("All Apps", "Uses " + (layout.appBanners ? "TV banners · responsive grid" : "launcher icons · dense grid")
+                        + " · Home favorites use " + homeAppSizeLabel(),
+                new String[]{"Launcher icons · dense grid", "TV banners · responsive grid"}, artwork -> {
+                    layout.appBanners = artwork == 1;
+                    if (returnToAllApps) {
+                        // The grid can change page size between icons and banners. Keep
+                        // the user in All Apps and focus a tile that belongs to the new visible page.
+                        allApps = true;
+                        List<String> items = appItems();
+                        if (!items.isEmpty()) {
+                            int index = items.indexOf(focused);
+                            if (index < 0) index = Math.min(appsPage * appPageSize(), items.size() - 1);
+                            appsPage = index / appPageSize();
+                            focused = items.get(index);
+                            appsFocus = focused;
+                        }
+                    }
+                    save("Changed All Apps artwork"); render(0);
+                }, layout.appBanners ? 1 : 0);
     }
 
     private void homeBehaviorSettings() {

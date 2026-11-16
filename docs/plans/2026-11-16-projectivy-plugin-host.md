@@ -1,6 +1,6 @@
 # Homeboard TV as a host for Projectivy wallpaper plugins
 
-**Status: implemented in feature/projectivy-wallpaper-host; implemented; fixture and launcher UI checks passed; unmodified Overflight video playback passed on Cast1 · 16 November 2026**
+**Status: implemented in feature/projectivy-wallpaper-host; fixture and launcher UI checks passed; unmodified Overflight video playback passed on Cast1 · 16 November 2026**
 
 Make Homeboard TV a compatible host for existing Projectivy wallpaper-provider
 plugins. Will installs a provider APK, selects it in Homeboard, and sees its
@@ -120,15 +120,15 @@ solid backgrounds and plugin wallpapers and is independent of provider selection
 
 Use the same UI opacity on Home and All Apps, with pie menus independently fixed
 at 95%. Default new layouts to the dense icon grid. At a typical 960 × 540 dp TV
-viewport, aim for nine columns and four rows (36 apps per page), compared with
-eight TV banners. Size the grid from the viewport and fit the artwork, label and
+viewport, fit at least 36 icon slots, with the exact count depending on font metrics.
+Banners use a separate grid with wider cells and taller rows. Size the grid from the viewport and fit the artwork, label and
 focus ring within each cell. Preserve an explicitly saved banner choice; the
 All Apps artwork control lets Will switch existing layouts to dense icons.
 
 ![Dense All Apps and Icons submenu](2026-11-16-projectivy-plugin-host/all-apps.svg)
 
 Keep Appearance at four compass choices: **Background**, **Palette**, **Icons**,
-and **UI opacity**. Put **All Apps artwork** and **Circular icon mask** inside
+and **UI opacity**. Put **Home favorites**, **All Apps artwork** and **Circular icon mask** inside
 **Icons**. Circular icons are an icon choice and do not get a separate top-level
 Appearance entry. Artwork and shape changes preserve app order, selection and
 saved Home widgets, and retain focus on the chosen app's resulting page.

@@ -1,5 +1,50 @@
 # Compass pie menu redesign · 16 November 2026
 
+## 0.1.7 deployment update
+
+The artwork fix is included with Home favorite sizes in 0.1.7, installed and
+launch-verified on Cast1. The longer input job failed before artwork acceptance,
+so the expanded About/palette/All Apps assertions remain pending. The shared
+network is available again. See the [deployment record](2026-11-16-home-favorite-app-sizes.md)
+for exact jobs, installed hash, evidence and the queued Cast2 deployment.
+
+## Earlier 0.1.6 local build and pending Cast1 regression
+
+The local artwork-setting change now preserves All Apps when the user switches
+between dense launcher icons and TV banners. After the grid changes size, it
+restores focus to an app on the visible page. Home favorites remain compact.
+The current version code is 6 (0.1.6); the debug APK is
+`artifacts/validation/homeboard-pie-about-0.1.6.apk`, SHA-256
+`3cd64aab9981191917cc595c23b945b55624c57f1ff87e06833db24a75ac1945`.
+
+Container unit tests, lint and APK build passed after this change. Cast1
+verification remains pending until the TV and development machine are back on
+the same network. The coordinator recipe is ready at
+`dev/device/pie-artwork-about-check.json`; it covers the menu-label captures,
+About source links, palette preview and reset, then both artwork choices from
+All Apps.
+
+The 0.1.5 coordinator run `J‑14da7356edda` exposed the regression: after
+switching from launcher icons to TV banners, the app returned to Home. The
+screenshots below record the before and after states. The 0.1.6 code change
+addresses that state transition, but has not yet been exercised on Cast1.
+
+![About page and source cards](../../artifacts/evidence/cast1-pie-artwork-about-0.1.5-final-2026-11-16/input-frame-003.png)
+![About source card focused](../../artifacts/evidence/cast1-pie-artwork-about-0.1.5-final-2026-11-16/input-frame-004.png)
+![Palette current color](../../artifacts/evidence/cast1-pie-artwork-about-0.1.5-final-2026-11-16/input-frame-006.png)
+![Palette preview](../../artifacts/evidence/cast1-pie-artwork-about-0.1.5-final-2026-11-16/input-frame-007.png)
+![Palette restored](../../artifacts/evidence/cast1-pie-artwork-about-0.1.5-final-2026-11-16/input-frame-008.png)
+![All Apps before switching artwork](../../artifacts/evidence/cast1-pie-artwork-about-0.1.5-final-2026-11-16/input-frame-010.png)
+![Dense launcher icons in All Apps](../../artifacts/evidence/cast1-pie-artwork-about-0.1.5-final-2026-11-16/input-frame-011.png)
+![Regression: TV banners selection returned to Home](../../artifacts/evidence/cast1-pie-artwork-about-0.1.5-final-2026-11-16/input-frame-012.png)
+
+An earlier 0.1.6 device attempt exited Homeboard because its recipe sent three
+initial Back presses. Those inputs were removed from the recipe; they were a
+test-startup issue, not an app regression. The corrected recipe is pending the
+next shared-network session.
+
+## Earlier coordinator evidence
+
 Built the final APK in the Android container and installed it on Cast1 through
 the shared Chromecast coordinator. APK SHA-256:
 `54b0c442b93c01a8b8889d2bc6a1f4e9ef6cadb083f5b8a4fa5bb6bfb49304e2`.

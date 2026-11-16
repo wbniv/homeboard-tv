@@ -19,7 +19,8 @@ missing rows on commit.*
 | [PM2.5 30-day history and sparklines](2026-11-16-pm25-30-day-sparkline.md) | Adds a bounded 30-day history and condition-colored 24-hour and 30-day traces. | [`b2c5553`](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | Feature |
 | [Compass pie menu redesign](2026-11-16-pie-menu-redesign.md) | Replaces card menus with compass choices, then revises reversible actions around Undo, bounded grid controls, clearer Restore wording and an About page. | [`9cb567a`](https://github.com/wbniv/homeboard-tv/commit/9cb567a) | Feature |
 | [Google TV app icons and glowing focus](2026-11-16-google-tv-app-focus.md) | Matches circular app artwork, focus geometry and halo to Cast2's reference and records numbered deployments and device validation. | [`531779b`](https://github.com/wbniv/homeboard-tv/commit/531779b) | Feature |
-| [Projectivy wallpaper plugin host](2026-11-16-projectivy-plugin-host.md) | Hosts the public wallpaper-provider v1 API, adds independent UI opacity and groups dense All Apps artwork and circular masking under Icons. | Worktree implementation, uncommitted | Feature |
+| [Home favorite app sizes](2026-11-16-home-favorite-app-sizes.md) | Adds independent Home artwork, separate dense icon/banner grids on both surfaces, reflow and Undo; records the combined-build handoff. | [`be49bd7`](https://github.com/wbniv/homeboard-tv/commit/be49bd7), [`9b2da17`](https://github.com/wbniv/homeboard-tv/commit/9b2da17), [`6a0366b`](https://github.com/wbniv/homeboard-tv/commit/6a0366b), [`4f3dd10`](https://github.com/wbniv/homeboard-tv/commit/4f3dd10) | Feature |
+| [Projectivy wallpaper plugin host](2026-11-16-projectivy-plugin-host.md) | Hosts the public wallpaper-provider v1 API, adds independent UI opacity and groups dense All Apps artwork and circular masking under Icons. | [`ad798a2`](https://github.com/wbniv/homeboard-tv/commit/ad798a2), [`81a9270`](https://github.com/wbniv/homeboard-tv/commit/81a9270) | Feature |
 
 ---
 
@@ -31,3 +32,4 @@ missing rows on commit.*
 - **Seeded** 2026-11-15 via `seed-plan-index.sh` — eight plan rows, with summaries
   and categories filled by hand.
 - **Updated** 2026-11-16 to ten plans, including the Google TV app focus implementation.
+- **Draft added** 2026-11-16 for Home favorite app sizes, bringing the index to eleven plans.

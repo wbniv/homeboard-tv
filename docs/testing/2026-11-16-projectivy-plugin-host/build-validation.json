@@ -3,14 +3,15 @@
   "base_commit": "290e675de1e2f0bd309a0d3b54a24b1588670716",
   "debug_version": "0.1.12",
   "tests": {
-    "tests": 361,
+    "tests": 373,
     "failures": 0,
     "errors": 0,
     "skipped": 0
   },
   "api_revision": "60ec7b4306ab16dac83ea10ed9b81f5670b51ee3",
-  "release_sha256": "c1320f3298c9f43e1c4acfbbff289acf1f4860fb43ae995ea41a9ac4c4202bfe",
-  "release_bytes": 945981,
+  "release_sha256": "66b778ed7442058977df778f806c5cd6539401acd691cc43624247e11f2d8e29",
+  "release_bytes": 948321,
   "release_excludes_debug_fixture": true,
-  "release_version": "0.1.12"
+  "release_version": "0.1.12",
+  "merged_main": "bed1ea1"
 }

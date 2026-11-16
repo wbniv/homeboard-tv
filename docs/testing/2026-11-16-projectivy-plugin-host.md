@@ -2,13 +2,13 @@
 
 Branch: `feature/projectivy-wallpaper-host` in `/home/will/homeboard-tv-projectivy`.
 
-- [x] Final suite: 360 JVM tests, zero failures/errors/skips, passed in the container.
-- [x] Debug lint passed and final minified 0.1.11 release APK packaged in the container.
+- [x] Combined source with main bed1ea1: 373 JVM tests, zero failures/errors/skips, debug lint and minified release packaging passed in the container.
+- [x] Debug lint passed and minified 0.1.12 release APK packaged in the container.
 - [x] Original API sources match pinned upstream SHA-256 hashes.
 - [x] Debug 0.1.9 installed on Cast1 in J‑fb03bd528d6a, data preserved and health ready.
 - [x] Offline probe J‑c26380f3365d displayed ALL CHECKS PASSED: API/parcel fields, preferences, all six media paths, focus/idle and hung-provider timeout. OCR oracle passed and its impossible-text negative check failed as expected.
 - [x] J‑849cc7af5234: nine-column All Apps with all 21 installed apps on one page; Icons contains Circular icon mask; opacity 75% → preview 100% → cancel → save 70% → Undo restored 75%.
-- [ ] Unmodified Overflight rendering: J‑6c39e99903f6 completed but its final screenshot showed All Apps rather than the probe. No real-plugin rendering pass is claimed.
+- [x] Unmodified Overflight rendering passed in J‑f9b793cee5cc on 0.1.12, including an actual first video frame. Original 4K/HDR preferences restored and visually verified in J‑02433595f75d.
 
 The final deployment version, coordinator job IDs, evidence and actual results
 will be added after completion. Prior build success does not establish device behavior.
