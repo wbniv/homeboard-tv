@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/00d4796) | Add native English and Thai language selection |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/e1dae89) | Verify background-fill opacity on Cast1 in 0.1.14 |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/a6727ae) | Deploy combined wallpaper host and dashboard styles as 0.1.13 |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/ad798a2) | Host Projectivy wallpaper providers with independent UI opacity |
@@ -8,6 +9,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+00d4796	author	Will Norris
+00d4796	added	6
+00d4796	deleted	0
+00d4796	files	1
 e1dae89	author	Will Norris
 e1dae89	added	4
 e1dae89	deleted	2
