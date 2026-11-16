@@ -43,7 +43,7 @@ final class BannerAppTile extends LinearLayout {
         };
         image.setImageDrawable(artwork); image.setScaleType(ImageView.ScaleType.FIT_CENTER);
         image.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        GradientDrawable plate = new GradientDrawable(); plate.setColor(0xff272b30);
+        GradientDrawable plate = new UiBackgroundDrawable(0xff272b30);
         plate.setCornerRadius(8 * density); image.setBackground(plate);
         image.setClipToOutline(true);
         image.setOutlineProvider(new ViewOutlineProvider() {

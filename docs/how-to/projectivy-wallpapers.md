@@ -13,12 +13,13 @@ Homeboard does not import, reset or back them up. **More options** controls
 wallpaper rotation (default 15 minutes) and wallpaper dimming (default 35%).
 These settings are separate from the cache lifetime requested by the provider.
 
-**Appearance → UI opacity** applies to Home and All Apps, defaulting to **75%**.
-Up/Down preview changes of five percentage points; Left resets to 75%; Right
-chooses 100%; OK saves one undoable change. Back cancels. Pie menus always use
-**95% opacity** and stay visible even when dashboard opacity is 0%. Press the
-remote's Menu key to reopen settings if dashboard controls are invisible.
-Wallpaper dimming and UI opacity are independent.
+**Appearance → UI opacity** changes the colored backgrounds on Home and All Apps,
+defaulting to **75%**. Text, icons, widget readings and focus indicators keep their
+normal opacity. **0%** removes colored backdrop/panel fills so wallpaper shows
+through; **100%** covers wallpaper with the selected palette. Up/Down preview
+changes of five percentage points; Left resets to 75%; Right chooses 100%; OK
+saves one undoable change. Back cancels. Pie backgrounds always use **95% opacity**,
+with opaque text and icons. Wallpaper dimming is a separate setting.
 
 **Appearance → Icons** contains **Home favorites**, **All Apps artwork** and **Circular icon mask**.
 New layouts use dense icons: a typical TV viewport fits at least 36 icon slots, with the exact count
@@ -118,3 +119,10 @@ Video preview readiness is reported only after Android signals the first rendere
 video frame, rather than merely finishing header preparation. The initial frame
 also has a ten-second deadline. Use provider quality settings appropriate to the
 device; a Chromecast HD cannot be assumed to decode a provider's 4K HDR selection.
+
+`UiBackgroundProbeActivity` draws the actual saved Home and All Apps at 0%, 75%
+and 100% over an offline image. Its comparison screen checks the rendered
+backdrop pixels, panel fills, foreground alpha, focus borders and inactive focus
+state without saving an opacity or layout draft. Run `dev/device/ui-background-probe.json`
+with this debug entry point, inspect **ALL CHECKS PASSED**, export evidence, and
+restore the normal MainActivity registration.

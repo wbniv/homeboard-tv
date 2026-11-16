@@ -3,6 +3,11 @@
 Merged from `feature/projectivy-wallpaper-host` into `main` at `2e37f02`.
 The source worktree remains at `/home/will/homeboard-tv-projectivy`.
 
+**0.1.14 correction:** UI opacity now adjusts colored backdrop and panel fills
+only. Text, artwork and focus retain their normal opacity. See the correction
+record at the end of this document and its six-screen comparison. Earlier
+0.1.9–0.1.13 opacity checks below describe the superseded whole-container behavior.
+
 - [x] Combined source with main bed1ea1: 373 JVM tests, zero failures/errors/skips, debug lint and minified release packaging passed in the container.
 - [x] Debug lint passed and minified 0.1.12 release APK packaged in the container.
 - [x] Original API sources match pinned upstream SHA-256 hashes.
@@ -157,3 +162,26 @@ The final registration was restored to `com.gathin.tvhome.MainActivity`.
 ![Home Small icons on 0.1.13](2026-11-16-projectivy-plugin-host/home-small-icons-0.1.13.png)
 
 ![Undo restores Home banners on 0.1.13](2026-11-16-projectivy-plugin-host/home-banners-undo-0.1.13.png)
+
+## Background-fill opacity correction · 0.1.14
+
+Will clarified that opacity controls the colored backgrounds under UI content.
+Implementation `eec2d09` removes container alpha, adds the full-screen palette
+backdrop above wallpaper, and updates panel/button/badge fills without fading
+labels, app artwork, readings, borders or focus. Pie fills remain 95%; their text
+and icons now keep normal opacity. Existing saved percentages and preview,
+Done/Back/Undo behavior are retained.
+
+- [x] 373 JVM tests, debug lint and minified release packaging passed in the container.
+- [x] J‑f61d778733eb verified installation of 0.1.14, SHA-256 `8c4c3450879dd246d6062e1dee6cbbdf2ee074f69bac2df1009aa54b09b97ad4`. Its brief launch check lost the foreground; the coordinator returned ready health.
+- [x] The same frozen APK passed J‑e7f342ed6d0b, health ready. The actual Home and All Apps were each drawn at 0%, 75% and 100% over an offline image. Pixel assertions verify uncovered wallpaper, the 75% blend and complete coverage at 100%. Foreground alpha, panel alpha, focus borders, inactive focus state and unchanged saved layout also passed.
+- [x] The exported assertion screenshot passed the independent OCR oracle.
+- [x] Normal MainActivity catalog registration restored after the debug probe. J‑cab4995b0d08 subsequently launch-verified the identical 0.1.14 APK successfully, with ready health.
+
+The [machine-readable record](2026-11-16-projectivy-plugin-host/deployment-0.1.14.json)
+keeps the installation and first launch failure separate from the passing probe.
+No data was cleared and the default Home app was unchanged. Video rendering and
+media compatibility are unchanged by this correction; this probe uses a still
+image to check compositing deterministically.
+
+![Actual Home and All Apps at 0, 75 and 100 percent background-fill opacity](2026-11-16-projectivy-plugin-host/ui-backgrounds-0.1.14.png)

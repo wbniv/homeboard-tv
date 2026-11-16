@@ -111,6 +111,8 @@ public class MainActivity extends Activity {
     private final Map<String, View> tiles = new LinkedHashMap<>();
     private final List<HomeLayout.Cell> visibleCells = new ArrayList<>();
     private FrameLayout root, surface, overlay;
+    private View uiBackdrop;
+    private int uiBackgroundOpacity = 75;
     private WallpaperSurface wallpaperSurface;
     private ProjectivyWallpaperHost wallpaperHost;
     private WallpaperSettings wallpaperDraft;
@@ -219,6 +221,9 @@ public class MainActivity extends Activity {
         root.setBackgroundColor(background);
         wallpaperSurface = new WallpaperSurface(this);
         root.addView(wallpaperSurface, new FrameLayout.LayoutParams(-1, -1));
+        uiBackdrop = new View(this);
+        uiBackdrop.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+        root.addView(uiBackdrop, new FrameLayout.LayoutParams(-1, -1));
         wallpaperHost = new ProjectivyWallpaperHost(this, new ProjectivyWallpaperHost.Listener() {
             @Override public void wallpaper(tv.projectivy.plugin.wallpaperprovider.api.Wallpaper item) {
                 wallpaperSurface.show(item, (ready, status) -> {
@@ -409,8 +414,10 @@ public class MainActivity extends Activity {
         handler.removeCallbacks(hideUndoBanner);
         if (undoBanner != null) root.removeView(undoBanner);
         undoBanner = new FrameLayout(this);
-        undoBanner.setBackground(shape(paletteColors.raised, paletteColors.focus, 2));
-        undoBanner.setFocusable(false); undoBanner.setAlpha(WallpaperSettings.PIE_ALPHA);
+        UiBackgroundDrawable undoFill = shape(paletteColors.raised, paletteColors.focus, 2);
+        undoFill.setFillOpacity(WallpaperSettings.PIE_BACKGROUND_OPACITY);
+        undoBanner.setBackground(undoFill);
+        undoBanner.setFocusable(false);
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL); row.setGravity(Gravity.CENTER_VERTICAL);
         row.setPadding(dp(22), dp(6), dp(10), dp(6));
@@ -695,7 +702,7 @@ public class MainActivity extends Activity {
         for (AirQualityCard widget : airWidgets.values()) widget.unbind();
         tiles.clear(); visibleCells.clear();
         surface = new FrameLayout(this);
-        surface.setAlpha(layout.uiOpacityPercent / 100f);
+        uiBackgroundOpacity = layout.uiOpacityPercent;
         syncBackground();
         surface.setFocusable(true);
         surface.setFocusableInTouchMode(true);
@@ -704,6 +711,7 @@ public class MainActivity extends Activity {
         if (overlay != null) overlay.bringToFront();
         else if (undoBanner != null) undoBanner.bringToFront();
         if (allApps) buildApps(); else buildHome();
+        applyUiBackgroundOpacity(uiBackgroundOpacity);
         updateAir();
         focused = requestedFocus;
         if (overlay == null) restoreFocus();
@@ -743,6 +751,7 @@ public class MainActivity extends Activity {
         AirQualityCard widget = airWidgets.get(key);
         if (widget == null) {
             widget = new AirQualityCard(this, this::menu, key, this::requestAirLocation, this::recordAirUndo);
+            widget.setBackgroundOpacity(uiBackgroundOpacity);
             widget.setPalette(paletteColors); airWidgets.put(key, widget);
         }
         return widget;
@@ -830,14 +839,14 @@ public class MainActivity extends Activity {
         return v;
     }
     private StateListDrawable tileBackground() {
-        StateListDrawable states = new StateListDrawable();
+        StateListDrawable states = new UiBackgroundDrawable.States();
         GradientDrawable selected = shape(paletteColors.raised, paletteColors.focus, 3);
         states.addState(new int[]{android.R.attr.state_focused}, selected);
         states.addState(new int[]{}, shape(paletteColors.surface, paletteColors.edge, 1));
         return states;
     }
-    private GradientDrawable shape(int color, int stroke, int width) {
-        GradientDrawable d = new GradientDrawable(); d.setColor(color); d.setCornerRadius(dp(14));
+    private UiBackgroundDrawable shape(int color, int stroke, int width) {
+        UiBackgroundDrawable d = new UiBackgroundDrawable(color); d.setCornerRadius(dp(14));
         d.setStroke(dp(width), stroke); return d;
     }
     private void addTopSettingsButtons() {
@@ -851,7 +860,7 @@ public class MainActivity extends Activity {
         button.setImageResource(icon);
         button.setContentDescription(description);
         button.setFocusable(true); button.setClickable(true);
-        StateListDrawable states = new StateListDrawable();
+        StateListDrawable states = new UiBackgroundDrawable.States();
         GradientDrawable selected = shape(paletteColors.raised, paletteColors.focus, 2);
         selected.setCornerRadius(dp(28));
         GradientDrawable normal = shape(paletteColors.surface, paletteColors.edge, 1);
@@ -1640,7 +1649,7 @@ public class MainActivity extends Activity {
                     else if (choice == 1) colorPaletteSettings();
                     else if (choice == 2) appArtworkSettings();
                     else startAdjustment("UI opacity", layout.uiOpacityPercent,
-                            value -> surface.setAlpha(value / 100f), value -> {
+                            this::applyUiBackgroundOpacity, value -> {
                                 layout.uiOpacityPercent = value; save("UI opacity: " + value + "%"); render(0);
                             });
                 });
@@ -2322,7 +2331,6 @@ public class MainActivity extends Activity {
         if (spec.labels.length == 0 && "Restore hidden app".equals(spec.title))
             interactionHint = "Apps stay installed · Back returns";
         PieMenuView pie = new PieMenuView(this, paletteColors);
-        pie.setAlpha(WallpaperSettings.PIE_ALPHA);
         if ("Provider background".equals(spec.title) && wallpaperProvider != null) interactionHint = wallpaperProvider.readiness();
         pie.setContent(spec.title, breadcrumb, centerAction, interactionHint, labels, kinds, selected,
                 new PieMenuView.Listener() {
@@ -2508,6 +2516,12 @@ public class MainActivity extends Activity {
         wallpaperSurface.options(selected.solid() ? 0 : selected.dimPercent, reducedMotion());
         wallpaperHost.select(selected);
     }
+    private void applyUiBackgroundOpacity(int percent) {
+        uiBackgroundOpacity = WallpaperSettings.percent(percent);
+        uiBackdrop.setBackgroundColor(UiBackgroundDrawable.colorWithOpacity(background, uiBackgroundOpacity));
+        for (AirQualityCard widget : airWidgets.values()) widget.setBackgroundOpacity(uiBackgroundOpacity);
+        UiBackgroundDrawable.apply(surface, uiBackgroundOpacity);
+    }
     private void sendWallpaperFocus(String key) {
         App app = apps.get(key);
         if (app == null || wallpaperHost == null) return;
@@ -2619,7 +2633,9 @@ public class MainActivity extends Activity {
         overlay = new FrameLayout(this); overlay.setBackgroundColor(paletteColors.scrim);
         LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL);
         panel.setPadding(dp(28), dp(24), dp(28), dp(20));
-        panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 1)); panel.setAlpha(WallpaperSettings.PIE_ALPHA);
+        UiBackgroundDrawable panelFill = shape(paletteColors.raised, paletteColors.edge, 1);
+        panelFill.setFillOpacity(WallpaperSettings.PIE_BACKGROUND_OPACITY);
+        panel.setBackground(panelFill);
         panel.addView(text("Background details", 24), new LinearLayout.LayoutParams(-1, -2));
         String info = wallpaperStatus;
         if (wallpaperProvider != null) info += "\n" + wallpaperProvider.name + " · " + wallpaperProvider.readiness();
@@ -2679,8 +2695,9 @@ public class MainActivity extends Activity {
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         overlay = new FrameLayout(this); overlay.setFocusable(true);
         // Keep the live background visible; the pie itself is always at the fixed menu opacity.
-        PieMenuView pie = new PieMenuView(this, paletteColors); pie.setAlpha(WallpaperSettings.PIE_ALPHA);
-        pie.setContent(adjustmentTitle, adjustmentValue + "%", "Done", "Back cancels",
+        PieMenuView pie = new PieMenuView(this, paletteColors);
+        pie.setContent(adjustmentTitle,
+                ("UI opacity".equals(adjustmentTitle) ? "Backgrounds · " : "") + adjustmentValue + "%", "Done", "Back cancels",
                 new String[]{"+5%", "100%", "−5%", "Reset " + ("UI opacity".equals(adjustmentTitle) ? "75%" : "35%")},
                 new MenuIconView.Kind[]{MenuIconView.Kind.ADD, MenuIconView.Kind.PALETTE, MenuIconView.Kind.DELETE, MenuIconView.Kind.UNDO}, new boolean[4],
                 new PieMenuView.Listener() {

@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import tv.projectivy.plugin.wallpaperprovider.api.Wallpaper;
 
-/** A non-focusable background layer, outside the dashboard and menu opacity groups. */
+/** A non-focusable wallpaper layer below the independent colored UI backdrops. */
 final class WallpaperSurface extends FrameLayout implements AutoCloseable {
     private static final int MAX_BYTES = 16 * 1024 * 1024;
     private final Handler main = new Handler(Looper.getMainLooper());

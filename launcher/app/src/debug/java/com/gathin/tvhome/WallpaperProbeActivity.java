@@ -38,14 +38,16 @@ public final class WallpaperProbeActivity extends Activity {
         wallpaper = new WallpaperSurface(this); root.addView(wallpaper, new FrameLayout.LayoutParams(-1, -1));
         wallpaper.options(0, false); wallpaper.visible(true);
         report = new TextView(this); report.setTextColor(Color.WHITE); report.setTextSize(18);
-        report.setPadding(22, 16, 22, 12); report.setBackgroundColor(0xff152339); report.setAlpha(.75f);
+        report.setPadding(22, 16, 22, 12); report.setBackground(new UiBackgroundDrawable(0xff152339));
+        UiBackgroundDrawable.apply(report, 75);
         root.addView(report, new FrameLayout.LayoutParams(620, -2, Gravity.TOP | Gravity.LEFT)); setContentView(root);
-        PieMenuView pie = new PieMenuView(this, PaletteColors.from(0xff102333)); pie.setAlpha(WallpaperSettings.PIE_ALPHA);
+        PieMenuView pie = new PieMenuView(this, PaletteColors.from(0xff102333));
         pie.setContent("Opacity", "UI 75% · pie 95%", "Probe", "Device validation", new String[]{"Up", "Right", "Down", "Left"},
                 new MenuIconView.Kind[4], new boolean[4], null);
         FrameLayout.LayoutParams pieLp = new FrameLayout.LayoutParams(480, 480, Gravity.RIGHT | Gravity.CENTER_VERTICAL); root.addView(pie, pieLp);
-        if (report.getAlpha() != .75f || pie.getAlpha() != .95f) { fail("opacity groups"); return; }
-        log("PASS opacity: UI 75%, pie 95%");
+        if (report.getAlpha() != 1f || pie.getAlpha() != 1f
+                || ( ((UiBackgroundDrawable) report.getBackground()).getColor().getDefaultColor() >>> 24) != 191) { fail("opacity groups"); return; }
+        log("PASS fills: UI 75%, pie 95%; content opaque");
         host = new ProjectivyWallpaperHost(this, new ProjectivyWallpaperHost.Listener() {
             @Override public void wallpaper(Wallpaper item) {
                 if (finished) return;
