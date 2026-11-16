@@ -40,11 +40,11 @@ final class AirQualityCard {
     static final String ENDPOINT = "https://official.airbkk.com/airbkk/Api";
     static final String MODEL_ENDPOINT = "https://air-quality-api.open-meteo.com/v1/air-quality";
     private static final String[] IDS = {"114", "119", "122", "70", "65"};
-    private static final String[] NAMES = {"Lumpini Park", "Benchasiri Park", "Benjakitti Park",
-            "Watthana · Ekkamai Road", "Pathum Wan · Samyan Mitrtown"};
+    private final String[] NAMES;
     private static final DateTimeFormatter REPORT_TIME = DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm", Locale.US);
     private static final DateTimeFormatter MOVING_AVERAGE_TIME = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm", Locale.US);
     private static final String HISTORY_ENDPOINT = "https://official.airbkk.com/airbkk/Report/getData";
+    private String getString(int id) { return activity.getString(id); }
     private final Activity activity;
     interface Menus { void show(String title, String[] labels, java.util.function.IntConsumer action); }
     interface LocationProvider { void request(java.util.function.Consumer<Location> callback); }
@@ -85,13 +85,14 @@ final class AirQualityCard {
     AirQualityCard(Activity activity, Menus menus, String widgetKey, LocationProvider locations,
                    UndoRecorder undoRecorder) {
         this.activity = activity;
+        NAMES = activity.getResources().getStringArray(R.array.hb_station_names);
         this.menus = menus;
         this.widgetKey = widgetKey; this.locations = locations; this.undoRecorder = undoRecorder;
         String preferenceName = "air-quality-widget-" + widgetKey.replaceAll("[^A-Za-z0-9_-]", "_");
         prefs = activity.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
         source = prefs.getString("source", "model");
         locationMode = prefs.getString("location-mode", "auto");
-        locationName = prefs.getString("location-name", "Near me");
+        locationName = prefs.getString("location-name", getString(R.string.hb_near_me));
         if (prefs.contains("latitude") && prefs.contains("longitude")) {
             latitude = Double.longBitsToDouble(prefs.getLong("latitude", 0));
             longitude = Double.longBitsToDouble(prefs.getLong("longitude", 0));
@@ -156,15 +157,15 @@ final class AirQualityCard {
     }
 
     void showActions() {
-        menus.show("Air quality · " + locationLabel(), new String[]{"Refresh reading", "Configure location and source"}, which -> {
+        menus.show(getString(R.string.hb_air_quality) + locationLabel(), new String[]{getString(R.string.hb_refresh_reading), getString(R.string.hb_configure_location_and_source)}, which -> {
             if (which == 0) refresh(true);
             else configureWidget();
         });
     }
     void refreshNow() { refresh(true); }
     void configureWidget() {
-        menus.show("Air quality location · each widget is independent",
-                new String[]{"Nearest model grid · use this device", "Enter coordinates for a model grid", "Bangkok monitoring station"}, choice -> {
+        menus.show(getString(R.string.hb_air_quality_location_each_widget_is_independent),
+                new String[]{getString(R.string.hb_nearest_model_grid_use_this_device), getString(R.string.hb_enter_coordinates_for_a_model_grid), getString(R.string.hb_bangkok_monitoring_station)}, choice -> {
                     if (choice == 0) useCurrentLocation();
                     else if (choice == 1) enterCoordinates();
                     else { source = "airbkk"; saveConfiguration(); chooseStation(); }
@@ -172,7 +173,7 @@ final class AirQualityCard {
     }
     private void useCurrentLocation() {
         source = "model"; locationMode = "auto"; latitude = Double.NaN; longitude = Double.NaN;
-        locationName = "Near me"; locationRequested = false; saveConfiguration();
+        locationName = getString(R.string.hb_near_me); locationRequested = false; saveConfiguration();
         reading = null; readHistory(); readCache(); render();
         ensureModelLocation();
     }
@@ -181,17 +182,17 @@ final class AirQualityCard {
         form.setOrientation(LinearLayout.VERTICAL);
         form.setPadding(dp(24), dp(8), dp(24), dp(4));
         TextView explanation = new TextView(activity);
-        explanation.setText("Choose the forecast grid near this location.");
+        explanation.setText(getString(R.string.hb_choose_the_forecast_grid_near_this_location));
         explanation.setTextColor(palette.muted);
         form.addView(explanation, new LinearLayout.LayoutParams(-1, -2));
-        EditText latitudeInput = coordinateField(form, "Latitude", "−90 to 90");
-        EditText longitudeInput = coordinateField(form, "Longitude", "−180 to 180");
+        EditText latitudeInput = coordinateField(form, getString(R.string.hb_latitude), "−90 to 90");
+        EditText longitudeInput = coordinateField(form, getString(R.string.hb_longitude), "−180 to 180");
         if (Double.isFinite(latitude)) latitudeInput.setText(String.format(Locale.US, "%.5f", latitude));
         if (Double.isFinite(longitude)) longitudeInput.setText(String.format(Locale.US, "%.5f", longitude));
 
-        AlertDialog dialog = new AlertDialog.Builder(activity).setTitle("Model grid location")
-                .setView(form).setNegativeButton("Cancel", (d, which) -> {})
-                .setPositiveButton("Save", null).create();
+        AlertDialog dialog = new AlertDialog.Builder(activity).setTitle(getString(R.string.hb_model_grid_location))
+                .setView(form).setNegativeButton(getString(R.string.hb_cancel), (d, which) -> {})
+                .setPositiveButton(getString(R.string.hb_save), null).create();
         dialog.setOnShowListener(ignored -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
             try {
                 double lat = Double.parseDouble(latitudeInput.getText().toString().trim());
@@ -203,7 +204,7 @@ final class AirQualityCard {
                 saveConfiguration(); reading = null; readHistory(); readCache(); render(); refresh(true);
                 dialog.dismiss();
             } catch (Exception invalid) {
-                latitudeInput.setError("Check both coordinates");
+                latitudeInput.setError(getString(R.string.hb_check_both_coordinates));
             }
         }));
         dialog.show();
@@ -238,7 +239,7 @@ final class AirQualityCard {
         String before = configurationFromPreferences().toString();
         String after = configurationFromFields().toString();
         if (userChange && !before.equals(after) && undoRecorder != null)
-            undoRecorder.record(widgetKey, before, "Air quality location");
+            undoRecorder.record(widgetKey, before, getString(R.string.hb_air_quality_location));
         persistConfiguration();
     }
     private void persistConfiguration() {
@@ -254,7 +255,7 @@ final class AirQualityCard {
         try {
             config.put("source", prefs.getString("source", "model"));
             config.put("location-mode", prefs.getString("location-mode", "auto"));
-            config.put("location-name", prefs.getString("location-name", "Near me"));
+            config.put("location-name", prefs.getString("location-name", getString(R.string.hb_near_me)));
             config.put("station", prefs.getString("station", IDS[0]));
             if (prefs.contains("latitude") && prefs.contains("longitude")) {
                 config.put("latitude", Double.longBitsToDouble(prefs.getLong("latitude", 0)));
@@ -278,7 +279,7 @@ final class AirQualityCard {
             JSONObject config = new JSONObject(encoded);
             source = config.optString("source", "model");
             locationMode = config.optString("location-mode", "auto");
-            locationName = config.optString("location-name", "Near me");
+            locationName = config.optString("location-name", getString(R.string.hb_near_me));
             String station = config.optString("station", IDS[0]);
             selected = 0;
             for (int i = 0; i < IDS.length; i++) if (IDS[i].equals(station)) selected = i;
@@ -297,7 +298,7 @@ final class AirQualityCard {
         locationRequested = true; render();
         locations.request(location -> handler.post(() -> {
             if (closed) return;
-            if (location == null) locationName = "Location unavailable";
+            if (location == null) locationName = getString(R.string.hb_location_unavailable);
             else {
                 latitude = location.getLatitude(); longitude = location.getLongitude();
                 locationName = String.format(Locale.US, "Near me · %.2f°, %.2f°", latitude, longitude);
@@ -307,11 +308,17 @@ final class AirQualityCard {
         }));
     }
     private String locationLabel() {
-        if ("model".equals(source)) return locationName + " · model";
+        if ("model".equals(source)) {
+            String name = locationName;
+            if ("auto".equals(locationMode)) name = Double.isFinite(latitude)
+                    ? activity.getString(R.string.hb_near_coordinates, latitude, longitude)
+                    : getString(R.string.hb_near_me);
+            return name + getString(R.string.hb_model);
+        }
         return NAMES[selected] + " · AirBKK";
     }
     void chooseStation() {
-        menus.show("Bangkok monitoring station · " + NAMES[selected], NAMES, index -> {
+        menus.show(getString(R.string.hb_bangkok_monitoring_station_228) + NAMES[selected], NAMES, index -> {
             source = "airbkk"; selected = index; saveConfiguration();
             readHistory();
             readCache(); render(); refresh(true);
@@ -322,7 +329,7 @@ final class AirQualityCard {
         if (!active || closed || loading) return;
         long now = SystemClock.elapsedRealtime();
         if (lastAttempt != 0 && now - lastAttempt < (manual ? 30_000L : 15 * 60_000L)) {
-            if (manual) android.widget.Toast.makeText(activity, "Recently checked; retry shortly", android.widget.Toast.LENGTH_SHORT).show();
+            if (manual) android.widget.Toast.makeText(activity, getString(R.string.hb_recently_checked_retry_shortly), android.widget.Toast.LENGTH_SHORT).show();
             return;
         }
         if ("model".equals(source) && (!Double.isFinite(latitude) || !Double.isFinite(longitude))) {
@@ -520,14 +527,14 @@ final class AirQualityCard {
                                                   long latestMillis, LocalDateTime start) throws Exception {
         JSONObject root = new JSONObject(json);
         if (!"success".equalsIgnoreCase(root.optString("status")))
-            throw new IllegalStateException("AirBKK history unavailable");
+            throw new IllegalStateException(getString(R.string.hb_airbkk_history_unavailable));
         JSONArray parameters = root.getJSONArray("arrParameter");
         String alias = null;
         for (int i = 0; i < parameters.length(); i++) {
             JSONObject parameter = parameters.getJSONObject(i);
             if (stationId.equals(parameter.optString("MeasIndex"))
                     && "PM2.5".equals(parameter.optString("ShortName"))) {
-                alias = parameter.optString("Alias", null);
+                alias = parameter.optString(getString(R.string.hb_alias), null);
                 break;
             }
         }
@@ -586,7 +593,7 @@ final class AirQualityCard {
         int color = reading == null ? palette.muted : conditionColor(reading.condition());
         applyTileBackground();
         value.setTextColor(color);
-        conditionLabel.setText(reading == null ? "WAITING FOR READING" : reading.conditionLabel());
+        conditionLabel.setText(reading == null ? getString(R.string.hb_waiting_for_reading) : activity.getResources().getStringArray(reading.modelEstimate ? R.array.hb_model_conditions : R.array.hb_station_conditions)[reading.condition().ordinal()]);
         conditionLabel.setTextColor(color);
         conditionLabel.setVisibility(reading == null ? View.GONE : View.VISIBLE);
         if (reading != null) {
@@ -607,21 +614,21 @@ final class AirQualityCard {
         trend.setPalette(palette);
         trend.setReadings(day, month);
         String status;
-        if (reading == null) status = loading ? "Loading…" : "model".equals(source)
-                ? (locationRequested ? "Getting device location…" : locationName + " · configure location")
-                : "Reading unavailable";
+        if (reading == null) status = loading ? getString(R.string.hb_loading) : "model".equals(source)
+                ? (locationRequested ? getString(R.string.hb_getting_device_location) : locationName + getString(R.string.hb_configure_location))
+                : getString(R.string.hb_reading_unavailable);
         else {
             ZoneId displayZone = "model".equals(source) ? ZoneId.systemDefault() : AirQualityReading.BANGKOK;
-            String time = DateTimeFormatter.ofPattern("dd MMM HH:mm", Locale.ENGLISH)
+            String time = DateTimeFormatter.ofPattern("dd MMM HH:mm", activity.getResources().getConfiguration().getLocales().get(0))
                     .withZone(displayZone).format(Instant.ofEpochMilli(reading.timeMillis));
-            status = "Data: " + time + ("model".equals(source) ? " local" : " Bangkok");
-            if (reading.stale(System.currentTimeMillis())) status += " · STALE";
-            if (failed) status += " · Refresh failed; saved reading";
-            if (loading) status += " · Updating…";
+            status = getString(R.string.hb_hint_data) + time + ("model".equals(source) ? getString(R.string.hb_hint_local) : getString(R.string.hb_hint_bangkok));
+            if (reading.stale(System.currentTimeMillis())) status += getString(R.string.hb_stale);
+            if (failed) status += getString(R.string.hb_refresh_failed_saved_reading);
+            if (loading) status += getString(R.string.hb_updating);
         }
-        String sourceNote = "model".equals(source) ? "Hourly model estimate · Open-Meteo / CAMS"
-                : "PCD 24-hour average · AirBKK / BMA";
-        detail.setText(sourceNote + "\n" + status + "\nOK: refresh or configure");
+        String sourceNote = "model".equals(source) ? getString(R.string.hb_hourly_model_estimate_open_meteo_cams)
+                : getString(R.string.hb_pcd_24_hour_average_airbkk_bma);
+        detail.setText(sourceNote + "\n" + status + getString(R.string.hb_nok_refresh_or_configure));
     }
 
     private void readHistory() {

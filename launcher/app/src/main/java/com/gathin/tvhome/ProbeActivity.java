@@ -9,6 +9,10 @@ import android.os.Bundle;
  * tell the stock home from an HDMI input without reading the screen (#1116).
  */
 public class ProbeActivity extends Activity {
+    @Override protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(AppLanguage.wrap(base));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -29,6 +29,7 @@ final class ProjectivyWallpaperHost implements AutoCloseable {
     // A hung remote Binder call cannot be interrupted. Never replace it with unbounded new workers.
     private static final ThreadPoolExecutor IPC = new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS,
             new SynchronousQueue<>(), task -> { Thread t = new Thread(task, "wallpaper-ipc"); t.setDaemon(true); return t; });
+    private String localized(int id) { return context.getString(id); }
     private final Context context;
     private final Handler main = new Handler(Looper.getMainLooper());
     private final ProjectivyProviderRegistry registry;
@@ -54,8 +55,8 @@ final class ProjectivyWallpaperHost implements AutoCloseable {
     private final Runnable rotate = () -> tick();
     private final Runnable idleTimer = () -> setIdle(true);
     private final Runnable flushFocus = () -> { if (focus != null) request(focus); };
-    private final Runnable requestDeadline = () -> fail("Provider did not respond. Retry after it recovers, or restart Homeboard.");
-    private final Runnable bindDeadline = () -> fail("Provider could not be connected. Choose Retry.");
+    private final Runnable requestDeadline = () -> fail(localized(R.string.hb_status_provider_did_not_respond_retry_after_it_recovers_or_restart_homeb));
+    private final Runnable bindDeadline = () -> fail(localized(R.string.hb_status_provider_could_not_be_connected_choose_retry));
 
     ProjectivyWallpaperHost(Context context, Listener listener) {
         this.context = context; this.listener = listener; registry = new ProjectivyProviderRegistry(context);
@@ -66,7 +67,7 @@ final class ProjectivyWallpaperHost implements AutoCloseable {
         boolean rotationChanged = settings.rotationMinutes != next.rotationMinutes;
         settings = next.copy();
         if (changed) { disconnect(); batch.clear(); expires = 0; nextItem = 0; listener.fallback(); }
-        if (settings.solid()) { listener.fallback(); listener.status("Solid color"); return; }
+        if (settings.solid()) { listener.fallback(); listener.status(localized(R.string.hb_status_solid_color)); return; }
         if (visible && connection == null) connect();
         if (changed || rotationChanged) scheduleRotation();
     }
@@ -107,7 +108,7 @@ final class ProjectivyWallpaperHost implements AutoCloseable {
     private void connect() {
         if (!visible || closed || settings.solid()) return;
         provider = registry.find(settings);
-        if (provider == null || !provider.usable()) { fail(provider == null ? "Selected provider is missing" : provider.problem); return; }
+        if (provider == null || !provider.usable()) { fail(provider == null ? localized(R.string.hb_status_selected_provider_is_missing) : provider.problem); return; }
         final long token = ++generation;
         connection = new ServiceConnection() {
             @Override public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -116,24 +117,24 @@ final class ProjectivyWallpaperHost implements AutoCloseable {
                 remote = IWallpaperProviderService.Stub.asInterface(binder);
                 initialRequest();
             }
-            @Override public void onServiceDisconnected(ComponentName name) { if (token == generation) fail("Provider disconnected. Choose Retry."); }
-            @Override public void onBindingDied(ComponentName name) { if (token == generation) fail("Provider was updated. Choose Retry."); }
-            @Override public void onNullBinding(ComponentName name) { if (token == generation) fail("Provider returned no service"); }
+            @Override public void onServiceDisconnected(ComponentName name) { if (token == generation) fail(localized(R.string.hb_status_provider_disconnected_choose_retry)); }
+            @Override public void onBindingDied(ComponentName name) { if (token == generation) fail(localized(R.string.hb_status_provider_was_updated_choose_retry)); }
+            @Override public void onNullBinding(ComponentName name) { if (token == generation) fail(localized(R.string.hb_status_provider_returned_no_service)); }
         };
-        listener.status("Connecting…");
+        listener.status(localized(R.string.hb_status_connecting));
         try {
             if (!context.bindService(new Intent(ProjectivyProviderRegistry.ACTION).setComponent(provider.component), connection, Context.BIND_AUTO_CREATE)) {
-                fail("Provider could not be bound"); return;
+                fail(localized(R.string.hb_status_provider_could_not_be_bound)); return;
             }
             main.postDelayed(bindDeadline, 5000);
-        } catch (RuntimeException denied) { fail("Provider connection is unavailable"); }
+        } catch (RuntimeException denied) { fail(localized(R.string.hb_status_provider_connection_is_unavailable)); }
     }
     private void initialRequest() {
         if (provider == null) return;
         if ((provider.events & 1) != 0) tick();
         else if ((provider.events & 4) != 0 && focus != null) request(focus);
         else if ((provider.events & 16) != 0) request(new Event.LauncherIdleModeChanged(16, idle));
-        else listener.status("Focus an app to request a wallpaper");
+        else listener.status(localized(R.string.hb_status_focus_an_app_to_request_a_wallpaper));
     }
     private void tick() {
         if (!visible || provider == null || (provider.events & 1) == 0) return;
@@ -155,25 +156,25 @@ final class ProjectivyWallpaperHost implements AutoCloseable {
         busy = true;
         long token = generation;
         IWallpaperProviderService service = remote;
-        listener.status("Loading wallpaper…");
+        listener.status(localized(R.string.hb_status_loading_wallpaper));
         main.postDelayed(requestDeadline, 10_000);
         try {
             IPC.execute(() -> {
                 List<Wallpaper> items = null; String error = null;
                 try {
                     List<Wallpaper> result = service.getWallpapers(event);
-                    if (result != null && result.size() > 1000) error = "Provider returned too many wallpapers";
+                    if (result != null && result.size() > 1000) error = localized(R.string.hb_status_provider_returned_too_many_wallpapers);
                     else if (result != null) {
                         items = new ArrayList<>();
                         for (Wallpaper item : result) if (item != null && !item.getUri().isEmpty()) items.add(item);
                     }
-                } catch (Exception invalid) { error = "Provider request failed"; }
+                } catch (Exception invalid) { error = localized(R.string.hb_status_provider_request_failed); }
                 List<Wallpaper> delivered = items; String failure = error;
                 main.post(() -> {
                     if (closed || token != generation) return;
                     main.removeCallbacks(requestDeadline); busy = false;
                     if (failure != null) listener.status(failure);
-                    else if (delivered == null || delivered.isEmpty()) listener.status("No new wallpaper; retaining current background");
+                    else if (delivered == null || delivered.isEmpty()) listener.status(localized(R.string.hb_status_no_new_wallpaper_retaining_current_background));
                     else {
                         if (event.getEventType() == 1) {
                             batch.clear(); batch.addAll(delivered); nextItem = 1;
@@ -188,7 +189,7 @@ final class ProjectivyWallpaperHost implements AutoCloseable {
             });
         } catch (RejectedExecutionException hung) {
             main.removeCallbacks(requestDeadline); busy = false;
-            listener.status("A provider is still busy. Retry after it recovers, or restart Homeboard.");
+            listener.status(localized(R.string.hb_status_a_provider_is_still_busy_retry_after_it_recovers_or_restart_homeb));
         }
     }
     void mediaFailed(String reason) {

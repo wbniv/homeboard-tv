@@ -1,0 +1,33 @@
+<resources>
+    <string name="hb_status_provider_did_not_respond_retry_after_it_recovers_or_restart_homeb">Provider did not respond. Retry after it recovers, or restart Homeboard.</string>
+    <string name="hb_status_provider_could_not_be_connected_choose_retry">Provider could not be connected. Choose Retry.</string>
+    <string name="hb_status_solid_color">Solid color</string>
+    <string name="hb_status_selected_provider_is_missing">Selected provider is missing</string>
+    <string name="hb_status_provider_disconnected_choose_retry">Provider disconnected. Choose Retry.</string>
+    <string name="hb_status_provider_was_updated_choose_retry">Provider was updated. Choose Retry.</string>
+    <string name="hb_status_provider_returned_no_service">Provider returned no service</string>
+    <string name="hb_status_connecting">Connecting…</string>
+    <string name="hb_status_provider_could_not_be_bound">Provider could not be bound</string>
+    <string name="hb_status_provider_connection_is_unavailable">Provider connection is unavailable</string>
+    <string name="hb_status_focus_an_app_to_request_a_wallpaper">Focus an app to request a wallpaper</string>
+    <string name="hb_status_loading_wallpaper">Loading wallpaper…</string>
+    <string name="hb_status_provider_returned_too_many_wallpapers">Provider returned too many wallpapers</string>
+    <string name="hb_status_provider_request_failed">Provider request failed</string>
+    <string name="hb_status_no_new_wallpaper_retaining_current_background">No new wallpaper; retaining current background</string>
+    <string name="hb_status_a_provider_is_still_busy_retry_after_it_recovers_or_restart_homeb">A provider is still busy. Retry after it recovers, or restart Homeboard.</string>
+    <string name="hb_status_unsupported_wallpaper_format_or_display_mode">Unsupported wallpaper format or display mode</string>
+    <string name="hb_status_preview_ready">Preview ready</string>
+    <string name="hb_status_invalid_wallpaper_color">Invalid wallpaper color</string>
+    <string name="hb_status_this_animation_display_mode_is_unsupported_on_this_device">This animation display mode is unsupported on this device</string>
+    <string name="hb_status_wallpaper_decoding_timed_out_retaining_previous_background">Wallpaper decoding timed out; retaining previous background</string>
+    <string name="hb_status_video_needs_https_or_an_accessible_content_resource_uri">Video needs HTTPS or an accessible content/resource URI</string>
+    <string name="hb_status_video_paused_for_reduced_motion_using_solid_color">Video paused for reduced motion; using solid color</string>
+    <string name="hb_status_this_video_display_mode_is_unsupported_on_this_device">This video display mode is unsupported on this device</string>
+    <string name="hb_status_video_preparation_timed_out">Video preparation timed out</string>
+    <string name="hb_status_video_produced_no_frame">Video produced no frame</string>
+    <string name="hb_status_video_playback_is_unavailable">Video playback is unavailable</string>
+    <string name="hb_status_video_source_is_unavailable">Video source is unavailable</string>
+    <string name="hb_status_recent_pm2_5_trend">Recent PM2.5 trend</string>
+    <string name="hb_status_24h">24H</string>
+    <string name="hb_status_30d">30D</string>
+</resources>
