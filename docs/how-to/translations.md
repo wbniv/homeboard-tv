@@ -2,8 +2,7 @@
 
 **Design contract · 16 November 2026.** This procedure accompanies the
 [language-setting plan](../plans/2026-11-16-language-setting-and-translations.md).
-The structural `task i18n:check` gate is implemented in the Thai-language
-worktree. The staged-index, review-ledger and artifact-acceptance enforcement
+The structural `task i18n:check` gate is implemented in the combined launcher. The staged-index, review-ledger and artifact-acceptance enforcement
 described here remain **planned**; see the implementation status at the end.
 
 ## Reusable contract
@@ -179,7 +178,7 @@ Passing catalog parity, a successful build, a completed coordinator job or an
 About version number alone is insufficient. Keep the plan's remaining checkboxes
 open for any unverified state.
 
-## Worktree implementation status — 16 November 2026
+## Implementation status — 16 November 2026
 
 The Thai-language implementation adds `task i18n:check`, backed by Gradle's
 `checkTranslations` in the container. It checks the paired `homeboard*.xml`

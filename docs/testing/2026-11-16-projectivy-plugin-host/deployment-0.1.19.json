@@ -32,5 +32,24 @@
     "app data and saved layout",
     "app language",
     "default Home app"
-  ]
+  ],
+  "physical_about": {
+    "job": "J-1d5adfd2bafb",
+    "status": "succeeded",
+    "health": "ready",
+    "visually_verified": [
+      "normal About source cards and installed version",
+      "Outfit full URL and QR",
+      "optional TV browser action",
+      "Back returns to About"
+    ],
+    "browser_launch": "not exercised",
+    "evidence": "/home/will/homeboard-tv-background-menus/artifacts/deployments/0.1.19/about-links-verified"
+  },
+  "excluded_physical_attempt": {
+    "job": "J-a894f982fca5",
+    "reason": "initial focus sent the script to the wrong menu; no About acceptance",
+    "language_restoration_job": "J-a993a53456d9",
+    "restoration": "newest Language change undone through Undo history"
+  }
 }

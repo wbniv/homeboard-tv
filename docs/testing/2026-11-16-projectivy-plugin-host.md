@@ -214,3 +214,17 @@ linguistic/device acceptance are outside this result. Existing wallpaper media
 and long-run compatibility limits remain as recorded above.
 
 ![All 53 menu assertions passed on Cast1](2026-11-16-projectivy-plugin-host/menu-regressions-0.1.19.png)
+
+
+The normal MainActivity remote recipe also passed visual review in
+J‑1d5adfd2bafb: About shows installed version 0.1.19, remote OK opens the Outfit
+source panel with its full URL/QR and optional TV browser action, and Back
+returns to About. The earlier J‑a894f982fca5 script started from the wrong focus
+and changed language instead; it provides no About acceptance. J‑a993a53456d9
+undid exactly that newest Language change through Undo history. The corrected
+recipe first moves focus up before opening Home settings. The final screenshots
+show the restored Thai UI; this is not a full bilingual acceptance review.
+
+![Normal About source cards on Cast1](2026-11-16-projectivy-plugin-host/about-cards-0.1.19.png)
+
+![Full source address and phone QR, with optional TV action](2026-11-16-projectivy-plugin-host/about-phone-qr-0.1.19.png)
