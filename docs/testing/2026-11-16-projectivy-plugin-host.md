@@ -93,3 +93,14 @@ never downgrades TLS failures to plaintext. URL-policy tests bring the suite to
 360 tests, all passing. Deployment J‑5f02d3e4aa20 succeeded on Cast1 with health
 ready, SHA-256
 `b3d35a588a8cc5b2355bb407d87827c08c55d4eecb93fdab955f56e73782744b`.
+
+## Real Overflight success on build 0.1.12
+
+Job **J‑f9b793cee5cc** passed with the unmodified official Overflight 1.20 APK.
+The first video frame was rendered and the captured screen shows the Mountains
+video playing. Overflight was temporarily set to HD/SDR for the Chromecast HD;
+its original 4K/HDR selections are restored after this test. This resolves the
+older no-media results above. The scoped Apple HTTP policy, rather than a broad
+cleartext allowance, is required by the published feed.
+
+![Unmodified Overflight playing Mountains on Cast1](2026-11-16-projectivy-plugin-host/overflight-playing.png)

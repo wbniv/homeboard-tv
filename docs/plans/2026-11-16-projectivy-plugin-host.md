@@ -1,6 +1,6 @@
 # Homeboard TV as a host for Projectivy wallpaper plugins
 
-**Status: implemented in feature/projectivy-wallpaper-host; implemented; fixture and launcher UI checks passed; final real-plugin check in progress · 16 November 2026**
+**Status: implemented in feature/projectivy-wallpaper-host; implemented; fixture and launcher UI checks passed; unmodified Overflight video playback passed on Cast1 · 16 November 2026**
 
 Make Homeboard TV a compatible host for existing Projectivy wallpaper-provider
 plugins. Will installs a provider APK, selects it in Homeboard, and sees its
@@ -396,3 +396,8 @@ HTTPS, and TLS failures never trigger a downgrade. This replaces the earlier
 HTTPS-only assumption after real-plugin testing established the requirement.
 Video readiness now waits for Android's first-frame rendering signal, with a
 separate startup deadline, so header preparation alone cannot count as playback.
+
+The real-plugin gate passed in J‑f9b793cee5cc: unmodified Overflight 1.20 supplied
+Mountains and Homeboard rendered the video with first-frame readiness. The Cast1
+check used HD/SDR. Merge and the next deployment must include the latest main
+branch's dashboard styles as well as this host implementation.
