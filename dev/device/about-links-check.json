@@ -1,0 +1,68 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 27,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 1,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 3,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 5,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 7,
+      "capture": "about-source-cards"
+    },
+    {
+      "at": 9,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 11,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 15,
+      "capture": "about-source-qr-and-address"
+    },
+    {
+      "at": 17,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 20,
+      "capture": "back-to-about"
+    },
+    {
+      "at": 22,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 24,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    }
+  ]
+}

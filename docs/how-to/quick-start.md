@@ -195,3 +195,12 @@ animation.
 An unavailable favorite can be removed using its hold-OK menu. Deleting a tile never
 uninstalls its app. If a station feed is unavailable, check the timestamp and status
 on the saved reading; a missing value is shown as a dash, not zero.
+
+## Source links on a TV
+
+Home settings → About Homeboard TV lists the project, CleanYourTV, Outfit font
+and AndroidX sources. Select one with the remote to show its exact web address
+and a QR code. Scan with a phone camera to open it there. When Android finds a
+web-link handler, Open on this TV is also available. A TV without a browser keeps
+the QR code and address visible. Back to About returns to the source list; Back
+from About returns to Home settings.

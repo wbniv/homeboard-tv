@@ -1,0 +1,22 @@
+{
+  "versionName": "0.1.16",
+  "versionCode": 16,
+  "device": "chromecast-test-01",
+  "apk": "/home/will/homeboard-tv-background-menus/artifacts/deployments/0.1.16/homeboard.apk",
+  "sha256": "87884e9cf606f49c1c5350261f67d81f93682cfab5c044582ec564c781a52520",
+  "base_commit": "f0ffee135571f093728fe5e1d3995e71dc627378",
+  "job": "J-d45fc812cb71",
+  "status": "succeeded",
+  "health": "ready",
+  "tests": {
+    "tests": 377,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "lint": "passed",
+  "minified_release": "passed on the same correction source before version bump",
+  "local_source_changes": [
+    "version.properties: version_code=16"
+  ]
+}
