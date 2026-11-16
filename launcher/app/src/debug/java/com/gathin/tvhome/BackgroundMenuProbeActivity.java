@@ -46,8 +46,14 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
     private boolean finished;
 
     @Override public SharedPreferences getSharedPreferences(String name, int mode) {
+        boolean airWidget = name.startsWith("air-quality-widget-");
         if ("widget-home".equals(name) || name.startsWith("air-quality-widget-")) {
-            name = "background-menu-probe-" + name; temporaryPreferences.add(name);
+            name = "background-menu-probe-" + name;
+            boolean first = temporaryPreferences.add(name);
+            if (airWidget && first) {
+                // Menu tests must not trigger a location permission prompt.
+                super.getSharedPreferences(name, mode).edit().clear().putString("source", "station").apply();
+            }
         }
         return super.getSharedPreferences(name, mode);
     }
