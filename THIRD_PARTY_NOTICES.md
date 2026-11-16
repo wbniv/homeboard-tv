@@ -18,3 +18,11 @@ Source: https://github.com/spocky/projectivy-plugin-wallpaper-provider/tree/60ec
 
 Lottie Android by Airbnb and contributors: Apache License 2.0.
 Source: https://github.com/airbnb/lottie-android/tree/v6.6.2
+
+## About source QR assets and verification
+
+The four offline source-link QR images are generated from public URLs with Python
+qrcode 8.2. The encoder is not included in the APK. Asset URLs, checksums and
+settings are recorded in `dev/about-qr-provenance.json`.
+JVM asset-decoding tests use ZXing Core 3.5.4 (Apache-2.0), which is test-only and
+not included in the APK: https://github.com/zxing/zxing/releases/tag/zxing-3.5.4.

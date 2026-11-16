@@ -75,6 +75,7 @@ public class MainActivity extends Activity {
         final int pageCount;
         final int pageSize, gridColumns;
         final boolean compactCards, paletteGrid;
+        final Runnable panelRenderer;
         int page, focusedChoice;
         MenuSpec(String title, String subtitle, String[] labels,
                  java.util.function.IntConsumer action, int selectedIndex) {
@@ -83,8 +84,17 @@ public class MainActivity extends Activity {
         MenuSpec(String title, String subtitle, String[] labels,
                  java.util.function.IntConsumer action, int selectedIndex,
                  int pageSize, int gridColumns, boolean compactCards, boolean paletteGrid) {
+            this(title, subtitle, labels, action, selectedIndex, pageSize, gridColumns, compactCards, paletteGrid, null);
+        }
+        MenuSpec(String title, Runnable panelRenderer) {
+            this(title, "", new String[0], ignored -> {}, -1, MENU_PAGE_SIZE, 4, false, false, panelRenderer);
+        }
+        private MenuSpec(String title, String subtitle, String[] labels,
+                 java.util.function.IntConsumer action, int selectedIndex,
+                 int pageSize, int gridColumns, boolean compactCards, boolean paletteGrid, Runnable panelRenderer) {
             this.title = title; this.subtitle = subtitle; this.labels = labels;
             this.action = action; this.selectedIndex = selectedIndex;
+            this.panelRenderer = panelRenderer;
             this.pageSize = pageSize; this.gridColumns = gridColumns; this.compactCards = compactCards;
             this.paletteGrid = paletteGrid;
             pageCount = Math.max(1, (labels.length + pageSize - 1) / pageSize);
@@ -138,6 +148,7 @@ public class MainActivity extends Activity {
     private FrameLayout undoBanner;
     private TextView undoButton;
     private TextView aboutBackButton;
+    private TextView backgroundStatusText;
     private SharedPreferences preferences;
     private HomeLayout layout;
     private String lastSavedLayout;
@@ -201,8 +212,8 @@ public class MainActivity extends Activity {
     private boolean reopenLanguageSettings;
     private void languageSettings() {
         String current = AppLanguage.mode(this);
-        menu(getString(R.string.hb_language), current.isEmpty() ? getString(R.string.hb_follow_device) : "th".equals(current) ? "ไทย" : "English",
-                new String[]{"English", "ไทย", getString(R.string.hb_follow_device), getString(R.string.hb_back)}, choice -> {
+        menu(getString(R.string.hb_language), current.isEmpty() ? getString(R.string.hb_follow_device) : "th".equals(current) ? getString(R.string.hb_thai) : getString(R.string.hb_english),
+                new String[]{getString(R.string.hb_english), getString(R.string.hb_thai), getString(R.string.hb_follow_device), getString(R.string.hb_back)}, choice -> {
             if (choice == 3) { homeSettings(); return; }
             String mode = new String[]{"en", "th", ""}[choice];
             if (mode.equals(current)) { homeSettings(); return; }
@@ -1295,7 +1306,7 @@ public class MainActivity extends Activity {
             }
             return true;
         }
-        if (backgroundInfo) {
+        if (activeMenu != null && activeMenu.panelRenderer != null) {
             if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
                 if (event.getAction() == KeyEvent.ACTION_UP) backMenu();
                 return true;
@@ -1707,6 +1718,14 @@ public class MainActivity extends Activity {
         }, selected);
     }
 
+    private void solidColorSettings() {
+        cancelWallpaperPreview();
+        beginUndoGroup("Changed solid background");
+        layout.wallpaper.component = ""; layout.wallpaper.uuid = "";
+        save(getString(R.string.hb_hint_background_solid_color)); syncBackground(); render(0);
+        colorPaletteSettings();
+    }
+
     private void applyBackgroundChoice() {
         background = paletteColor(); paletteColors = PaletteColors.from(background);
         setAirPalette();
@@ -1965,14 +1984,12 @@ public class MainActivity extends Activity {
     }
 
     private void aboutHomeboard() {
-        showAboutDialog();
+        openMenu(new MenuSpec(getString(R.string.hb_about_homeboard_tv), this::showAboutDialog));
     }
     private void showAboutDialog() {
-        if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
-        dismissMenu(); cancelOk();
+        if (overlay != null) root.removeView(overlay);
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
-        activeMenu = null; menuGeneration++;
         hideAppFocusHighlight();
         overlay = new FrameLayout(this);
         overlay.setBackgroundColor(paletteColors.scrim);
@@ -1980,14 +1997,14 @@ public class MainActivity extends Activity {
 
         LinearLayout panel = new LinearLayout(this);
         panel.setOrientation(LinearLayout.VERTICAL);
-        panel.setPadding(dp(30), dp(24), dp(30), dp(18));
+        panel.setPadding(dp(26), dp(18), dp(26), dp(14));
         panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
         LinearLayout heading = new LinearLayout(this);
         heading.setOrientation(LinearLayout.HORIZONTAL); heading.setGravity(Gravity.CENTER_VERTICAL);
         ImageView icon = new ImageView(this);
         try { icon.setImageDrawable(getPackageManager().getApplicationIcon(getPackageName())); }
         catch (PackageManager.NameNotFoundException ignored) { }
-        heading.addView(icon, new LinearLayout.LayoutParams(dp(76), dp(76)));
+        heading.addView(icon, new LinearLayout.LayoutParams(dp(56), dp(56)));
         LinearLayout titleBlock = new LinearLayout(this);
         titleBlock.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams titleBlockLp = new LinearLayout.LayoutParams(0, -2, 1f);
@@ -1996,10 +2013,10 @@ public class MainActivity extends Activity {
         TextView version = text(getString(R.string.hb_version) + appVersion() + getString(R.string.hb_hint_your_apps_and_widgets_arranged_your_way), 16);
         version.setTextColor(paletteColors.muted);
         titleBlock.addView(title); titleBlock.addView(version);
-        panel.addView(heading, new LinearLayout.LayoutParams(-1, dp(90)));
+        panel.addView(heading, new LinearLayout.LayoutParams(-1, dp(72)));
 
-        TextView purpose = text(getString(R.string.hb_a_customizable_home_screen_for_your_tv_built_on_cleanyourtv), 18);
-        purpose.setPadding(0, dp(14), 0, dp(16));
+        TextView purpose = text(getString(R.string.hb_a_customizable_home_screen_for_your_tv_built_on_cleanyourtv), 16);
+        purpose.setPadding(0, dp(8), 0, dp(8));
         panel.addView(purpose);
         TextView sourcesHeading = text(getString(R.string.hb_project_sources_licenses), 13);
         sourcesHeading.setTextColor(paletteColors.focus); sourcesHeading.setTypeface(null, Typeface.BOLD);
@@ -2007,27 +2024,23 @@ public class MainActivity extends Activity {
 
         LinearLayout sourceGrid = new LinearLayout(this);
         sourceGrid.setOrientation(LinearLayout.VERTICAL);
-        String[][] sources = {
-                {getString(R.string.hb_homeboard_tv_source), getString(R.string.hb_project_repository), "https://github.com/wbniv/homeboard-tv"},
-                {getString(R.string.hb_cleanyourtv_source), "Launcher foundation · MIT", "https://github.com/Gathin23/cleanyourtv"},
-                {"Outfit font", "Font source · SIL Open Font License", "https://github.com/google/fonts/tree/main/ofl/outfit"},
-                {"AndroidX", "Library source · Apache License 2.0", "https://github.com/androidx/androidx"}
-        };
+        AboutSource[] sources = AboutSource.values();
         for (int row = 0; row < 2; row++) {
             LinearLayout sourceRow = new LinearLayout(this);
             sourceRow.setOrientation(LinearLayout.HORIZONTAL);
             for (int column = 0; column < 2; column++) {
-                String[] source = sources[row * 2 + column];
-                View link = aboutSourceLink(source[0], source[1], source[2]);
-                LinearLayout.LayoutParams linkLp = new LinearLayout.LayoutParams(0, dp(72), 1f);
+                View link = aboutSourceLink(sources[row * 2 + column]);
+                LinearLayout.LayoutParams linkLp = new LinearLayout.LayoutParams(0, dp(56), 1f);
                 linkLp.setMargins(column == 0 ? 0 : dp(10), dp(4), column == 0 ? dp(5) : 0, dp(4));
                 sourceRow.addView(link, linkLp);
             }
-            sourceGrid.addView(sourceRow, new LinearLayout.LayoutParams(-1, dp(80)));
+            sourceGrid.addView(sourceRow, new LinearLayout.LayoutParams(-1, dp(64)));
         }
         panel.addView(sourceGrid);
-        TextView wallpaperCredits = text("Projectivy wallpaper API · Spocky · Apache-2.0\nLottie Android · Airbnb · Apache-2.0", 13);
+        TextView wallpaperCredits = text("Projectivy wallpaper API · Spocky · Apache-2.0\nLottie Android · Airbnb · Apache-2.0", 12);
         wallpaperCredits.setPadding(0, dp(6), 0, 0); panel.addView(wallpaperCredits);
+        TextView linkHint = text("Select a source to show its web address and phone QR code.", 13);
+        linkHint.setPadding(0, dp(6), 0, 0); panel.addView(linkHint);
 
         TextView closeText = text(getString(R.string.hb_hint_back), 15); closeText.setTypeface(null, Typeface.BOLD);
         closeText.setTextColor(paletteColors.text); closeText.setGravity(Gravity.CENTER);
@@ -2044,19 +2057,62 @@ public class MainActivity extends Activity {
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));
         closeText.requestFocus();
     }
-    private View aboutSourceLink(String title, String detail, String url) {
+    private View aboutSourceLink(AboutSource source) {
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setGravity(Gravity.CENTER_VERTICAL);
         card.setPadding(dp(14), dp(7), dp(14), dp(7));
         card.setBackground(tileBackground());
         card.setFocusable(true); card.setClickable(true);
-        card.setContentDescription(title + ". " + detail + getString(R.string.hb_hint_open_source_link));
-        TextView heading = text(title + "  ↗", 17); heading.setTypeface(null, Typeface.BOLD);
-        TextView caption = text(detail, 13); caption.setTextColor(paletteColors.muted);
+        card.setContentDescription(source.title + ". " + source.detail + ". Show web address and phone QR code.");
+        TextView heading = text(source.title + "  →", 17); heading.setTypeface(null, Typeface.BOLD);
+        TextView caption = text(source.detail, 13); caption.setTextColor(paletteColors.muted);
         card.addView(heading); card.addView(caption);
-        card.setOnClickListener(v -> open(new Intent(Intent.ACTION_VIEW, Uri.parse(url))));
+        card.setOnClickListener(v -> openMenu(new MenuSpec(source.title, () -> showAboutSource(source))));
         return card;
+    }
+    private Intent sourceIntent(AboutSource source) {
+        return new Intent(Intent.ACTION_VIEW, Uri.parse(source.url)).addCategory(Intent.CATEGORY_BROWSABLE);
+    }
+    private void showAboutSource(AboutSource source) {
+        if (overlay != null) root.removeView(overlay);
+        overlay = new FrameLayout(this); overlay.setBackgroundColor(paletteColors.scrim);
+        LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL);
+        panel.setPadding(dp(26), dp(22), dp(26), dp(20));
+        panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
+        TextView title = text(source.title, 26); title.setTypeface(null, Typeface.BOLD);
+        panel.addView(title, new LinearLayout.LayoutParams(-1, dp(44)));
+        LinearLayout body = new LinearLayout(this); body.setGravity(Gravity.CENTER_VERTICAL);
+        ImageView qr = new ImageView(this); qr.setImageResource(source.qrResource);
+        qr.setContentDescription("QR code for " + source.url); qr.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        if (qr.getDrawable() instanceof android.graphics.drawable.BitmapDrawable)
+            ((android.graphics.drawable.BitmapDrawable) qr.getDrawable()).setFilterBitmap(false);
+        body.addView(qr, new LinearLayout.LayoutParams(dp(240), dp(240)));
+        LinearLayout words = new LinearLayout(this); words.setOrientation(LinearLayout.VERTICAL);
+        words.setPadding(dp(28), 0, 0, 0);
+        words.addView(text("Open on your phone", 22));
+        words.addView(text("Scan the QR code with your phone's camera.", 17));
+        TextView address = text(source.url, 16); address.setTextIsSelectable(false);
+        address.setPadding(0, dp(18), 0, dp(18)); words.addView(address);
+        TextView status = text(source.detail, 15); status.setTextColor(paletteColors.muted); words.addView(status);
+        if (getPackageManager().resolveActivity(sourceIntent(source), PackageManager.MATCH_DEFAULT_ONLY) != null) {
+            TextView openOnTv = infoButton("Open on this TV", () -> {
+                try { startActivity(sourceIntent(source)); }
+                catch (RuntimeException unavailable) { status.setText("This TV could not open the page. Scan the QR code with your phone."); }
+            });
+            LinearLayout.LayoutParams openLp = new LinearLayout.LayoutParams(-1, dp(52)); openLp.topMargin = dp(14);
+            words.addView(openOnTv, openLp);
+        } else {
+            status.setText(source.detail + "\nNo web browser is available on this TV. Scan with your phone.");
+        }
+        body.addView(words, new LinearLayout.LayoutParams(0, -2, 1));
+        panel.addView(body, new LinearLayout.LayoutParams(-1, dp(260)));
+        aboutBackButton = infoButton("Back to About", this::backMenu);
+        LinearLayout.LayoutParams backLp = new LinearLayout.LayoutParams(-2, dp(48)); backLp.topMargin = dp(12);
+        panel.addView(aboutBackButton, backLp);
+        int width = Math.min(dp(880), getResources().getDisplayMetrics().widthPixels - dp(64));
+        overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
+        root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); aboutBackButton.requestFocus();
     }
     private boolean isDefaultHomeApp() {
         if (android.os.Build.VERSION.SDK_INT >= 29) {
@@ -2125,7 +2181,7 @@ public class MainActivity extends Activity {
         openMenu(new MenuSpec(title, subtitle, labels, action, selectedIndex, labels.length, 4, true, true));
     }
     private void openMenu(MenuSpec spec) {
-        if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
+        if (activeMenu != null && (invokingMenuAction || activeMenu.panelRenderer != null)) menuStack.add(activeMenu);
         else menuStack.clear();
         dismissMenu(); cancelOk();
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
@@ -2141,6 +2197,7 @@ public class MainActivity extends Activity {
         String[] labels = spec.labels;
         int selectedIndex = spec.selectedIndex, pageCount = spec.pageCount;
         spec.page = page;
+        if (spec.panelRenderer != null) { spec.panelRenderer.run(); return; }
         if (!spec.paletteGrid) {
             showPieMenuPage(spec, page, focusChoice);
             return;
@@ -2519,6 +2576,7 @@ public class MainActivity extends Activity {
     }
     private void dismissMenu() {
         backgroundInfo = false;
+        backgroundStatusText = null;
         if (overlay == null) return;
         if (activeMenu != null && activeMenu.paletteGrid) finishUndoGroup();
         root.removeView(overlay); overlay = null;
@@ -2541,6 +2599,7 @@ public class MainActivity extends Activity {
         if (!menuStack.isEmpty()) {
             dismissMenu();
             activeMenu = menuStack.remove(menuStack.size() - 1);
+            if (getString(R.string.hb_background).equals(activeMenu.title)) activeMenu = backgroundMenuSpec();
             showMenuPage(activeMenu, activeMenu.page, activeMenu.focusedChoice);
         } else {
             dismissMenu(); activeMenu = null;
@@ -2589,15 +2648,22 @@ public class MainActivity extends Activity {
         wallpaperHost.appFocused(app.label, app.component.getPackageName(), light, dark);
     }
     private void backgroundSettings() {
-        menu(getString(R.string.hb_background), layout.wallpaper.solid() ? getString(R.string.hb_solid_color) : getString(R.string.hb_projectivy_wallpaper_provider_selected),
-                new String[]{getString(R.string.hb_solid_color), getString(R.string.hb_projectivy_plugins), getString(R.string.hb_background_details), getString(R.string.hb_retry_provider)}, choice -> {
-                    if (choice == 0) {
-                        cancelWallpaperPreview(); layout.wallpaper.component = ""; layout.wallpaper.uuid = "";
-                        save(getString(R.string.hb_hint_background_solid_color)); syncBackground(); render(0);
-                    } else if (choice == 1) providerList();
+        openMenu(backgroundMenuSpec());
+    }
+    private MenuSpec backgroundMenuSpec() {
+        String[] choices = layout.wallpaper.solid()
+                ? new String[]{getString(R.string.hb_status_solid_color), getString(R.string.hb_projectivy_plugins), getString(R.string.hb_background_details)}
+                : new String[]{getString(R.string.hb_status_solid_color), getString(R.string.hb_projectivy_plugins), getString(R.string.hb_background_details), getString(R.string.hb_retry_provider)};
+        return new MenuSpec(getString(R.string.hb_background), layout.wallpaper.solid() ? getString(R.string.hb_status_solid_color) : getString(R.string.hb_projectivy_wallpaper_provider_selected),
+                choices, choice -> {
+                    if (choice == 0) solidColorSettings();
+                    else if (choice == 1) providerList();
                     else if (choice == 2) backgroundDetails();
-                    else { wallpaperHost.refresh(); backgroundDetails(); }
-                });
+                    else {
+                        if (layout.wallpaper.solid()) { providerList(); return; }
+                        cancelWallpaperPreview(); syncBackground(); wallpaperHost.refresh(); backgroundDetails();
+                    }
+                }, -1);
     }
     private void providerList() {
         List<ProjectivyProviderRegistry.Provider> providers = new ProjectivyProviderRegistry(this).discover();
@@ -2652,6 +2718,7 @@ public class MainActivity extends Activity {
         } else openMenu(spec);
     }
     private void refreshProviderDetails() {
+        if (backgroundInfo && backgroundStatusText != null) backgroundStatusText.setText(backgroundInfoText());
         if (!closed && activeMenu != null && getString(R.string.hb_provider_background).equals(activeMenu.title)
                 && overlay != null && wallpaperProvider != null) providerDetails(wallpaperProvider, true);
     }
@@ -2672,9 +2739,33 @@ public class MainActivity extends Activity {
                 });
     }
     private void backgroundDetails() {
+        openMenu(new MenuSpec(getString(R.string.hb_background_details), this::drawBackgroundDetails));
+    }
+    private String backgroundInfoText() {
+        WallpaperSettings selected = wallpaperDraft != null && wallpaperPreviewStarted ? wallpaperDraft : layout.wallpaper;
+        String info;
+        if (selected.solid()) {
+            info = "Source: Solid color\nPalette: " + layout.palette + String.format(java.util.Locale.ROOT, " · #%06X", background & 0xffffff);
+        } else {
+            ProjectivyProviderRegistry.Provider provider = wallpaperProvider;
+            if (provider == null || !provider.component.flattenToString().equals(selected.component))
+                provider = new ProjectivyProviderRegistry(this).find(selected);
+            info = "Source: " + (provider == null ? "Missing provider" : provider.name)
+                    + "\n" + wallpaperStatus;
+            if (provider != null && !provider.usable()) info += "\n" + provider.readiness();
+        }
+        info += "\nUI background opacity: " + layout.uiOpacityPercent + "%";
+        if (!selected.solid() && layout.uiOpacityPercent == 100) info += " · covers wallpaper";
         tv.projectivy.plugin.wallpaperprovider.api.Wallpaper item = displayedWallpaper;
-        if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
-        dismissMenu(); activeMenu = null; menuGeneration++; backgroundInfo = true;
+        if (item != null && !selected.solid()) info += getString(R.string.hb_hint_ntitle) + (item.getTitle() == null ? getString(R.string.hb_untitled) : item.getTitle())
+                + getString(R.string.hb_hint_nauthor) + (item.getAuthor() == null ? getString(R.string.hb_not_provided) : item.getAuthor())
+                + getString(R.string.hb_hint_nsource) + (item.getSource() == null ? getString(R.string.hb_not_provided) : item.getSource());
+        return info;
+    }
+    private void drawBackgroundDetails() {
+        tv.projectivy.plugin.wallpaperprovider.api.Wallpaper item = displayedWallpaper;
+        if (overlay != null) root.removeView(overlay);
+        backgroundInfo = true;
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         overlay = new FrameLayout(this); overlay.setBackgroundColor(paletteColors.scrim);
         LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL);
@@ -2683,19 +2774,16 @@ public class MainActivity extends Activity {
         panelFill.setFillOpacity(WallpaperSettings.PIE_BACKGROUND_OPACITY);
         panel.setBackground(panelFill);
         panel.addView(text(getString(R.string.hb_background_details), 24), new LinearLayout.LayoutParams(-1, -2));
-        String info = wallpaperStatus;
-        if (wallpaperProvider != null) info += "\n" + wallpaperProvider.name + " · " + wallpaperProvider.readiness();
-        if (item != null) info += getString(R.string.hb_hint_ntitle) + (item.getTitle() == null ? getString(R.string.hb_untitled) : item.getTitle())
-                + getString(R.string.hb_hint_nauthor) + (item.getAuthor() == null ? getString(R.string.hb_not_provided) : item.getAuthor())
-                + getString(R.string.hb_hint_nsource) + (item.getSource() == null ? getString(R.string.hb_not_provided) : item.getSource());
-        TextView details = text(info, 18); details.setMaxLines(8); details.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        TextView details = text(backgroundInfoText(), 18); details.setMaxLines(8); details.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        backgroundStatusText = details;
         LinearLayout.LayoutParams detailLp = new LinearLayout.LayoutParams(-1, -2); detailLp.topMargin = dp(16); panel.addView(details, detailLp);
         LinearLayout buttons = new LinearLayout(this); buttons.setGravity(Gravity.CENTER_VERTICAL);
         if (item != null && item.getActionUri() != null) {
             TextView link = infoButton(getString(R.string.hb_open_wallpaper_link), () -> openWallpaperLink(item.getActionUri()));
             buttons.addView(link, new LinearLayout.LayoutParams(0, dp(60), 1));
         }
-        buttons.addView(infoButton(getString(R.string.hb_choose_background), this::backgroundSettings), new LinearLayout.LayoutParams(0, dp(60), 1));
+        buttons.addView(infoButton("Choose color", this::solidColorSettings), new LinearLayout.LayoutParams(0, dp(60), 1));
+        buttons.addView(infoButton("Choose provider", this::providerList), new LinearLayout.LayoutParams(0, dp(60), 1));
         aboutBackButton = infoButton(getString(R.string.hb_back), this::backMenu);
         buttons.addView(aboutBackButton, new LinearLayout.LayoutParams(0, dp(60), 1));
         LinearLayout.LayoutParams buttonsLp = new LinearLayout.LayoutParams(-1, dp(64)); buttonsLp.topMargin = dp(16); panel.addView(buttons, buttonsLp);
@@ -2721,7 +2809,7 @@ public class MainActivity extends Activity {
     }
     private void startAdjustment(String title, int original, java.util.function.IntConsumer preview,
                                  java.util.function.IntConsumer commit) {
-        dismissMenu(); menuStack.clear(); activeMenu = null; menuGeneration++;
+        dismissMenu(); activeMenu = null; menuGeneration++;
         adjustmentTitle = title; adjustmentValue = original; adjustmentPreview = preview; adjustmentCommit = commit;
         adjustmentCancel = () -> { preview.accept(original); };
         adjustmentArm = arm -> {

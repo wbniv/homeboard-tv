@@ -64,6 +64,7 @@ dependencies {
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
     // Test only (never in the APK): plain JVM tests for the module card validators, src/test.
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'com.google.zxing:core:3.5.4'
     testImplementation 'org.json:json:20240303'
 }
 

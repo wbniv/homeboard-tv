@@ -210,3 +210,12 @@ English/Thai device preference, with English as the fallback. This setting chang
 Homeboard's interface; installed apps and Android-owned screens retain their own
 language settings. Thai copy and TV rendering still require the acceptance checks
 listed in the [worktree validation record](../testing/2026-11-16-thai-language.md).
+
+## Source links on a TV
+
+Home settings → About Homeboard TV lists the project, CleanYourTV, Outfit font
+and AndroidX sources. Select one with the remote to show its exact web address
+and a QR code. Scan with a phone camera to open it there. When Android finds a
+web-link handler, Open on this TV is also available. A TV without a browser keeps
+the QR code and address visible. Back to About returns to the source list; Back
+from About returns to Home settings.
