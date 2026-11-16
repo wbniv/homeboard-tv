@@ -43,6 +43,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
     private final List<String> passed = new ArrayList<>();
     private final List<Bitmap> shots = new ArrayList<>();
     private Map<String, ?> original;
+    private String originalLanguage;
     private ProjectivyProviderRegistry.Provider fixture;
     private int index, undoBeforeRetry, undoBeforeSolid;
     private long deadline;
@@ -70,6 +71,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         return super.getSharedPreferences(name, mode);
     }
     @Override protected void onCreate(Bundle state) {
+        originalLanguage = AppLanguage.mode(this);
         try {
             original = new LinkedHashMap<>(super.getSharedPreferences("widget-home", MODE_PRIVATE).getAll());
             String saved = (String) original.get("layout");
@@ -86,7 +88,10 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
                         .orElseThrow(() -> new IllegalStateException("Offline provider missing"));
                 for (boolean apps : new boolean[]{false, true}) addSurfaceCases(apps);
                 addProviderCases(); addAboutCases();
-                add("Real user settings remain unchanged", this::closeMenus, () -> require(original.equals(super.getSharedPreferences("widget-home", MODE_PRIVATE).getAll()), "Tests changed Will's settings"));
+                add("Real user settings remain unchanged", this::closeMenus, () -> {
+                    require(original.equals(super.getSharedPreferences("widget-home", MODE_PRIVATE).getAll()), "Tests changed Will's settings");
+                    require(originalLanguage.equals(AppLanguage.mode(this)), "Tests changed Will's language");
+                });
                 next();
             } catch (Exception error) { fail(error); }
         }, 12_000);
@@ -124,6 +129,11 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         int[] arms = {KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_DPAD_DOWN, KeyEvent.KEYCODE_DPAD_LEFT};
         key(arms[choice % size]);
     }
+    private void chooseLabel(String label) throws Exception {
+        String[] labels = (String[]) get(menu(), "labels");
+        for (int i = 0; i < labels.length; i++) if (label.equals(labels[i])) { choose(i); return; }
+        throw new IllegalStateException("Missing menu action " + label);
+    }
     private void closeMenus() throws Exception {
         for (int i = 0; get("overlay") != null && i < 15; i++) key(KeyEvent.KEYCODE_BACK);
         require(get("overlay") == null, "Back did not close menus");
@@ -132,7 +142,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         closeMenus(); key(KeyEvent.KEYCODE_MENU); choose(1); choose(0); expectMenu("Background");
     }
     private void undo() throws Exception {
-        closeMenus(); key(KeyEvent.KEYCODE_MENU); choose(3); expectMenu("Undo history"); choose(0);
+        closeMenus(); key(KeyEvent.KEYCODE_MENU); chooseLabel(getString(R.string.hb_undo_history)); expectMenu("Undo history"); choose(0);
     }
     private int undoCount() throws Exception {
         return new JSONArray(getSharedPreferences("widget-home", MODE_PRIVATE).getString("undo_history", "[]")).length();
@@ -265,7 +275,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         require(panel.getTop() >= 0 && panel.getBottom() <= overlay.getHeight(), "Native panel extends beyond TV viewport");
     }
     private void addAboutCases() {
-        add("About is visible and fits TV", () -> { closeMenus(); key(KeyEvent.KEYCODE_MENU); choose(5); }, () -> { expectMenu("About Homeboard TV"); panelFits(); });
+        add("About is visible and fits TV", () -> { closeMenus(); key(KeyEvent.KEYCODE_MENU); chooseLabel(getString(R.string.hb_about_homeboard_tv)); }, () -> { expectMenu("About Homeboard TV"); panelFits(); });
         for (AboutSource source : AboutSource.values()) {
             add(source.name() + ": remote OK opens source", () -> {
                 View card = sourceCard((View) get("overlay"), source); require(card != null && card.requestFocus(), "Source card missing");
