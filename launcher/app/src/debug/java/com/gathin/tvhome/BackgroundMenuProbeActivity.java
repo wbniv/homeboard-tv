@@ -226,10 +226,13 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         });
         add("Provider to Solid opens picker", () -> { undoBeforeSolid = undoCount(); click("Choose color"); }, () -> { expectMenu("Palette"); require(layout().wallpaper.solid(), "Solid did not stop provider"); });
         add("Source and color create one Undo", () -> {
-            key(KeyEvent.KEYCODE_DPAD_RIGHT); key(KeyEvent.KEYCODE_BACK); expectMenu("Background details"); click("Back");
+            key(KeyEvent.KEYCODE_DPAD_RIGHT); key(KeyEvent.KEYCODE_BACK);
         }, () -> {
-            expectMenu("Background"); require(((String[]) get(menu(), "labels")).length == 3, "Background retained stale Retry");
+            expectMenu("Background details");
             require(undoCount() == undoBeforeSolid + 1, "Source and color were split into multiple changes");
+        });
+        add("Returning refreshes source actions", () -> click("Back"), () -> {
+            expectMenu("Background"); require(((String[]) get(menu(), "labels")).length == 3, "Background retained stale Retry");
         });
         add("Undo restores provider plus color", this::undo, () -> require(fixture.component.flattenToString().equals(layout().wallpaper.component)
                 && "forest".equals(layout().palette), "Undo did not restore provider and palette together"));
