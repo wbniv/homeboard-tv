@@ -73,14 +73,13 @@ remove it using raw ADB or alter the shared coordinator to bypass its guard.
 
 ## Iterative install target
 
-Will moved iterative testing to **cast2** (`chromecast-test-02`) on 16 November
-2026. After each working APK iteration, check devices and queue, then register
-the new APK hash and install it through a complete coordinator-owned job,
-preserving data/settings. The coordinator currently pauses Cast2 for another
-owner's personal use; wait until that reservation clears before submitting.
-Cast1 (`chromecast-test-01`) is the previous target and is recovery-required
-after a location permission dialog interrupted foreground restoration. Do not
-bypass either state. Installation does not select Homeboard as the default Home app.
+Keep iterative installs on **Cast1** (`chromecast-test-01`) while Will is testing
+Homeboard. Once Will says it is usable, move iterative testing to Cast2
+(`chromecast-test-02`). After each working APK iteration, check devices and
+queue, then register the new APK hash and install it through a complete
+coordinator-owned job, preserving data/settings. Do not use Cast2 while its
+personal-use reservation is active. Installation does not select Homeboard as
+the default Home app.
 
 Use `dev/device/iteration-check.json` for the current install/brief-launch cycle
 while Will tests interactively. It sends no scripted navigation. Historical menu

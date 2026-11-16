@@ -25,10 +25,9 @@ docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
 
 ## Will's iterative TV testing
 
-Will has explicitly moved iterative Homeboard testing to `chromecast-test-02`
-(cast2). Install each working APK through the shared coordinator after it reports
-the device available; preserve app data and settings. Cast2 is currently paused
-for another owner's personal use, so do not submit an install until that
-reservation clears. Cast1 (`chromecast-test-01`) remains the previous test device
-and is currently recovery-required. Do not change the default Home app merely to
-install a build.
+Keep iterative Homeboard testing on Cast1 (`chromecast-test-01`) while Will is
+still testing the app. After Will says it is usable, move iterative testing to
+Cast2 (`chromecast-test-02`). Install each working APK through the shared
+coordinator and preserve app data and settings. Do not use Cast2 while it is
+reserved for personal use. Do not change the default Home app merely to install
+a build.

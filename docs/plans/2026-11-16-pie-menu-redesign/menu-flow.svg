@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" role="img" aria-labelledby="title desc">
+  <title id="title">Homeboard TV compass menu flow</title>
+  <desc id="desc">Directional choices either apply a reversible Homeboard action or drill into another menu. Grid rows and columns use bounded controls. Back returns to the caller; Android owns uninstall confirmation.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 z" fill="#82b9dd"/>
+    </marker>
+    <style>
+      .bg { fill:#0b1118 }
+      .node { fill:#1a2732; stroke:#58748a; stroke-width:2 }
+      .leaf { fill:#18362f; stroke:#58a88d; stroke-width:2 }
+      .grid { fill:#243241; stroke:#d4ad67; stroke-width:2 }
+      .title { fill:#f3f6f8; font:700 22px Arial,sans-serif }
+      .sub { fill:#b4c2ce; font:16px Arial,sans-serif }
+      .small { fill:#8fb5cf; font:14px Arial,sans-serif }
+      .line { fill:none; stroke:#82b9dd; stroke-width:2.5; marker-end:url(#arrow) }
+      .back { fill:none; stroke:#91a0ad; stroke-width:2; stroke-dasharray:8 6; marker-end:url(#arrow) }
+    </style>
+  </defs>
+  <rect class="bg" width="1280" height="620" rx="18"/>
+
+  <rect class="node" x="42" y="238" width="170" height="135" rx="18"/>
+  <text class="title" x="127" y="273" text-anchor="middle">Home</text>
+  <text class="sub" x="127" y="307" text-anchor="middle">sliders → Homeboard</text>
+  <text class="sub" x="127" y="338" text-anchor="middle">gear → Android</text>
+
+  <rect class="node" x="280" y="55" width="230" height="150" rx="75"/>
+  <text class="title" x="395" y="112" text-anchor="middle">Context pie</text>
+  <text class="sub" x="395" y="143" text-anchor="middle">4 compass choices</text>
+  <text class="small" x="395" y="171" text-anchor="middle">leaf = act · branch = drill in</text>
+
+  <rect class="node" x="280" y="245" width="230" height="150" rx="75"/>
+  <text class="title" x="395" y="302" text-anchor="middle">Homeboard settings</text>
+  <text class="sub" x="395" y="333" text-anchor="middle">Appearance · Widgets · Undo</text>
+  <text class="small" x="395" y="361" text-anchor="middle">More at center · Back returns</text>
+
+  <rect class="leaf" x="610" y="50" width="240" height="100" rx="18"/>
+  <text class="title" x="730" y="91" text-anchor="middle">Move / Favorite</text>
+  <text class="sub" x="730" y="121" text-anchor="middle">direct, reversible action</text>
+
+  <rect class="node" x="610" y="175" width="240" height="105" rx="18"/>
+  <text class="title" x="730" y="218" text-anchor="middle">Organize pie</text>
+  <text class="sub" x="730" y="248" text-anchor="middle">Delete · Uninstall · Info</text>
+
+  <rect class="node" x="610" y="315" width="240" height="105" rx="18"/>
+  <text class="title" x="730" y="358" text-anchor="middle">Appearance pie</text>
+  <text class="sub" x="730" y="388" text-anchor="middle">Background · Shape · Icons</text>
+
+  <rect class="grid" x="930" y="300" width="300" height="145" rx="18"/>
+  <text class="title" x="1080" y="334" text-anchor="middle">Background color grid</text>
+  <g transform="translate(954 353)">
+    <rect width="52" height="28" rx="6" fill="#101a2a"/><rect x="62" width="52" height="28" rx="6" fill="#17382d"/>
+    <rect x="124" width="52" height="28" rx="6" fill="#123b51"/><rect x="186" width="52" height="28" rx="6" fill="#3c213e"/>
+    <rect y="38" width="52" height="28" rx="6" fill="#59422f"/><rect x="62" y="38" width="52" height="28" rx="6" fill="#542c3b"/>
+    <rect x="124" y="38" width="52" height="28" rx="6" fill="#0c3f42"/><rect x="186" y="38" width="52" height="28" rx="6" fill="#303b49"/>
+  </g>
+  <text class="small" x="1080" y="433" text-anchor="middle">4 × 5 · full-card swatches · preview on focus</text>
+
+  <rect class="leaf" x="930" y="80" width="300" height="105" rx="18"/>
+  <text class="title" x="1080" y="123" text-anchor="middle">Delete shortcut</text>
+  <text class="sub" x="1080" y="153" text-anchor="middle">Remove now · Undo restores it</text>
+
+  <path class="line" d="M212 278 C240 260 252 150 280 140"/>
+  <path class="line" d="M212 322 C242 340 250 320 280 320"/>
+  <path class="line" d="M510 112 C552 94 566 95 610 96"/>
+  <path class="line" d="M510 150 C554 185 565 220 610 225"/>
+  <path class="line" d="M850 225 C892 190 896 150 930 135"/>
+  <path class="line" d="M510 320 C554 344 565 362 610 365"/>
+  <path class="line" d="M850 365 C890 365 895 365 930 365"/>
+  <path class="back" d="M1090 480 C980 570 530 570 415 400"/>
+
+  <rect class="node" x="930" y="475" width="300" height="70" rx="16"/>
+  <text class="title" x="1080" y="505" text-anchor="middle">Bounded grid controls</text>
+  <text class="small" x="1080" y="529" text-anchor="middle">Rows / columns stop at supported limits</text>
+  <path class="line" d="M510 350 C610 450 760 505 930 510"/>
+  <text class="small" x="650" y="588" text-anchor="middle">Back returns to the caller · Undo reverses Homeboard changes · Android confirms uninstall</text>
+</svg>

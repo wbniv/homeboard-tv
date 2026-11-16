@@ -1,11 +1,10 @@
 # Flexible Home grid
 
-**Status: PM2.5 30D capture reviewed on Cast1; current device target is Cast2 · 16 November 2026**
+**Status: PM2.5 30D capture reviewed on Cast1; iterative testing remains on Cast1 until Will says Homeboard is usable, then moves to Cast2 · 16 November 2026**
 
-Will moved the iterative test target to Cast2 on 16 November. The coordinator
-currently reports Cast2 paused for another owner's personal use, so the next
-install must wait for that reservation to clear. Earlier Cast1 screenshots and
-jobs below remain historical evidence.
+Keep iterative installs on Cast1 while Will is still testing Homeboard. Move to
+Cast2 after Will says the app is usable. Cast2 is currently reserved for personal
+use; its earlier status does not change the active Cast1 test target.
 
 Replace the fixed 2 × 2 dashboard placement with a responsive, configurable grid.
 Home favorites should pack like launcher icons instead of reserving a quarter of
@@ -21,7 +20,9 @@ the screen apiece. Widgets can span multiple cells and rows so they remain usefu
   maximum instead of a short, arbitrary preset list.
 - App favorites occupy 1 × 1 cells and keep 48 dp circular launcher icons, 16 sp
   labels, transparent cell backgrounds and a matching-shape glass focus highlight
-  with one screen pixel of clearance around the icon mask.
+  with one physical screen pixel of clear space between the focused icon mask
+  and highlight rim. The focus tile scales to 108%, so size the circle around
+  that scaled icon and add one physical pixel for the gap.
 - The air-quality widget spans two rows by default. Small, Medium and Large adjust
   widget spans relative to the selected grid; the placement algorithm packs
   favorites around each panel.

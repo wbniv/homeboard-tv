@@ -17,6 +17,7 @@ missing rows on commit.*
 | [About dialog, free grid placement and per-widget air quality](2026-11-16-about-move-air-widgets.md) | Tracks the About view, free grid placement and independent location-aware air widgets. | [`b2c5553`](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | Feature |
 | [Palette-driven surfaces, condition trends and directional panel resizing](2026-11-16-palette-trend-resize.md) | Tracks palette-derived UI, condition-colored PM2.5 trends, panel resize and current Cast2 verification blocker. | [`b2c5553`](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | Feature |
 | [PM2.5 30-day history and sparklines](2026-11-16-pm25-30-day-sparkline.md) | Adds a bounded 30-day history and condition-colored 24-hour and 30-day traces. | [`b2c5553`](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | Feature |
+| [Compass pie menu redesign](2026-11-16-pie-menu-redesign.md) | Replaces card menus with compass choices, then revises reversible actions around Undo, bounded grid controls, clearer Restore wording and an About page. | Working tree | Feature |
 
 ---
 

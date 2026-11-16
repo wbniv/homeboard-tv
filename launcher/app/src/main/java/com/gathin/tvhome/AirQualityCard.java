@@ -167,27 +167,61 @@ final class AirQualityCard {
         ensureModelLocation();
     }
     private void enterCoordinates() {
-        EditText coordinates = new EditText(activity);
-        coordinates.setSingleLine(true); coordinates.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        coordinates.setImeOptions(EditorInfo.IME_ACTION_DONE); coordinates.setHint("latitude, longitude");
-        coordinates.setTextColor(palette.text); coordinates.setHintTextColor(palette.muted);
-        coordinates.setPadding(dp(12), dp(8), dp(12), dp(8));
-        new AlertDialog.Builder(activity).setTitle("Model grid location")
-                .setMessage("Enter latitude and longitude, separated by a comma")
-                .setView(coordinates).setNegativeButton("Cancel", (dialog, which) -> {})
-                .setPositiveButton("Save", (dialog, which) -> {
-                    try {
-                        String[] parts = coordinates.getText().toString().trim().split(",");
-                        double lat = Double.parseDouble(parts[0].trim()), lon = Double.parseDouble(parts[1].trim());
-                        if (parts.length != 2 || !Double.isFinite(lat) || !Double.isFinite(lon)
-                                || lat < -90 || lat > 90 || lon < -180 || lon > 180) throw new IllegalArgumentException();
-                        source = "model"; locationMode = "manual"; latitude = lat; longitude = lon;
-                        locationName = String.format(Locale.US, "%.2f°, %.2f°", lat, lon);
-                        saveConfiguration(); reading = null; readHistory(); readCache(); render(); refresh(true);
-                    } catch (Exception invalid) {
-                        android.widget.Toast.makeText(activity, "Enter valid coordinates, for example 13.76, 100.50", android.widget.Toast.LENGTH_LONG).show();
-                    }
-                }).show();
+        LinearLayout form = new LinearLayout(activity);
+        form.setOrientation(LinearLayout.VERTICAL);
+        form.setPadding(dp(24), dp(8), dp(24), dp(4));
+        TextView explanation = new TextView(activity);
+        explanation.setText("Choose the forecast grid near this location.");
+        explanation.setTextColor(palette.muted);
+        form.addView(explanation, new LinearLayout.LayoutParams(-1, -2));
+        EditText latitudeInput = coordinateField(form, "Latitude", "−90 to 90");
+        EditText longitudeInput = coordinateField(form, "Longitude", "−180 to 180");
+        if (Double.isFinite(latitude)) latitudeInput.setText(String.format(Locale.US, "%.5f", latitude));
+        if (Double.isFinite(longitude)) longitudeInput.setText(String.format(Locale.US, "%.5f", longitude));
+
+        AlertDialog dialog = new AlertDialog.Builder(activity).setTitle("Model grid location")
+                .setView(form).setNegativeButton("Cancel", (d, which) -> {})
+                .setPositiveButton("Save", null).create();
+        dialog.setOnShowListener(ignored -> dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            try {
+                double lat = Double.parseDouble(latitudeInput.getText().toString().trim());
+                double lon = Double.parseDouble(longitudeInput.getText().toString().trim());
+                if (!Double.isFinite(lat) || !Double.isFinite(lon)
+                        || lat < -90 || lat > 90 || lon < -180 || lon > 180) throw new IllegalArgumentException();
+                source = "model"; locationMode = "manual"; latitude = lat; longitude = lon;
+                locationName = String.format(Locale.US, "%.2f°, %.2f°", lat, lon);
+                saveConfiguration(); reading = null; readHistory(); readCache(); render(); refresh(true);
+                dialog.dismiss();
+            } catch (Exception invalid) {
+                latitudeInput.setError("Check both coordinates");
+            }
+        }));
+        dialog.show();
+    }
+
+    private EditText coordinateField(LinearLayout form, String label, String hint) {
+        TextView caption = new TextView(activity);
+        caption.setText(label);
+        caption.setTextColor(palette.text);
+        caption.setTextSize(15);
+        LinearLayout.LayoutParams captionLp = new LinearLayout.LayoutParams(-1, -2);
+        captionLp.topMargin = dp(14);
+        form.addView(caption, captionLp);
+        EditText input = new EditText(activity);
+        input.setSingleLine(true);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL
+                | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        input.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        input.setHint(hint + "°"); input.setContentDescription(label);
+        input.setTextColor(palette.text); input.setHintTextColor(palette.muted);
+        input.setPadding(dp(12), dp(8), dp(12), dp(8));
+        GradientDrawable fieldBackground = new GradientDrawable();
+        fieldBackground.setColor(palette.background);
+        fieldBackground.setCornerRadius(dp(6));
+        fieldBackground.setStroke(dp(1), palette.edge);
+        input.setBackground(fieldBackground);
+        form.addView(input, new LinearLayout.LayoutParams(-1, dp(54)));
+        return input;
     }
     private void saveConfiguration() {
         SharedPreferences.Editor editor = prefs.edit().putString("source", source).putString("location-mode", locationMode)

@@ -1,88 +1,106 @@
 package com.gathin.tvhome;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.FrameLayout;
 
-/**
- * The panel the remote's Settings button opens when {@code settings_key_panel} is on (HomeKeyService):
- * a few glass rows under the Settings pill, over Home or whatever app is playing. Translucent and in a
- * task of its own, so the app behind keeps running and Back returns to it. Pressing Settings again
- * closes the panel.
- */
+/** Four-way Quick Settings pie opened by the remote's Settings button. */
 public final class QuickSettingsActivity extends Activity {
-    @Override
-    protected void attachBaseContext(android.content.Context base) {
-        super.attachBaseContext(LauncherLocale.wrap(base));   // locale
+    private PieMenuView pie;
+    private PaletteColors palette;
+    private final String[] labels = {"TV settings", "Picture", "Network", "Apps"};
+    private final MenuIconView.Kind[] icons = {MenuIconView.Kind.SETTINGS, MenuIconView.Kind.APPEARANCE,
+            MenuIconView.Kind.LOCATION, MenuIconView.Kind.APP};
+
+    @Override protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(LauncherLocale.wrap(base));
     }
 
-
-    @Override
-    protected void onCreate(Bundle state) {
+    @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
-        setContentView(R.layout.activity_quick_settings);
-        if (getResources().getBoolean(R.bool.rtl_menu_bar)) {
-            View panel = findViewById(R.id.panel);
-            android.widget.FrameLayout.LayoutParams position =
-                    (android.widget.FrameLayout.LayoutParams) panel.getLayoutParams();
-            position.gravity = android.view.Gravity.TOP | android.view.Gravity.LEFT;
-            int inset = position.getMarginEnd();
-            position.setMarginEnd(0);
-            position.setMargins(inset, position.topMargin, 0, position.bottomMargin);
-            panel.setLayoutParams(position);
-        }
-        findViewById(R.id.scrim).setOnClickListener(v -> finish());
-        LinearLayout rows = findViewById(R.id.rows);
-        addRow(rows, R.drawable.ic_settings, R.string.tv_settings, 0, SystemSettings.intent(this, Settings.ACTION_SETTINGS));
-        addRow(rows, R.drawable.ic_picture, R.string.quick_picture, 0, SystemSettings.displayIntent(this));
-        addRow(rows, R.drawable.ic_wifi, R.string.quick_network, 0, SystemSettings.intent(this, Settings.ACTION_WIFI_SETTINGS));
-        addRow(rows, R.drawable.ic_apps, R.string.quick_apps, R.string.quick_apps_hint,
-                SystemSettings.intent(this, Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
-        // Through Home, so it rebuilds with the new choices when Launcher settings closes.
-        addRow(rows, R.drawable.ic_home_settings, R.string.launcher_settings, 0,
-                new Intent(this, MainActivity.class).setAction(MainActivity.ACTION_LAUNCHER_SETTINGS));
-        rows.getChildAt(0).requestFocus();
+        int background = MainActivity.paletteColorForId(savedPalette());
+        palette = PaletteColors.from(background);
+        FrameLayout root = new FrameLayout(this);
+        root.setBackgroundColor(Color.argb(148, 0, 0, 0));
+        root.setOnClickListener(v -> finish());
+        pie = new PieMenuView(this, palette);
+        pie.setContent("Quick settings", "DEVICE", "Homeboard", "Directions choose · Back returns",
+                labels, icons, new boolean[4], new PieMenuView.Listener() {
+                    @Override public void onArm(int arm) { openChoice(arm); }
+                    @Override public void onCenter() { openHomeboardSettings(); }
+                });
+        float density = getResources().getDisplayMetrics().density;
+        int availableHeight = getResources().getDisplayMetrics().heightPixels - Math.round(130 * density);
+        int availableWidth = getResources().getDisplayMetrics().widthPixels - Math.round(96 * density);
+        int diameter = Math.max(Math.round(380 * density), Math.min(availableHeight, availableWidth));
+        diameter = Math.min(diameter, Math.round(650 * density));
+        FrameLayout.LayoutParams pieLp = new FrameLayout.LayoutParams(diameter, diameter,
+                Gravity.TOP | Gravity.RIGHT);
+        pieLp.topMargin = Math.round(48 * density);
+        pieLp.rightMargin = Math.round(48 * density);
+        root.addView(pie, pieLp);
+        setContentView(root);
+        pie.requestFocus();
     }
 
-    /** Settings pressed again while the panel is up. */
-    @Override
-    protected void onNewIntent(Intent intent) {
+    private String savedPalette() {
+        SharedPreferences preferences = getSharedPreferences("widget-home", MODE_PRIVATE);
+        String encoded = preferences.getString("layout", null);
+        if (encoded == null) return "midnight";
+        try { return HomeLayout.parse(encoded).palette; }
+        catch (Exception ignored) { return "midnight"; }
+    }
+
+    private void openChoice(int choice) {
+        Intent target;
+        switch (choice) {
+            case 0: target = SystemSettings.intent(this, Settings.ACTION_SETTINGS); break;
+            case 1: target = SystemSettings.displayIntent(this); break;
+            case 2: target = SystemSettings.intent(this, Settings.ACTION_WIFI_SETTINGS); break;
+            case 3: target = SystemSettings.intent(this, Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS); break;
+            default: return;
+        }
+        try { startActivity(target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); }
+        catch (RuntimeException ignored) { /* Keep the quick menu open if the TV has no matching page. */ return; }
+        finish();
+    }
+
+    private void openHomeboardSettings() {
+        startActivity(new Intent(this, MainActivity.class).setAction(MainActivity.ACTION_LAUNCHER_SETTINGS)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        finish();
+    }
+
+    @Override public boolean dispatchKeyEvent(KeyEvent event) {
+        int key = event.getKeyCode();
+        if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
+            if (event.getAction() == KeyEvent.ACTION_UP) finish();
+            return true;
+        }
+        int arm = key == KeyEvent.KEYCODE_DPAD_UP ? 0 : key == KeyEvent.KEYCODE_DPAD_RIGHT ? 1
+                : key == KeyEvent.KEYCODE_DPAD_DOWN ? 2 : key == KeyEvent.KEYCODE_DPAD_LEFT ? 3 : -1;
+        if (arm >= 0) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) pie.setHighlighted(arm);
+            else if (!event.isCanceled()) openChoice(arm);
+            return true;
+        }
+        if (key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER
+                || key == KeyEvent.KEYCODE_NUMPAD_ENTER) {
+            if (event.getAction() == KeyEvent.ACTION_UP) openHomeboardSettings();
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         finish();
-    }
-
-    /** Anything else taking the screen (Home, an app, a screensaver) closes the panel. */
-    @Override
-    @SuppressWarnings("deprecation")
-    protected void onPause() {
-        super.onPause();
-        finish();
-        overridePendingTransition(0, 0);
-    }
-
-    private void addRow(LinearLayout rows, int icon, int title, int status, Intent target) {
-        View row = getLayoutInflater().inflate(R.layout.item_input, rows, false);
-        ((ImageView) row.findViewById(R.id.icon)).setImageResource(icon);
-        ((TextView) row.findViewById(R.id.title)).setText(title);
-        row.findViewById(R.id.dot).setVisibility(View.GONE);
-        TextView hint = row.findViewById(R.id.status);
-        if (status != 0) hint.setText(status);
-        else hint.setVisibility(View.GONE);
-        row.setOnClickListener(v -> {
-            try {
-                startActivity(target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            } catch (ActivityNotFoundException | SecurityException e) {
-                Toast.makeText(this, R.string.not_available, Toast.LENGTH_SHORT).show();
-            }
-            finish();
-        });
-        rows.addView(row);
     }
 }

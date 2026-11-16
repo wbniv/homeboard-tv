@@ -53,6 +53,7 @@ import java.util.concurrent.Executors;
 
 /** Homeboard's widgets-first native Home shell, using CleanYourTV's launcher foundation. */
 public class MainActivity extends Activity {
+    private static final float APP_FOCUS_SCALE = 1.08f;
     static final String ACTION_LAUNCHER_SETTINGS = "com.gathin.tvhome.action.LAUNCHER_SETTINGS";
     static final String ACTION_APP_LIBRARY = "com.gathin.tvhome.action.APP_LIBRARY";
     static final String ACTION_VIEW_INPUTS = "com.android.tv.action.VIEW_INPUTS";
@@ -61,25 +62,27 @@ public class MainActivity extends Activity {
     private static final String HOME_SETTINGS = "control:homeboard-settings";
     private static final String DEVICE_SETTINGS = "control:device-settings";
     private static final int REQUEST_HOME_ROLE = 7402;
-    private static final int MENU_PAGE_SIZE = 9;
+    private static final int MENU_PAGE_SIZE = 4;
     private static final class MenuSpec {
         final String title, subtitle;
         final String[] labels;
         final java.util.function.IntConsumer action;
-        final int selectedIndex, pageCount;
+        int selectedIndex;
+        final int pageCount;
         final int pageSize, gridColumns;
-        final boolean compactCards;
+        final boolean compactCards, paletteGrid;
         int page, focusedChoice;
         MenuSpec(String title, String subtitle, String[] labels,
                  java.util.function.IntConsumer action, int selectedIndex) {
-            this(title, subtitle, labels, action, selectedIndex, MENU_PAGE_SIZE, 3, false);
+            this(title, subtitle, labels, action, selectedIndex, MENU_PAGE_SIZE, 4, false, false);
         }
         MenuSpec(String title, String subtitle, String[] labels,
                  java.util.function.IntConsumer action, int selectedIndex,
-                 int pageSize, int gridColumns, boolean compactCards) {
+                 int pageSize, int gridColumns, boolean compactCards, boolean paletteGrid) {
             this.title = title; this.subtitle = subtitle; this.labels = labels;
             this.action = action; this.selectedIndex = selectedIndex;
             this.pageSize = pageSize; this.gridColumns = gridColumns; this.compactCards = compactCards;
+            this.paletteGrid = paletteGrid;
             pageCount = Math.max(1, (labels.length + pageSize - 1) / pageSize);
         }
     }
@@ -272,7 +275,7 @@ public class MainActivity extends Activity {
     private int paletteColor() {
         return paletteColorForId(layout.palette);
     }
-    private int paletteColorForId(String palette) {
+    static int paletteColorForId(String palette) {
         switch (palette) {
             case "charcoal": return Color.rgb(32, 34, 36);
             case "indigo": return Color.rgb(20, 29, 53);
@@ -306,6 +309,11 @@ public class MainActivity extends Activity {
             case "midnight":
             default: return Color.rgb(16, 23, 35);
         }
+    }
+    private int contrastingText(int color) {
+        double luminance = (0.2126 * Color.red(color) + 0.7152 * Color.green(color)
+                + 0.0722 * Color.blue(color)) / 255.0;
+        return luminance > 0.52 ? Color.rgb(24, 27, 30) : Color.WHITE;
     }
 
     private void loadApps() {
@@ -612,8 +620,8 @@ public class MainActivity extends Activity {
             if (isAirWidgetKey(key)) airFor(key).setTileFocused(hasFocus);
             boolean animateTile = hasFocus && denseApp && !reducedMotion();
             view.animate().cancel();
-            view.animate().scaleX(hasFocus && denseApp ? 1.08f : 1f)
-                    .scaleY(hasFocus && denseApp ? 1.08f : 1f)
+            view.animate().scaleX(hasFocus && denseApp ? APP_FOCUS_SCALE : 1f)
+                    .scaleY(hasFocus && denseApp ? APP_FOCUS_SCALE : 1f)
                     .setDuration(animateTile ? 180 : 0)
                     .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
             if (hasFocus) {
@@ -655,16 +663,17 @@ public class MainActivity extends Activity {
         if (appFocusHighlight == null || card.getParent() == null) return;
         Rect rect = new Rect(0, 0, card.getWidth(), card.getHeight());
         surface.offsetDescendantRectToMyCoords(card, rect);
-        // Match the system launcher's slight breathing room around its icon mask.
+        // The outline is clipped at this view's bounds, so one physical pixel of
+        // view padding gives the same one-pixel breathing gap as the system launcher.
         int padding = 1;
-        int width = rect.width() + padding * 2;
-        int height = rect.height() + padding * 2;
+        int width = (int) Math.ceil(card.getWidth() * APP_FOCUS_SCALE) + padding * 2;
+        int height = (int) Math.ceil(card.getHeight() * APP_FOCUS_SCALE) + padding * 2;
         appFocusHighlight.setRadius(layout.circularIcons ? Math.min(width, height) / 2f : dp(10));
         ViewGroup.LayoutParams lp = appFocusHighlight.getLayoutParams();
         lp.width = width; lp.height = height;
         appFocusHighlight.setLayoutParams(lp);
-        float x = rect.left - padding;
-        float y = rect.top - padding;
+        float x = rect.exactCenterX() - width / 2f;
+        float y = rect.exactCenterY() - height / 2f;
         if (!appFocusHighlightShown || !animate || reducedMotion()) {
             appFocusX.cancel(); appFocusY.cancel();
             appFocusHighlight.setTranslationX(x); appFocusHighlight.setTranslationY(y);
@@ -948,6 +957,31 @@ public class MainActivity extends Activity {
                 if (event.getAction() == KeyEvent.ACTION_UP) backMenu();
                 return true;
             }
+            if (activeMenu != null && activeMenu.paletteGrid) return super.dispatchKeyEvent(event);
+            if (ok) {
+                if (event.getAction() == KeyEvent.ACTION_UP) {
+                    if (activeMenu == null) {
+                        dismissMenu(); menuStack.clear();
+                    } else menuCenter(activeMenu);
+                }
+                return true;
+            }
+            if (activeMenu != null && (key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_RIGHT
+                    || key == KeyEvent.KEYCODE_DPAD_DOWN || key == KeyEvent.KEYCODE_DPAD_LEFT)) {
+                int arm = key == KeyEvent.KEYCODE_DPAD_UP ? 0 : key == KeyEvent.KEYCODE_DPAD_RIGHT ? 1
+                        : key == KeyEvent.KEYCODE_DPAD_DOWN ? 2 : 3;
+                if (overlay.getChildCount() > 0 && overlay.getChildAt(0) instanceof PieMenuView) {
+                    PieMenuView pie = (PieMenuView) overlay.getChildAt(0);
+                    if (event.getAction() == KeyEvent.ACTION_DOWN) pie.setHighlighted(arm);
+                    else if (!event.isCanceled()) {
+                        pie.setHighlighted(-1);
+                        int choice = activeMenu.page * activeMenu.pageSize + arm;
+                        if (choice < activeMenu.labels.length)
+                            selectMenuChoice(activeMenu, activeMenu.page, choice);
+                    }
+                }
+                return true;
+            }
             return super.dispatchKeyEvent(event);
         }
         if (ok) {
@@ -1215,16 +1249,15 @@ public class MainActivity extends Activity {
     }
     private void homeSettings() {
         menu("Home settings", "Choose an area to customize", new String[]{
-                "Widgets & restore", "Appearance", "App artwork",
+                "Widgets & restore", "Appearance",
                 "Home behavior", "Default Home app · " + (isDefaultHomeApp() ? "Homeboard" : "Choose"),
                 "About Homeboard TV"}, choice -> {
             switch (choice) {
                 case 0: widgetsAndRestore(); break;
                 case 1: appearanceSettings(); break;
-                case 2: appArtworkSettings(); break;
-                case 3: homeBehaviorSettings(); break;
-                case 4: chooseDefaultHomeApp(); break;
-                case 5: aboutHomeboard(); break;
+                case 2: homeBehaviorSettings(); break;
+                case 3: chooseDefaultHomeApp(); break;
+                case 4: aboutHomeboard(); break;
                 default: break;
             }
         });
@@ -1252,19 +1285,15 @@ public class MainActivity extends Activity {
     }
 
     private void appearanceSettings() {
-        menu("Appearance", "Choose a background color or app icon shape",
-                new String[]{"Background and wallpaper", "Circular icon mask · " + (layout.circularIcons ? "On" : "Off")}, choice -> {
-                    if (choice == 0) backgroundSettings();
-                    else menu("Circular icon mask", "The icon keeps the same size",
+        menu("Appearance", "Choose colors, icon shape or artwork",
+                new String[]{"Background", "Circular icon mask · " + (layout.circularIcons ? "On" : "Off"), "Icons"}, choice -> {
+                    if (choice == 0) colorPaletteSettings();
+                    else if (choice == 1) menu("Circular icon mask", "The icon keeps the same size",
                             new String[]{"Original icon shape", "Circular mask"}, mask -> {
                                 layout.circularIcons = mask == 1; save(); render(0);
                             }, layout.circularIcons ? 1 : 0);
+                    else appArtworkSettings();
                 });
-    }
-
-    private void backgroundSettings() {
-        menu("Background and wallpaper", "Choose a solid background color",
-                new String[]{"Choose color palette…"}, choice -> colorPaletteSettings());
     }
 
     private void colorPaletteSettings() {
@@ -1283,7 +1312,7 @@ public class MainActivity extends Activity {
             labels[selected] = "Current palette";
         }
         if ("theme".equals(layout.palette)) selected = 0;
-        paletteMenu("Color palette", "20 colors · one screen", labels, choice -> {
+        paletteMenu("Background", "Move to a color to preview it", labels, choice -> {
             layout.palette = ids[choice];
             applyBackgroundChoice();
         }, selected);
@@ -1296,7 +1325,7 @@ public class MainActivity extends Activity {
     }
 
     private void appArtworkSettings() {
-        menu("App artwork", "Choose All Apps artwork · Home favorites stay compact",
+        menu("Icons", "Choose All Apps icon style · Home favorites stay compact",
                 new String[]{"Launcher icons · full-size grid", "TV banners · 4 × 2"}, artwork -> {
                     layout.appBanners = artwork == 1; save(); render(0);
                 }, layout.appBanners ? 1 : 0);
@@ -1535,7 +1564,7 @@ public class MainActivity extends Activity {
     }
     private void paletteMenu(String title, String subtitle, String[] labels,
                              java.util.function.IntConsumer action, int selectedIndex) {
-        openMenu(new MenuSpec(title, subtitle, labels, action, selectedIndex, labels.length, 4, true));
+        openMenu(new MenuSpec(title, subtitle, labels, action, selectedIndex, labels.length, 4, true, true));
     }
     private void openMenu(MenuSpec spec) {
         if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
@@ -1554,6 +1583,10 @@ public class MainActivity extends Activity {
         String[] labels = spec.labels;
         int selectedIndex = spec.selectedIndex, pageCount = spec.pageCount;
         spec.page = page;
+        if (!spec.paletteGrid) {
+            showPieMenuPage(spec, page, focusChoice);
+            return;
+        }
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         if (overlay != null) root.removeView(overlay);
@@ -1571,7 +1604,7 @@ public class MainActivity extends Activity {
         int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels / density);
         int panelWidth = Math.max(dp(300), Math.min(dp(850), dp(screenWidthDp - 64)));
         int padding = dp(spec.compactCards ? 10 : 20);
-        int cardHeight = dp(spec.compactCards ? 56 : 104);
+        int cardHeight = dp(spec.paletteGrid ? 82 : spec.compactCards ? 56 : 104);
         int footerHeight = dp(spec.compactCards ? 32 : 46);
         int pagerHeight = pageCount > 1 ? dp(54) : 0;
         int titleHeight = dp(spec.compactCards ? 36 : 48);
@@ -1581,7 +1614,7 @@ public class MainActivity extends Activity {
                 + pagerHeight + footerHeight + dp(10);
         int maximumHeight = Math.max(dp(340), dp(screenHeightDp - 48));
         if (desiredHeight > maximumHeight) {
-            cardHeight = Math.max(dp(spec.compactCards ? 56 : 78), cardHeight - (desiredHeight - maximumHeight) / rows);
+            cardHeight = Math.max(dp(spec.paletteGrid ? 70 : spec.compactCards ? 56 : 78), cardHeight - (desiredHeight - maximumHeight) / rows);
             desiredHeight = padding * 2 + titleHeight + subtitleHeight + rows * cardHeight
                     + pagerHeight + footerHeight + dp(10);
         }
@@ -1625,18 +1658,23 @@ public class MainActivity extends Activity {
                             dp(spec.compactCards ? 3 : 6), dp(spec.compactCards ? 2 : 5));
                     card.setFocusable(true); card.setClickable(true);
                     card.setContentDescription(label + (isSelected ? ", selected" : ""));
-                    card.setBackground(tileBackground());
-                    Drawable appIcon = appIconForLabel(label);
+                    String paletteId = paletteIdForLabel(label);
+                    int swatch = paletteId == null ? paletteColor() : paletteColorForId(paletteId);
+                    if (spec.paletteGrid) {
+                        if (swatch == 0) swatch = paletteColor();
+                        int edge = isSelected ? paletteColors.text : paletteColors.edge;
+                        card.setBackground(shape(swatch, edge, isSelected ? 3 : 1));
+                    } else card.setBackground(tileBackground());
+                    Drawable appIcon = spec.paletteGrid ? null : appIconForLabel(label);
                     if (appIcon != null) {
                         ImageView icon = new ImageView(this);
                         icon.setImageDrawable(appIcon); icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
                         icon.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
                         card.addView(icon, new LinearLayout.LayoutParams(dp(38), dp(38)));
-                    } else {
+                    } else if (!spec.paletteGrid) {
                         MenuIconView.Kind iconKind = menuIconFor(title, label);
                         MenuIconView icon = new MenuIconView(this, iconKind, paletteColors);
                         if (iconKind == MenuIconView.Kind.PALETTE) {
-                            String paletteId = paletteIdForLabel(label);
                             if (paletteId != null) icon.setSwatchColor(paletteColorForId(paletteId));
                             else if ("current palette".equalsIgnoreCase(label)
                                     || label.toLowerCase(java.util.Locale.ROOT).contains("choose color palette"))
@@ -1646,22 +1684,28 @@ public class MainActivity extends Activity {
                         int iconSize = spec.compactCards ? 18 : 38;
                         card.addView(icon, new LinearLayout.LayoutParams(dp(iconSize), dp(iconSize)));
                     }
-                    TextView caption = text(label, spec.compactCards ? 12 : 16);
+                    String cardLabel = spec.paletteGrid && isSelected ? label + " · Current" : label;
+                    TextView caption = text(cardLabel, spec.paletteGrid ? 18 : spec.compactCards ? 12 : 16);
+                    if (spec.paletteGrid) caption.setTextColor(contrastingText(swatch));
                     caption.setGravity(Gravity.CENTER); caption.setMaxLines(spec.compactCards ? 1 : 2);
                     caption.setEllipsize(android.text.TextUtils.TruncateAt.END);
                     LinearLayout.LayoutParams captionLp = new LinearLayout.LayoutParams(-1, -2);
                     captionLp.topMargin = dp(spec.compactCards ? 1 : 3); card.addView(caption, captionLp);
-                    card.setOnFocusChangeListener((v, hasFocus) -> { if (hasFocus) spec.focusedChoice = choice; });
-                    card.setOnClickListener(v -> {
-                        spec.focusedChoice = choice; spec.page = page;
-                        int previousGeneration = menuGeneration;
-                        dismissMenu();
-                        invokingMenuAction = true;
-                        try { spec.action.accept(choice); }
-                        finally { invokingMenuAction = false; }
-                        if (menuGeneration == previousGeneration) {
-                            activeMenu = null; menuStack.clear();
+                    card.setOnFocusChangeListener((v, hasFocus) -> {
+                        if (!hasFocus) return;
+                        spec.focusedChoice = choice;
+                        if (spec.paletteGrid && spec.selectedIndex != choice) {
+                            spec.selectedIndex = choice;
+                            spec.action.accept(choice);
+                            if (activeMenu == spec) showMenuPage(spec, page, choice);
                         }
+                    });
+                    card.setOnClickListener(v -> {
+                        if (spec.paletteGrid) {
+                            backMenu();
+                            return;
+                        }
+                        selectMenuChoice(spec, page, choice);
                     });
                     LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(0, cardHeight, 1f);
                     cardLp.setMargins(dp(4), dp(4), dp(4), dp(4));
@@ -1701,14 +1745,19 @@ public class MainActivity extends Activity {
 
         LinearLayout hints = new LinearLayout(this);
         hints.setOrientation(LinearLayout.HORIZONTAL); hints.setGravity(Gravity.CENTER_VERTICAL);
-        hints.addView(new MenuIconView(this, MenuIconView.Kind.CONFIRM, paletteColors), new LinearLayout.LayoutParams(dp(20), dp(20)));
-        TextView selectHint = text("OK Select", 13); selectHint.setTextColor(paletteColors.muted);
-        LinearLayout.LayoutParams selectLp = new LinearLayout.LayoutParams(-2, dp(26)); selectLp.leftMargin = dp(5);
-        hints.addView(selectHint, selectLp);
-        hints.addView(new MenuIconView(this, MenuIconView.Kind.CANCEL, paletteColors), new LinearLayout.LayoutParams(dp(20), dp(20)));
-        TextView backHint = text("Back Close", 13); backHint.setTextColor(paletteColors.muted);
-        LinearLayout.LayoutParams backLp = new LinearLayout.LayoutParams(-2, dp(26)); backLp.leftMargin = dp(5);
-        hints.addView(backHint, backLp);
+        if (spec.paletteGrid) {
+            TextView hint = text("Move to preview a color · Back returns", 14);
+            hint.setTextColor(paletteColors.muted); hints.addView(hint);
+        } else {
+            hints.addView(new MenuIconView(this, MenuIconView.Kind.CONFIRM, paletteColors), new LinearLayout.LayoutParams(dp(20), dp(20)));
+            TextView selectHint = text("OK More / Back", 13); selectHint.setTextColor(paletteColors.muted);
+            LinearLayout.LayoutParams selectLp = new LinearLayout.LayoutParams(-2, dp(26)); selectLp.leftMargin = dp(5);
+            hints.addView(selectHint, selectLp);
+            hints.addView(new MenuIconView(this, MenuIconView.Kind.CANCEL, paletteColors), new LinearLayout.LayoutParams(dp(20), dp(20)));
+            TextView backHint = text("Back Parent", 13); backHint.setTextColor(paletteColors.muted);
+            LinearLayout.LayoutParams backLp = new LinearLayout.LayoutParams(-2, dp(26)); backLp.leftMargin = dp(5);
+            hints.addView(backHint, backLp);
+        }
         LinearLayout.LayoutParams hintLp = new LinearLayout.LayoutParams(-1, footerHeight);
         hintLp.topMargin = dp(3); panel.addView(hints, hintLp);
 
@@ -1716,6 +1765,78 @@ public class MainActivity extends Activity {
         overlay.addView(panel, panelLp);
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));
         if (firstFocus != null) firstFocus.requestFocus();
+    }
+
+    private void showPieMenuPage(MenuSpec spec, int page, int focusChoice) {
+        spec.page = page;
+        surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        if (overlay != null) root.removeView(overlay);
+        overlay = new FrameLayout(this);
+        overlay.setBackgroundColor(paletteColors.scrim);
+        overlay.setFocusable(true); overlay.setClickable(true);
+        int first = page * spec.pageSize;
+        int last = Math.min(spec.labels.length, first + spec.pageSize);
+        String[] labels = new String[Math.max(0, last - first)];
+        MenuIconView.Kind[] kinds = new MenuIconView.Kind[labels.length];
+        boolean[] selected = new boolean[labels.length];
+        for (int i = 0; i < labels.length; i++) {
+            int choice = first + i;
+            labels[i] = spec.labels[choice];
+            kinds[i] = menuIconFor(spec.title, labels[i]);
+            selected[i] = choice == spec.selectedIndex || labels[i].toLowerCase(java.util.Locale.ROOT).contains("current");
+        }
+        String centerAction = spec.pageCount > 1
+                ? page + 1 < spec.pageCount ? "More" : "First page"
+                : menuStack.isEmpty() ? "Close" : "Back";
+        String pageHint = spec.pageCount > 1 ? "Page " + (page + 1) + " of " + spec.pageCount : "";
+        String breadcrumb = menuStack.isEmpty() ? spec.subtitle
+                : menuStack.get(menuStack.size() - 1).title + " › " + spec.title;
+        String interactionHint = spec.pageCount > 1
+                ? "Page " + (page + 1) + " of " + spec.pageCount + " · OK changes page"
+                : "Directions choose · Back returns";
+        PieMenuView pie = new PieMenuView(this, paletteColors);
+        pie.setContent(spec.title, breadcrumb, centerAction, interactionHint, labels, kinds, selected,
+                new PieMenuView.Listener() {
+                    @Override public void onArm(int arm) {
+                        int choice = spec.page * spec.pageSize + arm;
+                        if (choice < spec.labels.length) selectMenuChoice(spec, spec.page, choice);
+                    }
+                    @Override public void onCenter() { menuCenter(spec); }
+                });
+        int width = Math.round(getResources().getDisplayMetrics().widthPixels - dp(56));
+        int height = Math.round(getResources().getDisplayMetrics().heightPixels - dp(40));
+        int diameter = Math.max(dp(360), Math.min(width, height));
+        diameter = Math.min(diameter, dp(760));
+        overlay.addView(pie, new FrameLayout.LayoutParams(diameter, diameter, Gravity.CENTER));
+        root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));
+        pie.requestFocus();
+    }
+
+    private void selectMenuChoice(MenuSpec spec, int page, int choice) {
+        if (activeMenu != spec || choice < 0 || choice >= spec.labels.length) return;
+        spec.focusedChoice = choice; spec.page = page;
+        int previousGeneration = menuGeneration;
+        dismissMenu();
+        invokingMenuAction = true;
+        try { spec.action.accept(choice); }
+        finally { invokingMenuAction = false; }
+        if (menuGeneration == previousGeneration) {
+            activeMenu = null; menuStack.clear();
+        }
+    }
+
+    private void menuCenter(MenuSpec spec) {
+        if (activeMenu != spec) return;
+        if (spec.pageCount > 1) {
+            int nextPage = (spec.page + 1) % spec.pageCount;
+            int nextFocus = Math.min(nextPage * spec.pageSize, spec.labels.length - 1);
+            showMenuPage(spec, nextPage, nextFocus);
+        } else if (!menuStack.isEmpty()) {
+            backMenu();
+        } else {
+            dismissMenu(); activeMenu = null; menuStack.clear();
+        }
     }
     private View menuPagerControl(String label, MenuIconView.Kind icon, boolean enabled) {
         LinearLayout control = new LinearLayout(this);
@@ -1822,6 +1943,12 @@ public class MainActivity extends Activity {
     }
     private void backMenu() {
         if (overlay == null) return;
+        if (activeMenu != null && activeMenu.page > 0) {
+            int page = activeMenu.page - 1;
+            int focus = Math.min(page * activeMenu.pageSize, activeMenu.labels.length - 1);
+            showMenuPage(activeMenu, page, focus);
+            return;
+        }
         if (!menuStack.isEmpty()) {
             dismissMenu();
             activeMenu = menuStack.remove(menuStack.size() - 1);
