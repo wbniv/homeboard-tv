@@ -1278,7 +1278,7 @@ public class MainActivity extends Activity {
             }
             return true;
         }
-        if (backgroundInfo) {
+        if (activeMenu != null && activeMenu.panelRenderer != null) {
             if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
                 if (event.getAction() == KeyEvent.ACTION_UP) backMenu();
                 return true;
@@ -1955,14 +1955,12 @@ public class MainActivity extends Activity {
     }
 
     private void aboutHomeboard() {
-        showAboutDialog();
+        openMenu(new MenuSpec("About Homeboard TV", this::showAboutDialog));
     }
     private void showAboutDialog() {
-        if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
-        dismissMenu(); cancelOk();
+        if (overlay != null) root.removeView(overlay);
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
-        activeMenu = null; menuGeneration++;
         hideAppFocusHighlight();
         overlay = new FrameLayout(this);
         overlay.setBackgroundColor(paletteColors.scrim);
@@ -1970,14 +1968,14 @@ public class MainActivity extends Activity {
 
         LinearLayout panel = new LinearLayout(this);
         panel.setOrientation(LinearLayout.VERTICAL);
-        panel.setPadding(dp(30), dp(24), dp(30), dp(18));
+        panel.setPadding(dp(26), dp(18), dp(26), dp(14));
         panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
         LinearLayout heading = new LinearLayout(this);
         heading.setOrientation(LinearLayout.HORIZONTAL); heading.setGravity(Gravity.CENTER_VERTICAL);
         ImageView icon = new ImageView(this);
         try { icon.setImageDrawable(getPackageManager().getApplicationIcon(getPackageName())); }
         catch (PackageManager.NameNotFoundException ignored) { }
-        heading.addView(icon, new LinearLayout.LayoutParams(dp(76), dp(76)));
+        heading.addView(icon, new LinearLayout.LayoutParams(dp(56), dp(56)));
         LinearLayout titleBlock = new LinearLayout(this);
         titleBlock.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams titleBlockLp = new LinearLayout.LayoutParams(0, -2, 1f);
@@ -1986,10 +1984,10 @@ public class MainActivity extends Activity {
         TextView version = text("Version " + appVersion() + " · Your apps and widgets, arranged your way", 16);
         version.setTextColor(paletteColors.muted);
         titleBlock.addView(title); titleBlock.addView(version);
-        panel.addView(heading, new LinearLayout.LayoutParams(-1, dp(90)));
+        panel.addView(heading, new LinearLayout.LayoutParams(-1, dp(72)));
 
-        TextView purpose = text("A customizable home screen for your TV, built on CleanYourTV.", 18);
-        purpose.setPadding(0, dp(14), 0, dp(16));
+        TextView purpose = text("A customizable home screen for your TV, built on CleanYourTV.", 16);
+        purpose.setPadding(0, dp(8), 0, dp(8));
         panel.addView(purpose);
         TextView sourcesHeading = text("PROJECT SOURCES & LICENSES", 13);
         sourcesHeading.setTextColor(paletteColors.focus); sourcesHeading.setTypeface(null, Typeface.BOLD);
@@ -1997,27 +1995,23 @@ public class MainActivity extends Activity {
 
         LinearLayout sourceGrid = new LinearLayout(this);
         sourceGrid.setOrientation(LinearLayout.VERTICAL);
-        String[][] sources = {
-                {"Homeboard TV source", "Project repository", "https://github.com/wbniv/homeboard-tv"},
-                {"CleanYourTV source", "Launcher foundation · MIT", "https://github.com/Gathin23/cleanyourtv"},
-                {"Outfit font", "Font source · SIL Open Font License", "https://github.com/google/fonts/tree/main/ofl/outfit"},
-                {"AndroidX", "Library source · Apache License 2.0", "https://github.com/androidx/androidx"}
-        };
+        AboutSource[] sources = AboutSource.values();
         for (int row = 0; row < 2; row++) {
             LinearLayout sourceRow = new LinearLayout(this);
             sourceRow.setOrientation(LinearLayout.HORIZONTAL);
             for (int column = 0; column < 2; column++) {
-                String[] source = sources[row * 2 + column];
-                View link = aboutSourceLink(source[0], source[1], source[2]);
-                LinearLayout.LayoutParams linkLp = new LinearLayout.LayoutParams(0, dp(72), 1f);
+                View link = aboutSourceLink(sources[row * 2 + column]);
+                LinearLayout.LayoutParams linkLp = new LinearLayout.LayoutParams(0, dp(56), 1f);
                 linkLp.setMargins(column == 0 ? 0 : dp(10), dp(4), column == 0 ? dp(5) : 0, dp(4));
                 sourceRow.addView(link, linkLp);
             }
-            sourceGrid.addView(sourceRow, new LinearLayout.LayoutParams(-1, dp(80)));
+            sourceGrid.addView(sourceRow, new LinearLayout.LayoutParams(-1, dp(64)));
         }
         panel.addView(sourceGrid);
-        TextView wallpaperCredits = text("Projectivy wallpaper API · Spocky · Apache-2.0\nLottie Android · Airbnb · Apache-2.0", 13);
+        TextView wallpaperCredits = text("Projectivy wallpaper API · Spocky · Apache-2.0\nLottie Android · Airbnb · Apache-2.0", 12);
         wallpaperCredits.setPadding(0, dp(6), 0, 0); panel.addView(wallpaperCredits);
+        TextView linkHint = text("Select a source to show its web address and phone QR code.", 13);
+        linkHint.setPadding(0, dp(6), 0, 0); panel.addView(linkHint);
 
         TextView closeText = text("←  BACK", 15); closeText.setTypeface(null, Typeface.BOLD);
         closeText.setTextColor(paletteColors.text); closeText.setGravity(Gravity.CENTER);
@@ -2034,19 +2028,62 @@ public class MainActivity extends Activity {
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));
         closeText.requestFocus();
     }
-    private View aboutSourceLink(String title, String detail, String url) {
+    private View aboutSourceLink(AboutSource source) {
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setGravity(Gravity.CENTER_VERTICAL);
         card.setPadding(dp(14), dp(7), dp(14), dp(7));
         card.setBackground(tileBackground());
         card.setFocusable(true); card.setClickable(true);
-        card.setContentDescription(title + ". " + detail + ". Open source link.");
-        TextView heading = text(title + "  ↗", 17); heading.setTypeface(null, Typeface.BOLD);
-        TextView caption = text(detail, 13); caption.setTextColor(paletteColors.muted);
+        card.setContentDescription(source.title + ". " + source.detail + ". Show web address and phone QR code.");
+        TextView heading = text(source.title + "  →", 17); heading.setTypeface(null, Typeface.BOLD);
+        TextView caption = text(source.detail, 13); caption.setTextColor(paletteColors.muted);
         card.addView(heading); card.addView(caption);
-        card.setOnClickListener(v -> open(new Intent(Intent.ACTION_VIEW, Uri.parse(url))));
+        card.setOnClickListener(v -> openMenu(new MenuSpec(source.title, () -> showAboutSource(source))));
         return card;
+    }
+    private Intent sourceIntent(AboutSource source) {
+        return new Intent(Intent.ACTION_VIEW, Uri.parse(source.url)).addCategory(Intent.CATEGORY_BROWSABLE);
+    }
+    private void showAboutSource(AboutSource source) {
+        if (overlay != null) root.removeView(overlay);
+        overlay = new FrameLayout(this); overlay.setBackgroundColor(paletteColors.scrim);
+        LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL);
+        panel.setPadding(dp(26), dp(22), dp(26), dp(20));
+        panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
+        TextView title = text(source.title, 26); title.setTypeface(null, Typeface.BOLD);
+        panel.addView(title, new LinearLayout.LayoutParams(-1, dp(44)));
+        LinearLayout body = new LinearLayout(this); body.setGravity(Gravity.CENTER_VERTICAL);
+        ImageView qr = new ImageView(this); qr.setImageResource(source.qrResource);
+        qr.setContentDescription("QR code for " + source.url); qr.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        if (qr.getDrawable() instanceof android.graphics.drawable.BitmapDrawable)
+            ((android.graphics.drawable.BitmapDrawable) qr.getDrawable()).setFilterBitmap(false);
+        body.addView(qr, new LinearLayout.LayoutParams(dp(240), dp(240)));
+        LinearLayout words = new LinearLayout(this); words.setOrientation(LinearLayout.VERTICAL);
+        words.setPadding(dp(28), 0, 0, 0);
+        words.addView(text("Open on your phone", 22));
+        words.addView(text("Scan the QR code with your phone's camera.", 17));
+        TextView address = text(source.url, 16); address.setTextIsSelectable(false);
+        address.setPadding(0, dp(18), 0, dp(18)); words.addView(address);
+        TextView status = text(source.detail, 15); status.setTextColor(paletteColors.muted); words.addView(status);
+        if (getPackageManager().resolveActivity(sourceIntent(source), PackageManager.MATCH_DEFAULT_ONLY) != null) {
+            TextView openOnTv = infoButton("Open on this TV", () -> {
+                try { startActivity(sourceIntent(source)); }
+                catch (RuntimeException unavailable) { status.setText("This TV could not open the page. Scan the QR code with your phone."); }
+            });
+            LinearLayout.LayoutParams openLp = new LinearLayout.LayoutParams(-1, dp(52)); openLp.topMargin = dp(14);
+            words.addView(openOnTv, openLp);
+        } else {
+            status.setText(source.detail + "\nNo web browser is available on this TV. Scan with your phone.");
+        }
+        body.addView(words, new LinearLayout.LayoutParams(0, -2, 1));
+        panel.addView(body, new LinearLayout.LayoutParams(-1, dp(260)));
+        aboutBackButton = infoButton("Back to About", this::backMenu);
+        LinearLayout.LayoutParams backLp = new LinearLayout.LayoutParams(-2, dp(48)); backLp.topMargin = dp(12);
+        panel.addView(aboutBackButton, backLp);
+        int width = Math.min(dp(880), getResources().getDisplayMetrics().widthPixels - dp(64));
+        overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
+        root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); aboutBackButton.requestFocus();
     }
     private boolean isDefaultHomeApp() {
         if (android.os.Build.VERSION.SDK_INT >= 29) {

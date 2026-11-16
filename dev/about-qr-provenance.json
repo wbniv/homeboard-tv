@@ -1,0 +1,23 @@
+{
+  "generator": "Python qrcode 8.2",
+  "error_correction": "M",
+  "quiet_zone_modules": 4,
+  "assets": {
+    "homeboard": {
+      "url": "https://github.com/wbniv/homeboard-tv",
+      "sha256": "07216d5351afdac9c73dd70a26dd01476bcbaf82ad07d1c00de78693f8087141"
+    },
+    "cleanyourtv": {
+      "url": "https://github.com/Gathin23/cleanyourtv",
+      "sha256": "f7ded1e231325aceb8841b0c9d6309e54028d21af07868ec3fdc404c9e3ccf32"
+    },
+    "outfit": {
+      "url": "https://github.com/google/fonts/tree/main/ofl/outfit",
+      "sha256": "3f5f45a7a7307a0fbbe956998d8b9bd55173170ebf62fac43723e321730b2e2d"
+    },
+    "androidx": {
+      "url": "https://github.com/androidx/androidx",
+      "sha256": "179cafbb66f38e865859d197ecef4ff60344b8a87d1b6a37bfce49a427d8b608"
+    }
+  }
+}

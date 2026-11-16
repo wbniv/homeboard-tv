@@ -26,6 +26,11 @@
     <!-- Android 11+ package visibility: lets the launcher list the TV apps it shows as tiles, and the
          apps that declare a module card (docs/specs/card.md). -->
     <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
         <intent><action android:name="tv.projectivy.plugin.WALLPAPER_PROVIDER" /></intent>
         <intent>
             <action android:name="android.intent.action.MAIN" />

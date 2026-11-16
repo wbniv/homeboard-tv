@@ -1,6 +1,9 @@
 package com.gathin.tvhome;
 
 import android.content.SharedPreferences;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -44,6 +47,15 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
     private int index, undoBeforeRetry, undoBeforeSolid;
     private long deadline;
     private boolean finished;
+    private Intent capturedSourceIntent;
+
+    @Override public void startActivity(Intent intent) {
+        if (Intent.ACTION_VIEW.equals(intent.getAction()) && intent.getData() != null
+                && "https".equals(intent.getData().getScheme())) {
+            capturedSourceIntent = new Intent(intent); return;
+        }
+        super.startActivity(intent);
+    }
 
     @Override public SharedPreferences getSharedPreferences(String name, int mode) {
         boolean airWidget = name.startsWith("air-quality-widget-");
@@ -73,7 +85,9 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
                         .filter(p -> p.component.getPackageName().equals(getPackageName())).findFirst()
                         .orElseThrow(() -> new IllegalStateException("Offline provider missing"));
                 for (boolean apps : new boolean[]{false, true}) addSurfaceCases(apps);
-                addProviderCases(); next();
+                addProviderCases(); addAboutCases();
+                add("Real user settings remain unchanged", this::closeMenus, () -> require(original.equals(super.getSharedPreferences("widget-home", MODE_PRIVATE).getAll()), "Tests changed Will's settings"));
+                next();
             } catch (Exception error) { fail(error); }
         }, 12_000);
     }
@@ -161,6 +175,8 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         });
         add(prefix + "color preview saves", () -> key(KeyEvent.KEYCODE_DPAD_RIGHT), () -> {
             require(!"forest".equals(layout().palette) && layout().wallpaper.solid(), "Color selection had no effect");
+            HomeLayout saved = HomeLayout.parse(getSharedPreferences("widget-home", MODE_PRIVATE).getString("layout", ""));
+            require(saved.palette.equals(layout().palette) && saved.wallpaper.solid(), "Color preview was not persisted");
             require(undoCount() == 0, "Preview split into separate Undo entries");
         });
         add(prefix + "Back returns to Background", () -> key(KeyEvent.KEYCODE_BACK), () -> { expectMenu("Background"); require(undoCount() == 1, "Missing grouped Undo"); });
@@ -169,9 +185,8 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
             String info = details(); require(info.contains("Source: Solid color") && info.contains("Palette: forest") && info.contains("UI background opacity:"), "Details lacks source or settings");
             if (!apps) snapshot();
         });
-        add(prefix + "Details color child returns", () -> {
-            click("Choose color"); expectMenu("Palette"); key(apps ? KeyEvent.KEYCODE_BACK : KeyEvent.KEYCODE_DPAD_CENTER);
-        }, () -> expectMenu("Background details"));
+        add(prefix + "Details opens color picker", () -> click("Choose color"), () -> expectMenu("Palette"));
+        add(prefix + "Color picker returns to Details", () -> key(apps ? KeyEvent.KEYCODE_BACK : KeyEvent.KEYCODE_DPAD_CENTER), () -> expectMenu("Background details"));
         add(prefix + "Details providers child returns", () -> {
             key(KeyEvent.KEYCODE_DPAD_LEFT);
             require(getCurrentFocus() instanceof TextView && "Choose provider".contentEquals(((TextView) getCurrentFocus()).getText()), "Details button focus navigation failed");
@@ -219,7 +234,60 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         add("Undo restores provider plus color", this::undo, () -> require(fixture.component.flattenToString().equals(layout().wallpaper.component)
                 && "forest".equals(layout().palette), "Undo did not restore provider and palette together"));
         addReady("Provider Details has live credits", () -> { openBackground(); choose(2); }, () -> require(details().contains("Homeboard test wallpapers") && details().contains("Title: Fixture color"), "Saved provider details unavailable"));
-        add("Real user settings remain unchanged", this::closeMenus, () -> require(original.equals(super.getSharedPreferences("widget-home", MODE_PRIVATE).getAll()), "Tests changed Will's settings"));
+    }
+    private View sourceCard(View view, AboutSource source) {
+        if (view.isClickable() && view.getContentDescription() != null
+                && view.getContentDescription().toString().startsWith(source.title + ".")) return view;
+        if (view instanceof ViewGroup) for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+            View found = sourceCard(((ViewGroup) view).getChildAt(i), source); if (found != null) return found;
+        }
+        return null;
+    }
+    private boolean hasText(View view, String text) {
+        if (view instanceof TextView && ((TextView) view).getText().toString().contains(text)) return true;
+        if (view instanceof ViewGroup) for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++)
+            if (hasText(((ViewGroup) view).getChildAt(i), text)) return true;
+        return false;
+    }
+    private boolean hasQr(View view, AboutSource source) {
+        if (view instanceof ImageView && ("QR code for " + source.url).contentEquals(
+                view.getContentDescription() == null ? "" : view.getContentDescription()))
+            return ((ImageView) view).getDrawable() != null && source.qrName.equals(getResources().getResourceEntryName(source.qrResource));
+        if (view instanceof ViewGroup) for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++)
+            if (hasQr(((ViewGroup) view).getChildAt(i), source)) return true;
+        return false;
+    }
+    private void panelFits() throws Exception {
+        ViewGroup overlay = (ViewGroup) get("overlay"); View panel = overlay.getChildAt(0);
+        require(panel.getTop() >= 0 && panel.getBottom() <= overlay.getHeight(), "Native panel extends beyond TV viewport");
+    }
+    private void addAboutCases() {
+        add("About is visible and fits TV", () -> { closeMenus(); key(KeyEvent.KEYCODE_MENU); choose(5); }, () -> { expectMenu("About Homeboard TV"); panelFits(); });
+        for (AboutSource source : AboutSource.values()) {
+            add(source.name() + ": remote OK opens source", () -> {
+                View card = sourceCard((View) get("overlay"), source); require(card != null && card.requestFocus(), "Source card missing");
+                key(KeyEvent.KEYCODE_DPAD_CENTER);
+            }, () -> expectMenu(source.title));
+            add(source.name() + ": full URL and QR visible", () -> {}, () -> {
+                View overlay = (View) get("overlay"); require(hasText(overlay, source.url) && hasQr(overlay, source), "Wrong or missing URL / QR asset"); panelFits();
+            });
+            add(source.name() + ": TV browser or phone fallback", () -> {
+                View overlay = (View) get("overlay");
+                Intent expected = new Intent(Intent.ACTION_VIEW, Uri.parse(source.url)).addCategory(Intent.CATEGORY_BROWSABLE);
+                boolean available = getPackageManager().resolveActivity(expected, PackageManager.MATCH_DEFAULT_ONLY) != null;
+                TextView open = button(overlay, "Open on this TV");
+                require(available == (open != null), "TV action does not match URL capability");
+                if (available) { capturedSourceIntent = null; click("Open on this TV"); }
+                else require(hasText(overlay, "No web browser is available"), "Missing phone fallback");
+            }, () -> {
+                if (capturedSourceIntent != null) require(source.url.equals(capturedSourceIntent.getDataString())
+                        && capturedSourceIntent.hasCategory(Intent.CATEGORY_BROWSABLE)
+                        && (capturedSourceIntent.getFlags() & (Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION)) == 0, "Invalid TV browser intent");
+                capturedSourceIntent = null;
+            });
+            add(source.name() + ": Back returns to About", () -> click("Back to About"), () -> expectMenu("About Homeboard TV"));
+        }
+        add("About Back retains Home settings page", () -> key(KeyEvent.KEYCODE_BACK), () -> { expectMenu("Home settings"); require((Integer) get(menu(), "page") == 1, "Lost About's parent page"); });
     }
     private void next() {
         if (finished) return;
@@ -239,16 +307,24 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
     }
     private void fail(Exception error) { finished = true; report("FAIL " + (index < cases.size() ? cases.get(index).name : "setup") + ": " + error); }
     private void report(String result) {
-        LinearLayout row = new LinearLayout(this); row.setBackgroundColor(0xff102333);
-        TextView text = new TextView(this); text.setTextColor(Color.WHITE); text.setTextSize(12.5f); text.setPadding(16, 12, 8, 8);
-        text.setText(result + "\n\n" + String.join("\n", passed)); row.addView(text, new LinearLayout.LayoutParams(0, -1, 1));
-        LinearLayout images = new LinearLayout(this); images.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout report = new LinearLayout(this); report.setOrientation(LinearLayout.VERTICAL); report.setBackgroundColor(0xff102333);
+        TextView heading = new TextView(this); heading.setTextColor(Color.WHITE); heading.setTextSize(18); heading.setText(result); heading.setPadding(16, 8, 16, 8);
+        report.addView(heading);
+        LinearLayout columns = new LinearLayout(this);
+        int half = (passed.size() + 1) / 2;
+        for (int side = 0; side < 2; side++) {
+            TextView text = new TextView(this); text.setTextColor(Color.WHITE); text.setTextSize(11.5f); text.setPadding(16, 4, 8, 4);
+            text.setText(String.join("\n", passed.subList(side == 0 ? 0 : half, side == 0 ? half : passed.size())));
+            columns.addView(text, new LinearLayout.LayoutParams(0, -1, 1));
+        }
+        report.addView(columns, new LinearLayout.LayoutParams(-1, 0, 1));
+        LinearLayout images = new LinearLayout(this);
         for (Bitmap bitmap : shots) {
             ImageView image = new ImageView(this); image.setImageBitmap(bitmap); image.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            images.addView(image, new LinearLayout.LayoutParams(-1, 0, 1));
+            images.addView(image, new LinearLayout.LayoutParams(0, -1, 1));
         }
-        row.addView(images, new LinearLayout.LayoutParams(0, -1, 1));
-        addContentView(row, new ViewGroup.LayoutParams(-1, -1));
+        report.addView(images, new LinearLayout.LayoutParams(-1, 210));
+        addContentView(report, new ViewGroup.LayoutParams(-1, -1));
     }
     private void require(boolean condition, String message) { if (!condition) throw new IllegalStateException(message); }
     @Override protected void onDestroy() {

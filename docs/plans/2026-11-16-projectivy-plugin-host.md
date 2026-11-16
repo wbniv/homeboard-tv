@@ -450,3 +450,30 @@ flowchart TD
     R --> D
     A --> U[Undo restores previous source and palette together]
 ```
+
+## About source links on TV · 16 November 2026
+
+About's four source links currently use a generic URL intent, while its remote
+OK path treats native link cards as a Back action. Put About and its link screen
+on the same native-panel navigation stack as Background details. Each source
+opens its exact web address and an offline QR code for a phone; offer Open on
+this TV only when Android reports an available URL handler. Keep Back returning
+to About and then Home settings. Preserve all four original source destinations.
+
+![About source link with phone QR and optional TV browser](2026-11-16-projectivy-plugin-host/about-links.svg)
+
+```mermaid
+flowchart LR
+    A[About: source and license links] -->|Remote OK on source| B[Source title, full URL and QR code]
+    B --> C[Scan with phone camera]
+    B -->|URL handler available| D[Open on this TV]
+    D --> E[Android browser or URL handler]
+    B -->|Back| A
+    A -->|Back| F[Home settings]
+```
+
+Pre-generated QR assets keep scanning available offline without adding a QR
+library to the APK. Decode every bundled QR in JVM tests and compare its payload
+with the source URL. Device tests exercise all four cards with remote OK, native
+button focus, Back navigation, visible URLs/QRs, panel bounds and the unavailable
+browser state. Browser capability is queried for HTTPS VIEW/BROWSABLE intents.
