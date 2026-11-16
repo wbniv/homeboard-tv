@@ -32,6 +32,7 @@ android {
         // Independent package identity; keep the upstream Java namespace for focused diffs.
         applicationId 'net.biohack.homeboard'
         minSdk 26
+        resourceConfigurations += ["en", "th"]
         targetSdk 34
         versionCode apkVersionCode
         versionName "${versionPrefix}.${apkVersionCode}"
@@ -65,4 +66,34 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'com.google.zxing:core:3.5.4'
     testImplementation 'org.json:json:20240303'
+}
+
+// Resource parity is required by local checks, CI and candidate deployment.
+tasks.register('checkTranslations') {
+    doLast {
+        def catalogs = ['values', 'values-th'].collect { folder ->
+            def result = [:]
+            fileTree("src/main/res/${folder}").matching { include 'homeboard*.xml' }.files.sort().each { resource ->
+                new XmlParser().parse(resource).children().each { node ->
+                    def key = node.name() + ':' + node.attribute('name')
+                    if (result.containsKey(key)) throw new GradleException("Duplicate translation ${folder}/${key}")
+                    if (!node.text().trim()) throw new GradleException("Empty translation ${folder}/${key}")
+                    result[key] = node
+                }
+            }
+            result
+        }
+        if (catalogs[0].keySet() != catalogs[1].keySet()) throw new GradleException('English/Thai catalog keys differ')
+        catalogs[0].each { key, source ->
+            def target = catalogs[1][key]
+            def args = { text -> (text =~ /%(?:\d+\$)?[-#+ 0,(]*\d*(?:\.\d+)?[sdif]/).collect().sort() }
+            if (args(source.text()) != args(target.text())) throw new GradleException("Format arguments differ: ${key}")
+            if (source.name() == 'string-array' && source.children().size() != target.children().size())
+                throw new GradleException("Array lengths differ: ${key}")
+        }
+        println "Validated ${catalogs[0].size()} English/Thai Homeboard resources"
+    }
+}
+tasks.configureEach {
+    if (name in ['testDebugUnitTest', 'lintDebug', 'assembleDebug', 'bundleRelease']) dependsOn 'checkTranslations'
 }

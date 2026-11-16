@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
     private tv.projectivy.plugin.wallpaperprovider.api.Wallpaper displayedWallpaper;
     private boolean wallpaperReady, wallpaperPreviewStarted, returningFromProviderSettings;
     private boolean backgroundInfo;
-    private String wallpaperStatus = "Choose Preview to load this provider";
+    private String wallpaperStatus = "";
     private java.util.function.IntConsumer adjustmentArm;
     private Runnable adjustmentDone, adjustmentCancel;
     private int adjustmentValue;
@@ -206,8 +206,26 @@ public class MainActivity extends Activity {
         else contextMenu(focused);
     };
 
+    @Override protected void attachBaseContext(Context base) {
+        super.attachBaseContext(AppLanguage.wrap(base));
+    }
+    private boolean reopenLanguageSettings;
+    private void languageSettings() {
+        String current = AppLanguage.mode(this);
+        menu(getString(R.string.hb_language), current.isEmpty() ? getString(R.string.hb_follow_device) : "th".equals(current) ? getString(R.string.hb_thai) : getString(R.string.hb_english),
+                new String[]{getString(R.string.hb_english), getString(R.string.hb_thai), getString(R.string.hb_follow_device), getString(R.string.hb_back)}, choice -> {
+            if (choice == 3) { homeSettings(); return; }
+            String mode = new String[]{"en", "th", ""}[choice];
+            if (mode.equals(current)) { homeSettings(); return; }
+            if (!AppLanguage.set(this, mode)) { toast(getString(R.string.hb_language_failed)); return; }
+            pushUndo("language", "", current, getString(R.string.hb_language));
+            reopenLanguageSettings = true;
+            recreate();
+        }, "en".equals(current) ? 0 : "th".equals(current) ? 1 : 2);
+    }
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        wallpaperStatus = getString(R.string.hb_choose_preview_to_load_this_provider);
         preferences = getSharedPreferences("widget-home", MODE_PRIVATE);
         String encoded = preferences.getString("layout", null);
         try { layout = encoded == null ? HomeLayout.firstRun() : HomeLayout.parse(encoded); }
@@ -215,7 +233,7 @@ public class MainActivity extends Activity {
             // Preserve an unreadable user's layout for diagnosis; never replace it silently with defaults.
             preferences.edit().putString("unreadable-layout", encoded).apply();
             layout = new HomeLayout();
-            Toast.makeText(this, "Saved layout could not be read. Starting with empty Home.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.hb_saved_layout_could_not_be_read_starting_with_empty_home), Toast.LENGTH_LONG).show();
         }
         if ("theme".equals(layout.palette)) {
             // Move former theme defaults to a deterministic palette; retain any saved image data.
@@ -285,6 +303,10 @@ public class MainActivity extends Activity {
         render(0);
         loadApps();
         handleIntent(getIntent());
+        if (savedInstanceState != null && savedInstanceState.getBoolean("languageSettings")) {
+            homeSettings();
+            showUndoBanner(getString(R.string.hb_language));
+        }
     }
 
     @Override protected void onResume() {
@@ -334,6 +356,7 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
     @Override protected void onSaveInstanceState(Bundle state) {
+        state.putBoolean("languageSettings", reopenLanguageSettings);
         state.putBoolean("allApps", allApps); state.putInt("homePage", homePage);
         state.putInt("appsPage", appsPage); state.putString("focus", focused);
         state.putString("homeFocus", homeFocus); state.putString("appsFocus", appsFocus);
@@ -342,8 +365,8 @@ public class MainActivity extends Activity {
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_HOME_ROLE) {
-            toast(isDefaultHomeApp() ? "Homeboard TV is now the default Home app"
-                    : "Default Home app was not changed");
+            toast(isDefaultHomeApp() ? getString(R.string.hb_homeboard_tv_is_now_the_default_home_app)
+                    : getString(R.string.hb_default_home_app_was_not_changed));
             render(0);
             return;
         }
@@ -368,7 +391,7 @@ public class MainActivity extends Activity {
         else if (ACTION_LAUNCHER_SETTINGS.equals(intent.getAction())) homeSettings();
         else if (ACTION_VIEW_INPUTS.equals(intent.getAction())) open(new Intent(ACTION_VIEW_INPUTS));
     }
-    private void save() { save("Home layout"); }
+    private void save() { save(getString(R.string.hb_hint_home_layout)); }
     private void save(String label) {
         String next = layout.encode();
         boolean changed = lastSavedLayout != null && !lastSavedLayout.equals(next);
@@ -435,10 +458,10 @@ public class MainActivity extends Activity {
         TextView message = text(label, 17);
         message.setSingleLine(true); message.setEllipsize(android.text.TextUtils.TruncateAt.END);
         row.addView(message, new LinearLayout.LayoutParams(0, -1, 1f));
-        undoButton = text("UNDO", 17); undoButton.setTypeface(null, Typeface.BOLD);
+        undoButton = text(getString(R.string.hb_undo), 17); undoButton.setTypeface(null, Typeface.BOLD);
         undoButton.setGravity(Gravity.CENTER); undoButton.setFocusable(true); undoButton.setClickable(true);
         undoButton.setPadding(dp(20), 0, dp(20), 0);
-        undoButton.setContentDescription("Undo " + label);
+        undoButton.setContentDescription(getString(R.string.hb_undo_5) + label);
         undoButton.setBackground(shape(paletteColors.focus, paletteColors.text, 1));
         undoButton.setOnClickListener(v -> undoThrough(0));
         row.addView(undoButton, new LinearLayout.LayoutParams(-2, dp(48)));
@@ -462,7 +485,7 @@ public class MainActivity extends Activity {
         JSONArray stored = storedUndoEntries();
         for (int i = stored.length() - 1; i >= 0; i--) try {
             JSONObject item = stored.getJSONObject(i);
-            entries.add(new UndoEntry(item.optString("label", "Homeboard change"),
+            entries.add(new UndoEntry(item.optString("label", getString(R.string.hb_homeboard_change)),
                     item.optString("kind", "layout"), item.optString("key", ""), item.optString("state", "")));
         } catch (Exception ignored) { }
         return entries;
@@ -470,12 +493,12 @@ public class MainActivity extends Activity {
     private void openUndoHistory() {
         List<UndoEntry> entries = readUndoHistory();
         if (entries.isEmpty()) {
-            menu("Undo history", "No recent Homeboard changes can be undone.", new String[0], ignored -> {});
+            menu(getString(R.string.hb_undo_history), getString(R.string.hb_no_recent_homeboard_changes_can_be_undone), new String[0], ignored -> {});
             return;
         }
         String[] labels = new String[entries.size()];
-        for (int i = 0; i < labels.length; i++) labels[i] = "Undo · " + entries.get(i).label;
-        menu("Undo history", "Newest first. Undoing an older change also reverses newer changes.",
+        for (int i = 0; i < labels.length; i++) labels[i] = getString(R.string.hb_undo_9) + entries.get(i).label;
+        menu(getString(R.string.hb_undo_history), getString(R.string.hb_newest_first_undoing_an_older_change_also_reverses_newer_changes),
                 labels, this::undoThrough);
     }
     private void undoThrough(int displayedIndex) {
@@ -487,7 +510,11 @@ public class MainActivity extends Activity {
             applyingUndo = true;
             for (int i = entries.size() - 1; i >= targetIndex; i--) {
                 UndoEntry entry = entries.get(entries.size() - 1 - i);
-                if ("layout".equals(entry.kind)) layout = HomeLayout.parse(entry.state);
+                if ("language".equals(entry.kind)) {
+                    if (!AppLanguage.set(this, entry.state)) throw new IllegalStateException("Language save failed");
+                    reopenLanguageSettings = true;
+                }
+                else if ("layout".equals(entry.kind)) layout = HomeLayout.parse(entry.state);
                 else if ("home-app-size".equals(entry.kind)) {
                     JSONObject state = new JSONObject(entry.state);
                     layout = HomeLayout.parse(state.getString("layout"));
@@ -506,7 +533,7 @@ public class MainActivity extends Activity {
             background = paletteColor(); paletteColors = PaletteColors.from(background);
             root.setBackgroundColor(background); setAirPalette();
         } catch (Exception failure) {
-            toast("Could not undo that change");
+            toast(getString(R.string.hb_could_not_undo_that_change));
             return;
         } finally { applyingUndo = false; }
         handler.removeCallbacks(hideUndoBanner);
@@ -516,8 +543,9 @@ public class MainActivity extends Activity {
         if (overlay != null) { root.removeView(overlay); overlay = null; }
         syncBackground();
         render(0); saveNavigationState();
-        showUndoBanner(displayedIndex == 0 ? "Undid " + restoredLabel
-                : "Undid " + restoredLabel + " and newer changes");
+        if (reopenLanguageSettings) recreate();
+        showUndoBanner(displayedIndex == 0 ? getString(R.string.hb_undid) + restoredLabel
+                : getString(R.string.hb_undid) + restoredLabel + " and newer changes");
     }
     private void saveNavigationState() {
         preferences.edit().putBoolean("nav_all_apps", allApps)
@@ -603,7 +631,7 @@ public class MainActivity extends Activity {
                 }
                 found.sort(Comparator.comparing(a -> a.label.toLowerCase(java.util.Locale.ROOT)));
             } catch (RuntimeException e) {
-                handler.post(() -> { loading = false; if (!closed) toast("Could not refresh installed apps"); });
+                handler.post(() -> { loading = false; if (!closed) toast(getString(R.string.hb_could_not_refresh_installed_apps)); });
                 return;
             }
             handler.post(() -> {
@@ -861,9 +889,9 @@ public class MainActivity extends Activity {
         d.setStroke(dp(width), stroke); return d;
     }
     private void addTopSettingsButtons() {
-        addTopSettingsButton(HOME_SETTINGS, R.drawable.ic_app_settings, "Homeboard settings",
+        addTopSettingsButton(HOME_SETTINGS, R.drawable.ic_app_settings, getString(R.string.hb_homeboard_settings),
                 this::homeSettings, dp(110));
-        addTopSettingsButton(DEVICE_SETTINGS, R.drawable.ic_settings, "Device settings",
+        addTopSettingsButton(DEVICE_SETTINGS, R.drawable.ic_settings, getString(R.string.hb_device_settings),
                 () -> open(new Intent(Settings.ACTION_SETTINGS)), dp(50));
     }
     private void addTopSettingsButton(String key, int icon, String description, Runnable action, int rightMargin) {
@@ -1023,8 +1051,8 @@ public class MainActivity extends Activity {
             grid.addTile(tile, cell.column, cell.row, cell.width, cell.height);
         }
         if (hasAppTile) createAppFocusHighlight();
-        footer = text(resizing ? resizeHelpText() : moving ? "Move preview · arrows place anywhere in the grid · OK saves · Back cancels"
-                : "Home " + (homePage + 1) + "/" + homePageCount(items) + "     Right → All Apps     Hold OK → menu", 13);
+        footer = text(resizing ? resizeHelpText() : moving ? getString(R.string.hb_move_preview_arrows_place_anywhere_in_the_grid_ok_saves_back_canc)
+                : getString(R.string.hb_hint_home) + (homePage + 1) + "/" + homePageCount(items) + getString(R.string.hb_right_all_apps_hold_ok_menu), 13);
         if (resizing) {
             footer.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
             footer.setPadding(dp(16), 0, dp(16), 0);
@@ -1066,18 +1094,18 @@ public class MainActivity extends Activity {
                 if (banner == null) try { icon = app.info.loadIcon(getPackageManager()); }
                 catch (RuntimeException ignored) { }
             }
-            String label = app == null ? "Unavailable app" : app.label;
+            String label = app == null ? getString(R.string.hb_unavailable_app) : app.label;
             BannerAppTile tile = new BannerAppTile(this, banner == null ? icon : banner, banner == null, label);
-            tile.setContentDescription(label + (app == null ? "; hold OK to remove" : "; hold OK for menu"));
+            tile.setContentDescription(label + (app == null ? getString(R.string.hb_hint_hold_ok_to_remove) : getString(R.string.hb_hint_hold_ok_for_menu)));
             return tile;
         }
         if (layout.circularIcons) {
             Drawable artwork = null;
             try { if (app != null) artwork = app.info.loadIcon(getPackageManager()); }
             catch (RuntimeException ignored) { }
-            String label = app == null ? "Unavailable app" : app.label;
+            String label = app == null ? getString(R.string.hb_unavailable_app) : app.label;
             CircularAppTile circular = new CircularAppTile(this, artwork, label);
-            circular.setContentDescription(label + (app == null ? "; hold OK to remove" : "; hold OK for menu"));
+            circular.setContentDescription(label + (app == null ? getString(R.string.hb_hint_hold_ok_to_remove) : getString(R.string.hb_hint_hold_ok_for_menu)));
             return circular;
         }
         LinearLayout tile = new LinearLayout(this); tile.setOrientation(LinearLayout.VERTICAL);
@@ -1094,12 +1122,12 @@ public class MainActivity extends Activity {
             iconLp.bottomMargin = dp(3);
             tile.addView(icon, iconLp);
         }
-        String label = app == null ? "Unavailable app" : app.label;
+        String label = app == null ? getString(R.string.hb_unavailable_app) : app.label;
         TextView name = text(label, 16);
         name.setGravity(Gravity.CENTER); name.setSingleLine(true);
         name.setEllipsize(android.text.TextUtils.TruncateAt.END);
         tile.addView(name, new LinearLayout.LayoutParams(-1, -2));
-        tile.setContentDescription(label + (app == null ? "; hold OK to remove" : "; hold OK for menu"));
+        tile.setContentDescription(label + (app == null ? getString(R.string.hb_hint_hold_ok_to_remove) : getString(R.string.hb_hint_hold_ok_for_menu)));
         return tile;
     }
     private void buildApps() {
@@ -1107,7 +1135,7 @@ public class MainActivity extends Activity {
         List<String> items = appItems();
         int columns = appColumns(), rows = appRows(), pageSize = appPageSize();
         appsPage = Math.max(0, Math.min(appsPage, Math.max(0, (items.size() - 1) / pageSize)));
-        TextView title = text("All Apps", 30); title.setTypeface(null, Typeface.BOLD);
+        TextView title = text(getString(R.string.hb_all_apps), 30); title.setTypeface(null, Typeface.BOLD);
         FrameLayout.LayoutParams tp = new FrameLayout.LayoutParams(-2, dp(50));
         tp.setMargins(dp(50), dp(22), 0, 0); surface.addView(title, tp);
         TileGrid grid = new TileGrid(this, columns, rows);
@@ -1120,9 +1148,9 @@ public class MainActivity extends Activity {
             grid.addTile(tile, (i - start) % columns, (i - start) / columns, 1);
         }
         if (start < items.size()) createAppFocusHighlight();
-        footer = text(moving ? "Move preview · arrows reposition · OK saves · Back cancels"
-                : "Left edge / Back → Home    Hold OK → menu    Page " + (appsPage + 1)
-                    + "    " + items.size() + " apps", 13);
+        footer = text(moving ? getString(R.string.hb_move_preview_arrows_reposition_ok_saves_back_cancels)
+                : getString(R.string.hb_hint_left_edge_back_home_hold_ok_menu_page) + (appsPage + 1)
+                    + "    " + items.size() + getString(R.string.hb_apps), 13);
         FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(-1, dp(36), Gravity.BOTTOM);
         fp.setMargins(dp(50), 0, dp(50), dp(10)); surface.addView(footer, fp);
     }
@@ -1519,7 +1547,7 @@ public class MainActivity extends Activity {
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
         if (isAirWidgetKey(key)) { airFor(key).showActions(); return; }
         App app = apps.get(key);
-        if (app == null) { if (!key.isEmpty()) toast("App unavailable; hold OK to remove this tile"); return; }
+        if (app == null) { if (!key.isEmpty()) toast(getString(R.string.hb_app_unavailable_hold_ok_to_remove_this_tile)); return; }
         open(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setComponent(app.component)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED));
     }
@@ -1528,12 +1556,12 @@ public class MainActivity extends Activity {
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (key.isEmpty() || SETTINGS.equals(key)) { homeSettings(); return; }
         if (isAirWidgetKey(key)) {
-            menu("Air quality widget", "Choose an action for this widget", new String[]{"Configure location and source", "Move", "Resize", "More…"}, choice -> {
+            menu(getString(R.string.hb_air_quality_widget), getString(R.string.hb_choose_an_action_for_this_widget), new String[]{getString(R.string.hb_configure_location_and_source), getString(R.string.hb_move), getString(R.string.hb_resize), getString(R.string.hb_more)}, choice -> {
                 if (choice == 0) airFor(key).configureWidget();
                 if (choice == 1) startMove(key);
                 if (choice == 2) startResize(key);
-                if (choice == 3) menu("More · Air quality", "Delete removes this widget panel; Undo restores it.",
-                        new String[]{"Delete widget", "Refresh reading", "Homeboard settings"}, more -> {
+                if (choice == 3) menu(getString(R.string.hb_hint_more_air_quality), getString(R.string.hb_delete_removes_this_widget_panel_undo_restores_it),
+                        new String[]{getString(R.string.hb_delete_widget), getString(R.string.hb_refresh_reading), getString(R.string.hb_homeboard_settings)}, more -> {
                             if (more == 0) deleteTile(key);
                             else if (more == 1) airFor(key).refreshNow();
                             else homeSettings();
@@ -1541,19 +1569,19 @@ public class MainActivity extends Activity {
             }); return;
         }
         App app = apps.get(key);
-        String deleteLabel = allApps ? "Hide from All Apps" : "Remove from Home";
-        menu(app == null ? "Unavailable app" : app.label, "Choose an action for this app",
-                new String[]{"Move", layout.widgets.contains(key) ? "Unfavorite" : "Favorite", deleteLabel, "More…"}, choice -> {
+        String deleteLabel = allApps ? getString(R.string.hb_hide_from_all_apps) : getString(R.string.hb_remove_from_home);
+        menu(app == null ? getString(R.string.hb_unavailable_app) : app.label, getString(R.string.hb_choose_an_action_for_this_app),
+                new String[]{getString(R.string.hb_move), layout.widgets.contains(key) ? getString(R.string.hb_unfavorite) : getString(R.string.hb_favorite), deleteLabel, getString(R.string.hb_more)}, choice -> {
                     switch (choice) {
                         case 0: startMove(key); break;
                         case 1:
                             if (layout.widgets.contains(key)) { layout.widgets.remove(key); layout.homePositions.remove(key); }
                             else layout.favorite(key);
-                            save(layout.widgets.contains(key) ? "Added app to Home" : "Removed app from Home");
+                            save(layout.widgets.contains(key) ? getString(R.string.hb_added_app_to_home) : getString(R.string.hb_removed_app_from_home));
                             render(0); break;
                         case 2: deleteTile(key); break;
-                        default: menu("More · " + (app == null ? "App" : app.label), "Android owns app and system actions.",
-                                new String[]{"Uninstall app", "App info", "Homeboard settings"}, more -> {
+                        default: menu(getString(R.string.hb_more_39) + (app == null ? getString(R.string.hb_hint_app) : app.label), getString(R.string.hb_android_owns_app_and_system_actions),
+                                new String[]{getString(R.string.hb_uninstall_app), getString(R.string.hb_app_info), getString(R.string.hb_homeboard_settings)}, more -> {
                                     if (more == 0) uninstall(key);
                                     else if (more == 1) {
                                         ComponentName c = ComponentName.unflattenFromString(key.substring(4));
@@ -1567,9 +1595,9 @@ public class MainActivity extends Activity {
     private void deleteTile(String key) {
         boolean dashboard = !allApps;
         App app = apps.get(key);
-        String label = isAirWidgetKey(key) ? "Air quality panel" : app == null ? "app shortcut" : app.label;
+        String label = isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : app == null ? "app shortcut" : app.label;
         layout.delete(key, dashboard);
-        save(dashboard ? "Removed " + label + " from Home" : "Hid " + label + " from All Apps");
+        save(dashboard ? getString(R.string.hb_hint_removed) + label + getString(R.string.hb_hint_from_home) : getString(R.string.hb_hint_hid) + label + getString(R.string.hb_hint_from_all_apps));
         if (dashboard && !layout.widgets.isEmpty()) {
             homePage = Math.min(homePage, homePageCount(layout.widgets) - 1);
             if (!layout.widgets.contains(focused)) focused = layout.widgets.isEmpty() ? "" : layout.widgets.get(0);
@@ -1578,9 +1606,9 @@ public class MainActivity extends Activity {
     }
     private void uninstall(String key) {
         App app = apps.get(key);
-        if (app == null) { toast("App is unavailable"); return; }
+        if (app == null) { toast(getString(R.string.hb_app_is_unavailable)); return; }
         if ((app.info.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-            menu("System app", "Android does not allow uninstalling this app here.", new String[]{"Keep app", "Open app info"}, choice -> {
+            menu(getString(R.string.hb_system_app), getString(R.string.hb_android_does_not_allow_uninstalling_this_app_here), new String[]{getString(R.string.hb_keep_app), getString(R.string.hb_open_app_info)}, choice -> {
                 if (choice == 1) open(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + app.component.getPackageName())));
             }); return;
         }
@@ -1608,7 +1636,7 @@ public class MainActivity extends Activity {
             layout.homePositions.clear();
             if (previewHomePositions != null) layout.homePositions.putAll(previewHomePositions);
         }
-        moving = false; preview = null; previewHomePositions = null; save("Moved item"); render(0);
+        moving = false; preview = null; previewHomePositions = null; save(getString(R.string.hb_moved_item)); render(0);
     }
     private void cancelMove() {
         moving = false; preview = null; previewHomePositions = null;
@@ -1617,28 +1645,29 @@ public class MainActivity extends Activity {
         render(0);
     }
     private void homeSettings() {
-        menu("Home settings", "Choose an area to customize", new String[]{
-                "Widgets & restore", "Appearance", "Home behavior", "Undo history",
-                "Default Home app · " + (isDefaultHomeApp() ? "Homeboard" : "Choose"), "About Homeboard TV"}, choice -> {
+        menu(getString(R.string.hb_home_settings), getString(R.string.hb_choose_an_area_to_customize), new String[]{
+                getString(R.string.hb_widgets_restore), getString(R.string.hb_appearance), getString(R.string.hb_home_behavior), getString(R.string.hb_language), getString(R.string.hb_undo_history),
+                getString(R.string.hb_default_home_app) + (isDefaultHomeApp() ? "Homeboard" : getString(R.string.hb_choose)), getString(R.string.hb_about_homeboard_tv)}, choice -> {
             switch (choice) {
                 case 0: widgetsAndRestore(); break;
                 case 1: appearanceSettings(); break;
                 case 2: homeBehaviorSettings(); break;
-                case 3: openUndoHistory(); break;
-                case 4: chooseDefaultHomeApp(); break;
-                case 5: aboutHomeboard(); break;
+                case 3: languageSettings(); break;
+                case 4: openUndoHistory(); break;
+                case 5: chooseDefaultHomeApp(); break;
+                case 6: aboutHomeboard(); break;
                 default: break;
             }
         });
     }
 
     private void widgetsAndRestore() {
-        menu("Widgets & restore", "Add a widget or restore an app shortcut",
-                new String[]{"Add widget", "Restore hidden app"}, choice -> {
-                    if (choice == 0) menu("Add to Home", "Choose a tile to add",
-                            new String[]{"Air quality widget", "Favorite an app from All Apps"}, add -> {
+        menu(getString(R.string.hb_widgets_restore), getString(R.string.hb_add_a_widget_or_restore_an_app_shortcut),
+                new String[]{getString(R.string.hb_add_widget), getString(R.string.hb_restore_hidden_app)}, choice -> {
+                    if (choice == 0) menu(getString(R.string.hb_add_to_home), getString(R.string.hb_choose_a_tile_to_add),
+                            new String[]{getString(R.string.hb_air_quality_widget), getString(R.string.hb_favorite_an_app_from_all_apps)}, add -> {
                                 if (add == 0) {
-                                    String key = newAirWidgetKey(); layout.addPanel(key); save("Added air-quality panel"); allApps = false; focused = key;
+                                    String key = newAirWidgetKey(); layout.addPanel(key); save(getString(R.string.hb_added_air_quality_panel)); allApps = false; focused = key;
                                     homePage = homePageOf(focused, layout.widgets); render(0); }
                                 else { allApps = false; showApps(); }
                             });
@@ -1654,14 +1683,14 @@ public class MainActivity extends Activity {
     }
 
     private void appearanceSettings() {
-        menu("Appearance", "Customize backgrounds and dashboard elements",
-                new String[]{"Background", "Palette", "Icons", "UI opacity · " + layout.uiOpacityPercent + "%"}, choice -> {
+        menu(getString(R.string.hb_appearance), getString(R.string.hb_customize_backgrounds_and_dashboard_elements),
+                new String[]{getString(R.string.hb_background), getString(R.string.hb_palette), getString(R.string.hb_icons), getString(R.string.hb_ui_opacity) + layout.uiOpacityPercent + "%"}, choice -> {
                     if (choice == 0) backgroundSettings();
                     else if (choice == 1) colorPaletteSettings();
                     else if (choice == 2) appArtworkSettings();
-                    else startAdjustment("UI opacity", layout.uiOpacityPercent,
+                    else startAdjustment(getString(R.string.hb_ui_opacity_70), layout.uiOpacityPercent,
                             this::applyUiBackgroundOpacity, value -> {
-                                layout.uiOpacityPercent = value; save("UI opacity: " + value + "%"); render(0);
+                                layout.uiOpacityPercent = value; save(getString(R.string.hb_hint_ui_opacity) + value + "%"); render(0);
                             });
                 });
     }
@@ -1670,20 +1699,20 @@ public class MainActivity extends Activity {
         String[] ids = {"midnight", "forest", "ocean", "plum", "sand", "rose", "teal", "slate",
                 "sunset", "black", "charcoal", "indigo", "lagoon", "moss", "cedar", "amber",
                 "cobalt", "pine", "emerald", "copper"};
-        String[] labels = {"Midnight", "Forest", "Ocean", "Plum", "Sand", "Rose", "Teal", "Slate",
-                "Sunset", "Black", "Charcoal", "Indigo", "Lagoon", "Moss", "Cedar", "Amber",
-                "Cobalt", "Pine", "Emerald", "Copper"};
+        String[] labels = {getString(R.string.hb_midnight), getString(R.string.hb_forest), getString(R.string.hb_ocean), getString(R.string.hb_plum), getString(R.string.hb_sand), getString(R.string.hb_rose), getString(R.string.hb_teal), getString(R.string.hb_slate),
+                getString(R.string.hb_sunset), getString(R.string.hb_black), getString(R.string.hb_charcoal), getString(R.string.hb_indigo), getString(R.string.hb_lagoon), getString(R.string.hb_moss), getString(R.string.hb_cedar), getString(R.string.hb_amber),
+                getString(R.string.hb_cobalt), getString(R.string.hb_pine), getString(R.string.hb_emerald), getString(R.string.hb_copper)};
         int selected = -1;
         for (int i = 0; i < ids.length; i++) if (ids[i].equals(layout.palette)) selected = i;
         if (selected < 0) {
             // Preserve an older selected palette while keeping the curated selector at twenty choices.
             selected = ids.length - 1;
             ids[selected] = layout.palette;
-            labels[selected] = "Current palette";
+            labels[selected] = getString(R.string.hb_current_palette);
         }
         if ("theme".equals(layout.palette)) selected = 0;
-        beginUndoGroup("Changed background color");
-        paletteMenu("Palette", "Move to a color to preview it", labels, choice -> {
+        beginUndoGroup(getString(R.string.hb_changed_background_color));
+        paletteMenu(getString(R.string.hb_palette), getString(R.string.hb_move_to_a_color_to_preview_it), labels, choice -> {
             layout.palette = ids[choice];
             applyBackgroundChoice();
         }, selected);
@@ -1693,37 +1722,37 @@ public class MainActivity extends Activity {
         cancelWallpaperPreview();
         beginUndoGroup("Changed solid background");
         layout.wallpaper.component = ""; layout.wallpaper.uuid = "";
-        save("Background: solid color"); syncBackground(); render(0);
+        save(getString(R.string.hb_hint_background_solid_color)); syncBackground(); render(0);
         colorPaletteSettings();
     }
 
     private void applyBackgroundChoice() {
         background = paletteColor(); paletteColors = PaletteColors.from(background);
         setAirPalette();
-        root.setBackgroundColor(background); save("Changed background"); render(0);
+        root.setBackgroundColor(background); save(getString(R.string.hb_changed_background)); render(0);
     }
 
     private void appArtworkSettings() {
-        menu("Icons", "Choose artwork and icon shape",
-                new String[]{"Home favorites · " + homeAppSizeLabel(),
-                        "All Apps · " + (layout.appBanners ? "TV banners" : "Dense icons"),
-                        "Circular icon mask · " + (layout.circularIcons ? "On" : "Off")}, choice -> {
+        menu(getString(R.string.hb_icons), getString(R.string.hb_choose_artwork_and_icon_shape),
+                new String[]{getString(R.string.hb_home_favorites) + homeAppSizeLabel(),
+                        getString(R.string.hb_all_apps_97) + (layout.appBanners ? getString(R.string.hb_tv_banners) : getString(R.string.hb_dense_icons)),
+                        getString(R.string.hb_hint_circular_icon_mask) + (layout.circularIcons ? getString(R.string.hb_on) : getString(R.string.hb_off))}, choice -> {
                     if (choice == 0) homeAppSizeSettings();
                     else if (choice == 1) allAppsArtworkSettings();
-                    else menu("Circular icon mask", "The icon keeps the same size",
-                            new String[]{"Original icon shape", "Circular mask"}, mask -> {
+                    else menu(getString(R.string.hb_circular_icon_mask), getString(R.string.hb_the_icon_keeps_the_same_size),
+                            new String[]{getString(R.string.hb_original_icon_shape), getString(R.string.hb_circular_mask)}, mask -> {
                                 layout.circularIcons = mask == 1;
                                 appsPage = Math.max(0, appItems().indexOf(focused) / appPageSize());
-                                save("Changed app icon shape"); render(0);
+                                save(getString(R.string.hb_changed_app_icon_shape)); render(0);
                             }, layout.circularIcons ? 1 : 0);
                 });
     }
     private String homeAppSizeLabel() {
-        return HomeLayout.APP_BANNER.equals(layout.homeAppSize) ? "Banners" : "Small icons";
+        return HomeLayout.APP_BANNER.equals(layout.homeAppSize) ? getString(R.string.hb_banners) : getString(R.string.hb_small_icons);
     }
     private void homeAppSizeSettings() {
-        menu("Home favorites", "Banners use wider cells and taller rows. Tiles may move to another row or page.",
-                new String[]{"Small icons", "Banners"}, choice -> changeHomeAppSize(
+        menu(getString(R.string.hb_home_favorites_109), getString(R.string.hb_banners_use_wider_cells_and_taller_rows_tiles_may_move_to_another),
+                new String[]{getString(R.string.hb_small_icons), getString(R.string.hb_banners)}, choice -> changeHomeAppSize(
                         choice == 0 ? HomeLayout.APP_SMALL : HomeLayout.APP_BANNER),
                 HomeLayout.APP_BANNER.equals(layout.homeAppSize) ? 1 : 0);
     }
@@ -1735,7 +1764,7 @@ public class MainActivity extends Activity {
         } catch (org.json.JSONException invalid) { throw new IllegalStateException(invalid); }
         if (!layout.setHomeAppSize(size, homeGridColumns(), homeGridRows(),
                 homeGridColumnsFor(size), homeGridRowsFor(size))) return;
-        String label = "Home favorites: " + homeAppSizeLabel();
+        String label = getString(R.string.hb_home_favorites_111) + homeAppSizeLabel();
         pushUndo("home-app-size", "", snapshot, label);
         saveWithoutUndo();
         String initiatingFocus = allApps ? homeFocus : focused;
@@ -1746,9 +1775,9 @@ public class MainActivity extends Activity {
     }
     private void allAppsArtworkSettings() {
         boolean returnToAllApps = allApps;
-        menu("All Apps", "Uses " + (layout.appBanners ? "TV banners · responsive grid" : "launcher icons · dense grid")
-                        + " · Home favorites use " + homeAppSizeLabel(),
-                new String[]{"Launcher icons · dense grid", "TV banners · responsive grid"}, artwork -> {
+        menu(getString(R.string.hb_all_apps), getString(R.string.hb_hint_uses) + (layout.appBanners ? getString(R.string.hb_tv_banners_responsive_grid) : "launcher icons · dense grid")
+                        + getString(R.string.hb_hint_home_favorites_use) + homeAppSizeLabel(),
+                new String[]{getString(R.string.hb_launcher_icons_dense_grid), getString(R.string.hb_tv_banners_responsive_grid)}, artwork -> {
                     layout.appBanners = artwork == 1;
                     if (returnToAllApps) {
                         // The grid can change page size between icons and banners. Keep
@@ -1763,30 +1792,30 @@ public class MainActivity extends Activity {
                             appsFocus = focused;
                         }
                     }
-                    save("Changed All Apps artwork"); render(0);
+                    save(getString(R.string.hb_changed_all_apps_artwork)); render(0);
                 }, layout.appBanners ? 1 : 0);
     }
 
     private void homeBehaviorSettings() {
-        String columns = layout.homeColumns == 0 ? "Auto" : String.valueOf(layout.homeColumns);
-        String rows = layout.homeRows == 0 ? "Auto" : String.valueOf(Math.min(layout.homeRows, homeGridFitRows()));
-        menu("Home behavior", "Choose grid density, new panel size or screen movement",
-                new String[]{"Grid columns · " + columns,
-                        "Grid rows · " + rows,
-                        "New panel size · " + panelSizeLabel(layout.defaultPanelSize),
-                        "Reduced motion · " + (layout.reducedMotion ? "On" : "Off")}, choice -> {
+        String columns = layout.homeColumns == 0 ? getString(R.string.hb_auto) : String.valueOf(layout.homeColumns);
+        String rows = layout.homeRows == 0 ? getString(R.string.hb_auto) : String.valueOf(Math.min(layout.homeRows, homeGridFitRows()));
+        menu(getString(R.string.hb_home_behavior), getString(R.string.hb_choose_grid_density_new_panel_size_or_screen_movement),
+                new String[]{getString(R.string.hb_grid_columns) + columns,
+                        getString(R.string.hb_grid_rows) + rows,
+                        getString(R.string.hb_new_panel_size) + panelSizeLabel(layout.defaultPanelSize),
+                        getString(R.string.hb_reduced_motion) + (layout.reducedMotion ? getString(R.string.hb_on) : getString(R.string.hb_off))}, choice -> {
                     if (choice == 0) showGridSelector(true);
                     else if (choice == 1) showGridSelector(false);
                     else if (choice == 2) panelSizeMenu(null, true);
-                    else menu("Reduced motion", "Choose how Home and All Apps move",
-                            new String[]{"Off", "On"}, motion -> {
-                                layout.reducedMotion = motion == 1; save("Changed reduced motion"); render(0);
+                    else menu(getString(R.string.hb_reduced_motion_121), getString(R.string.hb_choose_how_home_and_all_apps_move),
+                            new String[]{getString(R.string.hb_off), getString(R.string.hb_on)}, motion -> {
+                                layout.reducedMotion = motion == 1; save(getString(R.string.hb_changed_reduced_motion)); render(0);
                             }, layout.reducedMotion ? 1 : 0);
                 });
     }
 
     private String panelSizeLabel(int size) {
-        return size == HomeLayout.PANEL_SMALL ? "Small" : size == HomeLayout.PANEL_LARGE ? "Large" : "Medium";
+        return size == HomeLayout.PANEL_SMALL ? getString(R.string.hb_small) : size == HomeLayout.PANEL_LARGE ? getString(R.string.hb_large) : getString(R.string.hb_medium);
     }
 
     private void startResize(String key) {
@@ -1812,13 +1841,13 @@ public class MainActivity extends Activity {
     }
 
     private String resizeHelpText() {
-        return "Resize " + resizeWidth + "×" + resizeHeight
-                + "   ← Narrower   ↑ Shorter   → Wider   ↓ Taller   ·   OK Save   ·   Back Cancel";
+        return getString(R.string.hb_hint_resize) + resizeWidth + "×" + resizeHeight
+                + getString(R.string.hb_narrower_shorter_wider_taller_ok_save_back_cancel);
     }
 
     private void finishResize(boolean commit) {
         if (!resizing) return;
-        if (commit) { save("Resized panel"); }
+        if (commit) { save(getString(R.string.hb_resized_panel)); }
         else if (resizePreviousSpan == null) { layout.panelSpans.remove(resizingKey); }
         else { layout.setPanelSpan(resizingKey, resizePreviousSpan.width, resizePreviousSpan.height); }
         resizing = false; resizingKey = null; resizePreviousSpan = null;
@@ -1832,16 +1861,16 @@ public class MainActivity extends Activity {
 
     private void panelSizeMenu(String key, boolean defaults) {
         int selected = defaults ? layout.defaultPanelSize : layout.panelSize(key);
-        String[] labels = {"Small · about one third width", "Medium · about half width", "Large · about three quarters width"};
-        labels[selected - 1] += " · Current";
-        menu(defaults ? "New panel size" : "Panel size",
-                defaults ? "Default size for panels added later; existing panels keep their size"
-                        : "Resize this panel; height grows with size and the grid repacks around it",
+        String[] labels = {getString(R.string.hb_small_about_one_third_width), getString(R.string.hb_medium_about_half_width), getString(R.string.hb_large_about_three_quarters_width)};
+        labels[selected - 1] += getString(R.string.hb_current);
+        menu(defaults ? getString(R.string.hb_new_panel_size_133) : getString(R.string.hb_panel_size),
+                defaults ? getString(R.string.hb_default_size_for_panels_added_later_existing_panels_keep_their_si)
+                        : getString(R.string.hb_resize_this_panel_height_grows_with_size_and_the_grid_repacks_aro),
                 labels, choice -> {
                     int size = choice + 1;
                     if (defaults) layout.defaultPanelSize = size;
                     else layout.setPanelSize(key, size);
-                    save(defaults ? "Changed new panel size" : "Changed panel size");
+                    save(defaults ? getString(R.string.hb_changed_new_panel_size) : getString(R.string.hb_changed_panel_size));
                     if (!defaults) homePage = homePageOf(key, layout.widgets);
                     render(0);
                     if (defaults) homeBehaviorSettings();
@@ -1861,7 +1890,7 @@ public class MainActivity extends Activity {
         String[] labels = new String[supported.size()];
         for (int i = 0; i < supported.size(); i++) {
             values[i] = supported.get(i);
-            labels[i] = values[i] == 0 ? "Auto" : columns ? values[i] + " columns" : values[i] + " rows";
+            labels[i] = values[i] == 0 ? getString(R.string.hb_auto) : columns ? values[i] + getString(R.string.hb_columns) : values[i] + getString(R.string.hb_rows);
         }
         int configured = columns ? layout.homeColumns : layout.homeRows;
         int effective = configured == 0 ? 0 : Math.min(configured, fit);
@@ -1880,7 +1909,7 @@ public class MainActivity extends Activity {
         hideAppFocusHighlight();
         overlay = new FrameLayout(this);
         overlay.setBackgroundColor(paletteColors.scrim); overlay.setFocusable(true); overlay.setFocusableInTouchMode(true);
-        overlay.setContentDescription((columns ? "Grid columns" : "Grid rows") + " selector");
+        overlay.setContentDescription((columns ? getString(R.string.hb_grid_columns_141) : getString(R.string.hb_grid_rows_142)) + " selector");
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));
         renderGridSelector();
     }
@@ -1895,17 +1924,17 @@ public class MainActivity extends Activity {
         panel.setOrientation(LinearLayout.VERTICAL); panel.setGravity(Gravity.CENTER);
         panel.setPadding(dp(32), dp(24), dp(32), dp(22));
         panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
-        TextView title = text(columns ? "Grid columns" : "Grid rows", 26);
+        TextView title = text(columns ? getString(R.string.hb_grid_columns_141) : getString(R.string.hb_grid_rows_142), 26);
         title.setTypeface(null, Typeface.BOLD); title.setGravity(Gravity.CENTER);
         panel.addView(title, new LinearLayout.LayoutParams(-1, dp(42)));
-        TextView subtitle = text("Bounded to this TV's fit: " + fit + " " + unit, 16);
+        TextView subtitle = text(getString(R.string.hb_hint_bounded_to_this_tv_s_fit) + fit + " " + unit, 16);
         subtitle.setTextColor(paletteColors.muted); subtitle.setGravity(Gravity.CENTER);
         panel.addView(subtitle, new LinearLayout.LayoutParams(-1, dp(34)));
 
         LinearLayout choices = new LinearLayout(this);
         choices.setOrientation(LinearLayout.HORIZONTAL); choices.setGravity(Gravity.CENTER);
-        String previous = selector.index > 0 ? selector.labels[selector.index - 1] : "End";
-        String next = selector.index + 1 < selector.labels.length ? selector.labels[selector.index + 1] : "End";
+        String previous = selector.index > 0 ? selector.labels[selector.index - 1] : getString(R.string.hb_end);
+        String next = selector.index + 1 < selector.labels.length ? selector.labels[selector.index + 1] : getString(R.string.hb_end);
         TextView before = text("‹   " + previous, 17); before.setTextColor(paletteColors.muted); before.setGravity(Gravity.CENTER);
         choices.addView(before, new LinearLayout.LayoutParams(0, dp(88), 1f));
         TextView current = text(selector.labels[selector.index], 27); current.setTypeface(null, Typeface.BOLD);
@@ -1917,7 +1946,7 @@ public class MainActivity extends Activity {
         LinearLayout.LayoutParams choicesLp = new LinearLayout.LayoutParams(-1, dp(100));
         choicesLp.topMargin = dp(18); panel.addView(choices, choicesLp);
 
-        TextView hint = text("← / → change · OK apply · Back cancel", 15);
+        TextView hint = text(getString(R.string.hb_hint_change_ok_apply_back_cancel), 15);
         hint.setTextColor(paletteColors.muted); hint.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams hintLp = new LinearLayout.LayoutParams(-1, dp(34));
         hintLp.topMargin = dp(14); panel.addView(hint, hintLp);
@@ -1938,7 +1967,7 @@ public class MainActivity extends Activity {
         if (apply) {
             int value = selector.values[selector.index];
             if (selector.columns) layout.homeColumns = value; else layout.homeRows = value;
-            save(selector.columns ? "Changed Home grid columns" : "Changed Home grid rows");
+            save(selector.columns ? getString(R.string.hb_changed_home_grid_columns) : getString(R.string.hb_changed_home_grid_rows));
             homePage = homePageOf(focused, layout.widgets);
             render(0);
             dismissMenu();
@@ -1955,7 +1984,7 @@ public class MainActivity extends Activity {
     }
 
     private void aboutHomeboard() {
-        openMenu(new MenuSpec("About Homeboard TV", this::showAboutDialog));
+        openMenu(new MenuSpec(getString(R.string.hb_about_homeboard_tv), this::showAboutDialog));
     }
     private void showAboutDialog() {
         if (overlay != null) root.removeView(overlay);
@@ -1981,15 +2010,15 @@ public class MainActivity extends Activity {
         LinearLayout.LayoutParams titleBlockLp = new LinearLayout.LayoutParams(0, -2, 1f);
         titleBlockLp.leftMargin = dp(22); heading.addView(titleBlock, titleBlockLp);
         TextView title = text("Homeboard TV", 29); title.setTypeface(null, Typeface.BOLD);
-        TextView version = text("Version " + appVersion() + " · Your apps and widgets, arranged your way", 16);
+        TextView version = text(getString(R.string.hb_version) + appVersion() + getString(R.string.hb_hint_your_apps_and_widgets_arranged_your_way), 16);
         version.setTextColor(paletteColors.muted);
         titleBlock.addView(title); titleBlock.addView(version);
         panel.addView(heading, new LinearLayout.LayoutParams(-1, dp(72)));
 
-        TextView purpose = text("A customizable home screen for your TV, built on CleanYourTV.", 16);
+        TextView purpose = text(getString(R.string.hb_a_customizable_home_screen_for_your_tv_built_on_cleanyourtv), 16);
         purpose.setPadding(0, dp(8), 0, dp(8));
         panel.addView(purpose);
-        TextView sourcesHeading = text("PROJECT SOURCES & LICENSES", 13);
+        TextView sourcesHeading = text(getString(R.string.hb_project_sources_licenses), 13);
         sourcesHeading.setTextColor(paletteColors.focus); sourcesHeading.setTypeface(null, Typeface.BOLD);
         sourcesHeading.setPadding(0, dp(2), 0, dp(8)); panel.addView(sourcesHeading);
 
@@ -2013,7 +2042,7 @@ public class MainActivity extends Activity {
         TextView linkHint = text("Select a source to show its web address and phone QR code.", 13);
         linkHint.setPadding(0, dp(6), 0, 0); panel.addView(linkHint);
 
-        TextView closeText = text("←  BACK", 15); closeText.setTypeface(null, Typeface.BOLD);
+        TextView closeText = text(getString(R.string.hb_hint_back), 15); closeText.setTypeface(null, Typeface.BOLD);
         closeText.setTextColor(paletteColors.text); closeText.setGravity(Gravity.CENTER);
         closeText.setFocusable(true); closeText.setClickable(true);
         closeText.setPadding(dp(14), 0, dp(14), 0);
@@ -2112,9 +2141,9 @@ public class MainActivity extends Activity {
         Intent chooser = new Intent(Settings.ACTION_HOME_SETTINGS);
         if (getPackageManager().resolveActivity(chooser, PackageManager.MATCH_DEFAULT_ONLY) != null) {
             try { startActivityForResult(chooser, REQUEST_HOME_ROLE); }
-            catch (RuntimeException unavailable) { toast("Android could not open Home app selection"); }
+            catch (RuntimeException unavailable) { toast(getString(R.string.hb_android_could_not_open_home_app_selection)); }
         }
-        else toast("Android does not provide Home app selection on this device");
+        else toast(getString(R.string.hb_android_does_not_provide_home_app_selection_on_this_device));
     }
     private String appVersion() {
         try {
@@ -2125,15 +2154,15 @@ public class MainActivity extends Activity {
     private void restoreHiddenApps() {
         List<String> keys = new ArrayList<>(layout.hidden); Collections.sort(keys);
         if (keys.isEmpty()) {
-            menu("Restore hidden app", "No hidden app shortcuts. Apps remain installed when a shortcut is hidden.",
+            menu(getString(R.string.hb_restore_hidden_app), getString(R.string.hb_no_hidden_app_shortcuts_apps_remain_installed_when_a_shortcut_is_),
                     new String[0], ignored -> {});
             return;
         }
         String[] labels = new String[keys.size()];
         for (int i = 0; i < keys.size(); i++) labels[i] = apps.containsKey(keys.get(i)) ? apps.get(keys.get(i)).label : keys.get(i).substring(4);
-        menu("Restore hidden app", "Restores this shortcut to All Apps; it does not reinstall the app.", labels, choice -> {
+        menu(getString(R.string.hb_restore_hidden_app), getString(R.string.hb_restores_this_shortcut_to_all_apps_it_does_not_reinstall_the_app), labels, choice -> {
             String restored = labels[choice];
-            layout.hidden.remove(keys.get(choice)); save("Restored " + restored + " to All Apps"); render(0);
+            layout.hidden.remove(keys.get(choice)); save(getString(R.string.hb_hint_restored) + restored + getString(R.string.hb_hint_to_all_apps)); render(0);
         });
     }
 
@@ -2271,7 +2300,7 @@ public class MainActivity extends Activity {
                         int iconSize = spec.compactCards ? 18 : 38;
                         card.addView(icon, new LinearLayout.LayoutParams(dp(iconSize), dp(iconSize)));
                     }
-                    String cardLabel = spec.paletteGrid && isSelected ? label + " · Current" : label;
+                    String cardLabel = spec.paletteGrid && isSelected ? label + getString(R.string.hb_current) : label;
                     TextView caption = text(cardLabel, spec.paletteGrid ? 18 : spec.compactCards ? 12 : 16);
                     if (spec.paletteGrid) caption.setTextColor(contrastingText(swatch));
                     caption.setGravity(Gravity.CENTER); caption.setMaxLines(spec.compactCards ? 1 : 2);
@@ -2312,14 +2341,14 @@ public class MainActivity extends Activity {
             LinearLayout pager = new LinearLayout(this);
             pager.setOrientation(LinearLayout.HORIZONTAL);
             pager.setGravity(Gravity.CENTER_VERTICAL);
-            View previous = menuPagerControl("Previous", MenuIconView.Kind.PREVIOUS, page > 0);
+            View previous = menuPagerControl(getString(R.string.hb_previous), MenuIconView.Kind.PREVIOUS, page > 0);
             previous.setOnClickListener(v -> {
                 if (page > 0) showMenuPage(spec, page - 1,
                         Math.max((page - 1) * spec.pageSize, spec.focusedChoice - spec.pageSize));
             });
-            TextView countLabel = text("Page " + (page + 1) + " of " + pageCount, 15);
+            TextView countLabel = text(getString(R.string.hb_page) + (page + 1) + getString(R.string.hb_of) + pageCount, 15);
             countLabel.setGravity(Gravity.CENTER);
-            View next = menuPagerControl("Next", MenuIconView.Kind.NEXT, page + 1 < pageCount);
+            View next = menuPagerControl(getString(R.string.hb_next), MenuIconView.Kind.NEXT, page + 1 < pageCount);
             next.setOnClickListener(v -> {
                 if (page + 1 < pageCount) showMenuPage(spec, page + 1,
                         Math.min((page + 1) * spec.pageSize, labels.length - 1));
@@ -2333,15 +2362,15 @@ public class MainActivity extends Activity {
         LinearLayout hints = new LinearLayout(this);
         hints.setOrientation(LinearLayout.HORIZONTAL); hints.setGravity(Gravity.CENTER_VERTICAL);
         if (spec.paletteGrid) {
-            TextView hint = text("Move to preview a color · Back returns", 14);
+            TextView hint = text(getString(R.string.hb_move_to_preview_a_color_back_returns), 14);
             hint.setTextColor(paletteColors.muted); hints.addView(hint);
         } else {
             hints.addView(new MenuIconView(this, MenuIconView.Kind.CONFIRM, paletteColors), new LinearLayout.LayoutParams(dp(20), dp(20)));
-            TextView selectHint = text("OK More / Back", 13); selectHint.setTextColor(paletteColors.muted);
+            TextView selectHint = text(getString(R.string.hb_ok_more_back), 13); selectHint.setTextColor(paletteColors.muted);
             LinearLayout.LayoutParams selectLp = new LinearLayout.LayoutParams(-2, dp(26)); selectLp.leftMargin = dp(5);
             hints.addView(selectHint, selectLp);
             hints.addView(new MenuIconView(this, MenuIconView.Kind.CANCEL, paletteColors), new LinearLayout.LayoutParams(dp(20), dp(20)));
-            TextView backHint = text("Back Parent", 13); backHint.setTextColor(paletteColors.muted);
+            TextView backHint = text(getString(R.string.hb_back_parent), 13); backHint.setTextColor(paletteColors.muted);
             LinearLayout.LayoutParams backLp = new LinearLayout.LayoutParams(-2, dp(26)); backLp.leftMargin = dp(5);
             hints.addView(backHint, backLp);
         }
@@ -2374,21 +2403,21 @@ public class MainActivity extends Activity {
             kinds[i] = menuIconFor(spec.title, labels[i]);
             selected[i] = choice == spec.selectedIndex || labels[i].toLowerCase(java.util.Locale.ROOT).contains("current");
         }
-        String centerAction = spec.labels.length == 0 ? "Back" : spec.pageCount > 1
-                ? page + 1 < spec.pageCount ? "More" : "First page"
-                : menuStack.isEmpty() ? "Close" : "Back";
-        String pageHint = spec.pageCount > 1 ? "Page " + (page + 1) + " of " + spec.pageCount : "";
-        String breadcrumb = "Provider background".equals(spec.title) || spec.labels.length == 0 ? spec.subtitle : spec.labels.length == 0 && "Restore hidden app".equals(spec.title)
-                ? "No hidden app shortcuts"
+        String centerAction = spec.labels.length == 0 ? getString(R.string.hb_back) : spec.pageCount > 1
+                ? page + 1 < spec.pageCount ? getString(R.string.hb_more_164) : getString(R.string.hb_first_page)
+                : menuStack.isEmpty() ? getString(R.string.hb_close) : getString(R.string.hb_back);
+        String pageHint = spec.pageCount > 1 ? getString(R.string.hb_page) + (page + 1) + getString(R.string.hb_of) + spec.pageCount : "";
+        String breadcrumb = getString(R.string.hb_provider_background).equals(spec.title) || spec.labels.length == 0 ? spec.subtitle : spec.labels.length == 0 && getString(R.string.hb_restore_hidden_app).equals(spec.title)
+                ? getString(R.string.hb_no_hidden_app_shortcuts)
                 : menuStack.isEmpty() ? spec.subtitle
                 : menuStack.get(menuStack.size() - 1).title + " › " + spec.title;
         String interactionHint = spec.pageCount > 1
-                ? "Page " + (page + 1) + " of " + spec.pageCount + " · OK changes page"
-                : "Directions choose · Back returns";
-        if (spec.labels.length == 0 && "Restore hidden app".equals(spec.title))
-            interactionHint = "Apps stay installed · Back returns";
+                ? getString(R.string.hb_page) + (page + 1) + getString(R.string.hb_of) + spec.pageCount + getString(R.string.hb_ok_changes_page)
+                : getString(R.string.hb_directions_choose_back_returns);
+        if (spec.labels.length == 0 && getString(R.string.hb_restore_hidden_app).equals(spec.title))
+            interactionHint = getString(R.string.hb_hint_apps_stay_installed_back_returns);
         PieMenuView pie = new PieMenuView(this, paletteColors);
-        if ("Provider background".equals(spec.title) && wallpaperProvider != null) interactionHint = wallpaperProvider.readiness();
+        if (getString(R.string.hb_provider_background).equals(spec.title) && wallpaperProvider != null) interactionHint = wallpaperProvider.readiness();
         pie.setContent(spec.title, breadcrumb, centerAction, interactionHint, labels, kinds, selected,
                 new PieMenuView.Listener() {
                     @Override public void onArm(int arm) {
@@ -2452,48 +2481,65 @@ public class MainActivity extends Activity {
         }
         return null;
     }
+    private boolean matchesMenuLabel(String label, int... resources) {
+        for (int id : resources) {
+            String text = getString(id).trim();
+            if (label.equals(text) || label.startsWith(text + " · ")) return true;
+        }
+        return false;
+    }
     private MenuIconView.Kind menuIconFor(String title, String label) {
-        String value = label.toLowerCase(java.util.Locale.ROOT);
-        String paletteLabel = value.replace(" · current", "");
-        String context = title.toLowerCase(java.util.Locale.ROOT);
-        if (value.startsWith("undo") || value.contains("undo history")) return MenuIconView.Kind.UNDO;
-        if (value.contains("favorite")) return MenuIconView.Kind.FAVORITE;
-        if (value.contains("close") || value.contains("cancel") || value.contains("keep tile") || value.contains("keep app")) return MenuIconView.Kind.CANCEL;
-        if (value.contains("open-source") || value.contains("acknowledgement") || value.contains("license")) return MenuIconView.Kind.LICENSE;
-        if (value.contains("about")) return MenuIconView.Kind.INFO;
-        if (value.contains("uninstall")) return MenuIconView.Kind.UNINSTALL;
-        if (value.contains("delete") || value.contains("remove")) return MenuIconView.Kind.DELETE;
-        if (value.contains("move")) return MenuIconView.Kind.MOVE;
-        if (value.contains("resize") || value.contains("width") || value.contains("wide")) return MenuIconView.Kind.RESIZE;
-        if (value.contains("air quality") || value.contains("refresh") || value.contains("station")) return MenuIconView.Kind.AIR;
-        if (value.contains("add widget") || value.contains("add to home")) return MenuIconView.Kind.ADD;
-        if (value.contains("widgets")) return MenuIconView.Kind.WIDGET;
-        if (value.contains("grid")) return MenuIconView.Kind.GRID;
-        if (value.contains("restore") || value.contains("deleted app")) return MenuIconView.Kind.RESTORE;
-        if (value.contains("wallpaper") || value.contains("photo")) return MenuIconView.Kind.WALLPAPER;
-        if (paletteIdForLabel(paletteLabel) != null || value.contains("palette")) return MenuIconView.Kind.PALETTE;
-        if (value.contains("appearance")) return MenuIconView.Kind.APPEARANCE;
-        if (value.contains("artwork") || value.contains("launcher icon") || value.contains("icon shape") || value.contains("original icon")) return MenuIconView.Kind.ARTWORK;
-        if (value.contains("circular") || value.contains("circle mask")) return MenuIconView.Kind.CIRCLE;
-        if (value.contains("behavior") || value.contains("reduced motion")) return MenuIconView.Kind.BEHAVIOR;
-        if (value.contains("default home") || value.contains("homeboard")) return MenuIconView.Kind.HOME;
-        if (value.contains("theme")) return MenuIconView.Kind.THEME;
-        if (value.contains("midnight")) return MenuIconView.Kind.MOON;
-        if (value.contains("forest")) return MenuIconView.Kind.FOREST;
-        if (value.contains("black") || value.contains("circle")) return MenuIconView.Kind.CIRCLE;
-        if (value.contains("banner")) return MenuIconView.Kind.BANNER;
-        if (value.contains("app info") || value.contains("version")) return MenuIconView.Kind.INFO;
-        if (value.contains("delete tile")) return MenuIconView.Kind.DELETE;
-        if (value.contains("app")) return MenuIconView.Kind.APP;
-        if (value.contains("home settings")) return MenuIconView.Kind.SETTINGS;
-        if (value.contains("location") || context.startsWith("monitoring station")) return MenuIconView.Kind.LOCATION;
-        if (value.contains("settings")) return MenuIconView.Kind.SETTINGS;
-        if (value.contains("app")) return MenuIconView.Kind.APP;
-        if (context.contains("air quality") || context.contains("station")) return MenuIconView.Kind.LOCATION;
+        if (paletteIdForLabel(label) != null) return MenuIconView.Kind.PALETTE;
+        if (matchesMenuLabel(label, R.string.hb_saved_layout_could_not_be_read_starting_with_empty_home, R.string.hb_homeboard_tv_is_now_the_default_home_app, R.string.hb_default_home_app_was_not_changed, R.string.hb_homeboard_change, R.string.hb_homeboard_settings, R.string.hb_added_app_to_home, R.string.hb_home_settings, R.string.hb_default_home_app, R.string.hb_a_customizable_home_screen_for_your_tv_built_on_cleanyourtv, R.string.hb_homeboard_tv_source, R.string.hb_android_could_not_open_home_app_selection, R.string.hb_android_does_not_provide_home_app_selection_on_this_device)) return MenuIconView.Kind.HOME;
+        if (matchesMenuLabel(label, R.string.hb_undo, R.string.hb_undo_5, R.string.hb_undo_history, R.string.hb_no_recent_homeboard_changes_can_be_undone, R.string.hb_undo_9, R.string.hb_newest_first_undoing_an_older_change_also_reverses_newer_changes, R.string.hb_could_not_undo_that_change, R.string.hb_delete_removes_this_widget_panel_undo_restores_it)) return MenuIconView.Kind.UNDO;
+        if (matchesMenuLabel(label, R.string.hb_could_not_refresh_installed_apps, R.string.hb_air_quality_widget, R.string.hb_refresh_reading, R.string.hb_air_quality_panel, R.string.hb_air_quality, R.string.hb_air_quality_location_each_widget_is_independent, R.string.hb_air_quality_location, R.string.hb_refresh_failed_saved_reading, R.string.hb_nok_refresh_or_configure)) return MenuIconView.Kind.AIR;
+        if (matchesMenuLabel(label, R.string.hb_device_settings, R.string.hb_plugin_settings, R.string.hb_no_accessible_plugin_settings, R.string.hb_plugin_settings_are_unavailable, R.string.hb_host_display_options_provider_content_stays_in_plugin_settings, R.string.hb_language)) return MenuIconView.Kind.SETTINGS;
+        if (matchesMenuLabel(label, R.string.hb_move_preview_arrows_place_anywhere_in_the_grid_ok_saves_back_canc, R.string.hb_move_preview_arrows_reposition_ok_saves_back_cancels, R.string.hb_keep_app, R.string.hb_narrower_shorter_wider_taller_ok_save_back_cancel, R.string.hb_back_cancels, R.string.hb_cancel)) return MenuIconView.Kind.CANCEL;
+        if (matchesMenuLabel(label, R.string.hb_app_unavailable_hold_ok_to_remove_this_tile, R.string.hb_delete_widget, R.string.hb_remove_from_home, R.string.hb_removed_app_from_home)) return MenuIconView.Kind.DELETE;
+        if (matchesMenuLabel(label, R.string.hb_configure_location_and_source, R.string.hb_bangkok_monitoring_station, R.string.hb_location_unavailable, R.string.hb_bangkok_monitoring_station_228, R.string.hb_getting_device_location, R.string.hb_configure_location)) return MenuIconView.Kind.LOCATION;
+        if (matchesMenuLabel(label, R.string.hb_move, R.string.hb_moved_item, R.string.hb_move_to_a_color_to_preview_it, R.string.hb_banners_use_wider_cells_and_taller_rows_tiles_may_move_to_another, R.string.hb_choose_grid_density_new_panel_size_or_screen_movement, R.string.hb_choose_how_home_and_all_apps_move, R.string.hb_move_to_preview_a_color_back_returns)) return MenuIconView.Kind.MOVE;
+        if (matchesMenuLabel(label, R.string.hb_resize, R.string.hb_resized_panel, R.string.hb_resize_this_panel_height_grows_with_size_and_the_grid_repacks_aro)) return MenuIconView.Kind.RESIZE;
+        if (matchesMenuLabel(label, R.string.hb_unfavorite, R.string.hb_favorite, R.string.hb_favorite_an_app_from_all_apps, R.string.hb_home_favorites, R.string.hb_home_favorites_109, R.string.hb_home_favorites_111)) return MenuIconView.Kind.FAVORITE;
+        if (matchesMenuLabel(label, R.string.hb_uninstall_app, R.string.hb_android_does_not_allow_uninstalling_this_app_here)) return MenuIconView.Kind.UNINSTALL;
+        if (matchesMenuLabel(label, R.string.hb_widgets_restore)) return MenuIconView.Kind.WIDGET;
+        if (matchesMenuLabel(label, R.string.hb_appearance)) return MenuIconView.Kind.APPEARANCE;
+        if (matchesMenuLabel(label, R.string.hb_home_behavior)) return MenuIconView.Kind.BEHAVIOR;
+        if (matchesMenuLabel(label, R.string.hb_about_homeboard_tv, R.string.hb_small_about_one_third_width, R.string.hb_medium_about_half_width, R.string.hb_large_about_three_quarters_width)) return MenuIconView.Kind.INFO;
+        if (matchesMenuLabel(label, R.string.hb_add_a_widget_or_restore_an_app_shortcut, R.string.hb_restore_hidden_app, R.string.hb_restores_this_shortcut_to_all_apps_it_does_not_reinstall_the_app)) return MenuIconView.Kind.RESTORE;
+        if (matchesMenuLabel(label, R.string.hb_add_widget, R.string.hb_add_to_home)) return MenuIconView.Kind.ADD;
+        if (matchesMenuLabel(label, R.string.hb_customize_backgrounds_and_dashboard_elements, R.string.hb_background, R.string.hb_changed_background_color, R.string.hb_changed_background, R.string.hb_provider_background, R.string.hb_projectivy_wallpaper_provider_selected, R.string.hb_background_details, R.string.hb_no_providers_installed_install_a_wallpaper_provider_app_then_retu, R.string.hb_use_background, R.string.hb_use_background_preview_first, R.string.hb_loading_wallpaper, R.string.hb_preview_a_usable_wallpaper_first, R.string.hb_background_189, R.string.hb_wallpaper_options, R.string.hb_wallpaper_rotation, R.string.hb_wallpaper_dimming, R.string.hb_open_wallpaper_link, R.string.hb_choose_background, R.string.hb_this_wallpaper_link_type_is_unsupported, R.string.hb_backgrounds)) return MenuIconView.Kind.WALLPAPER;
+        if (matchesMenuLabel(label, R.string.hb_palette, R.string.hb_current_palette)) return MenuIconView.Kind.PALETTE;
+        if (matchesMenuLabel(label, R.string.hb_icons, R.string.hb_choose_artwork_and_icon_shape, R.string.hb_dense_icons, R.string.hb_circular_icon_mask, R.string.hb_the_icon_keeps_the_same_size, R.string.hb_original_icon_shape, R.string.hb_changed_app_icon_shape, R.string.hb_small_icons)) return MenuIconView.Kind.ARTWORK;
+        if (matchesMenuLabel(label, R.string.hb_tv_banners, R.string.hb_banners)) return MenuIconView.Kind.BANNER;
+        if (matchesMenuLabel(label, R.string.hb_circular_mask)) return MenuIconView.Kind.CIRCLE;
+        if (matchesMenuLabel(label, R.string.hb_tv_banners_responsive_grid, R.string.hb_launcher_icons_dense_grid, R.string.hb_grid_columns, R.string.hb_grid_rows, R.string.hb_grid_columns_141, R.string.hb_grid_rows_142, R.string.hb_changed_home_grid_columns, R.string.hb_changed_home_grid_rows, R.string.hb_nearest_model_grid_use_this_device, R.string.hb_enter_coordinates_for_a_model_grid, R.string.hb_choose_the_forecast_grid_near_this_location, R.string.hb_model_grid_location)) return MenuIconView.Kind.GRID;
+        if (matchesMenuLabel(label, R.string.hb_reduced_motion, R.string.hb_reduced_motion_121, R.string.hb_changed_reduced_motion)) return MenuIconView.Kind.MOTION;
+        if (matchesMenuLabel(label, R.string.hb_project_sources_licenses)) return MenuIconView.Kind.LICENSE;
+        if (matchesMenuLabel(label, R.string.hb_previous, R.string.hb_back)) return MenuIconView.Kind.PREVIOUS;
         return MenuIconView.Kind.APP;
     }
     private String paletteIdForLabel(String label) {
-        String normalized = label.toLowerCase(java.util.Locale.ROOT).trim().replace(" · current", "");
+        String normalized = label.replace(getString(R.string.hb_current_171), "").trim();
+        if (normalized.equals(getString(R.string.hb_midnight))) return "midnight";
+        if (normalized.equals(getString(R.string.hb_forest))) return "forest";
+        if (normalized.equals(getString(R.string.hb_ocean))) return "ocean";
+        if (normalized.equals(getString(R.string.hb_plum))) return "plum";
+        if (normalized.equals(getString(R.string.hb_sand))) return "sand";
+        if (normalized.equals(getString(R.string.hb_rose))) return "rose";
+        if (normalized.equals(getString(R.string.hb_teal))) return "teal";
+        if (normalized.equals(getString(R.string.hb_slate))) return "slate";
+        if (normalized.equals(getString(R.string.hb_sunset))) return "sunset";
+        if (normalized.equals(getString(R.string.hb_black))) return "black";
+        if (normalized.equals(getString(R.string.hb_charcoal))) return "charcoal";
+        if (normalized.equals(getString(R.string.hb_indigo))) return "indigo";
+        if (normalized.equals(getString(R.string.hb_cobalt))) return "cobalt";
+        if (normalized.equals(getString(R.string.hb_lagoon))) return "lagoon";
+        if (normalized.equals(getString(R.string.hb_pine))) return "pine";
+        if (normalized.equals(getString(R.string.hb_moss))) return "moss";
+        if (normalized.equals(getString(R.string.hb_amber))) return "amber";
+        if (normalized.equals(getString(R.string.hb_copper))) return "copper";
+        if (normalized.equals(getString(R.string.hb_cedar))) return "cedar";
+        if (normalized.equals(getString(R.string.hb_emerald))) return "emerald";
         switch (normalized) {
             case "midnight": return "midnight";
             case "forest": return "forest";
@@ -2543,7 +2589,7 @@ public class MainActivity extends Activity {
     private void backMenu() {
         if (overlay == null) return;
         if (adjustmentCancel != null) { backAdjustment(); return; }
-        if (activeMenu != null && "Provider background".equals(activeMenu.title)) cancelWallpaperPreview();
+        if (activeMenu != null && getString(R.string.hb_provider_background).equals(activeMenu.title)) cancelWallpaperPreview();
         if (activeMenu != null && activeMenu.page > 0) {
             int page = activeMenu.page - 1;
             int focus = Math.min(page * activeMenu.pageSize, activeMenu.labels.length - 1);
@@ -2553,7 +2599,7 @@ public class MainActivity extends Activity {
         if (!menuStack.isEmpty()) {
             dismissMenu();
             activeMenu = menuStack.remove(menuStack.size() - 1);
-            if ("Background".equals(activeMenu.title)) activeMenu = backgroundMenuSpec();
+            if (getString(R.string.hb_background).equals(activeMenu.title)) activeMenu = backgroundMenuSpec();
             showMenuPage(activeMenu, activeMenu.page, activeMenu.focusedChoice);
         } else {
             dismissMenu(); activeMenu = null;
@@ -2561,7 +2607,7 @@ public class MainActivity extends Activity {
     }
     private void open(Intent intent) {
         try { startActivity(intent); }
-        catch (RuntimeException e) { toast("Android could not open that action"); }
+        catch (RuntimeException e) { toast(getString(R.string.hb_android_could_not_open_that_action)); }
     }
     private void toast(String message) { Toast.makeText(this, message, Toast.LENGTH_SHORT).show(); }
 
@@ -2606,9 +2652,9 @@ public class MainActivity extends Activity {
     }
     private MenuSpec backgroundMenuSpec() {
         String[] choices = layout.wallpaper.solid()
-                ? new String[]{"Solid color", "Projectivy plugins", "Background details"}
-                : new String[]{"Solid color", "Projectivy plugins", "Background details", "Retry provider"};
-        return new MenuSpec("Background", layout.wallpaper.solid() ? "Solid color" : "Projectivy wallpaper provider selected",
+                ? new String[]{getString(R.string.hb_status_solid_color), getString(R.string.hb_projectivy_plugins), getString(R.string.hb_background_details)}
+                : new String[]{getString(R.string.hb_status_solid_color), getString(R.string.hb_projectivy_plugins), getString(R.string.hb_background_details), getString(R.string.hb_retry_provider)};
+        return new MenuSpec(getString(R.string.hb_background), layout.wallpaper.solid() ? getString(R.string.hb_status_solid_color) : getString(R.string.hb_projectivy_wallpaper_provider_selected),
                 choices, choice -> {
                     if (choice == 0) solidColorSettings();
                     else if (choice == 1) providerList();
@@ -2627,43 +2673,43 @@ public class MainActivity extends Activity {
             long sameUuid = providers.stream().filter(other -> other.uuid.equals(p.uuid)).count();
             labels[i] = p.name + (sameUuid > 1 ? " · " + p.component.getPackageName() : "") + " · " + p.readiness();
         }
-        menu("Projectivy plugins", providers.isEmpty() ? "No providers installed. Install a wallpaper-provider app, then return here."
-                : "Choose an installed provider to preview", labels, choice -> {
+        menu(getString(R.string.hb_projectivy_plugins), providers.isEmpty() ? getString(R.string.hb_no_providers_installed_install_a_wallpaper_provider_app_then_retu)
+                : getString(R.string.hb_choose_an_installed_provider_to_preview), labels, choice -> {
                     ProjectivyProviderRegistry.Provider p = providers.get(choice);
                     if (!p.usable()) { toast(p.problem); providerList(); return; }
                     wallpaperProvider = p;
                     wallpaperDraft = layout.wallpaper.copy();
                     wallpaperDraft.component = p.component.flattenToString(); wallpaperDraft.uuid = p.uuid;
-                    wallpaperReady = false; wallpaperPreviewStarted = false; wallpaperStatus = "Choose Preview to load this provider";
+                    wallpaperReady = false; wallpaperPreviewStarted = false; wallpaperStatus = getString(R.string.hb_choose_preview_to_load_this_provider);
                     providerDetails(p, false);
                 });
     }
     private void providerDetails(ProjectivyProviderRegistry.Provider p, boolean replace) {
-        MenuSpec spec = new MenuSpec("Provider background", wallpaperStatus + " · " + p.name + " · " + p.readiness(),
-                new String[]{"Preview", "Plugin settings", wallpaperReady ? "Use background" : "Use background · preview first", "More options"}, choice -> {
+        MenuSpec spec = new MenuSpec(getString(R.string.hb_provider_background), wallpaperStatus + " · " + p.name + " · " + p.readiness(),
+                new String[]{getString(R.string.hb_preview), getString(R.string.hb_plugin_settings), wallpaperReady ? getString(R.string.hb_use_background) : getString(R.string.hb_use_background_preview_first), getString(R.string.hb_more_options)}, choice -> {
                     if (choice == 0) {
                         if (wallpaperDraft == null) { wallpaperDraft = layout.wallpaper.copy(); wallpaperDraft.component = p.component.flattenToString(); wallpaperDraft.uuid = p.uuid; }
-                        wallpaperPreviewStarted = true; wallpaperReady = false; wallpaperStatus = "Loading wallpaper…";
+                        wallpaperPreviewStarted = true; wallpaperReady = false; wallpaperStatus = getString(R.string.hb_loading_wallpaper);
                         syncBackground(); wallpaperHost.refresh(); providerDetails(p, true);
                     } else if (choice == 1) {
                         Intent settings = new ProjectivyProviderRegistry(this).settings(p);
-                        if (settings == null) { toast("No accessible plugin settings"); providerDetails(p, true); }
+                        if (settings == null) { toast(getString(R.string.hb_no_accessible_plugin_settings)); providerDetails(p, true); }
                         else {
                             returningFromProviderSettings = true;
                             try { startActivity(settings); }
-                            catch (RuntimeException invalid) { returningFromProviderSettings = false; toast("Plugin settings are unavailable"); providerDetails(p, true); }
+                            catch (RuntimeException invalid) { returningFromProviderSettings = false; toast(getString(R.string.hb_plugin_settings_are_unavailable)); providerDetails(p, true); }
                         }
                     } else if (choice == 2) {
-                        if (!wallpaperReady || wallpaperDraft == null) { toast("Preview a usable wallpaper first"); providerDetails(p, true); return; }
+                        if (!wallpaperReady || wallpaperDraft == null) { toast(getString(R.string.hb_preview_a_usable_wallpaper_first)); providerDetails(p, true); return; }
                         layout.wallpaper = wallpaperDraft.copy(); wallpaperDraft = null;
-                        save("Background: " + p.name); syncBackground(); render(0);
+                        save(getString(R.string.hb_background_189) + p.name); syncBackground(); render(0);
                     } else providerOptions(p);
                 }, -1);
         if (replace) {
             // Returning from provider options replaces that subtree. Back must reach the
             // provider list, rather than a stale options callback after discarding the draft.
             for (int i = menuStack.size() - 1; i >= 0; i--) {
-                if ("Provider background".equals(menuStack.get(i).title)) {
+                if (getString(R.string.hb_provider_background).equals(menuStack.get(i).title)) {
                     while (menuStack.size() > i) menuStack.remove(menuStack.size() - 1);
                     break;
                 }
@@ -2673,18 +2719,18 @@ public class MainActivity extends Activity {
     }
     private void refreshProviderDetails() {
         if (backgroundInfo && backgroundStatusText != null) backgroundStatusText.setText(backgroundInfoText());
-        if (!closed && activeMenu != null && "Provider background".equals(activeMenu.title)
+        if (!closed && activeMenu != null && getString(R.string.hb_provider_background).equals(activeMenu.title)
                 && overlay != null && wallpaperProvider != null) providerDetails(wallpaperProvider, true);
     }
     private void providerOptions(ProjectivyProviderRegistry.Provider p) {
         if (wallpaperDraft == null) wallpaperDraft = layout.wallpaper.copy();
-        menu("Wallpaper options", "Host display options; provider content stays in Plugin settings",
-                new String[]{"Rotation · " + wallpaperDraft.rotationMinutes + " min", "Dimming · " + wallpaperDraft.dimPercent + "%", "Background details", "Back to provider"}, choice -> {
-                    if (choice == 0) menu("Wallpaper rotation", "Batch cache expiry is controlled by the provider",
-                            new String[]{"1 minute", "5 minutes", "15 minutes", "60 minutes"}, n -> {
+        menu(getString(R.string.hb_wallpaper_options), getString(R.string.hb_host_display_options_provider_content_stays_in_plugin_settings),
+                new String[]{getString(R.string.hb_rotation) + wallpaperDraft.rotationMinutes + getString(R.string.hb_min), getString(R.string.hb_dimming) + wallpaperDraft.dimPercent + "%", getString(R.string.hb_background_details), getString(R.string.hb_back_to_provider)}, choice -> {
+                    if (choice == 0) menu(getString(R.string.hb_wallpaper_rotation), getString(R.string.hb_batch_cache_expiry_is_controlled_by_the_provider),
+                            new String[]{getString(R.string.hb_1_minute), getString(R.string.hb_5_minutes), getString(R.string.hb_15_minutes), getString(R.string.hb_60_minutes)}, n -> {
                                 wallpaperDraft.rotationMinutes = new int[]{1, 5, 15, 60}[n]; syncBackground(); providerDetails(p, true);
                             });
-                    else if (choice == 1) startAdjustment("Wallpaper dimming", wallpaperDraft.dimPercent,
+                    else if (choice == 1) startAdjustment(getString(R.string.hb_wallpaper_dimming), wallpaperDraft.dimPercent,
                             value -> wallpaperSurface.options(value, reducedMotion()), value -> {
                                 wallpaperDraft.dimPercent = value; syncBackground(); providerDetails(p, true);
                             });
@@ -2693,7 +2739,7 @@ public class MainActivity extends Activity {
                 });
     }
     private void backgroundDetails() {
-        openMenu(new MenuSpec("Background details", this::drawBackgroundDetails));
+        openMenu(new MenuSpec(getString(R.string.hb_background_details), this::drawBackgroundDetails));
     }
     private String backgroundInfoText() {
         WallpaperSettings selected = wallpaperDraft != null && wallpaperPreviewStarted ? wallpaperDraft : layout.wallpaper;
@@ -2711,9 +2757,9 @@ public class MainActivity extends Activity {
         info += "\nUI background opacity: " + layout.uiOpacityPercent + "%";
         if (!selected.solid() && layout.uiOpacityPercent == 100) info += " · covers wallpaper";
         tv.projectivy.plugin.wallpaperprovider.api.Wallpaper item = displayedWallpaper;
-        if (item != null && !selected.solid()) info += "\nTitle: " + (item.getTitle() == null ? "Untitled" : item.getTitle())
-                + "\nAuthor: " + (item.getAuthor() == null ? "Not provided" : item.getAuthor())
-                + "\nSource: " + (item.getSource() == null ? "Not provided" : item.getSource());
+        if (item != null && !selected.solid()) info += getString(R.string.hb_hint_ntitle) + (item.getTitle() == null ? getString(R.string.hb_untitled) : item.getTitle())
+                + getString(R.string.hb_hint_nauthor) + (item.getAuthor() == null ? getString(R.string.hb_not_provided) : item.getAuthor())
+                + getString(R.string.hb_hint_nsource) + (item.getSource() == null ? getString(R.string.hb_not_provided) : item.getSource());
         return info;
     }
     private void drawBackgroundDetails() {
@@ -2727,18 +2773,18 @@ public class MainActivity extends Activity {
         UiBackgroundDrawable panelFill = shape(paletteColors.raised, paletteColors.edge, 1);
         panelFill.setFillOpacity(WallpaperSettings.PIE_BACKGROUND_OPACITY);
         panel.setBackground(panelFill);
-        panel.addView(text("Background details", 24), new LinearLayout.LayoutParams(-1, -2));
+        panel.addView(text(getString(R.string.hb_background_details), 24), new LinearLayout.LayoutParams(-1, -2));
         TextView details = text(backgroundInfoText(), 18); details.setMaxLines(8); details.setEllipsize(android.text.TextUtils.TruncateAt.END);
         backgroundStatusText = details;
         LinearLayout.LayoutParams detailLp = new LinearLayout.LayoutParams(-1, -2); detailLp.topMargin = dp(16); panel.addView(details, detailLp);
         LinearLayout buttons = new LinearLayout(this); buttons.setGravity(Gravity.CENTER_VERTICAL);
         if (item != null && item.getActionUri() != null) {
-            TextView link = infoButton("Open wallpaper link", () -> openWallpaperLink(item.getActionUri()));
+            TextView link = infoButton(getString(R.string.hb_open_wallpaper_link), () -> openWallpaperLink(item.getActionUri()));
             buttons.addView(link, new LinearLayout.LayoutParams(0, dp(60), 1));
         }
         buttons.addView(infoButton("Choose color", this::solidColorSettings), new LinearLayout.LayoutParams(0, dp(60), 1));
         buttons.addView(infoButton("Choose provider", this::providerList), new LinearLayout.LayoutParams(0, dp(60), 1));
-        aboutBackButton = infoButton("Back", this::backMenu);
+        aboutBackButton = infoButton(getString(R.string.hb_back), this::backMenu);
         buttons.addView(aboutBackButton, new LinearLayout.LayoutParams(0, dp(60), 1));
         LinearLayout.LayoutParams buttonsLp = new LinearLayout.LayoutParams(-1, dp(64)); buttonsLp.topMargin = dp(16); panel.addView(buttons, buttonsLp);
         int width = Math.min(dp(840), getResources().getDisplayMetrics().widthPixels - dp(64));
@@ -2752,7 +2798,7 @@ public class MainActivity extends Activity {
     private void openWallpaperLink(String value) {
         Uri uri = Uri.parse(value); String scheme = uri.getScheme();
         if (scheme == null || java.util.Arrays.asList("file", "content", "android.resource", "data", "javascript", "intent").contains(scheme.toLowerCase(java.util.Locale.ROOT))) {
-            toast("This wallpaper link type is unsupported"); return;
+            toast(getString(R.string.hb_this_wallpaper_link_type_is_unsupported)); return;
         }
         open(new Intent(Intent.ACTION_VIEW, uri).addCategory(Intent.CATEGORY_BROWSABLE));
     }
@@ -2767,7 +2813,7 @@ public class MainActivity extends Activity {
         adjustmentTitle = title; adjustmentValue = original; adjustmentPreview = preview; adjustmentCommit = commit;
         adjustmentCancel = () -> { preview.accept(original); };
         adjustmentArm = arm -> {
-            adjustmentValue = "UI opacity".equals(title) ? WallpaperSettings.opacityStep(adjustmentValue, arm)
+            adjustmentValue = getString(R.string.hb_ui_opacity_70).equals(title) ? WallpaperSettings.opacityStep(adjustmentValue, arm)
                     : arm == 0 ? WallpaperSettings.percent(adjustmentValue + 5) : arm == 1 ? 100
                     : arm == 2 ? WallpaperSettings.percent(adjustmentValue - 5) : 35;
             adjustmentPreview.accept(adjustmentValue); drawAdjustment();
@@ -2785,8 +2831,8 @@ public class MainActivity extends Activity {
         // Keep the live background visible; the pie itself is always at the fixed menu opacity.
         PieMenuView pie = new PieMenuView(this, paletteColors);
         pie.setContent(adjustmentTitle,
-                ("UI opacity".equals(adjustmentTitle) ? "Backgrounds · " : "") + adjustmentValue + "%", "Done", "Back cancels",
-                new String[]{"+5%", "100%", "−5%", "Reset " + ("UI opacity".equals(adjustmentTitle) ? "75%" : "35%")},
+                (getString(R.string.hb_ui_opacity_70).equals(adjustmentTitle) ? getString(R.string.hb_backgrounds) : "") + adjustmentValue + "%", getString(R.string.hb_done), getString(R.string.hb_back_cancels),
+                new String[]{"+5%", "100%", "−5%", getString(R.string.hb_reset) + (getString(R.string.hb_ui_opacity_70).equals(adjustmentTitle) ? "75%" : "35%")},
                 new MenuIconView.Kind[]{MenuIconView.Kind.ADD, MenuIconView.Kind.PALETTE, MenuIconView.Kind.DELETE, MenuIconView.Kind.UNDO}, new boolean[4],
                 new PieMenuView.Listener() {
                     @Override public void onArm(int arm) { if (adjustmentArm != null) adjustmentArm.accept(arm); }
@@ -2800,7 +2846,7 @@ public class MainActivity extends Activity {
     private void backAdjustment() {
         String title = adjustmentTitle;
         cancelAdjustment();
-        if ("UI opacity".equals(title)) appearanceSettings();
+        if (getString(R.string.hb_ui_opacity_70).equals(title)) appearanceSettings();
         else if (wallpaperProvider != null) providerDetails(wallpaperProvider, true);
     }
     private void cancelAdjustment() {

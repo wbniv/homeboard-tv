@@ -13,7 +13,7 @@ import android.os.Bundle;
 public class InputsRequestActivity extends Activity {
     @Override
     protected void attachBaseContext(android.content.Context base) {
-        super.attachBaseContext(LauncherLocale.wrap(base));   // locale
+        super.attachBaseContext(AppLanguage.wrap(base));   // locale
     }
 
     @Override

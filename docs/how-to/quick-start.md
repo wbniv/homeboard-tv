@@ -196,6 +196,21 @@ An unavailable favorite can be removed using its hold-OK menu. Deleting a tile n
 uninstalls its app. If a station feed is unavailable, check the timestamp and status
 on the saved reading; a missing value is shown as a dash, not zero.
 
+## App language
+
+In the Thai-language implementation, open **Home settings → Language / ภาษา**.
+Press Up for **English**, Right for **ไทย**, or Down for **Follow device**.
+The directional choice applies immediately. Left or Back returns without a new
+choice. The saved choice has a current marker; explicit English/Thai remains
+selected across restarts independently of the TV's system language.
+
+A change returns to Home settings in the selected language. Use **Undo** to
+restore the previous language mode. Follow device chooses the first supported
+English/Thai device preference, with English as the fallback. This setting changes
+Homeboard's interface; installed apps and Android-owned screens retain their own
+language settings. Thai copy and TV rendering still require the acceptance checks
+listed in the [worktree validation record](../testing/2026-11-16-thai-language.md).
+
 ## Source links on a TV
 
 Home settings → About Homeboard TV lists the project, CleanYourTV, Outfit font

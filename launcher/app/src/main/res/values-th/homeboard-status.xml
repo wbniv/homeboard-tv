@@ -1,0 +1,33 @@
+<resources>
+    <string name="hb_status_provider_did_not_respond_retry_after_it_recovers_or_restart_homeb">ผู้ให้บริการไม่ตอบสนอง ลองใหม่เมื่อพร้อมหรือเริ่ม Homeboard ใหม่</string>
+    <string name="hb_status_provider_could_not_be_connected_choose_retry">เชื่อมต่อผู้ให้บริการไม่ได้ เลือกลองอีกครั้ง</string>
+    <string name="hb_status_solid_color">สีพื้น</string>
+    <string name="hb_status_selected_provider_is_missing">ไม่พบผู้ให้บริการที่เลือก</string>
+    <string name="hb_status_provider_disconnected_choose_retry">ผู้ให้บริการตัดการเชื่อมต่อ เลือกลองอีกครั้ง</string>
+    <string name="hb_status_provider_was_updated_choose_retry">ผู้ให้บริการอัปเดตแล้ว เลือกลองอีกครั้ง</string>
+    <string name="hb_status_provider_returned_no_service">ผู้ให้บริการไม่มีบริการตอบกลับ</string>
+    <string name="hb_status_connecting">กำลังเชื่อมต่อ…</string>
+    <string name="hb_status_provider_could_not_be_bound">เชื่อมโยงบริการไม่ได้</string>
+    <string name="hb_status_provider_connection_is_unavailable">การเชื่อมต่อผู้ให้บริการไม่พร้อมใช้งาน</string>
+    <string name="hb_status_focus_an_app_to_request_a_wallpaper">เลือกแอปเพื่อขอภาพพื้นหลัง</string>
+    <string name="hb_status_loading_wallpaper">กำลังโหลดภาพพื้นหลัง…</string>
+    <string name="hb_status_provider_returned_too_many_wallpapers">ผู้ให้บริการส่งภาพพื้นหลังมากเกินไป</string>
+    <string name="hb_status_provider_request_failed">คำขอผู้ให้บริการล้มเหลว</string>
+    <string name="hb_status_no_new_wallpaper_retaining_current_background">ไม่มีภาพใหม่ คงพื้นหลังปัจจุบันไว้</string>
+    <string name="hb_status_a_provider_is_still_busy_retry_after_it_recovers_or_restart_homeb">ผู้ให้บริการยังไม่ว่าง ลองอีกครั้งเมื่อพร้อมหรือเริ่ม Homeboard ใหม่</string>
+    <string name="hb_status_unsupported_wallpaper_format_or_display_mode">ไม่รองรับรูปแบบภาพพื้นหลังหรือโหมดแสดงผลนี้</string>
+    <string name="hb_status_preview_ready">ตัวอย่างพร้อมแล้ว</string>
+    <string name="hb_status_invalid_wallpaper_color">สีภาพพื้นหลังไม่ถูกต้อง</string>
+    <string name="hb_status_this_animation_display_mode_is_unsupported_on_this_device">อุปกรณ์นี้ไม่รองรับโหมดแสดงภาพเคลื่อนไหวนี้</string>
+    <string name="hb_status_wallpaper_decoding_timed_out_retaining_previous_background">ถอดรหัสภาพไม่ทันเวลา คงพื้นหลังก่อนหน้าไว้</string>
+    <string name="hb_status_video_needs_https_or_an_accessible_content_resource_uri">วิดีโอต้องใช้ HTTPS หรือ URI เนื้อหาที่เข้าถึงได้</string>
+    <string name="hb_status_video_paused_for_reduced_motion_using_solid_color">หยุดวิดีโอเพื่อลดการเคลื่อนไหว ใช้สีพื้น</string>
+    <string name="hb_status_this_video_display_mode_is_unsupported_on_this_device">อุปกรณ์นี้ไม่รองรับโหมดแสดงวิดีโอนี้</string>
+    <string name="hb_status_video_preparation_timed_out">เตรียมวิดีโอไม่ทันเวลา</string>
+    <string name="hb_status_video_produced_no_frame">วิดีโอไม่มีเฟรมภาพ</string>
+    <string name="hb_status_video_playback_is_unavailable">เล่นวิดีโอไม่ได้</string>
+    <string name="hb_status_video_source_is_unavailable">แหล่งวิดีโอไม่พร้อมใช้งาน</string>
+    <string name="hb_status_recent_pm2_5_trend">แนวโน้ม PM2.5 ล่าสุด</string>
+    <string name="hb_status_24h">24 ชม.</string>
+    <string name="hb_status_30d">30 วัน</string>
+</resources>

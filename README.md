@@ -48,6 +48,12 @@ text and artwork remain opaque. The 0.1.14 comparison verifies 0%, 75% and 100%
 on both Home and All Apps. See the [combined validation record](docs/testing/2026-11-16-projectivy-plugin-host.md),
 including the recorded cold-launch timeout and successful retry.
 
+English/Thai language selection is implemented in the `feature/thai-language`
+worktree: **Home settings → Language / ภาษา**. It supports explicit English, Thai
+and Follow device, with independent persistence and Undo. See the
+[language plan](docs/plans/2026-11-16-language-setting-and-translations.md) and
+[validation limits](docs/testing/2026-11-16-thai-language.md).
+
 ## Start here
 
 - [Product direction: our brand and the CleanYourTV community](docs/product-direction.md)

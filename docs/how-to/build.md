@@ -71,3 +71,13 @@ do not establish TV focus, rendering or performance; device testing uses the sha
 Chromecast coordinator. `task fixture` builds a disposable app for testing app
 launch and uninstall without removing an existing user app.
 Production signing and Play distribution remain open work.
+
+## Shared worktree debug signing
+
+The Compose Gradle cache has the explicit name `homeboard-tv_gradle-cache` so
+parallel worktrees use the same development keystore under `/cache/gradle/.android`.
+A separate automatically named cache generates a different debug certificate;
+Android then rejects updates with `INSTALL_FAILED_UPDATE_INCOMPATIBLE`.
+Preserve the existing cache/key to preserve installed app data. Do not uninstall
+Homeboard to work around this failure. This is development signing, not release
+signing or an embedded household credential.

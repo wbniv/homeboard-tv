@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class HomeSettingsActivity extends Activity {
     @Override
     protected void attachBaseContext(android.content.Context base) {
-        super.attachBaseContext(LauncherLocale.wrap(base));   // locale
+        super.attachBaseContext(AppLanguage.wrap(base));   // locale
     }
 
     private boolean left;

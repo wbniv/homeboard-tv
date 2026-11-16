@@ -1,0 +1,33 @@
+<resources>
+    <string name="hb_hint_home_layout">"รูปแบบหน้าหลัก"</string>
+    <string name="hb_hint_home">"หน้าหลัก"</string>
+    <string name="hb_hint_hold_ok_to_remove">" กด OK ค้างเพื่อนำออก"</string>
+    <string name="hb_hint_hold_ok_for_menu">" กด OK ค้างเพื่อเปิดเมนู"</string>
+    <string name="hb_hint_left_edge_back_home_hold_ok_menu_page">"ขอบซ้าย / กลับ → หน้าหลัก    กด OK ค้าง → เมนู    หน้า"</string>
+    <string name="hb_hint_more_air_quality">"เพิ่มเติม · คุณภาพอากาศ"</string>
+    <string name="hb_hint_app">"แอป"</string>
+    <string name="hb_hint_removed">"นำออกแล้ว"</string>
+    <string name="hb_hint_from_home">" จากหน้าหลัก"</string>
+    <string name="hb_hint_hid">"ซ่อน"</string>
+    <string name="hb_hint_from_all_apps">" จากแอปทั้งหมด"</string>
+    <string name="hb_hint_ui_opacity">"ความทึบส่วนติดต่อ:"</string>
+    <string name="hb_hint_circular_icon_mask">"กรอบไอคอนวงกลม ·"</string>
+    <string name="hb_hint_uses">"ใช้"</string>
+    <string name="hb_hint_home_favorites_use">" · แอปโปรดบนหน้าหลักใช้"</string>
+    <string name="hb_hint_resize">"ปรับขนาด"</string>
+    <string name="hb_hint_bounded_to_this_tv_s_fit">"จำกัดตามพื้นที่ทีวีนี้:"</string>
+    <string name="hb_hint_change_ok_apply_back_cancel">"← / → เปลี่ยน · OK ใช้ · กลับ ยกเลิก"</string>
+    <string name="hb_hint_your_apps_and_widgets_arranged_your_way">" · จัดแอปและวิดเจ็ตได้ตามใจ"</string>
+    <string name="hb_hint_back">"← กลับ"</string>
+    <string name="hb_hint_open_source_link">" เปิดลิงก์ซอร์ส"</string>
+    <string name="hb_hint_restored">"กู้คืนแล้ว"</string>
+    <string name="hb_hint_to_all_apps">" ไปยังแอปทั้งหมด"</string>
+    <string name="hb_hint_apps_stay_installed_back_returns">"แอปยังติดตั้งอยู่ · กดกลับเพื่อย้อนกลับ"</string>
+    <string name="hb_hint_background_solid_color">"พื้นหลัง: สีพื้น"</string>
+    <string name="hb_hint_ntitle">"\nชื่อ:"</string>
+    <string name="hb_hint_nauthor">"\nผู้สร้าง:"</string>
+    <string name="hb_hint_nsource">"\nแหล่งที่มา:"</string>
+    <string name="hb_hint_data">"ข้อมูล:"</string>
+    <string name="hb_hint_local">" เวลาท้องถิ่น"</string>
+    <string name="hb_hint_bangkok">" กรุงเทพฯ"</string>
+</resources>

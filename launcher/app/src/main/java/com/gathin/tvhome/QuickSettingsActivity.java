@@ -20,7 +20,7 @@ public final class QuickSettingsActivity extends Activity {
             MenuIconView.Kind.LOCATION, MenuIconView.Kind.APP};
 
     @Override protected void attachBaseContext(android.content.Context base) {
-        super.attachBaseContext(LauncherLocale.wrap(base));
+        super.attachBaseContext(AppLanguage.wrap(base));
     }
 
     @Override protected void onCreate(Bundle state) {

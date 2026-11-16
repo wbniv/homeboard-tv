@@ -20,7 +20,7 @@ final class AirQualityTrendView extends View {
     AirQualityTrendView(Context context) {
         super(context);
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
-        setContentDescription("Recent PM2.5 trend");
+        setContentDescription(getContext().getString(R.string.hb_status_recent_pm2_5_trend));
         gridPaint.setStrokeWidth(dp(1));
         linePaint.setStyle(Paint.Style.STROKE); linePaint.setStrokeWidth(dp(3));
         linePaint.setStrokeCap(Paint.Cap.ROUND); linePaint.setStrokeJoin(Paint.Join.ROUND);
@@ -51,8 +51,8 @@ final class AirQualityTrendView extends View {
         if (right <= left || bottom <= top) return;
         float mid = top + (bottom - top) / 2;
         labelPaint.setAlpha(220);
-        canvas.drawText("24H", dp(1), top + dp(13), labelPaint);
-        canvas.drawText("30D", dp(1), mid + dp(13), labelPaint);
+        canvas.drawText(getContext().getString(R.string.hb_status_24h), dp(1), top + dp(13), labelPaint);
+        canvas.drawText(getContext().getString(R.string.hb_status_30d), dp(1), mid + dp(13), labelPaint);
         canvas.drawLine(left, mid, right, mid, gridPaint);
         drawSeries(canvas, dayValues, left, right, top, mid - dp(2));
         drawSeries(canvas, monthValues, left, right, mid + dp(2), bottom);
