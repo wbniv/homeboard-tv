@@ -20,7 +20,10 @@ AirBKK PM2.5 card, widget Home/All Apps shell and independent launcher artwork.
 The original air-card activity is retained as a reference; the new shell replaces
 dock-specific UI behavior, so not every upstream option is exposed.
 The Java namespace remains unchanged to keep source comparisons
-focused. No Kotlin or dashboard framework is required for the current integration.
+focused. The host remains Java. The original Kotlin parcel classes of the public Projectivy
+wallpaper-provider API are retained in a scoped library with pinned build tooling;
+see [the wallpaper how-to](../how-to/projectivy-wallpapers.md). No dashboard framework
+is introduced.
 
 ## Contribution strategy agreed with Will
 

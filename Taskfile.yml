@@ -36,3 +36,6 @@ tasks:
   md:
     desc: Render, verify Mermaid output and open project Markdown
     cmds: ['dev/render-markdown.sh {{.CLI_ARGS}}']
+  wallpaper-fixture:
+    desc: Build the debug-only offline wallpaper provider library
+    cmds: ['dev/container.sh run ./gradlew --no-daemon :wallpaper-fixture:assembleDebug']

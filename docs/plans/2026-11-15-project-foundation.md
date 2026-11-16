@@ -18,7 +18,9 @@ currently installed. No dashboard server or custom bridge is a prerequisite.
 
 The [dashboard comparison](../investigations/2026-11-15-dashboard-systems-for-homeboard.md)
 remains research for later needs. MagicMirror², Home Assistant, WebView and Kotlin
-are not selected dependencies. Revisit them only when the next feature benefits
+are not selected dashboard technologies. The later
+[wallpaper-provider host](2026-11-16-projectivy-plugin-host.md) retains Kotlin only
+for the public API parcel classes. Revisit them only when the next feature benefits
 from them. Scheduled scenes and the broader mockups below remain future work.
 
 ## Upstream contribution decision

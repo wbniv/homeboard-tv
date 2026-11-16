@@ -88,7 +88,7 @@ public class HomeLayoutTest {
         HomeLayout s = new HomeLayout(); s.palette = "forest"; s.reducedMotion = true;
         s.setPanelSize(HomeLayout.AIR, HomeLayout.PANEL_SMALL); s.defaultPanelSize = HomeLayout.PANEL_LARGE; s.appBanners = false;
         HomeLayout copy = HomeLayout.parse(s.encode());
-        assertFalse(copy.appBanners); assertTrue(HomeLayout.firstRun().appBanners);
+        assertFalse(copy.appBanners); assertFalse(HomeLayout.firstRun().appBanners);
         assertTrue(copy.reducedMotion); assertEquals("forest", copy.palette);
         assertEquals(HomeLayout.PANEL_SMALL, copy.panelSize(HomeLayout.AIR));
         assertEquals(HomeLayout.PANEL_LARGE, copy.defaultPanelSize);

@@ -1,0 +1,30 @@
+{
+  "workflow": "check",
+  "app": "projectivy-overflight",
+  "duration": 9,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 1,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 3,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 4,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 7,
+      "capture": "quality-settings"
+    }
+  ]
+}

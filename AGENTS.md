@@ -16,6 +16,9 @@ docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
 - Shared device sessions must follow [the Chromecast how-to](docs/how-to/chromecast.md):
   devices, queue, complete submitted job, watch, evidence. No direct-device fallback.
 - The native widget Home, All Apps and public Bangkok air-quality card are implemented.
+  Wallpaper-provider v1 hosting and independent UI opacity are implemented; consult
+  [the wallpaper how-to](docs/how-to/projectivy-wallpapers.md) and testing record for
+  verified behavior and remaining compatibility limits.
   Other network integrations, scheduled scenes and Play release signing remain future work.
 - Keep mockups and the workflow diagram current before implementing a new UI workflow.
 - Upstream contributions need their own narrowly scoped patch and upstream requirements review.

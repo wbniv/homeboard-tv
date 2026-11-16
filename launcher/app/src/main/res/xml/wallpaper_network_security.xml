@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false" />
+    <!-- Overflight publishes public Apple Aerial videos on these exact HTTP CDN hosts. -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">sylvan.apple.com</domain>
+        <domain includeSubdomains="false">a1.phobos.apple.com</domain>
+    </domain-config>
+</network-security-config>

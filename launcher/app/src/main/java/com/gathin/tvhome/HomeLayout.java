@@ -14,6 +14,9 @@ import java.util.Set;
 /** Persisted product state; page/focus and uncommitted move previews live in the activity. */
 final class HomeLayout {
     static final String AIR = "widget:air";
+    // Independent worktrees share an installed app. Preserve fields written by newer feature
+    // branches (currently homeAppSize) when this branch saves known layout settings.
+    private JSONObject additionalFields = new JSONObject();
     final List<String> widgets = new ArrayList<>();
     final List<String> order = new ArrayList<>();
     final Set<String> hidden = new HashSet<>();
@@ -25,9 +28,11 @@ final class HomeLayout {
     int homeColumns;
     int homeRows;
     boolean reducedMotion;
-    boolean appBanners = true;
+    boolean appBanners;
     boolean circularIcons = true;
     String customWallpaper = "";
+    WallpaperSettings wallpaper = new WallpaperSettings();
+    int uiOpacityPercent = 75;
     String palette = "midnight";
 
     static HomeLayout firstRun() {
@@ -39,6 +44,11 @@ final class HomeLayout {
     static HomeLayout parse(String encoded) throws JSONException {
         JSONObject j = new JSONObject(encoded);
         HomeLayout s = new HomeLayout();
+        s.additionalFields = new JSONObject(j.toString());
+        for (String key : new String[]{"widgets", "order", "hidden", "defaultPanelSize", "panelSizes",
+                "airWidth", "panelSpans", "homePositions", "homeColumns", "homeRows", "appBanners",
+                "circularIcons", "customWallpaper", "reducedMotion", "palette", "wallpaper", "uiOpacityPercent"})
+            s.additionalFields.remove(key);
         read(j.getJSONArray("widgets"), s.widgets);
         read(j.getJSONArray("order"), s.order);
         List<String> hidden = new ArrayList<>();
@@ -78,8 +88,10 @@ final class HomeLayout {
         s.homeColumns = homeColumns >= 4 && homeColumns <= 12 ? homeColumns : 0;
         int homeRows = j.optInt("homeRows", 0);
         s.homeRows = homeRows == 0 ? 0 : Math.max(2, homeRows);
-        s.appBanners = j.optBoolean("appBanners", true);
+        s.appBanners = j.optBoolean("appBanners", false);
         s.circularIcons = j.optBoolean("circularIcons", true);
+        s.uiOpacityPercent = WallpaperSettings.percent(j.optInt("uiOpacityPercent", 75));
+        s.wallpaper = WallpaperSettings.parse(j.optJSONObject("wallpaper"));
         s.customWallpaper = j.optString("customWallpaper", "");
         s.reducedMotion = j.optBoolean("reducedMotion", false);
         s.palette = j.optString("palette", "midnight");
@@ -95,7 +107,7 @@ final class HomeLayout {
 
     String encode() {
         try {
-            return new JSONObject().put("widgets", new JSONArray(widgets)).put("order", new JSONArray(order))
+            return new JSONObject(additionalFields.toString()).put("widgets", new JSONArray(widgets)).put("order", new JSONArray(order))
                     .put("hidden", new JSONArray(new java.util.TreeSet<>(hidden)))
                     .put("defaultPanelSize", defaultPanelSize).put("panelSizes", new JSONObject(panelSizes))
                     .put("panelSpans", encodedSpans())
@@ -103,6 +115,7 @@ final class HomeLayout {
                     .put("homeColumns", homeColumns).put("homeRows", homeRows)
                     .put("appBanners", appBanners).put("circularIcons", circularIcons)
                     .put("customWallpaper", customWallpaper)
+                    .put("wallpaper", wallpaper.json()).put("uiOpacityPercent", uiOpacityPercent)
                     .put("reducedMotion", reducedMotion).put("palette", palette).toString();
         } catch (JSONException e) { throw new IllegalStateException(e); }
     }

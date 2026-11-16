@@ -1,0 +1,16 @@
+{
+  "repository": "https://github.com/spocky/projectivy-plugin-wallpaper-provider",
+  "revision": "60ec7b4306ab16dac83ea10ed9b81f5670b51ee3",
+  "license": "Apache-2.0",
+  "sha256": {
+    "LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "consumer-rules.pro": "592675092e3cc80cabebeb49cc58f41497e28d568b44e944f85a29af6fd87a4b",
+    "src/main/AndroidManifest.xml": "f0f4b47043b24ea2136dabe1cd4309c3b71d84d779889989dbe6d6e5126bfd56",
+    "src/main/aidl/tv/projectivy/plugin/wallpaperprovider/api/Event.aidl": "7408317c4f26dddc2c73eab4f5d9002d4d873b02dd26ab0140fbddfcfc945d91",
+    "src/main/aidl/tv/projectivy/plugin/wallpaperprovider/api/IWallpaperProviderService.aidl": "f3344411bebe848bc0d7aefcc497ca46d0f3216ac049c6fe3378fdf180bfce65",
+    "src/main/aidl/tv/projectivy/plugin/wallpaperprovider/api/Wallpaper.aidl": "58349bad403e525eeda0783b551a1673decf78aabdd9c1be61b1666acc07337d",
+    "src/main/java/tv/projectivy/plugin/wallpaperprovider/api/Event.kt": "78c2cae1c5376a4dec9ee611717ffbe7419c3adb5180221fce50c6d846997589",
+    "src/main/java/tv/projectivy/plugin/wallpaperprovider/api/Wallpaper.kt": "e9e250330874dcf13ba2810843362e0155fe773e8246e59f2adcf09b7698a2e6",
+    "src/main/java/tv/projectivy/plugin/wallpaperprovider/api/WallpaperProviderContract.kt": "272d7faea65ce3b889c0158a59bd4b334965d844ade142af8ab69b3a213f0f03"
+  }
+}

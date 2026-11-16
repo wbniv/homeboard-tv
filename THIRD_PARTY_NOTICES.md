@@ -7,3 +7,14 @@ Imported source hashes are in docs/upstream/provenance.json.
 The imported launcher includes the Outfit font and its SIL Open Font License at
 launcher/FONT-LICENSE-OFL.txt. AndroidX dependencies retain their Apache 2.0 terms.
 No Luncher code has been copied.
+
+Projectivy wallpaper-provider API by Mickael Despesse (Spocky) and contributors:
+Apache License 2.0, retained in launcher/projectivy-api/LICENSE and packaged as
+assets/licenses/projectivy-api-apache-2.0.txt. Source revision and SHA-256 hashes
+are in launcher/projectivy-api/provenance.json. Original AIDL and parcel classes
+are unchanged. This is an independent compatible host, without Projectivy branding
+or launcher implementation code.
+Source: https://github.com/spocky/projectivy-plugin-wallpaper-provider/tree/60ec7b4306ab16dac83ea10ed9b81f5670b51ee3
+
+Lottie Android by Airbnb and contributors: Apache License 2.0.
+Source: https://github.com/airbnb/lottie-android/tree/v6.6.2

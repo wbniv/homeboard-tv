@@ -27,6 +27,12 @@ documents the circular artwork, focus ring and halo reference, implementation
 and device evidence. Use `task deploy` for a newly numbered APK deployment;
 the About dialog displays the installed APK version.
 
+Wallpaper-provider hosting, UI opacity and dense All Apps are described in the
+[Projectivy wallpaper how-to](docs/how-to/projectivy-wallpapers.md). The host uses
+the public v1 API; it does not need Projectivy Launcher. See the
+[implementation plan](docs/plans/2026-11-16-projectivy-plugin-host.md) for
+compatibility scope and validation status.
+
 ## Start here
 
 - [Product direction: our brand and the CleanYourTV community](docs/product-direction.md)

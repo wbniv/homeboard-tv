@@ -1,20 +1,16 @@
 | Date | Change |
 |------|--------|
-| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/3588efb) | docs: index compass menu redesign plan |
-| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/9cb567a) | feat: add compass menus and document undo-first revision |
-| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/531779b) | Match Google TV app focus and version each deployment |
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
-3588efb	author	Will Norris
-3588efb	added	1
-3588efb	deleted	1
-3588efb	files	1
-9cb567a	author	Will Norris
-9cb567a	added	1
-9cb567a	deleted	0
-9cb567a	files	1
-8e2d390	author	Will Norris
-8e2d390	added	29
-8e2d390	deleted	0
-8e2d390	files	1
+531779b	author	Will Norris
+531779b	added	5
+531779b	deleted	0
+531779b	files	1
+531779b	body	Add circular adaptive artwork, independent icon and label focus, and a cached\nring and halo with lifecycle and reduced-motion handling. Preserve Home layout\nwhile allowing larger circular icons in All Apps.\n\nPolish compass label geometry and About source links. Generate APK versionName\nfrom major.minor.versionCode and add containerized bump/deploy tasks with frozen\nartifacts and coordinator evidence.\n\nValidation: 348 unit tests, lint with zero errors, and debug APK assembly.\nDeploy 0.1.4 on Cast1 and verify focus, halo cleanup and the installed About\nversion. Submit the same APK to Cast2; its coordinator preflight fails with\npersonal-install-unverified. Reference motion calibration remains open.
+b2c5553	author	Will Norris
+b2c5553	added	68
+b2c5553	deleted	0
+b2c5553	files	1
 -->

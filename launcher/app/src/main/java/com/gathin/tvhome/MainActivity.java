@@ -111,6 +111,19 @@ public class MainActivity extends Activity {
     private final Map<String, View> tiles = new LinkedHashMap<>();
     private final List<HomeLayout.Cell> visibleCells = new ArrayList<>();
     private FrameLayout root, surface, overlay;
+    private WallpaperSurface wallpaperSurface;
+    private ProjectivyWallpaperHost wallpaperHost;
+    private WallpaperSettings wallpaperDraft;
+    private ProjectivyProviderRegistry.Provider wallpaperProvider;
+    private tv.projectivy.plugin.wallpaperprovider.api.Wallpaper displayedWallpaper;
+    private boolean wallpaperReady, wallpaperPreviewStarted, returningFromProviderSettings;
+    private boolean backgroundInfo;
+    private String wallpaperStatus = "Choose Preview to load this provider";
+    private java.util.function.IntConsumer adjustmentArm;
+    private Runnable adjustmentDone, adjustmentCancel;
+    private int adjustmentValue;
+    private String adjustmentTitle;
+    private java.util.function.IntConsumer adjustmentPreview, adjustmentCommit;
     private View appFocusHighlight;
     private SpringAnimation appFocusX, appFocusY;
     private boolean appFocusHighlightShown;
@@ -169,6 +182,7 @@ public class MainActivity extends Activity {
                 saveWithoutUndo();
             }
             loadApps();
+            if (wallpaperHost != null) wallpaperHost.packagesChanged();
         }
     };
     private final Runnable heldOk = () -> {
@@ -191,7 +205,6 @@ public class MainActivity extends Activity {
             Toast.makeText(this, "Saved layout could not be read. Starting with empty Home.", Toast.LENGTH_LONG).show();
         }
         if ("theme".equals(layout.palette)) {
-            // Wallpaper selection is not part of Homeboard's current appearance controls.
             // Move former theme defaults to a deterministic palette; retain any saved image data.
             layout.palette = "midnight";
             saveWithoutUndo();
@@ -204,6 +217,22 @@ public class MainActivity extends Activity {
         paletteColors = PaletteColors.from(background);
         root = new FrameLayout(this);
         root.setBackgroundColor(background);
+        wallpaperSurface = new WallpaperSurface(this);
+        root.addView(wallpaperSurface, new FrameLayout.LayoutParams(-1, -1));
+        wallpaperHost = new ProjectivyWallpaperHost(this, new ProjectivyWallpaperHost.Listener() {
+            @Override public void wallpaper(tv.projectivy.plugin.wallpaperprovider.api.Wallpaper item) {
+                wallpaperSurface.show(item, (ready, status) -> {
+                    wallpaperReady = ready && (wallpaperDraft == null || wallpaperPreviewStarted);
+                    if (ready) displayedWallpaper = item;
+                    wallpaperStatus = status;
+                    refreshProviderDetails();
+                    if (!ready) wallpaperHost.mediaFailed(status);
+                });
+            }
+            @Override public void status(String status) { wallpaperStatus = status; refreshProviderDetails(); }
+            @Override public void fallback() { wallpaperReady = false; displayedWallpaper = null; wallpaperSurface.solid(); }
+        });
+        syncBackground();
         setContentView(root);
         root.getViewTreeObserver().addOnGlobalFocusChangeListener((previous, next) -> {
             // Android can dispatch this before the tile's own focus listener updates `focused`.
@@ -245,6 +274,12 @@ public class MainActivity extends Activity {
     @Override protected void onResume() {
         super.onResume(); active = true;
         updateAir();
+        wallpaperSurface.visible(true); wallpaperHost.visible(true);
+        if (returningFromProviderSettings && wallpaperProvider != null) {
+            returningFromProviderSettings = false;
+            wallpaperPreviewStarted = true; syncBackground(); wallpaperHost.refresh();
+            handler.post(() -> providerDetails(wallpaperProvider, false));
+        }
         // Package broadcasts reconcile installs, removal and enable/disable changes. Avoid rebuilding
         // the same surface on every return from an app: that used to drop remote focus for a frame.
         root.post(() -> {
@@ -256,6 +291,9 @@ public class MainActivity extends Activity {
     }
     @Override protected void onPause() {
         active = false; restoringSurface = true; cancelOk();
+        if (adjustmentCancel != null) cancelAdjustment();
+        if (!returningFromProviderSettings) cancelWallpaperPreview();
+        wallpaperHost.visible(false); wallpaperSurface.visible(false);
         if (activeMenu != null && activeMenu.paletteGrid) finishUndoGroup();
         gridSelector = null;
         menuStack.clear(); activeMenu = null; aboutBackButton = null;
@@ -272,6 +310,7 @@ public class MainActivity extends Activity {
     }
     @Override protected void onDestroy() {
         closed = true; loadVersion++;
+        wallpaperHost.close(); wallpaperSurface.close();
         unregisterReceiver(packages);
         handler.removeCallbacksAndMessages(null);
         loader.shutdownNow(); for (AirQualityCard widget : airWidgets.values()) widget.close();
@@ -294,6 +333,8 @@ public class MainActivity extends Activity {
     }
     @Override protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent); setIntent(intent);
+        if (adjustmentCancel != null) cancelAdjustment();
+        cancelWallpaperPreview();
         menuStack.clear(); activeMenu = null;
         dismissMenu(); cancelOk(); moving = false; preview = null;
         allApps = false;
@@ -368,7 +409,7 @@ public class MainActivity extends Activity {
         if (undoBanner != null) root.removeView(undoBanner);
         undoBanner = new FrameLayout(this);
         undoBanner.setBackground(shape(paletteColors.raised, paletteColors.focus, 2));
-        undoBanner.setFocusable(false);
+        undoBanner.setFocusable(false); undoBanner.setAlpha(WallpaperSettings.PIE_ALPHA);
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL); row.setGravity(Gravity.CENTER_VERTICAL);
         row.setPadding(dp(22), dp(6), dp(10), dp(6));
@@ -448,6 +489,7 @@ public class MainActivity extends Activity {
         undoBanner = null; undoButton = null;
         menuStack.clear(); activeMenu = null; gridSelector = null;
         if (overlay != null) { root.removeView(overlay); overlay = null; }
+        syncBackground();
         render(0);
         showUndoBanner(displayedIndex == 0 ? "Undid " + restoredLabel
                 : "Undid " + restoredLabel + " and newer changes");
@@ -626,6 +668,8 @@ public class MainActivity extends Activity {
         for (AirQualityCard widget : airWidgets.values()) widget.unbind();
         tiles.clear(); visibleCells.clear();
         surface = new FrameLayout(this);
+        surface.setAlpha(layout.uiOpacityPercent / 100f);
+        syncBackground();
         surface.setFocusable(true);
         surface.setFocusableInTouchMode(true);
         surface.setClipChildren(false);
@@ -818,6 +862,7 @@ public class MainActivity extends Activity {
             }
             if (hasFocus) {
                 focused = key; if (allApps) appsFocus = key; else homeFocus = key;
+                sendWallpaperFocus(key);
                 if (denseApp) moveAppFocusHighlight(appHighlightTarget(view), !restoringSurface);
             }
         });
@@ -1034,18 +1079,12 @@ public class MainActivity extends Activity {
     /** Measures each cell once before layout; never requests another layout while laying out. */
     private boolean compactApps() { return !layout.appBanners; }
     private int appColumns() {
-        if (!compactApps()) return 4;
-        int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
-                / getResources().getDisplayMetrics().density);
-        int gridWidthDp = Math.max(1, screenWidthDp - 88);
-        return Math.max(1, gridWidthDp / (layout.circularIcons ? 96 : 108));
+        int widthDp = Math.round(getResources().getDisplayMetrics().widthPixels / getResources().getDisplayMetrics().density);
+        return AppGrid.columns(widthDp, layout.appBanners, layout.circularIcons);
     }
     private int appRows() {
-        if (!compactApps()) return 2;
-        if (!layout.circularIcons) return 4;
-        int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
-                / getResources().getDisplayMetrics().density);
-        return Math.max(1, (screenHeightDp - 132) / 128);
+        int heightDp = Math.round(getResources().getDisplayMetrics().heightPixels / getResources().getDisplayMetrics().density);
+        return AppGrid.rows(heightDp, layout.appBanners);
     }
     private int appPageSize() { return appColumns() * appRows(); }
     private final class TileGrid extends ViewGroup {
@@ -1159,6 +1198,16 @@ public class MainActivity extends Activity {
 
     @Override public boolean dispatchKeyEvent(KeyEvent event) {
         int key = event.getKeyCode();
+        if (wallpaperHost != null && event.getAction() == KeyEvent.ACTION_DOWN) wallpaperHost.userActivity();
+        if (adjustmentArm != null) {
+            if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) {
+                if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) backAdjustment();
+                else if (key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER || key == KeyEvent.KEYCODE_NUMPAD_ENTER) adjustmentDone.run();
+                else if (key >= KeyEvent.KEYCODE_DPAD_UP && key <= KeyEvent.KEYCODE_DPAD_RIGHT)
+                    adjustmentArm.accept(key == KeyEvent.KEYCODE_DPAD_UP ? 0 : key == KeyEvent.KEYCODE_DPAD_RIGHT ? 1 : key == KeyEvent.KEYCODE_DPAD_DOWN ? 2 : 3);
+            }
+            return true;
+        }
         boolean ok = key == KeyEvent.KEYCODE_DPAD_CENTER || key == KeyEvent.KEYCODE_ENTER || key == KeyEvent.KEYCODE_NUMPAD_ENTER;
         if (gridSelector != null) {
             if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
@@ -1174,6 +1223,13 @@ public class MainActivity extends Activity {
                 return true;
             }
             return true;
+        }
+        if (backgroundInfo) {
+            if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
+                if (event.getAction() == KeyEvent.ACTION_UP) backMenu();
+                return true;
+            }
+            return super.dispatchKeyEvent(event);
         }
         if (undoButton != null && undoButton.hasFocus()) return super.dispatchKeyEvent(event);
         if (aboutBackButton != null && aboutBackButton.hasFocus()) return super.dispatchKeyEvent(event);
@@ -1270,6 +1326,7 @@ public class MainActivity extends Activity {
         });
     }
     @Override public void onBackPressed() {
+        if (adjustmentCancel != null) { backAdjustment(); return; }
         if (overlay != null) backMenu(); else if (moving) cancelMove(); else if (allApps) showHome();
     }
     private void navigate(int key) {
@@ -1543,14 +1600,15 @@ public class MainActivity extends Activity {
     }
 
     private void appearanceSettings() {
-        menu("Appearance", "Choose colors, icon shape or artwork",
-                new String[]{"Background", "Circular icon mask · " + (layout.circularIcons ? "On" : "Off"), "Icons"}, choice -> {
-                    if (choice == 0) colorPaletteSettings();
-                    else if (choice == 1) menu("Circular icon mask", "The icon keeps the same size",
-                            new String[]{"Original icon shape", "Circular mask"}, mask -> {
-                                layout.circularIcons = mask == 1; save("Changed app icon shape"); render(0);
-                            }, layout.circularIcons ? 1 : 0);
-                    else appArtworkSettings();
+        menu("Appearance", "Customize backgrounds and dashboard elements",
+                new String[]{"Background", "Palette", "Icons", "UI opacity · " + layout.uiOpacityPercent + "%"}, choice -> {
+                    if (choice == 0) backgroundSettings();
+                    else if (choice == 1) colorPaletteSettings();
+                    else if (choice == 2) appArtworkSettings();
+                    else startAdjustment("UI opacity", layout.uiOpacityPercent,
+                            value -> surface.setAlpha(value / 100f), value -> {
+                                layout.uiOpacityPercent = value; save("UI opacity: " + value + "%"); render(0);
+                            });
                 });
     }
 
@@ -1571,7 +1629,7 @@ public class MainActivity extends Activity {
         }
         if ("theme".equals(layout.palette)) selected = 0;
         beginUndoGroup("Changed background color");
-        paletteMenu("Background", "Move to a color to preview it", labels, choice -> {
+        paletteMenu("Palette", "Move to a color to preview it", labels, choice -> {
             layout.palette = ids[choice];
             applyBackgroundChoice();
         }, selected);
@@ -1584,11 +1642,22 @@ public class MainActivity extends Activity {
     }
 
     private void appArtworkSettings() {
-        menu("Icons", "All Apps uses " + (layout.appBanners ? "TV banners · 4 × 2" : "launcher icons · dense grid")
-                        + " · Home favorites stay compact",
-                new String[]{"Launcher icons · dense grid", "TV banners · 4 × 2"}, artwork -> {
-                    layout.appBanners = artwork == 1; save("Changed All Apps artwork"); render(0);
-                }, layout.appBanners ? 1 : 0);
+        menu("Icons", "Choose app artwork and icon shape",
+                new String[]{"All Apps artwork · " + (layout.appBanners ? "TV banners" : "Dense icons"),
+                        "Circular icon mask · " + (layout.circularIcons ? "On" : "Off")}, choice -> {
+                    if (choice == 0) menu("All Apps artwork", "Dense icons fit more apps on each page",
+                            new String[]{"Launcher icons · dense grid", "TV banners · 4 × 2"}, artwork -> {
+                                layout.appBanners = artwork == 1;
+                                appsPage = Math.max(0, appItems().indexOf(focused) / appPageSize());
+                                save("Changed All Apps artwork"); render(0);
+                            }, layout.appBanners ? 1 : 0);
+                    else menu("Circular icon mask", "The icon keeps the same size",
+                            new String[]{"Original icon shape", "Circular mask"}, mask -> {
+                                layout.circularIcons = mask == 1;
+                                appsPage = Math.max(0, appItems().indexOf(focused) / appPageSize());
+                                save("Changed app icon shape"); render(0);
+                            }, layout.circularIcons ? 1 : 0);
+                });
     }
 
     private void homeBehaviorSettings() {
@@ -1840,6 +1909,8 @@ public class MainActivity extends Activity {
             sourceGrid.addView(sourceRow, new LinearLayout.LayoutParams(-1, dp(80)));
         }
         panel.addView(sourceGrid);
+        TextView wallpaperCredits = text("Projectivy wallpaper API · Spocky · Apache-2.0\nLottie Android · Airbnb · Apache-2.0", 13);
+        wallpaperCredits.setPadding(0, dp(6), 0, 0); panel.addView(wallpaperCredits);
 
         TextView closeText = text("←  BACK", 15); closeText.setTypeface(null, Typeface.BOLD);
         closeText.setTextColor(paletteColors.text); closeText.setGravity(Gravity.CENTER);
@@ -2162,7 +2233,7 @@ public class MainActivity extends Activity {
                 ? page + 1 < spec.pageCount ? "More" : "First page"
                 : menuStack.isEmpty() ? "Close" : "Back";
         String pageHint = spec.pageCount > 1 ? "Page " + (page + 1) + " of " + spec.pageCount : "";
-        String breadcrumb = spec.labels.length == 0 && "Restore hidden app".equals(spec.title)
+        String breadcrumb = "Provider background".equals(spec.title) || spec.labels.length == 0 ? spec.subtitle : spec.labels.length == 0 && "Restore hidden app".equals(spec.title)
                 ? "No hidden app shortcuts"
                 : menuStack.isEmpty() ? spec.subtitle
                 : menuStack.get(menuStack.size() - 1).title + " › " + spec.title;
@@ -2172,6 +2243,8 @@ public class MainActivity extends Activity {
         if (spec.labels.length == 0 && "Restore hidden app".equals(spec.title))
             interactionHint = "Apps stay installed · Back returns";
         PieMenuView pie = new PieMenuView(this, paletteColors);
+        pie.setAlpha(WallpaperSettings.PIE_ALPHA);
+        if ("Provider background".equals(spec.title) && wallpaperProvider != null) interactionHint = wallpaperProvider.readiness();
         pie.setContent(spec.title, breadcrumb, centerAction, interactionHint, labels, kinds, selected,
                 new PieMenuView.Listener() {
                     @Override public void onArm(int arm) {
@@ -2312,6 +2385,7 @@ public class MainActivity extends Activity {
         }
     }
     private void dismissMenu() {
+        backgroundInfo = false;
         if (overlay == null) return;
         if (activeMenu != null && activeMenu.paletteGrid) finishUndoGroup();
         root.removeView(overlay); overlay = null;
@@ -2323,6 +2397,8 @@ public class MainActivity extends Activity {
     }
     private void backMenu() {
         if (overlay == null) return;
+        if (adjustmentCancel != null) { backAdjustment(); return; }
+        if (activeMenu != null && "Provider background".equals(activeMenu.title)) cancelWallpaperPreview();
         if (activeMenu != null && activeMenu.page > 0) {
             int page = activeMenu.page - 1;
             int focus = Math.min(page * activeMenu.pageSize, activeMenu.labels.length - 1);
@@ -2342,4 +2418,208 @@ public class MainActivity extends Activity {
         catch (RuntimeException e) { toast("Android could not open that action"); }
     }
     private void toast(String message) { Toast.makeText(this, message, Toast.LENGTH_SHORT).show(); }
+
+    @Override public void onUserInteraction() {
+        super.onUserInteraction();
+        if (wallpaperHost != null) wallpaperHost.userActivity();
+    }
+    private void syncBackground() {
+        if (wallpaperHost == null) return;
+        WallpaperSettings selected = wallpaperDraft == null || !wallpaperPreviewStarted ? layout.wallpaper : wallpaperDraft;
+        wallpaperSurface.options(selected.solid() ? 0 : selected.dimPercent, reducedMotion());
+        wallpaperHost.select(selected);
+    }
+    private void sendWallpaperFocus(String key) {
+        App app = apps.get(key);
+        if (app == null || wallpaperHost == null) return;
+        // Sample app artwork, not dashboard palette colors, for the public CardFocused event.
+        int r = 0, g = 0, b = 0, count = 0;
+        try {
+            Drawable icon = app.info.loadIcon(getPackageManager());
+            android.graphics.Bitmap sample = android.graphics.Bitmap.createBitmap(8, 8, android.graphics.Bitmap.Config.ARGB_8888);
+            icon.setBounds(0, 0, 8, 8); icon.draw(new android.graphics.Canvas(sample));
+            for (int y = 0; y < 8; y++) for (int x = 0; x < 8; x++) {
+                int color = sample.getPixel(x, y);
+                if (Color.alpha(color) > 128) { r += Color.red(color); g += Color.green(color); b += Color.blue(color); count++; }
+            }
+            sample.recycle();
+        } catch (RuntimeException ignored) { }
+        int base = count == 0 ? Color.GRAY : Color.rgb(r / count, g / count, b / count);
+        int light = Color.rgb((Color.red(base) + 255) / 2, (Color.green(base) + 255) / 2, (Color.blue(base) + 255) / 2);
+        int dark = Color.rgb(Color.red(base) / 2, Color.green(base) / 2, Color.blue(base) / 2);
+        wallpaperHost.appFocused(app.label, app.component.getPackageName(), light, dark);
+    }
+    private void backgroundSettings() {
+        menu("Background", layout.wallpaper.solid() ? "Solid color" : "Projectivy wallpaper provider selected",
+                new String[]{"Solid color", "Projectivy plugins", "Background details", "Retry provider"}, choice -> {
+                    if (choice == 0) {
+                        cancelWallpaperPreview(); layout.wallpaper.component = ""; layout.wallpaper.uuid = "";
+                        save("Background: solid color"); syncBackground(); render(0);
+                    } else if (choice == 1) providerList();
+                    else if (choice == 2) backgroundDetails();
+                    else { wallpaperHost.refresh(); backgroundDetails(); }
+                });
+    }
+    private void providerList() {
+        List<ProjectivyProviderRegistry.Provider> providers = new ProjectivyProviderRegistry(this).discover();
+        String[] labels = new String[providers.size()];
+        for (int i = 0; i < labels.length; i++) {
+            ProjectivyProviderRegistry.Provider p = providers.get(i);
+            long sameUuid = providers.stream().filter(other -> other.uuid.equals(p.uuid)).count();
+            labels[i] = p.name + (sameUuid > 1 ? " · " + p.component.getPackageName() : "") + " · " + p.readiness();
+        }
+        menu("Projectivy plugins", providers.isEmpty() ? "No providers installed. Install a wallpaper-provider app, then return here."
+                : "Choose an installed provider to preview", labels, choice -> {
+                    ProjectivyProviderRegistry.Provider p = providers.get(choice);
+                    if (!p.usable()) { toast(p.problem); providerList(); return; }
+                    wallpaperProvider = p;
+                    wallpaperDraft = layout.wallpaper.copy();
+                    wallpaperDraft.component = p.component.flattenToString(); wallpaperDraft.uuid = p.uuid;
+                    wallpaperReady = false; wallpaperPreviewStarted = false; wallpaperStatus = "Choose Preview to load this provider";
+                    providerDetails(p, false);
+                });
+    }
+    private void providerDetails(ProjectivyProviderRegistry.Provider p, boolean replace) {
+        MenuSpec spec = new MenuSpec("Provider background", wallpaperStatus + " · " + p.name + " · " + p.readiness(),
+                new String[]{"Preview", "Plugin settings", wallpaperReady ? "Use background" : "Use background · preview first", "More options"}, choice -> {
+                    if (choice == 0) {
+                        if (wallpaperDraft == null) { wallpaperDraft = layout.wallpaper.copy(); wallpaperDraft.component = p.component.flattenToString(); wallpaperDraft.uuid = p.uuid; }
+                        wallpaperPreviewStarted = true; wallpaperReady = false; wallpaperStatus = "Loading wallpaper…";
+                        syncBackground(); wallpaperHost.refresh(); providerDetails(p, true);
+                    } else if (choice == 1) {
+                        Intent settings = new ProjectivyProviderRegistry(this).settings(p);
+                        if (settings == null) { toast("No accessible plugin settings"); providerDetails(p, true); }
+                        else {
+                            returningFromProviderSettings = true;
+                            try { startActivity(settings); }
+                            catch (RuntimeException invalid) { returningFromProviderSettings = false; toast("Plugin settings are unavailable"); providerDetails(p, true); }
+                        }
+                    } else if (choice == 2) {
+                        if (!wallpaperReady || wallpaperDraft == null) { toast("Preview a usable wallpaper first"); providerDetails(p, true); return; }
+                        layout.wallpaper = wallpaperDraft.copy(); wallpaperDraft = null;
+                        save("Background: " + p.name); syncBackground(); render(0);
+                    } else providerOptions(p);
+                }, -1);
+        if (replace) {
+            // Returning from provider options replaces that subtree. Back must reach the
+            // provider list, rather than a stale options callback after discarding the draft.
+            for (int i = menuStack.size() - 1; i >= 0; i--) {
+                if ("Provider background".equals(menuStack.get(i).title)) {
+                    while (menuStack.size() > i) menuStack.remove(menuStack.size() - 1);
+                    break;
+                }
+            }
+            activeMenu = spec; menuGeneration++; showMenuPage(spec, 0, 0);
+        } else openMenu(spec);
+    }
+    private void refreshProviderDetails() {
+        if (!closed && activeMenu != null && "Provider background".equals(activeMenu.title)
+                && overlay != null && wallpaperProvider != null) providerDetails(wallpaperProvider, true);
+    }
+    private void providerOptions(ProjectivyProviderRegistry.Provider p) {
+        if (wallpaperDraft == null) wallpaperDraft = layout.wallpaper.copy();
+        menu("Wallpaper options", "Host display options; provider content stays in Plugin settings",
+                new String[]{"Rotation · " + wallpaperDraft.rotationMinutes + " min", "Dimming · " + wallpaperDraft.dimPercent + "%", "Background details", "Back to provider"}, choice -> {
+                    if (choice == 0) menu("Wallpaper rotation", "Batch cache expiry is controlled by the provider",
+                            new String[]{"1 minute", "5 minutes", "15 minutes", "60 minutes"}, n -> {
+                                wallpaperDraft.rotationMinutes = new int[]{1, 5, 15, 60}[n]; syncBackground(); providerDetails(p, true);
+                            });
+                    else if (choice == 1) startAdjustment("Wallpaper dimming", wallpaperDraft.dimPercent,
+                            value -> wallpaperSurface.options(value, reducedMotion()), value -> {
+                                wallpaperDraft.dimPercent = value; syncBackground(); providerDetails(p, true);
+                            });
+                    else if (choice == 2) backgroundDetails();
+                    else providerDetails(p, true);
+                });
+    }
+    private void backgroundDetails() {
+        tv.projectivy.plugin.wallpaperprovider.api.Wallpaper item = displayedWallpaper;
+        if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
+        dismissMenu(); activeMenu = null; menuGeneration++; backgroundInfo = true;
+        surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        overlay = new FrameLayout(this); overlay.setBackgroundColor(paletteColors.scrim);
+        LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL);
+        panel.setPadding(dp(28), dp(24), dp(28), dp(20));
+        panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 1)); panel.setAlpha(WallpaperSettings.PIE_ALPHA);
+        panel.addView(text("Background details", 24), new LinearLayout.LayoutParams(-1, -2));
+        String info = wallpaperStatus;
+        if (wallpaperProvider != null) info += "\n" + wallpaperProvider.name + " · " + wallpaperProvider.readiness();
+        if (item != null) info += "\nTitle: " + (item.getTitle() == null ? "Untitled" : item.getTitle())
+                + "\nAuthor: " + (item.getAuthor() == null ? "Not provided" : item.getAuthor())
+                + "\nSource: " + (item.getSource() == null ? "Not provided" : item.getSource());
+        TextView details = text(info, 18); details.setMaxLines(8); details.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        LinearLayout.LayoutParams detailLp = new LinearLayout.LayoutParams(-1, -2); detailLp.topMargin = dp(16); panel.addView(details, detailLp);
+        LinearLayout buttons = new LinearLayout(this); buttons.setGravity(Gravity.CENTER_VERTICAL);
+        if (item != null && item.getActionUri() != null) {
+            TextView link = infoButton("Open wallpaper link", () -> openWallpaperLink(item.getActionUri()));
+            buttons.addView(link, new LinearLayout.LayoutParams(0, dp(60), 1));
+        }
+        buttons.addView(infoButton("Choose background", this::backgroundSettings), new LinearLayout.LayoutParams(0, dp(60), 1));
+        aboutBackButton = infoButton("Back", this::backMenu);
+        buttons.addView(aboutBackButton, new LinearLayout.LayoutParams(0, dp(60), 1));
+        LinearLayout.LayoutParams buttonsLp = new LinearLayout.LayoutParams(-1, dp(64)); buttonsLp.topMargin = dp(16); panel.addView(buttons, buttonsLp);
+        int width = Math.min(dp(840), getResources().getDisplayMetrics().widthPixels - dp(64));
+        overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
+        root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); aboutBackButton.requestFocus();
+    }
+    private TextView infoButton(String label, Runnable action) {
+        TextView button = text(label, 17); button.setGravity(Gravity.CENTER); button.setFocusable(true); button.setClickable(true);
+        button.setBackground(tileBackground()); button.setOnClickListener(v -> action.run()); return button;
+    }
+    private void openWallpaperLink(String value) {
+        Uri uri = Uri.parse(value); String scheme = uri.getScheme();
+        if (scheme == null || java.util.Arrays.asList("file", "content", "android.resource", "data", "javascript", "intent").contains(scheme.toLowerCase(java.util.Locale.ROOT))) {
+            toast("This wallpaper link type is unsupported"); return;
+        }
+        open(new Intent(Intent.ACTION_VIEW, uri).addCategory(Intent.CATEGORY_BROWSABLE));
+    }
+    private void cancelWallpaperPreview() {
+        if (wallpaperDraft == null) return;
+        wallpaperDraft = null; wallpaperProvider = null; wallpaperReady = false; wallpaperPreviewStarted = false;
+        syncBackground();
+    }
+    private void startAdjustment(String title, int original, java.util.function.IntConsumer preview,
+                                 java.util.function.IntConsumer commit) {
+        dismissMenu(); menuStack.clear(); activeMenu = null; menuGeneration++;
+        adjustmentTitle = title; adjustmentValue = original; adjustmentPreview = preview; adjustmentCommit = commit;
+        adjustmentCancel = () -> { preview.accept(original); };
+        adjustmentArm = arm -> {
+            adjustmentValue = "UI opacity".equals(title) ? WallpaperSettings.opacityStep(adjustmentValue, arm)
+                    : arm == 0 ? WallpaperSettings.percent(adjustmentValue + 5) : arm == 1 ? 100
+                    : arm == 2 ? WallpaperSettings.percent(adjustmentValue - 5) : 35;
+            adjustmentPreview.accept(adjustmentValue); drawAdjustment();
+        };
+        adjustmentDone = () -> {
+            int value = adjustmentValue; java.util.function.IntConsumer done = adjustmentCommit;
+            clearAdjustment(); dismissMenu(); done.accept(value);
+        };
+        drawAdjustment();
+    }
+    private void drawAdjustment() {
+        if (overlay != null) root.removeView(overlay);
+        surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        overlay = new FrameLayout(this); overlay.setFocusable(true);
+        // Keep the live background visible; the pie itself is always at the fixed menu opacity.
+        PieMenuView pie = new PieMenuView(this, paletteColors); pie.setAlpha(WallpaperSettings.PIE_ALPHA);
+        pie.setContent(adjustmentTitle, adjustmentValue + "%", "Done", "Back cancels",
+                new String[]{"+5%", "100%", "−5%", "Reset " + ("UI opacity".equals(adjustmentTitle) ? "75%" : "35%")},
+                new MenuIconView.Kind[]{MenuIconView.Kind.ADD, MenuIconView.Kind.PALETTE, MenuIconView.Kind.DELETE, MenuIconView.Kind.UNDO}, new boolean[4],
+                new PieMenuView.Listener() {
+                    @Override public void onArm(int arm) { if (adjustmentArm != null) adjustmentArm.accept(arm); }
+                    @Override public void onCenter() { if (adjustmentDone != null) adjustmentDone.run(); }
+                });
+        int diameter = Math.min(dp(760), Math.min(getResources().getDisplayMetrics().widthPixels - dp(56), getResources().getDisplayMetrics().heightPixels - dp(40)));
+        overlay.addView(pie, new FrameLayout.LayoutParams(diameter, diameter, Gravity.CENTER));
+        root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); pie.requestFocus();
+    }
+    private void clearAdjustment() { adjustmentArm = null; adjustmentDone = null; adjustmentCancel = null; adjustmentPreview = null; adjustmentCommit = null; }
+    private void backAdjustment() {
+        String title = adjustmentTitle;
+        cancelAdjustment();
+        if ("UI opacity".equals(title)) appearanceSettings();
+        else if (wallpaperProvider != null) providerDetails(wallpaperProvider, true);
+    }
+    private void cancelAdjustment() {
+        Runnable cancel = adjustmentCancel; clearAdjustment(); dismissMenu(); if (cancel != null) cancel.run();
+    }
 }

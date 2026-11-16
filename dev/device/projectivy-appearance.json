@@ -1,0 +1,140 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 43,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 1,
+      "capture": "all-apps-before"
+    },
+    {
+      "at": 2,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 4,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 6,
+      "capture": "appearance-four-choices"
+    },
+    {
+      "at": 7,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 9,
+      "capture": "icons-contains-circular-mask"
+    },
+    {
+      "at": 10,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 12,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 14,
+      "capture": "all-apps-dense-icons"
+    },
+    {
+      "at": 15,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 17,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 19,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 21,
+      "capture": "opacity-default"
+    },
+    {
+      "at": 22,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 24,
+      "capture": "opacity-preview-100"
+    },
+    {
+      "at": 25,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 27,
+      "capture": "opacity-cancel-returns-appearance"
+    },
+    {
+      "at": 28,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 30,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 32,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 34,
+      "capture": "opacity-saved-70"
+    },
+    {
+      "at": 35,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 37,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 39,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 41,
+      "capture": "opacity-restored-by-undo"
+    }
+  ]
+}

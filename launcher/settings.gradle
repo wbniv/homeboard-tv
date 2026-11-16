@@ -16,3 +16,6 @@ rootProject.name = "HomeboardTV"
 include ':app'
 
 include ':fixture'
+
+include ':projectivy-api'
+include ':wallpaper-fixture'

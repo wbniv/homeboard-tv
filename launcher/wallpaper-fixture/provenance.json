@@ -1,0 +1,9 @@
+{
+  "repository": "https://github.com/spocky/projectivy-plugin-wallpaper-provider",
+  "revision": "60ec7b4306ab16dac83ea10ed9b81f5670b51ee3",
+  "license": "Apache-2.0",
+  "sample_media_sha256": {
+    "gradient.json": "2e47529a920d895d5b685975e85b8fef3eb8e3e9ff71d6b86f74941ff5bd4506",
+    "light.mp4": "d5c1877c8595f3bfc4968fbc9fcd185013d38ad51da995d639d435d87d637c4a"
+  }
+}

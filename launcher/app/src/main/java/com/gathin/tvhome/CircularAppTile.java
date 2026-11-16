@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /** Stable label and artwork center; only the artwork enlarges on focus. */
+// Homeboard uses platform Activity inflation, including when Lottie brings AppCompat transitively.
+@android.annotation.SuppressLint("AppCompatCustomView")
 final class CircularAppTile extends LinearLayout {
     private final ImageView icon;
     private final TextView label;
