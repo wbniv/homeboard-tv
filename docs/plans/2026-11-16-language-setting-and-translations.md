@@ -1,6 +1,6 @@
 # Language setting and repeatable English/Thai translation
 
-**Status: core implementation in isolated worktree; copy/device acceptance pending · 16 November 2026.**
+**Status: core implementation merged and deployed; bilingual copy/device acceptance pending · 16 November 2026.**
 
 Add **Home settings → Language** with English and Thai, plus a Follow device
 choice. Translate the complete reachable Homeboard interface and establish one
@@ -317,9 +317,9 @@ calendar work is deliberately excluded.
 - [ ] Convert remaining inherited/persisted feedback and dynamic fragments to
   whole typed messages; finish the secondary/provider-status surface inventory.
 
-The initial Thai copy is an implementation draft, not a linguistic signoff. This
-worktree has not been merged or installed over the combined testing APK. Preserve
-one deployment owner and merge intended features before a combined deployment.
+The initial Thai copy is an implementation draft, not a linguistic signoff. The
+implementation is now merged into `main` and included in the combined 0.1.19 APK.
+Preserve one deployment owner and merge intended features before each combined deployment.
 
 
 ### Deployment addendum — 16 November 2026
@@ -329,3 +329,13 @@ Merged the committed Background-menu/About QR changes before the combined build.
 0.1.18 reuses the verified existing project cache/key and installed successfully
 on Cast1 through coordinator job J‑588dec1e1f43. The installed APK hash matches
 the frozen artifact. See the [deployment record](../testing/2026-11-16-thai-language.md).
+
+
+### Combined menu verification · 0.1.19
+
+The final combined APK includes source `2215f73`, with version code 19. Cast1
+installation J‑fa2912d4e7a1 and all 53 isolated menu regressions J‑cc2c28ed312a
+passed with ready health; 380 JVM tests and lint passed in the container. These
+checks verify Background/About navigation while preserving the app language.
+They do not replace the pending full bilingual and linguistic acceptance above.
+See the [combined record](../testing/2026-11-16-projectivy-plugin-host.md).
