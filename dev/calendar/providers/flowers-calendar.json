@@ -1,0 +1,1970 @@
+{
+  "id": "flowers",
+  "country": "TH",
+  "timeZone": "Asia/Bangkok",
+  "status": "offline",
+  "reviewedOn": "2026-11-16",
+  "coverageStart": "2026-01-01",
+  "coverageEnd": "2026-12-24",
+  "events": [
+    {
+      "anchor": "2026-01-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-03:2026-01-01",
+      "date": "2026-01-01",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-01-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-03:2026-01-02",
+      "date": "2026-01-02",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-01-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-03:2026-01-03",
+      "date": "2026-01-03",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-01-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-11:2026-01-08",
+      "date": "2026-01-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-01-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-11:2026-01-09",
+      "date": "2026-01-09",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-01-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-11:2026-01-10",
+      "date": "2026-01-10",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-01-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-11:2026-01-11",
+      "date": "2026-01-11",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-01-18",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-18:2026-01-15",
+      "date": "2026-01-15",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-01-18",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-18:2026-01-16",
+      "date": "2026-01-16",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-01-18",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-18:2026-01-17",
+      "date": "2026-01-17",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-01-18",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-18:2026-01-18",
+      "date": "2026-01-18",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-01-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-26:2026-01-23",
+      "date": "2026-01-23",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-01-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-26:2026-01-24",
+      "date": "2026-01-24",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-01-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-26:2026-01-25",
+      "date": "2026-01-25",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-01-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-01-26:2026-01-26",
+      "date": "2026-01-26",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-02-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-02:2026-01-30",
+      "date": "2026-01-30",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-02-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-02:2026-01-31",
+      "date": "2026-01-31",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-02-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-02:2026-02-01",
+      "date": "2026-02-01",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-02-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-02:2026-02-02",
+      "date": "2026-02-02",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-02-10",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-10:2026-02-07",
+      "date": "2026-02-07",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-02-10",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-10:2026-02-08",
+      "date": "2026-02-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-02-10",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-10:2026-02-09",
+      "date": "2026-02-09",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-02-10",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-10:2026-02-10",
+      "date": "2026-02-10",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-02-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-16:2026-02-13",
+      "date": "2026-02-13",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-02-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-16:2026-02-14",
+      "date": "2026-02-14",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-02-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-16:2026-02-15",
+      "date": "2026-02-15",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-02-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-16:2026-02-16",
+      "date": "2026-02-16",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-02-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-24:2026-02-21",
+      "date": "2026-02-21",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-02-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-24:2026-02-22",
+      "date": "2026-02-22",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-02-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-24:2026-02-23",
+      "date": "2026-02-23",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-02-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-02-24:2026-02-24",
+      "date": "2026-02-24",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-03-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-03:2026-02-28",
+      "date": "2026-02-28",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-03-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-03:2026-03-01",
+      "date": "2026-03-01",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-03-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-03:2026-03-02",
+      "date": "2026-03-02",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-03-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-03:2026-03-03",
+      "date": "2026-03-03",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-03-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-11:2026-03-08",
+      "date": "2026-03-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-03-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-11:2026-03-09",
+      "date": "2026-03-09",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-03-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-11:2026-03-10",
+      "date": "2026-03-10",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-03-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-11:2026-03-11",
+      "date": "2026-03-11",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-03-18",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-18:2026-03-15",
+      "date": "2026-03-15",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-03-18",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-18:2026-03-16",
+      "date": "2026-03-16",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-03-18",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-18:2026-03-17",
+      "date": "2026-03-17",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-03-18",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-18:2026-03-18",
+      "date": "2026-03-18",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-03-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-26:2026-03-23",
+      "date": "2026-03-23",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-03-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-26:2026-03-24",
+      "date": "2026-03-24",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-03-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-26:2026-03-25",
+      "date": "2026-03-25",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-03-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-03-26:2026-03-26",
+      "date": "2026-03-26",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-04-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-02:2026-03-30",
+      "date": "2026-03-30",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-04-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-02:2026-03-31",
+      "date": "2026-03-31",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-04-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-02:2026-04-01",
+      "date": "2026-04-01",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-04-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-02:2026-04-02",
+      "date": "2026-04-02",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-04-10",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-10:2026-04-07",
+      "date": "2026-04-07",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-04-10",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-10:2026-04-08",
+      "date": "2026-04-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-04-10",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-10:2026-04-09",
+      "date": "2026-04-09",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-04-10",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-10:2026-04-10",
+      "date": "2026-04-10",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-04-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-16:2026-04-13",
+      "date": "2026-04-13",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-04-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-16:2026-04-14",
+      "date": "2026-04-14",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-04-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-16:2026-04-15",
+      "date": "2026-04-15",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-04-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-16:2026-04-16",
+      "date": "2026-04-16",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-04-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-24:2026-04-21",
+      "date": "2026-04-21",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-04-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-24:2026-04-22",
+      "date": "2026-04-22",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-04-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-24:2026-04-23",
+      "date": "2026-04-23",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-04-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-04-24:2026-04-24",
+      "date": "2026-04-24",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-01",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-01:2026-04-28",
+      "date": "2026-04-28",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-01",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-01:2026-04-29",
+      "date": "2026-04-29",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-01",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-01:2026-04-30",
+      "date": "2026-04-30",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-01",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-01:2026-05-01",
+      "date": "2026-05-01",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-09:2026-05-06",
+      "date": "2026-05-06",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-09:2026-05-07",
+      "date": "2026-05-07",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-09:2026-05-08",
+      "date": "2026-05-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-09:2026-05-09",
+      "date": "2026-05-09",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-16:2026-05-13",
+      "date": "2026-05-13",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-16:2026-05-14",
+      "date": "2026-05-14",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-16:2026-05-15",
+      "date": "2026-05-15",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-16",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-16:2026-05-16",
+      "date": "2026-05-16",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-24:2026-05-21",
+      "date": "2026-05-21",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-24:2026-05-22",
+      "date": "2026-05-22",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-24:2026-05-23",
+      "date": "2026-05-23",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-24:2026-05-24",
+      "date": "2026-05-24",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-31",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-31:2026-05-28",
+      "date": "2026-05-28",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-31",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-31:2026-05-29",
+      "date": "2026-05-29",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-05-31",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-31:2026-05-30",
+      "date": "2026-05-30",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-05-31",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-05-31:2026-05-31",
+      "date": "2026-05-31",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-06-08",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-08:2026-06-05",
+      "date": "2026-06-05",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-06-08",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-08:2026-06-06",
+      "date": "2026-06-06",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-06-08",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-08:2026-06-07",
+      "date": "2026-06-07",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-06-08",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-08:2026-06-08",
+      "date": "2026-06-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-06-14",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-14:2026-06-11",
+      "date": "2026-06-11",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-06-14",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-14:2026-06-12",
+      "date": "2026-06-12",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-06-14",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-14:2026-06-13",
+      "date": "2026-06-13",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-06-14",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-14:2026-06-14",
+      "date": "2026-06-14",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-06-22",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-22:2026-06-19",
+      "date": "2026-06-19",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-06-22",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-22:2026-06-20",
+      "date": "2026-06-20",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-06-22",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-22:2026-06-21",
+      "date": "2026-06-21",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-06-22",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-22:2026-06-22",
+      "date": "2026-06-22",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-06-29",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-29:2026-06-26",
+      "date": "2026-06-26",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-06-29",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-29:2026-06-27",
+      "date": "2026-06-27",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-06-29",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-29:2026-06-28",
+      "date": "2026-06-28",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-06-29",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-06-29:2026-06-29",
+      "date": "2026-06-29",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-07-07",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-07:2026-07-04",
+      "date": "2026-07-04",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-07-07",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-07:2026-07-05",
+      "date": "2026-07-05",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-07-07",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-07:2026-07-06",
+      "date": "2026-07-06",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-07-07",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-07:2026-07-07",
+      "date": "2026-07-07",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-07-14",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-14:2026-07-11",
+      "date": "2026-07-11",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-07-14",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-14:2026-07-12",
+      "date": "2026-07-12",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-07-14",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-14:2026-07-13",
+      "date": "2026-07-13",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-07-14",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-14:2026-07-14",
+      "date": "2026-07-14",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-07-22",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-22:2026-07-19",
+      "date": "2026-07-19",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-07-22",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-22:2026-07-20",
+      "date": "2026-07-20",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-07-22",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-22:2026-07-21",
+      "date": "2026-07-21",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-07-22",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-22:2026-07-22",
+      "date": "2026-07-22",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-07-29",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-29:2026-07-26",
+      "date": "2026-07-26",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-07-29",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-29:2026-07-27",
+      "date": "2026-07-27",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-07-29",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-29:2026-07-28",
+      "date": "2026-07-28",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-07-29",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-07-29:2026-07-29",
+      "date": "2026-07-29",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-08-06",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-06:2026-08-03",
+      "date": "2026-08-03",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-08-06",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-06:2026-08-04",
+      "date": "2026-08-04",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-08-06",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-06:2026-08-05",
+      "date": "2026-08-05",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-08-06",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-06:2026-08-06",
+      "date": "2026-08-06",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-08-13",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-13:2026-08-10",
+      "date": "2026-08-10",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-08-13",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-13:2026-08-11",
+      "date": "2026-08-11",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-08-13",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-13:2026-08-12",
+      "date": "2026-08-12",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-08-13",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-13:2026-08-13",
+      "date": "2026-08-13",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-08-21",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-21:2026-08-18",
+      "date": "2026-08-18",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-08-21",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-21:2026-08-19",
+      "date": "2026-08-19",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-08-21",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-21:2026-08-20",
+      "date": "2026-08-20",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-08-21",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-21:2026-08-21",
+      "date": "2026-08-21",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-08-28",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-28:2026-08-25",
+      "date": "2026-08-25",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-08-28",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-28:2026-08-26",
+      "date": "2026-08-26",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-08-28",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-28:2026-08-27",
+      "date": "2026-08-27",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-08-28",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-08-28:2026-08-28",
+      "date": "2026-08-28",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-09-05",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-05:2026-09-02",
+      "date": "2026-09-02",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-09-05",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-05:2026-09-03",
+      "date": "2026-09-03",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-09-05",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-05:2026-09-04",
+      "date": "2026-09-04",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-09-05",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-05:2026-09-05",
+      "date": "2026-09-05",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-09-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-11:2026-09-08",
+      "date": "2026-09-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-09-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-11:2026-09-09",
+      "date": "2026-09-09",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-09-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-11:2026-09-10",
+      "date": "2026-09-10",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-09-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-11:2026-09-11",
+      "date": "2026-09-11",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-09-19",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-19:2026-09-16",
+      "date": "2026-09-16",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-09-19",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-19:2026-09-17",
+      "date": "2026-09-17",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-09-19",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-19:2026-09-18",
+      "date": "2026-09-18",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-09-19",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-19:2026-09-19",
+      "date": "2026-09-19",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-09-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-26:2026-09-23",
+      "date": "2026-09-23",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-09-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-26:2026-09-24",
+      "date": "2026-09-24",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-09-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-26:2026-09-25",
+      "date": "2026-09-25",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-09-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-09-26:2026-09-26",
+      "date": "2026-09-26",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-10-04",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-04:2026-10-01",
+      "date": "2026-10-01",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-10-04",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-04:2026-10-02",
+      "date": "2026-10-02",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-10-04",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-04:2026-10-03",
+      "date": "2026-10-03",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-10-04",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-04:2026-10-04",
+      "date": "2026-10-04",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-10-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-11:2026-10-08",
+      "date": "2026-10-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-10-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-11:2026-10-09",
+      "date": "2026-10-09",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-10-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-11:2026-10-10",
+      "date": "2026-10-10",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-10-11",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-11:2026-10-11",
+      "date": "2026-10-11",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-10-19",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-19:2026-10-16",
+      "date": "2026-10-16",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-10-19",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-19:2026-10-17",
+      "date": "2026-10-17",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-10-19",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-19:2026-10-18",
+      "date": "2026-10-18",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-10-19",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-19:2026-10-19",
+      "date": "2026-10-19",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-10-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-26:2026-10-23",
+      "date": "2026-10-23",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-10-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-26:2026-10-24",
+      "date": "2026-10-24",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-10-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-26:2026-10-25",
+      "date": "2026-10-25",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-10-26",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-10-26:2026-10-26",
+      "date": "2026-10-26",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-11-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-03:2026-10-31",
+      "date": "2026-10-31",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-11-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-03:2026-11-01",
+      "date": "2026-11-01",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-11-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-03:2026-11-02",
+      "date": "2026-11-02",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-11-03",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-03:2026-11-03",
+      "date": "2026-11-03",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-11-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-09:2026-11-06",
+      "date": "2026-11-06",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-11-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-09:2026-11-07",
+      "date": "2026-11-07",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-11-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-09:2026-11-08",
+      "date": "2026-11-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-11-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-09:2026-11-09",
+      "date": "2026-11-09",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-11-17",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-17:2026-11-14",
+      "date": "2026-11-14",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-11-17",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-17:2026-11-15",
+      "date": "2026-11-15",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-11-17",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-17:2026-11-16",
+      "date": "2026-11-16",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-11-17",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-17:2026-11-17",
+      "date": "2026-11-17",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-11-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-24:2026-11-21",
+      "date": "2026-11-21",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-11-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-24:2026-11-22",
+      "date": "2026-11-22",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-11-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-24:2026-11-23",
+      "date": "2026-11-23",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-11-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-11-24:2026-11-24",
+      "date": "2026-11-24",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-12-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-02:2026-11-29",
+      "date": "2026-11-29",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-12-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-02:2026-11-30",
+      "date": "2026-11-30",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-12-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-02:2026-12-01",
+      "date": "2026-12-01",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-12-02",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-02:2026-12-02",
+      "date": "2026-12-02",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-12-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-09:2026-12-06",
+      "date": "2026-12-06",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-12-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-09:2026-12-07",
+      "date": "2026-12-07",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-12-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-09:2026-12-08",
+      "date": "2026-12-08",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-12-09",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-09:2026-12-09",
+      "date": "2026-12-09",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-12-17",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-17:2026-12-14",
+      "date": "2026-12-14",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-12-17",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-17:2026-12-15",
+      "date": "2026-12-15",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-12-17",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-17:2026-12-16",
+      "date": "2026-12-16",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-12-17",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-17:2026-12-17",
+      "date": "2026-12-17",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-12-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-24:2026-12-21",
+      "date": "2026-12-21",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-12-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-24:2026-12-22",
+      "date": "2026-12-22",
+      "title": "Flower work",
+      "original": "",
+      "kind": "MAKE"
+    },
+    {
+      "anchor": "2026-12-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-24:2026-12-23",
+      "date": "2026-12-23",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    },
+    {
+      "anchor": "2026-12-24",
+      "scope": "national",
+      "url": "https://www.dmc.tv/article/5453",
+      "id": "flowers:2026-12-24:2026-12-24",
+      "date": "2026-12-24",
+      "title": "Flower work",
+      "original": "",
+      "kind": "SELL"
+    }
+  ],
+  "schemaVersion": 1,
+  "stage": "normalize",
+  "producerVersion": "1",
+  "inputHashes": {
+    "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+    "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+    "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+    "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+  }
+}

@@ -25,8 +25,10 @@ tasks:
     desc: Run a command inside the build container
     cmds: ['dev/container.sh run {{.CLI_ARGS}}']
   check:
-    desc: Run Java tests and Android lint
-    cmds: ['dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest :app:lintDebug']
+    desc: Run calendar pipeline checks, Java tests and Android lint
+    cmds:
+      - task: calendar:check
+      - 'dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest :app:lintDebug'
   build:
     desc: Build the Homeboard debug APK without installing
     cmds: ['dev/container.sh run ./gradlew --no-daemon :app:assembleDebug']
@@ -42,3 +44,13 @@ tasks:
   i18n:check:
     desc: Validate English/Thai Homeboard resource parity in the build container
     cmds: ['dev/container.sh run ./gradlew --no-daemon :app:checkTranslations']
+
+  calendar:normalize:
+    desc: Normalize reviewed calendar facts into provider JSON in the container
+    cmds: ['dev/container.sh run python3 /workspace/dev/calendar/normalize.py --input /workspace/dev/calendar/reviewed --output /workspace/dev/calendar/providers']
+  calendar:assemble:
+    desc: Validate provider JSON and atomically assemble the calendar asset
+    cmds: ['dev/container.sh run python3 /workspace/dev/calendar/assemble.py --input /workspace/dev/calendar/providers --output /workspace/launcher/app/src/main/assets/calendar-snapshot.json']
+  calendar:check:
+    desc: Test JSON normalization, replay and atomic snapshot publication in the container
+    cmds: ['dev/container.sh run python3 /workspace/dev/calendar/test_pipeline.py']

@@ -1,0 +1,248 @@
+{
+  "schema": 1,
+  "coverageStart": "2026-01-01",
+  "coverageEnd": "2026-12-31",
+  "reviewedOn": "2026-11-16",
+  "sources": {
+    "government": {
+      "name": "Cabinet Secretariat · government holidays 2026",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    "government-december": {
+      "name": "Ministry of Interior · government holiday calendar",
+      "url": "https://smoi.moi.go.th/calendar"
+    },
+    "ploughing": {
+      "name": "Government university · corrected Royal Ploughing date",
+      "url": "https://capr.tsu.ac.th/upload/files/1777604073_b167d9d87f9f076c.pdf"
+    },
+    "bangkok-special": {
+      "name": "BOT · Cabinet Bangkok-only government closure",
+      "url": "https://www.bot.or.th/content/dam/bot/documents/th/news-and-media/news/2026/news-20260609.pdf"
+    },
+    "wan-phra": {
+      "name": "DMC · Buddhist calendar 2026",
+      "url": "https://www.dmc.tv/article/5453"
+    },
+    "buddhist-government": {
+      "name": "Government-hosted Buddhist calendar 2026",
+      "url": "https://dopasakonnakhon.go.th/home/wp-content/uploads/2025/11/1111.pdf"
+    }
+  },
+  "government": [
+    {
+      "date": "2026-01-01",
+      "english": "New Year’s Day",
+      "thai": "วันขึ้นปีใหม่",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-01-02",
+      "english": "Special government holiday",
+      "thai": "วันหยุดราชการเพิ่มเติมเป็นกรณีพิเศษ",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-03-03",
+      "english": "Makha Bucha Day",
+      "thai": "วันมาฆบูชา",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-04-06",
+      "english": "Chakri Memorial Day",
+      "thai": "วันจักรี",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-04-13",
+      "english": "Songkran",
+      "thai": "วันสงกรานต์",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-04-14",
+      "english": "Songkran",
+      "thai": "วันสงกรานต์",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-04-15",
+      "english": "Songkran",
+      "thai": "วันสงกรานต์",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-05-04",
+      "english": "Coronation Day",
+      "thai": "วันฉัตรมงคล",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-05-13",
+      "english": "Royal Ploughing Ceremony",
+      "thai": "วันพืชมงคล",
+      "scope": "national",
+      "source": "ploughing"
+    },
+    {
+      "date": "2026-05-31",
+      "english": "Visakha Bucha Day",
+      "thai": "วันวิสาขบูชา",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-06-01",
+      "english": "Visakha Bucha substitute holiday",
+      "thai": "วันหยุดชดเชยวันวิสาขบูชา",
+      "scope": "national",
+      "source": "government",
+      "substituteFor": "2026-05-31"
+    },
+    {
+      "date": "2026-06-03",
+      "english": "Queen Suthida’s Birthday",
+      "thai": "วันเฉลิมพระชนมพรรษาสมเด็จพระนางเจ้าฯ พระบรมราชินี",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-07-28",
+      "english": "King Vajiralongkorn’s Birthday",
+      "thai": "วันเฉลิมพระชนมพรรษาพระบาทสมเด็จพระเจ้าอยู่หัว",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-07-29",
+      "english": "Asarnha Bucha Day",
+      "thai": "วันอาสาฬหบูชา",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-07-30",
+      "english": "Buddhist Lent Day",
+      "thai": "วันเข้าพรรษา",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-08-12",
+      "english": "Queen Mother’s Birthday / Mother’s Day",
+      "thai": "วันแม่แห่งชาติ",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-10-13",
+      "english": "King Bhumibol Memorial Day",
+      "thai": "วันนวมินทรมหาราช",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-10-16",
+      "english": "Special government holiday · Bangkok",
+      "thai": "วันหยุดราชการเป็นกรณีพิเศษเฉพาะกรุงเทพมหานคร",
+      "scope": "bangkok",
+      "source": "bangkok-special"
+    },
+    {
+      "date": "2026-10-23",
+      "english": "Chulalongkorn Memorial Day",
+      "thai": "วันปิยมหาราช",
+      "scope": "national",
+      "source": "government"
+    },
+    {
+      "date": "2026-12-05",
+      "english": "Father’s Day / National Day",
+      "thai": "วันพ่อแห่งชาติและวันชาติ",
+      "scope": "national",
+      "source": "government-december"
+    },
+    {
+      "date": "2026-12-07",
+      "english": "Father’s Day substitute holiday",
+      "thai": "วันหยุดชดเชยวันพ่อแห่งชาติ",
+      "scope": "national",
+      "source": "government-december",
+      "substituteFor": "2026-12-05"
+    },
+    {
+      "date": "2026-12-10",
+      "english": "Constitution Day",
+      "thai": "วันรัฐธรรมนูญ",
+      "scope": "national",
+      "source": "government-december"
+    },
+    {
+      "date": "2026-12-31",
+      "english": "New Year’s Eve",
+      "thai": "วันสิ้นปี",
+      "scope": "national",
+      "source": "government-december"
+    }
+  ],
+  "wanPhra": [
+    "2026-01-03",
+    "2026-01-11",
+    "2026-01-18",
+    "2026-01-26",
+    "2026-02-02",
+    "2026-02-10",
+    "2026-02-16",
+    "2026-02-24",
+    "2026-03-03",
+    "2026-03-11",
+    "2026-03-18",
+    "2026-03-26",
+    "2026-04-02",
+    "2026-04-10",
+    "2026-04-16",
+    "2026-04-24",
+    "2026-05-01",
+    "2026-05-09",
+    "2026-05-16",
+    "2026-05-24",
+    "2026-05-31",
+    "2026-06-08",
+    "2026-06-14",
+    "2026-06-22",
+    "2026-06-29",
+    "2026-07-07",
+    "2026-07-14",
+    "2026-07-22",
+    "2026-07-29",
+    "2026-08-06",
+    "2026-08-13",
+    "2026-08-21",
+    "2026-08-28",
+    "2026-09-05",
+    "2026-09-11",
+    "2026-09-19",
+    "2026-09-26",
+    "2026-10-04",
+    "2026-10-11",
+    "2026-10-19",
+    "2026-10-26",
+    "2026-11-03",
+    "2026-11-09",
+    "2026-11-17",
+    "2026-11-24",
+    "2026-12-02",
+    "2026-12-09",
+    "2026-12-17",
+    "2026-12-24"
+  ]
+}

@@ -15,5 +15,7 @@ RUN curl -fsSL "https://dl.google.com/android/repository/commandlinetools-linux-
 RUN yes | /opt/android-sdk/cmdline-tools/12.0/bin/sdkmanager --licenses >/dev/null
 RUN /opt/android-sdk/cmdline-tools/12.0/bin/sdkmanager 'platforms;android-34' 'build-tools;34.0.0' 'platform-tools' \
     && mkdir -p /cache/gradle && chmod 1777 /cache/gradle
+RUN apt-get update && apt-get install -y --no-install-recommends python3 \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /workspace/launcher
 CMD ["bash"]

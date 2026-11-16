@@ -1,0 +1,236 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 96,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 1,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 3,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 5,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 7,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 10,
+      "capture": "calendar-combined-default-30"
+    },
+    {
+      "at": 12,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 1000
+    },
+    {
+      "at": 15,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 17,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 19,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 22,
+      "capture": "calendar-days-7"
+    },
+    {
+      "at": 24,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 1000
+    },
+    {
+      "at": 27,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 29,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 31,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 34,
+      "capture": "calendar-days-30"
+    },
+    {
+      "at": 36,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 1000
+    },
+    {
+      "at": 39,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 41,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 43,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 46,
+      "capture": "calendar-custom-numeric-editor"
+    },
+    {
+      "at": 48,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 50,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 52,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 54,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 56,
+      "capture": "calendar-custom-cancel-keeps-30"
+    },
+    {
+      "at": 58,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 1000
+    },
+    {
+      "at": 61,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 63,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 66,
+      "capture": "calendar-monday-fixed-explanation"
+    },
+    {
+      "at": 68,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 70,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 72,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 74,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 76,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 79,
+      "capture": "calendar-all-dates-page-one"
+    },
+    {
+      "at": 81,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 84,
+      "capture": "calendar-date-details"
+    },
+    {
+      "at": 86,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 88,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 90,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 93,
+      "capture": "calendar-final-30"
+    }
+  ]
+}

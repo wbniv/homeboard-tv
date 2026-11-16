@@ -1,0 +1,52 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 14,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 0.5,
+      "capture": "launch-state"
+    },
+    {
+      "at": 2,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 3,
+      "capture": "root-menu"
+    },
+    {
+      "at": 5,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 6,
+      "capture": "widgets-menu"
+    },
+    {
+      "at": 8,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 9,
+      "capture": "add-menu"
+    },
+    {
+      "at": 11,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 12,
+      "capture": "calendar-added"
+    }
+  ]
+}

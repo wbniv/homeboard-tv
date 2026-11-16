@@ -1,0 +1,147 @@
+{
+  "id": "spain",
+  "country": "ES",
+  "timeZone": "Europe/Madrid",
+  "coverageStart": "2026-01-01",
+  "coverageEnd": "2026-12-31",
+  "status": "offline",
+  "reviewedOn": "2026-11-16",
+  "events": [
+    {
+      "id": "spain:2026-01-01:HOLIDAY:national",
+      "date": "2026-01-01",
+      "title": "New Year’s Day",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": "Cap d’Any"
+    },
+    {
+      "id": "spain:2026-01-06:HOLIDAY:national",
+      "date": "2026-01-06",
+      "title": "Epiphany",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": "Reis"
+    },
+    {
+      "id": "spain:2026-04-03:HOLIDAY:national",
+      "date": "2026-04-03",
+      "title": "Good Friday",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": "Divendres Sant"
+    },
+    {
+      "id": "spain:2026-04-06:HOLIDAY:catalunya",
+      "date": "2026-04-06",
+      "title": "Easter Monday",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "catalunya",
+      "original": "Pasqua Florida"
+    },
+    {
+      "id": "spain:2026-05-01:HOLIDAY:national",
+      "date": "2026-05-01",
+      "title": "Labour Day",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": "Festa del Treball"
+    },
+    {
+      "id": "spain:2026-06-24:HOLIDAY:catalunya",
+      "date": "2026-06-24",
+      "title": "Saint John’s Day",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "catalunya",
+      "original": "Sant Joan"
+    },
+    {
+      "id": "spain:2026-07-23:HOLIDAY:tivissa",
+      "date": "2026-07-23",
+      "title": "Tivissa local holiday",
+      "url": "https://analisi.transparenciacatalunya.cat/resource/b4eh-r8up.json",
+      "kind": "HOLIDAY",
+      "scope": "tivissa",
+      "original": "Festiu local de Tivissa"
+    },
+    {
+      "id": "spain:2026-07-24:HOLIDAY:tivissa",
+      "date": "2026-07-24",
+      "title": "Tivissa local holiday",
+      "url": "https://analisi.transparenciacatalunya.cat/resource/b4eh-r8up.json",
+      "kind": "HOLIDAY",
+      "scope": "tivissa",
+      "original": "Festiu local de Tivissa"
+    },
+    {
+      "id": "spain:2026-08-15:HOLIDAY:national",
+      "date": "2026-08-15",
+      "title": "Assumption",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": "L’Assumpció"
+    },
+    {
+      "id": "spain:2026-09-11:HOLIDAY:catalunya",
+      "date": "2026-09-11",
+      "title": "National Day of Catalunya",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "catalunya",
+      "original": "Diada Nacional de Catalunya"
+    },
+    {
+      "id": "spain:2026-10-12:HOLIDAY:national",
+      "date": "2026-10-12",
+      "title": "National Day of Spain",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": "Festa Nacional d’Espanya"
+    },
+    {
+      "id": "spain:2026-12-08:HOLIDAY:national",
+      "date": "2026-12-08",
+      "title": "Immaculate Conception",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": "La Immaculada"
+    },
+    {
+      "id": "spain:2026-12-25:HOLIDAY:national",
+      "date": "2026-12-25",
+      "title": "Christmas Day",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": "Nadal"
+    },
+    {
+      "id": "spain:2026-12-26:HOLIDAY:catalunya",
+      "date": "2026-12-26",
+      "title": "Saint Stephen’s Day",
+      "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+      "kind": "HOLIDAY",
+      "scope": "catalunya",
+      "original": "Sant Esteve"
+    }
+  ],
+  "notes": "No province-wide holiday asserted without a notice. Municipal coverage is Tivissa centre (INE 43150, pedania 000); 2027 local dates not verified.",
+  "schemaVersion": 1,
+  "stage": "normalize",
+  "producerVersion": "1",
+  "inputHashes": {
+    "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+    "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+    "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+    "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+  }
+}

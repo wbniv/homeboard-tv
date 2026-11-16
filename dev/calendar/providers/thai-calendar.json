@@ -1,0 +1,247 @@
+{
+  "id": "thai",
+  "country": "TH",
+  "timeZone": "Asia/Bangkok",
+  "status": "offline",
+  "reviewedOn": "2026-11-16",
+  "coverageStart": "2026-01-01",
+  "coverageEnd": "2026-12-31",
+  "events": [
+    {
+      "id": "thai:2026-01-01:national",
+      "date": "2026-01-01",
+      "title": "New Year’s Day",
+      "original": "วันขึ้นปีใหม่",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-01-02:national",
+      "date": "2026-01-02",
+      "title": "Special government holiday",
+      "original": "วันหยุดราชการเพิ่มเติมเป็นกรณีพิเศษ",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-03-03:national",
+      "date": "2026-03-03",
+      "title": "Makha Bucha Day",
+      "original": "วันมาฆบูชา",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-04-06:national",
+      "date": "2026-04-06",
+      "title": "Chakri Memorial Day",
+      "original": "วันจักรี",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-04-13:national",
+      "date": "2026-04-13",
+      "title": "Songkran",
+      "original": "วันสงกรานต์",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-04-14:national",
+      "date": "2026-04-14",
+      "title": "Songkran",
+      "original": "วันสงกรานต์",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-04-15:national",
+      "date": "2026-04-15",
+      "title": "Songkran",
+      "original": "วันสงกรานต์",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-05-04:national",
+      "date": "2026-05-04",
+      "title": "Coronation Day",
+      "original": "วันฉัตรมงคล",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-05-13:national",
+      "date": "2026-05-13",
+      "title": "Royal Ploughing Ceremony",
+      "original": "วันพืชมงคล",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://capr.tsu.ac.th/upload/files/1777604073_b167d9d87f9f076c.pdf"
+    },
+    {
+      "id": "thai:2026-05-31:national",
+      "date": "2026-05-31",
+      "title": "Visakha Bucha Day",
+      "original": "วันวิสาขบูชา",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-06-01:national",
+      "date": "2026-06-01",
+      "title": "Visakha Bucha substitute holiday",
+      "original": "วันหยุดชดเชยวันวิสาขบูชา",
+      "scope": "national",
+      "kind": "OBSERVED",
+      "url": "https://www.soc.go.th/?p=33672",
+      "anchor": "2026-05-31"
+    },
+    {
+      "id": "thai:2026-06-03:national",
+      "date": "2026-06-03",
+      "title": "Queen Suthida’s Birthday",
+      "original": "วันเฉลิมพระชนมพรรษาสมเด็จพระนางเจ้าฯ พระบรมราชินี",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-07-28:national",
+      "date": "2026-07-28",
+      "title": "King Vajiralongkorn’s Birthday",
+      "original": "วันเฉลิมพระชนมพรรษาพระบาทสมเด็จพระเจ้าอยู่หัว",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-07-29:national",
+      "date": "2026-07-29",
+      "title": "Asarnha Bucha Day",
+      "original": "วันอาสาฬหบูชา",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-07-30:national",
+      "date": "2026-07-30",
+      "title": "Buddhist Lent Day",
+      "original": "วันเข้าพรรษา",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-08-12:national",
+      "date": "2026-08-12",
+      "title": "Queen Mother’s Birthday / Mother’s Day",
+      "original": "วันแม่แห่งชาติ",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-09-28:bangkok",
+      "date": "2026-09-28",
+      "title": "Flood closure · online/essential services may continue",
+      "original": "วันหยุดราชการพิเศษเนื่องจากน้ำท่วม",
+      "scope": "bangkok",
+      "kind": "HOLIDAY",
+      "url": "https://www.thaigov.go.th/th/news/169370"
+    },
+    {
+      "id": "thai:2026-09-29:bangkok",
+      "date": "2026-09-29",
+      "title": "Flood closure · online/essential services may continue",
+      "original": "วันหยุดราชการพิเศษเนื่องจากน้ำท่วม",
+      "scope": "bangkok",
+      "kind": "HOLIDAY",
+      "url": "https://www.thaigov.go.th/th/news/169370"
+    },
+    {
+      "id": "thai:2026-10-13:national",
+      "date": "2026-10-13",
+      "title": "King Bhumibol Memorial Day",
+      "original": "วันนวมินทรมหาราช",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-10-16:bangkok",
+      "date": "2026-10-16",
+      "title": "Special government holiday · Bangkok",
+      "original": "วันหยุดราชการเป็นกรณีพิเศษเฉพาะกรุงเทพมหานคร",
+      "scope": "bangkok",
+      "kind": "HOLIDAY",
+      "url": "https://www.bot.or.th/content/dam/bot/documents/th/news-and-media/news/2026/news-20260609.pdf"
+    },
+    {
+      "id": "thai:2026-10-23:national",
+      "date": "2026-10-23",
+      "title": "Chulalongkorn Memorial Day",
+      "original": "วันปิยมหาราช",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://www.soc.go.th/?p=33672"
+    },
+    {
+      "id": "thai:2026-12-05:national",
+      "date": "2026-12-05",
+      "title": "Father’s Day / National Day",
+      "original": "วันพ่อแห่งชาติและวันชาติ",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://smoi.moi.go.th/calendar"
+    },
+    {
+      "id": "thai:2026-12-07:national",
+      "date": "2026-12-07",
+      "title": "Father’s Day substitute holiday",
+      "original": "วันหยุดชดเชยวันพ่อแห่งชาติ",
+      "scope": "national",
+      "kind": "OBSERVED",
+      "url": "https://smoi.moi.go.th/calendar",
+      "anchor": "2026-12-05"
+    },
+    {
+      "id": "thai:2026-12-10:national",
+      "date": "2026-12-10",
+      "title": "Constitution Day",
+      "original": "วันรัฐธรรมนูญ",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://smoi.moi.go.th/calendar"
+    },
+    {
+      "id": "thai:2026-12-31:national",
+      "date": "2026-12-31",
+      "title": "New Year’s Eve",
+      "original": "วันสิ้นปี",
+      "scope": "national",
+      "kind": "HOLIDAY",
+      "url": "https://smoi.moi.go.th/calendar"
+    }
+  ],
+  "schemaVersion": 1,
+  "stage": "normalize",
+  "producerVersion": "1",
+  "inputHashes": {
+    "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+    "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+    "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+    "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+  }
+}

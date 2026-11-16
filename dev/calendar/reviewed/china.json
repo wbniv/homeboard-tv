@@ -1,0 +1,210 @@
+{
+  "id": "china",
+  "country": "CN",
+  "timeZone": "Asia/Shanghai",
+  "coverageStart": "2026-01-01",
+  "coverageEnd": "2027-12-31",
+  "status": "offline",
+  "reviewedOn": "2026-11-16",
+  "events": [
+    {
+      "id": "china:2026-01-04:WORKING:national",
+      "date": "2026-01-04",
+      "title": "Make-up working day",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2026-02-14:WORKING:national",
+      "date": "2026-02-14",
+      "title": "Make-up working day",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2026-02-28:WORKING:national",
+      "date": "2026-02-28",
+      "title": "Make-up working day",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2026-05-09:WORKING:national",
+      "date": "2026-05-09",
+      "title": "Make-up working day",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2026-09-20:WORKING:national",
+      "date": "2026-09-20",
+      "title": "Make-up working day",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2026-10-10:WORKING:national",
+      "date": "2026-10-10",
+      "title": "Make-up working day",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2027-01-31:WORKING:national",
+      "date": "2027-01-31",
+      "title": "Make-up working day",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2027-02-14:WORKING:national",
+      "date": "2027-02-14",
+      "title": "Make-up working day",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2027-05-08:WORKING:national",
+      "date": "2027-05-08",
+      "title": "Make-up working day",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2027-09-26:WORKING:national",
+      "date": "2027-09-26",
+      "title": "Make-up working day",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    },
+    {
+      "id": "china:2027-10-09:WORKING:national",
+      "date": "2027-10-09",
+      "title": "Make-up working day",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+      "kind": "WORKING",
+      "scope": "national",
+      "original": "调休上班"
+    }
+  ],
+  "periods": [
+    {
+      "start": "2026-01-01",
+      "end": "2026-01-03",
+      "title": "New Year holiday",
+      "original": "元旦",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html"
+    },
+    {
+      "start": "2026-02-15",
+      "end": "2026-02-23",
+      "title": "Spring Festival holiday",
+      "original": "春节",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html"
+    },
+    {
+      "start": "2026-04-04",
+      "end": "2026-04-06",
+      "title": "Qingming holiday",
+      "original": "清明节",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html"
+    },
+    {
+      "start": "2026-05-01",
+      "end": "2026-05-05",
+      "title": "Labour Day holiday",
+      "original": "劳动节",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html"
+    },
+    {
+      "start": "2026-06-19",
+      "end": "2026-06-21",
+      "title": "Dragon Boat holiday",
+      "original": "端午节",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html"
+    },
+    {
+      "start": "2026-09-25",
+      "end": "2026-09-27",
+      "title": "Mid-Autumn holiday",
+      "original": "中秋节",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html"
+    },
+    {
+      "start": "2026-10-01",
+      "end": "2026-10-07",
+      "title": "National Day holiday",
+      "original": "国庆节",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html"
+    },
+    {
+      "start": "2027-01-01",
+      "end": "2027-01-03",
+      "title": "New Year holiday",
+      "original": "元旦",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml"
+    },
+    {
+      "start": "2027-02-05",
+      "end": "2027-02-13",
+      "title": "Spring Festival holiday",
+      "original": "春节",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml"
+    },
+    {
+      "start": "2027-04-03",
+      "end": "2027-04-05",
+      "title": "Qingming holiday",
+      "original": "清明节",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml"
+    },
+    {
+      "start": "2027-05-01",
+      "end": "2027-05-05",
+      "title": "Labour Day holiday",
+      "original": "劳动节",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml"
+    },
+    {
+      "start": "2027-06-09",
+      "end": "2027-06-09",
+      "title": "Dragon Boat holiday",
+      "original": "端午节",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml"
+    },
+    {
+      "start": "2027-09-15",
+      "end": "2027-09-15",
+      "title": "Mid-Autumn holiday",
+      "original": "中秋节",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml"
+    },
+    {
+      "start": "2027-10-01",
+      "end": "2027-10-07",
+      "title": "National Day holiday",
+      "original": "国庆节",
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml"
+    }
+  ]
+}

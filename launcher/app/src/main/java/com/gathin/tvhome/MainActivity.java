@@ -156,6 +156,9 @@ public class MainActivity extends Activity {
     private String undoGroupLabel;
     private boolean applyingUndo;
     private GridSelector gridSelector;
+    private CalendarSnapshot calendarSnapshot;
+    private boolean calendarDayEditor;
+    private final Map<String, CalendarWidgetView> calendarWidgets = new LinkedHashMap<>();
     private final Map<String, AirQualityCard> airWidgets = new LinkedHashMap<>();
     private final List<Consumer<Location>> pendingLocationRequests = new ArrayList<>();
     private final Set<AirLocationLookup> activeLocationLookups = new LinkedHashSet<>();
@@ -242,6 +245,12 @@ public class MainActivity extends Activity {
         }
         if (encoded == null) saveWithoutUndo();
         lastSavedLayout = layout.encode();
+        try (java.io.InputStream data = getAssets().open("calendar-snapshot.json")) {
+            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+            byte[] buffer = new byte[4096]; int count;
+            while ((count = data.read(buffer)) != -1) out.write(buffer, 0, count);
+            calendarSnapshot = CalendarSnapshot.parse(out.toString("UTF-8"));
+        } catch (Exception failure) { calendarSnapshot = CalendarSnapshot.unavailable(); }
         Config config = Config.load(this);
         configReducedMotion = config.reducedMotion;
         background = paletteColor();
@@ -345,6 +354,7 @@ public class MainActivity extends Activity {
         }
         saveNavigationState();
         for (AirQualityCard widget : airWidgets.values()) widget.stop();
+        for (CalendarWidgetView widget : calendarWidgets.values()) widget.stop();
         super.onPause();
     }
     @Override protected void onDestroy() {
@@ -739,6 +749,8 @@ public class MainActivity extends Activity {
         appFocusHighlight = null; appFocusX = null; appFocusY = null; appFocusHighlightShown = false;
         if (old != null) { old.animate().cancel(); root.removeView(old); }
         for (AirQualityCard widget : airWidgets.values()) widget.unbind();
+        for (CalendarWidgetView widget : calendarWidgets.values()) widget.stop();
+        calendarWidgets.clear();
         tiles.clear(); visibleCells.clear();
         surface = new FrameLayout(this);
         uiBackgroundOpacity = layout.uiOpacityPercent;
@@ -778,6 +790,9 @@ public class MainActivity extends Activity {
         Set<String> onPage = new LinkedHashSet<>();
         for (HomeLayout.Cell c : homeCells(dashboardItems()))
             if (isAirWidgetKey(c.key) && c.page == homePage) onPage.add(c.key);
+        for (CalendarWidgetView widget : calendarWidgets.values()) {
+            if (visible) widget.start(); else widget.stop();
+        }
         for (Map.Entry<String, AirQualityCard> entry : airWidgets.entrySet()) {
             if (visible && onPage.contains(entry.getKey())) entry.getValue().start();
             else entry.getValue().stop();
@@ -921,7 +936,7 @@ public class MainActivity extends Activity {
         boolean appTile = key.startsWith("app:");
         boolean denseApp = appTile && !layout.appUsesBanner(!allApps);
         view.setFocusable(true);
-        view.setBackground(appTile ? null : tileBackground());
+        view.setBackground(appTile || HomeLayout.isCalendarWidget(key) ? null : tileBackground());
         view.setPadding(dp(appTile ? 2 : 16), dp(appTile ? 2 : 12),
                 dp(appTile ? 2 : 16), dp(appTile ? 2 : 12));
         view.setOnFocusChangeListener((v, hasFocus) -> {
@@ -1045,7 +1060,8 @@ public class MainActivity extends Activity {
             if (cell.page != homePage) continue;
             visibleCells.add(cell);
             if (cell.key.startsWith("app:")) hasAppTile = true;
-            View tile = isAirWidgetKey(cell.key) ? airTile(cell.key, cell.width, cell.height) : appTile(cell.key, true);
+            View tile = isAirWidgetKey(cell.key) ? airTile(cell.key, cell.width, cell.height)
+                    : HomeLayout.isCalendarWidget(cell.key) ? calendarTile(cell.key) : appTile(cell.key, true);
             configureTile(tile, cell.key);
             if (isAirWidgetKey(cell.key)) airFor(cell.key).bind(tile);
             grid.addTile(tile, cell.column, cell.row, cell.width, cell.height);
@@ -1061,6 +1077,70 @@ public class MainActivity extends Activity {
         }
         FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(-1, dp(40), Gravity.BOTTOM);
         fp.setMargins(dp(resizing ? 44 : 50), 0, dp(resizing ? 44 : 50), dp(10)); surface.addView(footer, fp);
+    }
+    private CalendarWidgetController calendarController(String key) {
+        return new CalendarWidgetController(this, calendarSnapshot, layout.calendarSettings.get(key), this::menu,
+                this::calendarDetails, this::calendarDayEditor, () -> { save(getString(R.string.hb_cal_updated)); render(0); },
+                () -> calendarWidgets.get(key));
+    }
+    private void configureCalendar(String key) { calendarController(key).configure(); }
+    private View calendarTile(String key) {
+        CalendarWidgetView tile = new CalendarWidgetView(this, calendarSnapshot, layout.calendarSettings.get(key), paletteColors);
+        tile.setFillOpacity(uiBackgroundOpacity); calendarWidgets.put(key, tile); return tile;
+    }
+    private void calendarDayEditor(int current, java.util.function.Consumer<Integer> saveValue) {
+        if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
+        dismissMenu(); cancelOk(); activeMenu = null; menuGeneration++; calendarDayEditor = true;
+        surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        overlay = new FrameLayout(this); overlay.setBackgroundColor(paletteColors.scrim);
+        LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL);
+        panel.setPadding(dp(24), dp(20), dp(24), dp(20)); panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 1));
+        panel.addView(text(getString(R.string.hb_cal_day_count), 23));
+        android.widget.EditText input = new android.widget.EditText(this);
+        input.setTextColor(paletteColors.text); input.setHintTextColor(paletteColors.muted); input.setSingleLine(true);
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER); input.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_DONE);
+        input.setText(String.valueOf(current)); input.selectAll();
+        input.setHint(getString(R.string.hb_cal_custom_hint)); input.setContentDescription(getString(R.string.hb_cal_custom_hint));
+        panel.addView(input, new LinearLayout.LayoutParams(-1, dp(64)));
+        Runnable apply = () -> {
+            int value;
+            try { value = CalendarWidgetSettings.days(input.getText().toString()); }
+            catch (IllegalArgumentException invalid) { input.setError(getString(R.string.hb_cal_invalid_days)); input.requestFocus(); return; }
+            ((android.view.inputmethod.InputMethodManager) getSystemService(INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(input.getWindowToken(), 0);
+            dismissMenu(); activeMenu = null; menuStack.clear(); saveValue.accept(value);
+        };
+        input.setOnEditorActionListener((v, actionId, event) -> { if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) { apply.run(); return true; } return false; });
+        LinearLayout buttons = new LinearLayout(this);
+        buttons.addView(infoButton(getString(R.string.hb_cal_save), apply), new LinearLayout.LayoutParams(0, dp(52), 1));
+        buttons.addView(infoButton(getString(R.string.hb_cal_cancel), this::backMenu), new LinearLayout.LayoutParams(0, dp(52), 1));
+        panel.addView(buttons);
+        overlay.addView(panel, new FrameLayout.LayoutParams(Math.min(dp(650), getResources().getDisplayMetrics().widthPixels - dp(48)), -2, Gravity.CENTER));
+        root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); input.requestFocus();
+    }
+    private void calendarDetails(String title, String detail) {
+        if (invokingMenuAction && activeMenu != null) menuStack.add(activeMenu);
+        dismissMenu(); cancelOk(); activeMenu = null; menuGeneration++;
+        surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        hideAppFocusHighlight();
+        overlay = new FrameLayout(this); overlay.setBackgroundColor(paletteColors.scrim);
+        LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL);
+        panel.setPadding(dp(24), dp(18), dp(24), dp(18));
+        panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 1));
+        TextView heading = text(title, 23); heading.setMaxLines(2);
+        heading.setEllipsize(android.text.TextUtils.TruncateAt.END);
+        panel.addView(heading, new LinearLayout.LayoutParams(-1, -2));
+        android.widget.ScrollView scroll = new android.widget.ScrollView(this); scroll.setFillViewport(true);
+        TextView body = text(detail, 18); body.setPadding(0, dp(12), 0, dp(12));
+        scroll.addView(body, new android.widget.ScrollView.LayoutParams(-1, -2));
+        panel.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1));
+        aboutBackButton = infoButton("Back", this::backMenu);
+        panel.addView(aboutBackButton, new LinearLayout.LayoutParams(-1, dp(52)));
+        int width = Math.min(dp(840), getResources().getDisplayMetrics().widthPixels - dp(64));
+        int height = Math.min(dp(510), getResources().getDisplayMetrics().heightPixels - dp(48));
+        overlay.addView(panel, new FrameLayout.LayoutParams(width, height, Gravity.CENTER));
+        root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); aboutBackButton.requestFocus();
     }
     private View airTile(String key, int widthCells, int heightCells) {
         LinearLayout tile = new LinearLayout(this); tile.setOrientation(LinearLayout.VERTICAL);
@@ -1335,6 +1415,10 @@ public class MainActivity extends Activity {
             consumeOkUp = false; return true;
         }
         if (overlay != null) {
+            if (calendarDayEditor) {
+                if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) { if (event.getAction() == KeyEvent.ACTION_UP) backMenu(); return true; }
+                return super.dispatchKeyEvent(event);
+            }
             if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
                 if (event.getAction() == KeyEvent.ACTION_UP) backMenu();
                 return true;
@@ -1545,6 +1629,7 @@ public class MainActivity extends Activity {
         if (SETTINGS.equals(key)) { homeSettings(); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
+        if (HomeLayout.isCalendarWidget(key)) { calendarController(key).actions(); return; }
         if (isAirWidgetKey(key)) { airFor(key).showActions(); return; }
         App app = apps.get(key);
         if (app == null) { if (!key.isEmpty()) toast(getString(R.string.hb_app_unavailable_hold_ok_to_remove_this_tile)); return; }
@@ -1555,6 +1640,14 @@ public class MainActivity extends Activity {
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (key.isEmpty() || SETTINGS.equals(key)) { homeSettings(); return; }
+        if (HomeLayout.isCalendarWidget(key)) {
+            menu(getString(R.string.hb_cal_calendar), "", new String[]{getString(R.string.hb_cal_configure), getString(R.string.hb_move), getString(R.string.hb_resize), getString(R.string.hb_delete_widget)}, choice -> {
+                if (choice == 0) configureCalendar(key);
+                else if (choice == 1) startMove(key);
+                else if (choice == 2) startResize(key);
+                else deleteTile(key);
+            }); return;
+        }
         if (isAirWidgetKey(key)) {
             menu(getString(R.string.hb_air_quality_widget), getString(R.string.hb_choose_an_action_for_this_widget), new String[]{getString(R.string.hb_configure_location_and_source), getString(R.string.hb_move), getString(R.string.hb_resize), getString(R.string.hb_more)}, choice -> {
                 if (choice == 0) airFor(key).configureWidget();
@@ -1595,7 +1688,7 @@ public class MainActivity extends Activity {
     private void deleteTile(String key) {
         boolean dashboard = !allApps;
         App app = apps.get(key);
-        String label = isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : app == null ? "app shortcut" : app.label;
+        String label = HomeLayout.isCalendarWidget(key) ? "calendar widget" : isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : app == null ? "app shortcut" : app.label;
         layout.delete(key, dashboard);
         save(dashboard ? getString(R.string.hb_hint_removed) + label + getString(R.string.hb_hint_from_home) : getString(R.string.hb_hint_hid) + label + getString(R.string.hb_hint_from_all_apps));
         if (dashboard && !layout.widgets.isEmpty()) {
@@ -1665,21 +1758,22 @@ public class MainActivity extends Activity {
         menu(getString(R.string.hb_widgets_restore), getString(R.string.hb_add_a_widget_or_restore_an_app_shortcut),
                 new String[]{getString(R.string.hb_add_widget), getString(R.string.hb_restore_hidden_app)}, choice -> {
                     if (choice == 0) menu(getString(R.string.hb_add_to_home), getString(R.string.hb_choose_a_tile_to_add),
-                            new String[]{getString(R.string.hb_air_quality_widget), getString(R.string.hb_favorite_an_app_from_all_apps)}, add -> {
-                                if (add == 0) {
-                                    String key = newAirWidgetKey(); layout.addPanel(key); save(getString(R.string.hb_added_air_quality_panel)); allApps = false; focused = key;
-                                    homePage = homePageOf(focused, layout.widgets); render(0); }
-                                else { allApps = false; showApps(); }
+                            new String[]{getString(R.string.hb_air_quality_widget), getString(R.string.hb_cal_calendar), getString(R.string.hb_favorite_an_app_from_all_apps)}, add -> {
+                                if (add == 2) { allApps = false; showApps(); return; }
+                                String key = add == 0 ? newWidgetKey(HomeLayout.AIR) : HomeLayout.CALENDAR;
+                                if (!layout.widgets.contains(key)) { layout.addPanel(key); save(getString(R.string.hb_cal_added)); }
+                                allApps = false; focused = key;
+                                homePage = homePageOf(focused, layout.widgets); render(0);
                             });
                     else restoreHiddenApps();
                 });
     }
 
-    private String newAirWidgetKey() {
-        if (!layout.widgets.contains(HomeLayout.AIR)) return HomeLayout.AIR;
+    private String newWidgetKey(String base) {
+        if (!layout.widgets.contains(base)) return base;
         int suffix = 2;
-        while (layout.widgets.contains(HomeLayout.AIR + ":" + suffix)) suffix++;
-        return HomeLayout.AIR + ":" + suffix;
+        while (layout.widgets.contains(base + ":" + suffix)) suffix++;
+        return base + ":" + suffix;
     }
 
     private void appearanceSettings() {
@@ -1830,9 +1924,10 @@ public class MainActivity extends Activity {
 
     private void changeResize(int key) {
         int columns = homeGridColumns(), rows = homeGridRows();
-        if (key == KeyEvent.KEYCODE_DPAD_UP) resizeHeight = Math.max(1, resizeHeight - 1);
+        int minimum = HomeLayout.isCalendarWidget(resizingKey) ? 2 : 1;
+        if (key == KeyEvent.KEYCODE_DPAD_UP) resizeHeight = Math.max(minimum, resizeHeight - 1);
         else if (key == KeyEvent.KEYCODE_DPAD_DOWN) resizeHeight = Math.min(rows, resizeHeight + 1);
-        else if (key == KeyEvent.KEYCODE_DPAD_LEFT) resizeWidth = Math.max(1, resizeWidth - 1);
+        else if (key == KeyEvent.KEYCODE_DPAD_LEFT) resizeWidth = Math.max(minimum, resizeWidth - 1);
         else if (key == KeyEvent.KEYCODE_DPAD_RIGHT) resizeWidth = Math.min(columns, resizeWidth + 1);
         layout.setPanelSpan(resizingKey, resizeWidth, resizeHeight);
         homePage = homePageOf(resizingKey, layout.widgets);
@@ -1918,7 +2013,6 @@ public class MainActivity extends Activity {
         overlay.removeAllViews();
         GridSelector selector = gridSelector;
         boolean columns = selector.columns;
-        String unit = columns ? "columns" : "rows";
         int fit = columns ? homeGridFitColumns() : homeGridFitRows();
         LinearLayout panel = new LinearLayout(this);
         panel.setOrientation(LinearLayout.VERTICAL); panel.setGravity(Gravity.CENTER);
@@ -1927,31 +2021,46 @@ public class MainActivity extends Activity {
         TextView title = text(columns ? getString(R.string.hb_grid_columns_141) : getString(R.string.hb_grid_rows_142), 26);
         title.setTypeface(null, Typeface.BOLD); title.setGravity(Gravity.CENTER);
         panel.addView(title, new LinearLayout.LayoutParams(-1, dp(42)));
-        TextView subtitle = text(getString(R.string.hb_hint_bounded_to_this_tv_s_fit) + fit + " " + unit, 16);
+        TextView subtitle = text(getString(columns ? R.string.hb_grid_preview_fit_columns : R.string.hb_grid_preview_fit_rows, fit), 16);
         subtitle.setTextColor(paletteColors.muted); subtitle.setGravity(Gravity.CENTER);
         panel.addView(subtitle, new LinearLayout.LayoutParams(-1, dp(34)));
 
         LinearLayout choices = new LinearLayout(this);
         choices.setOrientation(LinearLayout.HORIZONTAL); choices.setGravity(Gravity.CENTER);
-        String previous = selector.index > 0 ? selector.labels[selector.index - 1] : getString(R.string.hb_end);
-        String next = selector.index + 1 < selector.labels.length ? selector.labels[selector.index + 1] : getString(R.string.hb_end);
-        TextView before = text("‹   " + previous, 17); before.setTextColor(paletteColors.muted); before.setGravity(Gravity.CENTER);
-        choices.addView(before, new LinearLayout.LayoutParams(0, dp(88), 1f));
-        TextView current = text(selector.labels[selector.index], 27); current.setTypeface(null, Typeface.BOLD);
-        current.setGravity(Gravity.CENTER); current.setTextColor(paletteColors.text);
-        current.setBackground(shape(paletteColors.focus, paletteColors.text, 2));
-        choices.addView(current, new LinearLayout.LayoutParams(0, dp(88), 1.3f));
-        TextView after = text(next + "   ›", 17); after.setTextColor(paletteColors.muted); after.setGravity(Gravity.CENTER);
-        choices.addView(after, new LinearLayout.LayoutParams(0, dp(88), 1f));
-        LinearLayout.LayoutParams choicesLp = new LinearLayout.LayoutParams(-1, dp(100));
-        choicesLp.topMargin = dp(18); panel.addView(choices, choicesLp);
+        for (int offset = -1; offset <= 1; offset++) {
+            int index = selector.index + offset;
+            LinearLayout choice = new LinearLayout(this); choice.setOrientation(LinearLayout.VERTICAL);
+            choice.setGravity(Gravity.CENTER);
+            boolean selected = offset == 0;
+            if (selected) choice.setBackground(shape(paletteColors.surface, paletteColors.text, 2));
+            if (index >= 0 && index < selector.values.length) {
+                int value = selector.values[index] == 0 ? fit : selector.values[index];
+                int previewColumns = columns ? value : homeGridColumns();
+                int previewRows = columns ? homeGridRows() : value;
+                GridSizePreview preview = new GridSizePreview(this, previewColumns, previewRows, columns, selected, paletteColors);
+                choice.addView(preview, new LinearLayout.LayoutParams(-1, 0, 1f));
+                String label = selector.values[index] == 0 ? getString(R.string.hb_grid_preview_auto, previewColumns, previewRows) : selector.labels[index];
+                TextView number = text((offset < 0 ? "‹  " : "") + label + (offset > 0 ? "  ›" : ""), selected ? 22 : 17);
+                number.setGravity(Gravity.CENTER); number.setTextColor(selected ? paletteColors.text : paletteColors.muted);
+                number.setSingleLine(true); number.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                choice.addView(number, new LinearLayout.LayoutParams(-1, dp(44)));
+                choice.setContentDescription(getString(R.string.hb_grid_preview_dimensions, previewColumns, previewRows));
+            } else {
+                TextView end = text(getString(R.string.hb_end), 17); end.setGravity(Gravity.CENTER); end.setTextColor(paletteColors.muted);
+                choice.addView(end, new LinearLayout.LayoutParams(-1, -1));
+            }
+            LinearLayout.LayoutParams choiceLp = new LinearLayout.LayoutParams(0, -1, selected ? 1.3f : 1f);
+            choiceLp.setMargins(dp(4), 0, dp(4), 0); choices.addView(choice, choiceLp);
+        }
+        LinearLayout.LayoutParams choicesLp = new LinearLayout.LayoutParams(-1, 0, 1f);
+        choicesLp.topMargin = dp(12); panel.addView(choices, choicesLp);
 
         TextView hint = text(getString(R.string.hb_hint_change_ok_apply_back_cancel), 15);
         hint.setTextColor(paletteColors.muted); hint.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams hintLp = new LinearLayout.LayoutParams(-1, dp(34));
         hintLp.topMargin = dp(14); panel.addView(hint, hintLp);
         int width = Math.min(dp(780), getResources().getDisplayMetrics().widthPixels - dp(80));
-        int height = dp(300);
+        int height = Math.min(dp(420), getResources().getDisplayMetrics().heightPixels - dp(48));
         overlay.addView(panel, new FrameLayout.LayoutParams(width, height, Gravity.CENTER));
         overlay.requestFocus();
     }
@@ -2575,6 +2684,7 @@ public class MainActivity extends Activity {
         }
     }
     private void dismissMenu() {
+        calendarDayEditor = false;
         backgroundInfo = false;
         backgroundStatusText = null;
         if (overlay == null) return;
@@ -2625,6 +2735,7 @@ public class MainActivity extends Activity {
         uiBackgroundOpacity = WallpaperSettings.percent(percent);
         uiBackdrop.setBackgroundColor(UiBackgroundDrawable.colorWithOpacity(background, uiBackgroundOpacity));
         for (AirQualityCard widget : airWidgets.values()) widget.setBackgroundOpacity(uiBackgroundOpacity);
+        for (CalendarWidgetView widget : calendarWidgets.values()) widget.setFillOpacity(uiBackgroundOpacity);
         UiBackgroundDrawable.apply(surface, uiBackgroundOpacity);
     }
     private void sendWallpaperFocus(String key) {

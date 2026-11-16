@@ -228,3 +228,33 @@ focus shape and no leftover circular halo on banners. Exercise focus leaving
 for top controls and menus, rapid app-to-app navigation, saved focus on resume,
 and returning from a launched app. A completed coordinator job establishes job
 execution; inspect its captures before marking visual acceptance complete.
+
+## Visual grid-setting previews · 16 November 2026
+
+Grid columns and Grid rows selectors show three miniature dashboard grids for
+the previous, selected and next value. Each preview uses the candidate count on
+the axis being edited and the current effective count on the other axis. The
+selected value is framed; Auto previews the TV-fitted count and states the
+resolved dimensions. Column previews emphasize vertical groups, while row
+previews emphasize horizontal groups. Numbers remain visible and spoken so
+color is not the only cue.
+
+![Representative row and column selectors](2026-11-16-home-favorite-app-sizes/grid-settings.svg)
+
+```mermaid
+flowchart LR
+    A[Home behavior] --> B[Grid columns or Grid rows]
+    B --> C[Three miniature grids with actual candidate dimensions]
+    C -->|Left or right| D[Preview adjacent value without saving]
+    D --> C
+    C -->|OK| E[Apply grid count and retain Undo]
+    C -->|Back| F[Cancel and retain saved layout]
+```
+
+This changes the selector presentation and keeps the existing supported values,
+TV fit bounds, remote navigation and Apply/Cancel behavior.
+
+The visual selectors were implemented and inspected on Cast1 in **0.1.21**.
+The column preview changed from Auto 12×3 to four columns; the row selector
+showed three rows and the adjacent two-row schematic. Back preserved the saved
+values. See the [combined validation record](../testing/2026-11-16-calendar-and-grid.md).

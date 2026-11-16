@@ -10,8 +10,11 @@ server. PM2.5 is labeled as a 24-hour station average. Choose from five Bangkok
 stations using the remote; Lumpini Park is the default. See the
 [air-quality implementation plan](docs/plans/2026-11-15-air-quality.md).
 
-The broader dashboard engine remains undecided. Calendar, traffic and other
-integrations are future work. Device validation status is recorded in the plan.
+The [Calendar widget](docs/how-to/calendar.md) combines upcoming holiday and
+flower/Buddhist dates, with a shared 7/30/custom holiday lookahead and independent
+Monday-week ranges. Its initial provider snapshot is reviewed offline data; live
+emergency updates and the validated lunar calculator remain future work. The
+broader dashboard engine and traffic integrations remain undecided.
 
 ## Home interaction
 
@@ -38,7 +41,8 @@ adds **Home settings → Appearance → Icons → Home favorites → Small icons
 Home and All Apps each use a compact icon grid or a separate banner grid with
 wider cards and taller rows. Their artwork settings are independent. Auto fits
 the available space while retaining readable labels and focus clearance; Undo
-restores Home's previous style and placement.
+restores Home's previous style and placement. Grid rows/columns selectors now
+preview actual candidate grids, with vertical column or horizontal row emphasis.
 
 The combined **0.1.19** deployment includes wallpaper hosting, independent UI
 background opacity, Home favorite sizes, dense icon/banner grids and English/Thai

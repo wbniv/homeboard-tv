@@ -1,0 +1,268 @@
+{
+  "id": "usa",
+  "country": "US",
+  "timeZone": "Asia/Bangkok",
+  "coverageStart": "2026-01-01",
+  "coverageEnd": "2027-12-31",
+  "status": "offline",
+  "reviewedOn": "2026-11-16",
+  "events": [
+    {
+      "id": "usa:2026-01-01:HOLIDAY:national",
+      "date": "2026-01-01",
+      "title": "New Year’s Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-01-19:HOLIDAY:national",
+      "date": "2026-01-19",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-02-16:HOLIDAY:national",
+      "date": "2026-02-16",
+      "title": "Washington’s Birthday",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-05-25:HOLIDAY:national",
+      "date": "2026-05-25",
+      "title": "Memorial Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-06-19:HOLIDAY:national",
+      "date": "2026-06-19",
+      "title": "Juneteenth National Independence Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-07-03:OBSERVED:national",
+      "date": "2026-07-03",
+      "title": "Independence Day · observed",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "OBSERVED",
+      "scope": "national",
+      "original": "",
+      "anchor": "2026-07-04"
+    },
+    {
+      "id": "usa:2026-07-04:HOLIDAY:national",
+      "date": "2026-07-04",
+      "title": "Independence Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-09-07:HOLIDAY:national",
+      "date": "2026-09-07",
+      "title": "Labor Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-10-12:HOLIDAY:national",
+      "date": "2026-10-12",
+      "title": "Columbus Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-11-11:HOLIDAY:national",
+      "date": "2026-11-11",
+      "title": "Veterans Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-11-26:HOLIDAY:national",
+      "date": "2026-11-26",
+      "title": "Thanksgiving Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2026-12-25:HOLIDAY:national",
+      "date": "2026-12-25",
+      "title": "Christmas Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-01-01:HOLIDAY:national",
+      "date": "2027-01-01",
+      "title": "New Year’s Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-01-18:HOLIDAY:national",
+      "date": "2027-01-18",
+      "title": "Birthday of Martin Luther King, Jr.",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-02-15:HOLIDAY:national",
+      "date": "2027-02-15",
+      "title": "Washington’s Birthday",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-05-31:HOLIDAY:national",
+      "date": "2027-05-31",
+      "title": "Memorial Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-06-18:OBSERVED:national",
+      "date": "2027-06-18",
+      "title": "Juneteenth National Independence Day · observed",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "OBSERVED",
+      "scope": "national",
+      "original": "",
+      "anchor": "2027-06-19"
+    },
+    {
+      "id": "usa:2027-06-19:HOLIDAY:national",
+      "date": "2027-06-19",
+      "title": "Juneteenth National Independence Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-07-04:HOLIDAY:national",
+      "date": "2027-07-04",
+      "title": "Independence Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-07-05:OBSERVED:national",
+      "date": "2027-07-05",
+      "title": "Independence Day · observed",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "OBSERVED",
+      "scope": "national",
+      "original": "",
+      "anchor": "2027-07-04"
+    },
+    {
+      "id": "usa:2027-09-06:HOLIDAY:national",
+      "date": "2027-09-06",
+      "title": "Labor Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-10-11:HOLIDAY:national",
+      "date": "2027-10-11",
+      "title": "Columbus Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-11-11:HOLIDAY:national",
+      "date": "2027-11-11",
+      "title": "Veterans Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-11-25:HOLIDAY:national",
+      "date": "2027-11-25",
+      "title": "Thanksgiving Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-12-24:OBSERVED:national",
+      "date": "2027-12-24",
+      "title": "Christmas Day · observed",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "OBSERVED",
+      "scope": "national",
+      "original": "",
+      "anchor": "2027-12-25"
+    },
+    {
+      "id": "usa:2027-12-25:HOLIDAY:national",
+      "date": "2027-12-25",
+      "title": "Christmas Day",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "original": ""
+    },
+    {
+      "id": "usa:2027-12-31:OBSERVED:national",
+      "date": "2027-12-31",
+      "title": "New Year’s Day 2028 · observed",
+      "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+      "kind": "OBSERVED",
+      "scope": "national",
+      "original": "",
+      "anchor": "2028-01-01"
+    }
+  ],
+  "schemaVersion": 1,
+  "stage": "normalize",
+  "producerVersion": "1",
+  "inputHashes": {
+    "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+    "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+    "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+    "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+  }
+}

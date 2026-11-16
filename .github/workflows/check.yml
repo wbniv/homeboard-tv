@@ -9,5 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build shared toolchain image
         run: dev/container.sh image
+      - name: Verify calendar JSON pipeline and packaged snapshot
+        run: dev/container.sh run python3 /workspace/dev/calendar/test_pipeline.py
       - name: Test, lint and package in container
         run: dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest :app:lintDebug :app:assembleDebug :app:bundleRelease

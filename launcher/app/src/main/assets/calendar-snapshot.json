@@ -1,0 +1,3834 @@
+{
+  "schemaVersion": 1,
+  "stage": "assemble",
+  "producerVersion": "1",
+  "inputHashes": {
+    "thai-calendar.json": "08640690aa3294251a02da924d34132f0ce5c37b6677190960de3752456c0a74",
+    "flowers-calendar.json": "65784120ce20f9882db9bdd44120a8fad435d21b905ada88265cbdd44d30960a",
+    "buddhist-calendar.json": "0c1c347517c5d05094e94edf2c601e0d5801443c37019fd134ab85e7b66bb1b3",
+    "spain-calendar.json": "f7fd384ba8bd1154e4b3f5fd2a66ce2f82c871e59d91753df377c15e0fffeadd",
+    "usa-calendar.json": "c94c07b825e60c0a434cf9dfd7fc2d6c1da32c636bb0d6242bc90a30da2eb9de",
+    "china-calendar.json": "01f10fe8adb0fcb396d4fcb9f31c28f64a78cc509da25492a4cd44b68848cbc5"
+  },
+  "providers": [
+    {
+      "id": "thai",
+      "country": "TH",
+      "timeZone": "Asia/Bangkok",
+      "status": "offline",
+      "reviewedOn": "2026-11-16",
+      "coverageStart": "2026-01-01",
+      "coverageEnd": "2026-12-31",
+      "events": [
+        {
+          "id": "thai:2026-01-01:national",
+          "date": "2026-01-01",
+          "title": "New Year’s Day",
+          "original": "วันขึ้นปีใหม่",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-01-02:national",
+          "date": "2026-01-02",
+          "title": "Special government holiday",
+          "original": "วันหยุดราชการเพิ่มเติมเป็นกรณีพิเศษ",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-03-03:national",
+          "date": "2026-03-03",
+          "title": "Makha Bucha Day",
+          "original": "วันมาฆบูชา",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-04-06:national",
+          "date": "2026-04-06",
+          "title": "Chakri Memorial Day",
+          "original": "วันจักรี",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-04-13:national",
+          "date": "2026-04-13",
+          "title": "Songkran",
+          "original": "วันสงกรานต์",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-04-14:national",
+          "date": "2026-04-14",
+          "title": "Songkran",
+          "original": "วันสงกรานต์",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-04-15:national",
+          "date": "2026-04-15",
+          "title": "Songkran",
+          "original": "วันสงกรานต์",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-05-04:national",
+          "date": "2026-05-04",
+          "title": "Coronation Day",
+          "original": "วันฉัตรมงคล",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-05-13:national",
+          "date": "2026-05-13",
+          "title": "Royal Ploughing Ceremony",
+          "original": "วันพืชมงคล",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://capr.tsu.ac.th/upload/files/1777604073_b167d9d87f9f076c.pdf"
+        },
+        {
+          "id": "thai:2026-05-31:national",
+          "date": "2026-05-31",
+          "title": "Visakha Bucha Day",
+          "original": "วันวิสาขบูชา",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-06-01:national",
+          "date": "2026-06-01",
+          "title": "Visakha Bucha substitute holiday",
+          "original": "วันหยุดชดเชยวันวิสาขบูชา",
+          "scope": "national",
+          "kind": "OBSERVED",
+          "url": "https://www.soc.go.th/?p=33672",
+          "anchor": "2026-05-31"
+        },
+        {
+          "id": "thai:2026-06-03:national",
+          "date": "2026-06-03",
+          "title": "Queen Suthida’s Birthday",
+          "original": "วันเฉลิมพระชนมพรรษาสมเด็จพระนางเจ้าฯ พระบรมราชินี",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-07-28:national",
+          "date": "2026-07-28",
+          "title": "King Vajiralongkorn’s Birthday",
+          "original": "วันเฉลิมพระชนมพรรษาพระบาทสมเด็จพระเจ้าอยู่หัว",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-07-29:national",
+          "date": "2026-07-29",
+          "title": "Asarnha Bucha Day",
+          "original": "วันอาสาฬหบูชา",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-07-30:national",
+          "date": "2026-07-30",
+          "title": "Buddhist Lent Day",
+          "original": "วันเข้าพรรษา",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-08-12:national",
+          "date": "2026-08-12",
+          "title": "Queen Mother’s Birthday / Mother’s Day",
+          "original": "วันแม่แห่งชาติ",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-09-28:bangkok",
+          "date": "2026-09-28",
+          "title": "Flood closure · online/essential services may continue",
+          "original": "วันหยุดราชการพิเศษเนื่องจากน้ำท่วม",
+          "scope": "bangkok",
+          "kind": "HOLIDAY",
+          "url": "https://www.thaigov.go.th/th/news/169370"
+        },
+        {
+          "id": "thai:2026-09-29:bangkok",
+          "date": "2026-09-29",
+          "title": "Flood closure · online/essential services may continue",
+          "original": "วันหยุดราชการพิเศษเนื่องจากน้ำท่วม",
+          "scope": "bangkok",
+          "kind": "HOLIDAY",
+          "url": "https://www.thaigov.go.th/th/news/169370"
+        },
+        {
+          "id": "thai:2026-10-13:national",
+          "date": "2026-10-13",
+          "title": "King Bhumibol Memorial Day",
+          "original": "วันนวมินทรมหาราช",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-10-16:bangkok",
+          "date": "2026-10-16",
+          "title": "Special government holiday · Bangkok",
+          "original": "วันหยุดราชการเป็นกรณีพิเศษเฉพาะกรุงเทพมหานคร",
+          "scope": "bangkok",
+          "kind": "HOLIDAY",
+          "url": "https://www.bot.or.th/content/dam/bot/documents/th/news-and-media/news/2026/news-20260609.pdf"
+        },
+        {
+          "id": "thai:2026-10-23:national",
+          "date": "2026-10-23",
+          "title": "Chulalongkorn Memorial Day",
+          "original": "วันปิยมหาราช",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://www.soc.go.th/?p=33672"
+        },
+        {
+          "id": "thai:2026-12-05:national",
+          "date": "2026-12-05",
+          "title": "Father’s Day / National Day",
+          "original": "วันพ่อแห่งชาติและวันชาติ",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://smoi.moi.go.th/calendar"
+        },
+        {
+          "id": "thai:2026-12-07:national",
+          "date": "2026-12-07",
+          "title": "Father’s Day substitute holiday",
+          "original": "วันหยุดชดเชยวันพ่อแห่งชาติ",
+          "scope": "national",
+          "kind": "OBSERVED",
+          "url": "https://smoi.moi.go.th/calendar",
+          "anchor": "2026-12-05"
+        },
+        {
+          "id": "thai:2026-12-10:national",
+          "date": "2026-12-10",
+          "title": "Constitution Day",
+          "original": "วันรัฐธรรมนูญ",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://smoi.moi.go.th/calendar"
+        },
+        {
+          "id": "thai:2026-12-31:national",
+          "date": "2026-12-31",
+          "title": "New Year’s Eve",
+          "original": "วันสิ้นปี",
+          "scope": "national",
+          "kind": "HOLIDAY",
+          "url": "https://smoi.moi.go.th/calendar"
+        }
+      ],
+      "schemaVersion": 1,
+      "stage": "normalize",
+      "producerVersion": "1",
+      "inputHashes": {
+        "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+        "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+        "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+        "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+      }
+    },
+    {
+      "id": "flowers",
+      "country": "TH",
+      "timeZone": "Asia/Bangkok",
+      "status": "offline",
+      "reviewedOn": "2026-11-16",
+      "coverageStart": "2026-01-01",
+      "coverageEnd": "2026-12-24",
+      "events": [
+        {
+          "anchor": "2026-01-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-03:2026-01-01",
+          "date": "2026-01-01",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-01-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-03:2026-01-02",
+          "date": "2026-01-02",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-01-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-03:2026-01-03",
+          "date": "2026-01-03",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-01-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-11:2026-01-08",
+          "date": "2026-01-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-01-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-11:2026-01-09",
+          "date": "2026-01-09",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-01-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-11:2026-01-10",
+          "date": "2026-01-10",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-01-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-11:2026-01-11",
+          "date": "2026-01-11",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-01-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-18:2026-01-15",
+          "date": "2026-01-15",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-01-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-18:2026-01-16",
+          "date": "2026-01-16",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-01-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-18:2026-01-17",
+          "date": "2026-01-17",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-01-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-18:2026-01-18",
+          "date": "2026-01-18",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-01-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-26:2026-01-23",
+          "date": "2026-01-23",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-01-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-26:2026-01-24",
+          "date": "2026-01-24",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-01-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-26:2026-01-25",
+          "date": "2026-01-25",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-01-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-01-26:2026-01-26",
+          "date": "2026-01-26",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-02-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-02:2026-01-30",
+          "date": "2026-01-30",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-02-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-02:2026-01-31",
+          "date": "2026-01-31",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-02-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-02:2026-02-01",
+          "date": "2026-02-01",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-02-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-02:2026-02-02",
+          "date": "2026-02-02",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-02-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-10:2026-02-07",
+          "date": "2026-02-07",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-02-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-10:2026-02-08",
+          "date": "2026-02-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-02-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-10:2026-02-09",
+          "date": "2026-02-09",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-02-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-10:2026-02-10",
+          "date": "2026-02-10",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-02-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-16:2026-02-13",
+          "date": "2026-02-13",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-02-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-16:2026-02-14",
+          "date": "2026-02-14",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-02-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-16:2026-02-15",
+          "date": "2026-02-15",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-02-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-16:2026-02-16",
+          "date": "2026-02-16",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-02-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-24:2026-02-21",
+          "date": "2026-02-21",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-02-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-24:2026-02-22",
+          "date": "2026-02-22",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-02-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-24:2026-02-23",
+          "date": "2026-02-23",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-02-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-02-24:2026-02-24",
+          "date": "2026-02-24",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-03-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-03:2026-02-28",
+          "date": "2026-02-28",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-03-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-03:2026-03-01",
+          "date": "2026-03-01",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-03-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-03:2026-03-02",
+          "date": "2026-03-02",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-03-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-03:2026-03-03",
+          "date": "2026-03-03",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-03-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-11:2026-03-08",
+          "date": "2026-03-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-03-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-11:2026-03-09",
+          "date": "2026-03-09",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-03-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-11:2026-03-10",
+          "date": "2026-03-10",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-03-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-11:2026-03-11",
+          "date": "2026-03-11",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-03-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-18:2026-03-15",
+          "date": "2026-03-15",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-03-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-18:2026-03-16",
+          "date": "2026-03-16",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-03-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-18:2026-03-17",
+          "date": "2026-03-17",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-03-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-18:2026-03-18",
+          "date": "2026-03-18",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-03-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-26:2026-03-23",
+          "date": "2026-03-23",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-03-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-26:2026-03-24",
+          "date": "2026-03-24",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-03-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-26:2026-03-25",
+          "date": "2026-03-25",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-03-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-03-26:2026-03-26",
+          "date": "2026-03-26",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-04-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-02:2026-03-30",
+          "date": "2026-03-30",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-04-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-02:2026-03-31",
+          "date": "2026-03-31",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-04-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-02:2026-04-01",
+          "date": "2026-04-01",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-04-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-02:2026-04-02",
+          "date": "2026-04-02",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-04-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-10:2026-04-07",
+          "date": "2026-04-07",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-04-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-10:2026-04-08",
+          "date": "2026-04-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-04-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-10:2026-04-09",
+          "date": "2026-04-09",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-04-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-10:2026-04-10",
+          "date": "2026-04-10",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-04-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-16:2026-04-13",
+          "date": "2026-04-13",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-04-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-16:2026-04-14",
+          "date": "2026-04-14",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-04-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-16:2026-04-15",
+          "date": "2026-04-15",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-04-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-16:2026-04-16",
+          "date": "2026-04-16",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-04-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-24:2026-04-21",
+          "date": "2026-04-21",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-04-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-24:2026-04-22",
+          "date": "2026-04-22",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-04-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-24:2026-04-23",
+          "date": "2026-04-23",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-04-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-04-24:2026-04-24",
+          "date": "2026-04-24",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-01",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-01:2026-04-28",
+          "date": "2026-04-28",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-01",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-01:2026-04-29",
+          "date": "2026-04-29",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-01",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-01:2026-04-30",
+          "date": "2026-04-30",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-01",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-01:2026-05-01",
+          "date": "2026-05-01",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-09:2026-05-06",
+          "date": "2026-05-06",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-09:2026-05-07",
+          "date": "2026-05-07",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-09:2026-05-08",
+          "date": "2026-05-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-09:2026-05-09",
+          "date": "2026-05-09",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-16:2026-05-13",
+          "date": "2026-05-13",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-16:2026-05-14",
+          "date": "2026-05-14",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-16:2026-05-15",
+          "date": "2026-05-15",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-16:2026-05-16",
+          "date": "2026-05-16",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-24:2026-05-21",
+          "date": "2026-05-21",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-24:2026-05-22",
+          "date": "2026-05-22",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-24:2026-05-23",
+          "date": "2026-05-23",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-24:2026-05-24",
+          "date": "2026-05-24",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-31",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-31:2026-05-28",
+          "date": "2026-05-28",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-31",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-31:2026-05-29",
+          "date": "2026-05-29",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-05-31",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-31:2026-05-30",
+          "date": "2026-05-30",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-05-31",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-05-31:2026-05-31",
+          "date": "2026-05-31",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-06-08",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-08:2026-06-05",
+          "date": "2026-06-05",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-06-08",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-08:2026-06-06",
+          "date": "2026-06-06",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-06-08",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-08:2026-06-07",
+          "date": "2026-06-07",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-06-08",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-08:2026-06-08",
+          "date": "2026-06-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-06-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-14:2026-06-11",
+          "date": "2026-06-11",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-06-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-14:2026-06-12",
+          "date": "2026-06-12",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-06-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-14:2026-06-13",
+          "date": "2026-06-13",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-06-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-14:2026-06-14",
+          "date": "2026-06-14",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-06-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-22:2026-06-19",
+          "date": "2026-06-19",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-06-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-22:2026-06-20",
+          "date": "2026-06-20",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-06-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-22:2026-06-21",
+          "date": "2026-06-21",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-06-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-22:2026-06-22",
+          "date": "2026-06-22",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-06-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-29:2026-06-26",
+          "date": "2026-06-26",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-06-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-29:2026-06-27",
+          "date": "2026-06-27",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-06-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-29:2026-06-28",
+          "date": "2026-06-28",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-06-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-06-29:2026-06-29",
+          "date": "2026-06-29",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-07-07",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-07:2026-07-04",
+          "date": "2026-07-04",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-07-07",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-07:2026-07-05",
+          "date": "2026-07-05",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-07-07",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-07:2026-07-06",
+          "date": "2026-07-06",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-07-07",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-07:2026-07-07",
+          "date": "2026-07-07",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-07-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-14:2026-07-11",
+          "date": "2026-07-11",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-07-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-14:2026-07-12",
+          "date": "2026-07-12",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-07-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-14:2026-07-13",
+          "date": "2026-07-13",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-07-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-14:2026-07-14",
+          "date": "2026-07-14",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-07-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-22:2026-07-19",
+          "date": "2026-07-19",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-07-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-22:2026-07-20",
+          "date": "2026-07-20",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-07-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-22:2026-07-21",
+          "date": "2026-07-21",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-07-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-22:2026-07-22",
+          "date": "2026-07-22",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-07-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-29:2026-07-26",
+          "date": "2026-07-26",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-07-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-29:2026-07-27",
+          "date": "2026-07-27",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-07-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-29:2026-07-28",
+          "date": "2026-07-28",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-07-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-07-29:2026-07-29",
+          "date": "2026-07-29",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-08-06",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-06:2026-08-03",
+          "date": "2026-08-03",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-08-06",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-06:2026-08-04",
+          "date": "2026-08-04",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-08-06",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-06:2026-08-05",
+          "date": "2026-08-05",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-08-06",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-06:2026-08-06",
+          "date": "2026-08-06",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-08-13",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-13:2026-08-10",
+          "date": "2026-08-10",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-08-13",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-13:2026-08-11",
+          "date": "2026-08-11",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-08-13",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-13:2026-08-12",
+          "date": "2026-08-12",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-08-13",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-13:2026-08-13",
+          "date": "2026-08-13",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-08-21",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-21:2026-08-18",
+          "date": "2026-08-18",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-08-21",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-21:2026-08-19",
+          "date": "2026-08-19",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-08-21",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-21:2026-08-20",
+          "date": "2026-08-20",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-08-21",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-21:2026-08-21",
+          "date": "2026-08-21",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-08-28",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-28:2026-08-25",
+          "date": "2026-08-25",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-08-28",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-28:2026-08-26",
+          "date": "2026-08-26",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-08-28",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-28:2026-08-27",
+          "date": "2026-08-27",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-08-28",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-08-28:2026-08-28",
+          "date": "2026-08-28",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-09-05",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-05:2026-09-02",
+          "date": "2026-09-02",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-09-05",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-05:2026-09-03",
+          "date": "2026-09-03",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-09-05",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-05:2026-09-04",
+          "date": "2026-09-04",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-09-05",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-05:2026-09-05",
+          "date": "2026-09-05",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-09-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-11:2026-09-08",
+          "date": "2026-09-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-09-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-11:2026-09-09",
+          "date": "2026-09-09",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-09-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-11:2026-09-10",
+          "date": "2026-09-10",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-09-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-11:2026-09-11",
+          "date": "2026-09-11",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-09-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-19:2026-09-16",
+          "date": "2026-09-16",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-09-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-19:2026-09-17",
+          "date": "2026-09-17",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-09-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-19:2026-09-18",
+          "date": "2026-09-18",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-09-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-19:2026-09-19",
+          "date": "2026-09-19",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-09-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-26:2026-09-23",
+          "date": "2026-09-23",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-09-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-26:2026-09-24",
+          "date": "2026-09-24",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-09-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-26:2026-09-25",
+          "date": "2026-09-25",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-09-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-09-26:2026-09-26",
+          "date": "2026-09-26",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-10-04",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-04:2026-10-01",
+          "date": "2026-10-01",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-10-04",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-04:2026-10-02",
+          "date": "2026-10-02",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-10-04",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-04:2026-10-03",
+          "date": "2026-10-03",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-10-04",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-04:2026-10-04",
+          "date": "2026-10-04",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-10-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-11:2026-10-08",
+          "date": "2026-10-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-10-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-11:2026-10-09",
+          "date": "2026-10-09",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-10-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-11:2026-10-10",
+          "date": "2026-10-10",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-10-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-11:2026-10-11",
+          "date": "2026-10-11",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-10-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-19:2026-10-16",
+          "date": "2026-10-16",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-10-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-19:2026-10-17",
+          "date": "2026-10-17",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-10-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-19:2026-10-18",
+          "date": "2026-10-18",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-10-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-19:2026-10-19",
+          "date": "2026-10-19",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-10-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-26:2026-10-23",
+          "date": "2026-10-23",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-10-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-26:2026-10-24",
+          "date": "2026-10-24",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-10-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-26:2026-10-25",
+          "date": "2026-10-25",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-10-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-10-26:2026-10-26",
+          "date": "2026-10-26",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-11-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-03:2026-10-31",
+          "date": "2026-10-31",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-11-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-03:2026-11-01",
+          "date": "2026-11-01",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-11-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-03:2026-11-02",
+          "date": "2026-11-02",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-11-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-03:2026-11-03",
+          "date": "2026-11-03",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-11-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-09:2026-11-06",
+          "date": "2026-11-06",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-11-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-09:2026-11-07",
+          "date": "2026-11-07",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-11-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-09:2026-11-08",
+          "date": "2026-11-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-11-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-09:2026-11-09",
+          "date": "2026-11-09",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-11-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-17:2026-11-14",
+          "date": "2026-11-14",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-11-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-17:2026-11-15",
+          "date": "2026-11-15",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-11-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-17:2026-11-16",
+          "date": "2026-11-16",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-11-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-17:2026-11-17",
+          "date": "2026-11-17",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-11-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-24:2026-11-21",
+          "date": "2026-11-21",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-11-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-24:2026-11-22",
+          "date": "2026-11-22",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-11-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-24:2026-11-23",
+          "date": "2026-11-23",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-11-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-11-24:2026-11-24",
+          "date": "2026-11-24",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-12-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-02:2026-11-29",
+          "date": "2026-11-29",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-12-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-02:2026-11-30",
+          "date": "2026-11-30",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-12-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-02:2026-12-01",
+          "date": "2026-12-01",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-12-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-02:2026-12-02",
+          "date": "2026-12-02",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-12-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-09:2026-12-06",
+          "date": "2026-12-06",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-12-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-09:2026-12-07",
+          "date": "2026-12-07",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-12-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-09:2026-12-08",
+          "date": "2026-12-08",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-12-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-09:2026-12-09",
+          "date": "2026-12-09",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-12-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-17:2026-12-14",
+          "date": "2026-12-14",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-12-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-17:2026-12-15",
+          "date": "2026-12-15",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-12-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-17:2026-12-16",
+          "date": "2026-12-16",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-12-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-17:2026-12-17",
+          "date": "2026-12-17",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-12-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-24:2026-12-21",
+          "date": "2026-12-21",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-12-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-24:2026-12-22",
+          "date": "2026-12-22",
+          "title": "Flower work",
+          "original": "",
+          "kind": "MAKE"
+        },
+        {
+          "anchor": "2026-12-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-24:2026-12-23",
+          "date": "2026-12-23",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        },
+        {
+          "anchor": "2026-12-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "flowers:2026-12-24:2026-12-24",
+          "date": "2026-12-24",
+          "title": "Flower work",
+          "original": "",
+          "kind": "SELL"
+        }
+      ],
+      "schemaVersion": 1,
+      "stage": "normalize",
+      "producerVersion": "1",
+      "inputHashes": {
+        "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+        "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+        "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+        "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+      }
+    },
+    {
+      "id": "buddhist",
+      "country": "TH",
+      "timeZone": "Asia/Bangkok",
+      "status": "offline",
+      "reviewedOn": "2026-11-16",
+      "coverageStart": "2026-01-01",
+      "coverageEnd": "2026-12-24",
+      "events": [
+        {
+          "anchor": "2026-01-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-01-03",
+          "date": "2026-01-03",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-01-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-01-11",
+          "date": "2026-01-11",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-01-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-01-18",
+          "date": "2026-01-18",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-01-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-01-26",
+          "date": "2026-01-26",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-02-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-02-02",
+          "date": "2026-02-02",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-02-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-02-10",
+          "date": "2026-02-10",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-02-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-02-16",
+          "date": "2026-02-16",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-02-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-02-24",
+          "date": "2026-02-24",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-03-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-03-03",
+          "date": "2026-03-03",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-03-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-03-11",
+          "date": "2026-03-11",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-03-18",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-03-18",
+          "date": "2026-03-18",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-03-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-03-26",
+          "date": "2026-03-26",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-04-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-04-02",
+          "date": "2026-04-02",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-04-10",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-04-10",
+          "date": "2026-04-10",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-04-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-04-16",
+          "date": "2026-04-16",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-04-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-04-24",
+          "date": "2026-04-24",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-05-01",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-05-01",
+          "date": "2026-05-01",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-05-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-05-09",
+          "date": "2026-05-09",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-05-16",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-05-16",
+          "date": "2026-05-16",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-05-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-05-24",
+          "date": "2026-05-24",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-05-31",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-05-31",
+          "date": "2026-05-31",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-06-08",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-06-08",
+          "date": "2026-06-08",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-06-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-06-14",
+          "date": "2026-06-14",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-06-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-06-22",
+          "date": "2026-06-22",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-06-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-06-29",
+          "date": "2026-06-29",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-07-07",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-07-07",
+          "date": "2026-07-07",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-07-14",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-07-14",
+          "date": "2026-07-14",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-07-22",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-07-22",
+          "date": "2026-07-22",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-07-29",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-07-29",
+          "date": "2026-07-29",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-08-06",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-08-06",
+          "date": "2026-08-06",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-08-13",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-08-13",
+          "date": "2026-08-13",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-08-21",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-08-21",
+          "date": "2026-08-21",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-08-28",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-08-28",
+          "date": "2026-08-28",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-09-05",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-09-05",
+          "date": "2026-09-05",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-09-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-09-11",
+          "date": "2026-09-11",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-09-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-09-19",
+          "date": "2026-09-19",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-09-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-09-26",
+          "date": "2026-09-26",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-10-04",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-10-04",
+          "date": "2026-10-04",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-10-11",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-10-11",
+          "date": "2026-10-11",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-10-19",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-10-19",
+          "date": "2026-10-19",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-10-26",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-10-26",
+          "date": "2026-10-26",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-11-03",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-11-03",
+          "date": "2026-11-03",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-11-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-11-09",
+          "date": "2026-11-09",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-11-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-11-17",
+          "date": "2026-11-17",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-11-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-11-24",
+          "date": "2026-11-24",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-12-02",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-12-02",
+          "date": "2026-12-02",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-12-09",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-12-09",
+          "date": "2026-12-09",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-12-17",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-12-17",
+          "date": "2026-12-17",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        },
+        {
+          "anchor": "2026-12-24",
+          "scope": "national",
+          "url": "https://www.dmc.tv/article/5453",
+          "id": "buddhist:2026-12-24",
+          "date": "2026-12-24",
+          "title": "Wan Phra",
+          "original": "วันพระ",
+          "kind": "WAN_PHRA"
+        }
+      ],
+      "schemaVersion": 1,
+      "stage": "normalize",
+      "producerVersion": "1",
+      "inputHashes": {
+        "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+        "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+        "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+        "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+      }
+    },
+    {
+      "id": "spain",
+      "country": "ES",
+      "timeZone": "Europe/Madrid",
+      "coverageStart": "2026-01-01",
+      "coverageEnd": "2026-12-31",
+      "status": "offline",
+      "reviewedOn": "2026-11-16",
+      "events": [
+        {
+          "id": "spain:2026-01-01:HOLIDAY:national",
+          "date": "2026-01-01",
+          "title": "New Year’s Day",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": "Cap d’Any"
+        },
+        {
+          "id": "spain:2026-01-06:HOLIDAY:national",
+          "date": "2026-01-06",
+          "title": "Epiphany",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": "Reis"
+        },
+        {
+          "id": "spain:2026-04-03:HOLIDAY:national",
+          "date": "2026-04-03",
+          "title": "Good Friday",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": "Divendres Sant"
+        },
+        {
+          "id": "spain:2026-04-06:HOLIDAY:catalunya",
+          "date": "2026-04-06",
+          "title": "Easter Monday",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "catalunya",
+          "original": "Pasqua Florida"
+        },
+        {
+          "id": "spain:2026-05-01:HOLIDAY:national",
+          "date": "2026-05-01",
+          "title": "Labour Day",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": "Festa del Treball"
+        },
+        {
+          "id": "spain:2026-06-24:HOLIDAY:catalunya",
+          "date": "2026-06-24",
+          "title": "Saint John’s Day",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "catalunya",
+          "original": "Sant Joan"
+        },
+        {
+          "id": "spain:2026-07-23:HOLIDAY:tivissa",
+          "date": "2026-07-23",
+          "title": "Tivissa local holiday",
+          "url": "https://analisi.transparenciacatalunya.cat/resource/b4eh-r8up.json",
+          "kind": "HOLIDAY",
+          "scope": "tivissa",
+          "original": "Festiu local de Tivissa"
+        },
+        {
+          "id": "spain:2026-07-24:HOLIDAY:tivissa",
+          "date": "2026-07-24",
+          "title": "Tivissa local holiday",
+          "url": "https://analisi.transparenciacatalunya.cat/resource/b4eh-r8up.json",
+          "kind": "HOLIDAY",
+          "scope": "tivissa",
+          "original": "Festiu local de Tivissa"
+        },
+        {
+          "id": "spain:2026-08-15:HOLIDAY:national",
+          "date": "2026-08-15",
+          "title": "Assumption",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": "L’Assumpció"
+        },
+        {
+          "id": "spain:2026-09-11:HOLIDAY:catalunya",
+          "date": "2026-09-11",
+          "title": "National Day of Catalunya",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "catalunya",
+          "original": "Diada Nacional de Catalunya"
+        },
+        {
+          "id": "spain:2026-10-12:HOLIDAY:national",
+          "date": "2026-10-12",
+          "title": "National Day of Spain",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": "Festa Nacional d’Espanya"
+        },
+        {
+          "id": "spain:2026-12-08:HOLIDAY:national",
+          "date": "2026-12-08",
+          "title": "Immaculate Conception",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": "La Immaculada"
+        },
+        {
+          "id": "spain:2026-12-25:HOLIDAY:national",
+          "date": "2026-12-25",
+          "title": "Christmas Day",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": "Nadal"
+        },
+        {
+          "id": "spain:2026-12-26:HOLIDAY:catalunya",
+          "date": "2026-12-26",
+          "title": "Saint Stephen’s Day",
+          "url": "https://treball.gencat.cat/ca/ambits/relacions_laborals/ci/calendari_laboral/calendari-festes-2026/",
+          "kind": "HOLIDAY",
+          "scope": "catalunya",
+          "original": "Sant Esteve"
+        }
+      ],
+      "notes": "No province-wide holiday asserted without a notice. Municipal coverage is Tivissa centre (INE 43150, pedania 000); 2027 local dates not verified.",
+      "schemaVersion": 1,
+      "stage": "normalize",
+      "producerVersion": "1",
+      "inputHashes": {
+        "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+        "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+        "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+        "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+      }
+    },
+    {
+      "id": "usa",
+      "country": "US",
+      "timeZone": "Asia/Bangkok",
+      "coverageStart": "2026-01-01",
+      "coverageEnd": "2027-12-31",
+      "status": "offline",
+      "reviewedOn": "2026-11-16",
+      "events": [
+        {
+          "id": "usa:2026-01-01:HOLIDAY:national",
+          "date": "2026-01-01",
+          "title": "New Year’s Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-01-19:HOLIDAY:national",
+          "date": "2026-01-19",
+          "title": "Birthday of Martin Luther King, Jr.",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-02-16:HOLIDAY:national",
+          "date": "2026-02-16",
+          "title": "Washington’s Birthday",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-05-25:HOLIDAY:national",
+          "date": "2026-05-25",
+          "title": "Memorial Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-06-19:HOLIDAY:national",
+          "date": "2026-06-19",
+          "title": "Juneteenth National Independence Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-07-03:OBSERVED:national",
+          "date": "2026-07-03",
+          "title": "Independence Day · observed",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "OBSERVED",
+          "scope": "national",
+          "original": "",
+          "anchor": "2026-07-04"
+        },
+        {
+          "id": "usa:2026-07-04:HOLIDAY:national",
+          "date": "2026-07-04",
+          "title": "Independence Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-09-07:HOLIDAY:national",
+          "date": "2026-09-07",
+          "title": "Labor Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-10-12:HOLIDAY:national",
+          "date": "2026-10-12",
+          "title": "Columbus Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-11-11:HOLIDAY:national",
+          "date": "2026-11-11",
+          "title": "Veterans Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-11-26:HOLIDAY:national",
+          "date": "2026-11-26",
+          "title": "Thanksgiving Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2026-12-25:HOLIDAY:national",
+          "date": "2026-12-25",
+          "title": "Christmas Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-01-01:HOLIDAY:national",
+          "date": "2027-01-01",
+          "title": "New Year’s Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-01-18:HOLIDAY:national",
+          "date": "2027-01-18",
+          "title": "Birthday of Martin Luther King, Jr.",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-02-15:HOLIDAY:national",
+          "date": "2027-02-15",
+          "title": "Washington’s Birthday",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-05-31:HOLIDAY:national",
+          "date": "2027-05-31",
+          "title": "Memorial Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-06-18:OBSERVED:national",
+          "date": "2027-06-18",
+          "title": "Juneteenth National Independence Day · observed",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "OBSERVED",
+          "scope": "national",
+          "original": "",
+          "anchor": "2027-06-19"
+        },
+        {
+          "id": "usa:2027-06-19:HOLIDAY:national",
+          "date": "2027-06-19",
+          "title": "Juneteenth National Independence Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-07-04:HOLIDAY:national",
+          "date": "2027-07-04",
+          "title": "Independence Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-07-05:OBSERVED:national",
+          "date": "2027-07-05",
+          "title": "Independence Day · observed",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "OBSERVED",
+          "scope": "national",
+          "original": "",
+          "anchor": "2027-07-04"
+        },
+        {
+          "id": "usa:2027-09-06:HOLIDAY:national",
+          "date": "2027-09-06",
+          "title": "Labor Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-10-11:HOLIDAY:national",
+          "date": "2027-10-11",
+          "title": "Columbus Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-11-11:HOLIDAY:national",
+          "date": "2027-11-11",
+          "title": "Veterans Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-11-25:HOLIDAY:national",
+          "date": "2027-11-25",
+          "title": "Thanksgiving Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-12-24:OBSERVED:national",
+          "date": "2027-12-24",
+          "title": "Christmas Day · observed",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "OBSERVED",
+          "scope": "national",
+          "original": "",
+          "anchor": "2027-12-25"
+        },
+        {
+          "id": "usa:2027-12-25:HOLIDAY:national",
+          "date": "2027-12-25",
+          "title": "Christmas Day",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "HOLIDAY",
+          "scope": "national",
+          "original": ""
+        },
+        {
+          "id": "usa:2027-12-31:OBSERVED:national",
+          "date": "2027-12-31",
+          "title": "New Year’s Day 2028 · observed",
+          "url": "https://www.opm.gov/policy-data-oversight/pay-leave/federal-holidays/",
+          "kind": "OBSERVED",
+          "scope": "national",
+          "original": "",
+          "anchor": "2028-01-01"
+        }
+      ],
+      "schemaVersion": 1,
+      "stage": "normalize",
+      "producerVersion": "1",
+      "inputHashes": {
+        "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+        "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+        "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+        "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+      }
+    },
+    {
+      "id": "china",
+      "country": "CN",
+      "timeZone": "Asia/Shanghai",
+      "coverageStart": "2026-01-01",
+      "coverageEnd": "2027-12-31",
+      "status": "offline",
+      "reviewedOn": "2026-11-16",
+      "events": [
+        {
+          "id": "china:2026-01-01:HOLIDAY:national",
+          "date": "2026-01-01",
+          "title": "New Year holiday",
+          "original": "元旦",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-01-02:HOLIDAY:national",
+          "date": "2026-01-02",
+          "title": "New Year holiday",
+          "original": "元旦",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-01-03:HOLIDAY:national",
+          "date": "2026-01-03",
+          "title": "New Year holiday",
+          "original": "元旦",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-01-04:WORKING:national",
+          "date": "2026-01-04",
+          "title": "Make-up working day",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2026-02-14:WORKING:national",
+          "date": "2026-02-14",
+          "title": "Make-up working day",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2026-02-15:HOLIDAY:national",
+          "date": "2026-02-15",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-02-16:HOLIDAY:national",
+          "date": "2026-02-16",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-02-17:HOLIDAY:national",
+          "date": "2026-02-17",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-02-18:HOLIDAY:national",
+          "date": "2026-02-18",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-02-19:HOLIDAY:national",
+          "date": "2026-02-19",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-02-20:HOLIDAY:national",
+          "date": "2026-02-20",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-02-21:HOLIDAY:national",
+          "date": "2026-02-21",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-02-22:HOLIDAY:national",
+          "date": "2026-02-22",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-02-23:HOLIDAY:national",
+          "date": "2026-02-23",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-02-28:WORKING:national",
+          "date": "2026-02-28",
+          "title": "Make-up working day",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2026-04-04:HOLIDAY:national",
+          "date": "2026-04-04",
+          "title": "Qingming holiday",
+          "original": "清明节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-04-05:HOLIDAY:national",
+          "date": "2026-04-05",
+          "title": "Qingming holiday",
+          "original": "清明节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-04-06:HOLIDAY:national",
+          "date": "2026-04-06",
+          "title": "Qingming holiday",
+          "original": "清明节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-05-01:HOLIDAY:national",
+          "date": "2026-05-01",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-05-02:HOLIDAY:national",
+          "date": "2026-05-02",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-05-03:HOLIDAY:national",
+          "date": "2026-05-03",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-05-04:HOLIDAY:national",
+          "date": "2026-05-04",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-05-05:HOLIDAY:national",
+          "date": "2026-05-05",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-05-09:WORKING:national",
+          "date": "2026-05-09",
+          "title": "Make-up working day",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2026-06-19:HOLIDAY:national",
+          "date": "2026-06-19",
+          "title": "Dragon Boat holiday",
+          "original": "端午节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-06-20:HOLIDAY:national",
+          "date": "2026-06-20",
+          "title": "Dragon Boat holiday",
+          "original": "端午节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-06-21:HOLIDAY:national",
+          "date": "2026-06-21",
+          "title": "Dragon Boat holiday",
+          "original": "端午节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-09-20:WORKING:national",
+          "date": "2026-09-20",
+          "title": "Make-up working day",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2026-09-25:HOLIDAY:national",
+          "date": "2026-09-25",
+          "title": "Mid-Autumn holiday",
+          "original": "中秋节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-09-26:HOLIDAY:national",
+          "date": "2026-09-26",
+          "title": "Mid-Autumn holiday",
+          "original": "中秋节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-09-27:HOLIDAY:national",
+          "date": "2026-09-27",
+          "title": "Mid-Autumn holiday",
+          "original": "中秋节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-10-01:HOLIDAY:national",
+          "date": "2026-10-01",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-10-02:HOLIDAY:national",
+          "date": "2026-10-02",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-10-03:HOLIDAY:national",
+          "date": "2026-10-03",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-10-04:HOLIDAY:national",
+          "date": "2026-10-04",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-10-05:HOLIDAY:national",
+          "date": "2026-10-05",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-10-06:HOLIDAY:national",
+          "date": "2026-10-06",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-10-07:HOLIDAY:national",
+          "date": "2026-10-07",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2026-10-10:WORKING:national",
+          "date": "2026-10-10",
+          "title": "Make-up working day",
+          "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2027-01-01:HOLIDAY:national",
+          "date": "2027-01-01",
+          "title": "New Year holiday",
+          "original": "元旦",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-01-02:HOLIDAY:national",
+          "date": "2027-01-02",
+          "title": "New Year holiday",
+          "original": "元旦",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-01-03:HOLIDAY:national",
+          "date": "2027-01-03",
+          "title": "New Year holiday",
+          "original": "元旦",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-01-31:WORKING:national",
+          "date": "2027-01-31",
+          "title": "Make-up working day",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2027-02-05:HOLIDAY:national",
+          "date": "2027-02-05",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-02-06:HOLIDAY:national",
+          "date": "2027-02-06",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-02-07:HOLIDAY:national",
+          "date": "2027-02-07",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-02-08:HOLIDAY:national",
+          "date": "2027-02-08",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-02-09:HOLIDAY:national",
+          "date": "2027-02-09",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-02-10:HOLIDAY:national",
+          "date": "2027-02-10",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-02-11:HOLIDAY:national",
+          "date": "2027-02-11",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-02-12:HOLIDAY:national",
+          "date": "2027-02-12",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-02-13:HOLIDAY:national",
+          "date": "2027-02-13",
+          "title": "Spring Festival holiday",
+          "original": "春节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-02-14:WORKING:national",
+          "date": "2027-02-14",
+          "title": "Make-up working day",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2027-04-03:HOLIDAY:national",
+          "date": "2027-04-03",
+          "title": "Qingming holiday",
+          "original": "清明节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-04-04:HOLIDAY:national",
+          "date": "2027-04-04",
+          "title": "Qingming holiday",
+          "original": "清明节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-04-05:HOLIDAY:national",
+          "date": "2027-04-05",
+          "title": "Qingming holiday",
+          "original": "清明节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-05-01:HOLIDAY:national",
+          "date": "2027-05-01",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-05-02:HOLIDAY:national",
+          "date": "2027-05-02",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-05-03:HOLIDAY:national",
+          "date": "2027-05-03",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-05-04:HOLIDAY:national",
+          "date": "2027-05-04",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-05-05:HOLIDAY:national",
+          "date": "2027-05-05",
+          "title": "Labour Day holiday",
+          "original": "劳动节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-05-08:WORKING:national",
+          "date": "2027-05-08",
+          "title": "Make-up working day",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2027-06-09:HOLIDAY:national",
+          "date": "2027-06-09",
+          "title": "Dragon Boat holiday",
+          "original": "端午节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-09-15:HOLIDAY:national",
+          "date": "2027-09-15",
+          "title": "Mid-Autumn holiday",
+          "original": "中秋节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-09-26:WORKING:national",
+          "date": "2027-09-26",
+          "title": "Make-up working day",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        },
+        {
+          "id": "china:2027-10-01:HOLIDAY:national",
+          "date": "2027-10-01",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-10-02:HOLIDAY:national",
+          "date": "2027-10-02",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-10-03:HOLIDAY:national",
+          "date": "2027-10-03",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-10-04:HOLIDAY:national",
+          "date": "2027-10-04",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-10-05:HOLIDAY:national",
+          "date": "2027-10-05",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-10-06:HOLIDAY:national",
+          "date": "2027-10-06",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-10-07:HOLIDAY:national",
+          "date": "2027-10-07",
+          "title": "National Day holiday",
+          "original": "国庆节",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "scope": "national",
+          "kind": "HOLIDAY"
+        },
+        {
+          "id": "china:2027-10-09:WORKING:national",
+          "date": "2027-10-09",
+          "title": "Make-up working day",
+          "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+          "kind": "WORKING",
+          "scope": "national",
+          "original": "调休上班"
+        }
+      ],
+      "schemaVersion": 1,
+      "stage": "normalize",
+      "producerVersion": "1",
+      "inputHashes": {
+        "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
+        "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+        "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
+        "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
+      }
+    }
+  ]
+}
