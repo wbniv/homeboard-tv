@@ -159,6 +159,7 @@ public class MainActivity extends Activity {
     private CalendarSnapshot calendarSnapshot;
     private boolean calendarDayEditor;
     private final Map<String, CalendarWidgetView> calendarWidgets = new LinkedHashMap<>();
+    private final Map<String, RainWidgetController> rainWidgets = new LinkedHashMap<>();
     private final Map<String, AirQualityCard> airWidgets = new LinkedHashMap<>();
     private final List<Consumer<Location>> pendingLocationRequests = new ArrayList<>();
     private final Set<AirLocationLookup> activeLocationLookups = new LinkedHashSet<>();
@@ -320,6 +321,7 @@ public class MainActivity extends Activity {
 
     @Override protected void onResume() {
         super.onResume(); active = true;
+        for (RainWidgetController widget : rainWidgets.values()) widget.resumeDetails();
         updateAir();
         wallpaperSurface.visible(true); wallpaperHost.visible(true);
         if (returningFromProviderSettings && wallpaperProvider != null) {
@@ -354,6 +356,7 @@ public class MainActivity extends Activity {
         }
         saveNavigationState();
         for (AirQualityCard widget : airWidgets.values()) widget.stop();
+        for (RainWidgetController widget : rainWidgets.values()) widget.pause();
         for (CalendarWidgetView widget : calendarWidgets.values()) widget.stop();
         super.onPause();
     }
@@ -363,6 +366,7 @@ public class MainActivity extends Activity {
         unregisterReceiver(packages);
         handler.removeCallbacksAndMessages(null);
         loader.shutdownNow(); for (AirQualityCard widget : airWidgets.values()) widget.close();
+        for (RainWidgetController widget : rainWidgets.values()) widget.close();
         super.onDestroy();
     }
     @Override protected void onSaveInstanceState(Bundle state) {
@@ -749,6 +753,7 @@ public class MainActivity extends Activity {
         appFocusHighlight = null; appFocusX = null; appFocusY = null; appFocusHighlightShown = false;
         if (old != null) { old.animate().cancel(); root.removeView(old); }
         for (AirQualityCard widget : airWidgets.values()) widget.unbind();
+        for (RainWidgetController widget : rainWidgets.values()) widget.unbind();
         for (CalendarWidgetView widget : calendarWidgets.values()) widget.stop();
         calendarWidgets.clear();
         tiles.clear(); visibleCells.clear();
@@ -786,17 +791,49 @@ public class MainActivity extends Activity {
         });
     }
     private void updateAir() {
-        boolean visible = active && !allApps;
+        boolean visible = active && !allApps && overlay == null && hasWindowFocus();
         Set<String> onPage = new LinkedHashSet<>();
         for (HomeLayout.Cell c : homeCells(dashboardItems()))
             if (isAirWidgetKey(c.key) && c.page == homePage) onPage.add(c.key);
         for (CalendarWidgetView widget : calendarWidgets.values()) {
             if (visible) widget.start(); else widget.stop();
         }
+        Set<String> rainOnPage = new LinkedHashSet<>();
+        for (HomeLayout.Cell c : homeCells(dashboardItems())) if (HomeLayout.isRainWidget(c.key) && c.page == homePage) rainOnPage.add(c.key);
+        for (Map.Entry<String, RainWidgetController> entry : rainWidgets.entrySet()) {
+            if (visible && rainOnPage.contains(entry.getKey())) entry.getValue().start(); else entry.getValue().stop();
+        }
         for (Map.Entry<String, AirQualityCard> entry : airWidgets.entrySet()) {
             if (visible && onPage.contains(entry.getKey())) entry.getValue().start();
             else entry.getValue().stop();
         }
+    }
+    private RainWidgetController rainFor(String key) {
+        RainWidgetController widget = rainWidgets.get(key);
+        if (widget == null) {
+            widget = new RainWidgetController(this, key,
+                    () -> layout.rainSettings.getOrDefault(key, new RainSettings()),
+                    next -> { layout.rainSettings.put(key, next); save(getString(R.string.hb_rain_changed)); render(0); },
+                    this::menu, this::requestAirLocation, () -> rainSize(key));
+            rainWidgets.put(key, widget);
+        }
+        widget.style(paletteColors, uiBackgroundOpacity, reducedMotion());
+        return widget;
+    }
+    private void rainSize(String key) {
+        menu(getString(R.string.hb_rain_size), new String[]{getString(R.string.hb_rain_recommended),getString(R.string.hb_rain_compact),
+                getString(R.string.hb_rain_summary),getString(R.string.hb_rain_glance),getString(R.string.hb_rain_fill),getString(R.string.hb_rain_directional)}, i -> {
+            if (i == 5) { startResize(key); return; }
+            int[][] spans={{4,3},{4,2},{2,2},{1,1},{homeGridColumns(),homeGridRows()}};
+            startResize(key);
+            resizeWidth=Math.min(homeGridColumns(),spans[i][0]);resizeHeight=Math.min(homeGridRows(),spans[i][1]);
+            layout.setPanelSpan(key,resizeWidth,resizeHeight);
+            homePage=homePageOf(key,layout.widgets);focused=key;render(0);
+        });
+    }
+    private View rainTile(String key) {
+        RainWidgetController controller=rainFor(key);RainWidgetView tile=new RainWidgetView(this,controller);
+        tile.setStyle(paletteColors,uiBackgroundOpacity,reducedMotion());controller.bind(tile);return tile;
     }
     private boolean isAirWidgetKey(String key) {
         return key != null && (HomeLayout.AIR.equals(key) || key.startsWith(HomeLayout.AIR + ":"));
@@ -936,7 +973,7 @@ public class MainActivity extends Activity {
         boolean appTile = key.startsWith("app:");
         boolean denseApp = appTile && !layout.appUsesBanner(!allApps);
         view.setFocusable(true);
-        view.setBackground(appTile || HomeLayout.isCalendarWidget(key) ? null : tileBackground());
+        view.setBackground(appTile || HomeLayout.isCalendarWidget(key) || HomeLayout.isRainWidget(key) ? null : tileBackground());
         view.setPadding(dp(appTile ? 2 : 16), dp(appTile ? 2 : 12),
                 dp(appTile ? 2 : 16), dp(appTile ? 2 : 12));
         view.setOnFocusChangeListener((v, hasFocus) -> {
@@ -1061,6 +1098,7 @@ public class MainActivity extends Activity {
             visibleCells.add(cell);
             if (cell.key.startsWith("app:")) hasAppTile = true;
             View tile = isAirWidgetKey(cell.key) ? airTile(cell.key, cell.width, cell.height)
+                    : HomeLayout.isRainWidget(cell.key) ? rainTile(cell.key)
                     : HomeLayout.isCalendarWidget(cell.key) ? calendarTile(cell.key) : appTile(cell.key, true);
             configureTile(tile, cell.key);
             if (isAirWidgetKey(cell.key)) airFor(cell.key).bind(tile);
@@ -1483,6 +1521,7 @@ public class MainActivity extends Activity {
     private void cancelOk() { handler.removeCallbacks(heldOk); okHeld = false; }
     @Override public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        if (surface != null) updateAir();
         if (!hasFocus) cancelOk();
         else if (root != null) root.post(() -> {
             if (active && overlay == null) {
@@ -1629,6 +1668,7 @@ public class MainActivity extends Activity {
         if (SETTINGS.equals(key)) { homeSettings(); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
+        if (HomeLayout.isRainWidget(key)) { rainFor(key).details(); return; }
         if (HomeLayout.isCalendarWidget(key)) { calendarController(key).actions(); return; }
         if (isAirWidgetKey(key)) { airFor(key).showActions(); return; }
         App app = apps.get(key);
@@ -1640,6 +1680,11 @@ public class MainActivity extends Activity {
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (key.isEmpty() || SETTINGS.equals(key)) { homeSettings(); return; }
+        if (HomeLayout.isRainWidget(key)) {
+            menu(getString(R.string.hb_rain_rain),new String[]{getString(R.string.hb_rain_configure),getString(R.string.hb_move),getString(R.string.hb_resize),getString(R.string.hb_delete_widget)}, i -> {
+                if(i==0) rainFor(key).configure(); else if(i==1) startMove(key); else if(i==2) rainSize(key); else deleteTile(key);
+            });return;
+        }
         if (HomeLayout.isCalendarWidget(key)) {
             menu(getString(R.string.hb_cal_calendar), "", new String[]{getString(R.string.hb_cal_configure), getString(R.string.hb_move), getString(R.string.hb_resize), getString(R.string.hb_delete_widget)}, choice -> {
                 if (choice == 0) configureCalendar(key);
@@ -1688,7 +1733,7 @@ public class MainActivity extends Activity {
     private void deleteTile(String key) {
         boolean dashboard = !allApps;
         App app = apps.get(key);
-        String label = HomeLayout.isCalendarWidget(key) ? "calendar widget" : isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : app == null ? "app shortcut" : app.label;
+        String label = HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_rain) : HomeLayout.isCalendarWidget(key) ? "calendar widget" : isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : app == null ? "app shortcut" : app.label;
         layout.delete(key, dashboard);
         save(dashboard ? getString(R.string.hb_hint_removed) + label + getString(R.string.hb_hint_from_home) : getString(R.string.hb_hint_hid) + label + getString(R.string.hb_hint_from_all_apps));
         if (dashboard && !layout.widgets.isEmpty()) {
@@ -1758,10 +1803,12 @@ public class MainActivity extends Activity {
         menu(getString(R.string.hb_widgets_restore), getString(R.string.hb_add_a_widget_or_restore_an_app_shortcut),
                 new String[]{getString(R.string.hb_add_widget), getString(R.string.hb_restore_hidden_app)}, choice -> {
                     if (choice == 0) menu(getString(R.string.hb_add_to_home), getString(R.string.hb_choose_a_tile_to_add),
-                            new String[]{getString(R.string.hb_air_quality_widget), getString(R.string.hb_cal_calendar), getString(R.string.hb_favorite_an_app_from_all_apps)}, add -> {
-                                if (add == 2) { allApps = false; showApps(); return; }
-                                String key = add == 0 ? newWidgetKey(HomeLayout.AIR) : HomeLayout.CALENDAR;
-                                if (!layout.widgets.contains(key)) { layout.addPanel(key); save(getString(R.string.hb_cal_added)); }
+                            new String[]{getString(R.string.hb_air_quality_widget), getString(R.string.hb_cal_calendar), getString(R.string.hb_rain_rain), getString(R.string.hb_favorite_an_app_from_all_apps)}, add -> {
+                                if (add == 3) { allApps = false; showApps(); return; }
+                                String key = add == 0 ? newWidgetKey(HomeLayout.AIR) : add == 2 ? newWidgetKey(HomeLayout.RAIN) : HomeLayout.CALENDAR;
+                                if (!layout.widgets.contains(key)) { layout.addPanel(key);
+                                    if (HomeLayout.isRainWidget(key)) layout.setPanelSpan(key,Math.min(4,homeGridColumns()),Math.min(3,homeGridRows()));
+                                    save(HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_changed) : getString(R.string.hb_cal_added)); }
                                 allApps = false; focused = key;
                                 homePage = homePageOf(focused, layout.widgets); render(0);
                             });
@@ -2299,6 +2346,7 @@ public class MainActivity extends Activity {
         menuGeneration++;
         int initialChoice = spec.selectedIndex >= 0 ? spec.selectedIndex : 0;
         showMenuPage(activeMenu, initialChoice / spec.pageSize, initialChoice);
+        for (RainWidgetController widget : rainWidgets.values()) widget.stop();
     }
     /** Draw one fixed page inside Home's window; no menu content is placed in a scroll container. */
     private void showMenuPage(MenuSpec spec, int page, int focusChoice) {
@@ -2695,6 +2743,7 @@ public class MainActivity extends Activity {
         surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
         restoreFocus();
         if (undoBanner != null) undoBanner.bringToFront();
+        updateAir();
     }
     private void backMenu() {
         if (overlay == null) return;
@@ -2736,6 +2785,7 @@ public class MainActivity extends Activity {
         uiBackdrop.setBackgroundColor(UiBackgroundDrawable.colorWithOpacity(background, uiBackgroundOpacity));
         for (AirQualityCard widget : airWidgets.values()) widget.setBackgroundOpacity(uiBackgroundOpacity);
         for (CalendarWidgetView widget : calendarWidgets.values()) widget.setFillOpacity(uiBackgroundOpacity);
+        for (RainWidgetController widget : rainWidgets.values()) widget.style(paletteColors, uiBackgroundOpacity, reducedMotion());
         UiBackgroundDrawable.apply(surface, uiBackgroundOpacity);
     }
     private void sendWallpaperFocus(String key) {

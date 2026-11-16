@@ -1,0 +1,277 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1680" height="2460" viewBox="0 0 1680 2460">
+<rect width="1680" height="2460" fill="#101824"/>
+<style>text{font-family:Arial,sans-serif;fill:#edf2fa}.muted{fill:#a9bbcf}.label{font-size:22px;font-weight:bold}.note{font-size:18px;fill:#a9bbcf}</style>
+<text x="40" y="48" font-size="34">Rain widget · from 1×1 to full screen</text>
+<text x="40" y="82" font-size="19">Recommended: 4×3. Illustration only: invented weather; layouts still need TV and enlarged-text validation.</text>
+<text x="40" y="112" font-size="18">Shared scale: 120 × 105 drawing units per cell. Expanded views below are illustrative screen areas.</text>
+<text x="40" y="147" font-size="22">1×1 · glance</text>
+<rect x="40" y="165" width="120" height="105" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<g transform="translate(64 193) scale(0.45)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="85" y="195" font-size="17">Rain</text>
+<text x="55" y="239" font-size="23">~15:00</text>
+<text x="220" y="147" font-size="22">2×1 · short bar</text>
+<rect x="220" y="165" width="240" height="105" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="236" y="192" font-size="16">Bangkok</text>
+<text x="236" y="232" font-size="24">Rain ~15:00</text>
+<g transform="translate(422 201) scale(0.65)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="530" y="147" font-size="22">1×2 · portrait</text>
+<rect x="530" y="165" width="120" height="210" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="543" y="192" font-size="15">Bangkok</text>
+<g transform="translate(590 230) scale(0.65)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="543" y="292" font-size="23">~15:00</text>
+<text x="543" y="324" font-size="16">Next 24h</text>
+<text x="720" y="147" font-size="22">2×2 · summary</text>
+<rect x="720" y="165" width="240" height="210" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="736" y="194" font-size="17">Bangkok</text>
+<g transform="translate(915 210) scale(0.65)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="736" y="241" font-size="23">Rain ~15:00</text>
+<text x="736" y="282" font-size="17">Next 24h · 6.2 mm</text>
+<text x="736" y="314" font-size="16">Peak hourly chance</text>
+<text x="736" y="341" font-size="24">80%</text>
+<text x="1050" y="147" font-size="22">3×2 · compact</text>
+<rect x="1050" y="165" width="360" height="210" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="1066" y="193" font-size="17">Bangkok · Rain forecast</text>
+<text x="1066" y="224" font-size="25">Rain ~15:00</text>
+<text x="1066" y="250" font-size="15">Next 24h · 6.2 mm · peak chance 80%</text>
+<g transform="translate(1363 208) scale(0.8)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="1066" y="274" font-size="14">NEXT 24H · RAIN mm</text>
+<path d="M1066 337h328" stroke="#668096"/>
+<rect x="1109.0" y="325.3" width="9.7" height="11.7" rx="1" fill="#78c5fa"/>
+<rect x="1122.7" y="305.8" width="9.7" height="31.2" rx="1" fill="#78c5fa"/>
+<rect x="1136.3" y="298.0" width="9.7" height="39.0" rx="1" fill="#78c5fa"/>
+<rect x="1150.0" y="309.7" width="9.7" height="27.3" rx="1" fill="#78c5fa"/>
+<rect x="1163.7" y="321.4" width="9.7" height="15.6" rx="1" fill="#78c5fa"/>
+<rect x="1177.3" y="333.1" width="9.7" height="3.9" rx="1" fill="#78c5fa"/>
+<rect x="1245.7" y="329.2" width="9.7" height="7.8" rx="1" fill="#78c5fa"/>
+<rect x="1259.3" y="325.3" width="9.7" height="11.7" rx="1" fill="#78c5fa"/>
+<rect x="1273.0" y="331.1" width="9.7" height="5.8" rx="1" fill="#78c5fa"/>
+<text x="1066" y="357" font-size="13">12:00</text>
+<text x="1148.0" y="357" font-size="13">18:00</text>
+<text x="1230.0" y="357" font-size="13">00:00</text>
+<text x="1312.0" y="357" font-size="13">06:00</text>
+<text x="1360" y="294" font-size="12">2mm</text>
+<text x="40" y="422" font-size="18">Small tiles retain every forecast value in OK → Details. Status replaces the wet time if space is tight.</text>
+<text x="40" y="467" font-size="22">2×3 · tall</text>
+<rect x="40" y="485" width="240" height="315" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="56" y="513" font-size="17">Bangkok · Rain</text>
+<g transform="translate(231 532) scale(0.6)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="56" y="553" font-size="23">Rain ~15:00</text>
+<text x="56" y="587" font-size="16">Next 24h</text>
+<text x="56" y="632" font-size="17">13:00  0mm   20%</text>
+<text x="56" y="666" font-size="17">14:00  0mm   20%</text>
+<text x="56" y="700" font-size="17">15:00  0.8mm 60%</text>
+<text x="56" y="768" font-size="16">3 of 24 hours · OK</text>
+<text x="350" y="467" font-size="22">3×3 · square</text>
+<rect x="350" y="485" width="360" height="315" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="366" y="513" font-size="17">Bangkok · Rain forecast</text>
+<text x="366" y="544" font-size="25">Rain ~15:00</text>
+<text x="366" y="570" font-size="15">Next 24h · 6.2 mm · peak chance 80%</text>
+<g transform="translate(663 528) scale(0.8)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="366" y="598" font-size="14">NEXT 24H · RAIN mm</text>
+<path d="M366 708h328" stroke="#668096"/>
+<rect x="409.0" y="682.2" width="9.7" height="25.8" rx="1" fill="#78c5fa"/>
+<rect x="422.7" y="639.2" width="9.7" height="68.8" rx="1" fill="#78c5fa"/>
+<rect x="436.3" y="622.0" width="9.7" height="86.0" rx="1" fill="#78c5fa"/>
+<rect x="450.0" y="647.8" width="9.7" height="60.2" rx="1" fill="#78c5fa"/>
+<rect x="463.7" y="673.6" width="9.7" height="34.4" rx="1" fill="#78c5fa"/>
+<rect x="477.3" y="699.4" width="9.7" height="8.6" rx="1" fill="#78c5fa"/>
+<rect x="545.7" y="690.8" width="9.7" height="17.2" rx="1" fill="#78c5fa"/>
+<rect x="559.3" y="682.2" width="9.7" height="25.8" rx="1" fill="#78c5fa"/>
+<rect x="573.0" y="695.1" width="9.7" height="12.9" rx="1" fill="#78c5fa"/>
+<text x="366" y="728" font-size="13">12:00</text>
+<text x="448.0" y="728" font-size="13">18:00</text>
+<text x="530.0" y="728" font-size="13">00:00</text>
+<text x="612.0" y="728" font-size="13">06:00</text>
+<text x="660" y="618" font-size="12">2mm</text>
+<text x="366" y="771" font-size="17">Following 6 days · OK</text>
+<text x="800" y="467" font-size="22">4×2 · space-saving</text>
+<rect x="800" y="485" width="480" height="210" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="816" y="513" font-size="17">Bangkok · Rain forecast</text>
+<text x="816" y="544" font-size="25">Rain ~15:00</text>
+<text x="816" y="570" font-size="15">Next 24h · 6.2 mm · peak chance 80%</text>
+<g transform="translate(1233 528) scale(0.8)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="816" y="592" font-size="14">NEXT 24H · RAIN mm</text>
+<path d="M816 638h448" stroke="#668096"/>
+<rect x="874.0" y="631.4" width="14.7" height="6.6" rx="1" fill="#78c5fa"/>
+<rect x="892.7" y="620.4" width="14.7" height="17.6" rx="1" fill="#78c5fa"/>
+<rect x="911.3" y="616.0" width="14.7" height="22.0" rx="1" fill="#78c5fa"/>
+<rect x="930.0" y="622.6" width="14.7" height="15.4" rx="1" fill="#78c5fa"/>
+<rect x="948.7" y="629.2" width="14.7" height="8.8" rx="1" fill="#78c5fa"/>
+<rect x="967.3" y="635.8" width="14.7" height="2.2" rx="1" fill="#78c5fa"/>
+<rect x="1060.7" y="633.6" width="14.7" height="4.4" rx="1" fill="#78c5fa"/>
+<rect x="1079.3" y="631.4" width="14.7" height="6.6" rx="1" fill="#78c5fa"/>
+<rect x="1098.0" y="634.7" width="14.7" height="3.3" rx="1" fill="#78c5fa"/>
+<text x="816" y="658" font-size="13">12:00</text>
+<text x="928.0" y="658" font-size="13">18:00</text>
+<text x="1040.0" y="658" font-size="13">00:00</text>
+<text x="1152.0" y="658" font-size="13">06:00</text>
+<text x="1230" y="612" font-size="12">2mm</text>
+<text x="816" y="684" font-size="15">Following 6 days · OK</text>
+<text x="800" y="752" font-size="18">Wide enough for 24 bars;</text>
+<text x="800" y="779" font-size="18">daily figures stay in details.</text>
+<text x="40" y="872" font-size="22">4×3 · RECOMMENDED</text>
+<rect x="40" y="890" width="480" height="315" rx="16" fill="#1b2a3c" stroke="#a7d6a4" stroke-width="3"/>
+<text x="56" y="918" font-size="17">Bangkok · Rain forecast</text>
+<text x="56" y="949" font-size="25">Rain ~15:00</text>
+<text x="56" y="975" font-size="15">Next 24h · 6.2 mm · peak chance 80%</text>
+<g transform="translate(473 933) scale(0.8)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="56" y="997" font-size="14">NEXT 24H · RAIN mm</text>
+<path d="M56 1057h448" stroke="#668096"/>
+<rect x="114.0" y="1046.2" width="14.7" height="10.8" rx="1" fill="#78c5fa"/>
+<rect x="132.7" y="1028.2" width="14.7" height="28.8" rx="1" fill="#78c5fa"/>
+<rect x="151.3" y="1021.0" width="14.7" height="36.0" rx="1" fill="#78c5fa"/>
+<rect x="170.0" y="1031.8" width="14.7" height="25.2" rx="1" fill="#78c5fa"/>
+<rect x="188.7" y="1042.6" width="14.7" height="14.4" rx="1" fill="#78c5fa"/>
+<rect x="207.3" y="1053.4" width="14.7" height="3.6" rx="1" fill="#78c5fa"/>
+<rect x="300.7" y="1049.8" width="14.7" height="7.2" rx="1" fill="#78c5fa"/>
+<rect x="319.3" y="1046.2" width="14.7" height="10.8" rx="1" fill="#78c5fa"/>
+<rect x="338.0" y="1051.6" width="14.7" height="5.4" rx="1" fill="#78c5fa"/>
+<text x="56" y="1077" font-size="13">12:00</text>
+<text x="168.0" y="1077" font-size="13">18:00</text>
+<text x="280.0" y="1077" font-size="13">00:00</text>
+<text x="392.0" y="1077" font-size="13">06:00</text>
+<text x="470" y="1017" font-size="12">2mm</text>
+<text x="56" y="1098" font-size="14">FOLLOWING 6 DAYS · peak chance</text>
+<text x="56.0" y="1123" font-size="13">Tue* from 12:00</text>
+<text x="56.0" y="1141" font-size="14">4mm · 70%</text>
+<text x="205.33333333333334" y="1123" font-size="13">Wed</text>
+<text x="205.33333333333334" y="1141" font-size="14">2mm · 50%</text>
+<text x="354.6666666666667" y="1123" font-size="13">Thu</text>
+<text x="354.6666666666667" y="1141" font-size="14">0mm · 10%</text>
+<text x="56.0" y="1165" font-size="13">Fri</text>
+<text x="56.0" y="1183" font-size="14">8mm · 80%</text>
+<text x="205.33333333333334" y="1165" font-size="13">Sat</text>
+<text x="205.33333333333334" y="1183" font-size="14">3mm · 60%</text>
+<text x="354.6666666666667" y="1165" font-size="13">Sun</text>
+<text x="354.6666666666667" y="1183" font-size="14">1mm · 30%</text>
+<text x="650" y="872" font-size="22">6×3 · wider dashboard</text>
+<rect x="650" y="890" width="720" height="315" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="666" y="918" font-size="17">Bangkok · Rain forecast</text>
+<text x="666" y="949" font-size="25">Rain ~15:00</text>
+<text x="666" y="975" font-size="15">Next 24h · 6.2 mm · peak chance 80%</text>
+<g transform="translate(1003 933) scale(0.8)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="666" y="1001" font-size="14">NEXT 24H · RAIN mm</text>
+<path d="M666 1121h365" stroke="#668096"/>
+<rect x="713.6" y="1092.2" width="11.2" height="28.8" rx="1" fill="#78c5fa"/>
+<rect x="728.8" y="1044.2" width="11.2" height="76.8" rx="1" fill="#78c5fa"/>
+<rect x="744.0" y="1025.0" width="11.2" height="96.0" rx="1" fill="#78c5fa"/>
+<rect x="759.2" y="1053.8" width="11.2" height="67.2" rx="1" fill="#78c5fa"/>
+<rect x="774.5" y="1082.6" width="11.2" height="38.4" rx="1" fill="#78c5fa"/>
+<rect x="789.7" y="1111.4" width="11.2" height="9.6" rx="1" fill="#78c5fa"/>
+<rect x="865.7" y="1101.8" width="11.2" height="19.2" rx="1" fill="#78c5fa"/>
+<rect x="880.9" y="1092.2" width="11.2" height="28.8" rx="1" fill="#78c5fa"/>
+<rect x="896.1" y="1106.6" width="11.2" height="14.4" rx="1" fill="#78c5fa"/>
+<text x="666" y="1141" font-size="13">12:00</text>
+<text x="757.25" y="1141" font-size="13">18:00</text>
+<text x="848.5" y="1141" font-size="13">00:00</text>
+<text x="939.75" y="1141" font-size="13">06:00</text>
+<text x="997" y="1021" font-size="12">2mm</text>
+<text x="1065" y="916" font-size="14">FOLLOWING 6 DAYS · peak chance</text>
+<text x="1065" y="948" font-size="17">Tue*</text>
+<text x="1170" y="948" font-size="17">4mm · 70%</text>
+<text x="1065" y="984" font-size="17">Wed</text>
+<text x="1170" y="984" font-size="17">2mm · 50%</text>
+<text x="1065" y="1020" font-size="17">Thu</text>
+<text x="1170" y="1020" font-size="17">0mm · 10%</text>
+<text x="1065" y="1056" font-size="17">Fri</text>
+<text x="1170" y="1056" font-size="17">8mm · 80%</text>
+<text x="1065" y="1092" font-size="17">Sat</text>
+<text x="1170" y="1092" font-size="17">3mm · 60%</text>
+<text x="1065" y="1128" font-size="17">Sun</text>
+<text x="1170" y="1128" font-size="17">1mm · 30%</text>
+<text x="666" y="1181" font-size="14">Open-Meteo · Updated 11:40 · OK for values</text>
+<text x="40" y="1262" font-size="22">Full width × 1 · ribbon</text>
+<rect x="40" y="1280" width="1560" height="105" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<g transform="translate(89 1323) scale(0.8)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="145" y="1320" font-size="27">Bangkok · Rain ~15:00</text>
+<text x="145" y="1357" font-size="18">Next 24h · 6.2 mm · peak hourly chance 80%</text>
+<text x="760" y="1299" font-size="14">NEXT 24H · RAIN mm</text>
+<path d="M760 1349h530" stroke="#668096"/>
+<rect x="828.2" y="1341.2" width="18.1" height="7.8" rx="1" fill="#78c5fa"/>
+<rect x="850.3" y="1328.2" width="18.1" height="20.8" rx="1" fill="#78c5fa"/>
+<rect x="872.4" y="1323.0" width="18.1" height="26.0" rx="1" fill="#78c5fa"/>
+<rect x="894.5" y="1330.8" width="18.1" height="18.2" rx="1" fill="#78c5fa"/>
+<rect x="916.6" y="1338.6" width="18.1" height="10.4" rx="1" fill="#78c5fa"/>
+<rect x="938.7" y="1346.4" width="18.1" height="2.6" rx="1" fill="#78c5fa"/>
+<rect x="1049.1" y="1343.8" width="18.1" height="5.2" rx="1" fill="#78c5fa"/>
+<rect x="1071.2" y="1341.2" width="18.1" height="7.8" rx="1" fill="#78c5fa"/>
+<rect x="1093.2" y="1345.1" width="18.1" height="3.9" rx="1" fill="#78c5fa"/>
+<text x="760" y="1369" font-size="13">12:00</text>
+<text x="892.5" y="1369" font-size="13">18:00</text>
+<text x="1025.0" y="1369" font-size="13">00:00</text>
+<text x="1157.5" y="1369" font-size="13">06:00</text>
+<text x="1256" y="1319" font-size="12">2mm</text>
+<text x="1330" y="1338" font-size="18">Following days · OK</text>
+<text x="40" y="1442" font-size="22">Fill Home · all available columns × rows; Home controls remain outside</text>
+<rect x="40" y="1460" width="1560" height="420" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="56" y="1488" font-size="17">Bangkok · Rain forecast</text>
+<text x="56" y="1519" font-size="25">Rain ~15:00</text>
+<text x="56" y="1545" font-size="15">Next 24h · 6.2 mm · peak chance 80%</text>
+<g transform="translate(943 1503) scale(0.8)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="64" y="1590" font-size="14">NEXT 24H · RAIN mm</text>
+<path d="M64 1774h930" stroke="#668096"/>
+<rect x="182.2" y="1726.0" width="34.8" height="48.0" rx="1" fill="#78c5fa"/>
+<rect x="221.0" y="1646.0" width="34.8" height="128.0" rx="1" fill="#78c5fa"/>
+<rect x="259.8" y="1614.0" width="34.8" height="160.0" rx="1" fill="#78c5fa"/>
+<rect x="298.5" y="1662.0" width="34.8" height="112.0" rx="1" fill="#78c5fa"/>
+<rect x="337.2" y="1710.0" width="34.8" height="64.0" rx="1" fill="#78c5fa"/>
+<rect x="376.0" y="1758.0" width="34.8" height="16.0" rx="1" fill="#78c5fa"/>
+<rect x="569.8" y="1742.0" width="34.8" height="32.0" rx="1" fill="#78c5fa"/>
+<rect x="608.5" y="1726.0" width="34.8" height="48.0" rx="1" fill="#78c5fa"/>
+<rect x="647.2" y="1750.0" width="34.8" height="24.0" rx="1" fill="#78c5fa"/>
+<text x="64" y="1794" font-size="13">12:00</text>
+<text x="296.5" y="1794" font-size="13">18:00</text>
+<text x="529.0" y="1794" font-size="13">00:00</text>
+<text x="761.5" y="1794" font-size="13">06:00</text>
+<text x="960" y="1610" font-size="12">2mm</text>
+<text x="1080" y="1495" font-size="14">FOLLOWING 6 DAYS · peak chance</text>
+<text x="1080" y="1527" font-size="17">Tue*</text>
+<text x="1185" y="1527" font-size="17">4mm · 70%</text>
+<text x="1080" y="1563" font-size="17">Wed</text>
+<text x="1185" y="1563" font-size="17">2mm · 50%</text>
+<text x="1080" y="1599" font-size="17">Thu</text>
+<text x="1185" y="1599" font-size="17">0mm · 10%</text>
+<text x="1080" y="1635" font-size="17">Fri</text>
+<text x="1185" y="1635" font-size="17">8mm · 80%</text>
+<text x="1080" y="1671" font-size="17">Sat</text>
+<text x="1185" y="1671" font-size="17">3mm · 60%</text>
+<text x="1080" y="1707" font-size="17">Sun</text>
+<text x="1185" y="1707" font-size="17">1mm · 30%</text>
+<text x="64" y="1845" font-size="18">Open-Meteo · Updated 11:40 · Asia/Bangkok · OK opens full-screen details</text>
+<text x="40" y="1942" font-size="22">Full-screen forecast · temporary expanded view; Back returns to saved tile</text>
+<rect x="40" y="1960" width="1560" height="435" rx="16" fill="#1b2a3c" stroke="#486680" stroke-width="3"/>
+<text x="64" y="2002" font-size="28">‹ Back       Bangkok · Hourly forecast                         Following days</text>
+<text x="64" y="2040" font-size="23">Selected hour · 16:00 · 2.0 mm rain · precipitation chance 80%</text>
+<g transform="translate(994 2046) scale(1.1)"><path d="M-22 9Q-35 8-32-2Q-30-11-20-9Q-17-25-4-20Q5-20 8-10Q23-12 24 1Q24 10 12 9Z" fill="#b7cee2"/><path d="M-20 16l-4 9M-5 17l-4 9M10 16l-4 9" stroke="#78c5fa" stroke-width="3" stroke-linecap="round"/></g>
+<text x="64" y="2090" font-size="14">NEXT 24H · RAIN mm</text>
+<path d="M64 2284h960" stroke="#668096"/>
+<rect x="186.0" y="2233.0" width="36.0" height="51.0" rx="1" fill="#78c5fa"/>
+<rect x="226.0" y="2148.0" width="36.0" height="136.0" rx="1" fill="#78c5fa"/>
+<rect x="266.0" y="2114.0" width="36.0" height="170.0" rx="1" fill="#78c5fa"/>
+<rect x="306.0" y="2165.0" width="36.0" height="119.0" rx="1" fill="#78c5fa"/>
+<rect x="346.0" y="2216.0" width="36.0" height="68.0" rx="1" fill="#78c5fa"/>
+<rect x="386.0" y="2267.0" width="36.0" height="17.0" rx="1" fill="#78c5fa"/>
+<rect x="586.0" y="2250.0" width="36.0" height="34.0" rx="1" fill="#78c5fa"/>
+<rect x="626.0" y="2233.0" width="36.0" height="51.0" rx="1" fill="#78c5fa"/>
+<rect x="666.0" y="2258.5" width="36.0" height="25.5" rx="1" fill="#78c5fa"/>
+<text x="64" y="2304" font-size="13">12:00</text>
+<text x="304.0" y="2304" font-size="13">18:00</text>
+<text x="544.0" y="2304" font-size="13">00:00</text>
+<text x="784.0" y="2304" font-size="13">06:00</text>
+<text x="990" y="2110" font-size="12">2mm</text>
+<text x="1090" y="2022" font-size="14">FOLLOWING 6 DAYS · peak chance</text>
+<text x="1090" y="2054" font-size="17">Tue*</text>
+<text x="1195" y="2054" font-size="17">4mm · 70%</text>
+<text x="1090" y="2090" font-size="17">Wed</text>
+<text x="1195" y="2090" font-size="17">2mm · 50%</text>
+<text x="1090" y="2126" font-size="17">Thu</text>
+<text x="1195" y="2126" font-size="17">0mm · 10%</text>
+<text x="1090" y="2162" font-size="17">Fri</text>
+<text x="1195" y="2162" font-size="17">8mm · 80%</text>
+<text x="1090" y="2198" font-size="17">Sat</text>
+<text x="1195" y="2198" font-size="17">3mm · 60%</text>
+<text x="1090" y="2234" font-size="17">Sun</text>
+<text x="1195" y="2234" font-size="17">1mm · 30%</text>
+<text x="64" y="2358" font-size="19">← → Select hour · date/time zone shown at midnight · exact daily intervals in Following days</text>
+<text x="40" y="2430" font-size="19">Every size: explicit unavailable/stale states · still charts · optional clouds · Reduced motion respected</text>
+</svg>

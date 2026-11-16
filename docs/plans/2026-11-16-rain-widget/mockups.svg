@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
+<rect width="1440" height="900" fill="#101824"/>
+<style>text{font-family:Arial,sans-serif;fill:#edf2fa} .muted{fill:#a9bbcf} .small{font-size:17px} .body{font-size:23px} .title{font-size:30px;font-weight:bold} .edge{fill:#1b2a3c;stroke:#486680;stroke-width:2}</style>
+<text x="42" y="53" class="title">Rain · proposed views</text><text x="42" y="84" class="small muted">Illustrative values only · location and both forecast ranges are configurable</text>
+<rect x="35" y="110" width="820" height="420" rx="24" class="edge"/>
+<text x="65" y="153" class="body">Bangkok · Rain forecast</text><text x="65" y="204" class="title">Rain forecast around 15:00</text>
+<text x="65" y="242" class="body">Peak hourly chance 80% · 6.2 mm rain / next 24h</text>
+<g transform="translate(718 178)"><path d="M-45 18 Q-70 16-64-4 Q-60-22-41-18 Q-35-49-9-41 Q9-39 15-20 Q46-24 47 1 Q49 19 24 18Z" fill="#b7cee2"/><g stroke="#78c5fa" stroke-width="5" stroke-linecap="round"><path d="M-41 32l-7 15M-12 35l-7 15M17 32l-7 15"/></g></g>
+<text x="65" y="284" class="small muted">HOURLY · NEXT 24H · RAIN mm</text>
+<path d="M65 376H820" stroke="#668096"/>
+<g fill="#78c5fa"><rect x="180" y="350" width="20" height="26"/><rect x="212" y="310" width="20" height="66"/><rect x="244" y="324" width="20" height="52"/><rect x="276" y="345" width="20" height="31"/><rect x="308" y="363" width="20" height="13"/><rect x="468" y="370" width="20" height="6"/><rect x="500" y="358" width="20" height="18"/><rect x="532" y="366" width="20" height="10"/></g>
+<text x="65" y="401" class="small muted">12:00</text><text x="248" y="401" class="small muted">18:00</text><text x="444" y="401" class="small muted">00:00</text><text x="639" y="401" class="small muted">06:00</text>
+<text x="65" y="438" class="small">Following 6 days · daily rain and peak precipitation chance</text>
+<text x="65" y="470" class="small muted">Tue* 4mm 70%    Wed 2mm 50%    Thu 0mm 10%    Fri 8mm 80%    Sat 3mm 60%    Sun 1mm 30%</text>
+<text x="65" y="505" class="small muted">*From 12:00 · Open-Meteo · Updated 11:40 · OK for all values</text>
+<rect x="885" y="110" width="520" height="670" rx="24" class="edge"/>
+<text x="915" y="156" class="title">Configure rain</text>
+<text x="915" y="211" class="body">Location</text><text x="915" y="247" class="small muted">Coordinates / City / Address / Device</text>
+<rect x="910" y="272" width="462" height="56" rx="12" fill="#29445e" stroke="#abd8fa" stroke-width="3"/><text x="928" y="308" class="body">Hourly outlook                 24 hours</text>
+<text x="925" y="362" class="small muted">6 / 12 / 24 / 48 hours</text>
+<text x="925" y="414" class="body">Following days                  6 days</text><text x="925" y="449" class="small muted">0–6 rows · begins after hourly window</text>
+<text x="925" y="502" class="body">Amount units                         mm</text><text x="925" y="556" class="body">Animated clouds                     On</text>
+<text x="925" y="590" class="small muted">Reduced motion uses static artwork.</text>
+<text x="925" y="646" class="body">Widget label                    Bangkok</text><text x="925" y="728" class="body">Cancel                                Save</text>
+<rect x="35" y="555" width="820" height="225" rx="24" class="edge"/>
+<text x="65" y="598" class="body">Details · Hourly                            Following days</text>
+<text x="65" y="640" class="small muted">Local time · Asia/Bangkok · liquid rain · chance of precipitation</text>
+<text x="65" y="682" class="body">14:00     0.0 mm     20%         15:00     0.8 mm     60%</text>
+<text x="65" y="721" class="body">16:00     2.0 mm     80%         17:00     1.6 mm     70%</text>
+<text x="65" y="756" class="small muted">Left / right: more hours · Date labels at midnight · Back: Home</text>
+<text x="42" y="826" class="body">Clouds animate for a labeled forecast hour, not as a claim that it is raining now.</text>
+<text x="42" y="860" class="small muted">Offline/stale: static illustration + status · No location chosen: configure · Missing intervals: unavailable</text>
+</svg>

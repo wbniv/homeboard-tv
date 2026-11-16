@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/bce5426) | Add combined calendar ranges and visual grid previews |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/91a9669) | Record combined 0.1.19 deployment and 53 passing menu regressions |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/00d4796) | Add native English and Thai language selection |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/e1dae89) | Verify background-fill opacity on Cast1 in 0.1.14 |
@@ -10,6 +11,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+bce5426	author	Will Norris
+bce5426	added	7
+bce5426	deleted	3
+bce5426	files	1
+bce5426	body	Combine reviewed offline holiday providers into one event-only Calendar widget with 7/30/custom lookahead, Monday week ranges, source controls and flag-colored date cards. Add replayable JSON normalization and assembly, tests, English/Thai resources and representative grid row/column previews.\n\nValidated 394 JVM tests, six pipeline tests, lint and APK packaging; deployed and visually checked 0.1.21 on Cast1. Live emergency refresh and the validated lunar calculator remain pending.
 91a9669	author	Will Norris
 91a9669	added	12
 91a9669	deleted	13

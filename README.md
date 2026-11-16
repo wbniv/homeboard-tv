@@ -57,6 +57,19 @@ with independent persistence and Undo. Full bilingual UI and Thai copy acceptanc
 remain pending; see the [language plan](docs/plans/2026-11-16-language-setting-and-translations.md)
 and [validation limits](docs/testing/2026-11-16-thai-language.md).
 
+## Rain forecast widget
+
+Add **Home settings → Widgets / Restore → Add widget → Rain**, then choose a city,
+coordinates, street address (when the TV's address service is available), or device
+location. The default is the next 24 hours by hour followed by six daily forecasts;
+both ranges, units, label and cloud animation are configurable per widget.
+
+Hold OK for configuration and size presets. **4×3 is recommended**; 1×1 glance,
+compact, tall, wide and Fill Home layouts adapt to available space. OK opens exact
+hourly/daily values and full-screen details. Animated clouds respect Reduced motion.
+See the [rain plan and size gallery](docs/plans/2026-11-16-rain-widget.md) and
+[validation record](docs/testing/2026-11-16-rain-widget.md).
+
 ## Start here
 
 - [Product direction: our brand and the CleanYourTV community](docs/product-direction.md)

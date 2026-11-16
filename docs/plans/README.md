@@ -25,6 +25,8 @@ missing rows on commit.*
 
 | [Language setting and English/Thai translation](2026-11-16-language-setting-and-translations.md) | Implements a native language compass and core English/Thai resources; tracks remaining review and acceptance gates. | Worktree implementation | Feature |
 
+| [Rain widget: hourly outlook and the following days](2026-11-16-rain-widget.md) | Implements configurable hourly and following-day rain forecasts, location lookup, animated clouds and adaptive 1×1-to-full-screen layouts; records container checks and pending Cast1 validation. | Implemented; Cast1 validation pending | Feature |
+
 ---
 
 ## How this index was derived

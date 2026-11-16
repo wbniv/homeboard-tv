@@ -14,6 +14,7 @@ import java.util.Set;
 /** Persisted product state; page/focus and uncommitted move previews live in the activity. */
 final class HomeLayout {
     static final String AIR = "widget:air";
+    static final String RAIN = "widget:rain";
     static final String CALENDAR = "widget:calendar";
     final List<String> widgets = new ArrayList<>();
     final List<String> order = new ArrayList<>();
@@ -23,6 +24,7 @@ final class HomeLayout {
     final Map<String, Integer> panelSizes = new LinkedHashMap<>();
     final Map<String, PanelSpan> panelSpans = new LinkedHashMap<>();
     final Map<String, HomePosition> homePositions = new LinkedHashMap<>();
+    final Map<String, RainSettings> rainSettings = new LinkedHashMap<>();
     final Map<String, CalendarWidgetSettings> calendarSettings = new LinkedHashMap<>();
     int homeColumns;
     int homeRows;
@@ -92,6 +94,9 @@ final class HomeLayout {
         s.customWallpaper = j.optString("customWallpaper", "");
         s.reducedMotion = j.optBoolean("reducedMotion", false);
         s.palette = j.optString("palette", "midnight");
+        JSONObject rains = j.optJSONObject("rainSettings");
+        for (String key : s.widgets) if (isRainWidget(key))
+            s.rainSettings.put(key, RainSettings.parse(rains == null ? null : rains.optJSONObject(key)));
         JSONObject calendars = j.optJSONObject("calendarSettings");
         for (String key : s.widgets) if (isCalendarWidget(key))
             s.calendarSettings.put(key, CalendarWidgetSettings.parse(calendars == null ? null : calendars.optJSONObject(key)));
@@ -112,7 +117,7 @@ final class HomeLayout {
                     .put("defaultPanelSize", defaultPanelSize).put("panelSizes", new JSONObject(panelSizes))
                     .put("panelSpans", encodedSpans())
                     .put("homePositions", encodedHomePositions())
-                    .put("calendarSettings", encodedCalendarSettings())
+                    .put("calendarSettings", encodedCalendarSettings()).put("rainSettings", encodedRainSettings())
                     .put("homeColumns", homeColumns).put("homeRows", homeRows)
                     .put("appBanners", appBanners).put("homeAppSize", homeAppSize).put("circularIcons", circularIcons)
                     .put("customWallpaper", customWallpaper)
@@ -144,10 +149,20 @@ final class HomeLayout {
         if (!key.startsWith("widget:")) throw new IllegalArgumentException("Panel keys must start with widget:");
         favorite(key);
         panelSizes.putIfAbsent(key, defaultPanelSize);
+        if (isRainWidget(key)) {
+            rainSettings.putIfAbsent(key, new RainSettings());
+            panelSpans.putIfAbsent(key, new PanelSpan(4, 3));
+        }
         if (isCalendarWidget(key)) {
             calendarSettings.putIfAbsent(key, new CalendarWidgetSettings());
             panelSpans.putIfAbsent(key, new PanelSpan(6, 3));
         }
+    }
+    static boolean isRainWidget(String key) { return RAIN.equals(key) || key != null && key.startsWith(RAIN + ":"); }
+    private JSONObject encodedRainSettings() throws JSONException {
+        JSONObject result = new JSONObject();
+        for (Map.Entry<String, RainSettings> entry : rainSettings.entrySet()) result.put(entry.getKey(), entry.getValue().json());
+        return result;
     }
     static boolean isCalendarWidget(String key) { return CALENDAR.equals(key); }
     private JSONObject encodedCalendarSettings() throws JSONException {
@@ -178,7 +193,7 @@ final class HomeLayout {
     }
     private static int validPanelSize(int size) { return size < PANEL_SMALL || size > PANEL_LARGE ? PANEL_MEDIUM : size; }
     void delete(String key, boolean dashboard) {
-        if (dashboard) { widgets.remove(key); panelSpans.remove(key); homePositions.remove(key); calendarSettings.remove(key); }
+        if (dashboard) { widgets.remove(key); panelSpans.remove(key); homePositions.remove(key); calendarSettings.remove(key); rainSettings.remove(key); }
         else hidden.add(key);
     }
     List<String> visibleApps(List<String> installed) {
