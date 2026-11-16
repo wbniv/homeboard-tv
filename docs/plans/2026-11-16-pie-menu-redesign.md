@@ -1,6 +1,6 @@
 # Homeboard TV menu redesign: compass pies and color cards
 
-**Status: implementation complete and exercised on Cast1; Will's full remote review remains open · 16 November 2026**
+**Status: implementation complete; expanded artwork and palette acceptance pending · 16 November 2026**
 
 Redesign Homeboard's complete remote-operated menu experience: its entry points,
 hierarchy, interaction, layout, typography, color, icons, focus feedback and exit
@@ -74,7 +74,8 @@ prompts; its uninstall confirmation remains because Homeboard cannot reverse it.
 - **Dialogs and editing:** coordinate entry is a palette-matched form with labeled
   latitude/longitude fields and Save/Cancel; invalid values stay in the form.
   Redesign About as a content-first information page: product name and version,
-  purpose, CleanYourTV attribution, license details and a clear Back action.
+  purpose, clickable links to the Homeboard and CleanYourTV projects and the
+  Outfit and AndroidX source projects, with a compact Back action.
   Move/resize remain direct grid-edit modes with the existing bottom help strip
   and OK/Back behavior.
 - **Grid controls:** Home behavior opens bounded selectors for columns and rows.
@@ -145,7 +146,7 @@ reviewed before implementation.
 | Grid columns and rows | Bounded selectors show current and supported values; left/right steps without wrapping. |
 | Empty restore state | “No hidden app shortcuts” with a short explanation; Back closes. |
 | Restore hidden app | Four hidden shortcuts at a time; restoring returns the shortcut to All Apps and shows Undo. |
-| About Homeboard TV | Use a content-first page with product/version, purpose, attribution and licenses; Back is clear and unobtrusive. |
+| About Homeboard TV | Use a content-first page with product/version, purpose, clickable project and dependency sources, license context, and a compact Back action. |
 | Air-quality actions | Refresh or Configure. |
 | Air-quality source/location | Nearest model grid, manual coordinates, or Bangkok station. |
 | Coordinate entry | Branded field form; directional Save/Cancel action, with the Android keyboard when text entry is active. |
@@ -214,8 +215,12 @@ they should remain outside the menu tree.
       that show only values supported by the device; columns are Auto, 4, 6, 8,
       10 or 12, filtered by measured fit.
 - [x] Redesign Restore hidden app and About from the paired mockups.
-- [ ] Will's Cast1 remote review confirms directional activation, center paging,
-      submenu Back behavior and palette focus preview.
+- [x] Add and run unit tests that keep compass-arm labels inside the ring, clear
+      of the direction icons, across representative TV sizes and densities.
+- [ ] Run the expanded `pie-artwork-about-check.json` acceptance recipe and
+      inspect palette preview/reset, About source-link focus and both All Apps
+      artwork choices. Earlier grid/Undo/About navigation passed; the expanded
+      source-link and artwork checks need their own completed run record.
 
 ## Acceptance
 
@@ -237,11 +242,13 @@ they should remain outside the menu tree.
       both ends without wrapping.
 - [x] Restore hidden app clearly restores only the shortcut to All Apps and has
       a helpful empty state.
-- [x] About shows product/version, purpose, upstream attribution and licenses in
-      a content-first layout with an easy Back action.
+- [x] About shows product/version and purpose, with remote-focusable links to
+      the Homeboard and CleanYourTV repositories and Outfit and AndroidX source
+      projects; license context and a compact Back action are visible.
 - [x] Homeboard settings are identified by the sliders icon; the gear remains
       Android device settings.
-- [ ] The shared visual system works from a TV remote at 10-foot viewing
-      distance, including text contrast and focused-state distinction.
+- [ ] Complete Will's TV viewing review of contrast, focus distinction and
+      revised compass labels. Captures establish visible layout; the earlier
+      run record predates the latest label geometry and source-link changes.
 - [x] Android-owned screens remain Android-owned, and returning from them
       restores the correct Homeboard page and focused item.

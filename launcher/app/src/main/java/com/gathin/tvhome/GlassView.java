@@ -15,6 +15,8 @@ import android.view.View;
  */
 public class GlassView extends View {
 
+    static final float RIM_STROKE_WIDTH_DP = 1.5f;
+
     private final Paint fill = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint specular = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint rim = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -38,7 +40,7 @@ public class GlassView extends View {
         radius = 20f * density;
         inset = 6f * density;
         rim.setStyle(Paint.Style.STROKE);
-        rim.setStrokeWidth(1.5f * density);
+        rim.setStrokeWidth(RIM_STROKE_WIDTH_DP * density);
         rim.setColor(0xCCFFFFFF);
         glow.setStyle(Paint.Style.STROKE);
         // Cache the slab as a texture. The spring only changes translation, so the GPU can

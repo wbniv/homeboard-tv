@@ -2,6 +2,16 @@ version: '3'
 includes:
   chromecast: Taskfile.chromecast.yml
 tasks:
+  bump:
+    desc: Advance the Android APK version code and displayed subversion
+    cmds: ['dev/container.sh run ./gradlew --no-daemon :app:bumpVersion']
+  deploy:
+    desc: Bump, check, build and deploy a new numbered APK through the coordinator
+    cmds:
+      - task: bump
+      - task: check
+      - task: build
+      - 'python3 dev/deploy.py --device "{{.DEVICE | default "chromecast-test-01"}}" --recipe "{{.RECIPE | default "dev/device/iteration-check.json"}}"'
   fixture:
     desc: Build the disposable Android UI test app in the container
     cmds: ['dev/container.sh run ./gradlew --no-daemon :fixture:assembleDebug']

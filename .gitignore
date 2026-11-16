@@ -10,3 +10,5 @@
 *.keystore
 artifacts/
 evidence/
+docs/diagnostics/
+__pycache__/

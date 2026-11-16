@@ -12,6 +12,13 @@ Then use `task check` for tests/lint, `task build` for the debug APK, and
 interactive container shell; `task run -- COMMAND ARGS` runs an ad-hoc container command.
 No build task installs an APK or changes a device's launcher.
 
+`version.properties` stores `major`, `minor` and Android `version_code`.
+Gradle generates the APK version name as `major.minor.version_code`, which the
+About dialog reads from the installed package. `task bump` increments the code
+in the build container. Use `task deploy` for each new deployment: it bumps,
+checks, builds and freezes a distinct numbered APK before submitting the
+coordinator job. A failed attempt may consume a number; never roll it back.
+
 The image contains JDK 17, Android command-line tools 12.0 (archive 11076708,
 SHA-256 checked), SDK platform 34 and build-tools 34.0.0, plus Android platform-tools. The repository pins
 Gradle 8.9 and AGP 8.5.2. Android's build tools require the Linux amd64 image;

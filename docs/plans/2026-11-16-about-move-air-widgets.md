@@ -41,8 +41,9 @@ rows; see the [menu mockup](2026-11-16-palette-trend-resize/background.svg) and
 - If a destination overlaps another tile, move the overlapped tile to the
   nearest available grid position while preserving its span.
 - Preview positions without changing persisted layout; OK commits, Back cancels.
-- Keep the existing one-pixel breathing gap between launcher icon bounds and
-  the animated circular focus rim.
+- Circular app icons now follow the measured gap, ring and halo in the
+  [Google TV app focus plan](2026-11-16-google-tv-app-focus.md), superseding the
+  earlier one-pixel clearance proposal. Unmasked icons retain their existing rim.
 
 ```mermaid
 flowchart LR
@@ -93,12 +94,14 @@ provider and grid location, and preserve AirBKK readings as station measurements
 - [ ] Move OK persists positions; Back restores all original positions.
 - [ ] Resize guidance is a one-line, dialog-styled strip spanning the grid.
 - [x] The palette selector shows twenty choices in five rows on one screen.
+- [ ] Put Icons under Appearance, with All Apps artwork choices in the Icons submenu.
 - [ ] Multiple air widgets have separate location, size, source and settings.
 - [ ] Auto location does not claim a model grid is a local monitor reading.
-- [ ] The one-pixel icon-to-focus clearance remains intact.
+- [x] Circular app focus uses the reference gap and halo; captured on Cast1.
 - [x] Container tests and lint pass for the 20-choice palette and background
       menu update.
-- [ ] Install/capture this revision on Cast2 after its personal-use pause clears.
+- [x] Install and capture the circular app focus revision on Cast1; Cast2 remains
+      held for personal use.
 - [ ] Cast1 remains recovery-required after `target-left-foreground` and
       unverified cleanup; see `evidence/cast1-palette-12-2026-11-16/` and
       `evidence/cast1-recovery-2026-11-16/`.

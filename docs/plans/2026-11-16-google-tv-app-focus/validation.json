@@ -1,0 +1,21 @@
+{
+  "tests": 348,
+  "failures": 0,
+  "errors": 0,
+  "version_name": "0.1.4",
+  "version_code": 4,
+  "apk_sha256": "d46504c27fedc9d01d785081f46e9171f46700de3a623484dc6799dcb196d0d4",
+  "cast1_job": "J-94603b06acc6",
+  "cast1_status": "succeeded",
+  "cast1_health": "ready",
+  "lint_errors": 0,
+  "lint_warnings": 193,
+  "lint_information": 96,
+  "observed_focus": "Snowgoons; recipe capture label says youtube-focused",
+  "about_version_observed": "0.1.4",
+  "halo_clears_on_top_control": true,
+  "reference_motion_calibrated": false,
+  "cast2_install": "failed before installation: personal-install-unverified",
+  "cast2_job": "J-ce90ef4963fa",
+  "cast2_health": "ready"
+}

@@ -2,6 +2,28 @@ plugins {
     id 'com.android.application'
 }
 
+def versionFile = rootProject.file('../version.properties')
+def appVersion = new Properties()
+versionFile.withInputStream { appVersion.load(it) }
+def apkVersionCode = appVersion.getProperty('version_code').toInteger()
+def versionPrefix = "${appVersion.getProperty('major')}.${appVersion.getProperty('minor')}"
+if (!(versionPrefix ==~ /\d+\.\d+/) || apkVersionCode < 1 || apkVersionCode > 2100000000) {
+    throw new GradleException('Invalid version.properties')
+}
+
+tasks.register('bumpVersion') {
+    group = 'versioning'
+    description = 'Advance the Android version code for the next deployment'
+    doLast {
+        def current = new Properties()
+        versionFile.withInputStream { current.load(it) }
+        def next = current.getProperty('version_code').toInteger() + 1L
+        if (next > 2100000000) throw new GradleException('Android version code limit reached')
+        versionFile.text = "major=${current.getProperty('major')}\nminor=${current.getProperty('minor')}\nversion_code=${next}\n"
+        println "Next deployment: ${current.getProperty('major')}.${current.getProperty('minor')}.${next} (versionCode ${next})"
+    }
+}
+
 android {
     namespace 'com.gathin.tvhome'
     compileSdk 34
@@ -11,8 +33,8 @@ android {
         applicationId 'net.biohack.homeboard'
         minSdk 26
         targetSdk 34
-        versionCode 1
-        versionName '0.1.0'
+        versionCode apkVersionCode
+        versionName "${versionPrefix}.${apkVersionCode}"
     }
 
     buildTypes {

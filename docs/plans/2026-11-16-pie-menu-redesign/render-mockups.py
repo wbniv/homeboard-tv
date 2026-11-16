@@ -183,17 +183,23 @@ def pie_screen(x, y, title, choices, center, w=850, h=420):
                f'<rect x="{x+28}" y="{y+28}" width="80" height="80" rx="20" fill="#37556b" stroke="#91bdd6" stroke-width="2"/>',
                text(x + 68, y + 82, "H", 42, "#ffffff", "700", "middle"),
                text(x + 130, y + 58, "Homeboard TV", 27, "#f2f5f7", "700"),
-               text(x + 130, y + 88, "Version 1.0 · A flexible home for your TV", 16, "#aebcc7"),
-               text(x + 32, y + 160, "WHAT IT DOES", 13, "#80bce3", "700"),
-               text(x + 32, y + 188, "Put your favorite apps and useful widgets on Home.", 18, "#f2f5f7"),
-               f'<rect x="{x+28}" y="{y+222}" width="370" height="108" rx="10" fill="#1d2b36" stroke="#536777"/>',
-               text(x + 48, y + 250, "BUILT ON CLEANYOURTV", 13, "#80bce3", "700"),
-               text(x + 48, y + 278, "Gathin and contributors · MIT License", 15, "#f2f5f7"),
-               f'<rect x="{x+414}" y="{y+222}" width="400" height="108" rx="10" fill="#1d2b36" stroke="#536777"/>',
-               text(x + 434, y + 250, "OPEN-SOURCE NOTICES", 13, "#80bce3", "700"),
-               text(x + 434, y + 278, "Outfit · SIL OFL 1.1  |  AndroidX · Apache 2.0", 14, "#f2f5f7"),
-               f'<rect x="{x+w-154}" y="{y+h-66}" width="126" height="42" rx="8" fill="#253746" stroke="#71899b"/>',
-               text(x+w-91, y+h-39, "←  BACK", 15, "#f2f5f7", "700", "middle")]
+               text(x + 130, y + 88, "Version 1.0 · Your apps and widgets, arranged your way", 16, "#aebcc7"),
+               text(x + 32, y + 145, "A customizable home screen for your TV, built on CleanYourTV.", 18, "#f2f5f7"),
+               text(x + 32, y + 178, "PROJECT SOURCES & LICENSES", 13, "#80bce3", "700")]
+        links = [
+            ("Homeboard TV source", "Project repository"),
+            ("CleanYourTV source", "Launcher foundation · MIT"),
+            ("Outfit font", "Source · SIL Open Font License"),
+            ("AndroidX", "Source · Apache License 2.0"),
+        ]
+        for i, (heading, detail) in enumerate(links):
+            row, col = divmod(i, 2)
+            xx, yy = x + 28 + col * 398, y + 190 + row * 64
+            out.append(f'<rect x="{xx}" y="{yy}" width="382" height="56" rx="9" fill="#1d2b36" stroke="#536777"/>')
+            out.append(text(xx + 14, yy + 23, heading + "  ↗", 16, "#f2f5f7", "700"))
+            out.append(text(xx + 14, yy + 44, detail, 12, "#aebcc7"))
+        out += [f'<rect x="{x+w-154}" y="{y+h-58}" width="126" height="38" rx="8" fill="#253746" stroke="#71899b"/>',
+               text(x+w-91, y+h-33, "←  BACK", 15, "#f2f5f7", "700", "middle")]
         return "".join(out)
     if title == "Restore empty state":
         out = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="12" fill="#15212b" stroke="#4a5967"/>',

@@ -43,7 +43,7 @@ final class PieMenuView extends ViewGroup {
         setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         labelPaint.setColor(palette.text);
         labelPaint.setTextSize(dp(18));
-        labelPaint.setTypeface(android.graphics.Typeface.create("sans-serif-medium", 0));
+        labelPaint.setTypeface(android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL));
         smallPaint.setColor(palette.muted);
         smallPaint.setTextSize(dp(11));
         for (int i = 0; i < icons.length; i++) {
@@ -104,11 +104,11 @@ final class PieMenuView extends ViewGroup {
 
     @Override protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         float cx = getWidth() / 2f, cy = getHeight() / 2f;
-        float outer = Math.min(getWidth(), getHeight()) / 2f - dp(12);
-        float inner = dp(104);
+        float outer = PieMenuGeometry.outerRadius(Math.min(getWidth(), getHeight()), dp(12));
+        float inner = PieMenuGeometry.innerRadius(outer, dp(104));
         float mid = (outer + inner) / 2f;
         float iconRadius = mid - dp(25);
-        float sideIconRadius = Math.max(inner + dp(30), outer - dp(160));
+        float sideIconRadius = PieMenuGeometry.sideIconRadius(outer, inner, dp(30), dp(160));
         int iconSize = dp(34);
         float[][] positions = {
                 {cx, cy - iconRadius}, {cx + sideIconRadius, cy},
@@ -124,8 +124,8 @@ final class PieMenuView extends ViewGroup {
     @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         float cx = getWidth() / 2f, cy = getHeight() / 2f;
-        float outer = Math.min(getWidth(), getHeight()) / 2f - dp(12);
-        float inner = dp(104);
+        float outer = PieMenuGeometry.outerRadius(Math.min(getWidth(), getHeight()), dp(12));
+        float inner = PieMenuGeometry.innerRadius(outer, dp(104));
         oval.set(cx - outer, cy - outer, cx + outer, cy + outer);
         RectF innerOval = new RectF(cx - inner, cy - inner, cx + inner, cy + inner);
         int[] starts = {-135, -45, 45, 135};
@@ -178,14 +178,19 @@ final class PieMenuView extends ViewGroup {
                               float cx, float cy, float outer, float inner) {
         float mid = (outer + inner) / 2f;
         float labelRadius = mid + dp(33);
+        float sideIconRadius = PieMenuGeometry.sideIconRadius(outer, inner, dp(30), dp(160));
+        float iconSize = dp(34);
+        float sideLabelStart = PieMenuGeometry.sideLabelStart(sideIconRadius, iconSize, dp(12));
+        float sideLabelMax = PieMenuGeometry.sideLabelWidth(outer, sideIconRadius, iconSize, dp(12), dp(24));
+        float verticalLabelMax = PieMenuGeometry.verticalLabelWidth(outer, labelRadius, dp(205), dp(20));
         labelPaint.setColor(palette.text);
         labelPaint.setTextSize(dp(label.length() > 17 ? 14 : 17));
-        String shortLabel = ellipsize(label, arm == 1 || arm == 3 ? outer - dp(154) : dp(205), labelPaint);
+        String shortLabel = ellipsize(label, arm == 1 || arm == 3 ? sideLabelMax : verticalLabelMax, labelPaint);
         float x, y;
         if (arm == 0) { x = cx; y = cy - labelRadius; labelPaint.setTextAlign(Paint.Align.CENTER); }
-        else if (arm == 1) { x = cx + outer - dp(142); y = cy + dp(6); labelPaint.setTextAlign(Paint.Align.LEFT); }
+        else if (arm == 1) { x = cx + sideLabelStart; y = cy + dp(6); labelPaint.setTextAlign(Paint.Align.LEFT); }
         else if (arm == 2) { x = cx; y = cy + labelRadius + dp(7); labelPaint.setTextAlign(Paint.Align.CENTER); }
-        else { x = cx - outer + dp(142); y = cy + dp(6); labelPaint.setTextAlign(Paint.Align.RIGHT); }
+        else { x = cx - sideLabelStart; y = cy + dp(6); labelPaint.setTextAlign(Paint.Align.RIGHT); }
         canvas.drawText(shortLabel, x, y, labelPaint);
         if (isCurrent) {
             smallPaint.setColor(palette.focus);

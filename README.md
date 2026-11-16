@@ -22,6 +22,11 @@ The native implementation supports saved empty Home, app favorites, separate app
 move previews, tile deletion/restoration, Android uninstall confirmation, palettes and reduced motion.
 See the plan for device validation and remaining limits.
 
+[Google TV app icons and glowing focus](docs/plans/2026-11-16-google-tv-app-focus.md)
+documents the circular artwork, focus ring and halo reference, implementation
+and device evidence. Use `task deploy` for a newly numbered APK deployment;
+the About dialog displays the installed APK version.
+
 ## Start here
 
 - [Product direction: our brand and the CleanYourTV community](docs/product-direction.md)

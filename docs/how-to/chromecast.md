@@ -73,13 +73,26 @@ remove it using raw ADB or alter the shared coordinator to bypass its guard.
 
 ## Iterative install target
 
+Use `task deploy DEVICE=chromecast-test-01` for a new Homeboard deployment.
+It runs `task bump`, container checks and packaging, verifies matching version
+metadata, freezes `artifacts/deployments/<major.minor.version_code>/homeboard.apk`,
+then runs coordinator devices/queue, registration, submit, watch and evidence.
+The About dialog displays that installed APK version. `RECIPE=/absolute/file.json`
+selects a complete reviewed job instead of the default brief iteration check.
+Never reuse a deployment number. Low-level coordinator tasks remain available
+for reference capture, job control and evidence; manually assembled new installs
+must follow the same bump/build/freeze rule.
+
 Keep iterative installs on **Cast1** (`chromecast-test-01`) while Will is testing
 Homeboard. Once Will says it is usable, move iterative testing to Cast2
 (`chromecast-test-02`). After each working APK iteration, check devices and
 queue, then register the new APK hash and install it through a complete
-coordinator-owned job, preserving data/settings. Do not use Cast2 while its
-personal-use reservation is active. Installation does not select Homeboard as
-the default Home app.
+coordinator-owned job, preserving data/settings. Submit requested installs even
+when Cast2 has a personal-use marker; the coordinator admits background installs
+and defers foreground verification as needed. Devices/queue are status checks,
+not an extra agent-side gate. Installation does not select Homeboard as the
+default Home app. Additional targets in one deployment receive the same frozen
+APK/version; rebuilds and new revisions need a fresh number.
 
 Use `dev/device/iteration-check.json` for the current install/brief-launch cycle
 while Will tests interactively. It sends no scripted navigation. Historical menu

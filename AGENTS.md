@@ -28,6 +28,16 @@ docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
 Keep iterative Homeboard testing on Cast1 (`chromecast-test-01`) while Will is
 still testing the app. After Will says it is usable, move iterative testing to
 Cast2 (`chromecast-test-02`). Install each working APK through the shared
-coordinator and preserve app data and settings. Do not use Cast2 while it is
-reserved for personal use. Do not change the default Home app merely to install
-a build.
+coordinator and preserve app data and settings. Submit requested installs after
+the devices/queue checks even when a personal-use marker is present: the
+coordinator owns admission and supports background installs during personal use.
+Let it defer any foreground launcher verification. Do not add an agent-side
+reservation gate or change the default Home app merely to install a build.
+
+Every new deployment must advance the Android APK version code. Use `task deploy`
+for the bump/check/build/freeze/coordinator workflow; `task bump` increments the
+integer in `version.properties` through the build container. The APK version name
+and About dialog must use `major.minor.version_code`. Never reuse an earlier
+deployment number, including after a failed attempt. See the Chromecast how-to.
+Additional target devices in the same deployment use the identical frozen APK
+and version; a new build or source revision requires a new number.

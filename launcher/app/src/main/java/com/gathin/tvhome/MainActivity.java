@@ -111,7 +111,7 @@ public class MainActivity extends Activity {
     private final Map<String, View> tiles = new LinkedHashMap<>();
     private final List<HomeLayout.Cell> visibleCells = new ArrayList<>();
     private FrameLayout root, surface, overlay;
-    private GlassView appFocusHighlight;
+    private View appFocusHighlight;
     private SpringAnimation appFocusX, appFocusY;
     private boolean appFocusHighlightShown;
     private boolean restoringSurface = true;
@@ -205,6 +205,17 @@ public class MainActivity extends Activity {
         root = new FrameLayout(this);
         root.setBackgroundColor(background);
         setContentView(root);
+        root.getViewTreeObserver().addOnGlobalFocusChangeListener((previous, next) -> {
+            // Android can dispatch this before the tile's own focus listener updates `focused`.
+            boolean appTarget = false;
+            for (Map.Entry<String, View> entry : tiles.entrySet()) {
+                if (entry.getValue() == next && entry.getKey().startsWith("app:")) {
+                    appTarget = true; break;
+                }
+            }
+            if (!active || overlay != null || !appTarget || (allApps && layout.appBanners))
+                hideAppFocusHighlight();
+        });
         if (savedInstanceState != null) {
             allApps = savedInstanceState.getBoolean("allApps");
             homePage = savedInstanceState.getInt("homePage");
@@ -250,6 +261,11 @@ public class MainActivity extends Activity {
         menuStack.clear(); activeMenu = null; aboutBackButton = null;
         dismissMenu();
         if (moving) cancelMove();
+        hideAppFocusHighlight();
+        for (View tile : tiles.values()) {
+            tile.animate().cancel();
+            if (tile instanceof CircularAppTile) ((CircularAppTile) tile).stopAppearanceAnimation();
+        }
         saveNavigationState();
         for (AirQualityCard widget : airWidgets.values()) widget.stop();
         super.onPause();
@@ -790,12 +806,16 @@ public class MainActivity extends Activity {
                 dp(denseApp ? 2 : 16), dp(denseApp ? 2 : 12));
         view.setOnFocusChangeListener((v, hasFocus) -> {
             if (isAirWidgetKey(key)) airFor(key).setTileFocused(hasFocus);
-            boolean animateTile = hasFocus && denseApp && !reducedMotion();
-            view.animate().cancel();
-            view.animate().scaleX(hasFocus && denseApp ? APP_FOCUS_SCALE : 1f)
-                    .scaleY(hasFocus && denseApp ? APP_FOCUS_SCALE : 1f)
-                    .setDuration(animateTile ? 180 : 0)
-                    .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
+            boolean animateTile = denseApp && !restoringSurface && !reducedMotion();
+            if (view instanceof CircularAppTile) {
+                ((CircularAppTile) view).setAppFocused(hasFocus, animateTile);
+            } else {
+                view.animate().cancel();
+                view.animate().scaleX(hasFocus && denseApp ? APP_FOCUS_SCALE : 1f)
+                        .scaleY(hasFocus && denseApp ? APP_FOCUS_SCALE : 1f)
+                        .setDuration(animateTile ? AppAppearance.TRANSITION_MS : 0)
+                        .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
+            }
             if (hasFocus) {
                 focused = key; if (allApps) appsFocus = key; else homeFocus = key;
                 if (denseApp) moveAppFocusHighlight(appHighlightTarget(view), !restoringSurface);
@@ -806,15 +826,20 @@ public class MainActivity extends Activity {
         tiles.put(key, view);
     }
     private void createAppFocusHighlight() {
-        appFocusHighlight = new GlassView(this, null);
-        appFocusHighlight.setPalette(background);
-        appFocusHighlight.setRadius(dp(18));
-        appFocusHighlight.setInset(0);
+        if (layout.circularIcons) {
+            appFocusHighlight = new AppFocusView(this);
+        } else {
+            GlassView glass = new GlassView(this, null);
+            glass.setPalette(background); glass.setRadius(dp(18)); glass.setInset(0);
+            appFocusHighlight = glass;
+        }
         appFocusHighlight.setAlpha(0f);
         appFocusHighlight.setFocusable(false);
         appFocusHighlight.setClickable(false);
         appFocusHighlight.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-        surface.addView(appFocusHighlight, new FrameLayout.LayoutParams(dp(100), dp(100)));
+        // Circular fill/halo belongs behind artwork; existing glass stays above unmasked artwork.
+        surface.addView(appFocusHighlight, layout.circularIcons ? 0 : surface.getChildCount(),
+                new FrameLayout.LayoutParams(dp(100), dp(100)));
         FloatPropertyCompat<View> x = new FloatPropertyCompat<View>("appFocusX") {
             @Override public float getValue(View view) { return view.getTranslationX(); }
             @Override public void setValue(View view, float value) { view.setTranslationX(value); }
@@ -825,22 +850,28 @@ public class MainActivity extends Activity {
         };
         appFocusX = new SpringAnimation(appFocusHighlight, x);
         appFocusY = new SpringAnimation(appFocusHighlight, y);
-        SpringForce spring = new SpringForce().setStiffness(260f).setDampingRatio(0.58f);
+        float damping = layout.circularIcons ? 1f : 0.58f;
+        SpringForce spring = new SpringForce().setStiffness(260f).setDampingRatio(damping);
         appFocusX.setSpring(spring);
-        appFocusY.setSpring(new SpringForce().setStiffness(260f).setDampingRatio(0.58f));
+        appFocusY.setSpring(new SpringForce().setStiffness(260f).setDampingRatio(damping));
         if (reducedMotion()) { appFocusX.setSpring(new SpringForce().setStiffness(1000f).setDampingRatio(1f));
             appFocusY.setSpring(new SpringForce().setStiffness(1000f).setDampingRatio(1f)); }
     }
     private void moveAppFocusHighlight(View card, boolean animate) {
-        if (appFocusHighlight == null || card.getParent() == null) return;
+        if (!active || overlay != null || appFocusHighlight == null || card.getParent() == null
+                || card.getWidth() <= 0 || card.getHeight() <= 0) return;
         Rect rect = new Rect(0, 0, card.getWidth(), card.getHeight());
         surface.offsetDescendantRectToMyCoords(card, rect);
-        // The outline is clipped at this view's bounds, so one physical pixel of
-        // view padding gives the same one-pixel breathing gap as the system launcher.
-        int padding = 1;
-        int width = (int) Math.ceil(card.getWidth() * APP_FOCUS_SCALE) + padding * 2;
-        int height = (int) Math.ceil(card.getHeight() * APP_FOCUS_SCALE) + padding * 2;
-        appFocusHighlight.setRadius(layout.circularIcons ? Math.min(width, height) / 2f : dp(10));
+        int width, height;
+        if (appFocusHighlight instanceof AppFocusView) {
+            ((AppFocusView) appFocusHighlight).setIconDiameter(card.getWidth());
+            width = height = AppAppearance.focusExtent(card.getWidth());
+        } else {
+            int padding = 1;
+            width = (int) Math.ceil(card.getWidth() * APP_FOCUS_SCALE) + padding * 2;
+            height = (int) Math.ceil(card.getHeight() * APP_FOCUS_SCALE) + padding * 2;
+            ((GlassView) appFocusHighlight).setRadius(dp(10));
+        }
         ViewGroup.LayoutParams lp = appFocusHighlight.getLayoutParams();
         lp.width = width; lp.height = height;
         appFocusHighlight.setLayoutParams(lp);
@@ -855,6 +886,12 @@ public class MainActivity extends Activity {
         }
         appFocusHighlightShown = true;
         appFocusHighlight.setAlpha(1f);
+    }
+    private void hideAppFocusHighlight() {
+        if (appFocusX != null) { appFocusX.cancel(); }
+        if (appFocusY != null) { appFocusY.cancel(); }
+        if (appFocusHighlight != null) { appFocusHighlight.setAlpha(0f); }
+        appFocusHighlightShown = false;
     }
     private View appHighlightTarget(View tile) {
         if (tile instanceof ViewGroup && ((ViewGroup) tile).getChildCount() > 0
@@ -918,6 +955,15 @@ public class MainActivity extends Activity {
     }
     private View appTile(String key, boolean dashboard) {
         App app = apps.get(key);
+        if (layout.circularIcons && (dashboard || !layout.appBanners)) {
+            Drawable artwork = null;
+            try { if (app != null) artwork = app.info.loadIcon(getPackageManager()); }
+            catch (RuntimeException ignored) { }
+            String label = app == null ? "Unavailable app" : app.label;
+            CircularAppTile circular = new CircularAppTile(this, artwork, label);
+            circular.setContentDescription(label + (app == null ? "; hold OK to remove" : "; hold OK for menu"));
+            return circular;
+        }
         LinearLayout tile = new LinearLayout(this); tile.setOrientation(LinearLayout.VERTICAL);
         tile.setGravity(Gravity.CENTER);
         if (app != null) {
@@ -992,9 +1038,15 @@ public class MainActivity extends Activity {
         int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
                 / getResources().getDisplayMetrics().density);
         int gridWidthDp = Math.max(1, screenWidthDp - 88);
-        return Math.max(1, gridWidthDp / 108);
+        return Math.max(1, gridWidthDp / (layout.circularIcons ? 96 : 108));
     }
-    private int appRows() { return compactApps() ? 4 : 2; }
+    private int appRows() {
+        if (!compactApps()) return 2;
+        if (!layout.circularIcons) return 4;
+        int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
+                / getResources().getDisplayMetrics().density);
+        return Math.max(1, (screenHeightDp - 132) / 128);
+    }
     private int appPageSize() { return appColumns() * appRows(); }
     private final class TileGrid extends ViewGroup {
         private final int columns, rows;
@@ -1072,12 +1124,15 @@ public class MainActivity extends Activity {
         if (target == null) return;
         target.post(() -> {
             if (!active || overlay != null || (allApps && layout.appBanners)
-                    || target != tiles.get(focused) || appFocusHighlight == null) return;
+                    || target != tiles.get(focused) || !target.hasFocus() || appFocusHighlight == null) return;
             View icon = appHighlightTarget(target);
             if (icon.getWidth() <= 0 || icon.getHeight() <= 0) {
-                icon.postOnAnimation(this::snapDenseAppHighlight);
+                // A laid-out cell may have no artwork room at large text sizes; do not spin forever.
+                if (!icon.isLaidOut()) icon.postOnAnimation(this::snapDenseAppHighlight);
+                else hideAppFocusHighlight();
                 return;
             }
+            if (target instanceof CircularAppTile) ((CircularAppTile) target).setAppFocused(true, false);
             moveAppFocusHighlight(icon, false);
         });
     }
@@ -1529,8 +1584,9 @@ public class MainActivity extends Activity {
     }
 
     private void appArtworkSettings() {
-        menu("Icons", "Choose All Apps icon style · Home favorites stay compact",
-                new String[]{"Launcher icons · full-size grid", "TV banners · 4 × 2"}, artwork -> {
+        menu("Icons", "All Apps uses " + (layout.appBanners ? "TV banners · 4 × 2" : "launcher icons · dense grid")
+                        + " · Home favorites stay compact",
+                new String[]{"Launcher icons · dense grid", "TV banners · 4 × 2"}, artwork -> {
                     layout.appBanners = artwork == 1; save("Changed All Apps artwork"); render(0);
                 }, layout.appBanners ? 1 : 0);
     }
@@ -1586,9 +1642,9 @@ public class MainActivity extends Activity {
 
     private void finishResize(boolean commit) {
         if (!resizing) return;
-        if (commit) save("Resized panel");
-        else if (resizePreviousSpan == null) layout.panelSpans.remove(resizingKey);
-        else layout.setPanelSpan(resizingKey, resizePreviousSpan.width, resizePreviousSpan.height);
+        if (commit) { save("Resized panel"); }
+        else if (resizePreviousSpan == null) { layout.panelSpans.remove(resizingKey); }
+        else { layout.setPanelSpan(resizingKey, resizePreviousSpan.width, resizePreviousSpan.height); }
         resizing = false; resizingKey = null; resizePreviousSpan = null;
         if (overlay != null) root.removeView(overlay);
         overlay = null; activeMenu = null; menuStack.clear();
@@ -1645,6 +1701,7 @@ public class MainActivity extends Activity {
         menuGeneration++;
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        hideAppFocusHighlight();
         overlay = new FrameLayout(this);
         overlay.setBackgroundColor(paletteColors.scrim); overlay.setFocusable(true); overlay.setFocusableInTouchMode(true);
         overlay.setContentDescription((columns ? "Grid columns" : "Grid rows") + " selector");
@@ -1730,13 +1787,14 @@ public class MainActivity extends Activity {
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         activeMenu = null; menuGeneration++;
+        hideAppFocusHighlight();
         overlay = new FrameLayout(this);
         overlay.setBackgroundColor(paletteColors.scrim);
         overlay.setFocusable(true); overlay.setFocusableInTouchMode(true);
 
         LinearLayout panel = new LinearLayout(this);
         panel.setOrientation(LinearLayout.VERTICAL);
-        panel.setPadding(dp(30), dp(24), dp(30), dp(20));
+        panel.setPadding(dp(30), dp(24), dp(30), dp(18));
         panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
         LinearLayout heading = new LinearLayout(this);
         heading.setOrientation(LinearLayout.HORIZONTAL); heading.setGravity(Gravity.CENTER_VERTICAL);
@@ -1748,35 +1806,69 @@ public class MainActivity extends Activity {
         titleBlock.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams titleBlockLp = new LinearLayout.LayoutParams(0, -2, 1f);
         titleBlockLp.leftMargin = dp(22); heading.addView(titleBlock, titleBlockLp);
-        TextView title = text("About Homeboard TV", 27); title.setTypeface(null, Typeface.BOLD);
-        TextView version = text("Version " + appVersion(), 17); version.setTextColor(paletteColors.muted);
+        TextView title = text("Homeboard TV", 29); title.setTypeface(null, Typeface.BOLD);
+        TextView version = text("Version " + appVersion() + " · Your apps and widgets, arranged your way", 16);
+        version.setTextColor(paletteColors.muted);
         titleBlock.addView(title); titleBlock.addView(version);
         panel.addView(heading, new LinearLayout.LayoutParams(-1, dp(90)));
 
-        TextView purpose = text("A customizable TV home screen for widgets and favorite apps.", 18);
-        purpose.setPadding(0, dp(18), 0, dp(18));
+        TextView purpose = text("A customizable home screen for your TV, built on CleanYourTV.", 18);
+        purpose.setPadding(0, dp(14), 0, dp(16));
         panel.addView(purpose);
-        View divider = new View(this); divider.setBackgroundColor(paletteColors.edge);
-        panel.addView(divider, new LinearLayout.LayoutParams(-1, dp(1)));
-        TextView base = text("Built on CleanYourTV", 18); base.setTypeface(null, Typeface.BOLD);
-        base.setPadding(0, dp(16), 0, dp(4)); panel.addView(base);
-        TextView attribution = text("CleanYourTV by Gathin and contributors · MIT License", 15);
-        attribution.setTextColor(paletteColors.muted); panel.addView(attribution);
-        TextView notices = text("Outfit font · SIL Open Font License 1.1\nAndroidX components · Apache License 2.0", 14);
-        notices.setTextColor(paletteColors.muted); notices.setPadding(0, dp(12), 0, dp(14)); panel.addView(notices);
+        TextView sourcesHeading = text("PROJECT SOURCES & LICENSES", 13);
+        sourcesHeading.setTextColor(paletteColors.focus); sourcesHeading.setTypeface(null, Typeface.BOLD);
+        sourcesHeading.setPadding(0, dp(2), 0, dp(8)); panel.addView(sourcesHeading);
 
-        TextView closeText = text("BACK TO HOME SETTINGS", 16); closeText.setTypeface(null, Typeface.BOLD);
+        LinearLayout sourceGrid = new LinearLayout(this);
+        sourceGrid.setOrientation(LinearLayout.VERTICAL);
+        String[][] sources = {
+                {"Homeboard TV source", "Project repository", "https://github.com/wbniv/homeboard-tv"},
+                {"CleanYourTV source", "Launcher foundation · MIT", "https://github.com/Gathin23/cleanyourtv"},
+                {"Outfit font", "Font source · SIL Open Font License", "https://github.com/google/fonts/tree/main/ofl/outfit"},
+                {"AndroidX", "Library source · Apache License 2.0", "https://github.com/androidx/androidx"}
+        };
+        for (int row = 0; row < 2; row++) {
+            LinearLayout sourceRow = new LinearLayout(this);
+            sourceRow.setOrientation(LinearLayout.HORIZONTAL);
+            for (int column = 0; column < 2; column++) {
+                String[] source = sources[row * 2 + column];
+                View link = aboutSourceLink(source[0], source[1], source[2]);
+                LinearLayout.LayoutParams linkLp = new LinearLayout.LayoutParams(0, dp(72), 1f);
+                linkLp.setMargins(column == 0 ? 0 : dp(10), dp(4), column == 0 ? dp(5) : 0, dp(4));
+                sourceRow.addView(link, linkLp);
+            }
+            sourceGrid.addView(sourceRow, new LinearLayout.LayoutParams(-1, dp(80)));
+        }
+        panel.addView(sourceGrid);
+
+        TextView closeText = text("←  BACK", 15); closeText.setTypeface(null, Typeface.BOLD);
         closeText.setTextColor(paletteColors.text); closeText.setGravity(Gravity.CENTER);
         closeText.setFocusable(true); closeText.setClickable(true);
-        closeText.setBackground(shape(paletteColors.focus, paletteColors.text, 1));
+        closeText.setPadding(dp(14), 0, dp(14), 0);
+        closeText.setBackground(tileBackground());
         closeText.setOnClickListener(v -> backMenu());
         aboutBackButton = closeText;
-        panel.addView(closeText, new LinearLayout.LayoutParams(-1, dp(54)));
+        LinearLayout.LayoutParams backLp = new LinearLayout.LayoutParams(-2, dp(42));
+        backLp.topMargin = dp(8); panel.addView(closeText, backLp);
 
-        int width = Math.min(dp(760), getResources().getDisplayMetrics().widthPixels - dp(96));
+        int width = Math.min(dp(900), getResources().getDisplayMetrics().widthPixels - dp(96));
         overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));
         closeText.requestFocus();
+    }
+    private View aboutSourceLink(String title, String detail, String url) {
+        LinearLayout card = new LinearLayout(this);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setGravity(Gravity.CENTER_VERTICAL);
+        card.setPadding(dp(14), dp(7), dp(14), dp(7));
+        card.setBackground(tileBackground());
+        card.setFocusable(true); card.setClickable(true);
+        card.setContentDescription(title + ". " + detail + ". Open source link.");
+        TextView heading = text(title + "  ↗", 17); heading.setTypeface(null, Typeface.BOLD);
+        TextView caption = text(detail, 13); caption.setTextColor(paletteColors.muted);
+        card.addView(heading); card.addView(caption);
+        card.setOnClickListener(v -> open(new Intent(Intent.ACTION_VIEW, Uri.parse(url))));
+        return card;
     }
     private boolean isDefaultHomeApp() {
         if (android.os.Build.VERSION.SDK_INT >= 29) {
@@ -1868,6 +1960,7 @@ public class MainActivity extends Activity {
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         if (overlay != null) root.removeView(overlay);
+        hideAppFocusHighlight();
         overlay = new FrameLayout(this);
         overlay.setBackgroundColor(paletteColors.scrim);
         overlay.setFocusable(true); overlay.setClickable(true);
@@ -2050,6 +2143,7 @@ public class MainActivity extends Activity {
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         if (overlay != null) root.removeView(overlay);
+        hideAppFocusHighlight();
         overlay = new FrameLayout(this);
         overlay.setBackgroundColor(paletteColors.scrim);
         overlay.setFocusable(true); overlay.setClickable(true);
