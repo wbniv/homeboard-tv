@@ -21,7 +21,7 @@ complete reachable coverage of inherited resources, cached Undo text, custom
 aliases or provider metadata. Raw provider readiness metadata and some inherited
 surfaces remain to be inventoried. Do not call this a fully accepted Thai release.
 
-No APK has been installed by this workstream. Before installing a combined
+The initial worktree build was not installed. Before installing another combined
 candidate, coordinate one deployment owner, merge intended features and consume
 a fresh deployment number using `task deploy` through the shared coordinator.
 
@@ -57,9 +57,32 @@ The combined candidate passed 380 tests, lint and the 315-resource structural ga
   confirms the previous installed APK stayed unchanged and device health is ready.
 - [x] Verify the existing project cache certificate matches the installed APK
   (`87884e9c…`); name the shared cache explicitly in Compose for worktrees.
-- [ ] Deploy the corrected build with a fresh number and verify launch/evidence.
+- [x] Deploy corrected 0.1.18 to Cast1; installed hash verified and brief launch captured.
 
 The failed 0.1.17 APK SHA-256 is
 `14b30d083a909c49fc23f75864ef6e3d6bca3170f42f78b19b054f32ce57ac38`.
 The complete failed evidence and source patch are retained under
 `artifacts/deployments/0.1.17/`. No uninstall or settings reset was performed.
+
+
+### Successful 0.1.18 deployment
+
+Coordinator job **J‑588dec1e1f43** succeeded on Cast1 with health `ready` and safe
+cleanup. It updated the existing installation in place without uninstalling or
+resetting app data. The screenshot shows the saved All Apps surface and palette;
+this is brief-launch evidence, not bilingual rendering acceptance.
+
+- Source base: `577afff`, containing merge `1622657` and the shared-key correction.
+- Frozen source patch: the version-only change from 17 to 18, retained alongside
+  the APK as `artifacts/deployments/0.1.18/source.patch`.
+- APK and verified installed SHA-256:
+  `00e7e692f722b7c74b7dd94347394d00e86386d5bb0af1f53ae4bf5f1662cd2e`.
+- Checks: 380 tests, zero failures; lint passed; 315 paired resources validated.
+- Recipe: `dev/device/iteration-check.json`; coordinator evidence exported under
+  `artifacts/deployments/0.1.18/evidence/` (receipt, screenshot, installed hash).
+
+This deployment includes the committed Background-menu fixes and offline About
+source QR links, plus the Thai language setting. Unfinished calendar changes in
+the main checkout are excluded. Thai copy review and full English/Thai switching,
+focus and shaping acceptance remain pending. Do not reinstall the old 0.1.16
+artifact over this combined build; test this identical frozen 0.1.18 APK instead.

@@ -9,8 +9,8 @@ deployment boundaries. Keep the Java launcher and native Android resources.
 
 The implementation addendum records the working language setting and structural
 resource gate. The broader review/commit/acceptance workflow below remains the
-design target; unimplemented checks are explicitly marked. No device deployment
-or linguistic acceptance is claimed.
+design target; unimplemented checks are explicitly marked. Cast1 installation and brief launch are now verified for 0.1.18; full bilingual
+rendering and linguistic acceptance remain pending.
 
 ## Review basis and decisions
 
@@ -320,3 +320,12 @@ calendar work is deliberately excluded.
 The initial Thai copy is an implementation draft, not a linguistic signoff. This
 worktree has not been merged or installed over the combined testing APK. Preserve
 one deployment owner and merge intended features before a combined deployment.
+
+
+### Deployment addendum — 16 November 2026
+
+Merged the committed Background-menu/About QR changes before the combined build.
+0.1.17 was refused because the isolated cache produced a different debug key;
+0.1.18 reuses the verified existing project cache/key and installed successfully
+on Cast1 through coordinator job J‑588dec1e1f43. The installed APK hash matches
+the frozen artifact. See the [deployment record](../testing/2026-11-16-thai-language.md).
