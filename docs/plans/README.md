@@ -41,6 +41,10 @@ missing rows on commit.*
 
 | [Configure Homeboard widgets from a phone](2026-11-17-phone-widget-editor.md) | Adds a TV-hosted local web editor with temporary TV-approved pairing, per-instance widget/layout controls, draft preview, atomic Apply and Undo. | 0.1.40 installed on both TVs; native HTTP and browser UI passed; physical-phone LAN acceptance pending | Feature |
 
+| [World clock widget](2026-11-17-world-clock-widget.md) | Implements configurable city clocks, shared city colors, an offline map, full-screen duration comparison and TV/phone settings inspired by wald3n.com. | 0.1.44 built; container checks and Cast1 core checks passed; map/restoration acceptance pending | Feature |
+
+| [Phone controller: Alan Cooper goal-directed design review](2026-11-17-phone-editor-goal-directed-design.md) | Dashboard-first phone editing, directly reorderable lists, contextual controls, one explicit TV update and conflict/draft recovery. | Implemented; validation/deployment in progress | UX / Feature |
+
 ---
 
 ## How this index was derived

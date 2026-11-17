@@ -71,6 +71,14 @@ Done/Back controls, with normal Undo after saving.
 Returning from an app retains selection/scroll during the session. Missing apps
 or metadata are labeled unavailable. Empty Favorites still has the restore action.
 
+## World clock
+
+World clock expands to city cards, a shared 24-hour comparison strip and an
+offline world map. Highlight a place for its exact date/time, zone, UTC offset,
+reference difference and next offset change. Compare time adds a shared future
+interval; Now restores live time. Back exits comparison first, then restores Home.
+See [World clock controls](world-clock.md) for settings and map navigation.
+
 ## Adding a widget type
 
 Register a type in `WidgetKind` and implement its compact renderer and expanded

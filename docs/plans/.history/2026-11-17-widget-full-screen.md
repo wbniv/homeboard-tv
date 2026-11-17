@@ -1,8 +1,13 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/2047e14) | Add fast zoom feedback when opening full-screen widgets |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/4fdbaf9) | Add full-screen widget drilldowns and dense dashboard browsing |
 
 <!--history-meta v1
+2047e14	author	Will Norris
+2047e14	added	26
+2047e14	deleted	1
+2047e14	files	1
 4fdbaf9	author	Will Norris
 4fdbaf9	added	507
 4fdbaf9	deleted	0

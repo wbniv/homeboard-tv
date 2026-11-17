@@ -15,6 +15,7 @@ import java.util.Set;
 final class HomeLayout {
     static final String AIR = "widget:air";
     static final String RAIN = "widget:rain";
+    static final String WORLD_CLOCK = "widget:world_clock";
     static final String FAVORITES = "widget:favorites";
     final List<String> favorites = new ArrayList<>();
     boolean favoritesContainer;
@@ -29,6 +30,7 @@ final class HomeLayout {
     final Map<String, HomePosition> homePositions = new LinkedHashMap<>();
     final Map<String, RainSettings> rainSettings = new LinkedHashMap<>();
     final Map<String, CalendarWidgetSettings> calendarSettings = new LinkedHashMap<>();
+    final Map<String, WorldClockSettings> clockSettings = new LinkedHashMap<>();
     int homeColumns;
     int homeRows;
     boolean reducedMotion;
@@ -147,6 +149,9 @@ final class HomeLayout {
         JSONObject calendars = j.optJSONObject("calendarSettings");
         for (String key : s.widgets) if (isCalendarWidget(key))
             s.calendarSettings.put(key, CalendarWidgetSettings.parse(calendars == null ? null : calendars.optJSONObject(key)));
+        JSONObject clocks=j.optJSONObject("clockSettings");
+        for(String key:s.widgets) if(isWorldClockWidget(key))
+            s.clockSettings.put(key,WorldClockSettings.parse(clocks==null?null:clocks.optJSONObject(key)));
         return s;
     }
 
@@ -166,6 +171,7 @@ final class HomeLayout {
                     .put("panelSpans", encodedSpans())
                     .put("homePositions", encodedHomePositions())
                     .put("calendarSettings", encodedCalendarSettings()).put("rainSettings", encodedRainSettings())
+                    .put("clockSettings",encodedClockSettings())
                     .put("homeColumns", homeColumns).put("homeRows", homeRows)
                     .put("appBanners", appBanners).put("homeAppSize", homeAppSize).put("circularIcons", circularIcons)
                     .put("customWallpaper", customWallpaper)
@@ -206,6 +212,10 @@ final class HomeLayout {
         if (isCalendarWidget(key)) {
             calendarSettings.putIfAbsent(key, new CalendarWidgetSettings());
             panelSpans.putIfAbsent(key, new PanelSpan(6, 3));
+        }
+        if(isWorldClockWidget(key)) {
+            clockSettings.putIfAbsent(key,new WorldClockSettings());
+            panelSpans.putIfAbsent(key,new PanelSpan(4,1));
         }
     }
     /** Retain existing user shortcuts once; new favorites never occupy outer grid cells. */
@@ -248,6 +258,10 @@ final class HomeLayout {
         for (Cell cell : resolved) homePositions.put(cell.key, new HomePosition(cell.page, cell.row, cell.column));
     }
     static boolean isRainWidget(String key) { return RAIN.equals(key) || key != null && key.startsWith(RAIN + ":"); }
+    static boolean isWorldClockWidget(String key) { return WORLD_CLOCK.equals(key)||key!=null&&key.startsWith(WORLD_CLOCK+":"); }
+    private JSONObject encodedClockSettings() throws JSONException {
+        JSONObject result=new JSONObject();for(Map.Entry<String,WorldClockSettings> entry:clockSettings.entrySet())result.put(entry.getKey(),entry.getValue().json());return result;
+    }
     private JSONObject encodedRainSettings() throws JSONException {
         JSONObject result = new JSONObject();
         for (Map.Entry<String, RainSettings> entry : rainSettings.entrySet()) result.put(entry.getKey(), entry.getValue().json());
@@ -283,7 +297,7 @@ final class HomeLayout {
     }
     private static int validPanelSize(int size) { return size < PANEL_SMALL || size > PANEL_LARGE ? PANEL_MEDIUM : size; }
     void delete(String key, boolean dashboard) {
-        if (dashboard) { widgets.remove(key); panelSpans.remove(key); homePositions.remove(key); calendarSettings.remove(key); rainSettings.remove(key); }
+        if (dashboard) { widgets.remove(key); panelSpans.remove(key); homePositions.remove(key); calendarSettings.remove(key); rainSettings.remove(key); clockSettings.remove(key); }
         else hidden.add(key);
     }
     List<String> visibleApps(List<String> installed) {

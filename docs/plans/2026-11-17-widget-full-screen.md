@@ -5,7 +5,8 @@ See the [validation record](../testing/2026-11-17-widget-full-screen.md) for exa
 evidence and remaining acceptance limits. Will requires every current and future widget
 type to open a useful full-screen view with more data and/or more detailed data.
 This covers Calendar, Rain, air quality and Favorites, including every configured
-instance. It supersedes the earlier Calendar-only scope.
+instance, and extends to [World clock](2026-11-17-world-clock-widget.md). It
+supersedes the earlier Calendar-only scope.
 
 ## Product requirement
 
@@ -48,7 +49,7 @@ the remaining timing, accessibility and lifecycle checks.
 
 ## Screen mockups
 
-![Expanded information for all four current widget types](2026-11-17-widget-full-screen.svg)
+![Expanded information for the original four widget types](2026-11-17-widget-full-screen.svg)
 
 ![Calendar dashboard, expansion and date details](2026-11-17-calendar-full-screen.svg)
 
@@ -70,6 +71,7 @@ with readable text. Reflow for larger text rather than shrinking it to fit more 
 | Rain | Clouds, rain timing and a compact forecast. | Seven-day overview plus a highlighted-day hourly chart/table. Temporary 24-hour / 48-hour / 7-day / All available browsing exposes the forecast already fetched, independently of compact ranges. Show exact intervals, amount/unit, separate probability, snowfall when supplied, source/update/coverage and immediate selected-hour details. Open full screen directly. |
 | Air quality | PM2.5, condition and small trend lines. | Open on a **geographic map of nearby monitoring stations**, their measurements and **Will's actual device-reported location**. Station selection updates distance, timestamp, measurement basis and details. A History tab retains 24-hour / 7-day / 30-day browsing for the selected station or separately labeled model source. |
 | Favorites | Bounded app panel with shortened labels. | Dense **banner grid on the left and persistent selected-app detail panel on the right**. More apps, full highlighted-app name, version, last update and Open / App info / Remove from favorites actions. Full-screen banners are independent of compact artwork. Retain app order, scrolling and launch/return selection. |
+| [World clock](2026-11-17-world-clock-widget.md) | Adaptive local-time cards with shared city colors, date and primary place. | Exact selected-place date/time, named zone, current offset, reference difference and next offset transition; a shared 24-hour duration comparison and an offline world map. Uses the same restore, state and lifecycle contract. See its separate mockups and validation record. |
 
 Use existing models and available records. Missing values remain missing. Expansion
 does not imply a new provider, live holiday feed or unavailable history. Full-screen
@@ -525,7 +527,8 @@ range settings. Mockups must include its expanded presentation.
   highlight updates the right pane, actions target that app, absent metadata is
   handled, explicit edits support Undo, and launch/return restores selection.
 - [ ] Record per-type evidence/limits; update widget creation guidance, how-tos
-  and quick start. Completion requires all four current types.
+  and quick start. Completion requires every registered type; World clock follows
+  this contract with its own plan and validation record.
 
 Implementation and deployment are now authorized. Per-type code and core TV
 acceptance are recorded above; unchecked items retain their specific acceptance

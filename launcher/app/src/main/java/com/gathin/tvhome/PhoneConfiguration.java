@@ -15,7 +15,7 @@ final class PhoneConfiguration {
         JSONArray widgets=new JSONArray();
         for(HomeLayout.Cell cell:layout.cells(layout.widgets,columns,rows)) {
             String key=cell.key;WidgetKind kind=kind(key);
-            JSONObject settings=kind==WidgetKind.RAIN?layout.rainSettings.get(key).json():kind==WidgetKind.CALENDAR?layout.calendarSettings.get(key).json():kind==WidgetKind.AIR?air.optJSONObject(key):new JSONObject();
+            JSONObject settings=kind==WidgetKind.RAIN?layout.rainSettings.get(key).json():kind==WidgetKind.CALENDAR?layout.calendarSettings.get(key).json():kind==WidgetKind.WORLD_CLOCK?layout.clockSettings.get(key).json():kind==WidgetKind.AIR?air.optJSONObject(key):new JSONObject();
             if(settings==null)settings=defaultAir();
             widgets.put(new JSONObject().put("key",key).put("type",kind==null?"app":kind.name().toLowerCase(Locale.ROOT))
                     .put("page",cell.page).put("column",cell.column).put("row",cell.row).put("width",cell.width).put("height",cell.height).put("settings",settings));
@@ -41,7 +41,7 @@ final class PhoneConfiguration {
             WidgetKind kind=kind(key);
             if(!seen.add(key))throw new Invalid("widgets","Duplicate widget instance");
             if(kind==null) {if(!before.widgets.contains(key)||!key.startsWith("app:")||!"app".equals(type))throw new Invalid("widgets","Unknown widget");}
-            else if(!kind.name().toLowerCase(Locale.ROOT).equals(type)||!key.matches("widget:(air|rain|calendar|favorites)(:[1-9][0-9]{0,5})?"))throw new Invalid("widgets","Invalid widget identity");
+            else if(!kind.name().toLowerCase(Locale.ROOT).equals(type)||!key.matches("widget:(air|rain|calendar|favorites|world_clock)(:[1-9][0-9]{0,5})?"))throw new Invalid("widgets","Invalid widget identity");
             if(kind==WidgetKind.CALENDAR&&!HomeLayout.CALENDAR.equals(key)||kind==WidgetKind.FAVORITES&&!HomeLayout.FAVORITES.equals(key))throw new Invalid("widgets","This widget has one instance");
             int page=integer(w,"page",0,15),x=integer(w,"column",0,columns-1),y=integer(w,"row",0,rows-1),width=integer(w,"width",1,columns),height=integer(w,"height",1,rows);
             if(kind==WidgetKind.CALENDAR&&width<2)throw new Invalid(key,"Calendar needs at least two columns");
@@ -52,10 +52,12 @@ final class PhoneConfiguration {
             if(kind==WidgetKind.RAIN){validateRain(settings);result.rainSettings.put(key,RainSettings.parse(settings));}
             else if(kind==WidgetKind.CALENDAR){validateCalendar(settings);result.calendarSettings.put(key,CalendarWidgetSettings.parse(settings));}
             else if(kind==WidgetKind.AIR){validateAir(settings);air.put(key,settings);}
+            else if(kind==WidgetKind.WORLD_CLOCK){WorldClockSettings.validate(settings);result.clockSettings.put(key,WorldClockSettings.parse(settings));}
             else keys(settings,key);
             result.widgets.add(key);result.setPanelSpan(key,width,height);result.homePositions.put(key,new HomeLayout.HomePosition(page,y,x));
         }
         result.rainSettings.keySet().retainAll(seen);result.calendarSettings.keySet().retainAll(seen);
+        result.clockSettings.keySet().retainAll(seen);
         JSONArray favorites=draft.getJSONArray("favorites");if(favorites.length()>256)throw new Invalid("favorites","Too many favorites");
         result.favorites.clear();
         for(int i=0;i<favorites.length();i++){

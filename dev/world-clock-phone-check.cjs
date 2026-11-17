@@ -1,0 +1,61 @@
+/* Container-only component acceptance against the real clock form, with editor UI helpers. */
+const {chromium,webkit,devices}=require('/workspace/artifacts/phone-browser/node_modules/playwright');
+const fs=require('fs'),http=require('http'),assert=require('assert');
+const root='/workspace/launcher/app/src/main/assets/phone';
+const html=`<!doctype html><html lang="en"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/style.css"><title>Clock form acceptance</title><body><main id="editor"></main><script src="/strings.js"></script><script src="/drag.js"></script><script src="/clock.js"></script></body></html>`;
+const server=http.createServer((req,res)=>{if(req.url==='/'){res.setHeader('Content-Type','text/html; charset=utf-8');res.end(html);}else if(['/clock.js','/strings.js','/drag.js'].includes(req.url)){res.setHeader('Content-Type','text/javascript; charset=utf-8');res.end(fs.readFileSync(root+req.url));}else if(req.url==='/style.css'){res.setHeader('Content-Type','text/css; charset=utf-8');res.end(fs.readFileSync(root+'/editor.css'));}else res.writeHead(404).end();});
+(async()=>{
+ await new Promise(resolve=>server.listen(0,'0.0.0.0',resolve));const url='http://127.0.0.1:'+server.address().port;
+ for(const [engine,profile,name]of [[chromium,devices['Pixel 7'],'chromium'],[webkit,devices['iPhone 13'],'webkit']]){
+  const browser=await engine.launch();const page=await browser.newPage({...profile,timezoneId:'America/New_York'});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.goto(url);
+  await page.evaluate(()=>{
+   window.language='en';window.edits=0;window.w={key:'widget:world_clock',type:'world_clock',settings:PhoneClock.defaults()};
+   const cities=[['Bangkok','Asia/Bangkok','TH','BKK',13.7563,100.5018],['Tivissa','Europe/Madrid','ES','',41.0409,.7331],['Seattle','America/Los_Angeles','US','SEA',47.6062,-122.3321],['Denver','America/Denver','US','DEN',39.7392,-104.9903],['Munich','Europe/Berlin','DE','MUC',48.1351,11.582],['Barcelona','Europe/Madrid','ES','BCN',41.3851,2.1734]];
+   window.state={clockNow:'2026-11-17T10:30:00Z',clockZone:'Asia/Bangkok',clock24Hour:true,worldClockCatalog:cities.map(([label,zone,country,code,latitude,longitude])=>({label,zone,country,code,latitude,longitude}))};
+   const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
+   const t=(key,args={})=>(PhoneStrings[language][key]||key).replace(/\{(\w+)\}/g,(_,k)=>String(args[k]||''));
+   const changed=()=>window.edits++,button=(label,fn,cls)=>{const n=el('button',label,cls);n.type='button';n.onclick=fn;return n;};
+   const field=(parent,label,value,edit,type='text',limits={})=>{const wrap=el('label',label),n=el('input');n.type=type;type==='checkbox'?n.checked=value:n.value=value;Object.assign(n,limits);n.setAttribute('aria-label',label);n.onchange=()=>{edit(type==='checkbox'?n.checked:n.value);changed();};wrap.append(n);parent.append(wrap);return n;};
+   const select=(parent,label,value,options,edit)=>{const wrap=el('label',label),n=el('select');n.setAttribute('aria-label',label);for(const [id,name]of options){const o=el('option',name);o.value=id;o.selected=id===value;n.append(o);}n.onchange=()=>{edit(n.value);changed();};wrap.append(n);parent.append(wrap);return n;};
+   const details=(parent,label,open)=>{const n=el('details');n.open=open;n.append(el('summary',label));parent.append(n);return n;},note=(parent,text)=>parent.append(el('p',text));
+   let disposers=[];window.render=()=>{for(const dispose of disposers)dispose();disposers=[];document.getElementById('editor').replaceChildren();PhoneClock.form(document.getElementById('editor'),w,{state,el,t,button,field,select,details,note,changed,render,uid:()=>crypto.randomUUID(),language,disposers,announce:()=>{}});};render();
+  });
+  console.log('Initial form headings:',await page.locator('summary').allTextContents());
+  await page.locator('summary').filter({hasText:'Local · Follow TV'}).click();
+  assert.match(await page.locator('body').innerText(),/17:30/,'Follow TV preview must use Bangkok, not browser New York');
+  await page.getByRole('button',{name:'Add place',exact:true}).click();await page.getByLabel('Search city, code or named time zone').fill('Tivissa');
+  await page.getByRole('button',{name:'Tivissa · Europe/Madrid',exact:true}).click();
+  assert.equal(await page.evaluate(()=>w.settings.places.length),2);assert.equal(await page.evaluate(()=>w.settings.places[1].code),'');
+  const name='<b>Family</b>';await page.getByLabel('Label',{exact:true}).last().fill(name);await page.getByLabel('Label',{exact:true}).last().press('Tab');assert.equal(await page.locator('b').count(),0);
+  const primary=await page.evaluate(()=>w.settings.places[1].id);await page.getByLabel('Primary place',{exact:true}).selectOption(primary);
+  await page.getByLabel('Reference clock',{exact:true}).selectOption(primary);
+  await page.getByRole('button',{name:'Add Studio cities (5)',exact:true}).click();
+  assert.equal(await page.evaluate(()=>w.settings.places.length),7);
+  await page.evaluate(()=>render());const family=page.locator('details').filter({has:page.locator('summary').filter({hasText:name})});if(!await family.evaluate(d=>d.open))await family.locator('summary').click();
+  await family.getByRole('button',{name:'Move up',exact:true}).click();
+  assert.equal(await page.evaluate(()=>w.settings.primary),primary);assert.equal(await page.evaluate(()=>w.settings.reference),primary);assert.equal(await page.evaluate(()=>w.settings.ordering),'manual');
+  assert.equal(await page.evaluate(()=>PhoneClock.valid(w.settings)),true);
+  await page.evaluate(()=>document.querySelectorAll('.clock-place-list details').forEach(d=>d.open=false));
+  const order=()=>page.locator('.clock-place-list [data-order-key]').evaluateAll(rows=>rows.map(row=>row.dataset.orderKey));
+  const before=await order();const grip=page.locator('.clock-place-list [data-reorder]').first();await grip.scrollIntoViewIfNeeded();
+  const start=await grip.boundingBox(),target=await page.locator('.clock-place-list [data-order-key]').nth(1).boundingBox();
+  await page.mouse.move(start.x+start.width/2,start.y+start.height/2);await page.mouse.down();await page.mouse.move(start.x+start.width/2,target.y+target.height-2,{steps:10});await page.mouse.up();
+  assert.deepEqual(await order(),[before[1],before[0],...before.slice(2)]);assert.equal(await page.evaluate(()=>w.settings.primary),primary);assert.equal(await page.evaluate(()=>w.settings.reference),primary);
+  await page.getByRole('button',{name:'Undo reorder',exact:true}).click();assert.deepEqual(await order(),before);
+  const keyboard=page.locator('.clock-place-list [data-reorder]').first();await keyboard.focus();await keyboard.press('Alt+ArrowDown');assert.deepEqual(await order(),[before[1],before[0],...before.slice(2)]);
+  await page.getByRole('button',{name:'Undo reorder',exact:true}).click();assert.deepEqual(await order(),before);
+  const cancelGrip=page.locator('.clock-place-list [data-reorder]').first();await cancelGrip.scrollIntoViewIfNeeded();const cancelStart=await cancelGrip.boundingBox();
+  await page.mouse.move(cancelStart.x+10,cancelStart.y+10);await page.mouse.down();await page.mouse.move(cancelStart.x+10,cancelStart.y+40,{steps:5});await cancelGrip.dispatchEvent('pointercancel');await page.mouse.up();
+  assert.deepEqual(await order(),before);assert.equal(await page.locator('.drag-ghost,.insertion-marker').count(),0);
+  await page.locator('summary').filter({hasText:'More options'}).click();await page.getByLabel('Time format',{exact:true}).selectOption('12');
+  await page.getByLabel('Seconds in full screen',{exact:true}).check();assert.equal(await page.evaluate(()=>w.settings.seconds),true);
+  assert.equal(await page.locator('body').evaluate(b=>b.scrollWidth<=innerWidth),true,'Clock form must fit phone width');
+  const en=await page.evaluate(()=>Object.keys(PhoneClock.translations.en).sort()),th=await page.evaluate(()=>Object.keys(PhoneClock.translations.th).sort());assert.deepEqual(en,th);
+  await page.evaluate(()=>{language='th';render();});await page.getByLabel('ชื่อวิดเจ็ต').fill('ครอบครัว');await page.getByLabel('ชื่อวิดเจ็ต').press('Tab');
+  assert.equal(await page.evaluate(()=>w.settings.title),'ครอบครัว');assert.equal(await page.locator('b').count(),0);
+  fs.mkdirSync('/workspace/artifacts/world-clock-phone',{recursive:true});await page.screenshot({path:'/workspace/artifacts/world-clock-phone/'+name.replaceAll(/[^a-z]/gi,'')+'-'+(engine===chromium?'chromium':'webkit')+'.png',fullPage:true});
+  assert.deepEqual(errors,[]);console.log((engine===chromium?'Chromium':'WebKit')+': TV-zone preview, search, metadata, labels, primary/reference, studio preset, pointer/keyboard reorder, cancel, Undo, format/seconds, bilingual form and width passed');await browser.close();
+ }
+ server.close();
+})().catch(e=>{console.error(e);server.close();process.exit(1);});

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1000" viewBox="0 0 1280 1000" role="img" aria-labelledby="title desc">
+<title id="title">World clock widget proposals</title>
+<desc id="desc">Dense Home clock strip, expanded city comparison with a detailed pane and hourly timeline, and per-widget settings.</desc>
+<style>text{font-family:Arial,sans-serif;fill:#ecf2fa} .muted{fill:#b2c4d7} .small{font-size:17px} .label{font-size:22px} .time{font-size:42px;font-weight:bold} .panel{fill:#203a54;stroke:#64809c;stroke-width:2} .cell{fill:#2b4865;stroke:#718aa4} .focus{fill:#355876;stroke:#b7e2ff;stroke-width:3}</style>
+<rect width="1280" height="1000" fill="#10263c"/>
+<text x="32" y="43" font-size="28" font-weight="bold">World clock · proposed layouts</text>
+<text x="32" y="74" class="small muted">Illustrative instant: 17 November 2026, 10:30 UTC · editable place labels</text>
+<text x="32" y="115" class="label">Home · one-row strip</text>
+<rect x="32" y="133" width="1216" height="143" rx="16" class="panel"/>
+<g class="label"><text x="58" y="167">◷ Bangkok</text><text x="358" y="167">Tivissa</text><text x="658" y="167">Beijing</text><text x="958" y="167">New York</text></g>
+<g class="time"><text x="58" y="215">17:30</text><text x="358" y="215">11:30</text><text x="658" y="215">18:30</text><text x="958" y="215">05:30</text></g>
+<g class="small muted"><text x="58" y="250">Tue 17 Nov · reference</text><text x="358" y="250">Tue 17 Nov · −6 h</text><text x="658" y="250">Tue 17 Nov · +1 h</text><text x="958" y="250">Tue 17 Nov · −12 h</text></g>
+<text x="32" y="315" class="label">Full screen · more detail and a shared comparison timeline</text>
+<rect x="32" y="333" width="1216" height="429" rx="16" class="panel"/>
+<rect x="50" y="350" width="195" height="44" rx="7" class="cell"/><text x="65" y="379" class="small">← Restore dashboard</text>
+<text x="270" y="381" font-size="26" font-weight="bold">World clock</text>
+<rect x="1090" y="350" width="140" height="44" rx="7" class="cell"/><text x="1110" y="379" class="small">Configure</text>
+<rect x="51" y="410" width="330" height="88" rx="8" class="focus"/><text x="66" y="440" class="label">Tivissa</text><text x="66" y="478" font-size="32">11:30</text><text x="180" y="478" class="small">Tue 17 Nov</text>
+<rect x="397" y="410" width="330" height="88" rx="8" class="cell"/><text x="413" y="440" class="label">Bangkok · reference</text><text x="413" y="478" font-size="32">17:30</text>
+<rect x="51" y="512" width="330" height="88" rx="8" class="cell"/><text x="66" y="542" class="label">Beijing</text><text x="66" y="581" font-size="32">18:30</text>
+<rect x="397" y="512" width="330" height="88" rx="8" class="cell"/><text x="413" y="542" class="label">New York</text><text x="413" y="581" font-size="32">05:30</text>
+<text x="765" y="439" class="label">Tivissa · Europe/Madrid</text><text x="765" y="475" class="small">Tuesday 17 November 2026, 11:30</text><text x="765" y="507" class="small">UTC +01:00 · 6 h behind Bangkok</text><text x="765" y="539" class="small">Standard time · TV system clock</text><text x="765" y="574" class="small muted">Next offset change: date and before/after times</text>
+<rect x="51" y="619" width="190" height="37" rx="6" class="cell"/><text x="67" y="645" class="small">Compare time</text><text x="265" y="645" class="small">Now · shared cursor → every place</text>
+<g class="small"><text x="64" y="691">Bangkok</text><text x="64" y="728">Tivissa</text></g>
+<g class="small muted"><text x="270" y="691">17</text><text x="390" y="691">18</text><text x="510" y="691">19</text><text x="630" y="691">20</text><text x="750" y="691">21</text><text x="870" y="691">22</text><text x="990" y="691">23</text><text x="1110" y="691">00 +1 day</text><text x="270" y="728">11</text><text x="390" y="728">12</text><text x="510" y="728">13</text><text x="630" y="728">14</text><text x="750" y="728">15</text><text x="870" y="728">16</text><text x="990" y="728">17</text><text x="1110" y="728">18</text></g>
+<path d="M345 667V741" stroke="#a3dfff" stroke-width="3"/>
+<text x="32" y="803" class="label">Settings · TV and phone share one per-instance configuration</text>
+<rect x="32" y="823" width="1216" height="142" rx="16" class="panel"/>
+<g class="small"><text x="58" y="856">Places: add / label / zone / order</text><text x="58" y="891">Primary: Bangkok</text><text x="58" y="926">Reference: Bangkok or Follow TV</text><text x="520" y="856">Format: Follow device / 24 h / 12 h</text><text x="520" y="891">Full-screen seconds: Off</text><text x="520" y="926">Save · Back cancels · Undo restores</text></g>
+</svg>

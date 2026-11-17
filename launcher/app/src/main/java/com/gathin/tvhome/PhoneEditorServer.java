@@ -9,7 +9,7 @@ import java.util.concurrent.*;
 
 /** Bounded HTTP transport: exact same origin, fixed assets, JSON-only API, no file server. */
 final class PhoneEditorServer extends NanoHTTPD {
-    interface Host {JSONObject command(String path,JSONObject body,String credential)throws Exception;void pairing(String request,String code);}
+    interface Host {JSONObject command(String path,JSONObject body,String credential)throws Exception;void pairing(String request,String code);default String name(){return "TV";}}
     private final Host host;
     final PhoneEditorSession session;
     private final Map<String,byte[]> assets;
@@ -45,12 +45,12 @@ final class PhoneEditorServer extends NanoHTTPD {
             JSONObject body=new JSONObject(new String(bytes,StandardCharsets.UTF_8));
             if(path.equals("/api/pair")){
                 String id=session.request(body.optString("invitation",""));host.pairing(id,session.code());
-                return response(new JSONObject().put("token",id).put("code",session.code()).put("status","pending"));
+                return response(new JSONObject().put("token",id).put("code",session.code()).put("status","pending").put("tv",host.name()));
             }
             String token=request.getHeaders().getOrDefault("x-homeboard-session","");
             if(path.equals("/api/status"))return response(new JSONObject().put("status",session.status(token)).put("remaining",session.remaining()));
             if(!session.authorized(token,!path.equals("/api/operation")))return json(403,"Approval expired or revoked; reconnect on TV");
-            if(!Set.of("/api/state","/api/apply","/api/undo","/api/preview","/api/cancel-preview","/api/lookup","/api/operation","/api/stop").contains(path))return json(404,"Unknown action");
+            if(!Set.of("/api/touch","/api/icon","/api/state","/api/apply","/api/undo","/api/preview","/api/cancel-preview","/api/lookup","/api/operation","/api/stop").contains(path))return json(404,"Unknown action");
             return response(host.command(path,body,token));
         }catch(PhoneConfiguration.Invalid invalid){return error(422,invalid.field,invalid.getMessage());}
         catch(IllegalArgumentException|JSONException bad){return error(422,"request",bad.getMessage());}

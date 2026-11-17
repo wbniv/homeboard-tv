@@ -30,6 +30,17 @@ tasks:
       - task: calendar:check
       - 'dev/container.sh run python3 /workspace/dev/test_deploy.py'
       - 'dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest :app:lintDebug'
+  phone:setup:
+    desc: Install pinned test-only browser packages inside the browser container
+    cmds:
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble npm install --prefix artifacts/phone-browser --no-save playwright@1.59.1 jsqr@1.4.0 pngjs@7.0.0'
+  phone:check:
+    desc: Check phone draft logic and Chromium/WebKit touch interactions in a container
+    cmds:
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/phone-model-check.cjs'
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/phone-browser-check.cjs'
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/world-clock-model-check.cjs'
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/world-clock-phone-check.cjs'
   build:
     desc: Build the Homeboard debug APK without installing
     cmds: ['dev/container.sh run ./gradlew --no-daemon :app:assembleDebug']

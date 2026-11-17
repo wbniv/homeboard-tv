@@ -31,8 +31,18 @@ final class PhoneEditor implements PhoneEditorServer.Host {
         try{
             session=new PhoneEditorSession(SystemClock::elapsedRealtime);
             Map<String,byte[]> assets=new HashMap<>();
-            for(String name:List.of("index.html","editor.js","editor.css"))try(java.io.InputStream in=activity.getAssets().open("phone/"+name)){assets.put(name.equals("index.html")?"/":"/"+name,read(in));}
-            server=new PhoneEditorServer(address,0,this,session,assets);server.open();
+            for(String name:List.of("index.html","editor.js","editor.css","model.js","strings.js","drag.js","clock.js"))try(java.io.InputStream in=activity.getAssets().open("phone/"+name)){assets.put(name.equals("index.html")?"/":"/"+name,read(in));}
+            // A stable origin lets this tab recover its draft after reopening the TV editor.
+            // The listener still exists only during this foreground session.
+            int port=PhoneConfigurationStore.preferences(activity).getInt("phone-editor-port",8765);
+            java.io.IOException last=null;
+            for(int attempt=0;attempt<12;attempt++){
+                int candidate=attempt==0?port:8765+(attempt-1);
+                PhoneEditorServer listener=new PhoneEditorServer(address,candidate,this,session,assets);
+                try{listener.open();server=listener;PhoneConfigurationStore.preferences(activity).edit().putInt("phone-editor-port",candidate).apply();break;}
+                catch(java.io.IOException unavailable){listener.stop();session=new PhoneEditorSession(SystemClock::elapsedRealtime);last=unavailable;}
+            }
+            if(server==null)throw last;
             activity.getWindow().getDecorView().postDelayed(tick,5000);show();
         }catch(Exception failure){stop();activity.phoneMessage(R.string.hb_phone_unavailable);}
     }
@@ -43,6 +53,7 @@ final class PhoneEditor implements PhoneEditorServer.Host {
                 new String[]{activity.getString(R.string.hb_phone_dashboard),activity.getString(R.string.hb_phone_stop)},i->{if(i==1)stop();activity.phoneDismiss();});
         }catch(Exception e){stop();activity.phoneMessage(R.string.hb_phone_unavailable);}
     }
+    @Override public String name(){return activity.phoneName();}
     @Override public void pairing(String request,String code){activity.runOnUiThread(()->{
         if(server==null||!session.pending())return;
         if(!activity.phoneCanPair()){session.approve(request,false);return;}
@@ -54,6 +65,8 @@ final class PhoneEditor implements PhoneEditorServer.Host {
         FutureTask<JSONObject> task=new FutureTask<>(()->{
             if(!running()||!session.authorized(credential,false)||!activity.phoneForeground())throw new IllegalStateException("Session stopped");
             switch(path){
+                case "/api/touch":return new JSONObject().put("ok",true);
+                case "/api/icon":return activity.phoneIcon(body);
                 case "/api/state":return activity.phoneState();
                 case "/api/apply":return activity.phoneApply(body);
                 case "/api/undo":return activity.phoneUndo(body);

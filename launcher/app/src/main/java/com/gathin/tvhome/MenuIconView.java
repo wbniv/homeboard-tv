@@ -12,7 +12,7 @@ final class MenuIconView extends View {
         APP, MOVE, FAVORITE, DELETE, UNINSTALL, INFO, SETTINGS, AIR, RESIZE, ADD,
         RESTORE, WIDGET, GRID, APPEARANCE, ARTWORK, BEHAVIOR, HOME, WALLPAPER, THEME, MOON,
         FOREST, PALETTE, CIRCLE, MOTION, BANNER, CANCEL, CONFIRM, LOCATION, CLOSE,
-        NEXT, PREVIOUS, LICENSE, UNDO
+        NEXT, PREVIOUS, LICENSE, UNDO, CLOCK
     }
 
     private final Kind kind;
@@ -48,6 +48,8 @@ final class MenuIconView extends View {
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStyle(Paint.Style.STROKE);
         switch (kind) {
+            case CLOCK:
+                circle(canvas,12,12,9);path(canvas,12,6,12,12,16,14);break;
             case APP:
                 rect(canvas, 3, 3, 9, 9); rect(canvas, 15, 3, 21, 9);
                 rect(canvas, 3, 15, 9, 21); rect(canvas, 15, 15, 21, 21); break;

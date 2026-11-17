@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/460eea9) | Add a TV-approved phone editor for widgets and dashboard layout |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/4fdbaf9) | Add full-screen widget drilldowns and dense dashboard browsing |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/d77eeab) | Keep the default dashboard on one screen and remove its preview trap |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/10cab3c) | Fix empty Home navigation and add the default dashboard |
@@ -16,6 +17,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+460eea9	author	Will Norris
+460eea9	added	9
+460eea9	deleted	0
+460eea9	files	1
+460eea9	body	Serve a temporary local web editor with QR pairing, per-instance configuration, draft preview and revision conflicts. Commit layout and Air settings together with composite Undo and operation receipts. Deploy 0.1.40 to both TVs. Container checks and native Android HTTP integration passed; external physical-phone LAN acceptance remains unverified after connection timeouts.
 4fdbaf9	author	Will Norris
 4fdbaf9	added	11
 4fdbaf9	deleted	1

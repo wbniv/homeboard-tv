@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1070" viewBox="0 0 1440 1070">
+<style>text{font-family:Arial,sans-serif;fill:#eaf3fd}.title{font-size:28px;font-weight:bold}.h{font-size:22px;font-weight:bold}.t{font-size:18px}.m{font-size:15px;fill:#afc3d9}.tiny{font-size:13px;fill:#c7d8e8}.dark{font-size:18px;font-weight:bold;fill:#102735}</style>
+<rect width="1440" height="1070" fill="#0b1726"/>
+<text x="24" y="42" class="title">Phone controller · configure what you see on the TV</text>
+<text x="24" y="75" class="m">Proposed interaction mockups · illustrative data · draft changes reach the TV only when you choose Update</text>
+<rect x="24" y="110" width="326" height="902" rx="28" fill="#13263a" stroke="#718ba0"/>
+<text x="42" y="150" class="h">Your dashboard</text>
+<text x="42" y="180" class="m">Bedroom TV  ▾    ·    Connected</text>
+<rect x="44" y="205" width="286" height="160" rx="8" fill="#0b192a" stroke="#56758d"/>
+<rect x="52" y="213" width="270" height="31" rx="5" fill="#35627e" stroke="#56758d"/>
+<text x="60" y="234" class="tiny">Rain · next 24 hours</text>
+<rect x="52" y="250" width="165.88" height="66" rx="5" fill="#334c68" stroke="#56758d"/>
+<text x="59" y="275" class="tiny">Calendar</text>
+<rect x="227.04" y="250" width="94.38000000000001" height="66" rx="5" fill="#2b5b59" stroke="#56758d"/>
+<text x="232.04" y="270" class="tiny">Air quality</text>
+<path d="M233.04 288 l10 -5 10 3 10 -7 10 4 12 -2 M233.04 307 l10 -7 10 5 10 -2 10 3 12 -8" fill="none" stroke="#9cd8b9" stroke-width="2"/>
+<rect x="52" y="322" width="270" height="33" rx="5" fill="#42566b" stroke="#56758d"/>
+<text x="60" y="344" class="tiny">Favorites · one bottom row</text>
+<text x="44" y="392" class="m">Tap a card to change it</text>
+<rect x="40" y="414" width="294" height="69" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="52" y="441" class="t">Rain · TV location</text>
+<text x="52" y="465" class="m">Next 24 hours · 6 following days</text>
+<text x="311" y="448" class="t">›</text>
+<rect x="40" y="494" width="294" height="69" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="52" y="521" class="t">Calendar</text>
+<text x="52" y="545" class="m">Holidays 30 days · flower work</text>
+<text x="311" y="528" class="t">›</text>
+<rect x="40" y="574" width="294" height="69" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="52" y="601" class="t">Air · Lumpini Park</text>
+<text x="52" y="625" class="m">24-hour + 30-day trends</text>
+<text x="311" y="608" class="t">›</text>
+<rect x="40" y="654" width="294" height="69" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="52" y="681" class="t">Favorites</text>
+<text x="52" y="705" class="m">9 apps · one bottom row</text>
+<text x="311" y="688" class="t">›</text>
+<rect x="44" y="744" width="286" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="56" y="773" class="t">Arrange dashboard</text>
+<rect x="44" y="802" width="286" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="56" y="831" class="t">+ Add widget</text>
+<rect x="34" y="890" width="306" height="106" rx="10" fill="#102134" stroke="#102134"/>
+<text x="46" y="916" class="m">No changes to update</text>
+<rect x="44" y="930" width="286" height="46" rx="10" fill="#98ddeb" stroke="#98ddeb"/>
+<text x="56" y="959" class="dark">Update Bedroom TV</text>
+<text x="34" y="1046" class="m">1 · Recognize the current dashboard</text>
+<rect x="380" y="110" width="326" height="902" rx="28" fill="#13263a" stroke="#718ba0"/>
+<text x="398" y="150" class="h">‹  Rain · Home</text>
+<text x="398" y="180" class="m">Bedroom TV    ·    Draft kept on Back</text>
+<text x="400" y="228" class="h">Location</text>
+<rect x="400" y="248" width="286" height="83" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="412" y="278" class="t">● TV location · Automatic</text>
+<text x="412" y="309" class="m">Choose a place  ›</text>
+<text x="400" y="375" class="h">Hours ahead</text>
+<rect x="400" y="396" width="64" height="46" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="423" y="426" class="t">6</text>
+<rect x="473" y="396" width="64" height="46" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="496" y="426" class="t">12</text>
+<rect x="546" y="396" width="64" height="46" rx="12" fill="#467891" stroke="#49657d"/>
+<text x="569" y="426" class="t">24</text>
+<rect x="619" y="396" width="64" height="46" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="642" y="426" class="t">48</text>
+<text x="400" y="494" class="h">Following days</text>
+<rect x="400" y="516" width="286" height="49" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="412" y="548" class="t">6 days                         ▾</text>
+<rect x="400" y="604" width="286" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="412" y="633" class="t">More options  ›</text>
+<text x="400" y="698" class="t">Next 24 hours by hour</text>
+<text x="400" y="728" class="m">Then the following 6 days</text>
+<text x="400" y="810" class="m">Changes stay in your draft</text>
+<rect x="390" y="890" width="306" height="106" rx="10" fill="#102134" stroke="#102134"/>
+<text x="402" y="916" class="m">1 change · Review ▾</text>
+<rect x="400" y="930" width="286" height="46" rx="10" fill="#98ddeb" stroke="#98ddeb"/>
+<text x="412" y="959" class="dark">Update Bedroom TV</text>
+<text x="390" y="1046" class="m">2 · Relevant choices, current values</text>
+<rect x="736" y="110" width="326" height="902" rx="28" fill="#13263a" stroke="#718ba0"/>
+<text x="754" y="150" class="h">‹  Favorites</text>
+<text x="754" y="180" class="m">Bedroom TV    ·    9 apps</text>
+<text x="756" y="218" class="m">Drag a grip to reorder</text>
+<rect x="752" y="242" width="294" height="65" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="764" y="282" class="h">⠿</text>
+<text x="794" y="281" class="t">YouTube</text>
+<text x="1015" y="281" class="t">⋯</text>
+<rect x="752" y="402" width="294" height="65" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="764" y="442" class="h">⠿</text>
+<text x="794" y="441" class="t">Prime Numbers</text>
+<text x="1015" y="441" class="t">⋯</text>
+<rect x="752" y="482" width="294" height="65" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="764" y="522" class="h">⠿</text>
+<text x="794" y="521" class="t">Snowgoons</text>
+<text x="1015" y="521" class="t">⋯</text>
+<rect x="752" y="562" width="294" height="65" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="764" y="602" class="h">⠿</text>
+<text x="794" y="601" class="t">Quilt Night</text>
+<text x="1015" y="601" class="t">⋯</text>
+<rect x="752" y="642" width="294" height="65" rx="12" fill="#20374e" stroke="#49657d"/>
+<text x="764" y="682" class="h">⠿</text>
+<text x="794" y="681" class="t">TV Media</text>
+<text x="1015" y="681" class="t">⋯</text>
+<rect x="752" y="322" width="294" height="64" rx="8" fill="#152b3d" stroke="#98ddeb"/>
+<line x1="752" y1="352" x2="1046" y2="352" stroke="#98ddeb" stroke-width="4"/>
+<rect x="764" y="325" width="274" height="60" rx="10" fill="#467791" stroke="#b6f1fb"/>
+<text x="778" y="363" class="t">⠿  WF Aquarium → 2 of 9</text>
+<text x="756" y="745" class="m">Moved to 2nd · Undo reorder</text>
+<rect x="756" y="790" width="286" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="768" y="819" class="t">+ Add apps</text>
+<rect x="746" y="890" width="306" height="106" rx="10" fill="#102134" stroke="#102134"/>
+<text x="758" y="916" class="m">1 change · Favorites order</text>
+<rect x="756" y="930" width="286" height="46" rx="10" fill="#98ddeb" stroke="#98ddeb"/>
+<text x="768" y="959" class="dark">Update Bedroom TV</text>
+<text x="746" y="1046" class="m">3 · Move list rows up and down</text>
+<rect x="1092" y="110" width="326" height="902" rx="28" fill="#13263a" stroke="#718ba0"/>
+<text x="1110" y="150" class="h">‹  Arrange dashboard</text>
+<text x="1110" y="180" class="m">Bedroom TV    ·    Page 1</text>
+<rect x="1112" y="220" width="286" height="160" rx="8" fill="#0b192a" stroke="#56758d"/>
+<rect x="1120" y="228" width="270" height="31" rx="5" fill="#35627e" stroke="#56758d"/>
+<text x="1128" y="249" class="tiny">Rain · next 24 hours</text>
+<rect x="1120" y="265" width="165.88" height="66" rx="5" fill="#334c68" stroke="#56758d"/>
+<text x="1127" y="290" class="tiny">Calendar</text>
+<rect x="1295.04" y="265" width="94.38000000000001" height="66" rx="5" fill="#2b5b59" stroke="#98ddeb"/>
+<text x="1300.04" y="285" class="tiny">Air quality</text>
+<path d="M1301.04 303 l10 -5 10 3 10 -7 10 4 12 -2 M1301.04 322 l10 -7 10 5 10 -2 10 3 12 -8" fill="none" stroke="#9cd8b9" stroke-width="2"/>
+<rect x="1120" y="337" width="270" height="33" rx="5" fill="#42566b" stroke="#56758d"/>
+<text x="1128" y="359" class="tiny">Favorites · one bottom row</text>
+<text x="1112" y="420" class="h">Air quality selected</text>
+<text x="1112" y="452" class="m">Drag its handle to move</text>
+<text x="1112" y="504" class="h">Size</text>
+<rect x="1112" y="525" width="139" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="1124" y="554" class="t">Compact</text>
+<rect x="1258" y="525" width="139" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="1270" y="554" class="t">Wide</text>
+<rect x="1112" y="584" width="139" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="1124" y="613" class="t">Tall</text>
+<rect x="1258" y="584" width="139" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="1270" y="613" class="t">Full width</text>
+<rect x="1112" y="660" width="286" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="1124" y="689" class="t">Move / Resize actions</text>
+<rect x="1112" y="719" width="286" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="1124" y="748" class="t">Preview on TV</text>
+<rect x="1112" y="778" width="286" height="46" rx="10" fill="#20374e" stroke="#5a768e"/>
+<text x="1124" y="807" class="t">Advanced placement  ›</text>
+<rect x="1102" y="890" width="306" height="106" rx="10" fill="#102134" stroke="#102134"/>
+<text x="1114" y="916" class="m">2 changes · Review ▾</text>
+<rect x="1112" y="930" width="286" height="46" rx="10" fill="#98ddeb" stroke="#98ddeb"/>
+<text x="1124" y="959" class="dark">Update Bedroom TV</text>
+<text x="1102" y="1046" class="m">4 · Manipulate the visible result</text>
+</svg>

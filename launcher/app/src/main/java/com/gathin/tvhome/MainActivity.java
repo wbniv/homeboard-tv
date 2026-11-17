@@ -161,6 +161,8 @@ public class MainActivity extends Activity {
     private boolean calendarDayEditor;
     private final Map<String, CalendarWidgetView> calendarWidgets = new LinkedHashMap<>();
     private final Map<String, RainWidgetController> rainWidgets = new LinkedHashMap<>();
+    private final Map<String,WorldClockWidgetView> clockWidgets=new LinkedHashMap<>();
+    private WorldClockEditor clockEditor;
     private final Map<String, AirQualityCard> airWidgets = new LinkedHashMap<>();
     private final List<Consumer<Location>> pendingLocationRequests = new ArrayList<>();
     private final List<Consumer<Location>> locationRequests = new ArrayList<>();
@@ -393,9 +395,12 @@ public class MainActivity extends Activity {
         for (RainWidgetController widget : rainWidgets.values()) widget.pause();
         if (activeLocationLookup != null) activeLocationLookup.finish(null);
         for (CalendarWidgetView widget : calendarWidgets.values()) widget.stop();
+        for(WorldClockWidgetView widget:clockWidgets.values())widget.stop();
         super.onPause();
     }
     @Override protected void onDestroy() {
+        if(clockEditor!=null){clockEditor.setOnDismissListener(null);clockEditor.dismiss();clockEditor=null;}
+        for(WorldClockWidgetView widget:clockWidgets.values())widget.stop();
         closed = true; loadVersion++;
         if(expandedWidget!=null){expandedWidget.release();expandedWidget=null;}
         wallpaperHost.close(); wallpaperSurface.close();
@@ -455,14 +460,14 @@ public class MainActivity extends Activity {
                 pushUndo("layout", "", lastSavedLayout, label);
             }
         }
-        SharedPreferences.Editor edit=preferences.edit().putString("layout",next);
+        SharedPreferences.Editor edit=PhoneConfigurationStore.trackInstances(preferences,preferences.edit(),layout).putString("layout",next);
         if(changed)PhoneConfigurationStore.revision(preferences,edit);
         edit.apply();
         lastSavedLayout = next;
         if (changed && !applyingUndo && undoGroupStart == null) showUndoBanner(label);
     }
     private void saveWithoutUndo() {
-        String next=layout.encode();SharedPreferences.Editor edit=preferences.edit().putString("layout",next);
+        String next=layout.encode();SharedPreferences.Editor edit=PhoneConfigurationStore.trackInstances(preferences,preferences.edit(),layout).putString("layout",next);
         if(!next.equals(preferences.getString("layout","")))PhoneConfigurationStore.revision(preferences,edit);
         edit.apply();lastSavedLayout=next;
     }
@@ -806,6 +811,7 @@ public class MainActivity extends Activity {
         for (RainWidgetController widget : rainWidgets.values()) widget.unbind();
         for (CalendarWidgetView widget : calendarWidgets.values()) widget.stop();
         calendarWidgets.clear();
+        for(WorldClockWidgetView widget:clockWidgets.values())widget.stop();clockWidgets.clear();
         favoritesWidget=null;
         tiles.clear(); visibleCells.clear();
         surface = new FrameLayout(this);
@@ -842,7 +848,7 @@ public class MainActivity extends Activity {
         });
     }
     private void updateAir() {
-        if(phonePreviewBefore!=null){for(AirQualityCard a:airWidgets.values())a.stop();for(RainWidgetController r:rainWidgets.values())r.stop();return;}
+        if(phonePreviewBefore!=null){for(AirQualityCard a:airWidgets.values())a.stop();for(RainWidgetController r:rainWidgets.values())r.stop();for(WorldClockWidgetView w:clockWidgets.values())w.stop();return;}
         boolean visible = active && !allApps && overlay == null && hasWindowFocus();
         Set<String> onPage = new LinkedHashSet<>();
         for (HomeLayout.Cell c : homeCells(dashboardItems()))
@@ -850,6 +856,7 @@ public class MainActivity extends Activity {
         for (CalendarWidgetView widget : calendarWidgets.values()) {
             if (visible) widget.start(); else widget.stop();
         }
+        for(WorldClockWidgetView widget:clockWidgets.values()){if(visible&&clockEditor==null)widget.start();else widget.stop();}
         Set<String> rainOnPage = new LinkedHashSet<>();
         for (HomeLayout.Cell c : homeCells(dashboardItems())) if (HomeLayout.isRainWidget(c.key) && c.page == homePage) rainOnPage.add(c.key);
         for (Map.Entry<String, RainWidgetController> entry : rainWidgets.entrySet()) {
@@ -889,6 +896,19 @@ public class MainActivity extends Activity {
     private View rainTile(String key) {
         RainWidgetController controller=rainFor(key);RainWidgetView tile=new RainWidgetView(this,controller);
         tile.setStyle(paletteColors,uiBackgroundOpacity,reducedMotion());controller.bind(tile);return tile;
+    }
+    private View clockTile(String key) {
+        WorldClockWidgetView tile=new WorldClockWidgetView(this,layout.clockSettings.getOrDefault(key,new WorldClockSettings()),paletteColors,uiBackgroundOpacity);
+        clockWidgets.put(key,tile);return tile;
+    }
+    private void configureClock(String key) {
+        if(clockEditor!=null)return;
+        clockEditor=new WorldClockEditor(this,layout.clockSettings.getOrDefault(key,new WorldClockSettings()),paletteColors,next->{
+            if(layout.clockSettings.getOrDefault(key,new WorldClockSettings()).json().toString().equals(next.json().toString()))return;
+            layout.clockSettings.put(key,next);save(getString(R.string.hb_wc_updated));render(0);
+        });
+        clockEditor.setOnDismissListener(d->{clockEditor=null;updateAir();handler.post(()->{if(active&&expandedWidget!=null&&expandedWidget.configuring())expandedWidget.resumeAfterConfiguration();});});
+        clockEditor.open();updateAir();
     }
     private boolean isAirWidgetKey(String key) {
         return key != null && (HomeLayout.AIR.equals(key) || key.startsWith(HomeLayout.AIR + ":"));
@@ -1047,7 +1067,7 @@ public class MainActivity extends Activity {
         boolean appTile = key.startsWith("app:");
         boolean denseApp = appTile && !layout.appUsesBanner(!allApps);
         view.setFocusable(true);
-        view.setBackground(appTile || HomeLayout.isCalendarWidget(key) || HomeLayout.isRainWidget(key) ? null : tileBackground());
+        view.setBackground(appTile || HomeLayout.isCalendarWidget(key) || HomeLayout.isRainWidget(key) || HomeLayout.isWorldClockWidget(key) ? null : tileBackground());
         view.setPadding(dp(appTile ? 2 : 16), dp(appTile ? 2 : 12),
                 dp(appTile ? 2 : 16), dp(appTile ? 2 : 12));
         view.setOnFocusChangeListener((v, hasFocus) -> {
@@ -1174,6 +1194,7 @@ public class MainActivity extends Activity {
             if (cell.key.startsWith("app:")) hasAppTile = true;
             View tile = phonePreviewBefore!=null&&(isAirWidgetKey(cell.key)||HomeLayout.isRainWidget(cell.key))?phonePreviewTile(cell.key):HomeLayout.FAVORITES.equals(cell.key) ? favoritesTile(cell.height == 1) : isAirWidgetKey(cell.key) ? airTile(cell.key, cell.width, cell.height)
                     : HomeLayout.isRainWidget(cell.key) ? rainTile(cell.key)
+                    : HomeLayout.isWorldClockWidget(cell.key) ? clockTile(cell.key)
                     : HomeLayout.isCalendarWidget(cell.key) ? calendarTile(cell.key) : appTile(cell.key, true);
             if(HomeLayout.FAVORITES.equals(cell.key)) {
                 tiles.put(cell.key,tile);
@@ -1891,7 +1912,7 @@ public class MainActivity extends Activity {
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
         if(HomeLayout.FAVORITES.equals(key)){activateFavorite();return;}
-        if (HomeLayout.isRainWidget(key)||HomeLayout.isCalendarWidget(key)||isAirWidgetKey(key)) { expandWidget(key,null); return; }
+        if (HomeLayout.isRainWidget(key)||HomeLayout.isCalendarWidget(key)||isAirWidgetKey(key)||HomeLayout.isWorldClockWidget(key)) { expandWidget(key,null); return; }
         App app = apps.get(key);
         if (app == null) { if (!key.isEmpty()) toast(getString(R.string.hb_app_unavailable_hold_ok_to_remove_this_tile)); return; }
         open(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setComponent(app.component)
@@ -1900,6 +1921,7 @@ public class MainActivity extends Activity {
     private int widgetTitle(WidgetKind kind){return switch(kind){
         case AIR -> R.string.hb_air_quality_widget;case CALENDAR -> R.string.hb_cal_calendar;
         case RAIN -> R.string.hb_rain_rain;case FAVORITES -> R.string.hb_fav_title;
+        case WORLD_CLOCK -> R.string.hb_wc_title;
     };}
     private void expandWidget(String key,Bundle saved){
         if(closed)return;WidgetKind kind=WidgetKind.of(key);cancelOk();consumeOkUp=false;
@@ -1912,13 +1934,16 @@ public class MainActivity extends Activity {
             case CALENDAR -> new CalendarExpanded(host,calendarSnapshot,layout.calendarSettings.getOrDefault(key,new CalendarWidgetSettings()),initialDate,state);
             case RAIN -> new RainExpanded(host,rainFor(key),state);
             case AIR -> new AirExpanded(host,airFor(key),this::requestAirLocation,state);
+            case WORLD_CLOCK -> new WorldClockExpanded(host,layout.clockSettings.getOrDefault(key,new WorldClockSettings()),state);
             case FAVORITES -> new FavoritesExpanded(host,()->new ArrayList<>(layout.favorites),this::activate,this::open,
                 app->{layout.removeFavorite(app);save(getString(R.string.hb_removed_app_from_home));render(0);},
                 order->{layout.favorites.clear();layout.favorites.addAll(order);save(getString(R.string.hb_fav_changed));render(0);},state);
         };
         final int origin=saved==null?homePage:saved.getInt("originPage",homePage);
-        expandedWidget=new WidgetExpansion(this,key,getString(widgetTitle(kind)),paletteColors,uiBackgroundOpacity,origin,saved,factory,
-            ()->{switch(kind){case CALENDAR:configureCalendar(key);break;case RAIN:rainFor(key).configure();break;case AIR:airFor(key).configureWidget();break;case FAVORITES:favoritesActions();break;}},
+        String expandedTitle=getString(widgetTitle(kind));
+        if(kind==WidgetKind.WORLD_CLOCK&&!layout.clockSettings.get(key).title.isEmpty())expandedTitle=layout.clockSettings.get(key).title;
+        expandedWidget=new WidgetExpansion(this,key,expandedTitle,paletteColors,uiBackgroundOpacity,origin,saved,factory,
+            ()->{switch(kind){case CALENDAR:configureCalendar(key);break;case RAIN:rainFor(key).configure();break;case AIR:airFor(key).configureWidget();break;case FAVORITES:favoritesActions();break;case WORLD_CLOCK:configureClock(key);break;}},
             ()->{expandedWidget=null;allApps=false;homePage=origin;focused=layout.widgets.contains(key)?key:"";homeFocus=focused;render(0);});
         expandedWidget.open(saved==null?tiles.get(key):null,saved==null&&!reducedMotion());
     }
@@ -1927,6 +1952,11 @@ public class MainActivity extends Activity {
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (key.isEmpty() || SETTINGS.equals(key)) { homeSettings(); return; }
         if(HomeLayout.FAVORITES.equals(key)){favoriteContext();return;}
+        if(HomeLayout.isWorldClockWidget(key)) {
+            menu(getString(R.string.hb_wc_title),new String[]{getString(R.string.hb_wc_configure),getString(R.string.hb_move),getString(R.string.hb_resize),getString(R.string.hb_delete_widget)},i->{
+                if(i==0)configureClock(key);else if(i==1)startMove(key);else if(i==2)startResize(key);else deleteTile(key);
+            });return;
+        }
         if (HomeLayout.isRainWidget(key)) {
             menu(getString(R.string.hb_rain_rain),new String[]{getString(R.string.hb_rain_configure),getString(R.string.hb_move),getString(R.string.hb_resize),getString(R.string.hb_delete_widget)}, i -> {
                 if(i==0) rainFor(key).configure(); else if(i==1) startMove(key); else if(i==2) rainSize(key); else deleteTile(key);
@@ -1980,7 +2010,7 @@ public class MainActivity extends Activity {
     private void deleteTile(String key) {
         boolean dashboard = !allApps;
         App app = apps.get(key);
-        String label = HomeLayout.FAVORITES.equals(key) ? getString(R.string.hb_fav_title) : HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_rain) : HomeLayout.isCalendarWidget(key) ? "calendar widget" : isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : app == null ? "app shortcut" : app.label;
+        String label = HomeLayout.FAVORITES.equals(key) ? getString(R.string.hb_fav_title) : HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_rain) : HomeLayout.isCalendarWidget(key) ? "calendar widget" : isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : HomeLayout.isWorldClockWidget(key) ? getString(R.string.hb_wc_title) : app == null ? "app shortcut" : app.label;
         layout.delete(key, dashboard);
         save(dashboard ? getString(R.string.hb_hint_removed) + label + getString(R.string.hb_hint_from_home) : getString(R.string.hb_hint_hid) + label + getString(R.string.hb_hint_from_all_apps));
         if (dashboard && !layout.widgets.isEmpty()) {
@@ -2040,7 +2070,7 @@ public class MainActivity extends Activity {
     private final Runnable phonePreviewTimeout=()->phoneCancelPreview();
     boolean phoneForeground(){return active&&!closed;}
     boolean phoneCanPair(){return phonePanelOpen||!phoneBusy();}
-    private boolean phoneBusy(){return !active||closed||overlay!=null||moving||resizing||firstPageBefore!=null||favoriteOrderPreview!=null||expandedWidget!=null||undoGroupStart!=null;}
+    private boolean phoneBusy(){return !active||closed||overlay!=null||clockEditor!=null||moving||resizing||firstPageBefore!=null||favoriteOrderPreview!=null||expandedWidget!=null||undoGroupStart!=null;}
     String phoneName(){String name=android.provider.Settings.Global.getString(getContentResolver(),"device_name");if(name==null||name.isBlank())name=android.os.Build.MODEL;String id=android.provider.Settings.Secure.getString(getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);return name+" · "+(id==null?"TV":id.substring(Math.max(0,id.length()-4)));}
     void phoneMessage(int id){toast(getString(id));}
     void phoneDismiss(){dismissMenu();activeMenu=null;menuStack.clear();}
@@ -2060,6 +2090,18 @@ public class MainActivity extends Activity {
         if(connected){phoneIndicator=text(getString(R.string.hb_phone_connected),13);phoneIndicator.setPadding(dp(12),dp(8),dp(12),dp(8));FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.LEFT);lp.topMargin=dp(16);lp.leftMargin=dp(32);root.addView(phoneIndicator,lp);}
         if(!connected&&phonePanelOpen)phoneDismiss();
     }
+    JSONObject phoneIcon(JSONObject body)throws Exception {
+        String key=PhoneConfiguration.bounded(body,"key",512);App app=apps.get(key);
+        JSONObject result=new JSONObject();if(app==null)return result;
+        try{
+            Drawable icon=app.info.loadIcon(getPackageManager()).mutate();
+            android.graphics.Bitmap bitmap=android.graphics.Bitmap.createBitmap(64,64,android.graphics.Bitmap.Config.ARGB_8888);
+            icon.setBounds(0,0,64,64);icon.draw(new android.graphics.Canvas(bitmap));
+            java.io.ByteArrayOutputStream bytes=new java.io.ByteArrayOutputStream();bitmap.compress(android.graphics.Bitmap.CompressFormat.PNG,100,bytes);bitmap.recycle();
+            result.put("icon","data:image/png;base64,"+android.util.Base64.encodeToString(bytes.toByteArray(),android.util.Base64.NO_WRAP));
+        }catch(RuntimeException unavailable){/* Missing artwork keeps the readable monogram. */}
+        return result;
+    }
     JSONObject phoneState()throws Exception {
         HomeLayout saved=HomeLayout.parse(preferences.getString("layout",layout.encode()));
         for(String key:saved.widgets)if(isAirWidgetKey(key))airFor(key).configurationSnapshot();
@@ -2067,11 +2109,12 @@ public class MainActivity extends Activity {
         int cols=saved.homeColumns==0?homeGridFitColumns():saved.homeColumns,rows=saved.homeRows==0?homeGridFitRows():saved.homeRows;
         JSONArray catalog=new JSONArray();for(App app:apps.values())catalog.put(new JSONObject().put("key",app.key).put("name",app.label));
         List<UndoEntry> undo=readUndoHistory();
-        JSONObject state=new JSONObject().put("tv",phoneName()).put("revision",preferences.getLong(PhoneConfigurationStore.REVISION,0))
+        JSONObject state=new JSONObject().put("tv",phoneName()).put("tvId",PhoneConfigurationStore.tvId(preferences)).put("instances",PhoneConfigurationStore.initializeInstances(preferences,saved)).put("revision",preferences.getLong(PhoneConfigurationStore.REVISION,0))
                 .put("draft",PhoneConfiguration.snapshot(saved,air,cols,rows)).put("apps",catalog).put("busy",phoneBusy()||phonePreviewBefore!=null)
                 .put("undo",undo.isEmpty()?"":undo.get(0).label).put("language",getResources().getConfiguration().getLocales().get(0).getLanguage());
         JSONArray stations=new JSONArray();String[] ids={"114","119","122","70","65"},names=getResources().getStringArray(R.array.hb_station_names);
-        for(int i=0;i<ids.length;i++)stations.put(new JSONObject().put("id",ids[i]).put("name",names[i]));return state.put("stations",stations);
+        for(int i=0;i<ids.length;i++)stations.put(new JSONObject().put("id",ids[i]).put("name",names[i]));
+        return state.put("stations",stations).put("worldClockCatalog",WorldClockCatalog.json()).put("clockNow",java.time.Instant.now().toString()).put("clockZone",java.time.ZoneId.systemDefault().getId()).put("clock24Hour",android.text.format.DateFormat.is24HourFormat(this));
     }
     private void phoneRequireRevision(JSONObject body)throws Exception{
         if(body.getLong("revision")!=preferences.getLong(PhoneConfigurationStore.REVISION,0))throw new PhoneConfiguration.Invalid("revision",getString(R.string.hb_phone_conflict));
@@ -2169,7 +2212,7 @@ public class MainActivity extends Activity {
         labels[kinds.length]=getString(R.string.hb_favorite_an_app_from_all_apps);
         menu(getString(R.string.hb_add_to_home),getString(R.string.hb_choose_a_tile_to_add),labels,add->{
             if(add==kinds.length){allApps=false;showApps();return;}
-            WidgetKind kind=kinds[add];String key=kind==WidgetKind.AIR||kind==WidgetKind.RAIN?newWidgetKey(kind.key):kind.key;
+            WidgetKind kind=kinds[add];String key=kind==WidgetKind.AIR||kind==WidgetKind.RAIN||kind==WidgetKind.WORLD_CLOCK?newWidgetKey(kind.key):kind.key;
             if(!layout.widgets.contains(key)){layout.addPanel(key);if(kind==WidgetKind.RAIN)layout.setPanelSpan(key,Math.min(4,homeGridColumns()),Math.min(3,homeGridRows()));save(getString(R.string.hb_cal_added));}
             allApps=false;focused=key;homePage=homePageOf(key,layout.widgets);render(0);
         });
@@ -2706,6 +2749,7 @@ public class MainActivity extends Activity {
         int initialChoice = spec.selectedIndex >= 0 ? spec.selectedIndex : 0;
         showMenuPage(activeMenu, initialChoice / spec.pageSize, initialChoice);
         for (RainWidgetController widget : rainWidgets.values()) widget.stop();
+        for(WorldClockWidgetView widget:clockWidgets.values())widget.stop();
     }
     /** Draw one fixed page inside Home's window; no menu content is placed in a scroll container. */
     private void showMenuPage(MenuSpec spec, int page, int focusChoice) {
@@ -3005,6 +3049,7 @@ public class MainActivity extends Activity {
         return false;
     }
     private MenuIconView.Kind menuIconFor(String title, String label) {
+        if(matchesMenuLabel(label,R.string.hb_wc_title,R.string.hb_wc_configure))return MenuIconView.Kind.CLOCK;
         if (paletteIdForLabel(label) != null) return MenuIconView.Kind.PALETTE;
         if (matchesMenuLabel(label, R.string.hb_saved_layout_could_not_be_read_starting_with_empty_home, R.string.hb_homeboard_tv_is_now_the_default_home_app, R.string.hb_default_home_app_was_not_changed, R.string.hb_homeboard_change, R.string.hb_homeboard_settings, R.string.hb_added_app_to_home, R.string.hb_home_settings, R.string.hb_default_home_app, R.string.hb_a_customizable_home_screen_for_your_tv_built_on_cleanyourtv, R.string.hb_homeboard_tv_source, R.string.hb_android_could_not_open_home_app_selection, R.string.hb_android_does_not_provide_home_app_selection_on_this_device)) return MenuIconView.Kind.HOME;
         if (matchesMenuLabel(label, R.string.hb_undo, R.string.hb_undo_5, R.string.hb_undo_history, R.string.hb_no_recent_homeboard_changes_can_be_undone, R.string.hb_undo_9, R.string.hb_newest_first_undoing_an_older_change_also_reverses_newer_changes, R.string.hb_could_not_undo_that_change, R.string.hb_delete_removes_this_widget_panel_undo_restores_it)) return MenuIconView.Kind.UNDO;
@@ -3147,6 +3192,7 @@ public class MainActivity extends Activity {
         uiBackdrop.setBackgroundColor(UiBackgroundDrawable.colorWithOpacity(background, uiBackgroundOpacity));
         for (AirQualityCard widget : airWidgets.values()) widget.setBackgroundOpacity(uiBackgroundOpacity);
         for (CalendarWidgetView widget : calendarWidgets.values()) widget.setFillOpacity(uiBackgroundOpacity);
+        for(WorldClockWidgetView widget:clockWidgets.values())widget.setFillOpacity(uiBackgroundOpacity);
         for (RainWidgetController widget : rainWidgets.values()) widget.style(paletteColors, uiBackgroundOpacity, reducedMotion());
         UiBackgroundDrawable.apply(surface, uiBackgroundOpacity);
     }

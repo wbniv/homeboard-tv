@@ -1,0 +1,15 @@
+World clock land outline
+
+Source: Natural Earth, 1:110m land polygons, ne_110m_land.geojson
+https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.geojson
+Downloaded: 2026-11-17
+Original SHA-256: 9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9
+
+The original GeoJSON's polygon rings were retained, with longitude/latitude
+rounded to three decimal places and properties removed. The resulting
+world-clock-land.json is drawn with an equirectangular projection.
+
+Natural Earth states that its raster and vector map data are public domain:
+https://www.naturalearthdata.com/about/terms-of-use/
+
+Made with Natural Earth. No network map service is used by this widget.

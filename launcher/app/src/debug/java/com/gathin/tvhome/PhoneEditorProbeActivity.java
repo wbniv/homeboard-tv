@@ -18,21 +18,35 @@ public final class PhoneEditorProbeActivity extends MainActivity {
     private PhoneEditor editor;
     private String origin,credential="";
     private JSONObject applied;
-    @Override public void onCreate(Bundle b){super.onCreate(b);
+    @Override public android.content.SharedPreferences getSharedPreferences(String name,int mode){
+        return super.getSharedPreferences(name.equals("widget-home")?"phone-review-widget-home":name,mode);
+    }
+    @Override public void onCreate(Bundle b){
+        if(b==null){
+            HomeLayout seed=HomeLayout.firstRun();
+            try{HomeLayout household=HomeLayout.parse(super.getSharedPreferences("widget-home",0).getString("layout",seed.encode()));for(String key:household.favorites)seed.addFavorite(key);}catch(JSONException ignored){}
+            getSharedPreferences("widget-home",0).edit().clear().putString("layout",seed.encode()).putBoolean("single-screen-default-v1",true).apply();
+        }
+        super.onCreate(b);
         report=new TextView(this);report.setTextSize(14);report.setTextColor(0xffffffff);report.setBackgroundColor(0xdd172c3e);report.setText("PHONE PROBE · preparing");
         addContentView(report,new android.widget.FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));
         probe.postDelayed(()->{try{
             editor=new PhoneEditor(this);java.lang.reflect.Field field=MainActivity.class.getDeclaredField("phoneEditor");field.setAccessible(true);field.set(this,editor);editor.open();
             if(editor.server==null)throw new IllegalStateException("Listener did not start");origin=editor.server.url();io.execute(this::check);
-        }catch(Exception e){fail(e);}},2500);
+        }catch(Exception e){fail(e);}},5000);
     }
     private void stage(String text){probe.post(()->{report.setText(text);report.bringToFront();android.util.Log.i("HomeboardPhoneProbe",text);});}
     private void check(){
         try{
             Thread.sleep(1500);JSONObject pairing=post("/api/pair",new JSONObject().put("invitation",""),false);credential=pairing.getString("token");
-            probe.postDelayed(()->{dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_CENTER));dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DPAD_CENTER));},600);
+            probe.post(()->approveVisible(0));
             for(int i=0;i<20;i++){if("approved".equals(post("/api/status",new JSONObject(),true).getString("status")))break;Thread.sleep(300);}
             JSONObject baseline=post("/api/state",new JSONObject(),true),draft=new JSONObject(baseline.getJSONObject("draft").toString());
+            require(!baseline.getString("tvId").isEmpty(),"TV identity missing");
+            require(baseline.getJSONObject("instances").length()>0,"Widget identities missing");
+            require(post("/api/touch",new JSONObject(),true).getBoolean("ok"),"Draft activity touch failed");
+            JSONArray apps=baseline.getJSONArray("apps");
+            if(apps.length()>0)require(post("/api/icon",new JSONObject().put("key",apps.getJSONObject(0).getString("key")),true).optString("icon").startsWith("data:image/png;base64,"),"App icon unavailable");
             stage("PHONE · actual Android HTTP and TV approval passed");
             for(int i=0;i<draft.getJSONArray("widgets").length();i++){
                 JSONObject w=draft.getJSONArray("widgets").getJSONObject(i),s=w.getJSONObject("settings");
@@ -54,11 +68,22 @@ public final class PhoneEditorProbeActivity extends MainActivity {
             JSONObject restored=post("/api/undo",new JSONObject().put("revision",applied.getLong("revision")).put("operation",PhoneEditorSession.random()),true);applied=null;
             require(canonical(restored.getJSONObject("draft")).equals(canonical(baseline.getJSONObject("draft"))),"Composite Undo did not restore all settings");
             post("/api/stop",new JSONObject(),true);
-            stage("PHONE_PASS · Android HTTP, TV approval, mixed Apply, idempotent retry, preview, composite Undo, Stop · household restored");
+            stage("PHONE_PASS · Android HTTP, TV approval, mixed Apply, idempotent retry, preview, composite Undo, Stop · isolated test settings restored; household untouched");
         }catch(Exception failure){
             if(applied!=null){try{post("/api/cancel-preview",new JSONObject(),true);post("/api/undo",new JSONObject().put("revision",applied.getLong("revision")).put("operation",PhoneEditorSession.random()),true);}catch(Exception restore){stage("PHONE_FAIL · "+failure.getClass().getSimpleName()+"; cleanup "+restore.getClass().getSimpleName());return;}}
             fail(failure);
         }
+    }
+    private void approveVisible(int attempt){
+        if(isFinishing()||editor==null||!editor.running())return;
+        View allow=findAllow(getWindow().getDecorView());
+        if(allow!=null&&editor.server.session.pending()){allow.performClick();return;}
+        if(attempt<40)probe.postDelayed(()->approveVisible(attempt+1),150);
+    }
+    private View findAllow(View view){
+        if(view instanceof TextView&&view.isShown()&&view.isClickable()&&getString(R.string.hb_phone_accept).contentEquals(((TextView)view).getText()))return view;
+        if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++){View result=findAllow(((ViewGroup)view).getChildAt(i));if(result!=null)return result;}
+        return null;
     }
     private JSONObject post(String path,JSONObject body,boolean auth)throws Exception{
         URL u=new URL(origin);byte[] bytes=body.toString().getBytes(StandardCharsets.UTF_8);
@@ -76,5 +101,6 @@ public final class PhoneEditorProbeActivity extends MainActivity {
     }
     private static void require(boolean ok,String text){if(!ok)throw new IllegalStateException(text);}
     private void fail(Exception e){stage("PHONE_FAIL · "+e.getClass().getSimpleName()+" · "+e.getMessage());}
+    @Override protected void onPause(){probe.removeCallbacksAndMessages(null);super.onPause();}
     @Override protected void onDestroy(){probe.removeCallbacksAndMessages(null);io.shutdownNow();super.onDestroy();}
 }

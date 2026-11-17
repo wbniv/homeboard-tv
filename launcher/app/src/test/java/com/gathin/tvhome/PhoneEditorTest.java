@@ -61,9 +61,45 @@ public class PhoneEditorTest {
             String url=server.url();assertEquals(403,post(url,"/api/state","{}","",url));
             assertEquals(403,post(url,"/api/state","{}","", "http://attacker.invalid"));
             String token=session.request("");assertEquals(403,post(url,"/api/state","{}",token,url));session.approve(token,true);
-            assertEquals(200,post(url,"/api/state","{}",token,url));assertEquals(413,post(url,"/api/state"," ".repeat(65537),token,url));
+            assertEquals(200,post(url,"/api/state","{}",token,url));assertEquals(200,post(url,"/api/icon","{}",token,url));assertEquals(200,post(url,"/api/touch","{}",token,url));assertEquals(413,post(url,"/api/state"," ".repeat(65537),token,url));
             session.close();assertEquals(403,post(url,"/api/state","{}",token,url));
         }finally{server.stop();}
+    }
+    @Test public void recreatedWidgetHasNewIdentityWhileOrdinaryEditsKeepIdentity()throws Exception {
+        HomeLayout original=HomeLayout.firstRun();JSONObject generations=PhoneConfigurationStore.nextInstances(new HomeLayout(),original,new JSONObject());
+        assertEquals(1,generations.getLong(HomeLayout.RAIN));
+        HomeLayout edited=HomeLayout.parse(original.encode());edited.rainSettings.get(HomeLayout.RAIN).hours=48;
+        JSONObject unchanged=PhoneConfigurationStore.nextInstances(original,edited,generations);assertEquals(1,unchanged.getLong(HomeLayout.RAIN));
+        HomeLayout removed=HomeLayout.parse(edited.encode());removed.widgets.remove(HomeLayout.RAIN);
+        JSONObject tombstones=PhoneConfigurationStore.nextInstances(edited,removed,unchanged);
+        JSONObject recreated=PhoneConfigurationStore.nextInstances(removed,original,tombstones);
+        assertEquals(2,recreated.getLong(HomeLayout.RAIN));assertEquals(1,recreated.getLong(HomeLayout.CALENDAR));
+        assertEquals(1,generations.getLong(HomeLayout.RAIN));
+    }
+    @Test public void failedDiskCommitCannotLeaveAnAcknowledgedOperationInMemory()throws Exception {
+        Map<String,Object> values=new HashMap<>();HomeLayout before=HomeLayout.firstRun();values.put("layout",before.encode());values.put(PhoneConfigurationStore.REVISION,7L);
+        android.content.SharedPreferences prefs=(android.content.SharedPreferences)java.lang.reflect.Proxy.newProxyInstance(getClass().getClassLoader(),new Class[]{android.content.SharedPreferences.class},(proxy,method,args)->{
+            switch(method.getName()){
+                case "getAll":return new HashMap<>(values);
+                case "getString":case "getLong":return values.getOrDefault(args[0],args[1]);
+                case "edit":{
+                    Map<String,Object> staged=new HashMap<>();Set<String> removed=new HashSet<>();
+                    return java.lang.reflect.Proxy.newProxyInstance(getClass().getClassLoader(),new Class[]{android.content.SharedPreferences.Editor.class},(editor,action,parameters)->{
+                        switch(action.getName()){
+                            case "putString":case "putLong":staged.put((String)parameters[0],parameters[1]);return editor;
+                            case "remove":removed.add((String)parameters[0]);return editor;
+                            case "commit":for(String key:removed)values.remove(key);values.putAll(staged);return false;
+                            default:throw new UnsupportedOperationException(action.getName());
+                        }
+                    });
+                }
+                default:throw new UnsupportedOperationException(method.getName());
+            }
+        });
+        HomeLayout next=HomeLayout.parse(before.encode());next.rainSettings.get(HomeLayout.RAIN).hours=48;
+        assertThrows(IllegalStateException.class,()->PhoneConfigurationStore.commit(prefs,next,new JSONObject(),new JSONArray(),"failed-operation","committed"));
+        assertEquals(before.encode(),values.get("layout"));assertEquals(7L,values.get(PhoneConfigurationStore.REVISION));
+        assertEquals("",PhoneConfigurationStore.result(prefs,"failed-operation"));assertFalse(values.containsKey("widget-instance-generations"));
     }
     private int post(String url,String path,String body,String token,String origin)throws Exception {
         URL target=new URL(url);byte[] bytes=body.getBytes(StandardCharsets.UTF_8);

@@ -18,6 +18,10 @@ broader dashboard engine and traffic integrations remain undecided.
 
 ## Home interaction
 
+The optional [World clock widget](docs/how-to/world-clock.md) shows configurable
+places with shared city colors, an offline world map and a full-screen 24-hour
+time comparison. Its settings use named time zones and the TV system clock.
+
 **Short OK/click expands a widget; hold OK opens widget settings/actions.** Expanded
 views add four-week Calendar detail, Rain amount/probability charts, nearby air
 stations on a geographic map with device location, and a Favorites banner browser
@@ -67,8 +71,9 @@ and [validation limits](docs/testing/2026-11-16-thai-language.md).
 
 **Home settings → More → Configure from phone** opens a temporary local web editor.
 Scan the TV QR code, approve the matching connection code, and edit each widget,
-Favorites or the layout in your phone browser. Changes stay in a draft until
-Apply, and one Undo restores a complete change. No phone app or account is needed.
+Favorites or the layout in your phone browser. Tap a dashboard card, drag Favorite
+rows to reorder, and review your shared draft before **Update TV**. One Undo
+restores the complete update. No phone app or account is needed.
 Keep Homeboard open on the TV and use your trusted home network.
 See the [phone editor how-to](docs/how-to/phone-widget-editor.md).
 

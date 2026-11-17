@@ -3,7 +3,7 @@
     <string name="hb_phone_title">"ตั้งค่าจากโทรศัพท์"</string>
     <string name="hb_phone_no_network">"เชื่อมต่อทีวีกับเครือข่ายบ้านก่อน"</string>
     <string name="hb_phone_unavailable">"เปิดตัวแก้ไขบนโทรศัพท์ไม่ได้ โปรดลองอีกครั้ง"</string>
-    <string name="hb_phone_pair_hint">"สแกนคิวอาร์โค้ดด้วยโทรศัพท์ แล้วยืนยันรหัสที่ตรงกันบนทีวี ต้องอยู่ในเครือข่ายบ้านเดียวกัน ใช้ HTTP ในเครือข่ายที่เชื่อถือได้ ออกจาก Homeboard เพื่อสิ้นสุดการเข้าถึง"</string>
+    <string name="hb_phone_pair_hint">"สแกนด้วยโทรศัพท์ แล้วอนุญาตรหัสที่ตรงกันที่นี่ ใช้เครือข่ายบ้านที่เชื่อถือได้เดียวกัน การเชื่อมต่อนี้ไม่เข้ารหัส เปิด Homeboard ค้างไว้"</string>
     <string name="hb_phone_dashboard">"กลับแดชบอร์ด"</string>
     <string name="hb_phone_stop">"หยุดแก้ไขจากโทรศัพท์"</string>
     <string name="hb_phone_allow">"อนุญาตตัวแก้ไขบนโทรศัพท์นี้หรือไม่"</string>

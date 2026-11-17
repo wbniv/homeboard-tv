@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="390" viewBox="0 0 1240 390" role="img" aria-labelledby="title desc">
+<title id="title">World clock interaction workflow</title><desc id="desc">Add a world clock, configure places on TV or phone and save to Home. Short OK opens full-screen Compare or Map; hold opens settings. Compare uses a shared cursor and duration. Back and Restore return to Home; cancel discards edits.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#9fdaff"/></marker></defs>
+<style>text{font:18px Arial,sans-serif;fill:#ecf2fa}.box{fill:#284761;stroke:#7895b0;stroke-width:2}.line{fill:none;stroke:#9fdaff;stroke-width:2;marker-end:url(#arrow)}.hint{font-size:16px;fill:#b9cedf}</style>
+<rect width="1240" height="390" fill="#10263c"/>
+<text x="25" y="35" font-size="24">World clock · workflow</text>
+<rect x="25" y="90" width="210" height="85" rx="10" class="box"/><text x="44" y="123">Add World clock</text><text x="44" y="151" class="hint">New independent instance</text>
+<rect x="310" y="90" width="250" height="85" rx="10" class="box"/><text x="330" y="123">Configure places</text><text x="330" y="151" class="hint">TV or phone draft · Save</text>
+<rect x="650" y="90" width="210" height="85" rx="10" class="box"/><text x="672" y="123">Home clock panel</text><text x="672" y="151" class="hint">Live time · adaptive size</text>
+<rect x="950" y="90" width="260" height="85" rx="10" class="box"/><text x="970" y="123">Full screen · Compare / Map</text><text x="970" y="151" class="hint">Place or pin → exact details</text>
+<path d="M235 132H310 M560 132H650 M860 132H950" class="line"/><text x="875" y="112" class="hint">Short OK</text>
+<path d="M1080 175V230H755V175" class="line"/><text x="840" y="220" class="hint">Back / Restore dashboard</text>
+<path d="M755 90V58H435V90" class="line"/><text x="565" y="52" class="hint">Hold OK</text>
+<rect x="950" y="280" width="260" height="80" rx="10" class="box"/><text x="970" y="311">Time cursor + duration</text><text x="970" y="340" class="hint">Now returns to live time</text>
+<path d="M1150 175V280" class="line"/><path d="M950 320H905V160H950" class="line"/>
+<text x="25" y="280" class="hint">Cancel: discard the settings draft and restore saved configuration.</text><text x="25" y="312" class="hint">Save / Apply: one atomic change with normal Undo.</text><text x="25" y="344" class="hint">Browsing: transient; preserves original Home page, focus and widget size.</text>
+</svg>

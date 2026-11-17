@@ -3,7 +3,7 @@
     <string name="hb_phone_title">"Configure from phone"</string>
     <string name="hb_phone_no_network">"Connect the TV to your home network first."</string>
     <string name="hb_phone_unavailable">"Phone editor could not start. Try again."</string>
-    <string name="hb_phone_pair_hint">"Scan the QR code on your phone, then approve the matching code here. Same home network required. Local HTTP: use a trusted network. Leaving Homeboard ends access."</string>
+    <string name="hb_phone_pair_hint">"Scan with your phone, then allow the matching code here. Use the same trusted home network; this local connection is unencrypted. Keep Homeboard open."</string>
     <string name="hb_phone_dashboard">"Return to dashboard"</string>
     <string name="hb_phone_stop">"Stop phone editing"</string>
     <string name="hb_phone_allow">"Allow this phone editor?"</string>

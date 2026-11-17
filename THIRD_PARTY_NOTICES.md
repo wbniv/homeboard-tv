@@ -1,5 +1,14 @@
 # Third party notices
 
+## World clock map
+
+Natural Earth 1:110m land polygons are public-domain map data. The packaged
+`assets/world-clock-land.json` contains rounded polygon rings derived from
+`ne_110m_land.geojson`. Source, checksum, transformation and the terms link are
+retained in `assets/licenses/world-clock-natural-earth.txt`.
+
+Made with Natural Earth: https://www.naturalearthdata.com/about/terms-of-use/
+
 CleanYourTV by Gathin and contributors: MIT license, retained in LICENSE.
 Source: https://github.com/Gathin23/cleanyourtv/tree/ddc3b2cdce299a5f30aa2da2437edc40f3cf6f2e/launcher
 Imported source hashes are in docs/upstream/provenance.json.
