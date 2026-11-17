@@ -2,8 +2,8 @@
   <rect width="1200" height="530" fill="#101723"/>
   <g font-family="sans-serif" fill="#edf3ff">
     <text x="55" y="48" font-size="28" font-weight="700">Home tile · Bangkok air quality</text>
-    <text x="55" y="78" font-size="17" fill="#aabbd0">Two time scales, one station, one condition color</text>
-    <rect x="55" y="105" width="1090" height="380" rx="24" fill="#4b2818" stroke="#ff995e" stroke-width="2"/>
+    <text x="55" y="78" font-size="17" fill="#aabbd0">Condition-tinted background · saved opacity · brighter focus border</text>
+    <rect x="55" y="105" width="1090" height="380" rx="24" fill="#604333" stroke="#ff995e" stroke-width="2"/>
     <text x="91" y="146" font-size="18" fill="#b9c9db">BANGKOK · LUMPINI PARK</text>
     <text x="91" y="194" font-size="37" font-weight="700">PM2.5  42.8 µg/m³</text>
     <rect x="91" y="210" width="472" height="40" rx="13" fill="#522f26" stroke="#ff995e" stroke-width="2"/>

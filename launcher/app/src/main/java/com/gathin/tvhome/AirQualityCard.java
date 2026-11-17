@@ -644,11 +644,14 @@ final class AirQualityCard {
 
     private void applyTileBackground() {
         if (tile == null) return;
-        if (tileFocused) {
-            tile.setBackground(tileSurface(palette.raised, palette.focus, 3));
-        } else {
-            tile.setBackground(tileSurface(palette.surface, palette.edge, 1));
-        }
+        int base = tileFocused ? palette.raised : palette.surface;
+        // Use the same condition as the value/badge, including model-specific bands.
+        // A subdued tint keeps the text and trend readable across the entire tile.
+        int fill = reading == null ? base
+                : PaletteColors.mix(base, conditionColor(reading.condition()), 0.28f);
+        int edge = tileFocused ? palette.focus
+                : reading == null ? palette.edge : conditionColor(reading.condition());
+        tile.setBackground(tileSurface(fill, edge, tileFocused ? 3 : 1));
     }
 
     private GradientDrawable tileSurface(int color, int stroke, int width) {

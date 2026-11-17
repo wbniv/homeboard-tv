@@ -12,8 +12,8 @@ flowchart LR
     A[Home shown] --> B[Show cached reading or loading state]
     B --> C[Background public API request]
     C --> D{Valid value and timestamp?}
-    D -->|Yes| E[Save and show value, source, data time]
-    D -->|No| F[Show unavailable or cached value with failure status]
+    D -->|Yes| E[Save and show value, source, data time and condition-tinted background]
+    D -->|No| F[Show neutral unavailable state or cached condition color with failure status]
     G[Remote OK on card] --> J[Actions menu]
     J -->|Refresh| C
     J -->|Choose station| K[Station picker]
@@ -39,6 +39,16 @@ text label and orange/red triangle with a plain-language outdoor activity cue
 supplement the color. The numeric
 24-hour threshold ranges and their official source are documented in the
 [flexible grid plan](2026-11-15-flexible-home-grid.md#pm25-tile).
+
+The full tile blends 28% of its condition color into the selected palette surface,
+including while focused; focus retains its brighter, thicker border. The saved UI
+background opacity applies to this fill. Missing readings stay neutral; cached or
+stale readings keep their condition tint with the existing status text. Model
+estimates use their existing model condition bands, matching the value and badge.
+Acceptance: inspect each of the five colors, no-reading state, focus/unfocus,
+opacity changes and a cached reading after refresh failure. Short OK still opens
+the richer full-screen station map/history; Back/Restore dashboard retains the
+original page, focus and widget size.
 
 - [x] Define the native card and direct-fetch architecture.
 - [x] Select and document the public source.
