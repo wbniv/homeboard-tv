@@ -175,8 +175,9 @@
     <string name="hb_android_could_not_open_that_action">"Android เปิดการทำงานนั้นไม่ได้"</string>
     <string name="hb_solid_color">"สีพื้น"</string>
     <string name="hb_projectivy_wallpaper_provider_selected">"เลือกผู้ให้บริการภาพพื้นหลัง Projectivy แล้ว"</string>
-    <string name="hb_projectivy_plugins">"ปลั๊กอิน Projectivy"</string>
-    <string name="hb_background_details">"รายละเอียดพื้นหลัง"</string>
+    <string name="hb_projectivy_plugins">"รูปภาพและวิดีโอ · Projectivy"</string>
+    <string name="hb_background_details">"สถานะและเครดิตพื้นหลัง"</string>
+    <string name="hb_wallpaper_preview_dashboard_hidden">"ตัวอย่างพื้นหลัง · ซ่อนแดชบอร์ด กดย้อนกลับเพื่อยกเลิก กดลงเพื่อใช้พื้นหลัง ค่าความทึบของ UI ที่บันทึกไว้ไม่เปลี่ยนแปลง"</string>
     <string name="hb_retry_provider">"ลองผู้ให้บริการอีกครั้ง"</string>
     <string name="hb_no_providers_installed_install_a_wallpaper_provider_app_then_retu">"ยังไม่มีผู้ให้บริการ ติดตั้งแอปผู้ให้บริการภาพพื้นหลังแล้วกลับมาที่นี่"</string>
     <string name="hb_choose_an_installed_provider_to_preview">"เลือกผู้ให้บริการที่ติดตั้งเพื่อดูตัวอย่าง"</string>

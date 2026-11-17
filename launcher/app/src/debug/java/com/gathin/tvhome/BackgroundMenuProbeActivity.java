@@ -76,7 +76,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
             original = new LinkedHashMap<>(super.getSharedPreferences("widget-home", MODE_PRIVATE).getAll());
             String saved = (String) original.get("layout");
             HomeLayout seed = saved == null ? HomeLayout.firstRun() : HomeLayout.parse(saved);
-            seed.wallpaper = new WallpaperSettings(); seed.palette = "forest";
+            seed.wallpaper = new WallpaperSettings(); seed.palette = "forest"; seed.uiOpacityPercent = 100;
             getSharedPreferences("widget-home", MODE_PRIVATE).edit().clear()
                     .putString("layout", seed.encode()).putBoolean("single-screen-default-v1",true).putString("undo_history", "[]").apply();
         } catch (Exception invalid) { throw new IllegalStateException(invalid); }
@@ -139,7 +139,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         require(get("overlay") == null, "Back did not close menus");
     }
     private void openBackground() throws Exception {
-        closeMenus(); key(KeyEvent.KEYCODE_MENU); choose(1); choose(0); expectMenu("Background");
+        closeMenus(); key(KeyEvent.KEYCODE_MENU); choose(1); choose(2); expectMenu("Background");
     }
     private void undo() throws Exception {
         closeMenus(); key(KeyEvent.KEYCODE_MENU); chooseLabel(getString(R.string.hb_undo_history)); expectMenu("Undo history"); choose(0);
@@ -148,7 +148,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         return new JSONArray(getSharedPreferences("widget-home", MODE_PRIVATE).getString("undo_history", "[]")).length();
     }
     private String details() throws Exception {
-        expectMenu("Background details"); require((Boolean) get("backgroundInfo"), "Native details input mode missing");
+        expectMenu(getString(R.string.hb_background_details)); require((Boolean) get("backgroundInfo"), "Native details input mode missing");
         return ((TextView) get("backgroundStatusText")).getText().toString();
     }
     private TextView button(View view, String text) {
@@ -175,6 +175,9 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
     }
     private void addSurfaceCases(boolean apps) {
         String prefix = apps ? "All Apps: " : "Home: ";
+        add(prefix + "Appearance Up opens Icons", () -> {
+            closeMenus(); key(KeyEvent.KEYCODE_MENU); choose(1); choose(0);
+        }, () -> expectMenu(getString(R.string.hb_icons)));
         add(prefix + "root source actions", () -> {
             closeMenus(); Field field = MainActivity.class.getDeclaredField("allApps"); field.setAccessible(true); field.setBoolean(this, apps);
             Method render = MainActivity.class.getDeclaredMethod("render", int.class); render.setAccessible(true); render.invoke(this, 0); openBackground();
@@ -196,16 +199,16 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
             if (!apps) snapshot();
         });
         add(prefix + "Details opens color picker", () -> click("Choose color"), () -> expectMenu("Palette"));
-        add(prefix + "Color picker returns to Details", () -> key(apps ? KeyEvent.KEYCODE_BACK : KeyEvent.KEYCODE_DPAD_CENTER), () -> expectMenu("Background details"));
+        add(prefix + "Color picker returns to Details", () -> key(apps ? KeyEvent.KEYCODE_BACK : KeyEvent.KEYCODE_DPAD_CENTER), () -> expectMenu(getString(R.string.hb_background_details)));
         add(prefix + "Details providers child returns", () -> {
             key(KeyEvent.KEYCODE_DPAD_LEFT);
             require(getCurrentFocus() instanceof TextView && "Choose provider".contentEquals(((TextView) getCurrentFocus()).getText()), "Details button focus navigation failed");
-            key(KeyEvent.KEYCODE_DPAD_CENTER); expectMenu("Projectivy plugins"); key(KeyEvent.KEYCODE_BACK);
-        }, () -> expectMenu("Background details"));
+            key(KeyEvent.KEYCODE_DPAD_CENTER); expectMenu(getString(R.string.hb_projectivy_plugins)); key(KeyEvent.KEYCODE_BACK);
+        }, () -> expectMenu(getString(R.string.hb_background_details)));
         add(prefix + "Details Back button works", () -> click("Back"), () -> expectMenu("Background"));
     }
     private void openFixture() throws Exception {
-        openBackground(); choose(1); expectMenu("Projectivy plugins");
+        openBackground(); choose(1); expectMenu(getString(R.string.hb_projectivy_plugins));
         List<ProjectivyProviderRegistry.Provider> providers = new ProjectivyProviderRegistry(this).discover();
         int selected = -1;
         for (int i = 0; i < providers.size(); i++) if (providers.get(i).component.equals(fixture.component)) selected = i;
@@ -213,23 +216,36 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
     }
     private void addProviderCases() {
         add("Provider browsing preserves source", this::openFixture, () -> require(layout().wallpaper.solid(), "Browsing applied a provider"));
-        addReady("Preview renders offline provider", () -> choose(0), () -> require(get("displayedWallpaper") != null && layout().wallpaper.solid(), "Preview changed saved source"));
+        addReady("Preview renders offline provider", () -> choose(0), () -> {
+            require(get("displayedWallpaper") != null && layout().wallpaper.solid(), "Preview changed saved source");
+            assertVisiblePreview(); snapshot();
+        });
+        for (boolean apps : new boolean[]{false, true}) {
+            add((apps ? "All Apps" : "Home") + " preview stays visible at 100% opacity", () -> {
+                Field field = MainActivity.class.getDeclaredField("allApps"); field.setAccessible(true); field.setBoolean(this, apps);
+                Method render = MainActivity.class.getDeclaredMethod("render", int.class); render.setAccessible(true); render.invoke(this, 0);
+            }, this::assertVisiblePreview);
+        }
         add("Rotation returns to provider", () -> { choose(3); choose(0); choose(1); }, () -> {
             expectMenu("Provider background"); require(((WallpaperSettings) get("wallpaperDraft")).rotationMinutes == 5, "Rotation choice ignored");
         });
         add("Dimming cancel retains value", () -> { choose(3); choose(1); key(KeyEvent.KEYCODE_DPAD_UP); key(KeyEvent.KEYCODE_BACK); }, () -> {
             expectMenu("Provider background"); require(((WallpaperSettings) get("wallpaperDraft")).dimPercent == 35, "Dimming cancel saved draft");
         });
-        add("Dimming Back retains provider parent", () -> key(KeyEvent.KEYCODE_BACK), () -> { expectMenu("Projectivy plugins"); require(get("wallpaperDraft") == null, "Cancelled preview leaked"); });
+        add("Dimming Back retains provider parent", () -> key(KeyEvent.KEYCODE_BACK), () -> {
+            expectMenu(getString(R.string.hb_projectivy_plugins)); require(get("wallpaperDraft") == null, "Cancelled preview leaked");
+            assertRestoredDashboard();
+        });
         addReady("Reopened provider previews again", () -> { openFixture(); choose(0); }, () -> expectMenu("Provider background"));
         add("Use background applies provider", () -> choose(2), () -> {
             require(fixture.component.flattenToString().equals(layout().wallpaper.component), "Use background did not save provider");
             require(get("overlay") == null && get("wallpaperDraft") == null, "Apply did not return to dashboard");
+            assertRestoredDashboard();
         });
         add("Retry exists for saved provider", () -> {
             openBackground(); require(((String[]) get(menu(), "labels")).length == 4, "Provider has no Retry");
             undoBeforeRetry = undoCount(); choose(3);
-        }, () -> expectMenu("Background details"));
+        }, () -> expectMenu(getString(R.string.hb_background_details)));
         addReady("Retry updates Details when ready", () -> {}, () -> {
             require(details().contains("Preview ready") && details().contains("Fixture color"), "Retry status or credits stayed stale");
             require(undoCount() == undoBeforeRetry, "Retry altered saved settings");
@@ -238,7 +254,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         add("Source and color create one Undo", () -> {
             key(KeyEvent.KEYCODE_DPAD_RIGHT); key(KeyEvent.KEYCODE_BACK);
         }, () -> {
-            expectMenu("Background details");
+            expectMenu(getString(R.string.hb_background_details));
             require(undoCount() == undoBeforeSolid + 1, "Source and color were split into multiple changes");
         });
         add("Returning refreshes source actions", () -> click("Back"), () -> {
@@ -247,6 +263,30 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         add("Undo restores provider plus color", this::undo, () -> require(fixture.component.flattenToString().equals(layout().wallpaper.component)
                 && "forest".equals(layout().palette), "Undo did not restore provider and palette together"));
         addReady("Provider Details has live credits", () -> { openBackground(); choose(2); }, () -> require(details().contains("Homeboard test wallpapers") && details().contains("Title: Fixture color"), "Saved provider details unavailable"));
+    }
+    private void assertRestoredDashboard() throws Exception {
+        require(((View) get("surface")).getVisibility() == View.VISIBLE
+                && ((View) get("uiBackdrop")).getVisibility() == View.VISIBLE, "Dashboard stayed hidden");
+        require(layout().uiOpacityPercent == 100, "Preview changed saved opacity");
+    }
+    private void assertVisiblePreview() throws Exception {
+        require(((View) get("surface")).getVisibility() == View.INVISIBLE
+                && ((View) get("uiBackdrop")).getVisibility() == View.INVISIBLE, "Dashboard covers preview");
+        require(layout().uiOpacityPercent == 100, "Preview changed saved opacity");
+        ViewGroup overlay = (ViewGroup) get("overlay"); View controls = overlay.getChildAt(0);
+        require(controls.getLeft() >= overlay.getWidth() / 2
+                && controls.getRight() <= overlay.getWidth(), "Controls cover left preview or leave screen");
+        View root = (View) get("root"); Bitmap frame = Bitmap.createBitmap(root.getWidth(), root.getHeight(), Bitmap.Config.ARGB_8888);
+        root.draw(new Canvas(frame));
+        // Check the provider's actual color through the complete root composition,
+        // including configured dimming, even at saved 100% UI opacity.
+        int pixel = frame.getPixel(frame.getWidth() / 4, frame.getHeight() * 3 / 4); frame.recycle();
+        int source = Color.parseColor(((tv.projectivy.plugin.wallpaperprovider.api.Wallpaper) get("displayedWallpaper")).getUri());
+        float brightness = 1 - ((WallpaperSettings) get("wallpaperDraft")).dimPercent / 100f;
+        require(Math.abs(Color.red(pixel) - Color.red(source) * brightness) <= 2
+                && Math.abs(Color.green(pixel) - Color.green(source) * brightness) <= 2
+                && Math.abs(Color.blue(pixel) - Color.blue(source) * brightness) <= 2,
+                "Preview pixel obscured: " + Integer.toHexString(pixel));
     }
     private View sourceCard(View view, AboutSource source) {
         if (view.isClickable() && view.getContentDescription() != null

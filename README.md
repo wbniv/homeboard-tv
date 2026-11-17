@@ -56,7 +56,7 @@ preview actual candidate grids, with vertical column or horizontal row emphasis.
 
 The combined **0.1.19** deployment includes wallpaper hosting, independent UI
 background opacity, Home favorite sizes, dense icon/banner grids and English/Thai
-language selection. Solid color opens the palette picker; Background details
+language selection. Solid color opens the palette picker; Background status & credits
 shows the saved source and live provider status. Retry refreshes a selected
 provider. About links show a full address and phone QR code, plus a TV browser
 action when available. All 53 menu regressions and 380 JVM tests passed. See the

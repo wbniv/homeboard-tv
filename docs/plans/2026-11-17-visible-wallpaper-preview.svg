@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+ <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#78b9d6"/><stop offset="1" stop-color="#cbdce0"/></linearGradient></defs>
+ <rect width="960" height="540" fill="url(#sky)"/>
+ <path d="M0 400L170 160 350 340 520 140 760 380 960 200V540H0Z" fill="#497769"/>
+ <path d="M0 460L230 310 450 450 700 290 960 470V540H0Z" fill="#294e4c"/>
+ <rect x="24" y="24" width="410" height="100" rx="12" fill="#102333" fill-opacity=".95"/>
+ <g fill="#fff" font-family="sans-serif"><text x="42" y="55" font-size="22">Overflight · Preview ready</text><text x="42" y="82" font-size="16">Wallpaper preview · dashboard hidden</text><text x="42" y="107" font-size="16">Saved dashboard opacity is unchanged</text></g>
+ <g fill="#243342" stroke="#718395" stroke-width="2"><path d="M580 105Q720 0 860 105L750 220H690Z"/><path d="M875 130Q960 270 875 410L760 300V240Z"/><path d="M860 435Q720 540 580 435L690 320H750Z"/><path d="M565 410Q480 270 565 130L680 240V300Z"/><circle cx="720" cy="270" r="70"/></g>
+ <g fill="#fff" font-family="sans-serif" text-anchor="middle" font-size="18"><text x="720" y="100">↑ Preview again</text><text x="862" y="275">Settings →</text><text x="720" y="445">↓ Use background</text><text x="580" y="275">← Options</text><text x="720" y="265">Provider</text><text x="720" y="290">Back cancels</text></g>
+</svg>

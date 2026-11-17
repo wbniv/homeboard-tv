@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/c718d87) | Use saved six-place World clock defaults |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/d4264f9) | Record Cast1 world clock map and restoration acceptance |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/01eb586) | Add dashboard-first phone controls and native world clocks |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/460eea9) | Add a TV-approved phone editor for widgets and dashboard layout |
@@ -24,6 +25,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+c718d87	author	Will Norris
+c718d87	added	3
+c718d87	deleted	1
+c718d87	files	1
 d4264f9	author	Will Norris
 d4264f9	added	1
 d4264f9	deleted	1

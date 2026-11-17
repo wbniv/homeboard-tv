@@ -3,14 +3,20 @@
 Homeboard implements the public Projectivy wallpaper-provider v1 interface.
 Projectivy Launcher itself is not required. Install a provider app through the
 normal Android app installation flow, then use **Home settings → Appearance →
-Background → Projectivy plugins**. Choose a provider, select **Preview**, and
+Background → Images & videos · Projectivy**. Choose a provider, select **Preview**, and
 choose **Use background** after usable media appears. Back discards the preview.
 Undo restores the previous Homeboard background selection.
+
+Preview temporarily hides dashboard widgets and the palette backdrop, removes the
+menu scrim, and puts directional controls on the right so the wallpaper remains
+visible on the left. Saved UI opacity stays unchanged. Back cancels the draft;
+Down chooses Use background and restores the dashboard.
+In Appearance, **Up opens Icons** and **Down opens Background**.
 
 **Background → Solid color** opens the palette picker. Move to preview a solid
 color; OK or Back returns to the invoking screen. Source and color changes share
 one Undo entry, so Undo can restore a previous provider and its palette together.
-**Background details** shows the active source, palette or provider status/credits,
+**Background status & credits** shows the active source, palette or provider status/credits,
 and UI-background opacity. Its Choose color and Choose provider buttons open
 those screens; Back returns to Details and then the invoking Background menu.
 **Retry provider** appears only with a saved provider. It refreshes that source
@@ -64,7 +70,7 @@ existing Gradle 8.9 / AGP 8.5.2 combination according to the
   downgrade if TLS fails. The two Apple domains have a scoped Android cleartext
   allowance; all other domains remain denied. Private file paths, plaintext-only
   media on other hosts and inaccessible content-provider data are unsupported.
-- Metadata credit appears in **Background details**. Wallpaper links open only
+- Metadata credit appears in **Background status & credits**. Wallpaper links open only
   after **Open wallpaper link**; local-file, content, script, data and raw intent
   links are rejected. App links use a fresh browsable VIEW intent without grants.
 - Wallpaper backgrounds do not provide interactive grid widgets or receive

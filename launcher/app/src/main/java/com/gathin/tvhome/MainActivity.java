@@ -2227,10 +2227,10 @@ public class MainActivity extends Activity {
 
     private void appearanceSettings() {
         menu(getString(R.string.hb_appearance), getString(R.string.hb_customize_backgrounds_and_dashboard_elements),
-                new String[]{getString(R.string.hb_background), getString(R.string.hb_palette), getString(R.string.hb_icons), getString(R.string.hb_ui_opacity) + layout.uiOpacityPercent + "%"}, choice -> {
-                    if (choice == 0) backgroundSettings();
+                new String[]{getString(R.string.hb_icons), getString(R.string.hb_palette), getString(R.string.hb_background), getString(R.string.hb_ui_opacity) + layout.uiOpacityPercent + "%"}, choice -> {
+                    if (choice == 0) appArtworkSettings();
                     else if (choice == 1) colorPaletteSettings();
-                    else if (choice == 2) appArtworkSettings();
+                    else if (choice == 2) backgroundSettings();
                     else startAdjustment(getString(R.string.hb_ui_opacity_70), layout.uiOpacityPercent,
                             this::applyUiBackgroundOpacity, value -> {
                                 layout.uiOpacityPercent = value; save(getString(R.string.hb_hint_ui_opacity) + value + "%"); render(0);
@@ -2950,7 +2950,8 @@ public class MainActivity extends Activity {
         if (overlay != null) root.removeView(overlay);
         hideAppFocusHighlight();
         overlay = new FrameLayout(this);
-        overlay.setBackgroundColor(paletteColors.scrim);
+        boolean preview = wallpaperPreviewActive();
+        overlay.setBackgroundColor(preview ? Color.TRANSPARENT : paletteColors.scrim);
         overlay.setFocusable(true); overlay.setClickable(true);
         int first = page * spec.pageSize;
         int last = Math.min(spec.labels.length, first + spec.pageSize);
@@ -2990,7 +2991,24 @@ public class MainActivity extends Activity {
         int height = Math.round(getResources().getDisplayMetrics().heightPixels - dp(40));
         int diameter = Math.max(dp(360), Math.min(width, height));
         diameter = Math.min(diameter, dp(760));
-        overlay.addView(pie, new FrameLayout.LayoutParams(diameter, diameter, Gravity.CENTER));
+        if (preview) diameter = Math.min(diameter, getResources().getDisplayMetrics().widthPixels / 2 - dp(32));
+        FrameLayout.LayoutParams pieLp = new FrameLayout.LayoutParams(diameter, diameter,
+                preview ? Gravity.RIGHT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
+        if (preview) pieLp.rightMargin = dp(16);
+        overlay.addView(pie, pieLp);
+        if (preview) {
+            String hint = getString(R.string.hb_provider_background).equals(spec.title)
+                    ? "\n" + getString(R.string.hb_wallpaper_preview_dashboard_hidden) : "";
+            TextView caption = text(wallpaperStatus + hint, 17);
+            caption.setPadding(dp(14), dp(10), dp(14), dp(10));
+            UiBackgroundDrawable fill = shape(paletteColors.raised, paletteColors.edge, 1);
+            fill.setFillOpacity(WallpaperSettings.PIE_BACKGROUND_OPACITY);
+            caption.setBackground(fill);
+            FrameLayout.LayoutParams captionLp = new FrameLayout.LayoutParams(
+                    getResources().getDisplayMetrics().widthPixels / 2 - dp(40), -2, Gravity.TOP | Gravity.LEFT);
+            captionLp.leftMargin = dp(16); captionLp.topMargin = dp(16);
+            overlay.addView(caption, captionLp);
+        }
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));
         pie.requestFocus();
     }
@@ -3183,9 +3201,17 @@ public class MainActivity extends Activity {
     }
     private void syncBackground() {
         if (wallpaperHost == null) return;
+        // A preview must not be hidden by the user's saved dashboard opacity or widgets.
+        // Only view visibility changes; apply/cancel restore the exact saved appearance.
+        boolean preview = wallpaperPreviewActive();
+        if (surface != null) surface.setVisibility(preview ? View.INVISIBLE : View.VISIBLE);
+        uiBackdrop.setVisibility(preview ? View.INVISIBLE : View.VISIBLE);
         WallpaperSettings selected = wallpaperDraft == null || !wallpaperPreviewStarted ? layout.wallpaper : wallpaperDraft;
         wallpaperSurface.options(selected.solid() ? 0 : selected.dimPercent, reducedMotion());
         wallpaperHost.select(selected);
+    }
+    private boolean wallpaperPreviewActive() {
+        return wallpaperDraft != null && wallpaperPreviewStarted;
     }
     private void applyUiBackgroundOpacity(int percent) {
         uiBackgroundOpacity = WallpaperSettings.percent(percent);

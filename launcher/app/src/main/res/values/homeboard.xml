@@ -175,8 +175,9 @@
     <string name="hb_android_could_not_open_that_action">"Android could not open that action"</string>
     <string name="hb_solid_color">"Solid color"</string>
     <string name="hb_projectivy_wallpaper_provider_selected">"Projectivy wallpaper provider selected"</string>
-    <string name="hb_projectivy_plugins">"Projectivy plugins"</string>
-    <string name="hb_background_details">"Background details"</string>
+    <string name="hb_projectivy_plugins">"Images &amp; videos · Projectivy"</string>
+    <string name="hb_background_details">"Background status &amp; credits"</string>
+    <string name="hb_wallpaper_preview_dashboard_hidden">"Wallpaper preview · dashboard hidden. Back cancels; Down uses background. Saved UI opacity is unchanged."</string>
     <string name="hb_retry_provider">"Retry provider"</string>
     <string name="hb_no_providers_installed_install_a_wallpaper_provider_app_then_retu">"No providers installed. Install a wallpaper-provider app, then return here."</string>
     <string name="hb_choose_an_installed_provider_to_preview">"Choose an installed provider to preview"</string>
