@@ -1,8 +1,8 @@
 # World clock widget
 
-**Status: implemented in the combined 0.1.44 source; native and phone container
-checks pass. Cast1 0.1.43 core acceptance passed; corrected map/restoration and
-0.1.44 visual acceptance remain pending.**
+**Status: implemented and pushed in `01eb586`. Native and phone container checks
+pass. Cast1 0.1.44 map, selection, dashboard restoration and hold checks passed;
+selected timeline rows can still remain outside the viewport.**
 
 The first isolated container run passed **456 JVM tests** with zero failures,
 including twelve clock tests, English/Thai parity for **603** resources and Android

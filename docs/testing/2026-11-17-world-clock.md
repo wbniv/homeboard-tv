@@ -109,8 +109,9 @@ or hold evidence. The corrected recipe removes that Up; a shorter dedicated
 
 The captures exposed two clock-only polish issues: the smallest panel's hidden
 place count overlaps its date, and a selected city can have its timeline row
-outside the viewport. The 0.1.44 follow-up reserves a small count footer and scrolls
-the selected timeline row into view on activation/selection/Compare. It also fixes
+outside the viewport. The 0.1.44 follow-up reserves a small count footer and requests
+that the selected timeline row scroll into view on activation/selection/Compare.
+The latter remains ineffective in reviewed captures below. It also fixes
 the optional-seconds cadence found by code inspection. These changes preserve the
 phone controller, shared expansion behavior and household configuration.
 
@@ -121,14 +122,35 @@ phone controller, shared expansion behavior and household configuration.
 - The combined container check again passed **458 JVM tests**, **603** paired
   English/Thai resources and Android lint with zero errors; APK assembly passed.
 - Initial Cast1 background install **J‑56a3214ee400** refused installation over
-  foreground Homeboard. The shared deployment owner is handling a complete
-  foreground retry. Cast2 install submission is **J‑16a32f357557**.
+  foreground Homeboard. Foreground retry **J‑9ce844eec3f6** installed and verified
+  0.1.44. Cast2 install submission is **J‑16a32f357557**.
 - The three small clock corrections are included in this frozen version.
-  Actual 0.1.44 clock visual/map/restoration acceptance remains pending; the
-  earlier core screenshots above are explicitly from 0.1.43.
+- Implementation and coordinated phone-editor changes were committed and pushed
+  to `main` as **`01eb586`**.
 
-At the requested commit/push checkpoint, retain these limits rather than treating
-the unreviewed map-script segment or a coordinator completion alone as a pass.
+### Reviewed 0.1.44 clock captures
+
+Cast1 **J‑daab8a6525b6 completed Ready**, using the corrected 73-second recipe.
+Evidence: `artifacts/deployments/0.1.44/world-clock-review/`. The app catalog stayed
+on the isolated clock probe throughout the job, then returned to MainActivity.
+
+- `input-frame-001.png`: the small clock's extra-place count has a clear footer
+  and no longer overlaps its date.
+- `input-frame-007.png`: the bundled geographic map renders with city pins,
+  Denver selected, matching timeline selection and Denver's detail pane.
+- `input-frame-008.png`: Up selects Seattle and updates its map ring, timeline
+  selection and exact place details.
+- `input-frame-009.png`: Back restores the original isolated Home geometry and
+  focused clock widget.
+- `input-frame-010.png`: an 800 ms hold opens Configure, Move, Resize and Delete;
+  releasing the button does not also expand the widget.
+
+Known limitation: frames 002–003 still show the timeline's first rows while the
+selected Tivissa/Beijing row is outside the viewport. The scroll request is not
+accepted as a working fix. The date-count footer, map, selection, Back and hold
+checks above are supported by reviewed captures; broader checklist items remain
+separate acceptance cases.
+
 Will's subsequent request to make his own saved clock settings/size the new-widget
 defaults is a separate follow-up: read the actual household configuration and
 preserve existing cards; never infer that preset from the isolated review fixture.
