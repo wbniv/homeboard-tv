@@ -24,8 +24,8 @@ public final class CalendarResizeProbeActivity extends MainActivity {
         HomeLayout seed = new HomeLayout(); seed.homeColumns = 12; seed.homeRows = 3;
         seed.favoritesContainer = true; seed.reducedMotion = true;
         seed.addPanel(HomeLayout.CALENDAR); seed.setPanelSpan(HomeLayout.CALENDAR, 6, 2);
-        getSharedPreferences("widget-home", 0).edit().clear().putString("layout", seed.encode())
-                .putBoolean("favorites-first-page-v1", true).putString("nav_focus", HomeLayout.CALENDAR)
+        getSharedPreferences("widget-home", 0).edit().clear().putString("layout", seed.encode()).putBoolean("single-screen-default-v1",true)
+                .putString("nav_focus", HomeLayout.CALENDAR)
                 .putString("nav_home_focus", HomeLayout.CALENDAR).apply();
         super.onCreate(state);
         report = new TextView(this); report.setTextColor(0xffffffff); report.setBackgroundColor(0xff102333); report.setTextSize(12);

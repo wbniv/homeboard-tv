@@ -1,211 +1,106 @@
-# Default dashboard and reliable navigation from empty Home pages
+# Single-screen default dashboard and reliable All Apps navigation
 
-Status: implemented; 0.1.31 installed on both TVs. Cast1 native navigation, Cancel/apply, Undo and default-dashboard readability are verified; Cast2 foreground acceptance is deferred during Personal use. See the [validation record](../testing/2026-11-17-default-dashboard.md).
+Status: corrected in 0.1.32, installed on both TVs. The actual Cast1 dashboard,
+Right to All Apps and Back are verified. This supersedes the previous two-page
+fallback and confirmation preview for Default dashboard. See the
+[validation record](../testing/2026-11-17-default-dashboard.md) for exact evidence
+and the inconclusive extended isolated regression.
 
-## Outcome
+## Required behavior
 
-Right must reach All Apps even when the current Home page has no widgets. A new
-default dashboard includes **Rain, Calendar, Air quality and Favorites**. An empty
-Home remains a valid saved choice; repairing navigation must not refill it.
+Rain, Calendar, Air quality and Favorites belong together on one Home screen.
+Right must reach All Apps from the dashboard, from either settings-row path and
+from empty Home. Choosing Default dashboard must not leave the user in a hidden
+confirmation mode.
 
-## Existing behavior and likely cause
+A read-only coordinator capture of Cast1 showed the reported failure: the TV was
+on Default dashboard preview, page 2 of 2. The earlier placement split the four
+cards on grids shorter than four rows, while the preview handler consumed Right
+at its last page. A separate header branch also ignored Right on populated Home.
+The former isolated test used a four-row grid and did not cover those states.
 
-`HomeLayout.firstRun()` currently creates only Air quality. Activity startup then
-runs a separate one-time Rain/Favorites arrangement, which does not provide a
-complete four-widget dashboard.
+## Corrected layout
 
-`buildHome()` creates the two settings buttons, then returns early for an entirely
-empty widget list. `restoreFocus()` falls back to Device settings when no widget
-on the current page can take focus. In `navigate()`, Device settings handles Left
-and Down but returns without acting on Right. Home settings moves Right to Device
-settings, where another Right is likewise swallowed. Thus the later no-current-
-widget branch that calls `showApps()` is unreachable from that focus state.
+![Four-widget single-screen composition](2026-11-17-default-dashboard-and-empty-page-navigation/dashboard.svg)
 
-The same focus trap can affect a blank page within a nonempty layout, deletion of
-the last tile, relaunch with stale saved focus, and returning from All Apps.
-Confirm these exact paths with an owned device reproduction before closing the bug.
+Use a two-by-two composition on every supported grid. Split the available rows
+between upper and lower halves, even when the grid has only two or three rows.
+Row spans are grid units, not a reason to move a card to another screen. Rain and
+Calendar occupy the upper half; Air quality and Favorites occupy the lower half.
 
-## Navigation contract
-
-| Starting point | Right | Left / Back |
+| Logical grid | Upper/lower row spans | Placement |
 |---|---|---|
-| Empty Home canvas, only Home page | Open All Apps immediately | Stay on Home |
-| Empty intermediate Home page | Advance to the next Home page; after the final Home page, open All Apps | Previous Home page when one exists |
-| Home settings button on an empty page | Move focus to Device settings | Retain existing header behavior |
-| Device settings button on an empty page | Advance to the next Home page or All Apps | Move focus to Home settings |
-| All Apps left edge | Existing behavior | Return to the remembered Home page, including an empty one |
-| All Apps with no visible apps | Remain usable; settings still reachable | Return to Home |
+| 8×2 or 10×2 | 1 / 1 | Four cards on page 1 |
+| 8×3 or 10×3 | 1 / 2 | Four cards on page 1 |
+| 8×4 or 10×4 | 2 / 2 | Four cards on page 1 |
+| Taller supported grids | Balanced halves | Four cards on page 1 |
 
-Give the empty canvas a stable focus target. Up reaches the settings controls;
-Down from the header returns to that canvas when there is no tile to focus.
-Short OK on an empty canvas does nothing; hold OK / Menu opens Home settings.
-Avoid presenting it as a widget or adding an extra tile to an intentionally empty
-page. Keep a meaningful accessibility description for the empty focus surface.
+Keep readable native summaries and show detail through the widgets' detail flows.
+Favorites still scrolls inside its rectangle, with wedges and no scrollbars.
+Preserve existing location, forecast ranges, calendar settings, air source/station,
+favorite order, wallpaper, appearance, language and hidden-app settings. The
+native Air card currently defaults to automatic local model data; model and
+station measurement bases remain labeled separately.
 
-Determine emptiness from the **current page's resolved cells**, not just
-`layout.widgets.isEmpty()`. Do not treat a focusable Favorites opener with no
-favorite apps as an empty Home page: it is still a widget with its own navigation.
-A panel disappearing because an app is unavailable must not leave stale focus.
+## Applying the dashboard
 
-Share one page-advance decision between the canvas and the rightmost header
-button. Handle direction on key-down only, retaining normal bounded key-repeat
-behavior. Key-up must not produce a second transition. Keep menus, move/resize,
-Favorites internal scrolling, Undo focus and modal dialogs ahead of ordinary page
-navigation so their controls keep working.
+**Home settings → Widgets / Restore → Default dashboard** applies the arrangement
+immediately as one Undoable edit. There is no extra OK-to-save preview. If several
+Rain or Air instances exist, keep the explicit instance selection; retain extra
+instances instead of deleting data.
 
-## New default dashboard
+On this corrective update, arrange an existing nonempty Home once so Will sees
+the requested four-widget screen without discovering another menu action. Reuse
+the first existing Rain/Air instance and create missing types. Record one Undo
+entry and remember that this repair was applied, so later user changes and Undo
+are respected on subsequent launches. Keep deliberately saved empty Home empty.
+Fresh installs use the same single-screen factory.
 
-Recommend a balanced **two-by-two dashboard** when at least eight columns and four
-rows fit. All four widgets start on page 1; each can subsequently be moved,
-resized or removed. Keep the user's fitted grid and readable text sizes.
+Additional user-created widget instances are retained; their existing placement
+is not permission to silently delete them. The four default types must not spill
+onto another page.
 
-![New default dashboard and empty-page navigation](2026-11-17-default-dashboard-and-empty-page-navigation/dashboard.svg)
+## Navigation
 
-| Fitted grid example | Rain | Calendar | Air quality | Favorites |
-|---|---|---|---|---|
-| **8×4 · compact default** | 4×2, upper left | 4×2, upper right | 4×2, lower left | 4×2, lower right |
-| 10×4 or wider | 4×2, upper left | Remaining columns ×2, upper right | 4×2, lower left | Remaining columns ×2, lower right |
-| 4–7 columns, at least 4 rows | Left half ×2 | Right half ×2 | Left half ×2 below | Right half ×2 below |
-| Fewer than 4 fitted rows, or accessibility text cannot fit | Put Rain and Favorites on page 1; Calendar and Air quality follow on the next page using readable spans. Page navigation remains available from every page. | | | |
-
-On grids taller than four rows, use a balanced upper/lower division rather than
-leaving an unnecessary empty band. Clamp spans to the actual fitted grid and
-widget minimums. The examples illustrate arrangements, not a command to force
-extra rows or columns on a TV that cannot fit them.
-
-Rain's standalone detail recommendation remains **4×3**. This dashboard deliberately
-uses the supported **4×2 compact view** to keep four widgets together; full hourly
-and daily figures remain available with OK. The preview must describe that choice.
-Never silently shrink an existing user's Rain widget to apply this default.
-
-Default data and behavior:
-
-- **Rain:** Device location · Automatic, next 24 hours by hour and following six
-  days. Use an existing permission grant; otherwise show Allow location without a
-  startup permission dialog. Preserve units, labels and animation on reused widgets.
-- **Calendar:** Existing reviewed calendar data and default ranges. A compact
-  event list/summary opens details with OK. Keep the recently implemented one-row
-  option available for later user resizing; do not force one row here.
-- **Air quality:** Keep the native card's current source/location defaults and
-  preserve any configured source or station on a reused card. The current native
-  default is automatic local model data (Open-Meteo / CAMS); explicitly label it
-  as a model estimate. AirBKK station readings remain a separate selectable source.
-- **Favorites:** One bounded container, preserving the saved app list/order. With
-  no favorites, show a readable Add apps action that opens All Apps. Never
-  automatically favorite every installed app. Overflow uses wedges, no scrollbars.
-
-Reserve panel padding for headers, app labels, focus rings and overflow wedges.
-Check the default's actual painted content at TV scale; a rectangle fitting in the
-grid does not establish that its text fits.
-
-## Fresh installs and existing dashboards
-
-Use one default-dashboard factory/placement policy instead of composing Air-only
-first run with the separate startup Rain/Favorites rearrangement. Initialize the
-four widget instances and Favorites-container mode together, then position them
-once the effective grid dimensions are known. Save the resolved layout once.
-
-Apply automatically **only when no saved dashboard exists**. A saved empty layout
-is intentional and must stay empty after an update or restart. Keep the existing
-unreadable-layout backup/error handling; corrupt JSON is not permission to replace
-a person's layout with defaults. Remove the unconditional startup arrangement
-path from normal saved-layout loading so it cannot undermine those rules.
-
-Add **Home settings → Widgets / Restore → Default dashboard** for existing users,
-including Will's current installation. Show a preview with the four panels and
-any pagination before applying:
-
-1. Reuse an existing instance of each requested widget where unambiguous. If
-   multiple Rain or Air cards exist, let the user choose the instance for the
-   default page. Preserve its source/configuration and keep other instances on
-   subsequent pages rather than deleting them.
-2. Create only missing widgets. Keep the favorite apps/order and their artwork
-   preference. Preserve unrelated widgets, moving overflow deterministically to
-   later Home pages, with those moves shown in the preview.
-3. OK applies the arrangement as one Undoable edit; Back leaves the saved layout
-   untouched. Undo restores placement, widgets and their settings together.
-
-This is an arrangement preset, not a factory reset. Preserve wallpaper/provider,
-opacity, palette, language, hidden apps, All Apps order and device permissions.
-Ordinary future launches do not reapply the preset or undo later customizations.
-
-## Workflow
+- Right from a widget with no neighbor advances normally and then opens All Apps.
+- Right from Device settings advances Home/All Apps regardless of whether widgets
+  are present. Home settings → Right still reaches Device settings first.
+- An Undo control does not trap Right on Home; the same page-advance action applies.
+- The separate Rain/Favorites arrangement preview remains cancelable. Right at
+  its final page cancels the uncommitted preview and opens All Apps, rather than
+  silently swallowing the key. Default dashboard no longer enters that mode.
+- Empty canvas, intermediate blank pages and returning from All Apps retain their
+  existing finite navigation. Menus and move/resize retain their own controls.
 
 ```mermaid
 flowchart TD
-    A[Load Home] --> B{Saved layout exists?}
-    B -->|No| C[Create Rain, Calendar, Air quality and Favorites]
-    C --> D[Arrange for the fitted grid and save once]
-    B -->|Yes| E[Keep saved layout, including empty Home]
-    D --> F[Render remembered Home page]
+    A[Load Home] --> B{Nonempty saved Home needs one-time repair?}
+    B -->|Yes| C[Fit all four default widgets on page 1]
+    C --> D[Save once with Undo and repair marker]
+    B -->|No| E[Keep saved layout or create fresh single-screen default]
+    D --> F[Normal dashboard navigation]
     E --> F
-    F --> G{Any focusable panel on this page?}
-    G -->|No| H[Focus empty canvas; keep header reachable]
-    G -->|Yes| I[Restore panel focus]
-    H -->|Right| J{Another Home page?}
-    J -->|Yes| F
-    J -->|No| K[All Apps]
-    K -->|Left edge or Back| F
-    E -->|Choose Default dashboard in settings| L[Preview arrangement and overflow]
-    L -->|OK| M[Save one Undoable layout edit]
-    L -->|Back| F
-    M --> F
+    F -->|Choose Default dashboard| G[Apply single-screen arrangement immediately]
+    G --> H[One Undo entry]
+    H --> F
+    F -->|Right at final edge or rightmost settings control| I[All Apps]
+    I -->|Left edge or Back| F
 ```
 
-## Implementation scope
+## Acceptance
 
-1. Reproduce the empty-page trap; separate page-navigation decisions from widget
-   focus lookup and fix the empty canvas/rightmost-header paths together.
-2. Add the four-widget factory and grid-aware default arrangement to `HomeLayout`
-   (or a small pure placement helper). Keep placement deterministic and avoid a
-   new saved-layout compatibility layer.
-3. Wire first-run creation and the explicit Default dashboard preview/Undo flow;
-   replace the conflicting startup-only Rain/Favorites arrangement behavior.
-4. Add English/Thai labels, empty-canvas accessibility text and the Favorites
-   Add apps action if the current empty-container rendering is not usable.
-5. Update quick start, default-layout mockups and device validation records.
+Container checks cover four cards on page 1 for 4/6/8/10/12 columns and two through
+seven rows; preserve configuration, deterministic placement and Undo state.
 
-## Acceptance and deployment
+The native isolated acceptance must deliberately use a **two-row grid**, verify
+all four resolved cells are on page 1, apply Default dashboard without any extra
+confirmation, use Right from a populated settings row, and exercise Right while
+Undo has focus. It must also cover the older Rain/Favorites preview's final-edge
+exit, empty canvas, blank intermediate pages and return from All Apps. Inspect
+screenshots of both the two-row and four-row compositions and the All Apps screen.
 
-Automated checks must cover:
-
-- Empty initial Home, saved empty Home, removal of the last widget, empty
-  intermediate pages, stale widget/header focus and returning from All Apps.
-- Right from the empty canvas and from both header buttons; no double navigation
-  on key-up. Header settings, Menu/hold OK and existing move/resize/Undo/Favorites
-  routing continue working.
-- Exactly one of each default widget, no invented favorite apps, nonoverlapping
-  deterministic placement and bounded spans across 4/6/8/10/12-column grids,
-  two-row/taller screens and accessibility text sizes.
-- Saved layouts remain unchanged on startup. Preset apply/cancel/Undo preserve
-  widget settings, additional instances, favorite order and unrelated preferences.
-
-Run the relevant tests plus `task check` and `task build` in the build container.
-Verify the actual four-panel composition and remote navigation in coordinator-owned
-Cast1 sessions using isolated layouts: delete all panels, Right to All Apps, return
-Left/Back, open settings, apply the default, cancel its preview, and Undo after apply.
-Include a reproducible blank intermediate-page case and visible screenshots of
-readable panel headers, app labels and wedges. No app-data clearing is needed.
-
-After implementation is approved, use `task deploy` to advance the APK number and
-install one identical frozen APK on **Cast1 and Cast2**, preserving app data. The
-coordinator admits background installation during Personal use and defers
-foreground acceptance as required. Record installed hashes and distinguish
-installation from launch/visual verification. Do not change the default Home app.
-
-
-## Implementation progress
-
-The new first-run factory creates all four widgets; saved-layout loading no longer
-runs the startup-only Rain/Favorites arrangement. Explicit preset application
-reuses instances, preserves settings and extras, previews pages, supports Cancel
-and writes one Undoable edit on apply. Leaving the activity cancels an uncommitted
-preview. Empty pages now receive canvas focus; their page-advance policy is shared
-with the rightmost header button and normal Home edge navigation. English/Thai
-resources and isolated native key-routing/preview/Undo acceptance were added.
-
-
-Source inspection corrected an outdated assumption in the proposed Air-quality
-default: the native card already defaults to automatic local model data rather
-than AirBKK/Lumpini. This preset keeps that current behavior and existing user
-source choices; it does not introduce a new station or location policy.
+Use coordinator-owned Cast1 sessions without resetting household settings.
+Deploy a newly numbered frozen APK to both Cast1 and Cast2 through task deploy,
+retaining Personal use and separating installed-hash proof from deferred launch
+acceptance. Keep the [validation record](../testing/2026-11-17-default-dashboard.md)
+current with actual results and limitations.

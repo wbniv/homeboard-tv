@@ -60,10 +60,10 @@ and [validation limits](docs/testing/2026-11-16-thai-language.md).
 ## Default dashboard
 
 New installations start with Rain, Calendar, Air quality and Favorites. The layout
-fits the TV grid, using extra Home pages on short screens. Existing dashboards,
-including empty Home, stay as saved. **Home settings → Widgets / Restore → Default
-dashboard** previews the four-widget arrangement; OK applies it, Back cancels and
-Undo restores the previous layout. Existing widget settings and favorite apps are
+fits all four widgets on one screen, including short two-row grids. This correction
+arranges existing nonempty dashboards once, with Undo; saved empty Home stays
+empty. **Home settings → Widgets / Restore → Default dashboard** applies the
+four-widget arrangement immediately, with Undo. Existing widget settings and favorite apps are
 retained.
 
 Right from an empty Home page advances normally to the next page or All Apps.

@@ -27,7 +27,7 @@ public final class RainProbeActivity extends MainActivity {
     @Override protected void onCreate(Bundle state){
         HomeLayout seed=new HomeLayout();seed.addPanel(HomeLayout.RAIN);
         RainSettings settings=seed.rainSettings.get(HomeLayout.RAIN);settings.automatic=false;settings.latitude=13.7563;settings.longitude=100.5018;settings.name="Bangkok example";
-        getSharedPreferences("widget-home",0).edit().clear().putString("layout",seed.encode()).apply();
+        getSharedPreferences("widget-home",0).edit().clear().putString("layout",seed.encode()).putBoolean("single-screen-default-v1",true).apply();
         super.onCreate(state);
         report=new TextView(this);report.setTextColor(Color.WHITE);report.setBackgroundColor(0xff102333);report.setTextSize(15);
         FrameLayout.LayoutParams p=new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM);addContentView(report,p);updateReport();

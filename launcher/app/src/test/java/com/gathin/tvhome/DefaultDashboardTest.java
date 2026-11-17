@@ -26,8 +26,7 @@ public class DefaultDashboardTest {
                 assertTrue(cell.column >= 0 && cell.column+cell.width <= columns);
                 for (int y=cell.row;y<cell.row+cell.height;y++) for (int x=cell.column;x<cell.column+cell.width;x++)
                     assertTrue(occupied.add(cell.page+":"+y+":"+x));
-                if (!cell.key.equals("widget:air:2")) assertEquals(rows>=4?0:
-                        cell.key.equals(HomeLayout.RAIN)||cell.key.equals(HomeLayout.FAVORITES)?0:1, cell.page);
+                if (!cell.key.equals("widget:air:2")) assertEquals(0,cell.page);
                 else assertTrue(cell.page>0);
             }
             String before = layout.encode();

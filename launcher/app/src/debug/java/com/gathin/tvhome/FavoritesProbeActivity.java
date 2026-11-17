@@ -27,7 +27,7 @@ public final class FavoritesProbeActivity extends MainActivity {
             if(!app.activityInfo.packageName.equals(getPackageName()))seed.favorite("app:"+new android.content.ComponentName(app.activityInfo.packageName,app.activityInfo.name).flattenToString());
         }
         seed.addPanel(HomeLayout.RAIN);RainSettings r=seed.rainSettings.get(HomeLayout.RAIN);r.automatic=false;r.latitude=13.7563;r.longitude=100.5018;r.name="Bangkok example";
-        getSharedPreferences("widget-home",0).edit().clear().putString("layout",seed.encode()).apply();
+        getSharedPreferences("widget-home",0).edit().clear().putString("layout",seed.encode()).putBoolean("single-screen-default-v1",true).apply();
         super.onCreate(state);
         report=new TextView(this);report.setTextColor(0xffffffff);report.setBackgroundColor(0xff102333);report.setTextSize(14);
         addContentView(report,new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM));

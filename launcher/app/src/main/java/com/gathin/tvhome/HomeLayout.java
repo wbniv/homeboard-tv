@@ -55,17 +55,17 @@ final class HomeLayout {
         if (!favoritesContainer) convertFavorites();
         addPanel(rain); addPanel(CALENDAR); addPanel(air); addPanel(FAVORITES);
         int left = Math.min(4, columns / 2), right = columns - left;
-        int upper = rows >= 4 ? rows / 2 : rows;
-        int lower = rows >= 4 ? rows - upper : rows;
+        int upper = Math.max(1, rows / 2);
+        int lower = rows - upper;
         setPanelSpan(rain, left, upper);
-        setPanelSpan(FAVORITES, right, rows >= 4 ? lower : upper);
+        setPanelSpan(FAVORITES, right, lower);
         setPanelSpan(CALENDAR, right, upper);
         setPanelSpan(air, left, lower);
         LinkedHashMap<String, HomePosition> requested = new LinkedHashMap<>();
         requested.put(rain, new HomePosition(0, 0, 0));
-        requested.put(FAVORITES, new HomePosition(0, rows >= 4 ? upper : 0, left));
-        requested.put(CALENDAR, new HomePosition(rows >= 4 ? 0 : 1, 0, left));
-        requested.put(air, new HomePosition(rows >= 4 ? 0 : 1, rows >= 4 ? upper : 0, 0));
+        requested.put(FAVORITES, new HomePosition(0, upper, left));
+        requested.put(CALENDAR, new HomePosition(0, 0, left));
+        requested.put(air, new HomePosition(0, upper, 0));
         for (Map.Entry<String, HomePosition> entry : homePositions.entrySet())
             if (!requested.containsKey(entry.getKey())) requested.put(entry.getKey(), entry.getValue());
         List<String> ordered = new ArrayList<>();

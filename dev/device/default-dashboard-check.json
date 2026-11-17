@@ -1,18 +1,19 @@
 {
   "workflow": "check",
   "app": "homeboard-tv",
-  "duration": 65,
+  "duration": 68,
   "panel": "require-hidden",
   "input_script": [
     {"at": 1, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
-    {"at": 7, "capture": "empty-home-to-all-apps"},
-    {"at": 11, "capture": "header-to-all-apps"},
-    {"at": 16, "capture": "blank-intermediate-page"},
-    {"at": 22, "capture": "last-page-to-all-apps"},
-    {"at": 29, "capture": "default-preview"},
-    {"at": 35, "capture": "preview-cancelled"},
-    {"at": 42, "capture": "default-applied"},
-    {"at": 49, "capture": "undo-and-empty-navigation"},
-    {"at": 63, "capture": "final-default-dashboard"}
+    {"at": 4, "capture": "two-row-upgrade"},
+    {"at": 10, "capture": "populated-header-all-apps"},
+    {"at": 16, "capture": "widget-and-favorites-right-exits"},
+    {"at": 22, "capture": "undo-right-exit"},
+    {"at": 28, "capture": "default-immediate-apply"},
+    {"at": 35, "capture": "preview-edge-exit"},
+    {"at": 44, "capture": "undo-and-reapply"},
+    {"at": 50, "capture": "empty-home-right-exit"},
+    {"at": 57, "capture": "four-row-default"},
+    {"at": 65, "capture": "final-two-row-default"}
   ]
 }

@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/10cab3c) | Fix empty Home navigation and add the default dashboard |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/f30db99) | Use automatic Rain location and deploy dashboard updates to both TVs |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/f16c73d) | Add native rain forecast widget and review workflow |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/bce5426) | Add combined calendar ranges and visual grid previews |
@@ -13,6 +14,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+10cab3c	author	Will Norris
+10cab3c	added	13
+10cab3c	deleted	0
+10cab3c	files	1
+10cab3c	body	Keep saved empty layouts navigable, add a four-widget first-run layout and an explicit preset with preview, Cancel and Undo. Container checks pass 429 JVM tests and lint; the same 0.1.30 APK is installed on both TVs.
 f30db99	author	Will Norris
 f30db99	added	18
 f30db99	deleted	3

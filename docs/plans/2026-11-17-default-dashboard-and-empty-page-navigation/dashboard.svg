@@ -3,8 +3,8 @@
 <desc id="desc">Rain and Calendar occupy the upper row. Air quality and Favorites occupy the lower row. A blank Home canvas remains connected by Right to All Apps and by Left or Back to Home.</desc>
 <defs><style>text{font-family:system-ui,sans-serif;fill:#eaf2fa}.title{font-size:30px;font-weight:700}.head{font-size:27px;font-weight:650}.body{font-size:23px}.small{font-size:20px;fill:#b9cbdc}.panel{fill:#1b2c3f;stroke:#52677d;stroke-width:2}.line{fill:none;stroke:#82c9fa;stroke-width:4}</style><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#82c9fa" stroke-width="1.8"/></marker></defs>
 <rect width="1400" height="1020" fill="#101b29"/>
-<text x="50" y="49" class="title">Default dashboard · all four widgets on page 1 when space permits</text>
-<text x="50" y="80" class="small">8×4 example · native readable text · illustrative data</text>
+<text x="50" y="49" class="title">Default dashboard · all four widgets together on one screen</text>
+<text x="50" y="80" class="small">Same composition on 2-, 3- and 4-row grids · illustrative data</text>
 <rect x="50" y="105" width="640" height="220" rx="18" class="panel"/>
 <text x="75" y="143" class="head">Rain</text><text x="75" y="176" class="small">Device location · Automatic</text>
 <text x="75" y="211" class="body">Next 24 hours · hourly outlook</text>
@@ -31,5 +31,5 @@
 <path d="M840,882 L520,882" class="line" marker-end="url(#arrow)"/><text x="566" y="866" class="body">← Left / Back</text>
 <rect x="865" y="745" width="485" height="185" rx="18" class="panel"/>
 <text x="890" y="784" class="head">All Apps</text><text x="890" y="829" class="small">Always reachable from empty Home</text><text x="890" y="868" class="small">Returning preserves the empty page</text>
-<text x="50" y="980" class="small">Intermediate blank pages keep normal page order. No forced widgets, scrollbars or automatic layout reset.</text>
+<text x="50" y="980" class="small">Default applies immediately with Undo. Right reaches All Apps; no confirmation preview.</text>
 </svg>

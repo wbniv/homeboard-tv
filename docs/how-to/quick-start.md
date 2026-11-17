@@ -254,9 +254,10 @@ Homeboard is active and do not add Undo entries.
 
 New installations include Rain, Calendar, Air quality and Favorites. To arrange
 those widgets on an existing dashboard, choose **Home settings → Widgets / Restore
-→ Default dashboard**. Use Left/Right to inspect preview pages, OK to apply, or
-Back to cancel. Undo restores the prior arrangement. Additional widgets and their
-settings are retained, with overflow on subsequent pages.
+→ Default dashboard**. The four widgets are arranged on one screen immediately;
+Undo restores the prior arrangement. This correction arranges an existing nonempty
+dashboard once on update. Later customizations and Undo are respected. Additional
+widget instances and their settings are retained.
 
 An empty Home stays empty until you add widgets or apply the preset. Right still
 advances to the next Home page or All Apps. Up reaches the settings buttons; Down

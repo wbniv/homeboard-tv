@@ -179,7 +179,7 @@ public class MainActivity extends Activity {
     private int layoutPreviewPage;
     private String layoutPreviewFocus;
     private String layoutPreviewHomeFocus;
-    private boolean layoutPreviewApps, defaultDashboardPreview;
+    private boolean layoutPreviewApps;
     private List<String> preview;
     private Map<String, HomeLayout.HomePosition> previewHomePositions;
     private String movingKey;
@@ -323,9 +323,18 @@ public class MainActivity extends Activity {
         filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
         filter.addDataScheme("package");
         registerReceiver(packages, filter);
+        boolean repairedDashboard = false;
+        if (!preferences.getBoolean("single-screen-default-v1",false)) {
+            if(encoded!=null&&!layout.widgets.isEmpty()) {
+                applyDefaultDashboard(firstDashboardInstance(true),firstDashboardInstance(false),false);
+                repairedDashboard=true;
+            }
+            preferences.edit().putBoolean("single-screen-default-v1",true).apply();
+        }
         if (encoded == null) { allApps=false;homePage=0;focused=HomeLayout.RAIN;homeFocus=focused; }
         favoriteFocus=preferences.getString("favorite-focus", "");
         render(0);
+        if(repairedDashboard)save(getString(R.string.hb_dashboard_applied));
         loadApps();
         handleIntent(getIntent());
         if (savedInstanceState != null && savedInstanceState.getBoolean("languageSettings")) {
@@ -1156,7 +1165,7 @@ public class MainActivity extends Activity {
         }
         if (hasAppTile) createAppFocusHighlight();
         if (visibleCells.isEmpty()) surface.setContentDescription(getString(R.string.hb_dashboard_empty));
-        footer = text(firstPageBefore!=null?(defaultDashboardPreview?getString(R.string.hb_dashboard_preview, homePage+1, homePageCount(items)):getString(R.string.hb_fav_preview)):favoriteOrderPreview!=null?getString(R.string.hb_fav_reorder):resizing ? resizeHelpText() : moving ? getString(R.string.hb_move_preview_arrows_place_anywhere_in_the_grid_ok_saves_back_canc)
+        footer = text(firstPageBefore!=null?getString(R.string.hb_fav_preview):favoriteOrderPreview!=null?getString(R.string.hb_fav_reorder):resizing ? resizeHelpText() : moving ? getString(R.string.hb_move_preview_arrows_place_anywhere_in_the_grid_ok_saves_back_canc)
                 : getString(R.string.hb_hint_home) + (homePage + 1) + "/" + homePageCount(items) + getString(R.string.hb_right_all_apps_hold_ok_menu), 13);
         if (resizing) {
             footer.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
@@ -1222,30 +1231,36 @@ public class MainActivity extends Activity {
         menu(getString(R.string.hb_fav_first_page),names,i->firstPagePreview(rains.get(i)));
     }
     private void firstPagePreview(String rain) {
-        if (!beginLayoutPreview(false)) return;
+        if (!beginLayoutPreview()) return;
         layout.convertFavorites();layout.arrangeFirstPage(rain,homeGridColumns(),homeGridRows(),false);
         allApps=false;homePage=0;focused=rain;render(0);
     }
-    private boolean beginLayoutPreview(boolean defaults) {
+    private boolean beginLayoutPreview() {
         try { firstPageBefore=HomeLayout.parse(layout.encode()); } catch(Exception e) { return false; }
-        layoutPreviewPage=homePage;layoutPreviewFocus=focused;layoutPreviewHomeFocus=homeFocus;layoutPreviewApps=allApps;defaultDashboardPreview=defaults;
+        layoutPreviewPage=homePage;layoutPreviewFocus=focused;layoutPreviewHomeFocus=homeFocus;layoutPreviewApps=allApps;
         return true;
     }
     private void finishLayoutPreview(boolean apply) {
         if (firstPageBefore == null) return;
-        boolean defaults=defaultDashboardPreview;
         if (!apply) { layout=firstPageBefore;homePage=layoutPreviewPage;focused=layoutPreviewFocus;homeFocus=layoutPreviewHomeFocus;allApps=layoutPreviewApps; }
-        firstPageBefore=null;defaultDashboardPreview=false;
-        if (apply) save(getString(defaults?R.string.hb_dashboard_applied:R.string.hb_fav_arranged));
+        firstPageBefore=null;
+        if (apply) save(getString(R.string.hb_fav_arranged));
         render(0);
     }
     private void chooseDefaultDashboard() {
         chooseDashboardInstance(true, rain -> chooseDashboardInstance(false, air -> {
-            if (!beginLayoutPreview(true)) return;
-            if (!layout.favoritesContainer) layout.convertFavorites();
-            layout.arrangeDefaultDashboard(rain,air,homeGridColumns(),homeGridRows());
-            allApps=false;homePage=0;focused=rain;render(0);
+            applyDefaultDashboard(rain,air,true);
         }));
+    }
+    private String firstDashboardInstance(boolean rain) {
+        for(String key:layout.widgets)if(rain?HomeLayout.isRainWidget(key):isAirWidgetKey(key))return key;
+        return rain?HomeLayout.RAIN:HomeLayout.AIR;
+    }
+    private void applyDefaultDashboard(String rain,String air,boolean persist) {
+        if (!layout.favoritesContainer) layout.convertFavorites();
+        layout.arrangeDefaultDashboard(rain,air,homeGridColumns(),homeGridRows());
+        allApps=false;homePage=0;focused=rain;homeFocus=rain;
+        if(persist){save(getString(R.string.hb_dashboard_applied));render(0);}
     }
     private void chooseDashboardInstance(boolean rain, Consumer<String> chosen) {
         List<String> instances=new ArrayList<>();
@@ -1576,7 +1591,13 @@ public class MainActivity extends Activity {
             }
             return super.dispatchKeyEvent(event);
         }
-        if (undoButton != null && undoButton.hasFocus()) return super.dispatchKeyEvent(event);
+        if (undoButton != null && undoButton.hasFocus()) {
+            if(!allApps&&!moving&&!resizing&&firstPageBefore==null&&overlay==null&&key==KeyEvent.KEYCODE_DPAD_RIGHT) {
+                if(event.getAction()==KeyEvent.ACTION_DOWN)advanceHomePage(1);
+                return true;
+            }
+            return super.dispatchKeyEvent(event);
+        }
         if (aboutBackButton != null && aboutBackButton.hasFocus()) return super.dispatchKeyEvent(event);
         if (resizing) {
             if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
@@ -1599,7 +1620,8 @@ public class MainActivity extends Activity {
                 finishLayoutPreview(ok);
             } else if(event.getAction()==KeyEvent.ACTION_DOWN&&(key==KeyEvent.KEYCODE_DPAD_LEFT||key==KeyEvent.KEYCODE_DPAD_RIGHT)) {
                 int next=HomePageNavigation.next(homePage,homePageCount(layout.widgets),key==KeyEvent.KEYCODE_DPAD_RIGHT?1:-1);
-                if(next>=0&&next!=homePage){homePage=next;focused="";render(key==KeyEvent.KEYCODE_DPAD_RIGHT?1:-1);}
+                if(next==HomePageNavigation.ALL_APPS){finishLayoutPreview(false);showApps();}
+                else if(next!=homePage){homePage=next;focused="";render(key==KeyEvent.KEYCODE_DPAD_RIGHT?1:-1);}
             }return true;
         }
         if(favoriteOrderPreview!=null){
@@ -1725,7 +1747,7 @@ public class MainActivity extends Activity {
         if (DEVICE_SETTINGS.equals(focused)) {
             if (key == KeyEvent.KEYCODE_DPAD_DOWN) focusFirstSurfaceItem();
             else if (key == KeyEvent.KEYCODE_DPAD_LEFT) { focused = HOME_SETTINGS; restoreFocus(); }
-            else if(key==KeyEvent.KEYCODE_DPAD_RIGHT&&!allApps&&visibleCells.isEmpty())advanceHomePage(1);
+            else if(key==KeyEvent.KEYCODE_DPAD_RIGHT&&!allApps)advanceHomePage(1);
             return;
         }
         if (allApps) {

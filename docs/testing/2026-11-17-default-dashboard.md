@@ -1,6 +1,12 @@
 # Default dashboard and empty-page navigation · 17 November 2026
 
-## Delivered behavior
+**Current correction:** the earlier two-page fallback and Default dashboard preview
+were rejected by Will after observing the actual TV. The 0.1.32 correction below
+supersedes those behaviors; older acceptance is historical evidence, not proof
+that the originally requested single-screen workflow worked.
+
+
+## Earlier delivered behavior (0.1.30–0.1.31)
 
 New installations create Rain, Calendar, Air quality and Favorites together. The
 factory uses the fitted grid, placing all four on one page with four or more rows
@@ -92,3 +98,58 @@ The native Air quality card was found to already default to automatic local mode
 data. The preset preserves that current default and existing source settings; the
 plan and illustration were corrected instead of imposing an AirBKK station choice.
 The captured model card labels its source and measurement basis explicitly.
+
+## 0.1.32 single-screen and navigation correction
+
+Read-only baseline Cast1 capture **J‑bdc11abe8b92** showed the actual failure:
+Default dashboard was still in its confirmation preview on page 2 of 2. The
+short-grid factory deliberately split the four cards, and the preview handler
+swallowed Right at its final page. A separate settings-row branch also swallowed
+Right on populated Home. This is why the earlier four-row/empty-header acceptance
+was insufficient for Will's reported behavior. Cast2 capture **J‑04e4890af44c** was
+black and does not establish that TV's app state. Private baseline evidence is in
+`artifacts/navigation-regression/`.
+
+The corrected factory keeps the four default types on page 1 on two-, three- and
+taller-row grids. Default dashboard applies immediately with one Undo entry; it
+no longer has a confirmation-preview mode. Existing nonempty Home is arranged
+once on this update, preserving configuration and favorites. Its repair marker
+prevents later Undo/customization from being overwritten. Saved empty Home stays
+empty. The rightmost settings button works on populated Home, Undo permits Right,
+and the separate Rain/Favorites preview can exit to All Apps at its final edge.
+
+0.1.32 passed 429 JVM tests, six calendar checks, two deployment checks, parity
+for 466 English/Thai resources and lint with zero errors (316 warnings). The
+frozen APK SHA-256 is
+`4318c5cc6bfb011ef5b8accabbf41a921ceb6123ab33fde969b9cfda353f6b93`.
+Cast1 **J‑38a3796e6c9a** completed installation/launcher verification; Cast2
+**J‑270c18f8c940** has matching installed-hash proof with foreground verification
+deferred during Personal use. This session cancelled its superseded 0.1.31
+verification **J‑0e305bf1ab78**.
+
+Actual-settings MainActivity check **J‑8bb5e6cd7da0** completed and captured All
+Apps. Explicit actual-settings Right/Back check **J‑1b440ad71452** and the corrected
+two-row isolated regression are being assessed before final acceptance.
+
+Actual-settings apply/Right/Back check **J‑d4675e8b3900** completed. Its inspected
+captures show the requested four widgets together on Home 1/1, nine retained
+favorites, the retained Lumpini Park AirBKK source, All Apps after Right through
+the settings row, and the same single-screen Home after Back. No confirmation
+preview remains. The empty saved Home underneath the previous preview was
+explicitly arranged through the real Widgets / Restore → Default dashboard menu,
+with Undo. Private captures: `artifacts/deployments/0.1.32/actual-default-applied/`.
+
+The extended isolated regression **J‑7b2a40e682fb** stopped when the foreground
+changed to `net.biohack.homeboard.fixture/.FixtureActivity`, before its first
+scheduled capture. The coordinator's input helper refused further input and
+automatic recovery verified the device. Its diagnostics contain no new Homeboard
+crash; they do not establish why that app came forward. Cleanup safely restored
+the original MainActivity. This extended run is **inconclusive**, not a passing
+result. It does not replace the successful actual-settings apply/Right/Back
+captures above. The normal MainActivity launch descriptor is restored.
+
+The observed production workflow is verified on Cast1: the requested dashboard
+is applied and saved, all four cards share Home 1/1, Right reaches All Apps and
+Back restores Home. Broader isolated Undo/preview/favorites-loop coverage remains
+inconclusive in this run; Cast2 foreground behavior is deferred during Personal
+use. Both installed APK hashes match the frozen 0.1.32 build.

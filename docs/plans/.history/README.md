@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/73bc07f) | Measure empty Favorites text before dashboard layout |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/10cab3c) | Fix empty Home navigation and add the default dashboard |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/91550df) | Allow one-row Calendar widgets with compact date cards |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/50919e6) | Record verified Rain installation on both TVs |
@@ -18,6 +19,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+73bc07f	author	Will Norris
+73bc07f	added	1
+73bc07f	deleted	1
+73bc07f	files	1
+73bc07f	body	Keep both lines of the empty Add apps action visible. Verify the complete native navigation, preset Cancel/apply, persistence and Undo flow on Cast1; install the identical 0.1.31 APK on both TVs.
 10cab3c	author	Will Norris
 10cab3c	added	2
 10cab3c	deleted	0

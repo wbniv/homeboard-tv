@@ -78,7 +78,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
             HomeLayout seed = saved == null ? HomeLayout.firstRun() : HomeLayout.parse(saved);
             seed.wallpaper = new WallpaperSettings(); seed.palette = "forest";
             getSharedPreferences("widget-home", MODE_PRIVATE).edit().clear()
-                    .putString("layout", seed.encode()).putString("undo_history", "[]").apply();
+                    .putString("layout", seed.encode()).putBoolean("single-screen-default-v1",true).putString("undo_history", "[]").apply();
         } catch (Exception invalid) { throw new IllegalStateException(invalid); }
         super.onCreate(state);
         runner.postDelayed(() -> {
