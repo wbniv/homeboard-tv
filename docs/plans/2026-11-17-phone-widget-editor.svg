@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="980" viewBox="0 0 1440 980"><style>text{font-family:Arial,sans-serif;fill:#edf4fc}.h{font-size:25px;font-weight:bold}.t{font-size:19px}.m{font-size:16px;fill:#acbed3}.b{font-size:18px;font-weight:bold;fill:#081c28}</style><rect width="1440" height="980" fill="#101b2b"/>
+<text x="32" y="42" class="h">Configure widgets from your phone</text>
+<text x="32" y="72" class="m">Proposed local web editor · illustrative screens and placeholder QR · no account or phone app</text>
+<rect x="32" y="108" width="812" height="460" rx="14" fill="#20334b" stroke="#526b86"/>
+<text x="58" y="150" class="h">TV · Home settings → Configure from phone</text>
+<text x="58" y="184" class="t">Cast1 · Living room · TV 7A2C</text>
+<rect x="60" y="210" width="180" height="180" rx="4" fill="#edf4fc" stroke="#edf4fc"/>
+<rect x="72" y="222" width="48" height="48" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="81" y="231" width="30" height="30" rx="0" fill="#edf4fc" stroke="#edf4fc"/>
+<rect x="88" y="238" width="16" height="16" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="178" y="222" width="48" height="48" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="187" y="231" width="30" height="30" rx="0" fill="#edf4fc" stroke="#edf4fc"/>
+<rect x="194" y="238" width="16" height="16" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="72" y="328" width="48" height="48" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="81" y="337" width="30" height="30" rx="0" fill="#edf4fc" stroke="#edf4fc"/>
+<rect x="88" y="344" width="16" height="16" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="91" y="279" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="91" y="298" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="129" y="222" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="129" y="298" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="129" y="317" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="148" y="260" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="148" y="279" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="148" y="355" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="167" y="317" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="167" y="336" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="186" y="279" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="186" y="298" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="205" y="336" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<rect x="205" y="355" width="13" height="13" rx="0" fill="#14263a" stroke="#14263a"/>
+<text x="264" y="240" class="h">Scan with your phone camera</text>
+<text x="264" y="278" class="t">Same home network · approve on this TV</text>
+<text x="264" y="315" class="t">http://TV-address:port</text>
+<text x="264" y="349" class="m">Local HTTP · use a trusted home network</text>
+<text x="264" y="381" class="m">Code and TV identity must match</text>
+<rect x="60" y="418" width="756" height="128" rx="14" fill="#2c4660" stroke="#526b86"/>
+<text x="80" y="451" class="h">Allow this editor? · matching code 482 731</text>
+<text x="80" y="479" class="m">One temporary connection · no permanent trust</text>
+<rect x="80" y="491" width="122" height="44" rx="10" fill="#94dbee" stroke="#94dbee"/>
+<text x="94" y="520" class="b">Allow</text>
+<rect x="220" y="491" width="112" height="44" rx="10" fill="#94dbee" stroke="#94dbee"/>
+<text x="234" y="520" class="b">Deny</text>
+<text x="370" y="519" class="m">Stop editing revokes access</text>
+<rect x="32" y="591" width="812" height="327" rx="14" fill="#20334b" stroke="#526b86"/>
+<text x="58" y="628" class="h">Phone edits → draft → explicit Apply → TV</text>
+<text x="58" y="666" class="t">Rain: TV location · next 24 hours · following 6 days</text>
+<text x="58" y="704" class="t">Air quality: station/model · 24h + 30d sparklines</text>
+<text x="58" y="742" class="t">Calendar: sources and date ranges</text>
+<text x="58" y="780" class="t">Favorites: choose apps · reorder · one bottom row</text>
+<text x="58" y="826" class="t">One Apply = one Undo, including mixed widget changes</text>
+<text x="58" y="865" class="m">Remote edit meanwhile? Reload latest; preserve the phone draft.</text>
+<text x="58" y="895" class="m">Leaving Homeboard ends the session and cancels any TV preview.</text>
+<rect x="890" y="108" width="518" height="810" rx="35" fill="#0d1521" stroke="#69849f"/>
+<rect x="909" y="130" width="480" height="766" rx="22" fill="#192b40" stroke="#192b40"/>
+<text x="932" y="167" class="h">Homeboard · Cast1</text>
+<text x="932" y="196" class="m">Connected · Living room · TV 7A2C</text>
+<rect x="932" y="213" width="435" height="78" rx="14" fill="#29425c" stroke="#526b86"/>
+<text x="948" y="242" class="t">Widgets      Layout      Changes (2)</text>
+<text x="948" y="270" class="m">Editing a draft · TV unchanged</text>
+<text x="932" y="328" class="h">Rain · main forecast</text>
+<text x="932" y="360" class="m">Location</text>
+<rect x="932" y="371" width="435" height="48" rx="14" fill="#253c55" stroke="#526b86"/>
+<text x="946" y="402" class="t">● TV device location · automatic</text>
+<text x="932" y="448" class="m">Hours ahead                 Following days</text>
+<rect x="932" y="460" width="207" height="48" rx="14" fill="#253c55" stroke="#526b86"/>
+<text x="947" y="492" class="t">24 hours    ▾</text>
+<rect x="1150" y="460" width="217" height="48" rx="14" fill="#253c55" stroke="#526b86"/>
+<text x="1165" y="492" class="t">6 days    ▾</text>
+<text x="932" y="544" class="t">Units      Millimetres ▾</text>
+<text x="932" y="582" class="t">Animated rain clouds      On</text>
+<rect x="932" y="607" width="435" height="121" rx="14" fill="#253c55" stroke="#526b86"/>
+<text x="948" y="637" class="t">Dashboard preview · draft</text>
+<rect x="948" y="650" width="401" height="17" rx="3" fill="#78b7d4" stroke="#78b7d4"/>
+<rect x="948" y="673" width="247" height="25" rx="3" fill="#476487" stroke="#476487"/>
+<rect x="1202" y="673" width="147" height="25" rx="3" fill="#66aa96" stroke="#66aa96"/>
+<rect x="948" y="704" width="401" height="10" rx="3" fill="#889cc1" stroke="#889cc1"/>
+<rect x="932" y="746" width="207" height="44" rx="10" fill="#94dbee" stroke="#94dbee"/>
+<text x="946" y="775" class="b">Preview on TV</text>
+<rect x="1150" y="746" width="217" height="44" rx="10" fill="#94dbee" stroke="#94dbee"/>
+<text x="1164" y="775" class="b">Apply to Cast1</text>
+<text x="932" y="819" class="t">Discard draft     •     Undo last change</text>
+<text x="932" y="856" class="m">Change TV · pair with its own QR code</text>
+<text x="32" y="958" class="t">TV approval once per session · native TV rendering · no silent overwrite · remote controls remain available</text>
+</svg>

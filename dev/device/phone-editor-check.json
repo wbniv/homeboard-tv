@@ -1,0 +1,68 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 380,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 1,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 160
+    },
+    {
+      "at": 3,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 160
+    },
+    {
+      "at": 6,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 160
+    },
+    {
+      "at": 9,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 160
+    },
+    {
+      "at": 12,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 160
+    },
+    {
+      "at": 20,
+      "capture": "phone-editor-qr"
+    },
+    {
+      "at": 300,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 304,
+      "capture": "phone-approved"
+    },
+    {
+      "at": 318,
+      "capture": "phone-changes-applied"
+    },
+    {
+      "at": 336,
+      "capture": "phone-preview"
+    },
+    {
+      "at": 358,
+      "capture": "phone-undo-restored"
+    },
+    {
+      "at": 370,
+      "capture": "phone-session-closed"
+    }
+  ]
+}

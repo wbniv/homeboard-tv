@@ -91,15 +91,13 @@ final class AirQualityCard {
         this.widgetKey = widgetKey; this.locations = locations; this.undoRecorder = undoRecorder;
         String preferenceName = "air-quality-widget-" + widgetKey.replaceAll("[^A-Za-z0-9_-]", "_");
         prefs = activity.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
-        source = prefs.getString("source", "model");
-        locationMode = prefs.getString("location-mode", "auto");
-        locationName = prefs.getString("location-name", getString(R.string.hb_near_me));
-        if (prefs.contains("latitude") && prefs.contains("longitude")) {
-            latitude = Double.longBitsToDouble(prefs.getLong("latitude", 0));
-            longitude = Double.longBitsToDouble(prefs.getLong("longitude", 0));
-        }
-        String saved = prefs.getString("station", IDS[0]);
-        for (int i = 0; i < IDS.length; i++) if (IDS[i].equals(saved)) selected = i;
+        JSONObject initial=legacyConfiguration();
+        JSONObject config=PhoneConfigurationStore.readAir(activity,widgetKey,initial);
+        source=config.optString("source","model");locationMode=config.optString("location-mode","auto");
+        locationName=config.optString("location-name",getString(R.string.hb_near_me));
+        latitude=config.optDouble("latitude",Double.NaN);longitude=config.optDouble("longitude",Double.NaN);
+        String saved=config.optString("station",IDS[0]);
+        for(int i=0;i<IDS.length;i++)if(IDS[i].equals(saved))selected=i;
         readHistory();
         readCache();
     }
@@ -244,14 +242,13 @@ final class AirQualityCard {
         persistConfiguration();
     }
     private void persistConfiguration() {
-        SharedPreferences.Editor editor = prefs.edit().putString("source", source).putString("location-mode", locationMode)
-                .putString("location-name", locationName).putString("station", IDS[selected]);
-        if (Double.isFinite(latitude) && Double.isFinite(longitude))
-            editor.putLong("latitude", Double.doubleToLongBits(latitude)).putLong("longitude", Double.doubleToLongBits(longitude));
-        else editor.remove("latitude").remove("longitude");
-        editor.apply();
+        PhoneConfigurationStore.writeAir(activity,widgetKey,configurationFromFields());
     }
+    JSONObject configurationSnapshot(){return configurationFromPreferences();}
     private JSONObject configurationFromPreferences() {
+        return PhoneConfigurationStore.readAir(activity,widgetKey,legacyConfiguration());
+    }
+    private JSONObject legacyConfiguration() {
         JSONObject config = new JSONObject();
         try {
             config.put("source", prefs.getString("source", "model"));

@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/4fdbaf9) | Add full-screen widget drilldowns and dense dashboard browsing |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/d77eeab) | Keep the default dashboard on one screen and remove its preview trap |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/73bc07f) | Measure empty Favorites text before dashboard layout |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/10cab3c) | Fix empty Home navigation and add the default dashboard |
@@ -20,6 +21,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+4fdbaf9	author	Will Norris
+4fdbaf9	added	4
+4fdbaf9	deleted	0
+4fdbaf9	files	1
 d77eeab	author	Will Norris
 d77eeab	added	1
 d77eeab	deleted	1

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hb_phone_title">"Configure from phone"</string>
+    <string name="hb_phone_no_network">"Connect the TV to your home network first."</string>
+    <string name="hb_phone_unavailable">"Phone editor could not start. Try again."</string>
+    <string name="hb_phone_pair_hint">"Scan the QR code on your phone, then approve the matching code here. Same home network required. Local HTTP: use a trusted network. Leaving Homeboard ends access."</string>
+    <string name="hb_phone_dashboard">"Return to dashboard"</string>
+    <string name="hb_phone_stop">"Stop phone editing"</string>
+    <string name="hb_phone_allow">"Allow this phone editor?"</string>
+    <string name="hb_phone_match">"Check this code matches your phone. Allow replaces any previous editor for this session."</string>
+    <string name="hb_phone_accept">"Allow"</string>
+    <string name="hb_phone_deny">"Deny"</string>
+    <string name="hb_phone_scan">"Scan this QR code with your phone camera"</string>
+    <string name="hb_phone_connected">"Phone editor connected"</string>
+    <string name="hb_phone_conflict">"Settings changed on the TV. Reload latest and review your draft."</string>
+    <string name="hb_phone_busy">"Finish the current TV action first, then retry."</string>
+    <string name="hb_phone_change">"Phone changes to widgets and layout"</string>
+    <string name="hb_phone_preview">"Phone preview · Back cancels · Restores automatically in 30 seconds"</string>
+    <string name="hb_phone_preview_data">"Layout preview · data refreshes after Apply"</string>
+</resources>

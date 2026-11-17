@@ -39,6 +39,8 @@ missing rows on commit.*
 
 | [Default dashboard: hourly rain and bottom Favorites](2026-11-17-default-dashboard-hourly-rain.md) | Proposes shallow full-width hourly rain, compact air quality with 24-hour/30-day sparklines and a full-width bottom Favorites row. | 0.1.35 installed on both TVs; Cast1 layout and navigation verified | Feature / Fix |
 
+| [Configure Homeboard widgets from a phone](2026-11-17-phone-widget-editor.md) | Adds a TV-hosted local web editor with temporary TV-approved pairing, per-instance widget/layout controls, draft preview, atomic Apply and Undo. | 0.1.40 installed on both TVs; native HTTP and browser UI passed; physical-phone LAN acceptance pending | Feature |
+
 ---
 
 ## How this index was derived

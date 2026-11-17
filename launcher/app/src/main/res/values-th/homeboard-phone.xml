@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hb_phone_title">"ตั้งค่าจากโทรศัพท์"</string>
+    <string name="hb_phone_no_network">"เชื่อมต่อทีวีกับเครือข่ายบ้านก่อน"</string>
+    <string name="hb_phone_unavailable">"เปิดตัวแก้ไขบนโทรศัพท์ไม่ได้ โปรดลองอีกครั้ง"</string>
+    <string name="hb_phone_pair_hint">"สแกนคิวอาร์โค้ดด้วยโทรศัพท์ แล้วยืนยันรหัสที่ตรงกันบนทีวี ต้องอยู่ในเครือข่ายบ้านเดียวกัน ใช้ HTTP ในเครือข่ายที่เชื่อถือได้ ออกจาก Homeboard เพื่อสิ้นสุดการเข้าถึง"</string>
+    <string name="hb_phone_dashboard">"กลับแดชบอร์ด"</string>
+    <string name="hb_phone_stop">"หยุดแก้ไขจากโทรศัพท์"</string>
+    <string name="hb_phone_allow">"อนุญาตตัวแก้ไขบนโทรศัพท์นี้หรือไม่"</string>
+    <string name="hb_phone_match">"ตรวจสอบว่ารหัสตรงกับโทรศัพท์ การอนุญาตจะแทนที่ตัวแก้ไขก่อนหน้าในเซสชันนี้"</string>
+    <string name="hb_phone_accept">"อนุญาต"</string>
+    <string name="hb_phone_deny">"ปฏิเสธ"</string>
+    <string name="hb_phone_scan">"สแกนคิวอาร์โค้ดด้วยกล้องโทรศัพท์"</string>
+    <string name="hb_phone_connected">"เชื่อมต่อตัวแก้ไขบนโทรศัพท์แล้ว"</string>
+    <string name="hb_phone_conflict">"การตั้งค่าบนทีวีเปลี่ยนแล้ว โหลดข้อมูลล่าสุดและตรวจสอบแบบร่าง"</string>
+    <string name="hb_phone_busy">"ทำรายการปัจจุบันบนทีวีให้เสร็จก่อน แล้วลองอีกครั้ง"</string>
+    <string name="hb_phone_change">"การเปลี่ยนวิดเจ็ตและเค้าโครงจากโทรศัพท์"</string>
+    <string name="hb_phone_preview">"ตัวอย่างจากโทรศัพท์ · ย้อนกลับเพื่อยกเลิก · คืนค่าอัตโนมัติใน 30 วินาที"</string>
+    <string name="hb_phone_preview_data">"ตัวอย่างเค้าโครง · ข้อมูลจะรีเฟรชหลังใช้การเปลี่ยนแปลง"</string>
+</resources>

@@ -1,0 +1,38 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 38,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 1,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 4,
+      "capture": "phone-qr"
+    },
+    {
+      "at": 8,
+      "capture": "phone-approved"
+    },
+    {
+      "at": 12,
+      "capture": "phone-applied"
+    },
+    {
+      "at": 17,
+      "capture": "phone-preview"
+    },
+    {
+      "at": 26,
+      "capture": "phone-restored-and-pass"
+    },
+    {
+      "at": 34,
+      "capture": "phone-final"
+    }
+  ]
+}

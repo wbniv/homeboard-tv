@@ -369,6 +369,7 @@ public class MainActivity extends Activity {
         });
     }
     @Override protected void onPause() {
+        if(phoneEditor!=null)phoneEditor.stop();
         active = false; restoringSurface = true; cancelOk();
         if(expandedWidget!=null)expandedWidget.setRunning(false);
         if (firstPageBefore != null) finishLayoutPreview(false);
@@ -454,14 +455,16 @@ public class MainActivity extends Activity {
                 pushUndo("layout", "", lastSavedLayout, label);
             }
         }
-        preferences.edit().putString("layout", next).apply();
+        SharedPreferences.Editor edit=preferences.edit().putString("layout",next);
+        if(changed)PhoneConfigurationStore.revision(preferences,edit);
+        edit.apply();
         lastSavedLayout = next;
         if (changed && !applyingUndo && undoGroupStart == null) showUndoBanner(label);
     }
     private void saveWithoutUndo() {
-        String next = layout.encode();
-        preferences.edit().putString("layout", next).apply();
-        lastSavedLayout = next;
+        String next=layout.encode();SharedPreferences.Editor edit=preferences.edit().putString("layout",next);
+        if(!next.equals(preferences.getString("layout","")))PhoneConfigurationStore.revision(preferences,edit);
+        edit.apply();lastSavedLayout=next;
     }
     private JSONArray storedUndoEntries() {
         try { return new JSONArray(preferences.getString(PREF_UNDO_HISTORY, "[]")); }
@@ -558,7 +561,9 @@ public class MainActivity extends Activity {
         if (displayedIndex < 0 || displayedIndex >= entries.size()) return;
         int targetIndex = entries.size() - 1 - displayedIndex;
         String restoredLabel = entries.get(displayedIndex).label;
+        HomeLayout beforeUndo=layout;
         try {
+            JSONObject restoredAir=PhoneConfigurationStore.air(preferences);
             applyingUndo = true;
             for (int i = entries.size() - 1; i >= targetIndex; i--) {
                 UndoEntry entry = entries.get(entries.size() - 1 - i);
@@ -573,18 +578,21 @@ public class MainActivity extends Activity {
                     homePage = state.getInt("page"); homeFocus = state.getString("focus");
                     if (!allApps) focused = homeFocus;
                 }
-                else if ("air".equals(entry.kind)) airFor(entry.key).restoreConfigurationSnapshot(entry.state);
+                else if ("air".equals(entry.kind)) restoredAir.put(entry.key,new JSONObject(entry.state));
+                else if ("phone".equals(entry.kind)) {JSONObject aggregate=new JSONObject(entry.state);layout=HomeLayout.parse(aggregate.getJSONObject("layout").toString());restoredAir=aggregate.getJSONObject("air");}
             }
             JSONArray stored = storedUndoEntries();
             JSONArray remaining = new JSONArray();
             for (int i = 0; i < targetIndex; i++) remaining.put(stored.getJSONObject(i));
-            preferences.edit().putString(PREF_UNDO_HISTORY, remaining.toString())
-                    .putString("layout", layout.encode()).apply();
+            PhoneConfigurationStore.commit(preferences,layout,restoredAir,remaining,null,null);
+            for(AirQualityCard a:airWidgets.values())a.close();airWidgets.clear();
+            for(RainWidgetController r:rainWidgets.values())r.close();rainWidgets.clear();
             lastSavedLayout = layout.encode();
             undoGroupStart = null; undoGroupLabel = null;
             background = paletteColor(); paletteColors = PaletteColors.from(background);
             root.setBackgroundColor(background); setAirPalette();
         } catch (Exception failure) {
+            layout=beforeUndo;
             toast(getString(R.string.hb_could_not_undo_that_change));
             return;
         } finally { applyingUndo = false; }
@@ -834,6 +842,7 @@ public class MainActivity extends Activity {
         });
     }
     private void updateAir() {
+        if(phonePreviewBefore!=null){for(AirQualityCard a:airWidgets.values())a.stop();for(RainWidgetController r:rainWidgets.values())r.stop();return;}
         boolean visible = active && !allApps && overlay == null && hasWindowFocus();
         Set<String> onPage = new LinkedHashSet<>();
         for (HomeLayout.Cell c : homeCells(dashboardItems()))
@@ -1042,7 +1051,7 @@ public class MainActivity extends Activity {
         view.setPadding(dp(appTile ? 2 : 16), dp(appTile ? 2 : 12),
                 dp(appTile ? 2 : 16), dp(appTile ? 2 : 12));
         view.setOnFocusChangeListener((v, hasFocus) -> {
-            if (isAirWidgetKey(key)) airFor(key).setTileFocused(hasFocus);
+            if (isAirWidgetKey(key)&&phonePreviewBefore==null) airFor(key).setTileFocused(hasFocus);
             boolean animateTile = denseApp && !restoringSurface && !reducedMotion();
             if (view instanceof CircularAppTile) {
                 ((CircularAppTile) view).setAppFocused(hasFocus, animateTile);
@@ -1163,14 +1172,14 @@ public class MainActivity extends Activity {
             if (cell.page != homePage) continue;
             visibleCells.add(cell);
             if (cell.key.startsWith("app:")) hasAppTile = true;
-            View tile = HomeLayout.FAVORITES.equals(cell.key) ? favoritesTile(cell.height == 1) : isAirWidgetKey(cell.key) ? airTile(cell.key, cell.width, cell.height)
+            View tile = phonePreviewBefore!=null&&(isAirWidgetKey(cell.key)||HomeLayout.isRainWidget(cell.key))?phonePreviewTile(cell.key):HomeLayout.FAVORITES.equals(cell.key) ? favoritesTile(cell.height == 1) : isAirWidgetKey(cell.key) ? airTile(cell.key, cell.width, cell.height)
                     : HomeLayout.isRainWidget(cell.key) ? rainTile(cell.key)
                     : HomeLayout.isCalendarWidget(cell.key) ? calendarTile(cell.key) : appTile(cell.key, true);
             if(HomeLayout.FAVORITES.equals(cell.key)) {
                 tiles.put(cell.key,tile);
                 favoritesWidget.interactive(!moving&&!resizing&&firstPageBefore==null);
             } else configureTile(tile, cell.key);
-            if (isAirWidgetKey(cell.key)) airFor(cell.key).bind(tile);
+            if (isAirWidgetKey(cell.key)&&phonePreviewBefore==null) airFor(cell.key).bind(tile);
             grid.addTile(tile, cell.column, cell.row, cell.width, cell.height);
         }
         if (hasAppTile) createAppFocusHighlight();
@@ -1568,6 +1577,8 @@ public class MainActivity extends Activity {
     }
 
     @Override public boolean dispatchKeyEvent(KeyEvent event) {
+        if(phonePreviewBefore!=null){if(event.getKeyCode()==KeyEvent.KEYCODE_BACK&&event.getAction()==KeyEvent.ACTION_UP)phoneCancelPreview();return true;}
+        if(phonePanelOpen){if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)phoneDismiss();return true;}return super.dispatchKeyEvent(event);}
         int key = event.getKeyCode();
         if (wallpaperHost != null && event.getAction() == KeyEvent.ACTION_DOWN) wallpaperHost.userActivity();
         if (adjustmentArm != null) {
@@ -2018,10 +2029,117 @@ public class MainActivity extends Activity {
         else homePage = homePageOf(focused, layout.widgets);
         render(0);
     }
+    private PhoneEditor phoneEditor;
+    private boolean phonePanelOpen;
+    private TextView phoneIndicator;
+    private HomeLayout phonePreviewBefore;
+    private String phonePreviewFocus,phonePreviewHomeFocus;
+    private int phonePreviewPage;
+    private boolean phonePreviewAllApps;
+    private JSONObject phonePreviewAir;
+    private final Runnable phonePreviewTimeout=()->phoneCancelPreview();
+    boolean phoneForeground(){return active&&!closed;}
+    boolean phoneCanPair(){return phonePanelOpen||!phoneBusy();}
+    private boolean phoneBusy(){return !active||closed||overlay!=null||moving||resizing||firstPageBefore!=null||favoriteOrderPreview!=null||expandedWidget!=null||undoGroupStart!=null;}
+    String phoneName(){String name=android.provider.Settings.Global.getString(getContentResolver(),"device_name");if(name==null||name.isBlank())name=android.os.Build.MODEL;String id=android.provider.Settings.Secure.getString(getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);return name+" · "+(id==null?"TV":id.substring(Math.max(0,id.length()-4)));}
+    void phoneMessage(int id){toast(getString(id));}
+    void phoneDismiss(){dismissMenu();activeMenu=null;menuStack.clear();}
+    void phonePanel(String title,String message,android.graphics.Bitmap bitmap,String[] choices,java.util.function.IntConsumer action){
+        dismissMenu();cancelOk();activeMenu=null;menuStack.clear();phonePanelOpen=true;
+        surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        overlay=new FrameLayout(this);overlay.setBackgroundColor(paletteColors.scrim);
+        LinearLayout panel=new LinearLayout(this);panel.setOrientation(LinearLayout.VERTICAL);panel.setPadding(dp(24),dp(18),dp(24),dp(18));panel.setBackground(shape(paletteColors.raised,paletteColors.edge,1));
+        panel.addView(text(title,23));TextView detail=text(message,17);detail.setPadding(0,dp(8),0,dp(8));panel.addView(detail);
+        if(bitmap!=null){ImageView qr=new ImageView(this);qr.setImageBitmap(bitmap);qr.setContentDescription(getString(R.string.hb_phone_scan));panel.addView(qr,new LinearLayout.LayoutParams(dp(160),dp(160)));}
+        LinearLayout buttons=new LinearLayout(this);View first=null;
+        for(int i=0;i<choices.length;i++){final int index=i;View button=infoButton(choices[i],()->action.accept(index));buttons.addView(button,new LinearLayout.LayoutParams(0,dp(48),1));if(first==null)first=button;}
+        panel.addView(buttons);overlay.addView(panel,new FrameLayout.LayoutParams(Math.min(dp(740),getResources().getDisplayMetrics().widthPixels-dp(48)),-2,Gravity.CENTER));root.addView(overlay,new FrameLayout.LayoutParams(-1,-1));if(first!=null)first.requestFocus();
+    }
+    void phoneConnectionChanged(boolean connected){
+        if(root==null)return;if(phoneIndicator!=null){root.removeView(phoneIndicator);phoneIndicator=null;}
+        if(connected){phoneIndicator=text(getString(R.string.hb_phone_connected),13);phoneIndicator.setPadding(dp(12),dp(8),dp(12),dp(8));FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(-2,-2,Gravity.TOP|Gravity.LEFT);lp.topMargin=dp(16);lp.leftMargin=dp(32);root.addView(phoneIndicator,lp);}
+        if(!connected&&phonePanelOpen)phoneDismiss();
+    }
+    JSONObject phoneState()throws Exception {
+        HomeLayout saved=HomeLayout.parse(preferences.getString("layout",layout.encode()));
+        for(String key:saved.widgets)if(isAirWidgetKey(key))airFor(key).configurationSnapshot();
+        JSONObject air=PhoneConfigurationStore.air(preferences);
+        int cols=saved.homeColumns==0?homeGridFitColumns():saved.homeColumns,rows=saved.homeRows==0?homeGridFitRows():saved.homeRows;
+        JSONArray catalog=new JSONArray();for(App app:apps.values())catalog.put(new JSONObject().put("key",app.key).put("name",app.label));
+        List<UndoEntry> undo=readUndoHistory();
+        JSONObject state=new JSONObject().put("tv",phoneName()).put("revision",preferences.getLong(PhoneConfigurationStore.REVISION,0))
+                .put("draft",PhoneConfiguration.snapshot(saved,air,cols,rows)).put("apps",catalog).put("busy",phoneBusy()||phonePreviewBefore!=null)
+                .put("undo",undo.isEmpty()?"":undo.get(0).label).put("language",getResources().getConfiguration().getLocales().get(0).getLanguage());
+        JSONArray stations=new JSONArray();String[] ids={"114","119","122","70","65"},names=getResources().getStringArray(R.array.hb_station_names);
+        for(int i=0;i<ids.length;i++)stations.put(new JSONObject().put("id",ids[i]).put("name",names[i]));return state.put("stations",stations);
+    }
+    private void phoneRequireRevision(JSONObject body)throws Exception{
+        if(body.getLong("revision")!=preferences.getLong(PhoneConfigurationStore.REVISION,0))throw new PhoneConfiguration.Invalid("revision",getString(R.string.hb_phone_conflict));
+    }
+    private String phoneOperationId(JSONObject body)throws Exception{String id=body.getString("operation");if(!id.matches("[A-Za-z0-9_-]{16,80}"))throw new PhoneConfiguration.Invalid("operation","Invalid operation identity");return id;}
+    JSONObject phoneOperation(JSONObject body)throws Exception{String id=phoneOperationId(body),result=PhoneConfigurationStore.result(preferences,id);return result.isEmpty()?new JSONObject().put("status","unknown"):new JSONObject(result).put("status","committed");}
+    private String phoneHash(String value)throws Exception{return android.util.Base64.encodeToString(java.security.MessageDigest.getInstance("SHA-256").digest(value.getBytes(java.nio.charset.StandardCharsets.UTF_8)),android.util.Base64.NO_WRAP);}
+    JSONObject phoneApply(JSONObject body)throws Exception{
+        String id=phoneOperationId(body),hash=phoneHash(body.getJSONObject("draft").toString()),previous=PhoneConfigurationStore.result(preferences,id);
+        if(!previous.isEmpty()){if(!new JSONObject(previous).getString("hash").equals(hash))throw new PhoneConfiguration.Invalid("operation","Operation already used for a different change");return phoneState().put("appliedRevision",new JSONObject(previous).getLong("revision"));}
+        if(phonePreviewBefore!=null)phoneCancelPreview();
+        phoneRequireRevision(body);if(phoneBusy())throw new PhoneConfiguration.Invalid("busy",getString(R.string.hb_phone_busy));
+        PhoneConfiguration.Result next=PhoneConfiguration.validate(body.getJSONObject("draft"),layout,PhoneConfigurationStore.air(preferences),apps.keySet());
+        JSONObject before=PhoneConfigurationStore.aggregate(preferences);
+        boolean changed=!layout.encode().equals(next.layout.encode())||!PhoneConfigurationStore.air(preferences).toString().equals(next.air.toString());
+        long rev=preferences.getLong(PhoneConfigurationStore.REVISION,0)+(changed?1:0);
+        JSONObject outcome=new JSONObject().put("revision",rev).put("hash",hash);
+        if(changed){JSONArray undo=storedUndoEntries();if(undo.length()>=MAX_UNDO_ENTRIES){JSONArray bounded=new JSONArray();for(int i=undo.length()-MAX_UNDO_ENTRIES+1;i<undo.length();i++)bounded.put(undo.getJSONObject(i));undo=bounded;}
+            undo.put(new JSONObject().put("kind","phone").put("key","").put("state",before.toString()).put("label",getString(R.string.hb_phone_change)));
+            PhoneConfigurationStore.commit(preferences,next.layout,next.air,undo,id,outcome.toString());phoneReload();showUndoBanner(getString(R.string.hb_phone_change));
+        }else{JSONObject operations=PhoneConfigurationStore.operations(preferences);if(operations.length()>=32)operations.remove(operations.keys().next());operations.put(id,outcome.toString());if(!preferences.edit().putString(PhoneConfigurationStore.OPERATIONS,operations.toString()).commit())throw new IllegalStateException("Save failed");}
+        return phoneState().put("appliedRevision",rev);
+    }
+    JSONObject phoneUndo(JSONObject body)throws Exception{
+        String id=phoneOperationId(body),previous=PhoneConfigurationStore.result(preferences,id);
+        if(!previous.isEmpty())return phoneState();phoneRequireRevision(body);
+        if(phoneBusy()||phonePreviewBefore!=null)throw new PhoneConfiguration.Invalid("busy",getString(R.string.hb_phone_busy));
+        List<UndoEntry> entries=readUndoHistory();if(entries.isEmpty())return phoneState();UndoEntry entry=entries.get(0);
+        HomeLayout restored=layout;JSONObject air=PhoneConfigurationStore.air(preferences);
+        switch(entry.kind){
+            case "phone":JSONObject aggregate=new JSONObject(entry.state);restored=HomeLayout.parse(aggregate.getJSONObject("layout").toString());air=aggregate.getJSONObject("air");break;
+            case "layout":restored=HomeLayout.parse(entry.state);break;
+            case "home-app-size":restored=HomeLayout.parse(new JSONObject(entry.state).getString("layout"));break;
+            case "air":air.put(entry.key,new JSONObject(entry.state));break;
+            default:throw new PhoneConfiguration.Invalid("undo","Undo this earlier system change with the TV controls");
+        }
+        JSONArray stored=storedUndoEntries(),remaining=new JSONArray();for(int i=0;i<stored.length()-1;i++)remaining.put(stored.getJSONObject(i));
+        JSONObject outcome=new JSONObject().put("revision",preferences.getLong(PhoneConfigurationStore.REVISION,0)+1).put("hash","undo");
+        PhoneConfigurationStore.commit(preferences,restored,air,remaining,id,outcome.toString());phoneReload();showUndoBanner(getString(R.string.hb_undid)+entry.label);return phoneState();
+    }
+    private void phoneReload(){
+        for(AirQualityCard a:airWidgets.values())a.close();airWidgets.clear();for(RainWidgetController r:rainWidgets.values())r.close();rainWidgets.clear();
+        try{layout=HomeLayout.parse(preferences.getString("layout",layout.encode()));}catch(Exception e){throw new IllegalStateException(e);}
+        lastSavedLayout=layout.encode();if(!layout.widgets.contains(homeFocus))homeFocus=layout.widgets.isEmpty()?"":layout.widgets.get(0);if(!allApps){focused=homeFocus;homePage=homeFocus.isEmpty()?0:homePageOf(homeFocus,layout.widgets);}render(0);
+    }
+    JSONObject phonePreview(JSONObject body)throws Exception{
+        if(phonePreviewBefore!=null)phoneCancelPreview();phoneRequireRevision(body);
+        if(phoneBusy())throw new PhoneConfiguration.Invalid("busy",getString(R.string.hb_phone_busy));
+        PhoneConfiguration.Result draft=PhoneConfiguration.validate(body.getJSONObject("draft"),layout,PhoneConfigurationStore.air(preferences),apps.keySet());
+        phonePreviewBefore=layout;phonePreviewAir=draft.air;phonePreviewFocus=focused;phonePreviewHomeFocus=homeFocus;phonePreviewPage=homePage;phonePreviewAllApps=allApps;
+        layout=draft.layout;allApps=false;homePage=0;focused=layout.widgets.isEmpty()?"":layout.widgets.get(0);render(0);
+        if(footer!=null)footer.setText(getString(R.string.hb_phone_preview));handler.postDelayed(phonePreviewTimeout,30_000);return new JSONObject().put("ok",true);
+    }
+    void phoneCancelPreview(){
+        if(phonePreviewBefore==null)return;handler.removeCallbacks(phonePreviewTimeout);layout=phonePreviewBefore;phonePreviewBefore=null;phonePreviewAir=null;
+        focused=phonePreviewFocus;homeFocus=phonePreviewHomeFocus;homePage=phonePreviewPage;allApps=phonePreviewAllApps;render(0);
+    }
+    private View phonePreviewTile(String key){
+        String value=getString(R.string.hb_phone_preview_data)+"\n";
+        if(HomeLayout.isRainWidget(key)){RainSettings r=layout.rainSettings.get(key);value+=getString(R.string.hb_rain_rain)+" · "+r.displayName()+"\n"+getString(R.string.hb_rain_window,r.hours)+" · "+getString(R.string.hb_rain_following,r.days);}
+        else {JSONObject a=phonePreviewAir.optJSONObject(key);value+=getString(R.string.hb_air_quality_panel)+"\n"+(a==null?"":a.optString("source")+" · "+a.optString("location-name")+" · "+a.optString("station"));}
+        TextView tile=text(value,16);tile.setGravity(Gravity.CENTER);tile.setBackground(shape(paletteColors.surface,paletteColors.edge,1));return tile;
+    }
+
     private void homeSettings() {
         menu(getString(R.string.hb_home_settings), getString(R.string.hb_choose_an_area_to_customize), new String[]{
                 getString(R.string.hb_widgets_restore), getString(R.string.hb_appearance), getString(R.string.hb_home_behavior), getString(R.string.hb_language), getString(R.string.hb_undo_history),
-                getString(R.string.hb_default_home_app) + (isDefaultHomeApp() ? "Homeboard" : getString(R.string.hb_choose)), getString(R.string.hb_about_homeboard_tv)}, choice -> {
+                getString(R.string.hb_default_home_app) + (isDefaultHomeApp() ? "Homeboard" : getString(R.string.hb_choose)), getString(R.string.hb_about_homeboard_tv),getString(R.string.hb_phone_title)}, choice -> {
             switch (choice) {
                 case 0: widgetsAndRestore(); break;
                 case 1: appearanceSettings(); break;
@@ -2030,6 +2148,7 @@ public class MainActivity extends Activity {
                 case 4: openUndoHistory(); break;
                 case 5: chooseDefaultHomeApp(); break;
                 case 6: aboutHomeboard(); break;
+                case 7: if(phoneEditor==null)phoneEditor=new PhoneEditor(this);phoneEditor.open();break;
                 default: break;
             }
         });
@@ -2972,6 +3091,7 @@ public class MainActivity extends Activity {
         }
     }
     private void dismissMenu() {
+        phonePanelOpen=false;
         favoritesBrowser=null;
         calendarDayEditor = false;
         backgroundInfo = false;

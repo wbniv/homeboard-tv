@@ -63,6 +63,15 @@ with independent persistence and Undo. Full bilingual UI and Thai copy acceptanc
 remain pending; see the [language plan](docs/plans/2026-11-16-language-setting-and-translations.md)
 and [validation limits](docs/testing/2026-11-16-thai-language.md).
 
+## Configure from a phone
+
+**Home settings → More → Configure from phone** opens a temporary local web editor.
+Scan the TV QR code, approve the matching connection code, and edit each widget,
+Favorites or the layout in your phone browser. Changes stay in a draft until
+Apply, and one Undo restores a complete change. No phone app or account is needed.
+Keep Homeboard open on the TV and use your trusted home network.
+See the [phone editor how-to](docs/how-to/phone-widget-editor.md).
+
 ## Default dashboard
 
 New installations start with Rain, Calendar, Air quality and Favorites. The revised

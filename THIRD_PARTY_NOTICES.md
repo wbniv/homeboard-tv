@@ -24,5 +24,17 @@ Source: https://github.com/airbnb/lottie-android/tree/v6.6.2
 The four offline source-link QR images are generated from public URLs with Python
 qrcode 8.2. The encoder is not included in the APK. Asset URLs, checksums and
 settings are recorded in `dev/about-qr-provenance.json`.
-JVM asset-decoding tests use ZXing Core 3.5.4 (Apache-2.0), which is test-only and
-not included in the APK: https://github.com/zxing/zxing/releases/tag/zxing-3.5.4.
+ZXing Core 3.5.4 (Apache-2.0) generates temporary phone-pairing QR codes in the
+APK and decodes QR assets in JVM tests: https://github.com/zxing/zxing/releases/tag/zxing-3.5.4.
+
+## Phone widget editor
+
+NanoHTTPD 2.3.1: BSD 3-Clause / Modified BSD. License is retained and packaged as
+`assets/licenses/nanohttpd-bsd-3-clause.txt`. The embedded core serves only bundled
+editor assets and an authenticated configuration API; it is not the project's
+file server or a device-administration interface.
+Source: https://github.com/NanoHttpd/nanohttpd/tree/nanohttpd-project-2.3.1
+
+ZXing Core 3.5.4: Apache License 2.0. The Apache 2.0 text is packaged under
+`assets/licenses/projectivy-api-apache-2.0.txt`; upstream copyright notices remain
+in the dependency. Source: https://github.com/zxing/zxing/tree/zxing-3.5.4
