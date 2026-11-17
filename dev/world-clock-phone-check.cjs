@@ -10,7 +10,7 @@ const server=http.createServer((req,res)=>{if(req.url==='/'){res.setHeader('Cont
   const browser=await engine.launch();const page=await browser.newPage({...profile,timezoneId:'America/New_York'});const errors=[];page.on('pageerror',e=>errors.push(e.message));
   await page.goto(url);
   await page.evaluate(()=>{
-   window.language='en';window.edits=0;window.w={key:'widget:world_clock',type:'world_clock',settings:PhoneClock.defaults()};
+   PhoneClock.configureDefaults({width:8,height:1,settings:{title:'',ordering:'manual',format:'24',primary:'local',reference:'',seconds:false,places:[{id:'local',label:'',zone:'device',country:'',code:''}]}});window.language='en';window.edits=0;window.w={key:'widget:world_clock',type:'world_clock',settings:PhoneClock.defaults()};
    const cities=[['Bangkok','Asia/Bangkok','TH','BKK',13.7563,100.5018],['Tivissa','Europe/Madrid','ES','',41.0409,.7331],['Seattle','America/Los_Angeles','US','SEA',47.6062,-122.3321],['Denver','America/Denver','US','DEN',39.7392,-104.9903],['Munich','Europe/Berlin','DE','MUC',48.1351,11.582],['Barcelona','Europe/Madrid','ES','BCN',41.3851,2.1734]];
    window.state={clockNow:'2026-11-17T10:30:00Z',clockZone:'Asia/Bangkok',clock24Hour:true,worldClockCatalog:cities.map(([label,zone,country,code,latitude,longitude])=>({label,zone,country,code,latitude,longitude}))};
    const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};

@@ -72,7 +72,8 @@ window.PhoneModel = (() => {
   function add(draft,type,instances={}) {
     if(['calendar','favorites'].includes(type)){const existing=draft.widgets.find(w=>w.type===type);if(existing)return existing;}
     const key=['calendar','favorites'].includes(type)?'widget:'+type:newKey(type,draft.widgets,instances);
-    const w=freePosition(draft,{key,type,width:type==='calendar'?2:1,height:1,settings:defaults(type)});draft.widgets.push(w);return w;
+    const size=type==='world_clock'?window.PhoneClock.defaultSize():{width:type==='calendar'?2:1,height:1};
+    const w=freePosition(draft,{key,type,width:Math.min(draft.columns,size.width),height:Math.min(draft.rows,size.height),settings:defaults(type)});draft.widgets.push(w);return w;
   }
   function recommended(draft,instances={},chosen={}) {
     const result=clone(draft); result.columns=8; result.rows=4;

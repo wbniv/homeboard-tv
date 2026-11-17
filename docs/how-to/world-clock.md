@@ -1,7 +1,13 @@
 # World clock
 
+New clocks start with **Local · Follow TV, Bangkok, Seattle, Denver, Munich and
+Barcelona**, in that manual order, using 24-hour time. The preferred size is
+**8×1**, fitted to smaller grids. Local is primary; the reference follows the TV,
+with seconds off. Existing cards keep their saved configuration. This preset
+matches Will’s saved Cast1 clock and is shared by TV and phone creation.
+
 Add **Home settings → Widgets / Restore → Add widget → World clock**. Each new
-instance starts with **Local · Follow TV**, independently of other clock widgets.
+instance receives its own copy of the six-place preset above.
 Small panels show the primary clock; wider/taller panels show more places. A
 count indicates configured places beyond the compact panel's capacity.
 

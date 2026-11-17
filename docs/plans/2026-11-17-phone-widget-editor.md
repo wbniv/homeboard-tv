@@ -1,5 +1,11 @@
 # Configure Homeboard widgets from a phone
 
+The implemented interaction design is now the
+[dashboard-first controller redesign](2026-11-17-phone-editor-goal-directed-design.md),
+deployed as 0.1.47. It replaces the original tab/selector presentation while
+retaining this plan’s temporary pairing, strict validation and transactional
+Apply/Undo foundation. See the [current validation record](../testing/2026-11-17-phone-controller-design.md).
+
 Status: implemented and deployed as **0.1.40** to both TVs. Android HTTP pairing,
 mixed Apply/Undo and TV preview passed on Cast1; Chromium/WebKit UI checks passed.
 External physical-phone LAN acceptance is still unverified. See the

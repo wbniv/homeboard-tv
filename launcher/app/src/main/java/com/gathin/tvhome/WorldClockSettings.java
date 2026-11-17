@@ -14,11 +14,19 @@ import org.json.JSONObject;
 final class WorldClockSettings {
     static final String DEVICE = "device";
     static final int MAX_PLACES = 12;
+    static final int DEFAULT_WIDTH=8,DEFAULT_HEIGHT=1;
     String title = "", ordering = "manual", format = "24", primary = "local", reference = "";
     boolean seconds;
     final List<Place> places = new ArrayList<>();
 
-    WorldClockSettings() { places.add(new Place("local", "", DEVICE)); }
+    WorldClockSettings() {
+        places.add(new Place("local", "", DEVICE));
+        // Will's saved six-place preset, captured read-only from Cast1 on 17 November.
+        for(int index:new int[]{0,4,5,6,7}) {
+            WorldClockCatalog.Entry city=WorldClockCatalog.CITIES.get(index);
+            places.add(city.place(city.code.toLowerCase(java.util.Locale.ROOT)));
+        }
+    }
 
     static final class Place {
         String id, label, zone, country = "", code = "";

@@ -62,12 +62,42 @@ on arbitrary UI while Will was editing.
 
 The corrected debug probe uses an isolated preference namespace, seeds a default
 four-card dashboard with copied app keys, and clicks only a visible Allow button.
-It cancels callbacks on pause. The recipe sends no blind navigation key. This
+It cancels callbacks on pause. The recipe sends no blind approval key. A harmless final Up event runs after the
+assertions, because the coordinator input engine requires a nonempty key score. This
 avoids interpreting arbitrary focus as TV approval or changing household settings.
 A new numbered deployment is required for that fixture and the evidenced clock
-corrections. Final deployment/native acceptance is pending.
+corrections. Those corrections are included in the final 0.1.47 deployment below.
 
 Installs preserve app data;
 foreground acceptance is a separate coordinator job. The native HTTP probe checks
 TV approval, metadata, authenticated artwork/activity, mixed Update, idempotent
 retry, preview, composite Undo and session Stop, restoring household settings.
+
+## Final 0.1.47 result
+
+The isolated retry on 0.1.45, J‑0af778d27555, passed actual Android HTTP, TV Allow,
+metadata/artwork/activity requests, mixed Apply, identical-operation retry,
+preview, composite Undo and Stop. It also supplied the read-only World clock
+snapshot requested by Will. The first capture-only recipe, J‑730ba7081af8, failed
+in the coordinator key-score engine before capture scheduling; automatic readd
+verified recovery. A final harmless Up event avoids an empty score.
+
+Final 0.1.47 hash:
+`05ee706dac93bd8caf301d70aaf8094e67a3c35001ba9f0da6d2fd56eb1d88fb`.
+Cast1 J‑c33fa731b555 completed installation/launch; Cast2 J‑16b48e69a71b completed
+installation with the same verified hash, with foreground verification deferred
+for Personal use. Prior superseded continuations owned by this session were
+canceled after their installation proof was retained.
+
+Native acceptance J‑3a3df2eee894 passed the same complete transaction, additionally
+creating an 8×1 six-place clock from the native preset delivered in approved TV
+state. It checked the returned settings/span and restored the original isolated
+draft with one Undo. Logcat and the final reviewed screenshot show `PHONE_PASS`.
+The household World clock snapshot, including its saved IDs and dimensions, is
+identical to the earlier read-only snapshot. No household rollback occurred.
+
+`task check` passed 459 JVM tests and 603 paired native translations, with zero
+lint errors (349 warnings). `task phone:check` passed the model and Chromium/WebKit
+suites, including creation from the actual six-place preset fixture. Frozen-source
+hash verification found no changed launcher inputs after packaging. The physical
+phone LAN boundary described above remains open.

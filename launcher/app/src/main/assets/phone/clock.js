@@ -8,7 +8,13 @@ window.PhoneClock = (() => {
   function registerStrings(){for(const lang of ['en','th'])if(window.PhoneStrings?.[lang])Object.assign(window.PhoneStrings[lang],translations[lang]);}
   registerStrings();
   const searches=new Map(),expanded=new Set(),orderUndo=new Map();
-  function defaults(){return {title:'',ordering:'manual',format:'24',primary:'local',reference:'',seconds:false,places:[{id:'local',label:'',zone:'device',country:'',code:''}]};}
+  let preset=null;
+  function configureDefaults(value){
+    if(!value||!Number.isInteger(value.width)||!Number.isInteger(value.height)||value.width<1||value.width>12||value.height<1||value.height>12||!valid(value.settings))throw new Error('Invalid TV clock defaults');
+    preset=JSON.parse(JSON.stringify(value));
+  }
+  function defaultSize(){if(!preset)throw new Error('TV clock defaults unavailable');return {width:preset.width,height:preset.height};}
+  function defaults(){if(!preset)throw new Error('TV clock defaults unavailable');return JSON.parse(JSON.stringify(preset.settings));}
   function valid(s){
     if(!s||typeof s.title!=='string'||s.title.length>120||!['manual','west'].includes(s.ordering)||!['24','12','device'].includes(s.format)||typeof s.seconds!=='boolean'||!Array.isArray(s.places)||s.places.length<1||s.places.length>12)return false;
     const ids=new Set();
@@ -76,5 +82,5 @@ window.PhoneClock = (() => {
     select(display,t('clockOrder'),s.ordering,[['manual',t('clockManual')],['west',t('clockWest')]],value=>s.ordering=value);
     field(display,t('clockSeconds'),s.seconds,value=>s.seconds=value,'checkbox');note(display,t('clockDaytime'));
   }
-  return {defaults,valid,summary,form,registerStrings,translations};
+  return {configureDefaults,defaultSize,defaults,valid,summary,form,registerStrings,translations};
 })();

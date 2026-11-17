@@ -1,6 +1,7 @@
 /* Pure model and translation contracts; run inside the browser/build container. */
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
 const scope={window:{}};vm.createContext(scope);for(const file of ['model.js','strings.js','clock.js'])vm.runInContext(fs.readFileSync('launcher/app/src/main/assets/phone/'+file,'utf8'),scope);
+scope.window.PhoneClock.configureDefaults(require('./phone-fixture.cjs').worldClockDefaults);
 const M=scope.window.PhoneModel,copy=v=>JSON.parse(JSON.stringify(v));
 const draft={columns:8,rows:4,artwork:'small',favorites:['a','b','c'],widgets:[]};
 M.add(draft,'rain');M.add(draft,'calendar');M.add(draft,'air');M.add(draft,'favorites');

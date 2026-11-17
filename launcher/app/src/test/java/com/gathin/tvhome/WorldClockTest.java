@@ -18,6 +18,30 @@ import static org.junit.Assert.*;
 
 public class WorldClockTest {
     private static final Instant NOW=Instant.parse("2026-11-17T10:30:00Z");
+    private WorldClockSettings localFixture(){WorldClockSettings s=new WorldClockSettings();s.places.clear();s.places.add(new WorldClockSettings.Place("local","",WorldClockSettings.DEVICE));return s;}
+    private void assertJsonEquals(Object expected,Object actual)throws Exception {
+        if(expected instanceof JSONObject){
+            assertTrue(actual instanceof JSONObject);JSONObject e=(JSONObject)expected,a=(JSONObject)actual;assertEquals(e.length(),a.length());
+            java.util.Iterator<String> keys=e.keys();while(keys.hasNext()){String key=keys.next();assertJsonEquals(e.get(key),a.get(key));}
+        }else if(expected instanceof JSONArray){
+            assertTrue(actual instanceof JSONArray);JSONArray e=(JSONArray)expected,a=(JSONArray)actual;assertEquals(e.length(),a.length());
+            for(int i=0;i<e.length();i++)assertJsonEquals(e.get(i),a.get(i));
+        }else if(expected instanceof Number){assertTrue(actual instanceof Number);assertEquals(((Number)expected).doubleValue(),((Number)actual).doubleValue(),0);}
+        else assertEquals(expected,actual);
+    }
+    @Test public void newWidgetsUseWillsCapturedPresetAndExistingSettingsStayIntact()throws Exception {
+        WorldClockSettings preset=new WorldClockSettings();
+        JSONObject expected=new JSONObject(new String(Files.readAllBytes(Path.of("../../dev/world-clock-default-fixture.json")),java.nio.charset.StandardCharsets.UTF_8));assertJsonEquals(expected.getJSONObject("settings"),preset.json());
+        assertEquals(List.of("","Bangkok","Seattle","Denver","Munich","Barcelona"),preset.places.stream().map(p->p.label).collect(java.util.stream.Collectors.toList()));
+        assertEquals(List.of("device","Asia/Bangkok","America/Los_Angeles","America/Denver","Europe/Berlin","Europe/Madrid"),preset.places.stream().map(p->p.zone).collect(java.util.stream.Collectors.toList()));
+        assertEquals("24",preset.format);assertEquals("manual",preset.ordering);assertEquals("local",preset.primary);assertEquals("",preset.reference);assertFalse(preset.seconds);WorldClockSettings.validate(preset.json());
+        HomeLayout home=new HomeLayout();home.addPanel(HomeLayout.WORLD_CLOCK);home.addPanel(HomeLayout.WORLD_CLOCK+":2");
+        assertEquals(8,home.panelSpans.get(HomeLayout.WORLD_CLOCK).width);assertEquals(1,home.panelSpans.get(HomeLayout.WORLD_CLOCK).height);
+        home.clockSettings.get(HomeLayout.WORLD_CLOCK).places.get(1).label="Private label";assertEquals("Bangkok",home.clockSettings.get(HomeLayout.WORLD_CLOCK+":2").places.get(1).label);
+        WorldClockSettings saved=localFixture();saved.format="12";saved.title="My existing clock";home.clockSettings.put(HomeLayout.WORLD_CLOCK,saved);home.setPanelSpan(HomeLayout.WORLD_CLOCK,3,2);
+        HomeLayout restored=HomeLayout.parse(home.encode());assertEquals(1,restored.clockSettings.get(HomeLayout.WORLD_CLOCK).places.size());assertEquals("12",restored.clockSettings.get(HomeLayout.WORLD_CLOCK).format);assertEquals("My existing clock",restored.clockSettings.get(HomeLayout.WORLD_CLOCK).title);assertEquals(3,restored.panelSpans.get(HomeLayout.WORLD_CLOCK).width);assertEquals(2,restored.panelSpans.get(HomeLayout.WORLD_CLOCK).height);
+        HomeLayout narrow=new HomeLayout();narrow.addPanel(HomeLayout.WORLD_CLOCK);assertEquals(4,narrow.cells(narrow.widgets,4,2).get(0).width);
+    }
     @Test public void convertsTheSameInstantAndHandlesDateLineHalfAndQuarterHours() {
         assertEquals("17:30",WorldClockModel.time(NOW,ZoneId.of("Asia/Bangkok"),Locale.US,false,false));
         assertEquals("4:15 PM",WorldClockModel.time(NOW,ZoneId.of("Asia/Kathmandu"),Locale.US,true,false));
@@ -52,7 +76,7 @@ public class WorldClockTest {
         assertArrayEquals(new double[]{0,0},WorldClockModel.overlay(NOW,NOW.minusSeconds(7200),30),1e-9);
     }
     @Test public void cityColorsAreSharedAndDoNotChangeWhenSavedOrderChanges() {
-        WorldClockSettings s=new WorldClockSettings();s.places.add(WorldClockCatalog.CITIES.get(0).place("bkk"));s.places.add(WorldClockCatalog.CITIES.get(3).place("ny"));
+        WorldClockSettings s=localFixture();s.places.add(WorldClockCatalog.CITIES.get(0).place("bkk"));s.places.add(WorldClockCatalog.CITIES.get(3).place("ny"));
         Map<String,Float> before=WorldClockModel.hues(s);assertEquals(0f,before.get("ny"),0);assertEquals(300f,before.get("bkk"),0);assertFalse(before.containsKey("local"));
         java.util.Collections.reverse(s.places);assertEquals(before,WorldClockModel.hues(s));
         s.ordering="west";List<WorldClockSettings.Place> sorted=WorldClockModel.ordered(s);
@@ -105,7 +129,7 @@ public class WorldClockTest {
         assertTrue(WorldClockCatalog.search("Tivissa").stream().anyMatch(e->e.zone.equals("Europe/Madrid")));
         assertTrue(WorldClockCatalog.search("SEA").stream().anyMatch(e->e.name.equals("Seattle")));
         WorldClockCatalog.Entry zone=WorldClockCatalog.search("America/Detroit").get(0);assertFalse(zone.place("zone").located());
-        WorldClockSettings settings=new WorldClockSettings();WorldClockCatalog.studio(settings);assertEquals(6,settings.places.size());
+        WorldClockSettings settings=localFixture();WorldClockCatalog.studio(settings);assertEquals(6,settings.places.size());
         for(WorldClockCatalog.Entry e:WorldClockCatalog.CITIES)assertNotNull(ZoneId.of(e.zone));
     }
     @Test public void daytimeMeansExplicitClockHoursAndMapProjectionUsesRealCoordinates()throws Exception {

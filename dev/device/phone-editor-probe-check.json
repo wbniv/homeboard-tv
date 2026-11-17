@@ -27,6 +27,12 @@
     {
       "at": 34,
       "capture": "phone-final"
+    },
+    {
+      "at": 36,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
     }
   ]
 }

@@ -56,7 +56,12 @@ network tile service for this small world overview.
 Add **Home settings → Widgets / Restore → Add widget → World clock**. It is an
 optional new type; adding it must preserve the existing dashboard and favorites.
 Support multiple independent instances, each containing 1–12 ordered clocks.
-Start a new widget with **Local · Follow TV time zone**, then offer Add place.
+Start new widgets with Will’s captured **8×1** preset: **Local · Follow TV,
+Bangkok, Seattle, Denver, Munich and Barcelona**, in manual order and 24-hour
+format. Local is primary, the reference follows the TV, and seconds are off.
+Existing saved cards keep their settings and size. See the
+[saved-preset follow-up](2026-11-17-world-clock-saved-preset.md). Add place remains
+available for further customization.
 
 Provide convenient offline choices for Bangkok, Tivissa, Beijing and New York;
 these are editable suggestions drawn from the dashboard's geographic interests,

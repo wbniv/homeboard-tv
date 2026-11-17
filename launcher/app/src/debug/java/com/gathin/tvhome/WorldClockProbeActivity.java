@@ -12,7 +12,7 @@ public final class WorldClockProbeActivity extends MainActivity {
     @Override protected void onCreate(Bundle state) {
         if(state==null) {
             HomeLayout seed=HomeLayout.firstRun();seed.widgets.clear();seed.homePositions.clear();seed.panelSpans.clear();seed.homeColumns=8;seed.homeRows=4;
-            WorldClockSettings clocks=new WorldClockSettings();WorldClockCatalog.studio(clocks);
+            WorldClockSettings clocks=new WorldClockSettings();clocks.places.clear();clocks.places.add(new WorldClockSettings.Place("local","",WorldClockSettings.DEVICE));WorldClockCatalog.studio(clocks);
             clocks.places.add(WorldClockCatalog.CITIES.get(1).place("tivissa"));clocks.places.add(WorldClockCatalog.CITIES.get(2).place("beijing"));clocks.places.add(WorldClockCatalog.CITIES.get(3).place("new-york"));
             clocks.primary="tivissa";clocks.reference=clocks.places.get(1).id;
             for(int i=0;i<3;i++) {

@@ -321,6 +321,7 @@
     $('actions').replaceChildren();poll();
   }
   async function approved(next){
+    PhoneClock.configureDefaults(next.worldClockDefaults);
     if(state&&state.tvId===next.tvId){
       const merged=M.rebase(state,draft,next);state=next;draft=merged.draft;conflicts=merged.conflicts;message(t('rebased'));
     }else{

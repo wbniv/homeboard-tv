@@ -24,7 +24,19 @@ public final class PhoneEditorProbeActivity extends MainActivity {
     @Override public void onCreate(Bundle b){
         if(b==null){
             HomeLayout seed=HomeLayout.firstRun();
-            try{HomeLayout household=HomeLayout.parse(super.getSharedPreferences("widget-home",0).getString("layout",seed.encode()));for(String key:household.favorites)seed.addFavorite(key);}catch(JSONException ignored){}
+            try{
+                HomeLayout household=HomeLayout.parse(super.getSharedPreferences("widget-home",0).getString("layout",seed.encode()));
+                for(String key:household.favorites)seed.addFavorite(key);
+                // Read-only capture for reproducing Will's explicitly requested new-clock preset.
+                // Never copy other household settings or identifiers into the exported record.
+                for(String key:household.widgets)if(HomeLayout.isWorldClockWidget(key)){
+                    WorldClockSettings clock=household.clockSettings.get(key);
+                    HomeLayout.PanelSpan span=household.panelSpans.get(key);
+                    JSONObject snapshot=new JSONObject().put("key",key).put("settings",clock.json()).put("width",span==null?4:span.width).put("height",span==null?1:span.height);
+                    String encoded=android.util.Base64.encodeToString(snapshot.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8),android.util.Base64.NO_WRAP);
+                    for(int offset=0;offset<encoded.length();offset+=2000)android.util.Log.i("HomeboardClockPreset",key+" "+offset+" "+encoded.substring(offset,Math.min(offset+2000,encoded.length())));
+                }
+            }catch(JSONException ignored){}
             getSharedPreferences("widget-home",0).edit().clear().putString("layout",seed.encode()).putBoolean("single-screen-default-v1",true).apply();
         }
         super.onCreate(b);
@@ -56,13 +68,20 @@ public final class PhoneEditorProbeActivity extends MainActivity {
                     case "air":s.put("source","airbkk").put("station","119");break;
                 }
             }
+            JSONObject clockDefault=baseline.getJSONObject("worldClockDefaults");
+            require(clockDefault.getInt("width")==8&&clockDefault.getInt("height")==1,"Clock default size differs from captured preset");
+            require(clockDefault.getJSONObject("settings").getJSONArray("places").length()==6,"Clock default places missing");
+            draft.getJSONArray("widgets").put(new JSONObject().put("key",HomeLayout.WORLD_CLOCK).put("type","world_clock").put("page",1).put("column",0).put("row",0)
+                    .put("width",clockDefault.getInt("width")).put("height",clockDefault.getInt("height")).put("settings",clockDefault.getJSONObject("settings")));
             JSONArray favorites=draft.getJSONArray("favorites");if(favorites.length()>1){Object first=favorites.get(0);favorites.put(0,favorites.get(1));favorites.put(1,first);}
             Thread.sleep(2000);
             String operation=PhoneEditorSession.random();JSONObject request=new JSONObject().put("revision",baseline.getLong("revision")).put("operation",operation).put("draft",draft);
             applied=post("/api/apply",request,true);
             JSONObject repeated=post("/api/apply",request,true);require(applied.getLong("revision")==repeated.getLong("revision"),"Duplicate Apply changed revision");
             require(!canonical(applied.getJSONObject("draft")).equals(canonical(baseline.getJSONObject("draft"))),"Apply made no changes");
-            stage("PHONE · mixed Rain / Air / Calendar / Favorites Apply and retry passed");Thread.sleep(4500);
+            JSONObject addedClock=null;for(int i=0;i<applied.getJSONObject("draft").getJSONArray("widgets").length();i++){JSONObject candidate=applied.getJSONObject("draft").getJSONArray("widgets").getJSONObject(i);if(candidate.getString("type").equals("world_clock"))addedClock=candidate;}
+            require(addedClock!=null&&addedClock.getInt("width")==8&&addedClock.getInt("height")==1&&canonical(addedClock.getJSONObject("settings")).equals(canonical(clockDefault.getJSONObject("settings"))),"Created clock did not retain native preset");
+            stage("PHONE · mixed Rain / Air / Calendar / Favorites and new six-place Clock Apply and retry passed");Thread.sleep(4500);
             post("/api/preview",new JSONObject().put("revision",applied.getLong("revision")).put("draft",applied.getJSONObject("draft")),true);
             stage("PHONE · native temporary preview active");Thread.sleep(4500);post("/api/cancel-preview",new JSONObject(),true);
             JSONObject restored=post("/api/undo",new JSONObject().put("revision",applied.getLong("revision")).put("operation",PhoneEditorSession.random()),true);applied=null;

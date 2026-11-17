@@ -2114,7 +2114,7 @@ public class MainActivity extends Activity {
                 .put("undo",undo.isEmpty()?"":undo.get(0).label).put("language",getResources().getConfiguration().getLocales().get(0).getLanguage());
         JSONArray stations=new JSONArray();String[] ids={"114","119","122","70","65"},names=getResources().getStringArray(R.array.hb_station_names);
         for(int i=0;i<ids.length;i++)stations.put(new JSONObject().put("id",ids[i]).put("name",names[i]));
-        return state.put("stations",stations).put("worldClockCatalog",WorldClockCatalog.json()).put("clockNow",java.time.Instant.now().toString()).put("clockZone",java.time.ZoneId.systemDefault().getId()).put("clock24Hour",android.text.format.DateFormat.is24HourFormat(this));
+        return state.put("worldClockDefaults",new JSONObject().put("settings",new WorldClockSettings().json()).put("width",WorldClockSettings.DEFAULT_WIDTH).put("height",WorldClockSettings.DEFAULT_HEIGHT)).put("stations",stations).put("worldClockCatalog",WorldClockCatalog.json()).put("clockNow",java.time.Instant.now().toString()).put("clockZone",java.time.ZoneId.systemDefault().getId()).put("clock24Hour",android.text.format.DateFormat.is24HourFormat(this));
     }
     private void phoneRequireRevision(JSONObject body)throws Exception{
         if(body.getLong("revision")!=preferences.getLong(PhoneConfigurationStore.REVISION,0))throw new PhoneConfiguration.Invalid("revision",getString(R.string.hb_phone_conflict));

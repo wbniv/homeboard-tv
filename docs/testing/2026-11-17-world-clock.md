@@ -154,3 +154,24 @@ separate acceptance cases.
 Will's subsequent request to make his own saved clock settings/size the new-widget
 defaults is a separate follow-up: read the actual household configuration and
 preserve existing cards; never infer that preset from the isolated review fixture.
+
+### Saved-preset follow-up: 0.1.47
+
+Will requested his actual saved World clock configuration as the default for new
+widgets. Read-only capture J‑0af778d27555 established six places (Local, Bangkok,
+Seattle, Denver, Munich, Barcelona), manual order, 24-hour format, TV reference,
+seconds off and an 8×1 span. See the [preset plan](../plans/2026-11-17-world-clock-saved-preset.md).
+The native constructor owns the preset; approved phone state supplies the same
+settings/span to browser creation. Existing saved configurations override the new
+constructor values. The nine-place debug review fixture explicitly seeds Local
+before adding Studio cities, so its coverage does not depend on product defaults.
+
+The combined check passes 459 JVM tests and Chromium/WebKit creation/size/data
+checks. Native acceptance J‑3a3df2eee894 created and checked the new clock through
+the actual API, with mixed edits, idempotent retry and composite Undo. Read-only
+household snapshots before and after match exactly, including original saved IDs.
+Both TVs have frozen hash
+`05ee706dac93bd8caf301d70aaf8094e67a3c35001ba9f0da6d2fd56eb1d88fb`:
+Cast1 J‑c33fa731b555, Cast2 J‑16b48e69a71b. Cast2's foreground verification stays
+deferred during Personal use. This follow-up changes default data and size;
+it does not establish that the earlier timeline auto-scroll limitation is fixed.

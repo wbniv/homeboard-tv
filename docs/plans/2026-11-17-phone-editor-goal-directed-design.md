@@ -1,6 +1,7 @@
 # Phone controller: Alan Cooper goal-directed design review
 
-Status: approved and implemented; combined validation and deployment are in progress. This revises the interaction design in the
+Status: implemented and deployed as 0.1.47 to both TVs. Native HTTP and container
+browser acceptance passed; separate physical-phone LAN acceptance remains pending. This revises the interaction design in the
 [phone widget editor plan](2026-11-17-phone-widget-editor.md), retaining its local
 pairing, transactional Apply, conflict protection and Undo foundations.
 

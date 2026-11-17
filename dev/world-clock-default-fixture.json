@@ -1,0 +1,66 @@
+{
+  "settings": {
+    "title": "",
+    "ordering": "manual",
+    "format": "24",
+    "primary": "local",
+    "reference": "",
+    "seconds": false,
+    "places": [
+      {
+        "id": "local",
+        "label": "",
+        "zone": "device",
+        "country": "",
+        "code": ""
+      },
+      {
+        "id": "bkk",
+        "label": "Bangkok",
+        "zone": "Asia/Bangkok",
+        "country": "TH",
+        "code": "BKK",
+        "latitude": 13.7563,
+        "longitude": 100.5018
+      },
+      {
+        "id": "sea",
+        "label": "Seattle",
+        "zone": "America/Los_Angeles",
+        "country": "US",
+        "code": "SEA",
+        "latitude": 47.6062,
+        "longitude": -122.3321
+      },
+      {
+        "id": "den",
+        "label": "Denver",
+        "zone": "America/Denver",
+        "country": "US",
+        "code": "DEN",
+        "latitude": 39.7392,
+        "longitude": -104.9903
+      },
+      {
+        "id": "muc",
+        "label": "Munich",
+        "zone": "Europe/Berlin",
+        "country": "DE",
+        "code": "MUC",
+        "latitude": 48.1351,
+        "longitude": 11.582
+      },
+      {
+        "id": "bcn",
+        "label": "Barcelona",
+        "zone": "Europe/Madrid",
+        "country": "ES",
+        "code": "BCN",
+        "latitude": 41.3851,
+        "longitude": 2.1734
+      }
+    ]
+  },
+  "width": 8,
+  "height": 1
+}

@@ -215,7 +215,7 @@ final class HomeLayout {
         }
         if(isWorldClockWidget(key)) {
             clockSettings.putIfAbsent(key,new WorldClockSettings());
-            panelSpans.putIfAbsent(key,new PanelSpan(4,1));
+            panelSpans.putIfAbsent(key,new PanelSpan(WorldClockSettings.DEFAULT_WIDTH,WorldClockSettings.DEFAULT_HEIGHT));
         }
     }
     /** Retain existing user shortcuts once; new favorites never occupy outer grid cells. */

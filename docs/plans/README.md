@@ -43,7 +43,9 @@ missing rows on commit.*
 
 | [World clock widget](2026-11-17-world-clock-widget.md) | Implements configurable city clocks, shared city colors, an offline map, full-screen duration comparison and TV/phone settings inspired by wald3n.com. | 0.1.44; container checks and Cast1 core/map/restoration/hold checks passed; timeline auto-scroll limitation recorded | Feature |
 
-| [Phone controller: Alan Cooper goal-directed design review](2026-11-17-phone-editor-goal-directed-design.md) | Dashboard-first phone editing, directly reorderable lists, contextual controls, one explicit TV update and conflict/draft recovery. | Implemented; validation/deployment in progress | UX / Feature |
+| [Phone controller: Alan Cooper goal-directed design review](2026-11-17-phone-editor-goal-directed-design.md) | Dashboard-first phone editing, directly reorderable lists, contextual controls, one explicit TV update and conflict/draft recovery. | 0.1.47 installed on both TVs; native HTTP/browser checks passed; physical-phone LAN pending | UX / Feature |
+
+| [World clock saved preset](2026-11-17-world-clock-saved-preset.md) | Uses Will’s captured six-place, 24-hour, 8×1 clock as the default for new TV and phone-created widgets. | 0.1.47 installed on both TVs; native preset creation and browser checks passed | Feature |
 
 ---
 
