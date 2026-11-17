@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1020" viewBox="0 0 1400 1020" role="img" aria-labelledby="title desc">
+<title id="title">Four-widget default dashboard and navigation from an empty Home</title>
+<desc id="desc">Rain and Calendar occupy the upper row. Air quality and Favorites occupy the lower row. A blank Home canvas remains connected by Right to All Apps and by Left or Back to Home.</desc>
+<defs><style>text{font-family:system-ui,sans-serif;fill:#eaf2fa}.title{font-size:30px;font-weight:700}.head{font-size:27px;font-weight:650}.body{font-size:23px}.small{font-size:20px;fill:#b9cbdc}.panel{fill:#1b2c3f;stroke:#52677d;stroke-width:2}.line{fill:none;stroke:#82c9fa;stroke-width:4}</style><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#82c9fa" stroke-width="1.8"/></marker></defs>
+<rect width="1400" height="1020" fill="#101b29"/>
+<text x="50" y="49" class="title">Default dashboard · all four widgets on page 1 when space permits</text>
+<text x="50" y="80" class="small">8×4 example · native readable text · illustrative data</text>
+<rect x="50" y="105" width="640" height="220" rx="18" class="panel"/>
+<text x="75" y="143" class="head">Rain</text><text x="75" y="176" class="small">Device location · Automatic</text>
+<text x="75" y="211" class="body">Next 24 hours · hourly outlook</text>
+<g fill="#82c9fa"><rect x="77" y="249" width="29" height="33"/><rect x="120" y="235" width="29" height="47"/><rect x="163" y="252" width="29" height="30"/><rect x="206" y="270" width="29" height="12"/><rect x="249" y="259" width="29" height="23"/><rect x="292" y="273" width="29" height="9"/></g>
+<text x="359" y="253" class="small">Following 6 days</text><text x="359" y="286" class="small">OK: full forecast</text>
+<rect x="710" y="105" width="640" height="220" rx="18" class="panel"/>
+<text x="735" y="143" class="head">Calendar</text><text x="735" y="180" class="body">Upcoming dates and events</text>
+<text x="735" y="220" class="small">Holiday and flower-work calendar</text><text x="735" y="261" class="small">Configured range · OK: event details</text>
+<rect x="50" y="345" width="640" height="220" rx="18" class="panel"/>
+<text x="75" y="384" class="head">Air quality</text><text x="75" y="422" class="body">PM2.5 · Lumpini Park</text>
+<text x="75" y="462" class="small">AirBKK · latest station reading</text><text x="75" y="507" class="small">24-hour average · OK: station details</text>
+<rect x="710" y="345" width="640" height="220" rx="18" class="panel"/>
+<text x="735" y="384" class="head">Favorites</text>
+<g fill="#334e68" stroke="#7892ab" stroke-width="2"><rect x="739" y="406" width="86" height="74" rx="14"/><rect x="853" y="406" width="86" height="74" rx="14"/><rect x="967" y="406" width="86" height="74" rx="14"/><rect x="1081" y="406" width="86" height="74" rx="14"/></g>
+<text x="747" y="508" class="small">App A</text><text x="861" y="508" class="small">App B</text><text x="975" y="508" class="small">App C</text><text x="1089" y="508" class="small">App D</text>
+<path d="M1006,536 L1022,546 L1038,536" fill="none" stroke="#b9cbdc" stroke-width="4"/>
+<text x="1198" y="451" class="small">More</text><text x="1198" y="480" class="small">below</text>
+<text x="50" y="604" class="small">Favorites use the saved app list; a fresh empty list shows Add apps instead of invented favorites.</text>
+<text x="50" y="638" class="small">Rain is 4×2 here; 4×3 remains the recommended size for a more detailed individual Rain widget.</text>
+<text x="50" y="714" class="title">Empty Home is valid · navigation remains available</text>
+<rect x="50" y="745" width="450" height="185" rx="18" class="panel"/>
+<text x="75" y="784" class="head">Home · no widgets</text><text x="75" y="829" class="small">Focusable empty canvas</text><text x="75" y="868" class="small">Up: settings · Hold OK: menu</text>
+<path d="M520,790 L840,790" class="line" marker-end="url(#arrow)"/><text x="600" y="773" class="body">Right →</text>
+<path d="M840,882 L520,882" class="line" marker-end="url(#arrow)"/><text x="566" y="866" class="body">← Left / Back</text>
+<rect x="865" y="745" width="485" height="185" rx="18" class="panel"/>
+<text x="890" y="784" class="head">All Apps</text><text x="890" y="829" class="small">Always reachable from empty Home</text><text x="890" y="868" class="small">Returning preserves the empty page</text>
+<text x="50" y="980" class="small">Intermediate blank pages keep normal page order. No forced widgets, scrollbars or automatic layout reset.</text>
+</svg>

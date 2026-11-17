@@ -5,9 +5,10 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class FavoritesContainerTest {
+    private static HomeLayout airOnly() { HomeLayout layout = new HomeLayout(); layout.addPanel(HomeLayout.AIR); return layout; }
     private static final String A="app:one/One",B="app:two/Two";
     @Test public void convertsSavedShortcutsInOrderWithoutChangingOtherSettings() throws Exception {
-        HomeLayout s=HomeLayout.firstRun();s.favorite(B);s.favorite(A);s.palette="forest";s.uiOpacityPercent=40;
+        HomeLayout s=airOnly();s.favorite(B);s.favorite(A);s.palette="forest";s.uiOpacityPercent=40;
         s.addPanel(HomeLayout.RAIN);s.rainSettings.get(HomeLayout.RAIN).name="Preserved";
         s.homePositions.put(A,new HomeLayout.HomePosition(2,1,1));
         s=HomeLayout.parse(s.encode());s.convertFavorites();
@@ -18,7 +19,7 @@ public class FavoritesContainerTest {
     }
     @Test public void rainAndFavoritesSharePageOneAcrossSupportedGridSizes(){
         for(int columns:new int[]{4,6,8,10,12})for(int rows:new int[]{2,3,4}){
-            HomeLayout s=HomeLayout.firstRun();s.addPanel(HomeLayout.CALENDAR);s.addPanel(HomeLayout.RAIN);
+            HomeLayout s=airOnly();s.addPanel(HomeLayout.CALENDAR);s.addPanel(HomeLayout.RAIN);
             s.homePositions.put(HomeLayout.RAIN,new HomeLayout.HomePosition(3,0,0));s.arrangeFirstPage(HomeLayout.RAIN,columns,rows,false);
             assertEquals(0,s.pageOf(HomeLayout.RAIN,s.widgets,columns,rows));assertEquals(0,s.pageOf(HomeLayout.FAVORITES,s.widgets,columns,rows));
             Set<String> occupied=new HashSet<>();for(HomeLayout.Cell c:s.cells(s.widgets,columns,rows))for(int y=c.row;y<c.row+c.height;y++)for(int x=c.column;x<c.column+c.width;x++)assertTrue(occupied.add(c.page+":"+y+":"+x));
@@ -26,7 +27,7 @@ public class FavoritesContainerTest {
         }
     }
     @Test public void hundredsOfFavoritesCannotChangeOuterPagesOrSpans()throws Exception{
-        HomeLayout s=HomeLayout.firstRun();s.arrangeFirstPage(HomeLayout.RAIN,8,4,false);
+        HomeLayout s=airOnly();s.arrangeFirstPage(HomeLayout.RAIN,8,4,false);
         int pages=s.pageCount(s.widgets,8,4);String positions=s.encode();
         for(int i=0;i<100;i++){s.addFavorite("app:pkg"+i+"/Main");s.addFavorite("app:pkg"+i+"/Main");}
         assertEquals(100,s.favorites.size());assertEquals(pages,s.pageCount(s.widgets,8,4));assertEquals(0,s.pageOf(HomeLayout.RAIN,s.widgets,8,4));
@@ -45,7 +46,7 @@ public class FavoritesContainerTest {
         s.packageRemoved("one");assertEquals(Collections.singletonList(B),s.favorites);
     }
     @Test public void snapshotUndoRestoresPriorFavoriteOrderAndOuterLayout()throws Exception{
-        HomeLayout s=HomeLayout.firstRun();s.favorite(A);s.favorite(B);String before=s.encode();
+        HomeLayout s=airOnly();s.favorite(A);s.favorite(B);String before=s.encode();
         s.convertFavorites();s.arrangeFirstPage(HomeLayout.RAIN,8,4,false);HomeLayout undo=HomeLayout.parse(before);
         assertEquals(Arrays.asList(HomeLayout.AIR,A,B),undo.widgets);assertFalse(undo.favoritesContainer);
         assertTrue(s.favoritesContainer);assertTrue(s.widgets.contains(HomeLayout.RAIN));

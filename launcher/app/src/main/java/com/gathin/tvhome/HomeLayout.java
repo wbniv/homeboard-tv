@@ -43,8 +43,38 @@ final class HomeLayout {
 
     static HomeLayout firstRun() {
         HomeLayout s = new HomeLayout();
-        s.addPanel(AIR);
+        s.arrangeDefaultDashboard(RAIN, AIR, 8, 4);
         return s;
+    }
+
+    /** Explicit preset: preserve all data/settings and place the requested panels first. */
+    void arrangeDefaultDashboard(String rain, String air, int columns, int rows) {
+        if (!isRainWidget(rain) || !(AIR.equals(air) || air.startsWith(AIR + ":")))
+            throw new IllegalArgumentException("Rain and air-quality widgets required");
+        if (columns < 4 || rows < 2) throw new IllegalArgumentException("Home grid is too small");
+        if (!favoritesContainer) convertFavorites();
+        addPanel(rain); addPanel(CALENDAR); addPanel(air); addPanel(FAVORITES);
+        int left = Math.min(4, columns / 2), right = columns - left;
+        int upper = rows >= 4 ? rows / 2 : rows;
+        int lower = rows >= 4 ? rows - upper : rows;
+        setPanelSpan(rain, left, upper);
+        setPanelSpan(FAVORITES, right, rows >= 4 ? lower : upper);
+        setPanelSpan(CALENDAR, right, upper);
+        setPanelSpan(air, left, lower);
+        LinkedHashMap<String, HomePosition> requested = new LinkedHashMap<>();
+        requested.put(rain, new HomePosition(0, 0, 0));
+        requested.put(FAVORITES, new HomePosition(0, rows >= 4 ? upper : 0, left));
+        requested.put(CALENDAR, new HomePosition(rows >= 4 ? 0 : 1, 0, left));
+        requested.put(air, new HomePosition(rows >= 4 ? 0 : 1, rows >= 4 ? upper : 0, 0));
+        for (Map.Entry<String, HomePosition> entry : homePositions.entrySet())
+            if (!requested.containsKey(entry.getKey())) requested.put(entry.getKey(), entry.getValue());
+        List<String> ordered = new ArrayList<>();
+        Collections.addAll(ordered, rain, CALENDAR, air, FAVORITES);
+        for (String key : widgets) if (!ordered.contains(key)) ordered.add(key);
+        widgets.clear(); widgets.addAll(ordered);
+        List<Cell> resolved = cells(widgets, columns, rows, requested);
+        homePositions.clear();
+        for (Cell cell : resolved) homePositions.put(cell.key, new HomePosition(cell.page, cell.row, cell.column));
     }
 
     static HomeLayout parse(String encoded) throws JSONException {

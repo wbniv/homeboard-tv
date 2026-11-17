@@ -8,9 +8,10 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class HomeLayoutTest {
+    private static HomeLayout airOnly() { HomeLayout layout = new HomeLayout(); layout.addPanel(HomeLayout.AIR); return layout; }
     private static final String A = "app:one/one.Main", B = "app:two/two.Main", C = "app:three/three.Main";
     @Test public void explicitEmptyLayoutSurvivesRoundTripAndNewApps() throws Exception {
-        HomeLayout s = HomeLayout.firstRun(); s.widgets.clear();
+        HomeLayout s = airOnly(); s.widgets.clear();
         HomeLayout loaded = HomeLayout.parse(s.encode());
         assertTrue(loaded.widgets.isEmpty());
         assertEquals(Arrays.asList(A, B), loaded.visibleApps(Arrays.asList(A, B)));
@@ -88,7 +89,7 @@ public class HomeLayoutTest {
         HomeLayout s = new HomeLayout(); s.palette = "forest"; s.reducedMotion = true;
         s.setPanelSize(HomeLayout.AIR, HomeLayout.PANEL_SMALL); s.defaultPanelSize = HomeLayout.PANEL_LARGE; s.appBanners = false;
         HomeLayout copy = HomeLayout.parse(s.encode());
-        assertFalse(copy.appBanners); assertFalse(HomeLayout.firstRun().appBanners);
+        assertFalse(copy.appBanners); assertFalse(airOnly().appBanners);
         assertTrue(copy.reducedMotion); assertEquals("forest", copy.palette);
         assertEquals(HomeLayout.PANEL_SMALL, copy.panelSize(HomeLayout.AIR));
         assertEquals(HomeLayout.PANEL_LARGE, copy.defaultPanelSize);
@@ -106,7 +107,7 @@ public class HomeLayoutTest {
     }
 
     @Test public void changingDefaultDoesNotResizeExistingPanel() throws Exception {
-        HomeLayout existing = HomeLayout.firstRun();
+        HomeLayout existing = airOnly();
         existing.defaultPanelSize = HomeLayout.PANEL_LARGE;
         HomeLayout saved = HomeLayout.parse(existing.encode());
         assertEquals(HomeLayout.PANEL_MEDIUM, saved.panelSize(HomeLayout.AIR));
@@ -115,7 +116,7 @@ public class HomeLayoutTest {
     }
 
     @Test public void exactPanelDimensionsPersistAndOverridePreset() throws Exception {
-        HomeLayout layout = HomeLayout.firstRun();
+        HomeLayout layout = airOnly();
         layout.setPanelSpan(HomeLayout.AIR, 4, 3);
         HomeLayout restored = HomeLayout.parse(layout.encode());
         HomeLayout.Cell cell = restored.cells(restored.widgets, 10, 5).get(0);
@@ -140,7 +141,7 @@ public class HomeLayoutTest {
     }
 
     @Test public void multipleAirWidgetsKeepIndependentSizeAndPlacement() throws Exception {
-        HomeLayout layout = HomeLayout.firstRun();
+        HomeLayout layout = airOnly();
         layout.addPanel("widget:air:2");
         layout.setPanelSize("widget:air:2", HomeLayout.PANEL_SMALL);
         layout.setPanelSpan("widget:air:2", 2, 1);
@@ -186,7 +187,7 @@ public class HomeLayoutTest {
     }
 
     @Test public void deletingPanelRemovesItsExactDimensions() {
-        HomeLayout layout = HomeLayout.firstRun();
+        HomeLayout layout = airOnly();
         layout.setPanelSpan(HomeLayout.AIR, 3, 1);
         layout.delete(HomeLayout.AIR, true);
         assertNull(layout.panelSpan(HomeLayout.AIR));
@@ -298,7 +299,7 @@ public class HomeLayoutTest {
 
     @Test public void bannerReflowRespectsEveryGridDensityAndKeepsWidgetConfiguration() {
         for (int columns : new int[]{4, 6, 8, 10, 12}) for (int rows : new int[]{2, 4, 7}) {
-            HomeLayout layout = HomeLayout.firstRun(); layout.setPanelSpan(HomeLayout.AIR, 2, 2);
+            HomeLayout layout = airOnly(); layout.setPanelSpan(HomeLayout.AIR, 2, 2);
             layout.setPanelSize(HomeLayout.AIR, HomeLayout.PANEL_SMALL);
             for (int i = 0; i < 32; i++) layout.favorite("app:density/" + i);
             HomeLayout.Cell widget = layout.cells(layout.widgets, columns, rows).get(0);
@@ -326,7 +327,7 @@ public class HomeLayoutTest {
     }
 
     @Test public void switchingStyleResolvesAgainstItsOwnGridAndUndoRestoresTheOriginalGridLayout() throws Exception {
-        HomeLayout layout = HomeLayout.firstRun();
+        HomeLayout layout = airOnly();
         layout.addPanel("widget:air:2"); layout.favorite(A); layout.favorite(B);
         layout.setPanelSpan(HomeLayout.AIR, 2, 1);
         layout.setPanelSpan("widget:air:2", 2, 1);

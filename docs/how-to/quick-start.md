@@ -248,3 +248,16 @@ provide a usable fix, OK retries; hold OK → Location offers a fixed city, stre
 address or coordinates. Existing fixed places remain fixed. Choose **Device
 location · Automatic** to follow the TV again. Automatic lookups run only while
 Homeboard is active and do not add Undo entries.
+
+
+### Default dashboard and empty Home
+
+New installations include Rain, Calendar, Air quality and Favorites. To arrange
+those widgets on an existing dashboard, choose **Home settings → Widgets / Restore
+→ Default dashboard**. Use Left/Right to inspect preview pages, OK to apply, or
+Back to cancel. Undo restores the prior arrangement. Additional widgets and their
+settings are retained, with overflow on subsequent pages.
+
+An empty Home stays empty until you add widgets or apply the preset. Right still
+advances to the next Home page or All Apps. Up reaches the settings buttons; Down
+returns to the empty canvas. Right from the last settings button also advances.

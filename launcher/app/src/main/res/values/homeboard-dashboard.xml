@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hb_dashboard_default">"Default dashboard"</string>
+    <string name="hb_dashboard_applied">"Applied default dashboard"</string>
+    <string name="hb_dashboard_empty">"Empty Home. Right opens the next page or All Apps. Up for settings. Hold OK for Home settings."</string>
+    <string name="hb_dashboard_preview">"Default dashboard · Page %1$d/%2$d · ←/→ pages · Rain compact · OK saves · Back cancels"</string>
+    <string name="hb_dashboard_choose_instance">"Choose the widget for the default dashboard"</string>
+</resources>

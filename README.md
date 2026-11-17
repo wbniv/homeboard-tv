@@ -57,6 +57,19 @@ with independent persistence and Undo. Full bilingual UI and Thai copy acceptanc
 remain pending; see the [language plan](docs/plans/2026-11-16-language-setting-and-translations.md)
 and [validation limits](docs/testing/2026-11-16-thai-language.md).
 
+## Default dashboard
+
+New installations start with Rain, Calendar, Air quality and Favorites. The layout
+fits the TV grid, using extra Home pages on short screens. Existing dashboards,
+including empty Home, stay as saved. **Home settings → Widgets / Restore → Default
+dashboard** previews the four-widget arrangement; OK applies it, Back cancels and
+Undo restores the previous layout. Existing widget settings and favorite apps are
+retained.
+
+Right from an empty Home page advances normally to the next page or All Apps.
+Up opens the settings row; Right from its last button also leaves an empty page.
+See the [default dashboard and navigation plan](docs/plans/2026-11-17-default-dashboard-and-empty-page-navigation.md).
+
 ## Favorites on the first page
 
 Rain and a resizable **Favorites** panel share Home page 1. Existing favorite apps

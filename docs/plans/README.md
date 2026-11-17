@@ -33,6 +33,8 @@ missing rows on commit.*
 
 | [Calendar one-row resize](2026-11-17-calendar-one-row.md) | Allows a persisted 2×1 minimum and a compact calendar strip, with resize and device acceptance checks. | 0.1.27 installed on both TVs; Cast1 resize verified | Fix |
 
+| [Default dashboard and empty-page navigation](2026-11-17-default-dashboard-and-empty-page-navigation.md) | Implements empty-Home access to All Apps and a four-widget default with preview, preserved settings and Undo. | 0.1.30 installed on both TVs | Fix / Feature |
+
 ---
 
 ## How this index was derived

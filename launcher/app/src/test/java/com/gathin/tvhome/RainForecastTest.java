@@ -62,7 +62,7 @@ public class RainForecastTest {
         assertThrows(JSONException.class,()->RainForecast.parse(l.toString()));
     }
     @Test public void settingsAndHomeUndoSnapshotPreserveIndependentInstances() throws Exception {
-        HomeLayout home=HomeLayout.firstRun();home.addPanel(HomeLayout.RAIN);home.addPanel(HomeLayout.RAIN+":2");
+        HomeLayout home=new HomeLayout();home.addPanel(HomeLayout.RAIN);home.addPanel(HomeLayout.RAIN+":2");
         RainSettings a=home.rainSettings.get(HomeLayout.RAIN);a.latitude=13.7;a.longitude=100.5;a.hours=48;a.days=3;a.animation=false;a.inches=true;a.name="Example";
         HomeLayout copy=HomeLayout.parse(home.encode());RainSettings b=copy.rainSettings.get(HomeLayout.RAIN);
         assertTrue(b.located());assertEquals(48,b.hours);assertEquals(3,b.days);assertTrue(b.inches);assertFalse(b.animation);

@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/f30db99) | Use automatic Rain location and deploy dashboard updates to both TVs |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/f16c73d) | Add native rain forecast widget and review workflow |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/bce5426) | Add combined calendar ranges and visual grid previews |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/91a9669) | Record combined 0.1.19 deployment and 53 passing menu regressions |
@@ -12,6 +13,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+f30db99	author	Will Norris
+f30db99	added	18
+f30db99	deleted	3
+f30db99	files	1
 f16c73d	author	Will Norris
 f16c73d	added	13
 f16c73d	deleted	0

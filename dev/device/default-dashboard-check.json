@@ -1,0 +1,18 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 65,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 1, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 7, "capture": "empty-home-to-all-apps"},
+    {"at": 11, "capture": "header-to-all-apps"},
+    {"at": 16, "capture": "blank-intermediate-page"},
+    {"at": 22, "capture": "last-page-to-all-apps"},
+    {"at": 29, "capture": "default-preview"},
+    {"at": 35, "capture": "preview-cancelled"},
+    {"at": 42, "capture": "default-applied"},
+    {"at": 49, "capture": "undo-and-empty-navigation"},
+    {"at": 63, "capture": "final-default-dashboard"}
+  ]
+}
