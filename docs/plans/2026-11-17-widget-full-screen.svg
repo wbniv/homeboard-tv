@@ -1,0 +1,256 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1040" viewBox="0 0 1200 1040" role="img" aria-labelledby="title desc">
+<title id="title">Richer full-screen views for every widget type</title>
+<desc id="desc">Four illustrative expanded views. Calendar shows four complete weeks and highlighted-day event and availability details, Rain shows amount bars and an aligned probability strip, air quality adds labeled sample history, and Favorites shows more apps with full names. Each has Restore dashboard and Back navigation.</desc>
+<defs><style>text{font-family:Arial,sans-serif;fill:#eff6f7}.title{font-size:24px;font-weight:bold}.head{font-size:20px;font-weight:bold}.body{font-size:17px}.small{font-size:14px;fill:#bfd1d5}.panel{fill:#12343e;stroke:#668d96}.box{fill:#254a55}.restore{fill:#315c68;stroke:#b4d7df}.line{stroke:#76cddd;stroke-width:3;fill:none}</style></defs>
+<rect width="1200" height="1040" fill="#0c191f"/>
+<text x="28" y="37" class="title">Every widget: additional information in full screen</text>
+<text x="28" y="65" class="body">Illustrative content · Click/OK on widget opens · Back restores original dashboard</text>
+
+<g transform="translate(26 90)">
+<rect width="562" height="420" rx="14" class="panel"/>
+<text x="18" y="33" class="head">Calendar · Four whole weeks + day detail</text>
+<rect x="18" y="48" width="198" height="32" rx="7" class="restore"/><text x="28" y="70" class="body">← Restore dashboard</text>
+<text x="21" y="110" font-size="11">Mon</text>
+<text x="54" y="110" font-size="11">Tue</text>
+<text x="87" y="110" font-size="11">Wed</text>
+<text x="120" y="110" font-size="11">Thu</text>
+<text x="153" y="110" font-size="11">Fri</text>
+<text x="186" y="110" font-size="11">Sat</text>
+<text x="219" y="110" font-size="11">Sun</text>
+<g transform="translate(18 120)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">16</text>
+</g>
+<g transform="translate(51 120)"><rect width="29" height="29" rx="5" fill="#355e69" stroke="#ffffff" stroke-width="2.5"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">17</text>
+</g>
+<g transform="translate(84 120)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">18</text>
+</g>
+<g transform="translate(117 120)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">19</text>
+</g>
+<g transform="translate(150 120)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">20</text>
+</g>
+<g transform="translate(183 120)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">21</text>
+</g>
+<g transform="translate(216 120)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">22</text>
+</g>
+<g transform="translate(18 153)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">23</text>
+</g>
+<g transform="translate(51 153)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">24</text>
+</g>
+<g transform="translate(84 153)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">25</text>
+</g>
+<g transform="translate(117 153)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#b22234" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#3c3b6e" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#b22234" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">26</text>
+</g>
+<g transform="translate(150 153)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">27</text>
+</g>
+<g transform="translate(183 153)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">28</text>
+</g>
+<g transform="translate(216 153)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">29</text>
+</g>
+<g transform="translate(18 186)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">30</text>
+</g>
+<g transform="translate(51 186)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">1</text>
+</g>
+<g transform="translate(84 186)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">2</text>
+</g>
+<g transform="translate(117 186)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">3</text>
+</g>
+<g transform="translate(150 186)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">4</text>
+</g>
+<g transform="translate(183 186)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">5</text>
+</g>
+<g transform="translate(216 186)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">6</text>
+</g>
+<g transform="translate(18 219)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">7</text>
+</g>
+<g transform="translate(51 219)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H5.12M2.00 26H5.12" stroke="#aa151b" stroke-width="3"/><path d="M5.12 3H8.25M5.12 26H8.25" stroke="#f1bf00" stroke-width="3"/><path d="M8.25 3H11.38M8.25 26H11.38" stroke="#f1bf00" stroke-width="3"/><path d="M11.38 3H14.50M11.38 26H14.50" stroke="#aa151b" stroke-width="3"/><path d="M14.50 3H17.00M14.50 26H17.00" stroke="#a51931" stroke-width="3"/><path d="M17.00 3H19.50M17.00 26H19.50" stroke="#fff" stroke-width="3"/><path d="M19.50 3H22.00M19.50 26H22.00" stroke="#2d2a4a" stroke-width="3"/><path d="M22.00 3H24.50M22.00 26H24.50" stroke="#fff" stroke-width="3"/><path d="M24.50 3H27.00M24.50 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">8</text>
+</g>
+<g transform="translate(84 219)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">9</text>
+</g>
+<g transform="translate(117 219)"><rect width="29" height="29" rx="5" fill="#23464c"/><path d="M2.00 3H7.00M2.00 26H7.00" stroke="#a51931" stroke-width="3"/><path d="M7.00 3H12.00M7.00 26H12.00" stroke="#fff" stroke-width="3"/><path d="M12.00 3H17.00M12.00 26H17.00" stroke="#2d2a4a" stroke-width="3"/><path d="M17.00 3H22.00M17.00 26H22.00" stroke="#fff" stroke-width="3"/><path d="M22.00 3H27.00M22.00 26H27.00" stroke="#a51931" stroke-width="3"/>
+
+
+
+<text x="4" y="20" font-size="15">10</text>
+</g>
+<g transform="translate(150 219)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">11</text>
+</g>
+<g transform="translate(183 219)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">12</text>
+</g>
+<g transform="translate(216 219)"><rect width="29" height="29" rx="5" fill="#23464c"/>
+<text x="4" y="20" font-size="15">13</text>
+</g>
+<text x="270" y="127" class="body">17 Nov · All 2 events</text>
+<text x="270" y="156" class="body">Selling flowers</text>
+<text x="270" y="185" class="body">Mostly unavailable</text>
+<text x="270" y="214" class="body">Buddhist observance</text>
+<text x="18" y="274" class="body">16 Nov–13 Dec 2026 · Monday–Sunday</text>
+<text x="18" y="302" class="small">Highlighted-day details update immediately</text>
+<text x="18" y="329" class="small">Approximate break: 11:00–16:00 Bangkok</text>
+<text x="18" y="356" class="small">Offline · Full-screen weeks leave compact ranges intact</text>
+<text x="18" y="397" class="body">Back → Dashboard · OK → Event details</text>
+</g>
+
+<g transform="translate(612 90)">
+<rect width="562" height="420" rx="14" class="panel"/>
+<text x="18" y="33" class="head">Rain · 7-day overview + highlighted hour</text>
+<rect x="18" y="48" width="198" height="32" rx="7" class="restore"/><text x="28" y="70" class="body">← Restore dashboard</text>
+<text x="18" y="108" class="small">24 hours / 48 hours / 7 days / All available</text>
+<rect x="18" y="120" width="64" height="48" rx="6" fill="#254a55" stroke="#fff" stroke-width="2"/><text x="25" y="140" class="small">Tue</text><text x="27" y="160" class="small">17 Nov</text>
+<rect x="93" y="120" width="64" height="48" rx="6" fill="#254a55"/><text x="100" y="140" class="small">Wed</text><text x="102" y="160" class="small">18 Nov</text>
+<rect x="168" y="120" width="64" height="48" rx="6" fill="#254a55"/><text x="175" y="140" class="small">Thu</text><text x="177" y="160" class="small">19 Nov</text>
+<rect x="243" y="120" width="64" height="48" rx="6" fill="#254a55"/><text x="250" y="140" class="small">Fri</text><text x="252" y="160" class="small">20 Nov</text>
+<rect x="318" y="120" width="64" height="48" rx="6" fill="#254a55"/><text x="325" y="140" class="small">Sat</text><text x="327" y="160" class="small">21 Nov</text>
+<rect x="393" y="120" width="64" height="48" rx="6" fill="#254a55"/><text x="400" y="140" class="small">Sun</text><text x="402" y="160" class="small">22 Nov</text>
+<rect x="468" y="120" width="64" height="48" rx="6" fill="#254a55"/><text x="475" y="140" class="small">Mon</text><text x="477" y="160" class="small">23 Nov</text>
+<path d="M45 184V225H520" stroke="#789da4" fill="none"/>
+<text x="18" y="199" class="small">mm</text>
+<rect x="70" y="224.0" width="40" height="1.0" fill="#76cddd"/>
+<text x="76" y="240" font-size="12">12:00</text>
+<rect x="70" y="246" width="40" height="9" rx="3" fill="#344655"/><rect x="70" y="246" width="36.0" height="9" rx="3" fill="#b9a3ed"/>
+<text x="76" y="273" font-size="12">90%</text>
+<rect x="145" y="220" width="40" height="5" fill="#76cddd"/>
+<text x="151" y="240" font-size="12">13:00</text>
+<rect x="145" y="246" width="40" height="9" rx="3" fill="#344655"/><rect x="145" y="246" width="16.0" height="9" rx="3" fill="#b9a3ed"/>
+<text x="151" y="273" font-size="12">40%</text>
+<rect x="220" y="212.5" width="40" height="12.5" fill="#76cddd"/>
+<text x="226" y="240" font-size="12">14:00</text>
+<rect x="220" y="246" width="40" height="9" rx="3" fill="#344655"/><rect x="220" y="246" width="28.0" height="9" rx="3" fill="#b9a3ed"/>
+<text x="226" y="273" font-size="12">70%</text>
+<rect x="295" y="185" width="40" height="40" fill="#76cddd"/>
+<text x="301" y="240" font-size="12">15:00</text>
+<rect x="295" y="246" width="40" height="9" rx="3" fill="#344655"/><rect x="295" y="246" width="8.0" height="9" rx="3" fill="#b9a3ed"/>
+<text x="301" y="273" font-size="12">20%</text>
+<rect x="370" y="200" width="40" height="25" fill="#76cddd"/>
+<text x="376" y="240" font-size="12">16:00</text>
+<rect x="370" y="246" width="40" height="9" rx="3" fill="#344655"/><rect x="370" y="246" width="36.0" height="9" rx="3" fill="#b9a3ed"/>
+<text x="376" y="273" font-size="12">90%</text>
+<rect x="445" y="222.5" width="40" height="2.5" fill="#76cddd"/>
+<text x="451" y="240" font-size="12">17:00</text>
+<rect x="445" y="246" width="40" height="9" rx="3" fill="#344655"/><rect x="445" y="246" width="20.0" height="9" rx="3" fill="#b9a3ed"/>
+<text x="451" y="273" font-size="12">50%</text>
+<rect x="214" y="179" width="52" height="98" rx="6" fill="none" stroke="#fff" stroke-width="2"/>
+<rect x="18" y="284" width="526" height="54" rx="8" class="box"/>
+<text x="30" y="306" class="body">14:00–15:00 · 70% chance · 2.5 mm forecast</text>
+<text x="30" y="331" class="small">Bar height = amount · Strip = chance · Same hour</text>
+<text x="18" y="354" class="small">Selected-day hours · Actual coverage · Source · Update</text>
+<text x="18" y="397" class="body">Back → Dashboard · OK → Interval details</text>
+</g>
+
+<g transform="translate(26 536)">
+<rect width="562" height="420" rx="14" class="panel"/>
+<text x="18" y="33" class="head">Air quality · Nearby station map + history</text>
+<rect x="18" y="48" width="198" height="32" rx="7" class="restore"/><text x="28" y="70" class="body">← Restore dashboard</text>
+<text x="18" y="109" class="small">Nearby map / History · 24 hours / 7 days / 30 days</text>
+<rect x="18" y="128" width="323" height="211" rx="8" fill="#2b464a"/>
+<path d="M22 174L334 235M102 130L152 333M245 130L213 335M23 281L334 265" stroke="#88a4a6" stroke-width="7" fill="none"/>
+<path d="M41 130C62 203 111 202 91 259C76 299 114 317 122 335" stroke="#3b7187" stroke-width="20" fill="none"/>
+<circle cx="184" cy="238" r="29" fill="#59b6ff" fill-opacity=".17" stroke="#59b6ff" stroke-dasharray="3 3"/>
+<circle cx="184" cy="238" r="8" fill="#59b6ff" stroke="#fff" stroke-width="2"/><text x="198" y="263" class="small">You</text>
+<rect x="225" y="164" width="77" height="31" rx="6" fill="#7ecfc2"/><text x="235" y="185" font-size="17" style="fill:#12303c">10.1</text>
+<rect x="51" y="241" width="77" height="31" rx="6" fill="#87c6ad"/><text x="61" y="262" font-size="17" style="fill:#12303c">23.2</text>
+<text x="26" y="324" class="small">Map mockup · Real coordinates required</text>
+<text x="355" y="151" class="small">Highlighted station</text>
+<text x="355" y="182" class="body">Lumpini Park</text>
+<text x="355" y="213" class="body">10.1 µg/m³</text>
+<text x="355" y="243" class="small">Measured 24h average</text>
+<text x="355" y="273" class="small">Distance · Timestamp</text>
+<text x="355" y="304" class="small">Station history →</text>
+<text x="18" y="360" class="small">Your actual location + nearby readings · Attribution visible</text>
+<text x="18" y="397" class="body">Back → Dashboard · Select station → Details</text>
+</g>
+
+<g transform="translate(612 536)">
+<rect width="562" height="420" rx="14" class="panel"/>
+<text x="18" y="33" class="head">Favorites · Banners + highlighted-app panel</text>
+<rect x="18" y="48" width="198" height="32" rx="7" class="restore"/><text x="28" y="70" class="body">← Restore dashboard</text>
+
+<text x="18" y="110" class="small">Saved order · 5 of 23 · Full-screen banners</text>
+<g fill="#254a55"><rect x="18" y="128" width="142" height="80" rx="8"/><rect x="174" y="128" width="142" height="80" rx="8"/><rect x="18" y="240" width="142" height="80" rx="8"/><rect x="174" y="240" width="142" height="80" rx="8" stroke="#fff" stroke-width="2"/></g>
+<text x="30" y="174" class="body">YouTube</text><text x="183" y="164" class="body">Prime</text><text x="183" y="190" class="body">Numbers</text>
+<text x="30" y="285" class="body">Snowgoons</text><text x="183" y="276" class="body">TV Media</text><text x="183" y="302" class="body">Phase II</text>
+<rect x="334" y="128" width="209" height="229" rx="9" fill="#254a55"/>
+<text x="346" y="154" class="small">Highlighted app</text>
+<text x="346" y="184" class="body">TV Media Phase II</text>
+<text x="346" y="214" class="small">Version 2.4</text>
+<text x="346" y="241" class="small">Updated 15 Nov 2026</text>
+<text x="346" y="273" class="body">Open</text>
+<text x="346" y="303" class="body">App info</text>
+<text x="346" y="333" class="small">Remove / Reorder…</text>
+<text x="18" y="356" class="small">Right panel follows highlight</text>
+<text x="18" y="397" class="body">Back → Dashboard · OK → Launch selected app</text>
+</g>
+<text x="28" y="997" class="body">Required for every future widget: useful extra information + consistent restore behavior + acceptance checks.</text>
+</svg>

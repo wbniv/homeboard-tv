@@ -49,6 +49,8 @@ final class RainWidgetController {
     RainForecast forecast;
     long fetchedAt;
     boolean failed, loading, active, closed;
+    private boolean expandedActive;
+    void expandedActive(boolean value){expandedActive=value;if(value){deviceLocation.attemptedAt=-1;refresh(false);}}
     private long lastAttempt;
     private int failures, generation, lookupGeneration;
     private String loadedKey = "";
@@ -80,7 +82,7 @@ final class RainWidgetController {
     void bind(RainWidgetView view) { this.view = view; sync(); render(); }
     void unbind() { if (view != null) view.setRunning(false); view = null; }
     void start() { if (active || closed) return; active = true; deviceLocation.attemptedAt = -1; tick.run(); }
-    void stop() { active = false; deviceLocation.cancel(); handler.removeCallbacks(tick); if (view != null) view.setRunning(false); }
+    void stop() { active = false; if(!expandedActive)deviceLocation.cancel(); handler.removeCallbacks(tick); if (view != null) view.setRunning(false); }
     void pause() { stop(); handler.removeCallbacks(detailsTick); if (detailsView != null) detailsView.setRunning(false); }
     void resumeDetails() { if (dialog != null) { handler.removeCallbacks(detailsTick); detailsTick.run(); } }
     void close() { closed = true; generation++; lookupGeneration++; stop(); if (dialog != null) dialog.dismiss(); unbind(); }
@@ -111,12 +113,12 @@ final class RainWidgetController {
                     .putLong("device-lon", Double.doubleToLongBits(deviceLocation.longitude)).putLong("device-time", deviceLocation.fixedAt).apply();
             sync();
             // A synchronous cached-location callback must not recursively start another lookup.
-            handler.post(() -> { if (!closed && (active || dialog != null)) { refresh(false); render(); } });
+            handler.post(() -> { if (!closed && (active || dialog != null || expandedActive)) { refresh(false); render(); } });
             render();
         });
     }
     void refresh(boolean manual) {
-        if (configured().automatic && (active || dialog != null || manual)) resolveLocation(manual, false);
+        if (configured().automatic && (active || dialog != null || expandedActive || manual)) resolveLocation(manual, false);
         sync();
         if (closed || loading || !settings().located()) return;
         if (configured().automatic && !deviceLocation.usable(System.currentTimeMillis())) return;

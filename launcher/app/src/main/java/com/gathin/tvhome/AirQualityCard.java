@@ -68,6 +68,7 @@ final class AirQualityCard {
     private String source, locationMode, locationName;
     private double latitude = Double.NaN, longitude = Double.NaN;
     private boolean locationRequested;
+    private ZoneId expandedZone = java.time.ZoneOffset.UTC;
     private AirQualityReading reading;
     private AirQualityHistory history = new AirQualityHistory();
     private PaletteColors palette = PaletteColors.from(0xff101010);
@@ -423,6 +424,7 @@ final class AirQualityCard {
         AirQualityReading current;
         final List<AirQualityReading> samples = new ArrayList<>();
         double gridLatitude, gridLongitude;
+        ZoneId zone;
     }
 
     private String fetchModel(double latitude, double longitude) throws Exception {
@@ -451,6 +453,8 @@ final class AirQualityCard {
         JSONObject root = new JSONObject(json);
         if (root.optBoolean("error", false)) throw new IllegalStateException(root.optString("reason", "Model unavailable"));
         ModelData result = new ModelData();
+        result.zone=ZoneId.of(root.optString("timezone","UTC"));
+        expandedZone=result.zone;
         result.gridLatitude = root.optDouble("latitude", latitude);
         result.gridLongitude = root.optDouble("longitude", longitude);
         JSONObject hourly = root.optJSONObject("hourly");
@@ -561,28 +565,22 @@ final class AirQualityCard {
         return URLEncoder.encode(value, StandardCharsets.UTF_8.name());
     }
 
-    private String fetch() throws Exception {
-        HttpURLConnection c = (HttpURLConnection) new URL(ENDPOINT).openConnection();
-        connection = c;
-        try {
-            c.setConnectTimeout(10_000); c.setReadTimeout(10_000);
-            c.setInstanceFollowRedirects(false);
-            c.setRequestMethod("POST"); // AirBKK's own public dashboard uses an empty POST to read this feed.
-            c.setRequestProperty("Accept", "application/json");
-            c.setDoOutput(true); c.setFixedLengthStreamingMode(0);
-            c.getOutputStream().close();
-            if (c.getResponseCode() != 200) throw new IllegalStateException("HTTP " + c.getResponseCode());
-            try (InputStream input = c.getInputStream(); ByteArrayOutputStream output = new ByteArrayOutputStream()) {
-                byte[] buffer = new byte[8192]; int count;
-                long deadline = SystemClock.elapsedRealtime() + 20_000L;
-                while ((count = input.read(buffer)) != -1) {
-                    if (Thread.currentThread().isInterrupted() || SystemClock.elapsedRealtime() > deadline
-                            || output.size() + count > 512 * 1024) throw new IllegalStateException("Response limit");
-                    output.write(buffer, 0, count);
-                }
-                return output.toString(StandardCharsets.UTF_8.name());
-            }
-        } finally { c.disconnect(); connection = null; }
+    private String fetch() throws Exception { return AirStationClient.fetch().get(30, java.util.concurrent.TimeUnit.SECONDS); }
+    String expandedCachedFeed(){return prefs.getString("feed", "");}
+    boolean expandedIsModel(){return "model".equals(source);}
+    String expandedLabel(){return locationLabel();}
+    ZoneId expandedZone(){return expandedIsModel()?expandedZone:AirQualityReading.BANGKOK;}
+    List<AirQualityReading> expandedHistory(){return history.readings();}
+    void expandedHistory(StationCatalog.Station station, java.util.function.Consumer<List<AirQualityReading>> callback){
+        if(closed)return;
+        worker.execute(()->{
+            List<AirQualityReading> values=new ArrayList<>();
+            try{values.addAll(AirQualityHistory.parse(prefs.getString("history-"+station.id,"[]")).readings());}catch(Exception ignored){}
+            try{values.addAll(fetchHistory(station.id,station.time>0?station.time:System.currentTimeMillis()));}catch(Exception ignored){}
+            if(station.reading()!=null)values.add(station.reading());
+            AirQualityHistory bounded=new AirQualityHistory();bounded.addAll(values);List<AirQualityReading> result=bounded.readings();
+            handler.post(()->{if(!closed)callback.accept(result);});
+        });
     }
 
     private void render() {

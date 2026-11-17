@@ -157,6 +157,7 @@ public class MainActivity extends Activity {
     private boolean applyingUndo;
     private GridSelector gridSelector;
     private CalendarSnapshot calendarSnapshot;
+    private WidgetExpansion expandedWidget;
     private boolean calendarDayEditor;
     private final Map<String, CalendarWidgetView> calendarWidgets = new LinkedHashMap<>();
     private final Map<String, RainWidgetController> rainWidgets = new LinkedHashMap<>();
@@ -341,10 +342,15 @@ public class MainActivity extends Activity {
             homeSettings();
             showUndoBanner(getString(R.string.hb_language));
         }
+        if(savedInstanceState!=null&&savedInstanceState.getBundle("expandedWidget")!=null){
+            Bundle expanded=savedInstanceState.getBundle("expandedWidget");
+            root.post(()->{String key=expanded.getString("key","");if(layout.widgets.contains(key))expandWidget(key,expanded);});
+        }
     }
 
     @Override protected void onResume() {
         super.onResume(); active = true;
+        if(expandedWidget!=null)expandedWidget.setRunning(true);
         for (RainWidgetController widget : rainWidgets.values()) widget.resumeDetails();
         updateAir();
         wallpaperSurface.visible(true); wallpaperHost.visible(true);
@@ -364,6 +370,7 @@ public class MainActivity extends Activity {
     }
     @Override protected void onPause() {
         active = false; restoringSurface = true; cancelOk();
+        if(expandedWidget!=null)expandedWidget.setRunning(false);
         if (firstPageBefore != null) finishLayoutPreview(false);
         if (adjustmentCancel != null) cancelAdjustment();
         if (!returningFromProviderSettings) cancelWallpaperPreview();
@@ -389,6 +396,7 @@ public class MainActivity extends Activity {
     }
     @Override protected void onDestroy() {
         closed = true; loadVersion++;
+        if(expandedWidget!=null){expandedWidget.release();expandedWidget=null;}
         wallpaperHost.close(); wallpaperSurface.close();
         unregisterReceiver(packages);
         handler.removeCallbacksAndMessages(null);
@@ -399,6 +407,7 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
     @Override protected void onSaveInstanceState(Bundle state) {
+        if(expandedWidget!=null)state.putBundle("expandedWidget",expandedWidget.state());
         state.putBoolean("languageSettings", reopenLanguageSettings);
         state.putBoolean("allApps", allApps); state.putInt("homePage", homePage);
         state.putInt("appsPage", appsPage); state.putString("focus", focused);
@@ -719,7 +728,7 @@ public class MainActivity extends Activity {
     private int homeGridColumnsFor(String size) {
         if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
         int fit = homeGridFitColumnsFor(size);
-        return layout.homeColumns == 0 ? fit : Math.min(layout.homeColumns, fit);
+        return layout.homeColumns == 0 ? fit : layout.favoritesContainer ? layout.homeColumns : Math.min(layout.homeColumns, fit);
     }
     private int appLabelHeightDp() {
         android.graphics.Paint paint = new android.graphics.Paint();
@@ -734,8 +743,9 @@ public class MainActivity extends Activity {
     private int homeGridFitColumnsFor(String size) {
         int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
                 / getResources().getDisplayMetrics().density);
-        return AppGridSizing.homeColumns(screenWidthDp - AppGridSizing.SIDE_MARGIN * 2,
+        int fit = AppGridSizing.homeColumns(screenWidthDp - AppGridSizing.SIDE_MARGIN * 2,
                 appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size));
+        return layout.favoritesContainer ? Math.max(8,fit) : fit;
     }
     private int homeGridFitRows() {
         return homeGridFitRowsFor(layout.homeAppSize);
@@ -744,7 +754,7 @@ public class MainActivity extends Activity {
         if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
         int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
                 / getResources().getDisplayMetrics().density);
-        return Math.max(2, AppGridSizing.rows(screenHeightDp - AppGridSizing.HOME_TOP
+        return Math.max(layout.favoritesContainer ? 4 : 2, AppGridSizing.rows(screenHeightDp - AppGridSizing.HOME_TOP
                 - AppGridSizing.BOTTOM_MARGIN, appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size)));
     }
     private int homeGridRows() {
@@ -753,7 +763,7 @@ public class MainActivity extends Activity {
     private int homeGridRowsFor(String size) {
         if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
         int fit = homeGridFitRowsFor(size);
-        return layout.homeRows == 0 ? fit : Math.min(layout.homeRows, fit);
+        return layout.homeRows == 0 ? fit : layout.favoritesContainer ? layout.homeRows : Math.min(layout.homeRows, fit);
     }
     private List<HomeLayout.Cell> homeCells(List<String> items) {
         Map<String, HomeLayout.HomePosition> positions = moving && !moveInApps
@@ -1188,7 +1198,7 @@ public class MainActivity extends Activity {
     }
     private void activateFavorite() {
         FavoritesWidgetView panel=activeFavorites();String key=panel==null?"":panel.activeKey();
-        if(key.isEmpty()){if(layout.favorites.isEmpty())showApps();else openFavoritesBrowser();}
+        if(key.isEmpty()){expandWidget(HomeLayout.FAVORITES,null);}
         else activate(key);
     }
     private void favoriteContext() {
@@ -1258,7 +1268,8 @@ public class MainActivity extends Activity {
     }
     private void applyDefaultDashboard(String rain,String air,boolean persist) {
         if (!layout.favoritesContainer) layout.convertFavorites();
-        layout.arrangeDefaultDashboard(rain,air,homeGridColumns(),homeGridRows());
+        layout.homeColumns=8; layout.homeRows=4;
+        layout.arrangeDefaultDashboard(rain,air,8,4);
         allApps=false;homePage=0;focused=rain;homeFocus=rain;
         if(persist){save(getString(R.string.hb_dashboard_applied));render(0);}
     }
@@ -1350,7 +1361,7 @@ public class MainActivity extends Activity {
         condition.setEllipsize(android.text.TextUtils.TruncateAt.END);
         AirQualityTrendView trend = new AirQualityTrendView(this);
         trend.setId(R.id.airQualityTrend);
-        LinearLayout.LayoutParams trendLp = new LinearLayout.LayoutParams(-1, dp(compact ? 38 : large ? 48 : 42));
+        LinearLayout.LayoutParams trendLp = new LinearLayout.LayoutParams(-1, dp(compact ? 44 : large ? 64 : 64));
         trend.setVisibility(widthCells >= 2 && heightCells >= 2 ? View.VISIBLE : View.GONE);
         TextView detail = text("", compact ? 9 : large ? 11 : 10); detail.setId(R.id.airQualityDetail);
         detail.setVisibility(widthCells >= 2 && heightCells >= 2 ? View.VISIBLE : View.GONE);
@@ -1715,6 +1726,7 @@ public class MainActivity extends Activity {
         if (surface != null) updateAir();
         if (!hasFocus) cancelOk();
         else if (root != null) root.post(() -> {
+            if(active&&overlay==null&&expandedWidget!=null&&expandedWidget.configuring()){expandedWidget.resumeAfterConfiguration();return;}
             if (active && overlay == null) {
                 restoreFocus();
                 snapAppHighlight();
@@ -1868,13 +1880,36 @@ public class MainActivity extends Activity {
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
         if(HomeLayout.FAVORITES.equals(key)){activateFavorite();return;}
-        if (HomeLayout.isRainWidget(key)) { rainFor(key).details(); return; }
-        if (HomeLayout.isCalendarWidget(key)) { calendarController(key).actions(); return; }
-        if (isAirWidgetKey(key)) { airFor(key).showActions(); return; }
+        if (HomeLayout.isRainWidget(key)||HomeLayout.isCalendarWidget(key)||isAirWidgetKey(key)) { expandWidget(key,null); return; }
         App app = apps.get(key);
         if (app == null) { if (!key.isEmpty()) toast(getString(R.string.hb_app_unavailable_hold_ok_to_remove_this_tile)); return; }
         open(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER).setComponent(app.component)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED));
+    }
+    private int widgetTitle(WidgetKind kind){return switch(kind){
+        case AIR -> R.string.hb_air_quality_widget;case CALENDAR -> R.string.hb_cal_calendar;
+        case RAIN -> R.string.hb_rain_rain;case FAVORITES -> R.string.hb_fav_title;
+    };}
+    private void expandWidget(String key,Bundle saved){
+        if(closed)return;WidgetKind kind=WidgetKind.of(key);cancelOk();consumeOkUp=false;
+        if(expandedWidget!=null){expandedWidget.release();expandedWidget=null;}
+        CalendarWidgetView compact=calendarWidgets.get(key);
+        java.time.LocalDate anchor=compact==null?null:compact.firstVisibleDate();
+        if(anchor!=null&&anchor.isBefore(java.time.LocalDate.now(CalendarSnapshot.BANGKOK)))anchor=null;
+        final java.time.LocalDate initialDate=anchor;
+        WidgetExpansion.Factory factory=(host,state)->switch(kind){
+            case CALENDAR -> new CalendarExpanded(host,calendarSnapshot,layout.calendarSettings.getOrDefault(key,new CalendarWidgetSettings()),initialDate,state);
+            case RAIN -> new RainExpanded(host,rainFor(key),state);
+            case AIR -> new AirExpanded(host,airFor(key),this::requestAirLocation,state);
+            case FAVORITES -> new FavoritesExpanded(host,()->new ArrayList<>(layout.favorites),this::activate,this::open,
+                app->{layout.removeFavorite(app);save(getString(R.string.hb_removed_app_from_home));render(0);},
+                order->{layout.favorites.clear();layout.favorites.addAll(order);save(getString(R.string.hb_fav_changed));render(0);},state);
+        };
+        final int origin=saved==null?homePage:saved.getInt("originPage",homePage);
+        expandedWidget=new WidgetExpansion(this,key,getString(widgetTitle(kind)),paletteColors,uiBackgroundOpacity,origin,saved,factory,
+            ()->{switch(kind){case CALENDAR:configureCalendar(key);break;case RAIN:rainFor(key).configure();break;case AIR:airFor(key).configureWidget();break;case FAVORITES:favoritesActions();break;}},
+            ()->{expandedWidget=null;allApps=false;homePage=origin;focused=layout.widgets.contains(key)?key:"";homeFocus=focused;render(0);});
+        expandedWidget.open();
     }
     private void contextMenu(String key) {
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
@@ -2003,19 +2038,22 @@ public class MainActivity extends Activity {
     private void widgetsAndRestore() {
         menu(getString(R.string.hb_widgets_restore), getString(R.string.hb_add_a_widget_or_restore_an_app_shortcut),
                 new String[]{getString(R.string.hb_add_widget), getString(R.string.hb_restore_hidden_app),getString(R.string.hb_dashboard_default)}, choice -> {
-                    if (choice == 0) menu(getString(R.string.hb_add_to_home), getString(R.string.hb_choose_a_tile_to_add),
-                            new String[]{getString(R.string.hb_air_quality_widget), getString(R.string.hb_cal_calendar), getString(R.string.hb_rain_rain), getString(R.string.hb_fav_title), getString(R.string.hb_favorite_an_app_from_all_apps)}, add -> {
-                                if (add == 4) { allApps = false; showApps(); return; }
-                                String key = add == 0 ? newWidgetKey(HomeLayout.AIR) : add == 2 ? newWidgetKey(HomeLayout.RAIN) : add == 3 ? HomeLayout.FAVORITES : HomeLayout.CALENDAR;
-                                if (!layout.widgets.contains(key)) { layout.addPanel(key);
-                                    if (HomeLayout.isRainWidget(key)) layout.setPanelSpan(key,Math.min(4,homeGridColumns()),Math.min(3,homeGridRows()));
-                                    save(HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_changed) : getString(R.string.hb_cal_added)); }
-                                allApps = false; focused = key;
-                                homePage = homePageOf(focused, layout.widgets); render(0);
-                            });
+                    if (choice == 0) addWidgetMenu();
                     else if(choice==1) restoreHiddenApps();
                     else chooseDefaultDashboard();
                 });
+    }
+
+    private void addWidgetMenu(){
+        WidgetKind[] kinds=WidgetKind.values();String[] labels=new String[kinds.length+1];
+        for(int i=0;i<kinds.length;i++)labels[i]=getString(widgetTitle(kinds[i]));
+        labels[kinds.length]=getString(R.string.hb_favorite_an_app_from_all_apps);
+        menu(getString(R.string.hb_add_to_home),getString(R.string.hb_choose_a_tile_to_add),labels,add->{
+            if(add==kinds.length){allApps=false;showApps();return;}
+            WidgetKind kind=kinds[add];String key=kind==WidgetKind.AIR||kind==WidgetKind.RAIN?newWidgetKey(kind.key):kind.key;
+            if(!layout.widgets.contains(key)){layout.addPanel(key);if(kind==WidgetKind.RAIN)layout.setPanelSpan(key,Math.min(4,homeGridColumns()),Math.min(3,homeGridRows()));save(getString(R.string.hb_cal_added));}
+            allApps=false;focused=key;homePage=homePageOf(key,layout.widgets);render(0);
+        });
     }
 
     private String newWidgetKey(String base) {
@@ -2947,6 +2985,7 @@ public class MainActivity extends Activity {
         restoreFocus();
         if (undoBanner != null) undoBanner.bringToFront();
         updateAir();
+        handler.post(()->{if(active&&hasWindowFocus()&&overlay==null&&expandedWidget!=null&&expandedWidget.configuring())expandedWidget.resumeAfterConfiguration();});
     }
     private void backMenu() {
         if (overlay == null) return;

@@ -23,8 +23,9 @@ No account, API key, Home Assistant or dashboard server is needed for air qualit
 | Right beyond the last widget page | Slide into All Apps from the right |
 | Left at the first All Apps column | Slide back to Home |
 | Back in All Apps | Return to Home |
-| Short OK | Open the selected app or widget |
-| Hold OK | Open the selected tile's menu |
+| Short OK | Expand a widget full screen, or launch the selected app |
+| Hold OK | Open widget settings/actions, or the selected app's menu |
+| Back in a full-screen widget | Restore its dashboard page, focus and size; nested details close first |
 | Back in a menu | Close the menu |
 | Menu button, if your remote has one | Open Home settings |
 
@@ -138,7 +139,8 @@ in µg/m³. The card labels its source, location and timestamp. Model estimates 
 the nearest available Open-Meteo/CAMS grid; station measurements come from AirBKK.
 Neither is an indoor sensor reading.
 
-Press OK on the widget for **Refresh reading** or **Configure location and source**.
+Press OK on the widget for the full-screen **Nearby map**, station details and history.
+See [full-screen widget controls](widgets-full-screen.md).
 Hold OK for **Configure location and source**, **Move**, **Resize**, **Delete widget** or
 **Home settings**. In Resize, Left and Up reduce width and height by one grid
 cell; Right makes the panel wider, and Down makes it taller. The dashboard

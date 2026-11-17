@@ -53,6 +53,8 @@ final class RainWidgetView extends View {
         paint.setStyle(Paint.Style.STROKE);paint.setStrokeWidth(dp(isFocused()?3:1));paint.setColor(isFocused()?palette.focus:palette.edge);
         c.drawRoundRect(dp(2),dp(2),w-dp(2),h-dp(2),dp(13),dp(13),paint);paint.setStyle(Paint.Style.FILL);
         RainSettings s=controller.settings();String status=controller.status();
+        if (period != null && !period.hours.isEmpty() && h <= dp(240)
+                && drawHourlyRibbon(c, w, h)) { scheduleFrame(); return; }
         boolean tiny=width<sp(170)||h<l*3+2*pad;
         if(tiny){
             String head=status.isEmpty()?controller.s(R.string.hb_rain_rain):status;
@@ -107,6 +109,56 @@ final class RainWidgetView extends View {
         if(y+l<h-pad){drawText(c,"Open-Meteo · "+controller.s(R.string.hb_rain_updated,controller.time(controller.fetchedAt/1000,"HH:mm")),pad,y,width,16,palette.muted,false,true);}
         scheduleFrame();
     }
+    /** Shallow wide cards prioritize every hour, independently of the larger card's headings. */
+    private boolean drawHourlyRibbon(Canvas c, float w, float h) {
+        float pad=dp(6), width=w-pad*2, size=14, line=sp(16);
+        text.setTextSize(sp(size));
+        float minimumPitch=Math.max(text.measureText("100"),text.measureText("00"))+dp(4);
+        int count=period.hours.size();
+        int columns=width/count>=minimumPitch?count:Math.min(12,count);
+        if(width/columns<minimumPitch)return false;
+        int rows=(count+columns-1)/columns;
+        float rowHeight=sp(34)+dp(10), required=pad*2+line+rows*rowHeight+(!days.isEmpty()?line:0);
+        if(h<required)return false;
+        double max=.5;
+        for(RainForecast.Hour hour:period.hours)if(Double.isFinite(hour.mm))max=Math.max(max,hour.mm);
+        RainSettings settings=controller.settings();
+        String heading=(controller.status().isEmpty()?"":controller.status()+" · ")+controller.s(R.string.hb_rain_window,settings.hours)+" · 0–"+controller.amount(max)+"/h"
+                +" · "+controller.amount(period.mm)+" · "+controller.s(R.string.hb_fs_chance)+" %"
+                +" · "+controller.time(period.start,"dd/MM HH")+"–"+controller.time(period.end,"dd/MM HH z")
+                +" · "+settings.displayName()+" · Open-Meteo · "+controller.s(R.string.hb_rain_updated,controller.time(controller.fetchedAt/1000,"HH:mm"));
+        drawText(c,heading,pad,pad+sp(14),width-dp(24),size,palette.muted,false,true);
+        cloud(c,w-pad-dp(10),pad+dp(8),dp(7));
+        for(int row=0;row<rows;row++) {
+            float top=pad+line+row*rowHeight, bottom=top+dp(10), pitch=width/columns;
+            for(int col=0;col<columns;col++) {
+                int i=row*columns+col;if(i>=count)break;
+                RainForecast.Hour hour=period.hours.get(i);
+                float left=pad+col*pitch, right=left+pitch-dp(3);
+                paint.setColor(palette.edge);c.drawLine(left,bottom,right,bottom,paint);
+                if(Double.isFinite(hour.mm)) {
+                    paint.setColor(0xff78c5fa);
+                    if(hour.mm>0)c.drawRect(left,bottom-(float)(hour.mm/max)*dp(10),right,bottom,paint);
+                } else {paint.setColor(palette.muted);c.drawLine(left,bottom-dp(6),right,bottom-dp(2),paint);}
+                drawText(c,controller.time(hour.start,"HH"),left,bottom+sp(15),pitch,size,palette.text,false,false);
+                String chance=Double.isFinite(hour.chance)?String.format(java.util.Locale.getDefault(),"%.0f",hour.chance):"—";
+                drawText(c,chance,left,bottom+sp(31),pitch,size,0xffc6b5f1,false,false);
+                if(controller.time(hour.start,"HH").equals("00")) {
+                    paint.setColor(palette.muted);c.drawLine(left-dp(2),top,left-dp(2),bottom+sp(31),paint);
+                }
+            }
+        }
+        if(!days.isEmpty()) {
+            float y=pad+line+rows*rowHeight+sp(14), pitch=width/days.size();
+            for(int i=0;i<days.size();i++) {
+                RainForecast.Period day=days.get(i);
+                String label=controller.time(day.start,"EEE")+" "+controller.amount(day.mm)+" "+controller.chance(day.chance);
+                if(!fits(label,pitch-dp(4),size))label=controller.time(day.start,"EEE")+" "+controller.chance(day.chance);
+                drawText(c,label,pad+i*pitch,y,pitch-dp(4),size,palette.muted,false,true);
+            }
+        }
+        return true;
+    }
     private void drawDays(Canvas c,float x,float y,float width,boolean rows){
         float l=line();drawText(c,controller.s(R.string.hb_rain_following,days.size()),x,y,width,16,palette.muted,false,false);y+=l;
         for(int i=0;i<days.size();i++){
@@ -119,21 +171,24 @@ final class RainWidgetView extends View {
         }
     }
     private void chart(Canvas c,float x,float y,float w,float h){
-        float l=line();drawText(c,controller.s(R.string.hb_rain_window,controller.settings().hours),x,y,w,16,palette.muted,false,false);
+        float l=line();String label=controller.s(R.string.hb_rain_window,controller.settings().hours);
+        String combined=label+" · "+controller.s(R.string.hb_fs_chance)+" %";
+        boolean probability=h>=l*4&&fits(combined,w,16);
+        drawText(c,probability?combined:label,x,y,w,16,palette.muted,false,false);
         double max=.5;for(RainForecast.Hour hour:period.hours)if(Double.isFinite(hour.mm))max=Math.max(max,hour.mm);
-        float top=y+l,bottom=y+h-l,pitch=w/period.hours.size();
+        float top=y+l,bottom=y+h-l*(probability?2:1),pitch=w/period.hours.size();
         paint.setColor(palette.edge);paint.setStrokeWidth(dp(1));c.drawLine(x,bottom,x+w,bottom,paint);
         for(int i=0;i<period.hours.size();i++){
             RainForecast.Hour hour=period.hours.get(i);float left=x+i*pitch+dp(1),right=x+(i+1)*pitch-dp(1);
-            if(!Double.isFinite(hour.mm)){paint.setColor(palette.muted);c.drawLine(left,bottom-dp(7),right,bottom-dp(2),paint);continue;}
-            paint.setColor(0xff78c5fa);float bar=(float)(hour.mm/max)*(bottom-top);
-            if(bar>0)c.drawRect(left,bottom-bar,right,bottom,paint);
+            if(!Double.isFinite(hour.mm)){paint.setColor(palette.muted);c.drawLine(left,bottom-dp(7),right,bottom-dp(2),paint);}
+            else{paint.setColor(0xff78c5fa);float bar=(float)(hour.mm/max)*(bottom-top);if(bar>0)c.drawRect(left,bottom-bar,right,bottom,paint);}
+            if(probability){paint.setColor(palette.edge);c.drawRect(left,bottom+l*.25f,right,bottom+l*.55f,paint);if(Double.isFinite(hour.chance)){paint.setColor(0xffb9a3ed);c.drawRect(left,bottom+l*.25f,(float)(left+(right-left)*hour.chance/100),bottom+l*.55f,paint);}}
         }
         drawText(c,controller.amount(max),x,top,w,16,palette.muted,false,false);
         int ticks=Math.max(2,Math.min(4,(int)(w/sp(95))));
         for(int i=0;i<ticks;i++){
             int index=i*period.hours.size()/ticks;float px=x+w*i/ticks;
-            drawText(c,controller.time(period.hours.get(index).start,"HH:mm"),px,bottom+l,w/ticks,16,palette.muted,false,false);
+            drawText(c,controller.time(period.hours.get(index).start,"HH:mm"),px,y+h,w/ticks,16,palette.muted,false,false);
         }
     }
     private void cloud(Canvas c,float x,float y,float r){

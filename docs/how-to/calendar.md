@@ -29,9 +29,12 @@ national/Catalunya/Tarragona-province/Tivissa scope. Tarragona city holidays are
 not included as Tivissa holidays. No unverified province-wide dates are invented.
 China make-up working days are a separate optional toggle, initially Off.
 
-Press OK for **All matching dates**, **Next page**, **Previous page**, or Configure.
-The date picker includes every matching date; it is not capped at six. Resize
-changes the visible card count and pages instead of dropping events. Calendar
+Press OK to open **four complete weeks with highlighted-day details**. Arrows
+select a date; OK opens its full details. Back restores the dashboard. The expanded
+window includes ordinary days and looks up events independently of compact ranges,
+while retaining enabled sources/scopes. Hold OK on Home for configuration and size.
+See [full-screen controls](widgets-full-screen.md). Resize changes the visible
+compact card count and pages instead of dropping events. Calendar
 has a minimum **2 columns × 1 row** grid size. Short widgets show a compact strip
 with square dates, icons, flag bands, paging and status. Full event details remain
 available through OK. Move/Delete/Undo work like other dashboard widgets.

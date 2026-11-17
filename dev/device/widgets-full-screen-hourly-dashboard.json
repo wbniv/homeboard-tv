@@ -1,0 +1,24 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 43,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 1, "capture": "hourly-dashboard-start"},
+    {"at": 2, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 4, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 6, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 9, "capture": "four-weeks-highlighted-day-preview"},
+    {"at": 11, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 13, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 15, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 25, "capture": "nearby-map-location-visible-above-stations"},
+    {"at": 27, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 29, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 31, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 33, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 37, "capture": "full-screen-favorites-from-ribbon"},
+    {"at": 39, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 41, "capture": "hourly-dashboard-restored"}
+  ]
+}

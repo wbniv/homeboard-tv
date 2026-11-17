@@ -42,7 +42,7 @@
     <string name="hb_cal_offline">Offline dates</string>
     <string name="hb_cal_incomplete">Calendar coverage incomplete</string>
     <string name="hb_cal_status">%1$s · %2$s</string>
-    <string name="hb_cal_page">%1$d/%2$d · OK for all dates and actions</string>
+    <string name="hb_cal_page">%1$d/%2$d · OK for full-screen Calendar</string>
     <string name="hb_cal_all_dates">All matching dates</string>
     <string name="hb_cal_next_page">Next page</string>
     <string name="hb_cal_previous_page">Previous page</string>

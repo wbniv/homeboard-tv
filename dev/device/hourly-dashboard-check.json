@@ -1,0 +1,88 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 33,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 1,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 2,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 3,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 8,
+      "capture": "hourly-dashboard-applied"
+    },
+    {
+      "at": 10,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 11,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 12,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 14,
+      "capture": "all-apps"
+    },
+    {
+      "at": 16,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 19,
+      "capture": "dashboard-return"
+    },
+    {
+      "at": 20,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 21,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 25,
+      "capture": "rain-expanded"
+    },
+    {
+      "at": 27,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 30,
+      "capture": "rain-restored"
+    }
+  ]
+}

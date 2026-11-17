@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/d77eeab) | Keep the default dashboard on one screen and remove its preview trap |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/10cab3c) | Fix empty Home navigation and add the default dashboard |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/f30db99) | Use automatic Rain location and deploy dashboard updates to both TVs |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/f16c73d) | Add native rain forecast widget and review workflow |
@@ -14,6 +15,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+d77eeab	author	Will Norris
+d77eeab	added	4
+d77eeab	deleted	4
+d77eeab	files	1
+d77eeab	body	Apply the default immediately with Undo, fit all four cards even on two-row grids, and allow Right from populated settings, Undo and the final arrangement-preview edge. The actual retained Cast1 dashboard was arranged through the menu and verified with Right to All Apps and Back. Install identical 0.1.32 APKs on both TVs.
 10cab3c	author	Will Norris
 10cab3c	added	13
 10cab3c	deleted	0

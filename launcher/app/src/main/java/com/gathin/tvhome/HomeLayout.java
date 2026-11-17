@@ -43,6 +43,7 @@ final class HomeLayout {
 
     static HomeLayout firstRun() {
         HomeLayout s = new HomeLayout();
+        s.homeColumns = 8; s.homeRows = 4;
         s.arrangeDefaultDashboard(RAIN, AIR, 8, 4);
         return s;
     }
@@ -54,18 +55,27 @@ final class HomeLayout {
         if (columns < 4 || rows < 2) throw new IllegalArgumentException("Home grid is too small");
         if (!favoritesContainer) convertFavorites();
         addPanel(rain); addPanel(CALENDAR); addPanel(air); addPanel(FAVORITES);
-        int left = Math.min(4, columns / 2), right = columns - left;
-        int upper = Math.max(1, rows / 2);
-        int lower = rows - upper;
-        setPanelSpan(rain, left, upper);
-        setPanelSpan(FAVORITES, right, lower);
-        setPanelSpan(CALENDAR, right, upper);
-        setPanelSpan(air, left, lower);
         LinkedHashMap<String, HomePosition> requested = new LinkedHashMap<>();
-        requested.put(rain, new HomePosition(0, 0, 0));
-        requested.put(FAVORITES, new HomePosition(0, upper, left));
-        requested.put(CALENDAR, new HomePosition(0, 0, left));
-        requested.put(air, new HomePosition(0, upper, 0));
+        if (rows >= 3) {
+            int airWidth = Math.max(2, columns * 3 / 8), calendarWidth = columns - airWidth;
+            setPanelSpan(rain, columns, 1);
+            setPanelSpan(CALENDAR, calendarWidth, rows - 2);
+            setPanelSpan(air, airWidth, rows - 2);
+            setPanelSpan(FAVORITES, columns, 1);
+            requested.put(rain, new HomePosition(0, 0, 0));
+            requested.put(CALENDAR, new HomePosition(0, 1, 0));
+            requested.put(air, new HomePosition(0, 1, calendarWidth));
+            requested.put(FAVORITES, new HomePosition(0, rows - 1, 0));
+        } else {
+            // A manually selected two-row grid uses four compact glance cards.
+            int left = columns / 2, right = columns - left;
+            setPanelSpan(rain, left, 1); setPanelSpan(CALENDAR, right, 1);
+            setPanelSpan(air, left, 1); setPanelSpan(FAVORITES, right, 1);
+            requested.put(rain, new HomePosition(0, 0, 0));
+            requested.put(CALENDAR, new HomePosition(0, 0, left));
+            requested.put(air, new HomePosition(0, 1, 0));
+            requested.put(FAVORITES, new HomePosition(0, 1, left));
+        }
         for (Map.Entry<String, HomePosition> entry : homePositions.entrySet())
             if (!requested.containsKey(entry.getKey())) requested.put(entry.getKey(), entry.getValue());
         List<String> ordered = new ArrayList<>();

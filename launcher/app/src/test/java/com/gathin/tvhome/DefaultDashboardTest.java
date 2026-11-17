@@ -12,8 +12,14 @@ public class DefaultDashboardTest {
         assertTrue(layout.rainSettings.get(HomeLayout.RAIN).automatic);
         assertEquals(24, layout.rainSettings.get(HomeLayout.RAIN).hours);
         assertEquals(6, layout.rainSettings.get(HomeLayout.RAIN).days);
-        assertEquals(4, layout.panelSpan(HomeLayout.RAIN).width);
-        assertEquals(2, layout.panelSpan(HomeLayout.RAIN).height);
+        assertEquals(8, layout.panelSpan(HomeLayout.RAIN).width);
+        assertEquals(1, layout.panelSpan(HomeLayout.RAIN).height);
+        assertEquals(8,layout.homeColumns); assertEquals(4,layout.homeRows);
+        assertEquals(8,layout.panelSpan(HomeLayout.FAVORITES).width);
+        assertEquals(1,layout.panelSpan(HomeLayout.FAVORITES).height);
+        assertEquals(3,layout.homePositions.get(HomeLayout.FAVORITES).row);
+        assertEquals(3,layout.panelSpan(HomeLayout.AIR).width);
+        assertEquals(2,layout.panelSpan(HomeLayout.AIR).height);
     }
     @Test public void defaultPlacementFitsWithoutOverlapAndKeepsExtras() throws Exception {
         for (int columns : new int[]{4, 6, 8, 10, 12}) for (int rows : new int[]{2, 3, 4, 5, 7}) {
@@ -52,6 +58,25 @@ public class DefaultDashboardTest {
         assertEquals(0,undo.homePositions.get(HomeLayout.RAIN).column);
         assertEquals("Home",undo.rainSettings.get(HomeLayout.RAIN+":2").label);
         assertEquals(48,undo.rainSettings.get(HomeLayout.RAIN+":2").hours);
+    }
+    @Test public void presetUndoRetainsGridAndOriginalFavorites() throws Exception {
+        HomeLayout layout=HomeLayout.firstRun();layout.homeColumns=6;layout.homeRows=2;
+        layout.addFavorite("app:one/Main");layout.addFavorite("app:two/Main");
+        String before=layout.encode();
+        layout.homeColumns=8;layout.homeRows=4;
+        layout.arrangeDefaultDashboard(HomeLayout.RAIN,HomeLayout.AIR,8,4);
+        HomeLayout applied=HomeLayout.parse(layout.encode());
+        assertEquals(8,applied.homeColumns);assertEquals(4,applied.homeRows);
+        HomeLayout restored=HomeLayout.parse(before);
+        assertEquals(6,restored.homeColumns);assertEquals(2,restored.homeRows);
+        assertEquals(restored.favorites,applied.favorites);
+        for(HomeLayout.Cell cell:applied.cells(applied.widgets,8,4)) {
+            assertEquals(0,cell.page);
+            if(HomeLayout.FAVORITES.equals(cell.key)) {
+                assertEquals(0,cell.column);assertEquals(3,cell.row);
+                assertEquals(8,cell.width);assertEquals(1,cell.height);
+            }
+        }
     }
     @Test public void parsingASavedEmptyDashboardNeverRestoresDefaults() throws Exception {
         HomeLayout empty=new HomeLayout();

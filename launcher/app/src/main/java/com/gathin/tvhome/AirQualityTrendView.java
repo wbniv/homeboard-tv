@@ -25,7 +25,7 @@ final class AirQualityTrendView extends View {
         linePaint.setStyle(Paint.Style.STROKE); linePaint.setStrokeWidth(dp(3));
         linePaint.setStrokeCap(Paint.Cap.ROUND); linePaint.setStrokeJoin(Paint.Join.ROUND);
         dotPaint.setStyle(Paint.Style.FILL);
-        labelPaint.setTextSize(dp(9)); labelPaint.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+        labelPaint.setTextSize(12 * getResources().getDisplayMetrics().scaledDensity); labelPaint.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
     }
 
     void setPalette(PaletteColors colors) {
@@ -47,33 +47,40 @@ final class AirQualityTrendView extends View {
 
     @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float left = dp(36), right = getWidth() - dp(5), top = dp(3), bottom = getHeight() - dp(3);
+        float left = dp(40), right = getWidth() - dp(5), top = dp(3), bottom = getHeight() - dp(3);
         if (right <= left || bottom <= top) return;
         float mid = top + (bottom - top) / 2;
         labelPaint.setAlpha(220);
         canvas.drawText(getContext().getString(R.string.hb_status_24h), dp(1), top + dp(13), labelPaint);
         canvas.drawText(getContext().getString(R.string.hb_status_30d), dp(1), mid + dp(13), labelPaint);
         canvas.drawLine(left, mid, right, mid, gridPaint);
-        drawSeries(canvas, dayValues, left, right, top, mid - dp(2));
-        drawSeries(canvas, monthValues, left, right, mid + dp(2), bottom);
+        drawSeries(canvas, dayValues, left, right, top, mid - dp(2), 24);
+        drawSeries(canvas, monthValues, left, right, mid + dp(2), bottom, 30 * 24);
     }
 
-    private void drawSeries(Canvas canvas, AirQualityReading[] values, float left, float right, float top, float bottom) {
+    private void drawSeries(Canvas canvas, AirQualityReading[] values, float left, float right, float top, float bottom, int hours) {
         canvas.drawLine(left, bottom, right, bottom, gridPaint);
-        if (values.length == 0) return;
+        if (values.length == 0) {
+            canvas.drawText(getContext().getString(R.string.hb_reading_unavailable), left,
+                    Math.min(bottom, top + dp(14)), labelPaint);
+            return;
+        }
         double min = values[0].pm25, max = values[0].pm25;
         for (AirQualityReading value : values) { min = Math.min(min, value.pm25); max = Math.max(max, value.pm25); }
         if (max - min < 1) { min = Math.max(0, min - 1); max += 1; }
         float inset = dp(4), usableTop = top + inset, usableBottom = bottom - inset;
+        long end=values[values.length-1].timeMillis, duration=hours*3_600_000L, start=end-duration;
         float previousX = 0, previousY = 0, lastX = 0, lastY = 0;
+        long previousTime=Long.MIN_VALUE;
         for (int i = 0; i < values.length; i++) {
-            float x = values.length == 1 ? (left + right) / 2
-                    : left + (right - left) * i / (values.length - 1f);
+            if(values[i].timeMillis<start)continue;
+            float x = left+(right-left)*(values[i].timeMillis-start)/(float)duration;
             float y = usableBottom - (float) ((values[i].pm25 - min) / (max - min)) * (usableBottom - usableTop);
-            if (i > 0) {
+            if (previousTime!=Long.MIN_VALUE && values[i].timeMillis-previousTime <= 2*3_600_000L) {
                 linePaint.setColor(AirQualityCard.conditionColor(values[i].condition()));
                 canvas.drawLine(previousX, previousY, x, y, linePaint);
             }
+            previousTime=values[i].timeMillis;
             previousX = x; previousY = y; lastX = x; lastY = y;
         }
         dotPaint.setColor(AirQualityCard.conditionColor(values[values.length - 1].condition()));

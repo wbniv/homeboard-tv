@@ -32,18 +32,26 @@ final class RainForecast {
         Period(long start, long end, Map<Long, Hour> samples) {
             this.start = start; this.end = end;
             List<Hour> list = new ArrayList<>();
-            boolean valid = true; double amount = 0, peak = 0, snow = 0;
+            boolean valid = true,amountKnown=true,chanceKnown=true,snowKnown=true; double amount = 0, peak = 0, snow = 0;
             for (long t = start; t < end; t += HOUR) {
                 Hour h = samples.get(t);
                 if (h == null) h = new Hour(t, Double.NaN, Double.NaN, Double.NaN);
                 list.add(h); valid &= h.valid();
-                if (h.valid()) { amount += h.mm; peak = Math.max(peak, h.chance); snow += h.snowCm; }
+                amountKnown&=Double.isFinite(h.mm);chanceKnown&=Double.isFinite(h.chance);snowKnown&=Double.isFinite(h.snowCm);
+                if(Double.isFinite(h.mm))amount+=h.mm;
+                if(Double.isFinite(h.chance))peak=Math.max(peak,h.chance);
+                if(Double.isFinite(h.snowCm))snow+=h.snowCm;
             }
             hours = Collections.unmodifiableList(list); complete = valid && !list.isEmpty();
-            mm = complete ? amount : Double.NaN; chance = complete ? peak : Double.NaN;
-            snowCm = complete ? snow : Double.NaN;
+            mm = amountKnown&&!list.isEmpty() ? amount : Double.NaN; chance = chanceKnown&&!list.isEmpty() ? peak : Double.NaN;
+            snowCm = snowKnown&&!list.isEmpty() ? snow : Double.NaN;
         }
         Hour firstWet() { for (Hour h : hours) if (h.valid() && h.mm >= .1) return h; return null; }
+        long wettestThreeHours(){
+            if(!Double.isFinite(mm)||hours.size()<3)return -1;double largest=-1;long selected=-1;
+            for(int i=0;i+2<hours.size();i++){double amount=hours.get(i).mm+hours.get(i+1).mm+hours.get(i+2).mm;if(amount>largest){largest=amount;selected=hours.get(i).start;}}
+            return largest>0?selected:-1;
+        }
     }
     final ZoneId zone;
     private final Map<Long, Hour> samples;
@@ -82,6 +90,19 @@ final class RainForecast {
     long windowStart(Instant now) { return now.atZone(zone).truncatedTo(ChronoUnit.HOURS).plusHours(1).toEpochSecond(); }
     Period hourly(Instant now, int hours) {
         long start = windowStart(now); return new Period(start, start + hours * HOUR, samples);
+    }
+    long coverageEnd(){return samples.isEmpty()?0:Collections.max(samples.keySet())+HOUR;}
+    Period interval(long start,long end){
+        if(end<=start||end-start>400*HOUR)throw new IllegalArgumentException("Invalid rain interval");
+        return new Period(start,end,samples);
+    }
+    List<Period> calendarDays(Instant now,int count){
+        if(count<1||count>16)throw new IllegalArgumentException("Invalid rain day count");
+        List<Period> result=new ArrayList<>();long start=windowStart(now);
+        for(int i=0;i<count;i++){
+            long end=Instant.ofEpochSecond(start).atZone(zone).toLocalDate().plusDays(1).atStartOfDay(zone).toEpochSecond();
+            result.add(interval(start,end));start=end;
+        }return result;
     }
     List<Period> following(Instant now, int hours, int days) {
         List<Period> result = new ArrayList<>(); long start = windowStart(now) + hours * HOUR;

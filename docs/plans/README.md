@@ -35,6 +35,10 @@ missing rows on commit.*
 
 | [Default dashboard and empty-page navigation](2026-11-17-default-dashboard-and-empty-page-navigation.md) | Keeps all four default widgets on one screen, applies the preset immediately with Undo and fixes Right to All Apps. | 0.1.32 installed on both TVs; actual Cast1 Right/Back verified | Fix / Feature |
 
+| [Every widget: full-screen detail and dashboard restoration](2026-11-17-widget-full-screen.md) | Implements richer full-screen content for all widget types, four-week Calendar detail, rain amount/probability charts, nearby station maps and a dense Favorites banner grid/app panel; Back restores Home. | 0.1.36 installed on both TVs; core Cast1 checks passed | Feature |
+
+| [Default dashboard: hourly rain and bottom Favorites](2026-11-17-default-dashboard-hourly-rain.md) | Proposes shallow full-width hourly rain, compact air quality with 24-hour/30-day sparklines and a full-width bottom Favorites row. | 0.1.35 installed on both TVs; Cast1 layout and navigation verified | Feature / Fix |
+
 ---
 
 ## How this index was derived

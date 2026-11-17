@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hb_dashboard_default">"แดชบอร์ดเริ่มต้น"</string>
+    <string name="hb_dashboard_default">"แดชบอร์ดเริ่มต้น · 8×4 · ฝนรายชั่วโมง · แอปโปรดแถวล่าง"</string>
     <string name="hb_dashboard_applied">"ใช้แดชบอร์ดเริ่มต้นแล้ว"</string>
     <string name="hb_dashboard_empty">"หน้าแรกว่าง กดขวาเพื่อไปหน้าถัดไปหรือแอปทั้งหมด กดขึ้นเพื่อไปการตั้งค่า กด OK ค้างเพื่อเปิดการตั้งค่าหน้าแรก"</string>
     <string name="hb_dashboard_choose_instance">"เลือกวิดเจ็ตสำหรับแดชบอร์ดเริ่มต้น"</string>

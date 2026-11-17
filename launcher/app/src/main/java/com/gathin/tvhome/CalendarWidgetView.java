@@ -37,6 +37,7 @@ final class CalendarWidgetView extends View {
     void setFillOpacity(int percent) { fillOpacity = Math.max(0, Math.min(100, percent)); invalidate(); }
     int pages() { return Math.max(1, (display.days.size() + pageSize - 1) / pageSize); }
     void turnPage(int direction) { page = Math.floorMod(page + direction, pages()); invalidate(); }
+    java.time.LocalDate firstVisibleDate() { return display.days.isEmpty()?null:display.days.get(Math.min(display.days.size()-1,page*pageSize)).date; }
     private void refresh() {
         display = snapshot.display(settings, Instant.now()); page = Math.min(page, pages() - 1);
         StringBuilder description = new StringBuilder(getContext().getString(R.string.hb_cal_days, settings.holidayLookaheadDays));
@@ -97,7 +98,7 @@ final class CalendarWidgetView extends View {
         } else text(canvas, status(), 10, height - 10, 11, palette.muted, width - 20, false);
         canvas.restoreToCount(outer);
     }
-    private void card(Canvas canvas, CalendarSnapshot.Day day, boolean compact, float dpSize) {
+    void card(Canvas canvas, CalendarSnapshot.Day day, boolean compact, float dpSize) {
         paint.setColor(palette.raised); paint.setAlpha(255 * fillOpacity / 100);
         canvas.drawRoundRect(1, 1, 199, 199, 12, 12, paint); paint.setAlpha(255);
         Path clip = new Path(); clip.addRoundRect(new RectF(1, 1, 199, 199), 12, 12, Path.Direction.CW);
@@ -122,6 +123,7 @@ final class CalendarWidgetView extends View {
         if (flowers) { int icon = canvas.save(); canvas.translate(164, 77); canvas.scale(.8f, .8f); flower(canvas); canvas.restoreToCount(icon); }
         if (phra) { int icon = canvas.save(); canvas.translate(164, flowers ? 126 : 91); canvas.scale(.8f, .8f); buddha(canvas); canvas.restoreToCount(icon); }
         Instant now = Instant.now();
+        if(day.events.isEmpty())return;
         if (compact) {
             if (dpSize >= 64) text(canvas, CalendarLabels.event(getContext(), day.events.get(0), settings, now),
                     13, 183, Math.max(15, 10 / scale), palette.text, 174, false);

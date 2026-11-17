@@ -131,13 +131,21 @@ final class CalendarSnapshot {
         return new Window(start, end);
     }
     Display display(CalendarWidgetSettings settings, Instant now) {
+        return display(settings,now,null);
+    }
+    Display display(CalendarWidgetSettings settings, LocalDate start, LocalDate end) {
+        if(start.isAfter(end)||java.time.temporal.ChronoUnit.DAYS.between(start,end)>366)
+            throw new IllegalArgumentException("Invalid calendar viewing window");
+        return display(settings,Instant.now(),new Window(start,end));
+    }
+    private Display display(CalendarWidgetSettings settings, Instant now, Window requested) {
         Map<LocalDate, Day> days = new TreeMap<>();
         List<String> incomplete = new ArrayList<>(), offline = new ArrayList<>();
         for (String id : CalendarWidgetSettings.SOURCES) {
             if (!settings.enabled.contains(id)) continue;
             Provider provider = providers.get(id);
             if (provider == null) { incomplete.add(id); continue; }
-            Window window = window(id, settings, now, provider.zone);
+            Window window = requested==null?window(id, settings, now, provider.zone):requested;
             if (provider.start.isAfter(window.start) || provider.end.isBefore(window.end)
                     || "partial".equals(provider.status) || "stale".equals(provider.status)) incomplete.add(id);
             if (!"verified".equals(provider.status)) offline.add(id);

@@ -18,6 +18,12 @@ broader dashboard engine and traffic integrations remain undecided.
 
 ## Home interaction
 
+**Short OK/click expands a widget; hold OK opens widget settings/actions.** Expanded
+views add four-week Calendar detail, Rain amount/probability charts, nearby air
+stations on a geographic map with device location, and a Favorites banner browser
+with app details. Back restores the dashboard's original page, widget focus and
+size. See [full-screen widget controls](docs/how-to/widgets-full-screen.md).
+
 [Widgets-first Home plan and mockups](docs/plans/2026-11-15-widget-home.md):
 custom widgets and app favorites, including an entirely empty dashboard; moving
 right reveals All Apps. Hold OK offers Move, Favorite, Delete tile and Uninstall app.
@@ -59,7 +65,11 @@ and [validation limits](docs/testing/2026-11-16-thai-language.md).
 
 ## Default dashboard
 
-New installations start with Rain, Calendar, Air quality and Favorites. The layout
+New installations start with Rain, Calendar, Air quality and Favorites. The revised
+8×4 preset uses shallow full-width hourly Rain, Calendar beside compact Air quality
+with 24-hour and 30-day sparklines, and one full-width Favorites row at the bottom.
+See the [revised layout plan](docs/plans/2026-11-17-default-dashboard-hourly-rain.md).
+ The layout
 fits all four widgets on one screen, including short two-row grids. This correction
 arranges existing nonempty dashboards once, with Undo; saved empty Home stays
 empty. **Home settings → Widgets / Restore → Default dashboard** applies the

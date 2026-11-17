@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+<title id="title">Full-screen air quality: nearby station measurements on a map</title>
+<desc id="desc">A schematic geographic-map composition shows a blue actual-location marker and accuracy circle, nearby station measurement markers and a selected-station panel. Controls include radius, recenter, pan, zoom and map/history tabs. Coordinates, streets, distances and values in this mockup are illustrative; implementation uses real station coordinates and a geographic basemap.</desc>
+<defs><style>text{font-family:Arial,sans-serif;fill:#eef5f7}.head{font-size:25px;font-weight:bold}.body{font-size:18px}.small{font-size:15px;fill:#bad0d7}.button{fill:#2b5362;stroke:#acd1dd;stroke-width:1.5}.road{stroke:#536b70;stroke-width:12;fill:none}.roadline{stroke:#adbbb1;stroke-width:2;fill:none}.water{fill:none;stroke:#234f67;stroke-width:44}.marker{stroke:#102a35;stroke-width:3}</style></defs>
+<rect width="1200" height="820" fill="#102a35"/>
+<text x="24" y="39" class="head">Air quality · Nearby stations and your actual location</text>
+<rect x="24" y="56" width="215" height="40" rx="8" class="button"/><text x="38" y="82" class="body">← Restore dashboard</text>
+<rect x="256" y="56" width="164" height="40" rx="8" class="button"/><text x="281" y="82" class="body">Nearby map</text>
+<rect x="436" y="56" width="124" height="40" rx="8" class="button"/><text x="459" y="82" class="body">History</text>
+<text x="589" y="82" class="small">History: 24 hours / 7 days / 30 days</text>
+<text x="24" y="124" class="small">Illustrative layout only · Real station coordinates and geographic basemap required in implementation</text>
+
+<rect x="24" y="144" width="822" height="555" rx="12" fill="#293f3f" stroke="#7f9da4"/>
+<g>
+<path d="M88 150C124 239 252 247 222 339C193 430 320 432 307 514C294 598 375 640 371 692" class="water"/>
+<path d="M28 239L837 350M28 543L838 461M147 149L202 691M501 149L435 691M736 149L697 692M28 638L838 600" class="road"/>
+<path d="M28 239L837 350M28 543L838 461M147 149L202 691M501 149L435 691M736 149L697 692M28 638L838 600" class="roadline"/>
+<rect x="548" y="362" width="114" height="90" rx="18" fill="#35614c"/>
+<text x="561" y="414" class="small">Park</text>
+<circle cx="408" cy="420" r="57" fill="#4cafff" fill-opacity=".14" stroke="#64b6ff" stroke-dasharray="5 5"/>
+<circle cx="408" cy="420" r="13" fill="#53b8ff" stroke="#fff" stroke-width="4"/>
+<rect x="331" y="444" width="171" height="49" rx="8" fill="#173c57"/>
+<text x="346" y="464" class="body">You · Device fix</text><text x="346" y="484" class="small">Accuracy shown</text>
+<rect x="555" y="302" width="111" height="45" rx="9" fill="#8acbd7" class="marker"/><text x="567" y="331" font-size="23" style="fill:#12303c">10.1</text>
+<rect x="549" y="296" width="123" height="57" rx="12" fill="none" stroke="#fff" stroke-width="3"/>
+<text x="542" y="285" class="body">Lumpini Park</text>
+<rect x="232" y="259" width="110" height="45" rx="9" fill="#8acbd7" class="marker"/><text x="245" y="289" font-size="23" style="fill:#12303c">14.6</text>
+<rect x="573" y="541" width="110" height="45" rx="9" fill="#8aca9d" class="marker"/><text x="586" y="571" font-size="23" style="fill:#12303c">23.2</text>
+<rect x="78" y="562" width="116" height="45" rx="9" fill="#b4b8bd" class="marker"/><text x="91" y="591" font-size="18" style="fill:#12303c">No value</text>
+<rect x="43" y="161" width="322" height="40" rx="8" fill="#173d4b"/><text x="56" y="187" class="body">Nearby radius: 10 / [25] / 50 / 100 km</text>
+<rect x="624" y="161" width="201" height="40" rx="8" class="button"/><text x="644" y="187" class="body">Recenter on me</text>
+<rect x="618" y="622" width="125" height="40" rx="8" class="button"/><text x="633" y="648" class="body">Pan map</text>
+<rect x="753" y="622" width="32" height="40" rx="7" class="button"/><text x="764" y="649" class="body">−</text>
+<rect x="794" y="622" width="32" height="40" rx="7" class="button"/><text x="804" y="649" class="body">+</text>
+<text x="42" y="684" class="small">PM2.5 · µg/m³ · Per-station timestamps · Visible map attribution</text>
+</g>
+
+<rect x="864" y="144" width="312" height="555" rx="12" fill="#20414e"/>
+<text x="882" y="176" class="small">Highlighted station</text>
+<text x="882" y="214" class="head">Lumpini Park</text>
+<text x="882" y="247" class="body">2.4 km from your location</text>
+<text x="882" y="298" font-size="31">10.1 µg/m³</text>
+<text x="882" y="331" class="body">PM2.5 · Station measured</text>
+<text x="882" y="361" class="small">24-hour moving average</text>
+<text x="882" y="395" class="small">17 Nov 2026 14:00 Bangkok</text>
+<text x="882" y="425" class="small">Source: AirBKK · Update age</text>
+<rect x="881" y="448" width="278" height="40" rx="8" class="button"/><text x="903" y="474" class="body">View station history</text>
+<text x="882" y="523" class="small">Nearby stations · By distance</text>
+<text x="882" y="557" class="body">Station A · 1.8 km · 14.6</text>
+<text x="882" y="591" class="body">Lumpini · 2.4 km · 10.1</text>
+<text x="882" y="625" class="body">Station B · 4.1 km · 23.2</text>
+<text x="882" y="674" class="small">Selecting does not change Home.</text>
+<text x="24" y="735" class="small">Blue dot = actual reported location · Accuracy/age explicit · Station/model-grid positions remain distinct</text>
+<text x="24" y="765" class="small">Production attribution: © OpenStreetMap contributors (if used) · Station data: AirBKK</text>
+<text x="24" y="800" class="body">Arrows → Select station · Pan mode → Move map · Back → Exit pan / Restore dashboard</text>
+</svg>

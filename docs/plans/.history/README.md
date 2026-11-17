@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/d77eeab) | Keep the default dashboard on one screen and remove its preview trap |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/73bc07f) | Measure empty Favorites text before dashboard layout |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/10cab3c) | Fix empty Home navigation and add the default dashboard |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/91550df) | Allow one-row Calendar widgets with compact date cards |
@@ -19,6 +20,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+d77eeab	author	Will Norris
+d77eeab	added	1
+d77eeab	deleted	1
+d77eeab	files	1
+d77eeab	body	Apply the default immediately with Undo, fit all four cards even on two-row grids, and allow Right from populated settings, Undo and the final arrangement-preview edge. The actual retained Cast1 dashboard was arranged through the menu and verified with Right to All Apps and Back. Install identical 0.1.32 APKs on both TVs.
 73bc07f	author	Will Norris
 73bc07f	added	1
 73bc07f	deleted	1

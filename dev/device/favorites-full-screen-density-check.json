@@ -1,0 +1,25 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 33,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 1, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 2, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 3, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 4, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 5, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 6, "key": "DPAD_LEFT", "action": "hold", "ms": 80},
+    {"at": 8, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 10, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 12, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 14, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 16, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 18, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 20, "capture": "four-column-dense-favorites"},
+    {"at": 22, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 25, "capture": "highlight-updates-app-details"},
+    {"at": 28, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 30, "capture": "dashboard-restored"}
+  ]
+}

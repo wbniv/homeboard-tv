@@ -21,6 +21,11 @@ docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
   verified behavior and remaining compatibility limits.
   Other network integrations, scheduled scenes and Play release signing remain future work.
 - Keep mockups and the workflow diagram current before implementing a new UI workflow.
+- Every current and future widget type must provide a full-screen presentation with
+  more data and/or more detailed data, opened from the widget with click/short OK.
+  Back and a visible Restore dashboard action must restore the original Home page,
+  widget focus and saved size. New widget plans must specify this richer content and
+  its acceptance checks; see [the full-screen widget plan](docs/plans/2026-11-17-widget-full-screen.md).
 - Upstream contributions need their own narrowly scoped patch and upstream requirements review.
   Do not send issues, PRs or messages unless authorized.
 - If AI attribution is required for a contribution, obtain actual tool/model/effort metadata;
