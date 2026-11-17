@@ -1920,7 +1920,7 @@ public class MainActivity extends Activity {
         expandedWidget=new WidgetExpansion(this,key,getString(widgetTitle(kind)),paletteColors,uiBackgroundOpacity,origin,saved,factory,
             ()->{switch(kind){case CALENDAR:configureCalendar(key);break;case RAIN:rainFor(key).configure();break;case AIR:airFor(key).configureWidget();break;case FAVORITES:favoritesActions();break;}},
             ()->{expandedWidget=null;allApps=false;homePage=origin;focused=layout.widgets.contains(key)?key:"";homeFocus=focused;render(0);});
-        expandedWidget.open();
+        expandedWidget.open(saved==null?tiles.get(key):null,saved==null&&!reducedMotion());
     }
     private void contextMenu(String key) {
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }

@@ -6,6 +6,9 @@ widget focus and saved size. The visible **Restore dashboard** button closes the
 expanded view directly. Expanding and browsing never resize the Home widget or
 add Undo entries. Configure is available in the expanded header.
 
+Opening gives immediate feedback with a quick zoom, followed by the richer content.
+The restore action stays available while loading. Reduced motion skips the zoom.
+
 ## Calendar
 
 The expanded Calendar shows four complete Monday–Sunday weeks and a detail pane

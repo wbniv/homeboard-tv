@@ -4,7 +4,7 @@
 <defs><style>text{font-family:Arial,sans-serif;fill:#eff6f7}.title{font-size:24px;font-weight:bold}.head{font-size:20px;font-weight:bold}.body{font-size:17px}.small{font-size:14px;fill:#bfd1d5}.panel{fill:#12343e;stroke:#668d96}.box{fill:#254a55}.restore{fill:#315c68;stroke:#b4d7df}.line{stroke:#76cddd;stroke-width:3;fill:none}</style></defs>
 <rect width="1200" height="1040" fill="#0c191f"/>
 <text x="28" y="37" class="title">Every widget: additional information in full screen</text>
-<text x="28" y="65" class="body">Illustrative content · Click/OK on widget opens · Back restores original dashboard</text>
+<text x="28" y="65" class="body">OK → shell + 140 ms zoom (92% → 100%) → richer content · Back restores · Reduced motion skips zoom</text>
 
 <g transform="translate(26 90)">
 <rect width="562" height="420" rx="14" class="panel"/>

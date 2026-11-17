@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -32,27 +33,35 @@ final class WidgetExpansion extends Dialog {
     final int originPage;
     private final Factory factory;
     private final FrameLayout body;
+    private final LinearLayout root;
+    private final Button configureButton;
+    private final Bundle initialState;
     private Content content;
+    private ViewTreeObserver.OnPreDrawListener firstDraw;
+    private final Runnable mountContent = this::mountContent;
     private final ArrayDeque<View[]> stack = new ArrayDeque<>();
-    private boolean running, released, configuring;
+    private boolean running, released, configuring, openingFinished;
     WidgetExpansion(Activity activity, String key, String title, PaletteColors palette, int opacity,
                     int page, Bundle saved, Factory factory, Runnable configure, Runnable restored) {
         super(activity); this.activity=activity;this.widgetKey=key;this.palette=palette;this.opacity=opacity;
         originPage=saved==null?page:saved.getInt("originPage",page);this.factory=factory;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        LinearLayout root=column();root.setPadding(dp(16),dp(12),dp(16),dp(10));root.setBackgroundColor(palette.surface);
+        root=column();root.setPadding(dp(16),dp(12),dp(16),dp(10));root.setBackgroundColor(palette.surface);
         LinearLayout header=row();
         header.addView(button(R.string.hb_fs_restore,this::dismiss));
         TextView heading=text(title,20);heading.setTypeface(null,android.graphics.Typeface.BOLD);
         header.addView(heading,new LinearLayout.LayoutParams(0,-2,1));
-        header.addView(button(R.string.hb_fs_configure,()->{configuring=true;setRunning(false);hide();configure.run();}));
+        configureButton=button(R.string.hb_fs_configure,()->{configuring=true;setRunning(false);hide();configure.run();});
+        configureButton.setEnabled(false);header.addView(configureButton);
         root.addView(header,new LinearLayout.LayoutParams(-1,dp(48)));
         body=new FrameLayout(activity);root.addView(body,new LinearLayout.LayoutParams(-1,0,1));
         root.addView(text(activity.getString(R.string.hb_fs_hint),13));
         setContentView(root);
         Bundle initial=saved==null?null:saved.getBundle("content");
-        content=factory.create(this,initial==null?new Bundle():initial);
-        body.addView(content.view(),new FrameLayout.LayoutParams(-1,-1));
+        initialState=initial==null?new Bundle():new Bundle(initial);
+        TextView loading=text(activity.getString(R.string.hb_loading),18);
+        loading.setGravity(Gravity.CENTER);
+        body.addView(loading,new FrameLayout.LayoutParams(-1,-1));
         setOnDismissListener(d->{releaseContent();restored.run();});
         setOnKeyListener((d,keyCode,event)->{
             if(keyCode==KeyEvent.KEYCODE_BACK||keyCode==KeyEvent.KEYCODE_ESCAPE){
@@ -60,23 +69,50 @@ final class WidgetExpansion extends Dialog {
             }return false;
         });
     }
-    void open() {
+    void open(View source, boolean animate) {
         if(released)return;show();
-        if(getWindow()!=null){getWindow().setBackgroundDrawableResource(android.R.color.transparent);getWindow().setLayout(-1,-1);}
-        setRunning(true);content.view().post(()->{if(content.view().findFocus()==null)content.view().requestFocus();});
+        if(getWindow()!=null){getWindow().setWindowAnimations(0);getWindow().setBackgroundDrawableResource(android.R.color.transparent);getWindow().setLayout(-1,-1);}
+        setRunning(true);
+        if(content!=null||firstDraw!=null||openingFinished)return;
+        android.graphics.Rect origin=new android.graphics.Rect();
+        boolean anchored=source!=null&&source.getGlobalVisibleRect(origin);
+        // Let the shell draw before creating potentially expensive widget views.
+        firstDraw=()->{
+            root.getViewTreeObserver().removeOnPreDrawListener(firstDraw);firstDraw=null;
+            if(released)return true;
+            if(animate){
+                int[] location=new int[2];root.getLocationOnScreen(location);
+                root.setPivotX(anchored?origin.exactCenterX()-location[0]:root.getWidth()/2f);
+                root.setPivotY(anchored?origin.exactCenterY()-location[1]:root.getHeight()/2f);
+                root.setScaleX(.92f);root.setScaleY(.92f);
+                root.animate().scaleX(1f).scaleY(1f).setDuration(140)
+                    .setInterpolator(new android.view.animation.DecelerateInterpolator())
+                    .withEndAction(this::finishOpening).start();
+            }else finishOpening();
+            return true;
+        };
+        root.getViewTreeObserver().addOnPreDrawListener(firstDraw);
+    }
+    private void finishOpening(){openingFinished=true;root.post(mountContent);}
+    private void mountContent(){
+        if(released||!running||!isShowing()||content!=null)return;
+        content=factory.create(this,new Bundle(initialState));
+        body.removeAllViews();body.addView(content.view(),new FrameLayout.LayoutParams(-1,-1));
+        configureButton.setEnabled(true);content.active(running);
+        content.view().post(()->{if(!released&&content.view().findFocus()==null)content.view().requestFocus();});
     }
     void resumeAfterConfiguration() {
         if(!configuring||released)return;configuring=false;
         Bundle state=content.state();content.close();body.removeAllViews();stack.clear();
-        content=factory.create(this,state);body.addView(content.view(),new FrameLayout.LayoutParams(-1,-1));open();
+        content=factory.create(this,state);body.addView(content.view(),new FrameLayout.LayoutParams(-1,-1));open(null,false);
     }
     boolean configuring(){return configuring;}
-    void setRunning(boolean value){running=value&&!configuring&&!released;content.active(running);}
+    void setRunning(boolean value){running=value&&!configuring&&!released;if(content!=null)content.active(running);else if(running&&openingFinished)root.post(mountContent);}
     private void back(){
         if(!stack.isEmpty()){
             View[] prior=stack.pop();body.removeAllViews();body.addView(prior[0],new FrameLayout.LayoutParams(-1,-1));
             if(prior[1]!=null)prior[1].requestFocus();else prior[0].requestFocus();
-        }else if(!content.back())dismiss();
+        }else if(content==null||!content.back())dismiss();
     }
     void details(String title,String detail){
         View old=body.getChildAt(0);stack.push(new View[]{old,old.findFocus()});body.removeAllViews();
@@ -85,8 +121,12 @@ final class WidgetExpansion extends Dialog {
         panel.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));
         Button back=button(R.string.hb_fs_back,this::back);panel.addView(back);body.addView(panel,new FrameLayout.LayoutParams(-1,-1));back.requestFocus();
     }
-    Bundle state(){Bundle b=new Bundle();b.putString("key",widgetKey);b.putInt("originPage",originPage);b.putBundle("content",content.state());return b;}
-    private void releaseContent(){if(released)return;released=true;content.close();}
+    Bundle state(){Bundle b=new Bundle();b.putString("key",widgetKey);b.putInt("originPage",originPage);b.putBundle("content",content==null?new Bundle(initialState):content.state());return b;}
+    private void releaseContent(){
+        if(released)return;released=true;root.animate().cancel();root.removeCallbacks(mountContent);
+        if(firstDraw!=null){root.getViewTreeObserver().removeOnPreDrawListener(firstDraw);firstDraw=null;}
+        if(content!=null)content.close();
+    }
     void release(){setOnDismissListener(null);releaseContent();dismiss();}
     int dp(float n){return Math.round(n*activity.getResources().getDisplayMetrics().density);}
     LinearLayout column(){LinearLayout v=new LinearLayout(activity);v.setOrientation(LinearLayout.VERTICAL);return v;}

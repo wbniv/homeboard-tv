@@ -23,6 +23,29 @@ This is permanent for new widget types. A new type is incomplete until its compa
 and expanded content, useful additional information, controls, empty/error states
 and restoration have been specified and verified.
 
+### Fast opening feedback
+
+Short OK/click immediately shows the shared header, Restore dashboard action and
+loading body. The shell zooms from 92% to full size in 140 ms, anchored toward
+the originating widget. Construct the richer content after that short transition
+so synchronous view creation does not block the first feedback or freeze the zoom.
+Use the existing localized loading label until content is mounted; network-backed
+views then retain their own loading states. There is no artificial network wait.
+Reduced motion and Android-disabled animations skip the zoom. Recreation and
+return from Configure do not replay it. Back/Restore during opening cancels pending
+construction and restores the original dashboard normally.
+
+Acceptance: open each type, repeat open/Back, press Back during opening, use
+Configure/return and recreate while loading; verify original page/focus/size and
+selection. Check Reduced motion and Android-disabled animations. A recording is
+needed to establish animation timing/smoothness; static captures only prove the
+resulting full-screen content.
+
+Implemented in **0.1.42**, installed on both TVs. Cast1 recording verifies visible
+zoom, shell-before-content, all four expanded views and restoration; see the
+[zoom validation record](../testing/2026-11-17-widget-zoom.md) for evidence and
+the remaining timing, accessibility and lifecycle checks.
+
 ## Screen mockups
 
 ![Expanded information for all four current widget types](2026-11-17-widget-full-screen.svg)
@@ -364,7 +387,9 @@ widget actions belong to its header.
 
 ```mermaid
 flowchart TD
-    H[Dashboard: any widget instance] -->|Click or short OK on widget| F[Full-screen view for that widget type]
+    H[Dashboard: any widget instance] -->|Click or short OK on widget| Z[Immediate shell and fast 140 ms zoom; reduced motion skips zoom]
+    Z --> L[Build richer content after first visual feedback; Back cancels opening]
+    L --> F[Full-screen view for that widget type]
     H -->|Hold OK| M[Widget actions]
     F --> R[More records and richer selected-record detail]
     R -->|Navigate| R
