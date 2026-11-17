@@ -28,6 +28,11 @@ docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
 
 ## Will's iterative TV testing
 
+Cast1 remains the default for routine foreground testing. Will's November 17
+Cast2 availability is temporary and permits checks that specifically need Cast2;
+it does not change that testing default. Installation targets and foreground
+testing targets are separate choices.
+
 Keep iterative Homeboard testing on Cast1 (`chromecast-test-01`) while Will is
 still testing the app. After Will says it is usable, move iterative testing to
 Cast2 (`chromecast-test-02`). Install each working APK through the shared

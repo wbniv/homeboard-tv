@@ -73,6 +73,11 @@ remove it using raw ADB or alter the shared coordinator to bypass its guard.
 
 ## Iterative install target
 
+Cast1 remains the default for routine foreground testing. Will's November 17
+Cast2 availability is temporary and permits checks that specifically need Cast2;
+it does not change that testing default. Installation targets and foreground
+testing targets are separate choices.
+
 Use `task deploy DEVICE=chromecast-test-01` for a new Homeboard deployment.
 It runs `task bump`, container checks and packaging, verifies matching version
 metadata, freezes `artifacts/deployments/<major.minor.version_code>/homeboard.apk`,
