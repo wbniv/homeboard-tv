@@ -83,3 +83,33 @@ The strict single-number UID parser rejects that list. A further narrow parser
 correction must verify that all listed UIDs map to the same Android app ID before
 continuing the existing process/foreground safeguards. Cast2 remains on the prior
 installed APK; 0.1.26 is confirmed only on Cast1 at this point.
+
+
+## Deployment completed
+
+Coordinator 0.1.175 (`2157cc5`) passed 177 tests and was deployed through the
+reviewed maintenance helper with existing keys, enrollment, reservations and
+recovery state retained. Cast2 background retry **J‑5ead5cfce69b** installed the
+unchanged frozen 0.1.26 APK successfully during Personal use. Its
+`apk-installations.json` reports `status: verified` and installed SHA-256
+`6753e2ea743c8ddb8d686090fe701c56381c05e3eaf2cd437d33dc805e466a7c`, identical
+to Cast1 and the frozen APK. Evidence: `artifacts/deployments/0.1.26/cast2-installed/`.
+
+The job's foreground verify-launch continuation remains queued under the same
+owner while Personal use is active. Installation is verified; Cast2 launch/visual
+acceptance is deferred. The hold and default Home app were not changed. This
+supersedes the earlier unconfirmed Cast2 installation status in this record.
+
+Implementation commit `f30db99` was pushed to origin/main. All 358 entries in the
+frozen source SHA-256 manifest matched the committed implementation before
+separate calendar work began in the shared checkout. That later work is not in
+this frozen APK.
+
+
+Final normal-Home check **J‑19b8b84238a6** completed on Cast1 with cleanup. The
+0.1.26 screenshot at `artifacts/deployments/0.1.26/cast1-main-final/screenshot.png`
+was inspected: the existing dashboard displays Device location, a live next-24-hour
+rain summary and chart without a setup prompt; chart tick labels are separated
+from subsequent content at this saved size. This used the actual retained Home
+settings rather than the isolated probe. Cast2 foreground acceptance remains
+deferred, as recorded above.

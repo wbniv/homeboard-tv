@@ -1,6 +1,6 @@
 # Rain: use the granted device location by default
 
-Status: implemented and container-verified; 0.1.26 installed on Cast1. Cast2 installation is blocked by coordinator ownership parsing; see the [validation record](../testing/2026-11-17-rain-device-location.md).
+Status: implemented and container-verified; identical 0.1.26 APKs are installed on Cast1 and Cast2. Cast2 foreground verification is deferred during Personal use; see the [validation record](../testing/2026-11-17-rain-device-location.md).
 
 ## Intended behavior
 
