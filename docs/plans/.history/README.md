@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/10cab3c) | Fix empty Home navigation and add the default dashboard |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/91550df) | Allow one-row Calendar widgets with compact date cards |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/50919e6) | Record verified Rain installation on both TVs |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/f30db99) | Use automatic Rain location and deploy dashboard updates to both TVs |
@@ -17,6 +18,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+10cab3c	author	Will Norris
+10cab3c	added	2
+10cab3c	deleted	0
+10cab3c	files	1
+10cab3c	body	Keep saved empty layouts navigable, add a four-widget first-run layout and an explicit preset with preview, Cancel and Undo. Container checks pass 429 JVM tests and lint; the same 0.1.30 APK is installed on both TVs.
 91550df	author	Will Norris
 91550df	added	2
 91550df	deleted	0

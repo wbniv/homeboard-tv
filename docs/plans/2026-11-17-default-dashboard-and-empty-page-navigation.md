@@ -1,6 +1,6 @@
 # Default dashboard and reliable navigation from empty Home pages
 
-Status: implemented; 0.1.30 installed on both TVs. Native acceptance is in progress; see the [validation record](../testing/2026-11-17-default-dashboard.md).
+Status: implemented; 0.1.31 installed on both TVs. Cast1 native navigation, Cancel/apply, Undo and default-dashboard readability are verified; Cast2 foreground acceptance is deferred during Personal use. See the [validation record](../testing/2026-11-17-default-dashboard.md).
 
 ## Outcome
 
@@ -86,9 +86,10 @@ Default data and behavior:
 - **Calendar:** Existing reviewed calendar data and default ranges. A compact
   event list/summary opens details with OK. Keep the recently implemented one-row
   option available for later user resizing; do not force one row here.
-- **Air quality:** Existing public AirBKK feed, with Lumpini Park as the documented
-  station default for a newly created card. Label the station explicitly; do not
-  imply it is inferred from Rain's location. Preserve the station on a reused card.
+- **Air quality:** Keep the native card's current source/location defaults and
+  preserve any configured source or station on a reused card. The current native
+  default is automatic local model data (Open-Meteo / CAMS); explicitly label it
+  as a model estimate. AirBKK station readings remain a separate selectable source.
 - **Favorites:** One bounded container, preserving the saved app list/order. With
   no favorites, show a readable Add apps action that opens All Apps. Never
   automatically favorite every installed app. Overflow uses wedges, no scrollbars.
@@ -202,3 +203,9 @@ and writes one Undoable edit on apply. Leaving the activity cancels an uncommitt
 preview. Empty pages now receive canvas focus; their page-advance policy is shared
 with the rightmost header button and normal Home edge navigation. English/Thai
 resources and isolated native key-routing/preview/Undo acceptance were added.
+
+
+Source inspection corrected an outdated assumption in the proposed Air-quality
+default: the native card already defaults to automatic local model data rather
+than AirBKK/Lumpini. This preset keeps that current behavior and existing user
+source choices; it does not introduce a new station or location policy.

@@ -35,7 +35,7 @@ final class FavoritesWidgetView extends FrameLayout {
     private int columns=1;
     private int pendingFocus=-1;
     private String selected;
-    private boolean compact, headerSelected, interactive=true, enterPending;
+    private boolean compact, headerSelected, interactive=true, enterPending, geometryReady;
     FavoritesWidgetView(Context context,List<String> keys,Function<String,View> artwork,Consumer<String> focused,
                         Runnable activate,Runnable actions,PaletteColors palette,int opacity,boolean banners,
                         boolean reducedMotion,boolean ribbon,String selected) {
@@ -111,17 +111,26 @@ final class FavoritesWidgetView extends FrameLayout {
         int position=keys.indexOf(selected)+1;
         setContentDescription(getContext().getString(R.string.hb_fav_position,position,keys.size())+". "+getContext().getString(R.string.hb_fav_hint));
     }
+    @Override protected void onMeasure(int widthSpec,int heightSpec){
+        int w=MeasureSpec.getSize(widthSpec),h=MeasureSpec.getSize(heightSpec);
+        boolean nextCompact=keys.isEmpty()||w<dp(banners?170:125)||h<dp(ribbon?90:140);
+        // Header geometry must be set before measuring children. Changing it in
+        // onSizeChanged left the two-line empty action clipped to the old 30dp.
+        if(!geometryReady||nextCompact!=compact){
+            compact=nextCompact;geometryReady=true;
+            header.setGravity(compact?Gravity.CENTER:Gravity.CENTER_VERTICAL);
+            header.setSingleLine(!compact);header.setMaxLines(compact?3:1);
+            header.setText(compact?getContext().getString(keys.isEmpty()?R.string.hb_fav_empty:R.string.hb_fav_opener,keys.size()):getContext().getString(R.string.hb_fav_title)+" · "+keys.size());
+        }
+        FrameLayout.LayoutParams hp=(FrameLayout.LayoutParams)header.getLayoutParams();hp.height=compact||ribbon&&headerSelected?-1:dp(30);
+        list.setVisibility(compact||ribbon&&headerSelected?GONE:VISIBLE);
+        header.setVisibility(ribbon&&!compact&&!headerSelected?GONE:VISIBLE);
+        FrameLayout.LayoutParams content=(FrameLayout.LayoutParams)list.getLayoutParams();content.topMargin=ribbon?0:dp(30);content.bottomMargin=ribbon?0:dp(18);
+        list.setPadding(dp(ribbon?18:10),dp(4),dp(ribbon?18:10),dp(4));
+        super.onMeasure(widthSpec,heightSpec);
+    }
     @Override protected void onSizeChanged(int w,int h,int oldw,int oldh){
         super.onSizeChanged(w,h,oldw,oldh);
-        compact=keys.isEmpty()||w<dp(banners?170:125)||h<dp(ribbon?90:140);
-        FrameLayout.LayoutParams hp=(FrameLayout.LayoutParams)header.getLayoutParams();hp.height=compact?-1:dp(30);header.setLayoutParams(hp);
-        header.setGravity(compact?Gravity.CENTER:Gravity.CENTER_VERTICAL);
-        header.setSingleLine(!compact);header.setMaxLines(compact?3:1);
-        header.setText(compact?getContext().getString(keys.isEmpty()?R.string.hb_fav_empty:R.string.hb_fav_opener,keys.size()):getContext().getString(R.string.hb_fav_title)+" · "+keys.size());
-        list.setVisibility(compact?GONE:VISIBLE);
-        header.setVisibility(ribbon&&!compact&&!headerSelected?GONE:VISIBLE);
-        FrameLayout.LayoutParams content=(FrameLayout.LayoutParams)list.getLayoutParams();content.topMargin=ribbon?0:dp(30);content.bottomMargin=ribbon?0:dp(18);list.setLayoutParams(content);
-        list.setPadding(dp(ribbon?18:10),dp(4),dp(ribbon?18:10),dp(4));
         if(compact){wedges.invalidate();if(enterPending)post(this::enter);return;}
         int pitch=Math.max(dp(banners?176:104),Math.round(16*getResources().getDisplayMetrics().scaledDensity*(banners?6:4)));
         columns=ribbon?1:Math.max(1,(w-dp(20))/pitch);

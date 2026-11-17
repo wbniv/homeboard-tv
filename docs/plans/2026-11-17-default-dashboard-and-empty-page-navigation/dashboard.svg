@@ -14,8 +14,8 @@
 <text x="735" y="143" class="head">Calendar</text><text x="735" y="180" class="body">Upcoming dates and events</text>
 <text x="735" y="220" class="small">Holiday and flower-work calendar</text><text x="735" y="261" class="small">Configured range · OK: event details</text>
 <rect x="50" y="345" width="640" height="220" rx="18" class="panel"/>
-<text x="75" y="384" class="head">Air quality</text><text x="75" y="422" class="body">PM2.5 · Lumpini Park</text>
-<text x="75" y="462" class="small">AirBKK · latest station reading</text><text x="75" y="507" class="small">24-hour average · OK: station details</text>
+<text x="75" y="384" class="head">Air quality</text><text x="75" y="422" class="body">PM2.5 · Device location</text>
+<text x="75" y="462" class="small">Open-Meteo / CAMS · model</text><text x="75" y="507" class="small">Hourly model estimate · OK: details</text>
 <rect x="710" y="345" width="640" height="220" rx="18" class="panel"/>
 <text x="735" y="384" class="head">Favorites</text>
 <g fill="#334e68" stroke="#7892ab" stroke-width="2"><rect x="739" y="406" width="86" height="74" rx="14"/><rect x="853" y="406" width="86" height="74" rx="14"/><rect x="967" y="406" width="86" height="74" rx="14"/><rect x="1081" y="406" width="86" height="74" rx="14"/></g>

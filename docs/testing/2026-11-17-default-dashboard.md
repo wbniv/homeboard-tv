@@ -57,6 +57,38 @@ Apps, settings-header escape, intermediate blank pages, final page → All Apps,
 preset preview/Cancel, saved apply and Undo back to navigable empty Home. Final
 screenshots also inspect the four-widget composition and readable controls.
 
-Owned Cast1 acceptance **J‑d3ebe4296df6** is in progress. Device acceptance and painted
-content are not yet claimed from the passing JVM tests alone. Additional permission,
+Owned Cast1 acceptance **J‑d3ebe4296df6** completed with cleanup. The fixture reached
+its final PASS report, confirming the preceding native assertions for navigation,
+header escape, blank intermediate pages, preset Cancel/apply, persistence and Undo.
+The screenshots show all four widgets together. They also exposed clipping of the
+second line in empty Favorites: Add apps was not readable. Child header geometry
+was being updated after measurement in onSizeChanged. The correction moves that
+geometry into onMeasure, and the isolated probe now asserts a measured two-line
+empty action. This requires a newly numbered 0.1.31 build and another capture. Additional permission,
 font-scale and Cast2 foreground acceptance remain separate from installation.
+
+
+## Final build 0.1.31
+
+The Favorites correction passed the same 429 JVM tests, calendar/deployment
+checks, resource parity and lint before packaging. The identical frozen APK
+`5f5e451f6f659640979fc7dc484c95c3d0b3234d0bfd8fcdc4c83afe6ecb3348` is installed
+on both TVs, confirmed by each job's installed SHA-256 proof. Cast1 installation
+and launch **J‑ad576c6f9d18** completed; Cast2 **J‑0e305bf1ab78** installed in the
+background and defers foreground verification during Personal use. This session's
+superseded 0.1.30 verification **J‑66af97aacafa** was cancelled.
+
+Final isolated acceptance **J‑9cf4b071ce97** checks the same navigation/Undo flow
+and additionally asserts that empty Favorites has a measured two-line action.
+It completed with cleanup and the final PASS report, including the measured
+two-line Favorites assertion. The final screenshot was inspected: all four
+widgets share page 1 and both No favorites yet / Add apps lines are fully visible.
+Evidence: `artifacts/deployments/0.1.31/dashboard-acceptance/`.
+The normal launch descriptor was restored to MainActivity after the owned test
+activity started. All 366 frozen source-file hashes matched the implementation
+before the final commit.
+
+The native Air quality card was found to already default to automatic local model
+data. The preset preserves that current default and existing source settings; the
+plan and illustration were corrected instead of imposing an AirBKK station choice.
+The captured model card labels its source and measurement basis explicitly.

@@ -38,6 +38,14 @@ public final class DashboardProbeActivity extends MainActivity {
         step(38_000,()->{call("chooseDefaultDashboard",new Class<?>[]{});press(KeyEvent.KEYCODE_DPAD_CENTER);require(HomeLayout.parse(getSharedPreferences("widget-home",0).getString("layout","")).widgets.size()==4,"Apply not persisted");pass("Preset applied and saved");});
         step(46_000,()->{call("undoThrough",new Class<?>[]{int.class},0);require(layout().widgets.isEmpty(),"Undo did not restore empty Home");press(KeyEvent.KEYCODE_DPAD_RIGHT);require((boolean)field("allApps"),"Right trapped after Undo");pass("Undo restores empty Home and navigation");});
         step(53_000,()->{press(KeyEvent.KEYCODE_BACK);call("chooseDefaultDashboard",new Class<?>[]{});press(KeyEvent.KEYCODE_DPAD_CENTER);pass("Final default dashboard");});
+        step(60_000,()->{
+            FavoritesWidgetView panel=(FavoritesWidgetView)field("favoritesWidget");
+            Field label=FavoritesWidgetView.class.getDeclaredField("header");label.setAccessible(true);
+            TextView header=(TextView)label.get(panel);
+            require(header.getLayout()!=null&&header.getLayout().getLineCount()>=2,"Empty Favorites action lost a line");
+            require(header.getHeight()>=header.getLineHeight()*2,"Empty Favorites action is clipped");
+            pass("Navigation, Cancel, apply, Undo and readable Add apps");
+        });
     }
     private interface Stage {void run()throws Exception;}
     private void step(long delay,Stage stage){runner.postDelayed(()->{if(failed)return;try{stage.run();}catch(Exception error){failed=true;report.setText("FAIL · "+error);}},delay);}
