@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/50919e6) | Record verified Rain installation on both TVs |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/f30db99) | Use automatic Rain location and deploy dashboard updates to both TVs |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/f16c73d) | Add native rain forecast widget and review workflow |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/bce5426) | Add combined calendar ranges and visual grid previews |
@@ -15,6 +16,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+50919e6	author	Will Norris
+50919e6	added	1
+50919e6	deleted	1
+50919e6	files	1
 f30db99	author	Will Norris
 f30db99	added	4
 f30db99	deleted	0

@@ -2,6 +2,8 @@
 
 Implemented and checked on Cast1 in **0.1.21**. See the
 [validation record](../testing/2026-11-16-calendar-and-grid.md).
+One-row resizing and the compact date strip are verified on Cast1 in **0.1.27**;
+see the [resize validation](../testing/2026-11-17-calendar-one-row.md).
 
 Add it with **Home settings → Widgets & restore → Add widget → Calendar**.
 Adding it again focuses the existing Calendar. It contains only dates with
@@ -30,7 +32,9 @@ China make-up working days are a separate optional toggle, initially Off.
 Press OK for **All matching dates**, **Next page**, **Previous page**, or Configure.
 The date picker includes every matching date; it is not capped at six. Resize
 changes the visible card count and pages instead of dropping events. Calendar
-has a minimum 2×2 grid size. Move/Delete/Undo work like other dashboard widgets.
+has a minimum **2 columns × 1 row** grid size. Short widgets show a compact strip
+with square dates, icons, flag bands, paging and status. Full event details remain
+available through OK. Move/Delete/Undo work like other dashboard widgets.
 
 ## Current data limits
 

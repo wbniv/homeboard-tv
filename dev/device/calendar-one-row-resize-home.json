@@ -1,0 +1,27 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 48,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 1, "capture": "home-before-resize"},
+    {"at": 2, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 4, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 6, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 8, "key": "DPAD_CENTER", "action": "hold", "ms": 800},
+    {"at": 10, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 14, "capture": "resize-original"},
+    {"at": 16, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 17, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 18, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 20, "capture": "resize-one-row-preview"},
+    {"at": 22, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 25, "capture": "one-row-saved"},
+    {"at": 34, "key": "DPAD_CENTER", "action": "hold", "ms": 800},
+    {"at": 36, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 38, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 40, "capture": "two-row-preview-before-cancel"},
+    {"at": 42, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 45, "capture": "cancel-restores-one-row"}
+  ]
+}

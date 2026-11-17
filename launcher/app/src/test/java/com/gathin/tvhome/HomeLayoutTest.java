@@ -127,6 +127,18 @@ public class HomeLayoutTest {
         assertEquals(1, cell.height);
     }
 
+    @Test public void calendarOneRowPersistsAndPacksWithoutGrowingBack() throws Exception {
+        HomeLayout layout = new HomeLayout();
+        layout.addPanel(HomeLayout.CALENDAR);
+        layout.setPanelSpan(HomeLayout.CALENDAR, 6, 1);
+        HomeLayout restored = HomeLayout.parse(layout.encode());
+        HomeLayout.Cell cell = restored.cells(restored.widgets, 12, 3).get(0);
+        assertEquals(6, cell.width); assertEquals(1, cell.height);
+        restored.setPanelSpan(HomeLayout.CALENDAR, 0, 0);
+        assertEquals(2, restored.panelSpan(HomeLayout.CALENDAR).width);
+        assertEquals(1, restored.panelSpan(HomeLayout.CALENDAR).height);
+    }
+
     @Test public void multipleAirWidgetsKeepIndependentSizeAndPlacement() throws Exception {
         HomeLayout layout = HomeLayout.firstRun();
         layout.addPanel("widget:air:2");

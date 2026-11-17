@@ -222,9 +222,10 @@ final class HomeLayout {
     int panelSize(String key) { return validPanelSize(panelSizes.containsKey(key) ? panelSizes.get(key) : defaultPanelSize); }
     void setPanelSize(String key, int size) { panelSizes.put(key, validPanelSize(size)); }
     PanelSpan panelSpan(String key) { return panelSpans.get(key); }
+    static PanelSpan minimumPanelSpan(String key) { return new PanelSpan(isCalendarWidget(key) ? 2 : 1, 1); }
     void setPanelSpan(String key, int width, int height) {
-        int minimum = isCalendarWidget(key) ? 2 : 1;
-        panelSpans.put(key, new PanelSpan(Math.max(minimum, Math.min(12, width)), Math.max(minimum, Math.min(12, height))));
+        PanelSpan minimum = minimumPanelSpan(key);
+        panelSpans.put(key, new PanelSpan(Math.max(minimum.width, Math.min(12, width)), Math.max(minimum.height, Math.min(12, height))));
     }
     private JSONObject encodedSpans() throws JSONException {
         JSONObject result = new JSONObject();

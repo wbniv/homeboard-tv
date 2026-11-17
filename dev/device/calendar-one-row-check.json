@@ -1,0 +1,16 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 39,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 4, "capture": "resize-preview-one-row"},
+    {"at": 8, "capture": "saved-six-by-one"},
+    {"at": 12, "capture": "next-date-page"},
+    {"at": 16, "capture": "cancel-restores-one-row"},
+    {"at": 20, "capture": "minimum-two-by-one"},
+    {"at": 25, "capture": "wide-twelve-by-one"},
+    {"at": 30, "capture": "normal-six-by-two"},
+    {"at": 36, "capture": "final-six-by-one"}
+  ]
+}

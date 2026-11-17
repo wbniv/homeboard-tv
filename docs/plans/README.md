@@ -31,6 +31,8 @@ missing rows on commit.*
 
 | [Rain defaults to device location](2026-11-17-rain-default-device-location.md) | Implements automatic use of granted device location, fixed-place overrides, bounded lookups and permission-aware fallback. | 0.1.26 installed on Cast1 and Cast2 | Fix |
 
+| [Calendar one-row resize](2026-11-17-calendar-one-row.md) | Allows a persisted 2×1 minimum and a compact calendar strip, with resize and device acceptance checks. | 0.1.27 installed on both TVs; Cast1 resize verified | Fix |
+
 ---
 
 ## How this index was derived

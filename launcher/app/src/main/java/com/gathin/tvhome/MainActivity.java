@@ -2107,10 +2107,10 @@ public class MainActivity extends Activity {
 
     private void changeResize(int key) {
         int columns = homeGridColumns(), rows = homeGridRows();
-        int minimum = HomeLayout.isCalendarWidget(resizingKey) ? 2 : 1;
-        if (key == KeyEvent.KEYCODE_DPAD_UP) resizeHeight = Math.max(minimum, resizeHeight - 1);
+        HomeLayout.PanelSpan minimum = HomeLayout.minimumPanelSpan(resizingKey);
+        if (key == KeyEvent.KEYCODE_DPAD_UP) resizeHeight = Math.max(minimum.height, resizeHeight - 1);
         else if (key == KeyEvent.KEYCODE_DPAD_DOWN) resizeHeight = Math.min(rows, resizeHeight + 1);
-        else if (key == KeyEvent.KEYCODE_DPAD_LEFT) resizeWidth = Math.max(minimum, resizeWidth - 1);
+        else if (key == KeyEvent.KEYCODE_DPAD_LEFT) resizeWidth = Math.max(minimum.width, resizeWidth - 1);
         else if (key == KeyEvent.KEYCODE_DPAD_RIGHT) resizeWidth = Math.min(columns, resizeWidth + 1);
         layout.setPanelSpan(resizingKey, resizeWidth, resizeHeight);
         homePage = homePageOf(resizingKey, layout.widgets);

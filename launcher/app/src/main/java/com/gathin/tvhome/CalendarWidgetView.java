@@ -64,35 +64,40 @@ final class CalendarWidgetView extends View {
         paint.setStyle(Paint.Style.STROKE); paint.setStrokeWidth(isFocused() ? 2 : 1);
         paint.setColor(isFocused() ? palette.text : palette.edge);
         canvas.drawRoundRect(2, 2, width - 2, height - 2, 12, 12, paint); paint.setStyle(Paint.Style.FILL);
-        text(canvas, getContext().getString(R.string.hb_cal_days, settings.holidayLookaheadDays), 10, 22, 13, palette.text, width - 20, true);
-        int[] weekLabels = {R.string.hb_cal_week_this, R.string.hb_cal_week_next, R.string.hb_cal_week_both};
-        text(canvas, getContext().getString(R.string.hb_cal_windows, getContext().getString(weekLabels[settings.flowerWeeks.ordinal()]),
-                getContext().getString(weekLabels[settings.buddhistWeeks.ordinal()])), 10, 38, 10, palette.muted, width - 20, false);
-        float usableHeight = height - 78;
-        int columns = Math.max(1, (int) ((width - 12) / 102));
-        int rows = Math.max(1, (int) (usableHeight / 104));
-        pageSize = columns * rows; page = Math.min(page, pages() - 1);
+        CalendarWidgetGeometry grid = new CalendarWidgetGeometry(width, height);
+        pageSize = grid.pageSize(); page = Math.min(page, pages() - 1);
+        String pageLabel = pages() > 1 ? getContext().getString(R.string.hb_cal_page, page + 1, pages()) : "";
+        if (grid.compact) {
+            textPaint.setTextSize(10); textPaint.setTypeface(Typeface.DEFAULT);
+            float pageWidth = pageLabel.isEmpty() ? 0 : Math.min((width - 20) / 2, textPaint.measureText(pageLabel) + 8);
+            text(canvas, getContext().getString(R.string.hb_cal_days, settings.holidayLookaheadDays), 10, 17, 11, palette.text, width - 20 - pageWidth, true);
+            if (pageWidth > 0) text(canvas, pageLabel, width - 10 - pageWidth, 17, 10, palette.muted, pageWidth, false);
+        } else {
+            text(canvas, getContext().getString(R.string.hb_cal_days, settings.holidayLookaheadDays), 10, 22, 13, palette.text, width - 20, true);
+            int[] weekLabels = {R.string.hb_cal_week_this, R.string.hb_cal_week_next, R.string.hb_cal_week_both};
+            text(canvas, getContext().getString(R.string.hb_cal_windows, getContext().getString(weekLabels[settings.flowerWeeks.ordinal()]),
+                    getContext().getString(weekLabels[settings.buddhistWeeks.ordinal()])), 10, 38, 10, palette.muted, width - 20, false);
+        }
         if (display.days.isEmpty()) {
             String empty = !display.incomplete.isEmpty() ? getContext().getString(R.string.hb_cal_incomplete)
                     : getContext().getString(settings.enabled.isEmpty() ? R.string.hb_cal_no_sources : R.string.hb_cal_empty);
             text(canvas, empty, 10, Math.max(40, height / 2), 13, palette.muted, width - 20, false);
         } else {
-            float cellW = (width - 12) / columns, cellH = Math.max(1, usableHeight / rows);
-            float size = Math.max(1, Math.min(cellW - 6, cellH - 6));
             int first = page * pageSize, last = Math.min(display.days.size(), first + pageSize);
             for (int index = first; index < last; index++) {
                 int offset = index - first; int saved = canvas.save();
-                canvas.translate(6 + (offset % columns) * cellW + (cellW - size) / 2, 44 + (offset / columns) * cellH);
-                canvas.scale(size / 200, size / 200); card(canvas, display.days.get(index)); canvas.restoreToCount(saved);
+                canvas.translate(grid.x(offset), grid.y(offset));
+                canvas.scale(grid.cardSize / 200, grid.cardSize / 200);
+                card(canvas, display.days.get(index), grid.compact, grid.cardSize); canvas.restoreToCount(saved);
             }
         }
-        if (pages() > 1) {
+        if (!grid.compact && pages() > 1) {
             text(canvas, status(), 10, height - 25, 10, palette.muted, width - 20, false);
             text(canvas, getContext().getString(R.string.hb_cal_page, page + 1, pages()), 10, height - 10, 10, palette.muted, width - 20, false);
         } else text(canvas, status(), 10, height - 10, 11, palette.muted, width - 20, false);
         canvas.restoreToCount(outer);
     }
-    private void card(Canvas canvas, CalendarSnapshot.Day day) {
+    private void card(Canvas canvas, CalendarSnapshot.Day day, boolean compact, float dpSize) {
         paint.setColor(palette.raised); paint.setAlpha(255 * fillOpacity / 100);
         canvas.drawRoundRect(1, 1, 199, 199, 12, 12, paint); paint.setAlpha(255);
         Path clip = new Path(); clip.addRoundRect(new RectF(1, 1, 199, 199), 12, 12, Path.Direction.CW);
@@ -108,16 +113,23 @@ final class CalendarWidgetView extends View {
         }
         canvas.restoreToCount(saved);
         String month = DateTimeFormatter.ofPattern("MMM uuuu", getResources().getConfiguration().getLocales().get(0)).format(day.date);
-        text(canvas, month, 13, 34, 16, palette.muted, 174, false);
+        float scale = dpSize / 200;
+        if (!compact || dpSize >= 64)
+            text(canvas, month, 13, 34, compact ? Math.max(16, 10 / scale) : 16, palette.muted, 174, false);
         text(canvas, String.valueOf(day.date.getDayOfMonth()), 10, 130, 87, palette.text, 130, true);
         boolean flowers = day.events.stream().anyMatch(e -> e.kind == CalendarSnapshot.Kind.MAKE || e.kind == CalendarSnapshot.Kind.SELL);
         boolean phra = day.events.stream().anyMatch(e -> e.kind == CalendarSnapshot.Kind.WAN_PHRA);
         if (flowers) { int icon = canvas.save(); canvas.translate(164, 77); canvas.scale(.8f, .8f); flower(canvas); canvas.restoreToCount(icon); }
         if (phra) { int icon = canvas.save(); canvas.translate(164, flowers ? 126 : 91); canvas.scale(.8f, .8f); buddha(canvas); canvas.restoreToCount(icon); }
         Instant now = Instant.now();
-        text(canvas, CalendarLabels.event(getContext(), day.events.get(0), settings, now), 13, 164, 15, palette.text, 174, false);
-        String second = day.events.size() > 1 ? CalendarLabels.event(getContext(), day.events.get(1), settings, now) : String.join(" / ", countries);
-        text(canvas, second, 13, 185, 13, palette.muted, 174, false);
+        if (compact) {
+            if (dpSize >= 64) text(canvas, CalendarLabels.event(getContext(), day.events.get(0), settings, now),
+                    13, 183, Math.max(15, 10 / scale), palette.text, 174, false);
+        } else {
+            text(canvas, CalendarLabels.event(getContext(), day.events.get(0), settings, now), 13, 164, 15, palette.text, 174, false);
+            String second = day.events.size() > 1 ? CalendarLabels.event(getContext(), day.events.get(1), settings, now) : String.join(" / ", countries);
+            text(canvas, second, 13, 185, 13, palette.muted, 174, false);
+        }
     }
     private void band(Canvas canvas, String country, float y, float x, float width) {
         int[] colors; int[] weights;
