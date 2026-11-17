@@ -12,9 +12,12 @@ import subprocess
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--device', required=True)
+    parser.add_argument('--device', required=True, help='Comma-separated coordinator devices; one frozen APK for all')
     parser.add_argument('--recipe', required=True)
     args = parser.parse_args()
+    devices = list(dict.fromkeys(device.strip() for device in args.device.split(',') if device.strip()))
+    if not devices:
+        parser.error('At least one device is required')
     root = Path(__file__).resolve().parent.parent
     recipe = (root / args.recipe).resolve()
     if not recipe.is_file():
@@ -49,9 +52,14 @@ def main():
     apk = destination / 'homeboard.apk'
     shutil.copyfile(output / artifact['outputFile'], apk)
     shutil.copyfile(recipe, destination / 'recipe.json')
-    record = {'versionName': name, 'versionCode': code, 'device': args.device,
+    record = {'versionName': name, 'versionCode': code, 'devices': devices, 'targets': {},
               'apk': str(apk), 'sha256': hashlib.sha256(apk.read_bytes()).hexdigest(),
-              'base_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()}
+              'base_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
+              'local_changes': subprocess.check_output(['git', 'status', '--short'], cwd=root, text=True).splitlines()}
+    source_files = [path for path in (root / 'launcher').rglob('*') if path.is_file()
+                    and 'build' not in path.relative_to(root).parts and '.gradle' not in path.relative_to(root).parts]
+    (destination / 'source-sha256.json').write_text(json.dumps({str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
+                                                             for path in sorted(source_files)}, indent=2) + '\n')
 
     def save_record():
         (destination / 'deployment.json').write_text(json.dumps(record, indent=2) + '\n')
@@ -59,23 +67,36 @@ def main():
     save_record()
     task('app-register', 'APP=homeboard-tv', f'APK={apk}',
          'ACTIVITY=com.gathin.tvhome.MainActivity', 'REPLACE=true')
-    result = task('submit', f'DEVICE={args.device}', f'APK={apk}',
-                  f'RECIPE={destination / "recipe.json"}', capture=True)
-    print(result.stdout, end='', flush=True)
-    match = re.search(r'Accepted (J-[0-9a-f]+):', result.stdout)
-    if not match:
-        raise RuntimeError('Coordinator did not return a job ID; inspect submission before retrying')
-    record['job'] = job = match.group(1)
-    save_record()
-    task('watch', f'JOB={job}')
-    task('evidence', f'JOB={job}', f'OUT={destination / "evidence"}')
-    receipt = json.loads((destination / 'evidence/receipt.json').read_text())
-    record['status'] = receipt.get('status')
-    record['health'] = receipt.get('health')
-    save_record()
-    if record['status'] != 'succeeded':
-        raise RuntimeError(f'Coordinator deployment ended {record["status"]}; inspect exported evidence')
-    print(f'Deployment {name}: {job}\nEvidence: {destination / "evidence"}', flush=True)
+    # Submit all targets before following any job: a held device must not prevent
+    # the other device receiving its requested installation.
+    for device in devices:
+        result = task('submit', f'DEVICE={device}', f'APK={apk}',
+                      f'RECIPE={destination / "recipe.json"}', capture=True)
+        print(result.stdout, end='', flush=True)
+        match = re.search(r'Accepted (J-[0-9a-f]+):', result.stdout)
+        if not match:
+            raise RuntimeError('Coordinator did not return a job ID; inspect submission before retrying')
+        record['targets'][device] = {'job': match.group(1)}
+        save_record()
+    failed = []
+    for device, target in record['targets'].items():
+        job = target['job']
+        evidence = destination / device / 'evidence'
+        try:
+            task('watch', f'JOB={job}')
+        except subprocess.CalledProcessError:
+            # A failed job makes watch exit nonzero. Its receipt still needs to
+            # be downloaded, and the other target still needs to be followed.
+            pass
+        task('evidence', f'JOB={job}', f'OUT={evidence}')
+        receipt = json.loads((evidence / 'receipt.json').read_text())
+        target.update(status=receipt.get('status'), health=receipt.get('health'), evidence=str(evidence))
+        save_record()
+        if target['status'] != 'succeeded':
+            failed.append(device)
+        print(f'Deployment {name} on {device}: {target["status"]}; {job}\nEvidence: {evidence}', flush=True)
+    if failed:
+        raise RuntimeError(f'Installation unconfirmed on {", ".join(failed)}; inspect exported evidence')
 
 
 if __name__ == '__main__':

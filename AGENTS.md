@@ -33,9 +33,11 @@ Cast2 availability is temporary and permits checks that specifically need Cast2;
 it does not change that testing default. Installation targets and foreground
 testing targets are separate choices.
 
-Keep iterative Homeboard testing on Cast1 (`chromecast-test-01`) while Will is
-still testing the app. After Will says it is usable, move iterative testing to
-Cast2 (`chromecast-test-02`). Install each working APK through the shared
+Deploy every working build to both Cast1 (`chromecast-test-01`) and Cast2
+(`chromecast-test-02`), as Will requested on November 17. Use `task deploy`
+(both devices by default) with the identical frozen APK/version for both.
+Use Cast1 for routine foreground acceptance; let the coordinator defer foreground
+work on either TV during Personal use. Install each working APK through the shared
 coordinator and preserve app data and settings. Submit requested installs after
 the devices/queue checks even when a personal-use marker is present: the
 coordinator owns admission and supports background installs during personal use.

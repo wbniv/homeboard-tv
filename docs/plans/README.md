@@ -27,6 +27,10 @@ missing rows on commit.*
 
 | [Rain widget: hourly outlook and the following days](2026-11-16-rain-widget.md) | Implements configurable hourly and following-day rain forecasts, location lookup, animated clouds and adaptive 1×1-to-full-screen layouts; records container checks and pending Cast1 validation. | Implemented; Cast1 validation pending | Feature |
 
+| [First-page rain and a bounded Favorites widget](2026-11-16-first-page-rain-and-favorites-container.md) | Implements Rain and a resizable Favorites container on page 1, with internal scrolling, directional wedges, remote focus handoff and preserved app order. | 0.1.23 built; Cast1 deployment queued | Feature |
+
+| [Rain defaults to device location](2026-11-17-rain-default-device-location.md) | Implements automatic use of granted device location, fixed-place overrides, bounded lookups and permission-aware fallback. | 0.1.26 on Cast1; Cast2 install blocked | Fix |
+
 ---
 
 ## How this index was derived

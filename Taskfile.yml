@@ -6,12 +6,12 @@ tasks:
     desc: Advance the Android APK version code and displayed subversion
     cmds: ['dev/container.sh run ./gradlew --no-daemon :app:bumpVersion']
   deploy:
-    desc: Bump, check, build and deploy a new numbered APK through the coordinator
+    desc: Bump, check, build and deploy the same numbered APK to Cast1 and Cast2
     cmds:
       - task: bump
       - task: check
       - task: build
-      - 'python3 dev/deploy.py --device "{{.DEVICE | default "chromecast-test-01"}}" --recipe "{{.RECIPE | default "dev/device/iteration-check.json"}}"'
+      - 'python3 dev/deploy.py --device "{{.DEVICE | default "chromecast-test-01,chromecast-test-02"}}" --recipe "{{.RECIPE | default "dev/device/install-only.json"}}"'
   fixture:
     desc: Build the disposable Android UI test app in the container
     cmds: ['dev/container.sh run ./gradlew --no-daemon :fixture:assembleDebug']
@@ -28,6 +28,7 @@ tasks:
     desc: Run calendar pipeline checks, Java tests and Android lint
     cmds:
       - task: calendar:check
+      - 'dev/container.sh run python3 /workspace/dev/test_deploy.py'
       - 'dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest :app:lintDebug'
   build:
     desc: Build the Homeboard debug APK without installing

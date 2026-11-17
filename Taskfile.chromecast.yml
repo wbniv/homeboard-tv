@@ -57,6 +57,9 @@ tasks:
   capture:
     desc: 'Coordinator capture'
     cmds: ['"{{.CC_CLIENT}}" capture']
+  check-connection:
+    desc: Check the enrolled connection without interrupting Personal use
+    cmds: ['"{{.CC_CLIENT}}" check-connection']
   readd:
     desc: 'Coordinator readd'
     cmds: ['"{{.CC_CLIENT}}" readd']

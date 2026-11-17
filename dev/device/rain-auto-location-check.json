@@ -1,0 +1,38 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 65,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 2,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 19,
+      "capture": "automatic-4x3"
+    },
+    {
+      "at": 26,
+      "capture": "automatic-1x1"
+    },
+    {
+      "at": 33,
+      "capture": "automatic-fill-home"
+    },
+    {
+      "at": 42,
+      "capture": "fixed-override"
+    },
+    {
+      "at": 50,
+      "capture": "automatic-restored"
+    },
+    {
+      "at": 63,
+      "capture": "automatic-final"
+    }
+  ]
+}

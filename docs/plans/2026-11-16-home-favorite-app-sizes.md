@@ -1,5 +1,9 @@
 # Home favorite app sizes
 
+**Container follow-up:** the [first-page Rain and Favorites implementation](2026-11-16-first-page-rain-and-favorites-container.md)
+retains the independent Small icons / Banners choice inside a bounded scrolling
+Favorites panel. The separate outer app placement described below is historical.
+
 **Status: dense style-specific layouts implemented and container-checked; 0.1.8 deployed, then replaced by the separate Projectivy 0.1.9 build; combined integration pending · 16 November 2026**
 
 [Deployment and validation record](../testing/2026-11-16-home-favorite-app-sizes.md)

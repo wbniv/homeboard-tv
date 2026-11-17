@@ -3,8 +3,9 @@
 Homeboard opens on **Home**, your space for widgets and favorite apps. **All Apps**
 is one screen to the right. Home can be completely empty if you prefer.
 
-Screenshots below come from the running Chromecast build. Any remaining design
-illustrations are explicitly labeled. Air-quality values shown are historical examples.
+Screenshots below come from earlier Chromecast builds. The Favorites container
+changes described here are in candidate 0.1.23; its Cast1 installation and visual
+review remain pending. Design illustrations are labeled; weather values are examples.
 
 ![Home with the air-quality widget — actual TV screenshot](quick-start/home.png)
 
@@ -37,16 +38,34 @@ Otherwise the remote's Home button still opens your currently selected launcher.
 1. Move right into All Apps.
 2. Focus an app and **hold OK**.
 3. Choose **Favorite**.
-4. Return left to Home. The app now has a tile there.
+4. Return left to Home. The app is inside the **Favorites** panel.
 
-The “AAA Homeboard Test” app in these screenshots is a disposable test app.
+The “AAA Homeboard Test” app in these historical screenshots is a disposable test app.
 
-![Two compact app favorites on Home — actual Cast1 screenshot](quick-start/favorite-home.png)
+![Earlier separate app favorites on Home — historical Cast1 screenshot](quick-start/favorite-home.png)
 
 Choose **Unfavorite** to remove that dashboard shortcut. The app remains installed
 and is still available in All Apps. Favoriting twice does not create duplicate tiles.
 
 ![App tile menu — actual TV screenshot](quick-start/app-menu.png)
+
+## Browse and size Favorites
+
+Rain and Favorites are placed together on Home page 1 once. Arrows browse apps
+inside Favorites; more rows scroll vertically, while a one-row panel scrolls
+sideways. Down/right wedges show more apps; up/left wedges show a return direction.
+There are no scrollbars. Reaching a list edge lets focus move to another widget.
+
+OK launches an app. Back focuses the Favorites header; hold OK there for widget
+Move/Resize. Hold OK on an app for internal reorder, Unfavorite, or **Favorites
+widget actions**. A 1×1 panel opens a larger Favorites browser with OK. Removing
+Favorites keeps its list, and re-adding the widget restores it.
+
+The initial layout supports Undo. To rearrange it later, use **Favorites widget
+actions → More → Arrange Rain and Favorites on page 1**, choose a Rain widget,
+and review the preview. OK saves; Back cancels.
+
+![Rain and Favorites together — design mockup, pending TV review](../plans/2026-11-16-first-page-rain-and-favorites-container/first-page.svg)
 
 ## Choose app density and artwork
 
@@ -54,9 +73,9 @@ Open **Home settings → Appearance → Icons**. The two branches are independen
 
 - **Home favorites → Small icons / Banners** changes all favorite apps on Home.
   Small icons use a compact grid; Banners use wider cards and taller rows.
-  The layout adapts to the chosen style and text size. Tiles may move to another
-  row or page; widget configuration is preserved. **Undo** restores
-  the previous size, positions and Home page. Selecting the current size changes nothing.
+  Apps reflow **inside the Favorites panel**; its saved outer size and other
+  widgets do not change. **Undo** restores the previous artwork choice.
+  Selecting the current size changes nothing.
 - **All Apps → Launcher icons / TV banners** changes the app library. Launcher icons
   use a dense icon grid; TV banners use their own responsive grid with wider
   cards and taller rows. Changing artwork keeps All Apps open.
@@ -72,8 +91,8 @@ For the densest automatic dashboard, open **Home settings → Home behavior**
 and set both **Grid columns** and **Grid rows** to **Auto**. Explicit grid choices
 remain respected, within the readable fit for the selected style. A typical
 960 × 540 dp TV can fit 11 × 4 small icons or six banners across three taller
-rows; larger text can reduce those counts. Home banners and icons have separate
-grid sizing. Changing All Apps artwork alone does not change the dashboard.
+rows; larger text can reduce those counts. Favorites artwork reflows within its panel; it does not change the outer Home
+grid. Changing All Apps artwork alone does not change the dashboard.
 
 To check the installed version, open **Home settings**, press **OK** to show the
 second menu page, then choose **About Homeboard TV**. About reads the installed
@@ -219,3 +238,13 @@ and a QR code. Scan with a phone camera to open it there. When Android finds a
 web-link handler, Open on this TV is also available. A TV without a browser keeps
 the QR code and address visible. Back to About returns to the source list; Back
 from About returns to Home settings.
+
+
+### Rain location
+
+Rain uses device location automatically when Homeboard has location permission.
+If permission is missing, focus Rain and press OK to allow it. If the TV cannot
+provide a usable fix, OK retries; hold OK → Location offers a fixed city, street
+address or coordinates. Existing fixed places remain fixed. Choose **Device
+location · Automatic** to follow the TV again. Automatic lookups run only while
+Homeboard is active and do not add Undo entries.

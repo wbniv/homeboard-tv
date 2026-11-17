@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hb_fav_title">"Favorites"</string>
+    <string name="hb_fav_empty">"No favorites yet\nAdd apps"</string>
+    <string name="hb_fav_opener">"Favorites\n%1$d apps · OK"</string>
+    <string name="hb_fav_position">"Favorite %1$d of %2$d"</string>
+    <string name="hb_fav_hint">"D-pad browses apps. Wedges show more. Back focuses the header. Hold OK for actions."</string>
+    <string name="hb_fav_widget_actions">"Favorites widget actions"</string>
+    <string name="hb_fav_remove_hint">"Remove widget keeps your favorites list. Add it again to restore the list."</string>
+    <string name="hb_fav_manage">"Manage favorites in All Apps"</string>
+    <string name="hb_fav_first_page">"Arrange Rain and Favorites on page 1"</string>
+    <string name="hb_fav_changed">"Changed favorites"</string>
+    <string name="hb_fav_arranged">"Placed Rain and Favorites on page 1"</string>
+    <string name="hb_fav_preview">"First-page preview · OK saves · Back cancels"</string>
+    <string name="hb_fav_reorder">"Reorder favorites · Arrows move app · OK saves · Back cancels"</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hb_fav_title">"รายการโปรด"</string>
+    <string name="hb_fav_empty">"ยังไม่มีรายการโปรด\nเพิ่มแอป"</string>
+    <string name="hb_fav_opener">"รายการโปรด\n%1$d แอป · OK"</string>
+    <string name="hb_fav_position">"รายการโปรด %1$d จาก %2$d"</string>
+    <string name="hb_fav_hint">"ใช้ปุ่มทิศทางเลือกแอป ลูกศรแสดงแอปเพิ่มเติม กดกลับเพื่อเลือกหัวข้อ กด OK ค้างเพื่อดูคำสั่ง"</string>
+    <string name="hb_fav_widget_actions">"คำสั่งวิดเจ็ตรายการโปรด"</string>
+    <string name="hb_fav_remove_hint">"นำวิดเจ็ตออกจะเก็บรายการโปรดไว้ เพิ่มวิดเจ็ตอีกครั้งเพื่อคืนรายการ"</string>
+    <string name="hb_fav_manage">"จัดการรายการโปรดในแอปทั้งหมด"</string>
+    <string name="hb_fav_first_page">"จัดวางฝนและรายการโปรดในหน้า 1"</string>
+    <string name="hb_fav_changed">"เปลี่ยนรายการโปรดแล้ว"</string>
+    <string name="hb_fav_arranged">"จัดวางฝนและรายการโปรดในหน้า 1 แล้ว"</string>
+    <string name="hb_fav_preview">"ตัวอย่างหน้าแรก · OK บันทึก · กลับยกเลิก"</string>
+    <string name="hb_fav_reorder">"เรียงรายการโปรด · ปุ่มทิศทางย้ายแอป · OK บันทึก · กลับยกเลิก"</string>
+</resources>

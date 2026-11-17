@@ -78,7 +78,11 @@ Cast2 availability is temporary and permits checks that specifically need Cast2;
 it does not change that testing default. Installation targets and foreground
 testing targets are separate choices.
 
-Use `task deploy DEVICE=chromecast-test-01` for a new Homeboard deployment.
+Use `task deploy` for a new Homeboard deployment to both Cast1 and Cast2.
+`task deploy` defaults to both TVs with a complete background-install job per target;
+set `DEVICE=<id>` or a comma-separated list only for an explicit target override.
+Both targets receive one identical frozen APK and version. All jobs are submitted
+before watching either, and each target has its own evidence directory.
 It runs `task bump`, container checks and packaging, verifies matching version
 metadata, freezes `artifacts/deployments/<major.minor.version_code>/homeboard.apk`,
 then runs coordinator devices/queue, registration, submit, watch and evidence.
@@ -88,9 +92,10 @@ Never reuse a deployment number. Low-level coordinator tasks remain available
 for reference capture, job control and evidence; manually assembled new installs
 must follow the same bump/build/freeze rule.
 
-Keep iterative installs on **Cast1** (`chromecast-test-01`) while Will is testing
-Homeboard. Once Will says it is usable, move iterative testing to Cast2
-(`chromecast-test-02`). After each working APK iteration, check devices and
+Deploy each working build to **both Cast1 and Cast2**. Use Cast1 for routine
+foreground acceptance, and let the coordinator defer foreground jobs on either TV
+while Personal use is active.
+After each working APK iteration, check devices and
 queue, then register the new APK hash and install it through a complete
 coordinator-owned job, preserving data/settings. Submit requested installs even
 when Cast2 has a personal-use marker; the coordinator admits background installs
@@ -164,3 +169,13 @@ dashboard-card crop. Exercise its failure path by requiring impossible text, suc
 as `unobtainium`, with `--expect-text`; that command must exit nonzero. Keep both
 outcomes in the machine-readable run record. A coordinator job can complete with
 an app-level assertion failure, so report job cleanup and OCR outcome separately.
+
+
+### November 17 deployment preference
+
+Will requested every working build on both Cast1 and Cast2. This supersedes the
+earlier single-TV iteration default. `task deploy` performs bump/check/build/freeze
+once and submits `dev/device/install-only.json` to each TV. It does not release
+Personal use. Installation and later foreground/visual verification are separate
+coordinator jobs. The default of `task build` remains compilation only; use
+`task deploy` for working app iterations.

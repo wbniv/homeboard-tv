@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- Foreground-only approximate location for the optional nearest air-quality grid. The fine
+    <!-- Foreground-only approximate location for automatic Rain and the nearest air-quality grid. The fine
          permission also supports the existing network-name pill on devices that grant it. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

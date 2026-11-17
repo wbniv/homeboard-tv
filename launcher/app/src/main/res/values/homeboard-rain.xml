@@ -63,4 +63,11 @@
     <string name="hb_rain_inches">"Inches"</string>
     <string name="hb_rain_dry_short">"Dry"</string>
     <string name="hb_rain_compact_summary">"%1$dh · %2$s · peak hourly %3$s"</string>
+    <string name="hb_rain_automatic">"Device location · Automatic"</string>
+    <string name="hb_rain_allow_location">"Allow location"</string>
+    <string name="hb_rain_finding_location">"Finding your location…"</string>
+    <string name="hb_rain_location_unavailable">"Location unavailable"</string>
+    <string name="hb_rain_last_location">"Last known location"</string>
+    <string name="hb_rain_allow_hint">"OK to allow location · Hold OK to choose a place"</string>
+    <string name="hb_rain_retry_hint">"OK to retry · Hold OK to choose a place"</string>
 </resources>

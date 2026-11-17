@@ -10,6 +10,10 @@ see the validation record below for verified behavior and remaining checks.
 
 ## What the widget answers
 
+**Proposed first-page follow-up:** [Rain and a bounded Favorites widget](2026-11-16-first-page-rain-and-favorites-container.md)
+places Rain on page 1 alongside one resizable, internally scrolling Favorites
+container. That layout change awaits approval and is not part of the current APK.
+
 “When is rain forecast, how likely is it, and how much?” Show location, forecast
 period, precipitation chance and rain amount together. Forecasts describe a model
 grid near the selected location, rather than a measurement at the house.
@@ -345,3 +349,11 @@ TV's secure handshake; reconnect job `J‑fe0ef60a1030` failed. Installation, de
 screenshots, street-address backend availability, animation recording and the
 broader enlarged-text/state matrix remain unverified. The frozen APK and recovery
 evidence are described in [the rain validation record](../testing/2026-11-16-rain-widget.md).
+
+
+## Automatic location update · November 17
+
+The [device-location update](2026-11-17-rain-default-device-location.md) makes
+unconfigured Rain widgets use an existing foreground location grant automatically.
+Manual places remain fixed; Location → Device location · Automatic restores the
+automatic source. Device fix/cache refreshes do not enter layout Undo.

@@ -15,6 +15,9 @@ import java.util.Set;
 final class HomeLayout {
     static final String AIR = "widget:air";
     static final String RAIN = "widget:rain";
+    static final String FAVORITES = "widget:favorites";
+    final List<String> favorites = new ArrayList<>();
+    boolean favoritesContainer;
     static final String CALENDAR = "widget:calendar";
     final List<String> widgets = new ArrayList<>();
     final List<String> order = new ArrayList<>();
@@ -49,6 +52,10 @@ final class HomeLayout {
         HomeLayout s = new HomeLayout();
         read(j.getJSONArray("widgets"), s.widgets);
         read(j.getJSONArray("order"), s.order);
+        JSONArray favoriteKeys = j.optJSONArray("favorites");
+        if (favoriteKeys != null) read(favoriteKeys, s.favorites);
+        s.favorites.removeIf(key -> !key.startsWith("app:"));
+        s.favoritesContainer = j.optBoolean("favoritesContainer", false);
         List<String> hidden = new ArrayList<>();
         read(j.getJSONArray("hidden"), hidden);
         s.hidden.addAll(hidden);
@@ -114,6 +121,7 @@ final class HomeLayout {
         try {
             return new JSONObject().put("widgets", new JSONArray(widgets)).put("order", new JSONArray(order))
                     .put("hidden", new JSONArray(new java.util.TreeSet<>(hidden)))
+                    .put("favorites", new JSONArray(favorites)).put("favoritesContainer", favoritesContainer)
                     .put("defaultPanelSize", defaultPanelSize).put("panelSizes", new JSONObject(panelSizes))
                     .put("panelSpans", encodedSpans())
                     .put("homePositions", encodedHomePositions())
@@ -133,6 +141,7 @@ final class HomeLayout {
     boolean setHomeAppSize(String size, int beforeColumns, int beforeRows, int columns, int rows) {
         if (!APP_SMALL.equals(size) && !APP_BANNER.equals(size)) throw new IllegalArgumentException("Unknown Home app size");
         if (size.equals(homeAppSize)) return false;
+        if (favoritesContainer) { homeAppSize = size; return true; }
         List<Cell> before = cells(widgets, beforeColumns, beforeRows);
         homeAppSize = size;
         Map<String, HomePosition> requested = new LinkedHashMap<>();
@@ -149,6 +158,7 @@ final class HomeLayout {
         if (!key.startsWith("widget:")) throw new IllegalArgumentException("Panel keys must start with widget:");
         favorite(key);
         panelSizes.putIfAbsent(key, defaultPanelSize);
+        if (FAVORITES.equals(key)) panelSpans.putIfAbsent(key, new PanelSpan(4, 2));
         if (isRainWidget(key)) {
             rainSettings.putIfAbsent(key, new RainSettings());
             panelSpans.putIfAbsent(key, new PanelSpan(4, 3));
@@ -157,6 +167,45 @@ final class HomeLayout {
             calendarSettings.putIfAbsent(key, new CalendarWidgetSettings());
             panelSpans.putIfAbsent(key, new PanelSpan(6, 3));
         }
+    }
+    /** Retain existing user shortcuts once; new favorites never occupy outer grid cells. */
+    void convertFavorites() {
+        for (String key : new ArrayList<>(widgets)) if (key.startsWith("app:")) {
+            if (!favorites.contains(key)) favorites.add(key);
+            widgets.remove(key); homePositions.remove(key); panelSpans.remove(key);
+        }
+        favoritesContainer = true;
+        addPanel(FAVORITES);
+    }
+    void addFavorite(String key) {
+        if (!key.startsWith("app:")) throw new IllegalArgumentException("Favorite must be an app");
+        if (!favoritesContainer) convertFavorites();
+        if (!favorites.contains(key)) favorites.add(key);
+        if (!widgets.contains(FAVORITES)) addPanel(FAVORITES);
+    }
+    void removeFavorite(String key) { favorites.remove(key); }
+    boolean isFavorite(String key) { return favorites.contains(key) || widgets.contains(key); }
+
+    /** Reserve the two requested page-one panels before resolving other saved origins. */
+    void arrangeFirstPage(String rainKey, int columns, int rows, boolean compact) {
+        if (!isRainWidget(rainKey)) throw new IllegalArgumentException("Rain widget required");
+        if (!favoritesContainer) convertFavorites();
+        addPanel(rainKey); addPanel(FAVORITES);
+        int rainWidth = Math.min(4, Math.max(2, columns / 2));
+        int rainHeight = Math.min(rows, compact ? 2 : 3);
+        setPanelSpan(rainKey, rainWidth, rainHeight);
+        setPanelSpan(FAVORITES, Math.max(1, Math.min(6, columns - rainWidth)), Math.min(2, rows));
+        LinkedHashMap<String, HomePosition> requested = new LinkedHashMap<>();
+        requested.put(rainKey, new HomePosition(0, 0, 0));
+        requested.put(FAVORITES, new HomePosition(0, 0, rainWidth));
+        for (Map.Entry<String, HomePosition> entry : homePositions.entrySet())
+            if (!requested.containsKey(entry.getKey())) requested.put(entry.getKey(), entry.getValue());
+        List<String> ordered = new ArrayList<>(); ordered.add(rainKey); ordered.add(FAVORITES);
+        for (String key : widgets) if (!ordered.contains(key)) ordered.add(key);
+        widgets.clear(); widgets.addAll(ordered);
+        List<Cell> resolved = cells(widgets, columns, rows, requested);
+        homePositions.clear();
+        for (Cell cell : resolved) homePositions.put(cell.key, new HomePosition(cell.page, cell.row, cell.column));
     }
     static boolean isRainWidget(String key) { return RAIN.equals(key) || key != null && key.startsWith(RAIN + ":"); }
     private JSONObject encodedRainSettings() throws JSONException {
@@ -207,6 +256,7 @@ final class HomeLayout {
         String prefix = "app:" + packageName + "/";
         boolean changed = canonicalizeKeys(widgets, prefix, chosenKey);
         changed |= canonicalizeKeys(order, prefix, chosenKey);
+        changed |= canonicalizeKeys(favorites, prefix, chosenKey);
         int hiddenPackageCount = 0;
         for (String key : hidden) if (key.startsWith(prefix)) hiddenPackageCount++;
         if (hiddenPackageCount > 0 && (hiddenPackageCount > 1 || !hidden.contains(chosenKey))) {
@@ -233,6 +283,7 @@ final class HomeLayout {
     // Only a confirmed package removal invokes this. A missing launcher activity alone is not uninstall.
     void packageRemoved(String packageName) {
         String prefix = "app:" + packageName + "/";
+        favorites.removeIf(k -> k.startsWith(prefix));
         widgets.removeIf(k -> k.startsWith(prefix));
         order.removeIf(k -> k.startsWith(prefix));
         hidden.removeIf(k -> k.startsWith(prefix));

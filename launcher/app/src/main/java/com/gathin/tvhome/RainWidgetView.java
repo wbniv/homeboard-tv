@@ -32,7 +32,7 @@ final class RainWidgetView extends View {
     void refresh() {
         now=Instant.now();RainSettings s=controller.settings();RainForecast f=controller.forecast;
         period=f==null?null:f.hourly(now,s.hours);days=f==null?java.util.Collections.emptyList():f.following(now,s.hours,s.days);
-        setContentDescription(s.displayName()+". "+controller.status()+". "+(period==null?"":controller.headline(period)+". "+controller.s(R.string.hb_rain_window,s.hours)+". "+controller.amount(period.mm)+". "+controller.s(R.string.hb_rain_peak,controller.chance(period.chance)))+". "+controller.s(R.string.hb_rain_more));
+        setContentDescription(s.displayName()+". "+controller.status()+". "+(period==null?"":controller.headline(period)+". "+controller.s(R.string.hb_rain_window,s.hours)+". "+controller.amount(period.mm)+". "+controller.s(R.string.hb_rain_peak,controller.chance(period.chance)))+". "+controller.actionHint());
         invalidate();
     }
     private float dp(float v){return v*getResources().getDisplayMetrics().density;}
@@ -71,8 +71,8 @@ final class RainWidgetView extends View {
         drawText(c,s.displayName(),pad,y,width-dp(58),16,palette.muted,false,true);
         cloud(c,w-pad-dp(28),pad+dp(29),dp(23));y+=l;
         String headline=period==null?status:controller.headline(period);
-        drawText(c,status.isEmpty()?headline:status+" · "+headline,pad,y,width-dp(55),18,palette.text,true,true);y+=l;
-        if(period==null){drawText(c,controller.s(R.string.hb_rain_more),pad,y,width,16,palette.muted,false,true);return;}
+        drawText(c,status.isEmpty()||period==null?headline:status+" · "+headline,pad,y,width-dp(55),18,palette.text,true,true);y+=l;
+        if(period==null){drawText(c,controller.actionHint(),pad,y,width,16,palette.muted,false,true);return;}
         String total=controller.s(R.string.hb_rain_window,s.hours)+" · "+controller.amount(period.mm);
         String compact=controller.s(R.string.hb_rain_compact_summary,s.hours,controller.amount(period.mm),controller.chance(period.chance));
         if(fits(compact,width,16)){drawText(c,compact,pad,y,width,16,palette.text,false,false);y+=l;}
@@ -89,9 +89,11 @@ final class RainWidgetView extends View {
         float chartWidth=side?width*.58f:width;
         float dayHeight=dayGrid?(float)(l*(1+2*Math.ceil(days.size()/3.0))):0;
         float footerHeight=l;
-        float chartHeight=Math.min(dp(130),h-y-footerHeight-(side?0:dayHeight));
+        // The chart's last time label sits on its bottom baseline. Reserve a
+        // separate line before daily rows or attribution begin.
+        float chartHeight=Math.min(dp(130),h-y-footerHeight-l-(side?0:dayHeight));
         if(chartWidth>=period.hours.size()*dp(4)&&chartHeight>=l*3){
-            chart(c,pad,y,chartWidth,chartHeight);y+=chartHeight;
+            chart(c,pad,y,chartWidth,chartHeight);y+=chartHeight+l;
         }else if(width<sp(300)&&h-y>=l*5){
             for(int i=0;i<Math.min(3,period.hours.size());i++){
                 RainForecast.Hour hour=period.hours.get(i);

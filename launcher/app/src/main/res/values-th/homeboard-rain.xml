@@ -63,4 +63,11 @@
     <string name="hb_rain_inches">"นิ้ว"</string>
     <string name="hb_rain_dry_short">"ไม่มีฝน"</string>
     <string name="hb_rain_compact_summary">"%1$d ชม. · %2$s · สูงสุดรายชั่วโมง %3$s"</string>
+    <string name="hb_rain_automatic">"ตำแหน่งอุปกรณ์ · อัตโนมัติ"</string>
+    <string name="hb_rain_allow_location">"อนุญาตตำแหน่ง"</string>
+    <string name="hb_rain_finding_location">"กำลังค้นหาตำแหน่ง…"</string>
+    <string name="hb_rain_location_unavailable">"ไม่พบตำแหน่ง"</string>
+    <string name="hb_rain_last_location">"ตำแหน่งล่าสุดที่ทราบ"</string>
+    <string name="hb_rain_allow_hint">"กด OK เพื่ออนุญาตตำแหน่ง · กด OK ค้างเพื่อเลือกสถานที่"</string>
+    <string name="hb_rain_retry_hint">"กด OK เพื่อลองอีกครั้ง · กด OK ค้างเพื่อเลือกสถานที่"</string>
 </resources>

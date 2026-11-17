@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -36,7 +37,12 @@ final class RainWidgetController {
     private final Supplier<RainSettings> settings;
     private final Consumer<RainSettings> save;
     private final AirQualityCard.Menus menus;
-    private final AirQualityCard.LocationProvider locations;
+    interface LocationAccess {
+        boolean granted();
+        void request(boolean prompt, Consumer<Location> callback);
+    }
+    private final LocationAccess locations;
+    private final RainLocation deviceLocation = new RainLocation();
     private final Runnable sizes;
     private final SharedPreferences prefs;
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -56,17 +62,25 @@ final class RainWidgetController {
         }
     };
     RainWidgetController(Activity activity, String key, Supplier<RainSettings> settings, Consumer<RainSettings> save,
-                         AirQualityCard.Menus menus, AirQualityCard.LocationProvider locations, Runnable sizes) {
+                         AirQualityCard.Menus menus, LocationAccess locations, Runnable sizes) {
         this.activity = activity; this.settings = settings; this.save = save; this.menus = menus; this.locations = locations; this.sizes = sizes;
         prefs = activity.getSharedPreferences("rain-cache-" + key, 0);
+        deviceLocation.accept(Double.longBitsToDouble(prefs.getLong("device-lat", Double.doubleToLongBits(Double.NaN))),
+                Double.longBitsToDouble(prefs.getLong("device-lon", Double.doubleToLongBits(Double.NaN))),
+                prefs.getLong("device-time", 0), System.currentTimeMillis());
         sync();
     }
-    RainSettings settings() { return settings.get(); }
+    private RainSettings configured() { return settings.get(); }
+    RainSettings settings() {
+        RainSettings result = deviceLocation.effective(configured(), locations.granted());
+        if (result.automatic) result.name = s(R.string.hb_rain_device);
+        return result;
+    }
     String s(int id, Object... args) { return activity.getString(id, args); }
     void bind(RainWidgetView view) { this.view = view; sync(); render(); }
     void unbind() { if (view != null) view.setRunning(false); view = null; }
-    void start() { if (active || closed) return; active = true; tick.run(); }
-    void stop() { active = false; handler.removeCallbacks(tick); if (view != null) view.setRunning(false); }
+    void start() { if (active || closed) return; active = true; deviceLocation.attemptedAt = -1; tick.run(); }
+    void stop() { active = false; deviceLocation.cancel(); handler.removeCallbacks(tick); if (view != null) view.setRunning(false); }
     void pause() { stop(); handler.removeCallbacks(detailsTick); if (detailsView != null) detailsView.setRunning(false); }
     void resumeDetails() { if (dialog != null) { handler.removeCallbacks(detailsTick); detailsTick.run(); } }
     void close() { closed = true; generation++; lookupGeneration++; stop(); if (dialog != null) dialog.dismiss(); unbind(); }
@@ -79,10 +93,33 @@ final class RainWidgetController {
             forecast = RainForecast.parse(prefs.getString("body", "")); fetchedAt = prefs.getLong("fetched", 0);
         } catch (Exception ignored) { forecast = null; }
     }
-    void changed(RainSettings next) { save.accept(next); sync(); refresh(true); render(); }
+    void changed(RainSettings next) {
+        deviceLocation.cancel();
+        if (next.automatic) { next.latitude = Double.NaN; next.longitude = Double.NaN; next.name = ""; }
+        save.accept(next); sync(); refresh(true); render();
+    }
+    private void resolveLocation(boolean manual, boolean prompt) {
+        if (closed || !configured().automatic || !locations.granted() && !prompt) return;
+        int token = deviceLocation.begin(SystemClock.elapsedRealtime(), manual);
+        if (token < 0) return;
+        locations.request(prompt, location -> {
+            if (closed || !configured().automatic || token != deviceLocation.generation || !deviceLocation.pending) return;
+            boolean accepted = locations.granted() && location != null &&
+                    deviceLocation.accept(location.getLatitude(), location.getLongitude(), location.getTime(), System.currentTimeMillis());
+            deviceLocation.finish(token, accepted);
+            if (accepted) prefs.edit().putLong("device-lat", Double.doubleToLongBits(deviceLocation.latitude))
+                    .putLong("device-lon", Double.doubleToLongBits(deviceLocation.longitude)).putLong("device-time", deviceLocation.fixedAt).apply();
+            sync();
+            // A synchronous cached-location callback must not recursively start another lookup.
+            handler.post(() -> { if (!closed && (active || dialog != null)) { refresh(false); render(); } });
+            render();
+        });
+    }
     void refresh(boolean manual) {
+        if (configured().automatic && (active || dialog != null || manual)) resolveLocation(manual, false);
         sync();
         if (closed || loading || !settings().located()) return;
+        if (configured().automatic && !deviceLocation.usable(System.currentTimeMillis())) return;
         long elapsed = SystemClock.elapsedRealtime();
         long backoff = manual ? 15_000 : forecast != null && !failed ? 30 * 60_000L : Math.min(30 * 60_000L, 60_000L << Math.min(failures, 4));
         if (lastAttempt != 0 && elapsed - lastAttempt < backoff) return;
@@ -106,6 +143,11 @@ final class RainWidgetController {
         render();
     }
     String status() {
+        if (configured().automatic) {
+            if (!locations.granted()) return s(R.string.hb_rain_allow_location);
+            if (!deviceLocation.located()) return s(deviceLocation.pending ? R.string.hb_rain_finding_location : R.string.hb_rain_location_unavailable);
+            if (!deviceLocation.usable(System.currentTimeMillis())) return s(R.string.hb_rain_last_location);
+        }
         if (!settings().located()) return s(R.string.hb_rain_set_location);
         if (forecast == null) return s(loading ? R.string.hb_rain_loading : R.string.hb_rain_unavailable);
         if (failed) return s(R.string.hb_rain_offline);
@@ -114,6 +156,11 @@ final class RainWidgetController {
         return "";
     }
     boolean fresh() { return forecast != null && status().isEmpty(); }
+    String actionHint() {
+        if (configured().automatic && !locations.granted()) return s(R.string.hb_rain_allow_hint);
+        if (configured().automatic && !deviceLocation.usable(System.currentTimeMillis())) return s(R.string.hb_rain_retry_hint);
+        return s(R.string.hb_rain_more);
+    }
     String amount(double mm) { return Double.isFinite(mm) ? String.format(Locale.getDefault(), settings().inches ? "%.2f in" : "%.1f mm", settings().inches ? mm / 25.4 : mm) : "—"; }
     String chance(double chance) { return Double.isFinite(chance) ? String.format(Locale.getDefault(), "%.0f%%", chance) : "—"; }
     String time(long epoch, String pattern) { return DateTimeFormatter.ofPattern(pattern, Locale.getDefault()).withZone(forecast.zone).format(Instant.ofEpochSecond(epoch)); }
@@ -124,36 +171,32 @@ final class RainWidgetController {
     }
     void render() { if (view != null) { view.refresh(); view.setRunning(active && dialog == null); } if (detailsView != null) { detailsView.refresh(); fillDetails(); } }
     void configure() {
-        RainSettings p = settings();
+        RainSettings p = configured();
         menus.show(s(R.string.hb_rain_configure), new String[]{s(R.string.hb_rain_location), s(R.string.hb_rain_hourly) + ": " + p.hours,
                 s(R.string.hb_rain_following, p.days), s(R.string.hb_rain_units), s(R.string.hb_rain_animation) + ": " + s(p.animation ? R.string.hb_rain_on : R.string.hb_rain_off),
                 s(R.string.hb_rain_label), s(R.string.hb_rain_size), s(R.string.hb_rain_refresh)}, choice -> {
             if (choice == 0) chooseLocation();
-            if (choice == 1) menus.show(s(R.string.hb_rain_hourly), new String[]{"6", "12", "24", "48"}, i -> { RainSettings n = settings().copy(); n.hours = new int[]{6,12,24,48}[i]; changed(n); });
-            if (choice == 2) menus.show(s(R.string.hb_rain_days), new String[]{"0","1","2","3","4","5","6"}, i -> { RainSettings n = settings().copy(); n.days = i; changed(n); });
-            if (choice == 3) menus.show(s(R.string.hb_rain_units), new String[]{s(R.string.hb_rain_mm), s(R.string.hb_rain_inches)}, i -> { RainSettings n = settings().copy(); n.inches = i == 1; changed(n); });
-            if (choice == 4) { RainSettings n = settings().copy(); n.animation = !n.animation; changed(n); }
-            if (choice == 5) input(s(R.string.hb_rain_label), p.label, value -> { RainSettings n = settings().copy(); n.label = value; changed(n); });
+            if (choice == 1) menus.show(s(R.string.hb_rain_hourly), new String[]{"6", "12", "24", "48"}, i -> { RainSettings n = configured().copy(); n.hours = new int[]{6,12,24,48}[i]; changed(n); });
+            if (choice == 2) menus.show(s(R.string.hb_rain_days), new String[]{"0","1","2","3","4","5","6"}, i -> { RainSettings n = configured().copy(); n.days = i; changed(n); });
+            if (choice == 3) menus.show(s(R.string.hb_rain_units), new String[]{s(R.string.hb_rain_mm), s(R.string.hb_rain_inches)}, i -> { RainSettings n = configured().copy(); n.inches = i == 1; changed(n); });
+            if (choice == 4) { RainSettings n = configured().copy(); n.animation = !n.animation; changed(n); }
+            if (choice == 5) input(s(R.string.hb_rain_label), p.label, value -> { RainSettings n = configured().copy(); n.label = value; changed(n); });
             if (choice == 6) sizes.run();
             if (choice == 7) refresh(true);
         });
     }
     void chooseLocation() {
-        menus.show(s(R.string.hb_rain_choose), new String[]{s(R.string.hb_rain_coordinates), s(R.string.hb_rain_city), s(R.string.hb_rain_address), s(R.string.hb_rain_device)}, i -> {
-            if (i == 0) coordinates();
+        menus.show(s(R.string.hb_rain_choose), new String[]{s(R.string.hb_rain_automatic), s(R.string.hb_rain_city), s(R.string.hb_rain_address), s(R.string.hb_rain_coordinates)}, i -> {
+            if (i == 0) { RainSettings n = configured().copy(); n.automatic = true; changed(n); resolveLocation(true, true); }
             if (i == 1 || i == 2) input(s(i == 1 ? R.string.hb_rain_city : R.string.hb_rain_address), "", query -> lookup(query, i == 2));
-            if (i == 3) locations.request(location -> {
-                if (closed) return;
-                if (location == null) message(s(R.string.hb_rain_lookup_failed));
-                else confirm(location.getLatitude(), location.getLongitude(), s(R.string.hb_rain_device));
-            });
+            if (i == 3) coordinates();
         });
     }
     private void confirm(double lat, double lon, String name) {
         if (!RainSettings.coordinates(lat, lon)) { message(s(R.string.hb_rain_invalid)); return; }
         new AlertDialog.Builder(activity).setTitle(s(R.string.hb_rain_confirm)).setMessage(name + "\n" + lat + ", " + lon)
                 .setNegativeButton(s(R.string.hb_rain_cancel), null).setPositiveButton(s(R.string.hb_rain_save), (d,w) -> {
-                    RainSettings n = settings().copy(); n.latitude = lat; n.longitude = lon; n.name = name; changed(n);
+                    RainSettings n = configured().copy(); n.automatic = false; n.latitude = lat; n.longitude = lon; n.name = name; changed(n);
                 }).show();
     }
     private void coordinates() {
@@ -238,6 +281,11 @@ final class RainWidgetController {
     private int page;
     private LinearLayout detailsBody;
     void details() {
+        if (configured().automatic && (!locations.granted() || !deviceLocation.usable(System.currentTimeMillis()))) {
+            if (!locations.granted()) resolveLocation(true, true);
+            else if (!deviceLocation.pending) resolveLocation(true, false);
+            return;
+        }
         if (!settings().located()) { chooseLocation(); return; }
         expanded = false; page = 0; daily = false; openDetails();
     }

@@ -162,7 +162,8 @@ public class MainActivity extends Activity {
     private final Map<String, RainWidgetController> rainWidgets = new LinkedHashMap<>();
     private final Map<String, AirQualityCard> airWidgets = new LinkedHashMap<>();
     private final List<Consumer<Location>> pendingLocationRequests = new ArrayList<>();
-    private final Set<AirLocationLookup> activeLocationLookups = new LinkedHashSet<>();
+    private final List<Consumer<Location>> locationRequests = new ArrayList<>();
+    private AirLocationLookup activeLocationLookup;
     private Location cachedLocation;
     private long cachedLocationAt;
     private static final int REQUEST_AIR_LOCATION = 7403;
@@ -170,6 +171,11 @@ public class MainActivity extends Activity {
     private boolean configReducedMotion;
     private int homePage, appsPage, loadVersion;
     private String focused = HomeLayout.AIR, homeFocus = HomeLayout.AIR, appsFocus = "";
+    private FavoritesWidgetView favoritesWidget, favoritesBrowser;
+    private String favoriteFocus="";
+    private List<String> favoriteOrderPreview;
+    private String favoriteMovingKey;
+    private HomeLayout firstPageBefore;
     private List<String> preview;
     private Map<String, HomeLayout.HomePosition> previewHomePositions;
     private String movingKey;
@@ -310,7 +316,19 @@ public class MainActivity extends Activity {
         filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
         filter.addDataScheme("package");
         registerReceiver(packages, filter);
+        boolean arrange = !preferences.getBoolean("favorites-first-page-v1", false);
+        if (arrange) {
+            String rain = HomeLayout.RAIN;
+            for (String key : layout.widgets) if (HomeLayout.isRainWidget(key)) { rain=key;break; }
+            layout.convertFavorites(); layout.arrangeFirstPage(rain, homeGridColumns(), homeGridRows(), false);
+            allApps=false;homePage=0;focused=rain;homeFocus=rain;
+        }
+        favoriteFocus=preferences.getString("favorite-focus", "");
         render(0);
+        if(arrange) {
+            save(getString(R.string.hb_fav_arranged));
+            preferences.edit().putBoolean("favorites-first-page-v1",true).apply();
+        }
         loadApps();
         handleIntent(getIntent());
         if (savedInstanceState != null && savedInstanceState.getBoolean("languageSettings")) {
@@ -354,9 +372,11 @@ public class MainActivity extends Activity {
             if (tile instanceof CircularAppTile) ((CircularAppTile) tile).stopAppearanceAnimation();
             if (tile instanceof BannerAppTile) ((BannerAppTile) tile).setAppFocused(tile.isFocused(), false);
         }
+        preferences.edit().putString("favorite-focus", favoriteFocus).apply();
         saveNavigationState();
         for (AirQualityCard widget : airWidgets.values()) widget.stop();
         for (RainWidgetController widget : rainWidgets.values()) widget.pause();
+        if (activeLocationLookup != null) activeLocationLookup.finish(null);
         for (CalendarWidgetView widget : calendarWidgets.values()) widget.stop();
         super.onPause();
     }
@@ -367,6 +387,8 @@ public class MainActivity extends Activity {
         handler.removeCallbacksAndMessages(null);
         loader.shutdownNow(); for (AirQualityCard widget : airWidgets.values()) widget.close();
         for (RainWidgetController widget : rainWidgets.values()) widget.close();
+        if (activeLocationLookup != null) activeLocationLookup.finish(null);
+        pendingLocationRequests.clear(); locationRequests.clear();
         super.onDestroy();
     }
     @Override protected void onSaveInstanceState(Bundle state) {
@@ -688,6 +710,7 @@ public class MainActivity extends Activity {
         return homeGridColumnsFor(layout.homeAppSize);
     }
     private int homeGridColumnsFor(String size) {
+        if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
         int fit = homeGridFitColumnsFor(size);
         return layout.homeColumns == 0 ? fit : Math.min(layout.homeColumns, fit);
     }
@@ -699,7 +722,7 @@ public class MainActivity extends Activity {
         return (int) Math.ceil((font.bottom - font.top) / metrics.density);
     }
     private int homeGridFitColumns() {
-        return homeGridFitColumnsFor(layout.homeAppSize);
+        return homeGridFitColumnsFor(layout.favoritesContainer ? HomeLayout.APP_SMALL : layout.homeAppSize);
     }
     private int homeGridFitColumnsFor(String size) {
         int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
@@ -711,6 +734,7 @@ public class MainActivity extends Activity {
         return homeGridFitRowsFor(layout.homeAppSize);
     }
     private int homeGridFitRowsFor(String size) {
+        if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
         int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
                 / getResources().getDisplayMetrics().density);
         return Math.max(2, AppGridSizing.rows(screenHeightDp - AppGridSizing.HOME_TOP
@@ -720,6 +744,7 @@ public class MainActivity extends Activity {
         return homeGridRowsFor(layout.homeAppSize);
     }
     private int homeGridRowsFor(String size) {
+        if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
         int fit = homeGridFitRowsFor(size);
         return layout.homeRows == 0 ? fit : Math.min(layout.homeRows, fit);
     }
@@ -756,6 +781,7 @@ public class MainActivity extends Activity {
         for (RainWidgetController widget : rainWidgets.values()) widget.unbind();
         for (CalendarWidgetView widget : calendarWidgets.values()) widget.stop();
         calendarWidgets.clear();
+        favoritesWidget=null;
         tiles.clear(); visibleCells.clear();
         surface = new FrameLayout(this);
         uiBackgroundOpacity = layout.uiOpacityPercent;
@@ -814,7 +840,10 @@ public class MainActivity extends Activity {
             widget = new RainWidgetController(this, key,
                     () -> layout.rainSettings.getOrDefault(key, new RainSettings()),
                     next -> { layout.rainSettings.put(key, next); save(getString(R.string.hb_rain_changed)); render(0); },
-                    this::menu, this::requestAirLocation, () -> rainSize(key));
+                    this::menu, new RainWidgetController.LocationAccess() {
+                        @Override public boolean granted() { return locationGranted(); }
+                        @Override public void request(boolean prompt, Consumer<Location> callback) { requestDeviceLocation(prompt, callback); }
+                    }, () -> rainSize(key));
             rainWidgets.put(key, widget);
         }
         widget.style(paletteColors, uiBackgroundOpacity, reducedMotion());
@@ -851,35 +880,51 @@ public class MainActivity extends Activity {
         for (AirQualityCard widget : airWidgets.values()) widget.setPalette(paletteColors);
     }
     private void requestAirLocation(Consumer<Location> callback) {
-        long now = System.currentTimeMillis();
-        if (cachedLocation != null && now - cachedLocationAt < 15 * 60_000L) {
-            callback.accept(new Location(cachedLocation)); return;
-        }
+        requestDeviceLocation(true, callback);
+    }
+    private boolean locationGranted() {
         boolean coarse = checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
         boolean fine = checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
-        if (!coarse && !fine) {
+        return coarse || fine;
+    }
+    private void requestDeviceLocation(boolean prompt, Consumer<Location> callback) {
+        if (closed) { callback.accept(null); return; }
+        long now = System.currentTimeMillis();
+        if (!locationGranted()) {
+            cachedLocation = null;
+            if (!prompt) { callback.accept(null); return; }
             pendingLocationRequests.add(callback);
             if (pendingLocationRequests.size() == 1)
                 requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
                         android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_AIR_LOCATION);
             return;
         }
+        if (cachedLocation != null && RainLocation.recent(cachedLocationAt, now, RainLocation.REFRESH)
+                && validDeviceLocation(cachedLocation, now)) {
+            callback.accept(new Location(cachedLocation)); return;
+        }
+        if (activeLocationLookup != null) { locationRequests.add(callback); return; }
         LocationManager manager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (manager == null) { callback.accept(null); return; }
         Location best = null;
         try {
             for (String provider : manager.getProviders(true)) {
                 Location location = manager.getLastKnownLocation(provider);
-                if (location != null && (best == null || location.getTime() > best.getTime())) best = location;
+                if (validDeviceLocation(location, now) && (best == null || location.getTime() > best.getTime())) best = location;
             }
         } catch (SecurityException ignored) { }
-        if (best != null && now - best.getTime() < 6 * 60 * 60_000L) {
+        if (best != null) {
             cachedLocation = new Location(best); cachedLocationAt = now; callback.accept(new Location(best)); return;
         }
-        AirLocationLookup lookup = new AirLocationLookup(manager, callback);
-        activeLocationLookups.add(lookup); lookup.start();
+        locationRequests.add(callback);
+        activeLocationLookup = new AirLocationLookup(manager);
+        activeLocationLookup.start();
+    }
+    private boolean validDeviceLocation(Location location, long now) {
+        return location != null && RainSettings.coordinates(location.getLatitude(), location.getLongitude())
+                && RainLocation.recent(location.getTime(), now, RainLocation.MAX_AGE);
     }
     @Override public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -894,12 +939,11 @@ public class MainActivity extends Activity {
     }
     private final class AirLocationLookup implements LocationListener {
         private final LocationManager manager;
-        private final Consumer<Location> callback;
         private final Set<String> providers = new LinkedHashSet<>();
         private boolean finished;
         private final Runnable timeout = () -> finish(null);
-        AirLocationLookup(LocationManager manager, Consumer<Location> callback) {
-            this.manager = manager; this.callback = callback;
+        AirLocationLookup(LocationManager manager) {
+            this.manager = manager;
         }
         void start() {
             try {
@@ -911,16 +955,20 @@ public class MainActivity extends Activity {
             if (providers.isEmpty()) finish(null);
             else handler.postDelayed(timeout, 15_000L);
         }
-        @Override public void onLocationChanged(Location location) { finish(location); }
+        @Override public void onLocationChanged(Location location) {
+            if (validDeviceLocation(location, System.currentTimeMillis())) finish(location);
+        }
         @Override public void onProviderDisabled(String provider) { }
         @Override public void onProviderEnabled(String provider) { }
         @SuppressWarnings("deprecation") @Override public void onStatusChanged(String provider, int status, Bundle extras) { }
         private void finish(Location location) {
             if (finished) return;
-            finished = true; handler.removeCallbacks(timeout); activeLocationLookups.remove(this);
+            finished = true; handler.removeCallbacks(timeout); activeLocationLookup = null;
             for (String provider : providers) try { manager.removeUpdates(this); break; } catch (SecurityException ignored) { }
+            if (!locationGranted()) location = null;
             if (location != null) { cachedLocation = new Location(location); cachedLocationAt = System.currentTimeMillis(); }
-            callback.accept(location == null ? null : new Location(location));
+            List<Consumer<Location>> callbacks = new ArrayList<>(locationRequests); locationRequests.clear();
+            for (Consumer<Location> callback : callbacks) callback.accept(location == null ? null : new Location(location));
         }
     }
     private TextView text(String value, float size) {
@@ -1097,15 +1145,18 @@ public class MainActivity extends Activity {
             if (cell.page != homePage) continue;
             visibleCells.add(cell);
             if (cell.key.startsWith("app:")) hasAppTile = true;
-            View tile = isAirWidgetKey(cell.key) ? airTile(cell.key, cell.width, cell.height)
+            View tile = HomeLayout.FAVORITES.equals(cell.key) ? favoritesTile(cell.height == 1) : isAirWidgetKey(cell.key) ? airTile(cell.key, cell.width, cell.height)
                     : HomeLayout.isRainWidget(cell.key) ? rainTile(cell.key)
                     : HomeLayout.isCalendarWidget(cell.key) ? calendarTile(cell.key) : appTile(cell.key, true);
-            configureTile(tile, cell.key);
+            if(HomeLayout.FAVORITES.equals(cell.key)) {
+                tiles.put(cell.key,tile);
+                favoritesWidget.interactive(!moving&&!resizing&&firstPageBefore==null);
+            } else configureTile(tile, cell.key);
             if (isAirWidgetKey(cell.key)) airFor(cell.key).bind(tile);
             grid.addTile(tile, cell.column, cell.row, cell.width, cell.height);
         }
         if (hasAppTile) createAppFocusHighlight();
-        footer = text(resizing ? resizeHelpText() : moving ? getString(R.string.hb_move_preview_arrows_place_anywhere_in_the_grid_ok_saves_back_canc)
+        footer = text(firstPageBefore!=null?getString(R.string.hb_fav_preview):favoriteOrderPreview!=null?getString(R.string.hb_fav_reorder):resizing ? resizeHelpText() : moving ? getString(R.string.hb_move_preview_arrows_place_anywhere_in_the_grid_ok_saves_back_canc)
                 : getString(R.string.hb_hint_home) + (homePage + 1) + "/" + homePageCount(items) + getString(R.string.hb_right_all_apps_hold_ok_menu), 13);
         if (resizing) {
             footer.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
@@ -1115,6 +1166,65 @@ public class MainActivity extends Activity {
         }
         FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(-1, dp(40), Gravity.BOTTOM);
         fp.setMargins(dp(resizing ? 44 : 50), 0, dp(resizing ? 44 : 50), dp(10)); surface.addView(footer, fp);
+    }
+    private FavoritesWidgetView activeFavorites(){return favoritesBrowser!=null?favoritesBrowser:favoritesWidget;}
+    private View favoritesTile(boolean ribbon) {
+        favoritesWidget=newFavorites(ribbon);return favoritesWidget;
+    }
+    private FavoritesWidgetView newFavorites(boolean ribbon) {
+        return new FavoritesWidgetView(this,favoriteOrderPreview==null?layout.favorites:favoriteOrderPreview,
+            key->appTile(key,true),key->{if(!key.isEmpty())favoriteFocus=key;focused=HomeLayout.FAVORITES;homeFocus=focused;},
+            this::activateFavorite,this::favoriteContext,paletteColors,uiBackgroundOpacity,
+            layout.appUsesBanner(true),reducedMotion(),ribbon,favoriteFocus);
+    }
+    private void activateFavorite() {
+        FavoritesWidgetView panel=activeFavorites();String key=panel==null?"":panel.activeKey();
+        if(key.isEmpty()){if(layout.favorites.isEmpty())showApps();else openFavoritesBrowser();}
+        else activate(key);
+    }
+    private void favoriteContext() {
+        FavoritesWidgetView panel=activeFavorites();String key=panel==null?"":panel.activeKey();
+        if(favoritesBrowser!=null)dismissMenu();
+        if(key.isEmpty()){favoritesActions();return;}
+        App app=apps.get(key);
+        menu(app==null?getString(R.string.hb_unavailable_app):app.label,
+            new String[]{getString(R.string.hb_move),getString(R.string.hb_unfavorite),getString(R.string.hb_fav_widget_actions),getString(R.string.hb_more)},i->{
+                if(i==0){favoriteOrderPreview=new ArrayList<>(layout.favorites);favoriteMovingKey=key;favoriteFocus=key;focused=HomeLayout.FAVORITES;render(0);}
+                else if(i==1){layout.removeFavorite(key);save(getString(R.string.hb_fav_changed));render(0);}
+                else if(i==2)favoritesActions();
+                else menu(getString(R.string.hb_more),new String[]{getString(R.string.hb_uninstall_app),getString(R.string.hb_app_info)},a->{
+                    if(a==0)uninstall(key);else if(app!=null)open(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,Uri.parse("package:"+app.component.getPackageName())));
+                });
+            });
+    }
+    private void favoritesActions() {
+        menu(getString(R.string.hb_fav_title),getString(R.string.hb_fav_remove_hint),new String[]{getString(R.string.hb_move),getString(R.string.hb_resize),getString(R.string.hb_appearance),getString(R.string.hb_more)},i->{
+            if(i==0)startMove(HomeLayout.FAVORITES);
+            else if(i==1)startResize(HomeLayout.FAVORITES);
+            else if(i==2)homeAppSizeSettings();
+            else menu(getString(R.string.hb_fav_title),getString(R.string.hb_fav_remove_hint),new String[]{getString(R.string.hb_fav_manage),getString(R.string.hb_fav_first_page),getString(R.string.hb_remove_from_home)},a->{
+                if(a==0)showApps();else if(a==1)chooseFirstPageRain();else deleteTile(HomeLayout.FAVORITES);
+            });
+        });
+    }
+    private void openFavoritesBrowser() {
+        dismissMenu();cancelOk();activeMenu=null;menuStack.clear();
+        overlay=new FrameLayout(this);overlay.setBackgroundColor(paletteColors.scrim);
+        favoritesBrowser=newFavorites(false);
+        FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(-1,-1);lp.setMargins(dp(32),dp(32),dp(32),dp(32));
+        overlay.addView(favoritesBrowser,lp);surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        root.addView(overlay,new FrameLayout.LayoutParams(-1,-1));favoritesBrowser.post(favoritesBrowser::enter);
+    }
+    private void chooseFirstPageRain() {
+        List<String> rains=new ArrayList<>();for(String key:layout.widgets)if(HomeLayout.isRainWidget(key))rains.add(key);
+        if(rains.isEmpty())rains.add(HomeLayout.RAIN);
+        String[] names=new String[rains.size()];for(int i=0;i<names.length;i++){RainSettings r=layout.rainSettings.get(rains.get(i));names[i]=getString(R.string.hb_rain_rain)+" "+(i+1)+(r==null?"":" · "+r.displayName());}
+        menu(getString(R.string.hb_fav_first_page),names,i->firstPagePreview(rains.get(i)));
+    }
+    private void firstPagePreview(String rain) {
+        try{firstPageBefore=HomeLayout.parse(layout.encode());}catch(Exception e){return;}
+        layout.convertFavorites();layout.arrangeFirstPage(rain,homeGridColumns(),homeGridRows(),false);
+        allApps=false;homePage=0;focused=rain;render(0);
     }
     private CalendarWidgetController calendarController(String key) {
         return new CalendarWidgetController(this, calendarSnapshot, layout.calendarSettings.get(key), this::menu,
@@ -1325,6 +1435,7 @@ public class MainActivity extends Activity {
     }
     private void restoreFocus() {
         View target = tiles.get(focused);
+        if(!allApps&&HomeLayout.FAVORITES.equals(focused)&&favoritesWidget!=null){favoritesWidget.restore();return;}
         if (target == null && allApps) {
             List<String> items = appItems();
             if (!items.isEmpty()) {
@@ -1449,8 +1560,30 @@ public class MainActivity extends Activity {
             }
             return true;
         }
+        if(firstPageBefore!=null){
+            if(event.getAction()==KeyEvent.ACTION_UP&&(ok||key==KeyEvent.KEYCODE_BACK)){
+                if(!ok)layout=firstPageBefore;firstPageBefore=null;
+                if(ok)save(getString(R.string.hb_fav_arranged));render(0);
+            }return true;
+        }
+        if(favoriteOrderPreview!=null){
+            if(event.getAction()==KeyEvent.ACTION_DOWN&&key>=KeyEvent.KEYCODE_DPAD_UP&&key<=KeyEvent.KEYCODE_DPAD_RIGHT){
+                int from=favoriteOrderPreview.indexOf(favoriteMovingKey);
+                int delta=key==KeyEvent.KEYCODE_DPAD_LEFT?-1:key==KeyEvent.KEYCODE_DPAD_RIGHT?1:key==KeyEvent.KEYCODE_DPAD_UP?-1:1;
+                HomeLayout.move(favoriteOrderPreview,from,Math.max(0,Math.min(favoriteOrderPreview.size()-1,from+delta)));render(0);
+            }
+            if(event.getAction()==KeyEvent.ACTION_UP&&(ok||key==KeyEvent.KEYCODE_BACK)){
+                if(ok){layout.favorites.clear();layout.favorites.addAll(favoriteOrderPreview);save(getString(R.string.hb_fav_changed));}
+                favoriteOrderPreview=null;favoriteMovingKey=null;render(0);
+            }return true;
+        }
         if (ok && event.getAction() == KeyEvent.ACTION_UP && consumeOkUp) {
             consumeOkUp = false; return true;
+        }
+        if(favoritesBrowser!=null){
+            if(key==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)dismissMenu();return true;}
+            if(ok){if(event.getAction()==KeyEvent.ACTION_DOWN&&event.getRepeatCount()==0){okHeld=true;handler.postDelayed(heldOk,600);}else if(event.getAction()==KeyEvent.ACTION_UP){boolean press=okHeld;cancelOk();if(press)activateFavorite();}return true;}
+            if(key>=KeyEvent.KEYCODE_DPAD_UP&&key<=KeyEvent.KEYCODE_DPAD_RIGHT){if(event.getAction()==KeyEvent.ACTION_DOWN&&!favoritesBrowser.navigate(key))favoritesBrowser.header();return true;}
         }
         if (overlay != null) {
             if (calendarDayEditor) {
@@ -1501,7 +1634,7 @@ public class MainActivity extends Activity {
         }
         if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
             if (event.getAction() == KeyEvent.ACTION_UP) {
-                if (moving) cancelMove(); else if (allApps) showHome();
+                if (moving) cancelMove(); else if (allApps) showHome(); else if(favoritesWidget!=null&&favoritesWidget.browsing())favoritesWidget.header();
             }
             return true;
         }
@@ -1589,6 +1722,7 @@ public class MainActivity extends Activity {
             }
             return;
         }
+        if(HomeLayout.FAVORITES.equals(focused)&&favoritesWidget!=null&&favoritesWidget.navigate(key))return;
         HomeLayout.Cell current = null;
         for (HomeLayout.Cell c : visibleCells) if (c.key.equals(focused)) current = c;
         if (current == null) {
@@ -1668,6 +1802,7 @@ public class MainActivity extends Activity {
         if (SETTINGS.equals(key)) { homeSettings(); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
+        if(HomeLayout.FAVORITES.equals(key)){activateFavorite();return;}
         if (HomeLayout.isRainWidget(key)) { rainFor(key).details(); return; }
         if (HomeLayout.isCalendarWidget(key)) { calendarController(key).actions(); return; }
         if (isAirWidgetKey(key)) { airFor(key).showActions(); return; }
@@ -1680,6 +1815,7 @@ public class MainActivity extends Activity {
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (key.isEmpty() || SETTINGS.equals(key)) { homeSettings(); return; }
+        if(HomeLayout.FAVORITES.equals(key)){favoriteContext();return;}
         if (HomeLayout.isRainWidget(key)) {
             menu(getString(R.string.hb_rain_rain),new String[]{getString(R.string.hb_rain_configure),getString(R.string.hb_move),getString(R.string.hb_resize),getString(R.string.hb_delete_widget)}, i -> {
                 if(i==0) rainFor(key).configure(); else if(i==1) startMove(key); else if(i==2) rainSize(key); else deleteTile(key);
@@ -1709,13 +1845,13 @@ public class MainActivity extends Activity {
         App app = apps.get(key);
         String deleteLabel = allApps ? getString(R.string.hb_hide_from_all_apps) : getString(R.string.hb_remove_from_home);
         menu(app == null ? getString(R.string.hb_unavailable_app) : app.label, getString(R.string.hb_choose_an_action_for_this_app),
-                new String[]{getString(R.string.hb_move), layout.widgets.contains(key) ? getString(R.string.hb_unfavorite) : getString(R.string.hb_favorite), deleteLabel, getString(R.string.hb_more)}, choice -> {
+                new String[]{getString(R.string.hb_move), layout.isFavorite(key) ? getString(R.string.hb_unfavorite) : getString(R.string.hb_favorite), deleteLabel, getString(R.string.hb_more)}, choice -> {
                     switch (choice) {
                         case 0: startMove(key); break;
                         case 1:
-                            if (layout.widgets.contains(key)) { layout.widgets.remove(key); layout.homePositions.remove(key); }
-                            else layout.favorite(key);
-                            save(layout.widgets.contains(key) ? getString(R.string.hb_added_app_to_home) : getString(R.string.hb_removed_app_from_home));
+                            if (layout.isFavorite(key)) { layout.removeFavorite(key);layout.widgets.remove(key); layout.homePositions.remove(key); }
+                            else layout.addFavorite(key);
+                            save(layout.isFavorite(key) ? getString(R.string.hb_added_app_to_home) : getString(R.string.hb_removed_app_from_home));
                             render(0); break;
                         case 2: deleteTile(key); break;
                         default: menu(getString(R.string.hb_more_39) + (app == null ? getString(R.string.hb_hint_app) : app.label), getString(R.string.hb_android_owns_app_and_system_actions),
@@ -1733,7 +1869,7 @@ public class MainActivity extends Activity {
     private void deleteTile(String key) {
         boolean dashboard = !allApps;
         App app = apps.get(key);
-        String label = HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_rain) : HomeLayout.isCalendarWidget(key) ? "calendar widget" : isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : app == null ? "app shortcut" : app.label;
+        String label = HomeLayout.FAVORITES.equals(key) ? getString(R.string.hb_fav_title) : HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_rain) : HomeLayout.isCalendarWidget(key) ? "calendar widget" : isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : app == null ? "app shortcut" : app.label;
         layout.delete(key, dashboard);
         save(dashboard ? getString(R.string.hb_hint_removed) + label + getString(R.string.hb_hint_from_home) : getString(R.string.hb_hint_hid) + label + getString(R.string.hb_hint_from_all_apps));
         if (dashboard && !layout.widgets.isEmpty()) {
@@ -1803,9 +1939,9 @@ public class MainActivity extends Activity {
         menu(getString(R.string.hb_widgets_restore), getString(R.string.hb_add_a_widget_or_restore_an_app_shortcut),
                 new String[]{getString(R.string.hb_add_widget), getString(R.string.hb_restore_hidden_app)}, choice -> {
                     if (choice == 0) menu(getString(R.string.hb_add_to_home), getString(R.string.hb_choose_a_tile_to_add),
-                            new String[]{getString(R.string.hb_air_quality_widget), getString(R.string.hb_cal_calendar), getString(R.string.hb_rain_rain), getString(R.string.hb_favorite_an_app_from_all_apps)}, add -> {
-                                if (add == 3) { allApps = false; showApps(); return; }
-                                String key = add == 0 ? newWidgetKey(HomeLayout.AIR) : add == 2 ? newWidgetKey(HomeLayout.RAIN) : HomeLayout.CALENDAR;
+                            new String[]{getString(R.string.hb_air_quality_widget), getString(R.string.hb_cal_calendar), getString(R.string.hb_rain_rain), getString(R.string.hb_fav_title), getString(R.string.hb_favorite_an_app_from_all_apps)}, add -> {
+                                if (add == 4) { allApps = false; showApps(); return; }
+                                String key = add == 0 ? newWidgetKey(HomeLayout.AIR) : add == 2 ? newWidgetKey(HomeLayout.RAIN) : add == 3 ? HomeLayout.FAVORITES : HomeLayout.CALENDAR;
                                 if (!layout.widgets.contains(key)) { layout.addPanel(key);
                                     if (HomeLayout.isRainWidget(key)) layout.setPanelSpan(key,Math.min(4,homeGridColumns()),Math.min(3,homeGridRows()));
                                     save(HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_changed) : getString(R.string.hb_cal_added)); }
@@ -2732,6 +2868,7 @@ public class MainActivity extends Activity {
         }
     }
     private void dismissMenu() {
+        favoritesBrowser=null;
         calendarDayEditor = false;
         backgroundInfo = false;
         backgroundStatusText = null;

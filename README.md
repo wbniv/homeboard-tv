@@ -57,11 +57,26 @@ with independent persistence and Undo. Full bilingual UI and Thai copy acceptanc
 remain pending; see the [language plan](docs/plans/2026-11-16-language-setting-and-translations.md)
 and [validation limits](docs/testing/2026-11-16-thai-language.md).
 
+## Favorites on the first page
+
+Rain and a resizable **Favorites** panel share Home page 1. Existing favorite apps
+keep their order inside the panel; adding more apps scrolls within its fixed area.
+Directional wedges show additional apps, with no scrollbars. One-row panels scroll
+sideways; taller panels scroll vertically. Small panels open a larger Favorites
+browser with OK.
+
+OK launches the focused app. Back reaches the panel header; hold OK on an app for
+app actions, or on the header for widget Move/Resize and artwork options. Removing
+the panel keeps its app list for re-adding. The first arrangement is saved once and
+supports Undo. See the [layout and interaction plan](docs/plans/2026-11-16-first-page-rain-and-favorites-container.md)
+and [validation record](docs/testing/2026-11-17-favorites-container.md).
+
 ## Rain forecast widget
 
-Add **Home settings → Widgets / Restore → Add widget → Rain**, then choose a city,
-coordinates, street address (when the TV's address service is available), or device
-location. The default is the next 24 hours by hour followed by six daily forecasts;
+Add **Home settings → Widgets / Restore → Add widget → Rain**. Rain defaults to
+device location and uses an existing location permission automatically. Hold OK →
+Location to choose a fixed city, coordinates or street address, or return to
+Device location · Automatic. The default is the next 24 hours by hour followed by six daily forecasts;
 both ranges, units, label and cloud animation are configurable per widget.
 
 Hold OK for configuration and size presets. **4×3 is recommended**; 1×1 glance,

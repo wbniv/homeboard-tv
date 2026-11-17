@@ -1,0 +1,36 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 48,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 9,
+      "capture": "rain-and-favorites-page-one"
+    },
+    {
+      "at": 13,
+      "capture": "favorites-app-focus"
+    },
+    {
+      "at": 21,
+      "capture": "favorites-scrolled"
+    },
+    {
+      "at": 25,
+      "capture": "favorites-header"
+    },
+    {
+      "at": 31,
+      "capture": "favorites-1x1"
+    },
+    {
+      "at": 38,
+      "capture": "favorites-browser"
+    },
+    {
+      "at": 46,
+      "capture": "favorites-restored"
+    }
+  ]
+}
