@@ -1,0 +1,21 @@
+{
+  "repository": "https://github.com/Gathin23/cleanyourtv",
+  "commit": "3ece7766ad5d6af79a2c4dd73e77b4b9623dfeca",
+  "files": {
+    "LICENSE": "e0941eca3b403700368b495fd9a91af4e15242fabb992ed27af95c0d4cdc6f83",
+    "tools/recovery.py": "e9034cf148396fe539fb7c7d7deb9a7e9ec3c4d7894775698bc2bd28c238777b",
+    "tools/disable.sh": "08ee0b8a3347195bafac2bc7aa65b5ad9bd379c231813fe18022f659f3161c73",
+    "tools/restore.sh": "bde4f92c883730aa2e592cfb44eed9d09ca5fca9da2ec8db993e1d54a57f802f",
+    "tests/test_recovery_record.py": "0038642aa738602143cfb0aa8cedc70ae01b2b67685e691189729b02013d20dc",
+    "tests/test_recovery_address_change.py": "acf235abc4e3f10205c20e6067621de7cdb1b3d238fb2941bd40468fe64f3ef8",
+    "tests/test_recovery_record_lan_address.py": "29cf5fe391457ff7f8e31cf3487e513ca254272ad348707c1c2656e7afe78750",
+    "examples/google-chromecast-gtv-4k/tv.json": "37f9b7e7f654595300e0091ff64677d0e26fb84896b40a110c7778773e41a7d5",
+    "examples/google-chromecast-gtv-4k/debloat.txt": "cb63b75fb90fdc721d78e676e3e0e455cb2cff7ae628729244faceac297401ae",
+    "examples/google-chromecast-gtv-4k/debloat-keep-cast.txt": "c63b91d10367f86de57909c42dfea9bfb026ab9df5c933e65ed54c9ad7ea8f29",
+    "examples/google-chromecast-gtv-hd/tv.json": "ada22d23a43fa296c25217af6fe7c091ea682c2b76f9bc21fef6a94ae02a73a2",
+    "examples/google-chromecast-gtv-hd/debloat.txt": "35f2c8374aac7bfb610a03d5c1a6ce5afcd1be17f7d22c10ab8bbb196e51d2a7",
+    "docs/TROUBLESHOOTING.md": "ee314065b190e2dba4f577abb527dc9facbdb90c26c30136490c94870484d7bc"
+  },
+  "local_changes": [],
+  "transport_included": false
+}

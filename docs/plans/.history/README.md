@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/a4aa25c) | Use Thai Buddhist Era dates and 65% widget backgrounds |
 | [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/539e9fc) | Complete TV controls and wallpaper provider directory |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/67c700a) | Reveal wallpaper previews and align Appearance directions |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/c718d87) | Use saved six-place World clock defaults |
@@ -27,6 +28,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+a4aa25c	author	Will Norris
+a4aa25c	added	1
+a4aa25c	deleted	0
+a4aa25c	files	1
 539e9fc	author	Will Norris
 539e9fc	added	10
 539e9fc	deleted	0

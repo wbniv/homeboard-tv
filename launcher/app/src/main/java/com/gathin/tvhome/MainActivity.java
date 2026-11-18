@@ -2282,7 +2282,7 @@ public class MainActivity extends Activity {
     private void homeSettings() {
         menu(getString(R.string.hb_home_settings), getString(R.string.hb_choose_an_area_to_customize), new String[]{
                 getString(R.string.hb_widgets_restore), getString(R.string.hb_appearance), getString(R.string.hb_home_behavior), getString(R.string.hb_language), getString(R.string.hb_undo_history),
-                getString(R.string.hb_default_home_app) + (isDefaultHomeApp() ? "Homeboard" : getString(R.string.hb_choose)), getString(R.string.hb_about_homeboard_tv),getString(R.string.hb_phone_title)}, choice -> {
+                getString(R.string.hb_default_home_app) + (isDefaultHomeApp() ? "Homeboard" : getString(R.string.hb_choose)), getString(R.string.hb_about_homeboard_tv),getString(R.string.hb_phone_title),getString(R.string.hb_cleanup_title)}, choice -> {
             switch (choice) {
                 case 0: widgetsAndRestore(); break;
                 case 1: appearanceSettings(); break;
@@ -2292,9 +2292,31 @@ public class MainActivity extends Activity {
                 case 5: chooseDefaultHomeApp(); break;
                 case 6: aboutHomeboard(); break;
                 case 7: if(phoneEditor==null)phoneEditor=new PhoneEditor(this);phoneEditor.open();break;
+                case 8: cleanupInstructions(); break;
                 default: break;
             }
         });
+    }
+
+    private void cleanupInstructions() {
+        openMenu(new MenuSpec(getString(R.string.hb_cleanup_title), this::drawCleanupInstructions));
+    }
+
+    private void drawCleanupInstructions() {
+        if (overlay != null) root.removeView(overlay);
+        overlay = new FrameLayout(this); overlay.setBackgroundColor(paletteColors.scrim);
+        LinearLayout panel = new LinearLayout(this); panel.setOrientation(LinearLayout.VERTICAL);
+        panel.setPadding(dp(26), dp(22), dp(26), dp(20));
+        panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
+        TextView heading = text(getString(R.string.hb_cleanup_title), 25); heading.setTypeface(null, Typeface.BOLD);
+        panel.addView(heading);
+        TextView description = text(getString(R.string.hb_cleanup_intro) + "\n\n" + getString(R.string.hb_cleanup_setup), 18);
+        description.setPadding(0, dp(18), 0, dp(18)); description.setLineSpacing(0, 1.12f); panel.addView(description);
+        View back = infoButton(getString(R.string.hb_hint_back), this::backMenu);
+        panel.addView(back, new LinearLayout.LayoutParams(-1, dp(48)));
+        int width = Math.min(dp(800), getResources().getDisplayMetrics().widthPixels - dp(80));
+        overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
+        root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); updateUndoHint(); back.requestFocus();
     }
 
     private void widgetsAndRestore() {

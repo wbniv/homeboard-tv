@@ -24,10 +24,21 @@ tasks:
   run:
     desc: Run a command inside the build container
     cmds: ['dev/container.sh run {{.CLI_ARGS}}']
+  cleanup:check:
+    desc: Verify copied cleanup code and run fake-TV recovery/fault tests in the container
+    cmds: ['dev/container.sh run python3 /workspace/dev/test_cleanup.py']
+  cleanup:serve:
+    desc: Open the local read-only TV cleanup inspection companion
+    cmds: ['python3 dev/cleanup_companion.py {{.CLI_ARGS}}']
+  cleanup:browser-check:
+    desc: Verify English/Thai cleanup inspection in Chromium and WebKit
+    cmds:
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/cleanup-browser-check.cjs'
   check:
     desc: Run calendar pipeline checks, Java tests and Android lint
     cmds:
       - task: calendar:check
+      - task: cleanup:check
       - 'dev/container.sh run python3 /workspace/dev/test_deploy.py'
       - 'dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest :app:lintDebug'
   phone:setup:

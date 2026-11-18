@@ -56,4 +56,7 @@
     <string name="hb_time_hours_minutes">%1$dh %2$dm</string>
     <string name="hb_time_days_hours">%1$dd %2$dh</string>
     <string name="hb_time_ago">%1$s ago</string>
+    <string name="hb_cleanup_title">TV cleanup · Inspect only</string>
+    <string name="hb_cleanup_intro">Inspect this TV before considering cleanup. The setup companion shows the exact model and firmware. Your apps, Homeboard, casting and settings stay as they are.</string>
+    <string name="hb_cleanup_setup">On your computer, open the Homeboard project and run: task cleanup:serve\nChoose this TV in the companion. A new TV must first be enrolled through the device coordinator. Package changes require an exact reviewed profile and a verified restore path.</string>
 </resources>

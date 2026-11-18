@@ -1,0 +1,77 @@
+{
+  "version": "0.1.64",
+  "live_inspection": {
+    "job": "J-548c10f653be",
+    "device": "chromecast-test-01",
+    "status": "succeeded",
+    "foreground_unchanged": true,
+    "apply_available": false
+  },
+  "upstream_commit": "3ece7766ad5d6af79a2c4dd73e77b4b9623dfeca",
+  "cleanup_tests": 52,
+  "real_package_changes": false,
+  "screenshots": {
+    "cast1-instructions-en.png": "17ef064c22c1e767391bf19011bf468db5a1e34010f092f11a695e936a95872d",
+    "cast1-instructions-th.png": "6efd57fc4b86599cbe08bd4e6e69d9b20604d4bcce003c20e5c13279a0f62abd",
+    "chromium-en.png": "eb69164fb9b47d5b00b4efc168c107c1bbddb673fd8ab44091699b00791c198a",
+    "chromium-th.png": "134afea56654792e42917845203f18c459e7880077f870a4edee23961587f0a3",
+    "companion-cast1-live.png": "3bbfd0f9606703051622fc74b705b36658a8517fa08e403bcc94f2def0f3496d",
+    "webkit-en.png": "33c79f50b9bf0cfe47fcb6185c32707d5f413cd9e20aed2f16f9811673fedf5e",
+    "webkit-th.png": "0d3870096850c295bda845df642c77c58c8a7a3ede777a5806349136a5006e45"
+  },
+  "apk_sha256": "6f1174cf94649bc585036ff62d38df5a11a083a1f9eaf844c250ffc3aa5edfe0",
+  "jvm_tests": 478,
+  "translation_resources": 639,
+  "deployment": {
+    "cast1": {
+      "job": "J-d3dea4df4c0d",
+      "status": "succeeded"
+    },
+    "cast2": {
+      "job": "J-d6f5259332fa",
+      "admission": "granted",
+      "status": "failed",
+      "reason": "personal-install-in-use"
+    }
+  },
+  "native_initial_attempt": {
+    "job": "J-3cbdf1b84845",
+    "status": "failed",
+    "reason": "target-left-foreground",
+    "screenshot": false
+  },
+  "source_base": "127fdfec42629de887ee07d9e60aedf5c6c5d97a",
+  "source_contains_local_changes": true,
+  "android_lint": "passed",
+  "native": {
+    "english": {
+      "job": "J-5520e2fe4010",
+      "version": "0.1.64",
+      "device": "chromecast-test-01",
+      "coordinator": "succeeded",
+      "proof": {
+        "status": "pass",
+        "language": "en",
+        "checks": "Actual Settings action, complete instructions, Back to Settings, unchanged household preferences and language",
+        "version": "0.1.64"
+      }
+    },
+    "thai": {
+      "job": "J-f900a455e565",
+      "version": "0.1.64",
+      "device": "chromecast-test-01",
+      "coordinator": "succeeded",
+      "proof": {
+        "status": "pass",
+        "language": "th",
+        "checks": "Actual Settings action, complete instructions, Back to Settings, unchanged household preferences and language",
+        "version": "0.1.64"
+      }
+    }
+  },
+  "browser_checks": {
+    "chromium": "passed",
+    "webkit": "passed",
+    "backend": "controlled HTTP fixture; live inspection verified separately"
+  }
+}

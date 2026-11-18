@@ -9,8 +9,13 @@ The public Homeboard repository is `https://github.com/wbniv/homeboard-tv`, conf
 license and font license are retained. The reference instruction files document upstream's
 contribution policy; they do not define this independent project's scope.
 
-The debloat/install scripts were intentionally omitted: device sessions belong to the shared
-coordinator. Compare future changes against the pinned upstream subtree in a temporary checkout;
+The initial launcher import omitted debloat/install scripts. The optional cleanup
+inspection milestone now carries a separately pinned subset of recovery code,
+original fake-TV tests and reference profiles under `vendor/cleanyourtv-cleanup/`.
+That subset retains its own license/hashes, includes no direct transport, and does
+not enable real cleanup. Device sessions still belong to the shared coordinator.
+See the [cleanup guide](../how-to/tv-cleanup.md).
+Compare future changes against the pinned upstream subtree in a temporary checkout;
 port focused fixes and update provenance deliberately. Do not blindly merge upstream root history
 into this extracted project.
 

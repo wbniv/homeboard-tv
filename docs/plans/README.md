@@ -59,6 +59,8 @@ missing rows on commit.*
 | [Provider testing spike and user installation](2026-11-18-provider-testing-spike-and-installation.md) | Defines a bounded 18-provider spike, security exclusions, evidence requirements and a Google Play first installation flow without bundled APKs. | Implemented 0.1.59; seven Cast1 screenshots passed; Cast2 queued | Investigation / UX |
 | [Thai years and time presentation](2026-11-18-thai-years-and-time-presentation.md) | Thai BE years, localized duration units and selective metadata clock/stopwatch icons, following Parking Space and Python TUI conventions. | Implementation authorized; verification in progress | Localization / UX |
 
+| [Optional TV cleanup and restore](2026-11-18-tv-cleanup-and-restore.md) | Copies reviewed existing cleanup/recovery code and tests into an optional companion integration, with strict protection, scan-only defaults, restore-first gates, mockups and Cast1/Cast2 screenshot proof. | Read-only inspection milestone implemented; real cleanup gates open | Feature / Safety |
+
 ---
 
 ## How this index was derived

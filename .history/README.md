@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/539e9fc) | Complete TV controls and wallpaper provider directory |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/67c700a) | Reveal wallpaper previews and align Appearance directions |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/01eb586) | Add dashboard-first phone controls and native world clocks |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/460eea9) | Add a TV-approved phone editor for widgets and dashboard layout |
@@ -19,6 +20,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+539e9fc	author	Will Norris
+539e9fc	added	25
+539e9fc	deleted	5
+539e9fc	files	1
+539e9fc	body	Add fixed configurable clock cards, per-TV phone shortcuts, hold-Back Undo and independent widget background opacity. Add the TV and phone provider directory with reviewed Play/publisher links, QR fallback and Weather v2.11 exclusion; fix first-launch widget identity initialization.\n\nUpdate user guides, plans and compatibility dispositions. Record seven reviewed Cast1 directory/dashboard captures, four phone captures, QR decoding and four provider baselines. Container verification passed 472 JVM tests and lint; 0.1.59 is verified on Cast1 and queued for unreachable Cast2. Store round trips and remaining backend/account-dependent checks stay explicit.
 67c700a	author	Will Norris
 67c700a	added	1
 67c700a	deleted	1

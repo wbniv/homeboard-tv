@@ -56,4 +56,7 @@
     <string name="hb_time_hours_minutes">%1$d ชม. %2$d น.</string>
     <string name="hb_time_days_hours">%1$d วัน %2$d ชม.</string>
     <string name="hb_time_ago">%1$s ที่แล้ว</string>
+    <string name="hb_cleanup_title">ปรับลดแอปทีวี · ตรวจสอบอย่างเดียว</string>
+    <string name="hb_cleanup_intro">ตรวจสอบทีวีเครื่องนี้ก่อนพิจารณาปรับลดแอป โปรแกรมช่วยตั้งค่าจะแสดงรุ่นและเฟิร์มแวร์ให้แน่ชัด แอป Homeboard การแคสต์ และการตั้งค่าจะยังคงเดิม</string>
+    <string name="hb_cleanup_setup">บนคอมพิวเตอร์ เปิดโครงการ Homeboard แล้วเรียกใช้: task cleanup:serve\nเลือกทีวีเครื่องนี้ในโปรแกรมช่วยตั้งค่า ทีวีใหม่ต้องลงทะเบียนผ่านตัวประสานงานอุปกรณ์ก่อน การเปลี่ยนแพ็กเกจต้องมีโปรไฟล์ที่ตรวจทานตรงกับเครื่องและวิธีกู้คืนที่ผ่านการตรวจสอบ</string>
 </resources>

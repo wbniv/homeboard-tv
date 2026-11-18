@@ -47,3 +47,13 @@ Source: https://github.com/NanoHttpd/nanohttpd/tree/nanohttpd-project-2.3.1
 ZXing Core 3.5.4: Apache License 2.0. The Apache 2.0 text is packaged under
 `assets/licenses/projectivy-api-apache-2.0.txt`; upstream copyright notices remain
 in the dependency. Source: https://github.com/zxing/zxing/tree/zxing-3.5.4
+
+## Cleanup companion source subset
+
+CleanYourTV cleanup/recovery primitives, original fake-TV tests, reference profiles
+and test documentation: MIT, copyright 2026 Gathin. Original license and exact
+file hashes are retained in `vendor/cleanyourtv-cleanup/LICENSE` and
+`vendor/cleanyourtv-cleanup/provenance.json` at source revision
+`3ece7766ad5d6af79a2c4dd73e77b4b9623dfeca`. These computer-side files are not bundled
+into the TV APK. The Homeboard companion uses an additional strict policy/journal
+adapter and coordinator-owned inspection; upstream direct transport is not copied.

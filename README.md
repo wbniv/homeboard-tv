@@ -132,12 +132,23 @@ See the [rain plan and size gallery](docs/plans/2026-11-16-rain-widget.md) and
 
 ## Current verification
 
-Build **0.1.59** passed 472 JVM tests and Android lint. Seven Cast1 directory and
-dashboard captures, four phone browser captures, and provider baseline evidence
-are in the [screenshot verification record](docs/testing/2026-11-18-provider-directory.md).
-Cast1 is installed and launch-verified; the identical Cast2 install is queued while
-its coordinator connection is unavailable. Actual Play installation/return and
-backend/account-dependent provider checks remain unverified.
+An optional [TV cleanup inspection companion](docs/how-to/tv-cleanup.md) can inspect
+an enrolled TV through the coordinator, with an English/Thai report and a TV setup
+entry. It is currently read-only. Real cleanup requires a reviewed device profile,
+an approved package selection and independent restore acceptance. Selected
+CleanYourTV recovery code and original tests are separately pinned and licensed.
+
+Build **0.1.64** passed 478 JVM tests, 52 cleanup/recovery tests and Android lint.
+Cast1 is installed and launch-verified. The identical Cast2 install was submitted
+and admitted, but failed `personal-install-in-use`; installation there is
+unconfirmed. English/Thai companion captures, the real read-only Cast1 inspection
+and native instructions verification are recorded in the
+[cleanup verification record](docs/testing/2026-11-18-tv-cleanup.md).
+
+Earlier directory/dashboard captures and provider baseline evidence remain in the
+[provider verification record](docs/testing/2026-11-18-provider-directory.md).
+Actual Play installation/return and backend/account-dependent provider checks
+remain unverified.
 
 On Home or All Apps, **hold Back for one second to Undo**. A short Back keeps
 normal navigation. See the [Undo guide](docs/how-to/undo.md).

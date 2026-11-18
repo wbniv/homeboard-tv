@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1120" viewBox="0 0 1280 1120" role="img" aria-labelledby="title desc">
+<title id="title">Optional Homeboard TV cleanup and restore mockups</title>
+<desc id="desc">Six screens show entering cleanup, connecting a companion, read-only results, reviewing selected changes, a stopped operation and restoration. Labels and counts are illustrative.</desc>
+<rect width="1280" height="1120" fill="#eff3f5"/>
+<style>text{font-family:Arial,sans-serif;fill:#183042}.heading{font-size:30px;font-weight:700}.sub{font-size:18px;fill:#526877}.title{font-size:22px;font-weight:700}.body{font-size:18px}.muted{fill:#526877}.button{fill:white;font-weight:700;font-size:18px}.small{font-size:15px;fill:#526877}</style>
+<text class="heading" x="24" y="43">TV cleanup: optional, reviewed, reversible</text>
+<text class="sub" x="24" y="75">Copy proven cleanup and restore behavior. Keep Homeboard and everyday TV services.</text>
+<g transform="translate(24 100)"><rect width="604" height="316" rx="14" fill="white" stroke="#c9d5dc"/>
+<text class="title" x="20" y="34">01  TV · Settings → More → TV cleanup</text>
+<path d="M20 51H584" stroke="#dce4e8"/>
+<text class="body" x="22" y="82">An optional setup step for this TV.</text>
+<text class="body muted" x="22" y="108">Review unwanted background apps with a companion.</text>
+<text class="body" x="22" y="134">Your dashboard and casting stay as they are.</text>
+<text class="body muted" x="22" y="160">Nothing changes when you open this screen.</text>
+<text class="body muted" x="22" y="186">Use your trusted setup companion to continue.</text>
+<text class="body muted" x="22" y="212">Recovery is available even if Homeboard is closed.</text>
+<rect x="20" y="262" width="310" height="38" rx="7" fill="#126d68"/>
+<text class="button" x="34" y="287">Setup instructions / QR</text>
+<text class="body muted" x="352" y="287">Back</text>
+</g>
+<g transform="translate(652 100)"><rect width="604" height="316" rx="14" fill="white" stroke="#c9d5dc"/>
+<text class="title" x="20" y="34">02  Companion · Confirm your TV</text>
+<path d="M20 51H584" stroke="#dce4e8"/>
+<text class="body" x="22" y="82">Living room · Cast1</text>
+<text class="body muted" x="22" y="108">Verified device and firmware shown here</text>
+<text class="body" x="22" y="134">Inspect this TV before choosing changes.</text>
+<text class="body muted" x="22" y="160">Reading installed apps and enabled states only.</text>
+<text class="body muted" x="22" y="186">A matching reviewed profile is required.</text>
+<text class="body muted" x="22" y="212">No package changes during inspection.</text>
+<rect x="20" y="262" width="310" height="38" rx="7" fill="#126d68"/>
+<text class="button" x="34" y="287">Inspect this TV</text>
+<text class="body muted" x="352" y="287">Cancel</text>
+</g>
+<g transform="translate(24 436)"><rect width="604" height="316" rx="14" fill="white" stroke="#c9d5dc"/>
+<text class="title" x="20" y="34">03  Scan results · Review only</text>
+<path d="M20 51H584" stroke="#dce4e8"/>
+<text class="body" x="22" y="82">Profile matched · revision shown in Details</text>
+<text class="body muted" x="22" y="108">2 optional suggestions · 0 selected</text>
+<text class="body" x="22" y="134">Kept: Homeboard, stock Home, casting and updates</text>
+<text class="body muted" x="22" y="160">Kept: voice, streaming apps, network and inputs</text>
+<text class="body muted" x="22" y="186">No exact profile? No Apply action.</text>
+<text class="body muted" x="22" y="212">Nothing recommended is a valid result.</text>
+<rect x="20" y="262" width="310" height="38" rx="7" fill="#126d68"/>
+<text class="button" x="34" y="287">Review suggestions</text>
+<text class="body muted" x="352" y="287">Done</text>
+</g>
+<g transform="translate(652 436)"><rect width="604" height="316" rx="14" fill="white" stroke="#c9d5dc"/>
+<text class="title" x="20" y="34">04  Review · Your choices</text>
+<path d="M20 51H584" stroke="#dce4e8"/>
+<text class="body" x="22" y="82">☐ Manufacturer promotion service · explanation</text>
+<text class="body muted" x="22" y="108">☐ Optional brand recommendations · explanation</text>
+<text class="body" x="22" y="134">Protected functions stay on. All start unselected.</text>
+<text class="body muted" x="22" y="160">Review shows exact names and selected count.</text>
+<text class="body muted" x="22" y="186">Restore point must be saved and verified first.</text>
+<text class="body muted" x="22" y="212">Apply only the changes you explicitly select.</text>
+<rect x="20" y="262" width="310" height="38" rx="7" fill="#126d68"/>
+<text class="button" x="34" y="287">Apply N selected changes</text>
+<text class="body muted" x="352" y="287">Cancel</text>
+</g>
+<g transform="translate(24 772)"><rect width="604" height="316" rx="14" fill="white" stroke="#c9d5dc"/>
+<text class="title" x="20" y="34">05  Stopped · Check the actual result</text>
+<path d="M20 51H584" stroke="#dce4e8"/>
+<text class="body" x="22" y="82">1 verified change · remaining items not attempted</text>
+<text class="body muted" x="22" y="108">Connection lost after the next command.</text>
+<text class="body" x="22" y="134">Its outcome is unknown until checked.</text>
+<text class="body muted" x="22" y="160">No automatic replay; the journal is retained.</text>
+<text class="body muted" x="22" y="186">Restore remains available from the companion.</text>
+<text class="body muted" x="22" y="212">The screen does not claim successful completion.</text>
+<rect x="20" y="262" width="310" height="38" rx="7" fill="#126d68"/>
+<text class="button" x="34" y="287">Check result</text>
+<text class="body muted" x="352" y="287">Review restore</text>
+</g>
+<g transform="translate(652 772)"><rect width="604" height="316" rx="14" fill="white" stroke="#c9d5dc"/>
+<text class="title" x="20" y="34">06  Restore · This cleanup session</text>
+<path d="M20 51H584" stroke="#dce4e8"/>
+<text class="body" x="22" y="82">Review changes made by this session.</text>
+<text class="body muted" x="22" y="108">Restore one item or the whole session.</text>
+<text class="body" x="22" y="134">Previously disabled apps remain disabled.</text>
+<text class="body muted" x="22" y="160">Your original Home assignment is preserved.</text>
+<text class="body muted" x="22" y="186">Each restored state is checked on the TV.</text>
+<text class="body muted" x="22" y="212">Unresolved items remain clearly listed.</text>
+<rect x="20" y="262" width="310" height="38" rx="7" fill="#126d68"/>
+<text class="button" x="34" y="287">Restore reviewed changes</text>
+<text class="body muted" x="352" y="287">Back</text>
+</g>
+<text class="small" x="24" y="1110">DESIGN MOCKUPS · Example labels/counts only; these are not package recommendations or device proof.</text>
+</svg>
