@@ -164,6 +164,9 @@ provider using its Google Play link or phone QR code, return to Homeboard, then
 background. **Images & videos · Projectivy** lists installed providers.
 [Provider installation guide](provider-directory.md).
 
+New layouts and the opacity control’s **Reset** use **65%**; existing saved
+opacity choices are kept.
+
 **Appearance → Widget background opacity** adjusts card fills from transparent to
 opaque. It leaves text, controls and wallpaper/video brightness alone. Wallpaper
 rotation and dimming are separate provider options. Back cancels a preview;
@@ -270,7 +273,10 @@ selected across restarts independently of the TV's system language.
 A change returns to Home settings in the selected language. Use **Undo** to
 restore the previous language mode. Follow device chooses the first supported
 English/Thai device preference, with English as the fallback. This setting changes
-Homeboard's interface; installed apps and Android-owned screens retain their own
+Homeboard's interface; Thai uses Buddhist Era years (2569 for 2026 CE), while
+English uses CE. Dates keep the same actual day and city time zone. Supporting
+timestamp labels use ⏲ and elapsed/age labels use ⏱ with localized units; the
+clock itself stays undecorated. Installed apps and Android-owned screens retain their own
 language settings. Thai copy and TV rendering still require the acceptance checks
 listed in the [worktree validation record](../testing/2026-11-16-thai-language.md).
 

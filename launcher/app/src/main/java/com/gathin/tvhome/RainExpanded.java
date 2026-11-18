@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +62,7 @@ final class RainExpanded implements WidgetExpansion.Content {
         RainForecast.Period period=f.interval(start,end);hours=period.hours;
         index=0;for(int i=0;i<hours.size();i++)if(hours.get(i).start==selected){index=i;break;}
         if(!hours.isEmpty())selected=hours.get(index).start;
-        String update=controller.fetchedAt>0?controller.time(controller.fetchedAt/1000,"dd MMM HH:mm"):t(R.string.hb_fs_missing);
+        String update=controller.fetchedAt>0?DisplayTime.CLOCK+controller.time(controller.fetchedAt/1000,"dd MMM HH:mm"):t(R.string.hb_fs_missing);
         summary.setText(controller.settings().displayName()+" · "+f.zone+"\n"+t(R.string.hb_fs_total)+": "+controller.amount(period.mm)+" · "+t(R.string.hb_fs_peak)+": "+controller.chance(period.chance)+" · "+(period.complete?"":t(R.string.hb_fs_partial))+"\n"+t(R.string.hb_fs_updated)+": "+update+" · "+controller.status());
         long wettest=period.wettestThreeHours();if(wettest>=0)summary.append(" · "+t(R.string.hb_fs_wettest)+": "+controller.time(wettest,"HH:mm")+"–"+controller.time(wettest+10800,"HH:mm"));
         updateDetail();chart.invalidate();

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.format.DateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.time.zone.ZoneOffsetTransition;
 import java.util.Locale;
 
@@ -18,7 +17,7 @@ final class WorldClockLabels {
     static String time(Context c,WorldClockSettings s,Instant at,ZoneId zone,boolean seconds) {
         return WorldClockModel.time(at,zone,locale(c),twelve(c,s),seconds);
     }
-    static String date(Context c,Instant at,ZoneId zone) { return DateTimeFormatter.ofPattern("EEE d MMM uuuu",locale(c)).withZone(zone).format(at); }
+    static String date(Context c,Instant at,ZoneId zone) { return DisplayTime.formatter("EEE d MMM uuuu",locale(c)).withZone(zone).format(at); }
     static String country(Context c,WorldClockSettings.Place p) { return p.country.isEmpty()?"":new Locale("",p.country).getDisplayCountry(locale(c)); }
     static String day(Context c,Instant at,ZoneId zone,ZoneId reference) {
         long days=WorldClockModel.dayDifference(at,zone,reference);
@@ -43,8 +42,8 @@ final class WorldClockLabels {
         ZoneOffsetTransition next=zone.getRules().nextTransition(at);
         b.append("\n").append(c.getString(R.string.hb_wc_transition)).append(": ");
         if(next==null) b.append(c.getString(R.string.hb_wc_no_transition));
-        else b.append(next.getDateTimeBefore()).append(" ").append(next.getOffsetBefore()).append(" → ")
-                .append(next.getDateTimeAfter()).append(" ").append(next.getOffsetAfter());
+        else b.append(DisplayTime.CLOCK).append(DisplayTime.formatter("d MMM uuuu HH:mm",locale(c)).format(next.getDateTimeBefore())).append(" ").append(next.getOffsetBefore()).append(" → ")
+                .append(DisplayTime.formatter("d MMM uuuu HH:mm",locale(c)).format(next.getDateTimeAfter())).append(" ").append(next.getOffsetAfter());
         b.append("\n\n").append(c.getString(R.string.hb_wc_clock_basis)).append("\n").append(c.getString(R.string.hb_wc_daytime_legend));
         if(!p.located()) b.append("\n").append(c.getString(R.string.hb_wc_no_position));
         return b.toString();

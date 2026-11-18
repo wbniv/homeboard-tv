@@ -42,7 +42,7 @@ final class HomeLayout {
     boolean circularIcons = true;
     String customWallpaper = "";
     WallpaperSettings wallpaper = new WallpaperSettings();
-    int uiOpacityPercent = 75;
+    int uiOpacityPercent = WallpaperSettings.DEFAULT_WIDGET_OPACITY;
     String palette = "midnight";
 
     static HomeLayout firstRun() {
@@ -140,7 +140,7 @@ final class HomeLayout {
         s.appBanners = j.optBoolean("appBanners", false);
         s.homeAppSize = APP_BANNER.equals(j.optString("homeAppSize", APP_SMALL)) ? APP_BANNER : APP_SMALL;
         s.circularIcons = j.optBoolean("circularIcons", true);
-        s.uiOpacityPercent = WallpaperSettings.percent(j.optInt("uiOpacityPercent", 75));
+        s.uiOpacityPercent = WallpaperSettings.percent(j.optInt("uiOpacityPercent", WallpaperSettings.DEFAULT_WIDGET_OPACITY));
         s.wallpaper = WallpaperSettings.parse(j.optJSONObject("wallpaper"));
         s.customWallpaper = j.optString("customWallpaper", "");
         s.reducedMotion = j.optBoolean("reducedMotion", false);

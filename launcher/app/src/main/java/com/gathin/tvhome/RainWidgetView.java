@@ -20,7 +20,7 @@ final class RainWidgetView extends View {
     private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
     private final TextPaint text=new TextPaint(Paint.ANTI_ALIAS_FLAG);
     private PaletteColors palette=PaletteColors.from(0xff101824);
-    private int opacity=75;
+    private int opacity=WallpaperSettings.DEFAULT_WIDGET_OPACITY;
     private boolean running,reducedMotion;
     private Instant now=Instant.now();
     private RainForecast.Period period;

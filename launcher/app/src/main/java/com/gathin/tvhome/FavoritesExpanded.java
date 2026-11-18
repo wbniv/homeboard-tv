@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -74,7 +73,7 @@ final class FavoritesExpanded implements WidgetExpansion.Content {
         if(c!=null)try{
             PackageInfo pkg=h.activity.getPackageManager().getPackageInfo(c.getPackageName(),0);
             text.append("\n\n").append(h.activity.getString(R.string.hb_fs_version)).append(": ").append(pkg.versionName==null?"—":pkg.versionName);
-            text.append("\n\n").append(h.activity.getString(R.string.hb_fs_updated)).append(": ").append(DateTimeFormatter.ofPattern("dd MMM uuuu",h.activity.getResources().getConfiguration().getLocales().get(0)).withZone(ZoneId.systemDefault()).format(Instant.ofEpochMilli(pkg.lastUpdateTime)));
+            text.append("\n\n").append(h.activity.getString(R.string.hb_fs_updated)).append(": ").append(DisplayTime.timestamp(h.activity,Instant.ofEpochMilli(pkg.lastUpdateTime),ZoneId.systemDefault(),"dd MMM uuuu"));
         }catch(PackageManager.NameNotFoundException e){text.append("\n\n").append(h.activity.getString(R.string.hb_fs_missing));}
         metadata.setText(text);String key=selected;
         if(reordering){

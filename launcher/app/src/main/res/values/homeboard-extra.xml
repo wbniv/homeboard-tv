@@ -52,4 +52,8 @@
     <string name="hb_provider_booru">Community images. General-rated default query reviewed; playback untested.</string>
     <string name="hb_provider_weather">Excluded: Google Play Protect blocked v2.11. Review found unprotected access to saved location settings. Keep protection enabled.</string>
     <string name="hb_provider_scope">Store availability does not establish safety or Homeboard compatibility. Server-dependent and source-only projects are listed in the testing documentation.</string>
+    <string name="hb_time_minutes">%1$dm</string>
+    <string name="hb_time_hours_minutes">%1$dh %2$dm</string>
+    <string name="hb_time_days_hours">%1$dd %2$dh</string>
+    <string name="hb_time_ago">%1$s ago</string>
 </resources>

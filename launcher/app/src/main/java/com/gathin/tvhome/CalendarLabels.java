@@ -3,7 +3,6 @@ package com.gathin.tvhome;
 import android.content.Context;
 import java.time.Instant;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 final class CalendarLabels {
     private CalendarLabels() { }
@@ -31,6 +30,6 @@ final class CalendarLabels {
         return c.getString(resource);
     }
     static String date(Context c, java.time.LocalDate date) {
-        return DateTimeFormatter.ofPattern("EEE d MMM uuuu", c.getResources().getConfiguration().getLocales().get(0)).format(date);
+        return DisplayTime.formatter("EEE d MMM uuuu", DisplayTime.locale(c)).format(date);
     }
 }

@@ -1,0 +1,451 @@
+{
+  "review_date": "2026-11-18",
+  "repository": "https://github.com/brevityA/CoreBuildsApps",
+  "revision": "f7c29360919ee0a802ad0e511fbcefb1353e832d",
+  "method": "Read repository JSON/text and API file metadata only; no video bytes downloaded.",
+  "feed_entries": 48,
+  "unique_videos": 48,
+  "total_unique_bytes": 152562928,
+  "missing_metadata": [],
+  "assets": [
+    {
+      "title": "Orbitals",
+      "author": "Core Builds",
+      "name": "coremotion-live-32-motion-orbitals.mp4",
+      "bytes": 3401133,
+      "git_blob_sha": "9e0f32e1d726c89a35a6295f56891b3412ad3d4b",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-32-motion-orbitals.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-32-motion-orbitals.mp4"
+    },
+    {
+      "title": "Warp",
+      "author": "Core Builds",
+      "name": "coremotion-live-33-motion-warp.mp4",
+      "bytes": 7728028,
+      "git_blob_sha": "e3c0cecaac2c1c4ef8cb3867afd478b89ed28120",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-33-motion-warp.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-33-motion-warp.mp4"
+    },
+    {
+      "title": "Fogbanks",
+      "author": "Core Builds",
+      "name": "coremotion-live-34-motion-fogbanks.mp4",
+      "bytes": 1942531,
+      "git_blob_sha": "51ce7dca533c2e737355f6d2699708b68812458e",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-34-motion-fogbanks.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-34-motion-fogbanks.mp4"
+    },
+    {
+      "title": "Spiral",
+      "author": "Core Builds",
+      "name": "coremotion-live-35-motion-spiral.mp4",
+      "bytes": 6956040,
+      "git_blob_sha": "251ad7c7bc2f2ba88d3e8697f0eeabfc8081328a",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-35-motion-spiral.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-35-motion-spiral.mp4"
+    },
+    {
+      "title": "Slipstream",
+      "author": "Core Builds",
+      "name": "coremotion-live-36-motion-slipstream.mp4",
+      "bytes": 11070133,
+      "git_blob_sha": "c905452b5cdf08a65cc45625415c1cc2fad52c22",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-36-motion-slipstream.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-36-motion-slipstream.mp4"
+    },
+    {
+      "title": "Embers",
+      "author": "Core Builds",
+      "name": "coremotion-live-37-motion-embers.mp4",
+      "bytes": 3365794,
+      "git_blob_sha": "15c81609d9a44b471c5755f15c6506939af2db72",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-37-motion-embers.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-37-motion-embers.mp4"
+    },
+    {
+      "title": "Tracer",
+      "author": "Core Builds",
+      "name": "coremotion-live-38-motion-tracer.mp4",
+      "bytes": 1945182,
+      "git_blob_sha": "59789cc26169cbf9adc98e513e584382bd3a439c",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-38-motion-tracer.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-38-motion-tracer.mp4"
+    },
+    {
+      "title": "Pendulum",
+      "author": "Core Builds",
+      "name": "coremotion-live-39-motion-pendulum.mp4",
+      "bytes": 5344399,
+      "git_blob_sha": "607f5f156438f594d450f68c57ac09fc10528ecd",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-39-motion-pendulum.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-39-motion-pendulum.mp4"
+    },
+    {
+      "title": "Vortex",
+      "author": "Core Builds",
+      "name": "coremotion-live-40-motion-vortex.mp4",
+      "bytes": 4368395,
+      "git_blob_sha": "72b40d30c0ac3392462b760b049a412b4b449796",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-40-motion-vortex.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-40-motion-vortex.mp4"
+    },
+    {
+      "title": "Shockwave",
+      "author": "Core Builds",
+      "name": "coremotion-live-41-motion-shockwave.mp4",
+      "bytes": 6251571,
+      "git_blob_sha": "f0cadbe9bd6cded5e523e086d02477f3b9ea8b92",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-41-motion-shockwave.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-41-motion-shockwave.mp4"
+    },
+    {
+      "title": "Cascade",
+      "author": "Core Builds",
+      "name": "coremotion-live-42-motion-cascade.mp4",
+      "bytes": 3183226,
+      "git_blob_sha": "f8b0a3f74645409700c2f7486033e079cb4937d0",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-42-motion-cascade.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-42-motion-cascade.mp4"
+    },
+    {
+      "title": "Drift Field",
+      "author": "Core Builds",
+      "name": "coremotion-live-43-motion-drift-field.mp4",
+      "bytes": 5248990,
+      "git_blob_sha": "052b6cfd60a47a302e303a5e532e1077848e3cc4",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-43-motion-drift-field.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-43-motion-drift-field.mp4"
+    },
+    {
+      "title": "Event Horizon",
+      "author": "Core Builds",
+      "name": "coremotion-live-11-deep-space-event-horizon.mp4",
+      "bytes": 3644488,
+      "git_blob_sha": "b43371b4abd4c9230becec915eba85da2321cc66",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-11-deep-space-event-horizon.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-11-deep-space-event-horizon.mp4"
+    },
+    {
+      "title": "Nebula Drift",
+      "author": "Core Builds",
+      "name": "coremotion-live-12-deep-space-nebula-drift.mp4",
+      "bytes": 3611511,
+      "git_blob_sha": "73c4b7e178c0fb94f1f7ccbf6f65793078bcec30",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-12-deep-space-nebula-drift.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-12-deep-space-nebula-drift.mp4"
+    },
+    {
+      "title": "Starfield",
+      "author": "Core Builds",
+      "name": "coremotion-live-13-deep-space-starfield.mp4",
+      "bytes": 6217355,
+      "git_blob_sha": "c6cbf3a2185caa5ec7ecd9f5473b9ba5cb4a7c60",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-13-deep-space-starfield.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-13-deep-space-starfield.mp4"
+    },
+    {
+      "title": "Ringed Planet",
+      "author": "Core Builds",
+      "name": "coremotion-live-14-deep-space-ringed-planet.mp4",
+      "bytes": 3919683,
+      "git_blob_sha": "77380cbee3e09b10101c1fed248b29c32b1cd0cb",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-14-deep-space-ringed-planet.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-14-deep-space-ringed-planet.mp4"
+    },
+    {
+      "title": "Galaxy Spiral",
+      "author": "Core Builds",
+      "name": "coremotion-live-15-deep-space-galaxy-spiral.mp4",
+      "bytes": 2887162,
+      "git_blob_sha": "1b8000d3e4ee37c61f53a50f26386708760cb33e",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-15-deep-space-galaxy-spiral.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-15-deep-space-galaxy-spiral.mp4"
+    },
+    {
+      "title": "Aurora Orbit",
+      "author": "Core Builds",
+      "name": "coremotion-live-16-deep-space-aurora-orbit.mp4",
+      "bytes": 2063527,
+      "git_blob_sha": "ffa4fcf84e3ddaa73b04e3804af931d2d4821b51",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-16-deep-space-aurora-orbit.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-16-deep-space-aurora-orbit.mp4"
+    },
+    {
+      "title": "Comet Lane",
+      "author": "Core Builds",
+      "name": "coremotion-live-17-deep-space-comet-lane.mp4",
+      "bytes": 3479191,
+      "git_blob_sha": "2f46adc5e9db34c68deeb68a38cd3fd8f197032f",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-17-deep-space-comet-lane.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-17-deep-space-comet-lane.mp4"
+    },
+    {
+      "title": "Deep Field",
+      "author": "Core Builds",
+      "name": "coremotion-live-18-deep-space-deep-field.mp4",
+      "bytes": 2712199,
+      "git_blob_sha": "553cb37b9aa3226907dfd269f28ae3f3659556f4",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-18-deep-space-deep-field.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-18-deep-space-deep-field.mp4"
+    },
+    {
+      "title": "Ember Nova",
+      "author": "Core Builds",
+      "name": "coremotion-live-19-deep-space-ember-nova.mp4",
+      "bytes": 3614846,
+      "git_blob_sha": "d157b56b5658bf6b4780ea9d3b7076496d832ffa",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-19-deep-space-ember-nova.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-19-deep-space-ember-nova.mp4"
+    },
+    {
+      "title": "Hex Station",
+      "author": "Core Builds",
+      "name": "coremotion-live-20-deep-space-hex-station.mp4",
+      "bytes": 2595022,
+      "git_blob_sha": "d8249394527a4bbd7c88a427e3d5ffc4ac97913f",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-20-deep-space-hex-station.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-20-deep-space-hex-station.mp4"
+    },
+    {
+      "title": "Cyan Supernova",
+      "author": "Core Builds",
+      "name": "coremotion-live-21-deep-space-cyan-supernova.mp4",
+      "bytes": 3430205,
+      "git_blob_sha": "314755376de1b1b9d522888f250848b57b74024f",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-21-deep-space-cyan-supernova.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-21-deep-space-cyan-supernova.mp4"
+    },
+    {
+      "title": "Dark Side Moon",
+      "author": "Core Builds",
+      "name": "coremotion-live-22-deep-space-dark-side-moon.mp4",
+      "bytes": 3932982,
+      "git_blob_sha": "bfc66e900800c2da08b56acf0510e14476e2744f",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-22-deep-space-dark-side-moon.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-22-deep-space-dark-side-moon.mp4"
+    },
+    {
+      "title": "Marquee Lights",
+      "author": "Core Builds",
+      "name": "coremotion-live-23-cinema-marquee-lights.mp4",
+      "bytes": 3988558,
+      "git_blob_sha": "b0401d7984b58196d8db6720bd14e383c647bb7b",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-23-cinema-marquee-lights.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-23-cinema-marquee-lights.mp4"
+    },
+    {
+      "title": "Velvet Curtain",
+      "author": "Core Builds",
+      "name": "coremotion-live-24-cinema-velvet-curtain.mp4",
+      "bytes": 2689447,
+      "git_blob_sha": "4fb4492a52b9418dd820973f846ccb5e5251a031",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-24-cinema-velvet-curtain.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-24-cinema-velvet-curtain.mp4"
+    },
+    {
+      "title": "Projector Beam",
+      "author": "Core Builds",
+      "name": "coremotion-live-25-cinema-projector-beam.mp4",
+      "bytes": 3307492,
+      "git_blob_sha": "4b04526fbfc8afbe6427fe5d22e404de93093e6e",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-25-cinema-projector-beam.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-25-cinema-projector-beam.mp4"
+    },
+    {
+      "title": "Neon Lounge",
+      "author": "Core Builds",
+      "name": "coremotion-live-26-cinema-neon-lounge.mp4",
+      "bytes": 1577110,
+      "git_blob_sha": "dd62f1dbe9ec7bd757d07da41a4c56de49b514f4",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-26-cinema-neon-lounge.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-26-cinema-neon-lounge.mp4"
+    },
+    {
+      "title": "Late Rentals",
+      "author": "Core Builds",
+      "name": "coremotion-live-27-cinema-late-rentals.mp4",
+      "bytes": 4682903,
+      "git_blob_sha": "27705801cffe91aa3bf7e5f661c7acbf0d229e24",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-27-cinema-late-rentals.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-27-cinema-late-rentals.mp4"
+    },
+    {
+      "title": "Box Office",
+      "author": "Core Builds",
+      "name": "coremotion-live-28-cinema-box-office.mp4",
+      "bytes": 1590958,
+      "git_blob_sha": "92de5573ceb81a20fcb7fd25cadfa14308c52d08",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-28-cinema-box-office.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-28-cinema-box-office.mp4"
+    },
+    {
+      "title": "Drive-In",
+      "author": "Core Builds",
+      "name": "coremotion-live-53-cinema-drive-in.mp4",
+      "bytes": 1846091,
+      "git_blob_sha": "f19ed26612172122ea383f86f5b904a0d339d85d",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-53-cinema-drive-in.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-53-cinema-drive-in.mp4"
+    },
+    {
+      "title": "Aisle Lights",
+      "author": "Core Builds",
+      "name": "coremotion-live-54-cinema-aisle-lights.mp4",
+      "bytes": 556693,
+      "git_blob_sha": "15e1f65ecce42a7b67a38a28a3209d144eb86f95",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-54-cinema-aisle-lights.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-54-cinema-aisle-lights.mp4"
+    },
+    {
+      "title": "Film Reel",
+      "author": "Core Builds",
+      "name": "coremotion-live-55-cinema-film-reel.mp4",
+      "bytes": 2305829,
+      "git_blob_sha": "06650d2ac8c8e7d1945c060eaec5901b746fbf88",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-55-cinema-film-reel.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-55-cinema-film-reel.mp4"
+    },
+    {
+      "title": "Popcorn Stand",
+      "author": "Core Builds",
+      "name": "coremotion-live-56-cinema-popcorn-stand.mp4",
+      "bytes": 1508486,
+      "git_blob_sha": "a5c38ea58576b00e7f62aa8c11c33b29d1eedead",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-56-cinema-popcorn-stand.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-56-cinema-popcorn-stand.mp4"
+    },
+    {
+      "title": "Exit Sign",
+      "author": "Core Builds",
+      "name": "coremotion-live-57-cinema-exit-sign.mp4",
+      "bytes": 1150824,
+      "git_blob_sha": "c37042179dd5dab691fbccb6d0f9dad7652ce89c",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-57-cinema-exit-sign.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-57-cinema-exit-sign.mp4"
+    },
+    {
+      "title": "Intermission",
+      "author": "Core Builds",
+      "name": "coremotion-live-58-cinema-intermission.mp4",
+      "bytes": 1094118,
+      "git_blob_sha": "c5382029d44fffc493d559d3f0b89d97d62c1eca",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-58-cinema-intermission.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-58-cinema-intermission.mp4"
+    },
+    {
+      "title": "Signal Red",
+      "author": "Core Builds",
+      "name": "coremotion-live-29-signal-sweep.mp4",
+      "bytes": 1409517,
+      "git_blob_sha": "14c363a66f7ed1d8ea69817edcfb9b19f99fd902",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-29-signal-sweep.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-29-signal-sweep.mp4"
+    },
+    {
+      "title": "Green Current",
+      "author": "Core Builds",
+      "name": "coremotion-live-30-green-current.mp4",
+      "bytes": 2094893,
+      "git_blob_sha": "80ee28374789078a2c13be71db1767a03d678433",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-30-green-current.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-30-green-current.mp4"
+    },
+    {
+      "title": "Molten Orbit",
+      "author": "Core Builds",
+      "name": "coremotion-live-31-molten-orbit.mp4",
+      "bytes": 2984423,
+      "git_blob_sha": "5e18858eb82c80f30ddb3e3bfdea9a0db41d09ea",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-31-molten-orbit.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-31-molten-orbit.mp4"
+    },
+    {
+      "title": "Thermal Bloom",
+      "author": "Core Builds",
+      "name": "coremotion-live-44-icon-echo-thermal-bloom.mp4",
+      "bytes": 1953396,
+      "git_blob_sha": "25d4cf96ff600cb84219a5b85b5edf75f1c184dd",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-44-icon-echo-thermal-bloom.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-44-icon-echo-thermal-bloom.mp4"
+    },
+    {
+      "title": "Frost Line",
+      "author": "Core Builds",
+      "name": "coremotion-live-45-icon-echo-frost-line.mp4",
+      "bytes": 1949757,
+      "git_blob_sha": "5e2a649655496a728e862949639d505bdf395504",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-45-icon-echo-frost-line.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-45-icon-echo-frost-line.mp4"
+    },
+    {
+      "title": "Signal Azure",
+      "author": "Core Builds",
+      "name": "coremotion-live-46-icon-echo-signal-azure.mp4",
+      "bytes": 1446311,
+      "git_blob_sha": "3b875981559ec48cb4bfe25b54645fd111c20d2e",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-46-icon-echo-signal-azure.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-46-icon-echo-signal-azure.mp4"
+    },
+    {
+      "title": "Violet Stream",
+      "author": "Core Builds",
+      "name": "coremotion-live-47-icon-echo-violet-stream.mp4",
+      "bytes": 1749741,
+      "git_blob_sha": "65ec529056cee5d36a12feca39836b6f2e8cadf8",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-47-icon-echo-violet-stream.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-47-icon-echo-violet-stream.mp4"
+    },
+    {
+      "title": "Ember Reel",
+      "author": "Core Builds",
+      "name": "coremotion-live-48-icon-echo-ember-reel.mp4",
+      "bytes": 2036197,
+      "git_blob_sha": "bcb03da1865deedf73df3cce33c140bc677b6b77",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-48-icon-echo-ember-reel.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-48-icon-echo-ember-reel.mp4"
+    },
+    {
+      "title": "Teal Tide",
+      "author": "Core Builds",
+      "name": "coremotion-live-49-icon-echo-teal-tide.mp4",
+      "bytes": 3108279,
+      "git_blob_sha": "d8037c02d6377622eba6f1665d79e9446f541379",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-49-icon-echo-teal-tide.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-49-icon-echo-teal-tide.mp4"
+    },
+    {
+      "title": "Solar Band",
+      "author": "Core Builds",
+      "name": "coremotion-live-50-icon-echo-solar-band.mp4",
+      "bytes": 1782648,
+      "git_blob_sha": "190a8282ca9526a9d312100e6efd346e883a5287",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-50-icon-echo-solar-band.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-50-icon-echo-solar-band.mp4"
+    },
+    {
+      "title": "Magenta Veil",
+      "author": "Core Builds",
+      "name": "coremotion-live-51-icon-echo-magenta-veil.mp4",
+      "bytes": 1575279,
+      "git_blob_sha": "4d5df801839bb134bf2419453b0da9a4f2165c32",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-51-icon-echo-magenta-veil.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-51-icon-echo-magenta-veil.mp4"
+    },
+    {
+      "title": "Indigo Drift",
+      "author": "Core Builds",
+      "name": "coremotion-live-52-icon-echo-indigo-drift.mp4",
+      "bytes": 1260385,
+      "git_blob_sha": "52edb03acb936d2914a47295eac0e983da67226a",
+      "source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/main/Motion/live/coremotion-live-52-icon-echo-indigo-drift.mp4",
+      "pinned_source": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live/coremotion-live-52-icon-echo-indigo-drift.mp4"
+    }
+  ],
+  "sources": {
+    "Motion/live-feed.json": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/Motion/live-feed.json",
+    "LICENSE": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/LICENSE",
+    "THIRD_PARTY_NOTICES.md": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/THIRD_PARTY_NOTICES.md",
+    "motion-plugin/README.md": "https://raw.githubusercontent.com/brevityA/CoreBuildsApps/f7c29360919ee0a802ad0e511fbcefb1353e832d/motion-plugin/README.md",
+    "listing": "https://api.github.com/repos/brevityA/CoreBuildsApps/contents/Motion/live?ref=f7c29360919ee0a802ad0e511fbcefb1353e832d"
+  }
+}

@@ -32,6 +32,9 @@ Homeboard does not import, reset or back them up. **More options** controls
 wallpaper rotation (default 15 minutes) and wallpaper dimming (default 35%).
 These settings are separate from the cache lifetime requested by the provider.
 
+New installations and the opacity control’s **Reset** use **65%**. Saved opacity
+choices are preserved; wallpaper dimming remains separate at its 35% default.
+
 **Appearance → Widget background opacity** changes only widget card fills on
 Home and the fixed World clock on All Apps. Text, artwork, focus borders and
 Settings controls stay opaque. **0%** makes card interiors transparent; **100%**

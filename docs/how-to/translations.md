@@ -189,3 +189,15 @@ and `task deploy` check/build steps inherit that structural gate.
 Source-aware lint, staged-index checks, copy-review fingerprints and bilingual
 artifact acceptance enforcement remain planned. Do not report the structural
 gate as proof of those checks or of competent Thai review.
+
+## Date and elapsed-time presentation
+
+Use the effective Homeboard language for date presentation: Thai uses Buddhist Era
+years, English uses CE. Route user-visible date patterns through `DisplayTime`.
+Keep API parsing, ISO stored state and calculations Gregorian/UTC as specified by
+their data contract. Phone clock previews explicitly select the matching calendar.
+
+For supporting metadata, use ⏲ for timestamps and ⏱ for elapsed/meeting durations.
+Use localized minute/hour/day units and a separate “ago” wrapper. Do not decorate
+clock faces, calendar dates, hourly chart ticks or signed UTC offsets. See the
+[date/time presentation plan](../plans/2026-11-18-thai-years-and-time-presentation.md).

@@ -69,3 +69,14 @@ permission is needed. Accuracy depends on the system clock and installed rules;
 unknown saved zones stay labeled unavailable until explicitly changed.
 
 See the [plan and mockups](../plans/2026-11-17-world-clock-widget.md).
+
+## Date language and time notation
+
+Thai shows Buddhist Era years (for example 2569); English shows Common Era years
+(2026). This follows Homeboard’s language even for cities outside Thailand.
+Changing language leaves the selected instant, city zones and meeting duration
+unchanged. The phone preview follows the same date-calendar rule.
+
+Clock faces and timeline ticks stay clean. Supporting transition timestamps use
+⏲; meeting durations use ⏱ and explicit units such as `1h 0m` or `1 ชม. 0 น.`.
+Signed UTC offsets and differences remain offsets, not elapsed-time labels.

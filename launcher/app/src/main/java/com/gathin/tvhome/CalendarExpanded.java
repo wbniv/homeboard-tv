@@ -11,7 +11,6 @@ import android.widget.TextView;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,8 +63,8 @@ final class CalendarExpanded implements WidgetExpansion.Content {
             text.append("\n").append(scope.equals(country)?country:country+" · "+scope).append(" · ").append(h.activity.getString(kind));
             if(e.anchor!=null&&(e.kind==CalendarSnapshot.Kind.MAKE||e.kind==CalendarSnapshot.Kind.SELL)) {
                 text.append("\n").append(h.activity.getString(e.kind==CalendarSnapshot.Kind.MAKE?R.string.hb_fs_make:R.string.hb_fs_sell));
-                text.append("\n").append(h.activity.getString(R.string.hb_fs_preparation)).append(": ").append(e.anchor.minusDays(3)).append(" — ").append(e.anchor.minusDays(2));
-                text.append("\n").append(h.activity.getString(R.string.hb_fs_selling)).append(": ").append(e.anchor.minusDays(1)).append(" — ").append(e.anchor);
+                text.append("\n").append(h.activity.getString(R.string.hb_fs_preparation)).append(": ").append(CalendarLabels.date(h.activity,e.anchor.minusDays(3))).append(" — ").append(CalendarLabels.date(h.activity,e.anchor.minusDays(2)));
+                text.append("\n").append(h.activity.getString(R.string.hb_fs_selling)).append(": ").append(CalendarLabels.date(h.activity,e.anchor.minusDays(1))).append(" — ").append(CalendarLabels.date(h.activity,e.anchor));
             }
             text.append("\n").append(CalendarLabels.source(h.activity,e.provider));if(full)text.append("\n").append(e.url);
         }

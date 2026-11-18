@@ -72,7 +72,7 @@ final class AirQualityCard {
     private AirQualityReading reading;
     private AirQualityHistory history = new AirQualityHistory();
     private PaletteColors palette = PaletteColors.from(0xff101010);
-    private int backgroundOpacity = 75;
+    private int backgroundOpacity = WallpaperSettings.DEFAULT_WIDGET_OPACITY;
 
     private final Runnable tick = new Runnable() {
         @Override public void run() {
@@ -614,8 +614,7 @@ final class AirQualityCard {
                 : getString(R.string.hb_reading_unavailable);
         else {
             ZoneId displayZone = "model".equals(source) ? ZoneId.systemDefault() : AirQualityReading.BANGKOK;
-            String time = DateTimeFormatter.ofPattern("dd MMM HH:mm", activity.getResources().getConfiguration().getLocales().get(0))
-                    .withZone(displayZone).format(Instant.ofEpochMilli(reading.timeMillis));
+            String time = DisplayTime.timestamp(activity,Instant.ofEpochMilli(reading.timeMillis),displayZone,"dd MMM HH:mm");
             status = getString(R.string.hb_hint_data) + time + ("model".equals(source) ? getString(R.string.hb_hint_local) : getString(R.string.hb_hint_bangkok));
             if (reading.stale(System.currentTimeMillis())) status += getString(R.string.hb_stale);
             if (failed) status += getString(R.string.hb_refresh_failed_saved_reading);

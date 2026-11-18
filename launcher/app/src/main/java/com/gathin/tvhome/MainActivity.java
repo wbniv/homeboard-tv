@@ -121,7 +121,7 @@ public class MainActivity extends Activity {
     private final Map<String, View> tiles = new LinkedHashMap<>();
     private final List<HomeLayout.Cell> visibleCells = new ArrayList<>();
     private FrameLayout root, surface, overlay;
-    private int uiBackgroundOpacity = 75;
+    private int uiBackgroundOpacity = WallpaperSettings.DEFAULT_WIDGET_OPACITY;
     private WallpaperSurface wallpaperSurface;
     private ProjectivyWallpaperHost wallpaperHost;
     private WallpaperSettings wallpaperDraft;
@@ -3633,7 +3633,7 @@ public class MainActivity extends Activity {
         PieMenuView pie = new PieMenuView(this, paletteColors);
         pie.setContent(adjustmentTitle,
                 (getString(R.string.hb_ui_opacity_70).equals(adjustmentTitle) ? getString(R.string.hb_backgrounds) : "") + adjustmentValue + "%", getString(R.string.hb_done), getString(R.string.hb_back_cancels),
-                new String[]{"+5%", "100%", "−5%", getString(R.string.hb_reset) + (getString(R.string.hb_ui_opacity_70).equals(adjustmentTitle) ? "75%" : "35%")},
+                new String[]{"+5%", "100%", "−5%", getString(R.string.hb_reset) + (getString(R.string.hb_ui_opacity_70).equals(adjustmentTitle) ? WallpaperSettings.DEFAULT_WIDGET_OPACITY + "%" : "35%")},
                 new MenuIconView.Kind[]{MenuIconView.Kind.ADD, MenuIconView.Kind.PALETTE, MenuIconView.Kind.DELETE, MenuIconView.Kind.UNDO}, new boolean[4],
                 new PieMenuView.Listener() {
                     @Override public void onArm(int arm) { if (adjustmentArm != null) adjustmentArm.accept(arm); }

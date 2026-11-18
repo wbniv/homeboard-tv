@@ -1,0 +1,39 @@
+{
+  "version": "0.1.61",
+  "apk_sha256": "e170a097cbe65e86afc9aa257d987c6f785d87dd0eefcd7a45a086c45236b4a4",
+  "cast1": {
+    "job": "J-ca2ff6542036",
+    "installation": [
+      {
+        "input": "e170a097cbe65e86afc9aa257d987c6f785d87dd0eefcd7a45a086c45236b4a4.apk",
+        "package": "net.biohack.homeboard.debug",
+        "before_sha256": "0e4fcdf2faecd0056a4ae755da2d9d7690200e5c0d64d576eb83e67e4a2dc431",
+        "action": "install",
+        "reason": "different-hash",
+        "variant": null,
+        "status": "verified",
+        "start": 1794977931.24176,
+        "journal_key": "install:1",
+        "installed_sha256": "e170a097cbe65e86afc9aa257d987c6f785d87dd0eefcd7a45a086c45236b4a4",
+        "end": 1794977955.3412476
+      }
+    ],
+    "acceptance_status": "failed",
+    "acceptance_reason": "target-left-foreground",
+    "native_report": null,
+    "screenshot": null,
+    "cleanup": "safe"
+  },
+  "cast2": {
+    "job": "J-8b2978c6f567",
+    "status": "queued",
+    "reason": "coordinator control unavailable",
+    "installation_confirmed": false
+  },
+  "browser_screenshots": {
+    "phone-webkit-be.png": "74f97c22470490698470a5ff0fc759f3198f3ccc965780c1b7a52dec30f743a2",
+    "phone-chromium-ce.png": "324a5d250eaaec34d9295558d902bf358747d22561c3229eeedeca1302f5365e",
+    "phone-chromium-be.png": "1acc3d2958ad212968014d3a0aa7252eeeb388d32e8b30602136568af675137c",
+    "phone-webkit-ce.png": "4d961a38f8767a951ccdc2bed1cb1e3e06de9a838cfda8a70a663148d463509b"
+  }
+}

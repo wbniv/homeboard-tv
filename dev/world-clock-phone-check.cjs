@@ -23,6 +23,7 @@ const server=http.createServer((req,res)=>{if(req.url==='/'){res.setHeader('Cont
   });
   console.log('Initial form headings:',await page.locator('summary').allTextContents());
   await page.locator('summary').filter({hasText:'Local · Follow TV'}).click();
+  assert.match(await page.locator('body').innerText(),/2026/,'English preview uses CE');
   assert.match(await page.locator('body').innerText(),/17:30/,'Follow TV preview must use Bangkok, not browser New York');
   await page.getByRole('button',{name:'Add place',exact:true}).click();await page.getByLabel('Search city, code or named time zone').fill('Tivissa');
   await page.getByRole('button',{name:'Tivissa · Europe/Madrid',exact:true}).click();
@@ -53,8 +54,13 @@ const server=http.createServer((req,res)=>{if(req.url==='/'){res.setHeader('Cont
   assert.equal(await page.locator('body').evaluate(b=>b.scrollWidth<=innerWidth),true,'Clock form must fit phone width');
   const en=await page.evaluate(()=>Object.keys(PhoneClock.translations.en).sort()),th=await page.evaluate(()=>Object.keys(PhoneClock.translations.th).sort());assert.deepEqual(en,th);
   await page.evaluate(()=>{language='th';render();});await page.getByLabel('ชื่อวิดเจ็ต').fill('ครอบครัว');await page.getByLabel('ชื่อวิดเจ็ต').press('Tab');
-  assert.equal(await page.evaluate(()=>w.settings.title),'ครอบครัว');assert.equal(await page.locator('b').count(),0);
-  fs.mkdirSync('/workspace/artifacts/world-clock-phone',{recursive:true});await page.screenshot({path:'/workspace/artifacts/world-clock-phone/'+name.replaceAll(/[^a-z]/gi,'')+'-'+(engine===chromium?'chromium':'webkit')+'.png',fullPage:true});
+  assert.equal(await page.evaluate(()=>w.settings.title),'ครอบครัว');
+  await page.locator('summary').first().evaluate(n=>n.parentElement.open=true);
+  const thaiPreview=await page.locator('body').innerText();assert.match(thaiPreview,/2569/,'Thai preview uses BE');assert(!thaiPreview.includes('2026'),'Thai preview must not leak CE');
+  const clockStored=await page.evaluate(()=>JSON.stringify(w.settings));await page.evaluate(()=>{language='en';render();});await page.locator('summary').first().evaluate(n=>n.parentElement.open=true);assert.match(await page.locator('body').innerText(),/2026/);assert.equal(await page.evaluate(()=>JSON.stringify(w.settings)),clockStored);
+  await page.evaluate(()=>window.scrollTo(0,0));await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+  await page.screenshot({path:'/workspace/artifacts/world-clock-phone/'+(engine===chromium?'chromium':'webkit')+'-ce-preview.png',fullPage:true});await page.evaluate(()=>{language='th';render();});await page.locator('summary').first().evaluate(n=>n.parentElement.open=true);assert.equal(await page.locator('b').count(),0);
+  fs.mkdirSync('/workspace/artifacts/world-clock-phone',{recursive:true});await page.evaluate(()=>window.scrollTo(0,0));await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));await page.screenshot({path:'/workspace/artifacts/world-clock-phone/'+name.replaceAll(/[^a-z]/gi,'')+'-'+(engine===chromium?'chromium':'webkit')+'.png',fullPage:true});
   assert.deepEqual(errors,[]);console.log((engine===chromium?'Chromium':'WebKit')+': TV-zone preview, search, metadata, labels, primary/reference, studio preset, pointer/keyboard reorder, cancel, Undo, format/seconds, bilingual form and width passed');await browser.close();
  }
  server.close();

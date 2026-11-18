@@ -12,7 +12,6 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /** One remote-focusable calendar widget, containing event-only date cards. */
@@ -25,7 +24,7 @@ final class CalendarWidgetView extends View {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private CalendarSnapshot.Display display;
     private boolean active;
-    private int page, pageSize = 1, fillOpacity = 75;
+    private int page, pageSize = 1, fillOpacity = WallpaperSettings.DEFAULT_WIDGET_OPACITY;
     private final Runnable tick = new Runnable() {
         @Override public void run() { if (active) { refresh(); handler.postDelayed(this, 30_000L); } }
     };
@@ -113,7 +112,7 @@ final class CalendarWidgetView extends View {
             }
         }
         canvas.restoreToCount(saved);
-        String month = DateTimeFormatter.ofPattern("MMM uuuu", getResources().getConfiguration().getLocales().get(0)).format(day.date);
+        String month = DisplayTime.formatter("MMM uuuu", DisplayTime.locale(getContext())).format(day.date);
         float scale = dpSize / 200;
         if (!compact || dpSize >= 64)
             text(canvas, month, 13, 34, compact ? Math.max(16, 10 / scale) : 16, palette.muted, 174, false);

@@ -93,7 +93,7 @@ final class CalendarWidgetController {
         for (String id : CalendarWidgetSettings.SOURCES) {
             CalendarSnapshot.Provider p = snapshot.providers.get(id);
             body.append("\n\n").append(p == null ? CalendarLabels.source(c, id) + ": " + t(R.string.hb_cal_unknown)
-                    : c.getString(R.string.hb_cal_coverage_detail, CalendarLabels.source(c, id), p.start.toString(), p.end.toString(), t(R.string.hb_cal_offline)));
+                    : c.getString(R.string.hb_cal_coverage_detail, CalendarLabels.source(c, id), CalendarLabels.date(c,p.start), CalendarLabels.date(c,p.end), t(R.string.hb_cal_offline)));
         }
         details.show(t(R.string.hb_cal_data_sources), body.toString());
     }

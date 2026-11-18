@@ -57,6 +57,7 @@ missing rows on commit.*
 | [Wallpaper provider inventory and compatibility testing](2026-11-18-wallpaper-provider-compatibility.md) | Inventories all ten catalog entries and eight additional projects/leads, with per-provider cases and isolated coordinator testing. | 18 dispositions; partial compatibility evidence collected | Investigation / Tooling |
 
 | [Provider testing spike and user installation](2026-11-18-provider-testing-spike-and-installation.md) | Defines a bounded 18-provider spike, security exclusions, evidence requirements and a Google Play first installation flow without bundled APKs. | Implemented 0.1.59; seven Cast1 screenshots passed; Cast2 queued | Investigation / UX |
+| [Thai years and time presentation](2026-11-18-thai-years-and-time-presentation.md) | Thai BE years, localized duration units and selective metadata clock/stopwatch icons, following Parking Space and Python TUI conventions. | Implementation authorized; verification in progress | Localization / UX |
 
 ---
 

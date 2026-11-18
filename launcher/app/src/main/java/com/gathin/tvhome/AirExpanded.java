@@ -13,7 +13,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -87,9 +86,9 @@ final class AirExpanded implements WidgetExpansion.Content {
     }
     private void select(StationCatalog.Station station){selected=station;selectedId=station.id;detail.setText(describe(station));map.stations(nearby,selectedId);map.setContentDescription(describe(station));}
     private double distance(StationCatalog.Station s){return actual==null?Double.NaN:StationCatalog.distanceKm(actual.getLatitude(),actual.getLongitude(),s.latitude,s.longitude);}
-    private String time(long millis,ZoneId zone){return DateTimeFormatter.ofPattern("dd MMM uuuu HH:mm",h.activity.getResources().getConfiguration().getLocales().get(0)).withZone(zone).format(Instant.ofEpochMilli(millis));}
+    private String time(long millis,ZoneId zone){return DisplayTime.timestamp(h.activity,Instant.ofEpochMilli(millis),zone,"dd MMM uuuu HH:mm");}
     private String describe(StationCatalog.Station s){
-        AirQualityReading r=s.reading();return s.name+"\n"+s.area+"\n"+String.format(Locale.getDefault(),"%.1f km",distance(s))+"\n\nPM2.5: "+(r==null?"—":String.format(Locale.getDefault(),"%.1f µg/m³",s.pm25))+"\n"+t(R.string.hb_fs_measured)+"\n"+(r==null?t(R.string.hb_fs_missing):r.conditionLabel())+"\n\n"+(s.time>0?time(s.time,AirQualityReading.BANGKOK)+" · Asia/Bangkok\n"+t(R.string.hb_fs_age)+" "+Math.max(0,(System.currentTimeMillis()-s.time)/60000)+" min":"—")+"\n\nAirBKK / BMA\nhttps://official.airbkk.com/airbkk/th"+(r!=null&&r.stale(System.currentTimeMillis())?"\n"+h.activity.getString(R.string.hb_stale):"");
+        AirQualityReading r=s.reading();return s.name+"\n"+s.area+"\n"+String.format(Locale.getDefault(),"%.1f km",distance(s))+"\n\nPM2.5: "+(r==null?"—":String.format(Locale.getDefault(),"%.1f µg/m³",s.pm25))+"\n"+t(R.string.hb_fs_measured)+"\n"+(r==null?t(R.string.hb_fs_missing):r.conditionLabel())+"\n\n"+(s.time>0?time(s.time,AirQualityReading.BANGKOK)+" · Asia/Bangkok\n"+DisplayTime.ago(h.activity,s.time,System.currentTimeMillis()):"—")+"\n\nAirBKK / BMA\nhttps://official.airbkk.com/airbkk/th"+(r!=null&&r.stale(System.currentTimeMillis())?"\n"+h.activity.getString(R.string.hb_stale):"");
     }
     private void detach(View v){if(v.getParent() instanceof android.view.ViewGroup)((android.view.ViewGroup)v.getParent()).removeView(v);}
     private void showMap(){

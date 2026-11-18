@@ -52,4 +52,8 @@
     <string name="hb_provider_booru">ภาพจากชุมชน ตรวจสอบคำค้นเริ่มต้นสำหรับทุกวัยแล้ว ยังไม่ทดสอบการเล่น</string>
     <string name="hb_provider_weather">ไม่รวม: Google Play Protect บล็อกรุ่น 2.11 พบการเข้าถึงตำแหน่งที่บันทึกโดยไม่มีการป้องกัน โปรดเปิดการป้องกันไว้</string>
     <string name="hb_provider_scope">การมีในร้านค้าไม่ได้ยืนยันความปลอดภัยหรือความเข้ากันได้ โครงการที่ต้องใช้เซิร์ฟเวอร์หรือมีเฉพาะซอร์สอยู่ในเอกสารทดสอบ</string>
+    <string name="hb_time_minutes">%1$d นาที</string>
+    <string name="hb_time_hours_minutes">%1$d ชม. %2$d น.</string>
+    <string name="hb_time_days_hours">%1$d วัน %2$d ชม.</string>
+    <string name="hb_time_ago">%1$s ที่แล้ว</string>
 </resources>

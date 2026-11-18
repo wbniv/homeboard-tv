@@ -1,0 +1,147 @@
+# Brand references and rights
+
+The code and original Core Builds artwork remain under the repository's MIT
+licence. **That licence does not grant rights to third-party brands or imply
+endorsement.** App names, logos and trademarks belong to their respective
+owners and are used to identify the apps represented by the pack.
+
+## Core Builds renders its own icon language
+
+The Classic icons are **Core Builds-authored geometric interpretations**, not
+vendor silhouettes pasted into an icon pack. The reviewed glyphs use rounded
+monoline strokes, one accent, transparent interiors and the same Outfit /
+category / cyan-violet-rail banner as their neighbours. The original fallback
+letters remain the pack's bundled, path-outlined Outfit typography.
+
+The `artwork` section of [`tools/catalog.json`](tools/catalog.json) is a
+**reference registry**, not a rendering registry. Each entry has
+`usage: reference-only`, a source URL, local file checksum, review date, rights
+notice and treatment. `tools/brandmarks.py` can inspect these references but
+cannot register them as pack glyphs. Actual icon geometry is in
+`tools/glyphs.py`.
+
+## Simple Icons reference files
+
+The following files in `tools/brandmarks/` are retained as **offline reference
+material** from Simple Icons, whose vector contributions are dedicated under
+**CC0 1.0 Universal**:
+
+- `crunchyroll.svg`
+- `deezer.svg`
+- `jellyfin.svg`
+- `kodi.svg`
+- `mubi.svg`
+- `netflix.svg`
+- `nordvpn.svg`
+- `paramountplus.svg`
+- `plex.svg`
+- `protonvpn.svg`
+- `spotify.svg`
+- `stremio.svg`
+- `twitch.svg`
+- `youtube.svg`
+- `youtubekids.svg`
+- `youtubemusic.svg`
+
+The full CC0 text is in
+[`tools/brandmarks/LICENSE-CC0.md`](tools/brandmarks/LICENSE-CC0.md).
+Upstream: <https://github.com/simple-icons/simple-icons>. The immutable upstream
+file and underlying brand reference are linked in the catalog. CC0 for the
+vector contribution does **not** waive an owner's trademark/brand rights.
+These files are not rendered directly or bundled as vendor logos in our APKs.
+
+## NoBuffr
+
+[`tools/reference/nobuffr/`](tools/reference/nobuffr/) retains the small original
+artwork resources extracted from the supplied vendor APK, plus its SHA-256
+receipt and the actual launcher component. No APK is committed, installed,
+executed or redistributed with this pack.
+
+`tools/brandmarks/nobuffr.svg` is the previous vectorised lettering/underline
+reference. It is **not the rendered icon**. The rejected standalone white
+wordmark has been removed from the icon and banner rendering route.
+
+The actual Classic glyph is an original Core Builds monoline construction:
+the observed lowercase **no** cue and interrupted buffer underline, in one
+accent. The full **NoBuffr** name is supplied by the standard Outfit banner
+label, not vendor typography. This is an explicit stylistic interpretation,
+not a claim to reproduce every letter of the vendor logo.
+
+NoBuffr's original/reference artwork remains its owner's property and is not
+covered by MIT or Simple Icons' CC0 dedication. Source:
+<https://downloads.nobuffr.com/android/nobuffr.apk>.
+
+## SPORT FM TV and TVLok
+
+[`tools/reference/sportfm-tv/`](tools/reference/sportfm-tv/) retains small
+visual references of the SPORT FM TV launcher icon and the official service's
+crest, with source pages, image hashes and the sampled red recorded. These
+are reference thumbnails, not downloaded APK resources or assets bundled
+in the icon pack.
+
+[`tools/reference/tvlok/`](tools/reference/tvlok/) retains the static
+manifest/resource receipt for the vendor's official 1.0.192 APK and small,
+explicitly downsized previews of its icon and banner. Original APK/resource
+hashes and preview hashes are recorded separately. The APK itself is not
+committed, installed, executed or redistributed.
+
+The original artwork remains each brand owner's property and is **not**
+covered by MIT or Simple Icons' CC0 dedication. The shipped
+`sportfm_crest()` and `tvlok_play_tiles()` glyphs are original Core Builds
+rounded-monoline interpretations. Vendor pixels, paths and typography are
+not used as rendered pack artwork.
+
+## Interpretation is not endorsement
+
+The sources establish recognisable cues and colours; they are not permission
+to claim official approval. The pack's light-ink fallback is a readability
+treatment for dark cards, not a brand-colour change. Source/reference materials
+are distinguished from the Core Builds-authored output throughout the catalog
+and fidelity notes.
+## Bundled font: Outfit (app interface)
+
+Since 2.6.0 the app's screens are set in **Outfit**, Copyright 2021 The Outfit
+Project Authors (<https://github.com/Outfitio/Outfit-Fonts>), under the **SIL
+Open Font License 1.1**; the licence ships in the APK as
+`app/src/main/assets/licenses/Outfit-OFL.txt`. Four static cuts are bundled in
+`app/src/main/res/font/` and are byte-identical to Core EQ's (SHA-256:
+regular `4d17202023801dd6d8345bbf6551ad524700021ffb3c61d5305c81a4613edd1e`,
+medium `9068e78c85bb456d528406f13f07e35e0e84b4997677379f4c585cc0c41afac4`,
+semibold `937d75a21c15ca5ab0b95797bc59c20dc29926a19a8aa9fbae91734605e68391`,
+bold `56b76e1976dd8f5ffe04dc2c57c4b57f81c3737da338a69ea0360030cafb0910`).
+This is interface type only: no icon draws Outfit letters
+(`tests/test_wordmark_type.py`).
+
+## Vendored code: Nayuki QR Code generator (Java)
+
+`app/src/main/java/io/nayuki/qrcodegen/QrCode.java`,
+`app/src/main/java/io/nayuki/qrcodegen/QrSegment.java` and
+`app/src/main/java/io/nayuki/qrcodegen/BitBuffer.java` and
+`app/src/main/java/io/nayuki/qrcodegen/DataTooLongException.java` (the
+encoder's compile surface; the optional `QrSegmentAdvanced` kanji optimiser
+and `package-info` are not on the encode path and stay upstream) are
+vendored verbatim
+from the **QR Code generator library** by Project Nayuki, under the
+**MIT License** (copyright Project Nayuki,
+<https://www.nayuki.io/page/qr-code-generator-library>), fetched from upstream
+commit `3c6d0b3cefb4e049dc337e82237c9644399716a8` on 2026-09-19. SHA-256 at
+vendoring: `QrCode.java`
+`01715baeb383ec26f7c38138299a2b6e5bbfa36fa607441c79dc9cc76b107c6b`,
+`BitBuffer.java`
+`d5496452b435423beead30aa356e10a7c0ba4790b7da37ee4a1b80b4df136447`,
+`QrSegment.java`
+`70f10e518d3a8f1a1862e598a249abaac036a9c6fae4e5892c4b6d24995bb8d7`,
+`DataTooLongException.java`
+`7661186dde4b27334fd94f4950f58522eaab256274388152e5cb8e35ef463e1a`.
+
+The on-device auditor renders its prefilled-issue QR codes with this encoder
+(`QrBitmap.kt` is the Core Builds wrapper: error correction M, four-module
+quiet zone, black-on-white modules). It is vendored rather than pulled as a
+dependency because the pack ships with no runtime libraries at all, and the
+two files are the encoder's complete Java surface.
+
+Core EQ carries the same four files, byte-identical (the SHA-256 values above
+hold), under `coreeq/app/src/main/java/io/nayuki/qrcodegen/`, with its own
+copy of the wrapper at `coreeq/app/src/main/kotlin/tv/corebuilds/eq/ui/QrBitmap.kt`.
+Both apps use them for the Support screen's two codes; the icon pack also uses
+them for the auditor's.

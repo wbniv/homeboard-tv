@@ -44,7 +44,7 @@ window.PhoneClock = (() => {
       const card=details(row,name(p),expanded.has(w.key+':'+p.id));card.style.flex='1';card.style.minWidth='0';card.addEventListener('toggle',()=>{if(card.open)expanded.add(w.key+':'+p.id);else expanded.delete(w.key+':'+p.id);});
       note(card,p.zone==='device'?t('clockFollowTV'):p.zone);
       if(!Object.hasOwn(p,'latitude'))note(card,t('clockNoPosition'));
-      if(state.clockNow){try{const zone=p.zone==='device'?state.clockZone:p.zone;const twelve=s.format==='12'||s.format==='device'&&!state.clock24Hour;const time=new Intl.DateTimeFormat(language,{timeZone:zone,dateStyle:'medium',timeStyle:'short',hourCycle:twelve?'h12':'h23'}).format(new Date(state.clockNow));note(card,t('clockCurrent',{time}));}catch(_){note(card,t('clockUnavailable'));}}
+      if(state.clockNow){try{const zone=p.zone==='device'?state.clockZone:p.zone;const twelve=s.format==='12'||s.format==='device'&&!state.clock24Hour;const time=new Intl.DateTimeFormat(language,{calendar:language==='th'?'buddhist':'gregory',timeZone:zone,dateStyle:'medium',timeStyle:'short',hourCycle:twelve?'h12':'h23'}).format(new Date(state.clockNow));note(card,t('clockCurrent',{time:'\u23f2\ufe0e '+time}));}catch(_){note(card,t('clockUnavailable'));}}
       field(card,t('label'),p.label,value=>p.label=value,'text',{maxLength:120});
       card.append(button(t('clockReplace'),()=>{searches.set(w.key,{query:'',editing:p.id});render();}));
       const moves=el('div',undefined,'two-fields');

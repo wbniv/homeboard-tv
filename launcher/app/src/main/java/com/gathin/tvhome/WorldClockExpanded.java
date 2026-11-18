@@ -81,7 +81,7 @@ final class WorldClockExpanded implements WidgetExpansion.Content {
         String mode=t(comparing?R.string.hb_wc_comparing:R.string.hb_wc_now);
         status.setText(mode+" · "+WorldClockLabels.date(h.activity,window,reference())+" · "+WorldClockLabels.time(h.activity,settings,at,reference(),false)
                 +" · "+reference().getId()+(expiredNotice?" · "+t(R.string.hb_wc_expired):""));
-        previous.setEnabled(page>0);durationButton.setText(h.activity.getString(R.string.hb_wc_duration,duration));mapButton.setText(t(map?R.string.hb_wc_clocks:R.string.hb_wc_map));
+        previous.setEnabled(page>0);durationButton.setText(DisplayTime.duration(h.activity,duration*60_000L));mapButton.setText(t(map?R.string.hb_wc_clocks:R.string.hb_wc_map));
         detail.setText(WorldClockLabels.detail(h.activity,settings,places.get(selected),at,!comparing&&settings.seconds,comparing?duration:null));
         stage.setContentDescription(detail.getText());timeline.setContentDescription(t(R.string.hb_wc_compare)+" · "+detail.getText());stage.invalidate();timeline.invalidate();
     }

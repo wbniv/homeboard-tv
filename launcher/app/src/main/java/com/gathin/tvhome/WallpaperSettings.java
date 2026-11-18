@@ -7,12 +7,13 @@ import org.json.JSONObject;
 final class WallpaperSettings {
     static final int SUPPORTED_EVENTS = 1 | 4 | 16;
     static final int PIE_BACKGROUND_OPACITY = 95;
+    static final int DEFAULT_WIDGET_OPACITY = 65;
     String component = "", uuid = "";
     int rotationMinutes = 15, dimPercent = 35;
 
     static int percent(int value) { return Math.max(0, Math.min(100, value)); }
     static int opacityStep(int value, int arm) {
-        return arm == 0 ? percent(value + 5) : arm == 1 ? 100 : arm == 2 ? percent(value - 5) : 75;
+        return arm == 0 ? percent(value + 5) : arm == 1 ? 100 : arm == 2 ? percent(value - 5) : DEFAULT_WIDGET_OPACITY;
     }
     static boolean usableEvents(int mask) { return (mask & SUPPORTED_EVENTS) != 0; }
     static String missingEvents(int mask) {

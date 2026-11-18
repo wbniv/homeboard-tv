@@ -5,12 +5,17 @@ import static org.junit.Assert.*;
 public class WallpaperSettingsTest {
     @Test public void firstRunOpacityAndBackgroundAreIndependent() throws Exception {
         HomeLayout layout = HomeLayout.firstRun();
-        assertEquals(75, layout.uiOpacityPercent); assertTrue(layout.wallpaper.solid());
+        assertEquals(65, layout.uiOpacityPercent); assertTrue(layout.wallpaper.solid());
         assertEquals(35, layout.wallpaper.dimPercent); assertEquals(15, layout.wallpaper.rotationMinutes);
         layout.uiOpacityPercent = 0; layout.wallpaper.dimPercent = 100;
         HomeLayout restored = HomeLayout.parse(layout.encode());
         assertEquals(0, restored.uiOpacityPercent); assertEquals(100, restored.wallpaper.dimPercent);
         assertEquals(95, WallpaperSettings.PIE_BACKGROUND_OPACITY);
+    }
+    @Test public void newDefaultDoesNotOverwriteExplicitSavedOpacity() throws Exception {
+        JSONObject saved=new JSONObject(HomeLayout.firstRun().encode());
+        saved.put("uiOpacityPercent",75);assertEquals(75,HomeLayout.parse(saved.toString()).uiOpacityPercent);
+        saved.remove("uiOpacityPercent");assertEquals(65,HomeLayout.parse(saved.toString()).uiOpacityPercent);
     }
     @Test public void savedSelectionAndOpacityRoundTripWithoutAlteringWidgets() throws Exception {
         HomeLayout layout = HomeLayout.firstRun();
@@ -30,13 +35,13 @@ public class WallpaperSettingsTest {
         assertEquals(0, restored.wallpaper.dimPercent);
         saved.put("uiOpacityPercent", 110); assertEquals(100, HomeLayout.parse(saved.toString()).uiOpacityPercent);
     }
-    @Test public void opacityDraftCannotMutateSavedSelectionAndResetIsSeventyFive() {
+    @Test public void opacityDraftCannotMutateSavedSelectionAndResetIsSixtyFive() {
         WallpaperSettings saved = new WallpaperSettings(); saved.component = "example/.Provider";
         WallpaperSettings draft = saved.copy(); draft.component = "other/.Provider"; draft.dimPercent = 90;
         assertEquals("example/.Provider", saved.component); assertEquals(35, saved.dimPercent);
         assertEquals(100, WallpaperSettings.opacityStep(100, 0));
         assertEquals(0, WallpaperSettings.opacityStep(0, 2));
-        assertEquals(75, WallpaperSettings.opacityStep(0, 3));
+        assertEquals(65, WallpaperSettings.opacityStep(0, 3));
         assertEquals(100, WallpaperSettings.opacityStep(75, 1));
     }
     @Test public void savingOpacityPreservesHomeFavoriteStyle() throws Exception {

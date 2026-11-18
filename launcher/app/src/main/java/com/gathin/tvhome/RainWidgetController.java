@@ -23,7 +23,6 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -165,7 +164,7 @@ final class RainWidgetController {
     }
     String amount(double mm) { return Double.isFinite(mm) ? String.format(Locale.getDefault(), settings().inches ? "%.2f in" : "%.1f mm", settings().inches ? mm / 25.4 : mm) : "—"; }
     String chance(double chance) { return Double.isFinite(chance) ? String.format(Locale.getDefault(), "%.0f%%", chance) : "—"; }
-    String time(long epoch, String pattern) { return DateTimeFormatter.ofPattern(pattern, Locale.getDefault()).withZone(forecast.zone).format(Instant.ofEpochSecond(epoch)); }
+    String time(long epoch, String pattern) { return DisplayTime.formatter(pattern, DisplayTime.locale(activity)).withZone(forecast.zone).format(Instant.ofEpochSecond(epoch)); }
     String headline(RainForecast.Period period) {
         RainForecast.Hour wet = period.firstWet();
         if (wet != null) return s(R.string.hb_rain_wet, time(wet.start, "HH:mm"));
@@ -350,7 +349,7 @@ final class RainWidgetController {
     private TextView label(String value,int size) { TextView t=new TextView(activity);t.setText(value);t.setTextColor(palette.text);t.setTextSize(size);t.setPadding(0,4,0,4);return t; }
     private void button(LinearLayout row,String title,Runnable action) { Button b=new Button(activity);b.setText(title);b.setTextSize(16);b.setOnClickListener(v->action.run());row.addView(b,new LinearLayout.LayoutParams(0,-2,1)); }
     PaletteColors palette = PaletteColors.from(0xff101824);
-    int opacity=75; boolean reducedMotion;
+    int opacity=WallpaperSettings.DEFAULT_WIDGET_OPACITY; boolean reducedMotion;
     void style(PaletteColors palette,int opacity,boolean reducedMotion) {
         this.palette=palette;this.opacity=opacity;this.reducedMotion=reducedMotion;
         if(view!=null) view.setStyle(palette,opacity,reducedMotion);
