@@ -46,7 +46,9 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
     private String originalLanguage;
     private ProjectivyProviderRegistry.Provider fixture;
     private int index, undoBeforeRetry, undoBeforeSolid;
-    private long deadline;
+    private long deadline,holdStarted;
+    private int holdCount,opacityDim;
+    private String holdPalette;
     private boolean finished;
     private Intent capturedSourceIntent;
 
@@ -87,7 +89,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
                         .filter(p -> p.component.getPackageName().equals(getPackageName())).findFirst()
                         .orElseThrow(() -> new IllegalStateException("Offline provider missing"));
                 for (boolean apps : new boolean[]{false, true}) addSurfaceCases(apps);
-                addProviderCases(); addAboutCases();
+                addProviderCases(); addAboutCases(); addBackUndoCases();
                 add("Real user settings remain unchanged", this::closeMenus, () -> {
                     require(original.equals(super.getSharedPreferences("widget-home", MODE_PRIVATE).getAll()), "Tests changed Will's settings");
                     require(originalLanguage.equals(AppLanguage.mode(this)), "Tests changed Will's language");
@@ -125,7 +127,10 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
     }
     private void choose(int choice) throws Exception {
         int size = (Integer) get(menu(), "pageSize");
-        while ((Integer) get(menu(), "page") < choice / size) key(KeyEvent.KEYCODE_DPAD_CENTER);
+        for (int attempts=0; (Integer)get(menu(),"page")<choice/size; attempts++) {
+            require(attempts<10,"Menu did not advance to choice "+choice);
+            key(KeyEvent.KEYCODE_DPAD_CENTER);
+        }
         int[] arms = {KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_DPAD_DOWN, KeyEvent.KEYCODE_DPAD_LEFT};
         key(arms[choice % size]);
     }
@@ -181,7 +186,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         add(prefix + "root source actions", () -> {
             closeMenus(); Field field = MainActivity.class.getDeclaredField("allApps"); field.setAccessible(true); field.setBoolean(this, apps);
             Method render = MainActivity.class.getDeclaredMethod("render", int.class); render.setAccessible(true); render.invoke(this, 0); openBackground();
-        }, () -> require(((String[]) get(menu(), "labels")).length == 3, "Solid source offers a no-op Retry"));
+        }, () -> require(((String[]) get(menu(), "labels")).length == 4, "Solid source offers a no-op Retry"));
         add(prefix + "Solid opens color picker", () -> choose(0), () -> {
             expectMenu("Palette"); require((Boolean) get(menu(), "paletteGrid"), "No palette grid");
             if (!apps) snapshot();
@@ -195,7 +200,7 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         add(prefix + "Back returns to Background", () -> key(KeyEvent.KEYCODE_BACK), () -> { expectMenu("Background"); require(undoCount() == 1, "Missing grouped Undo"); });
         add(prefix + "Undo restores color", this::undo, () -> require("forest".equals(layout().palette) && undoCount() == 0, "Undo did not restore palette"));
         add(prefix + "Details shows real settings", () -> { openBackground(); choose(2); }, () -> {
-            String info = details(); require(info.contains("Source: Solid color") && info.contains("Palette: forest") && info.contains("UI background opacity:"), "Details lacks source or settings");
+            String info = details(); require(info.contains("Source: Solid color") && info.contains("Palette: forest") && info.contains(getString(R.string.hb_ui_opacity_70)+": 100%"), "Details lacks source or settings");
             if (!apps) snapshot();
         });
         add(prefix + "Details opens color picker", () -> click("Choose color"), () -> expectMenu("Palette"));
@@ -243,8 +248,8 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
             assertRestoredDashboard();
         });
         add("Retry exists for saved provider", () -> {
-            openBackground(); require(((String[]) get(menu(), "labels")).length == 4, "Provider has no Retry");
-            undoBeforeRetry = undoCount(); choose(3);
+            openBackground(); require(((String[]) get(menu(), "labels")).length == 5, "Provider has no Retry");
+            undoBeforeRetry = undoCount(); choose(4);
         }, () -> expectMenu(getString(R.string.hb_background_details)));
         addReady("Retry updates Details when ready", () -> {}, () -> {
             require(details().contains("Preview ready") && details().contains("Fixture color"), "Retry status or credits stayed stale");
@@ -258,20 +263,18 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
             require(undoCount() == undoBeforeSolid + 1, "Source and color were split into multiple changes");
         });
         add("Returning refreshes source actions", () -> click("Back"), () -> {
-            expectMenu("Background"); require(((String[]) get(menu(), "labels")).length == 3, "Background retained stale Retry");
+            expectMenu("Background"); require(((String[]) get(menu(), "labels")).length == 4, "Background retained stale Retry");
         });
         add("Undo restores provider plus color", this::undo, () -> require(fixture.component.flattenToString().equals(layout().wallpaper.component)
                 && "forest".equals(layout().palette), "Undo did not restore provider and palette together"));
         addReady("Provider Details has live credits", () -> { openBackground(); choose(2); }, () -> require(details().contains("Homeboard test wallpapers") && details().contains("Title: Fixture color"), "Saved provider details unavailable"));
     }
     private void assertRestoredDashboard() throws Exception {
-        require(((View) get("surface")).getVisibility() == View.VISIBLE
-                && ((View) get("uiBackdrop")).getVisibility() == View.VISIBLE, "Dashboard stayed hidden");
+        require(((View) get("surface")).getVisibility() == View.VISIBLE, "Dashboard stayed hidden");
         require(layout().uiOpacityPercent == 100, "Preview changed saved opacity");
     }
     private void assertVisiblePreview() throws Exception {
-        require(((View) get("surface")).getVisibility() == View.INVISIBLE
-                && ((View) get("uiBackdrop")).getVisibility() == View.INVISIBLE, "Dashboard covers preview");
+        require(((View) get("surface")).getVisibility() == View.INVISIBLE, "Dashboard covers preview");
         require(layout().uiOpacityPercent == 100, "Preview changed saved opacity");
         ViewGroup overlay = (ViewGroup) get("overlay"); View controls = overlay.getChildAt(0);
         require(controls.getLeft() >= overlay.getWidth() / 2
@@ -342,10 +345,51 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
         }
         add("About Back retains Home settings page", () -> key(KeyEvent.KEYCODE_BACK), () -> { expectMenu("Home settings"); require((Integer) get(menu(), "page") == 1, "Lost About's parent page"); });
     }
+    private Object invoke(String name,Class<?>[] types,Object...args)throws Exception{Method method=MainActivity.class.getDeclaredMethod(name,types);method.setAccessible(true);return method.invoke(this,args);}
+    private void setField(String name,Object value)throws Exception{Field field=MainActivity.class.getDeclaredField(name);field.setAccessible(true);field.set(this,value);}
+    private void saveTestPalette(String value)throws Exception{layout().palette=value;invoke("save",new Class<?>[]{String.class},"Palette "+value);}
+    private void beginHold(){holdStarted=SystemClock.uptimeMillis();dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_BACK));}
+    private void endHold(){dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_BACK));}
+    private void addTimed(String name,Check action,Check assertion,long millis){cases.add(new Case(name,action,assertion,()->SystemClock.uptimeMillis()-holdStarted>=millis));}
+    private void addBackUndoCases(){
+        addTimed("Long Back cancels widget-opacity draft without undo",()->{
+            closeMenus();holdCount=undoCount();opacityDim=layout().wallpaper.dimPercent;call("appearanceSettings");choose(3);key(KeyEvent.KEYCODE_DPAD_DOWN);
+            require(layout().uiOpacityPercent==100&&(Integer)get("uiBackgroundOpacity")==95,"Opacity draft saved early or did not preview");beginHold();
+        },()->{endHold();require(layout().uiOpacityPercent==100&&(Integer)get("uiBackgroundOpacity")==100&&undoCount()==holdCount&&layout().wallpaper.dimPercent==opacityDim,"Draft Back altered history, saved opacity or wallpaper dimming");},1200);
+        addTimed("Hold Back undoes saved widget opacity",()->{
+            closeMenus();call("appearanceSettings");choose(3);key(KeyEvent.KEYCODE_DPAD_DOWN);key(KeyEvent.KEYCODE_DPAD_CENTER);closeMenus();require(layout().uiOpacityPercent==95,"Opacity did not save");beginHold();
+        },()->{endHold();require(layout().uiOpacityPercent==100&&layout().wallpaper.dimPercent==opacityDim&&undoCount()==holdCount,"Saved opacity Undo did not restore only its change");},1200);
+        addTimed("Hold Back gives progress or completion feedback on All Apps",()->{
+            closeMenus();getSharedPreferences("widget-home",MODE_PRIVATE).edit().putString("undo_history","[]").apply();
+            holdPalette=layout().palette;setField("lastSavedLayout",layout().encode());saveTestPalette("ocean");saveTestPalette("plum");
+            setField("allApps",true);invoke("render",new Class<?>[]{int.class},0);holdCount=undoCount();beginHold();
+        },()->{BackUndoGesture gesture=(BackUndoGesture)get("backUndo");if(!gesture.finished())require(((View)get("undoProgress")).getVisibility()==View.VISIBLE,"No hold progress");else require(hasText((View)get("root"),getString(R.string.hb_undid)),"No undo completion feedback");snapshot();},450);
+        addTimed("One hold undoes once; repeats/release do not navigate",()->{
+            dispatchKeyEvent(new KeyEvent(holdStarted,SystemClock.uptimeMillis(),KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_BACK,1));
+        },()->{require(undoCount()==holdCount-1&&"ocean".equals(layout().palette),"Hold did not undo exactly newest change");endHold();require((Boolean)get("allApps"),"Release navigated Home after undo");require(get("undoButton")==null,"Undo confirmation offered an unrelated action");},1800);
+        addTimed("Fresh hold undoes the preceding change",this::beginHold,()->{endHold();require(undoCount()==0&&holdPalette.equals(layout().palette),"Fresh hold did not restore original state");},1200);
+        addTimed("No history: long Back explains and does not navigate",this::beginHold,()->{endHold();require((Boolean)get("allApps")&&undoCount()==0,"Empty-history hold navigated or changed state");require(get("undoButton")==null,"Empty history has an inactive Undo button");},1200);
+        add("Short Back still returns All Apps to Home",()->key(KeyEvent.KEYCODE_BACK),()->require(!(Boolean)get("allApps"),"Short Back stopped navigating"));
+        addTimed("Holding Back in a menu closes it without undo",()->{
+            saveTestPalette("ocean");holdCount=undoCount();key(KeyEvent.KEYCODE_MENU);beginHold();
+        },()->{endHold();require(get("overlay")==null&&undoCount()==holdCount&&"ocean".equals(layout().palette),"Menu Back undid a saved change");},1200);
+        addTimed("Another key cancels pending hold and consumes its release",()->{
+            setField("allApps",true);invoke("render",new Class<?>[]{int.class},0);holdCount=undoCount();beginHold();key(KeyEvent.KEYCODE_DPAD_UP);
+        },()->{endHold();require((Boolean)get("allApps")&&undoCount()==holdCount,"Canceled hold undid or navigated");},1200);
+        add("Undo button is reachable and stays while selected",()->{
+            saveTestPalette("plum");setField("allApps",true);
+            @SuppressWarnings("unchecked") List<String> apps=(List<String>)invoke("appItems",new Class<?>[]{});require(!apps.isEmpty(),"No app fixture");
+            setField("focused",apps.get(apps.size()-1));setField("appsPage",(apps.size()-1)/(Integer)invoke("appPageSize",new Class<?>[]{}));invoke("render",new Class<?>[]{int.class},0);key(KeyEvent.KEYCODE_DPAD_DOWN);
+        },()->{require(((View)get("undoButton")).hasFocus(),"Down did not select Undo from All Apps");((Runnable)get("hideUndoBanner")).run();require(get("undoBanner")!=null,"Focused Undo disappeared");});
+        add("Short Back leaves Undo button; OK still undoes",()->{
+            key(KeyEvent.KEYCODE_BACK);require((Boolean)get("allApps")&&!((View)get("undoButton")).hasFocus(),"Short Back did not return to app content");key(KeyEvent.KEYCODE_DPAD_DOWN);key(KeyEvent.KEYCODE_DPAD_CENTER);
+        },()->{require("ocean".equals(layout().palette)&&get("undoButton")==null,"Clickable Undo failed or retained inactive button");});
+    }
     private void next() {
         if (finished) return;
         if (index == cases.size()) { finished = true; report("ALL CHECKS PASSED · " + passed.size() + " menu regressions"); return; }
         Case test = cases.get(index);
+        android.util.Log.i("HomeboardMenuProbe","START "+index+" "+test.name);
         try { test.action.run(); deadline = SystemClock.uptimeMillis() + 15_000; runner.postDelayed(this::check, 300); }
         catch (Exception error) { fail(error); }
     }
@@ -355,11 +399,12 @@ public final class BackgroundMenuProbeActivity extends MainActivity {
             if (!test.ready.getAsBoolean()) {
                 require(SystemClock.uptimeMillis() < deadline, "Timed out waiting for UI"); runner.postDelayed(this::check, 200); return;
             }
-            test.assertion.run(); passed.add("PASS " + test.name); index++; runner.postDelayed(this::next, 100);
+            test.assertion.run(); android.util.Log.i("HomeboardMenuProbe","PASS "+test.name); passed.add("PASS " + test.name); index++; runner.postDelayed(this::next, 100);
         } catch (Exception error) { fail(error); }
     }
     private void fail(Exception error) { finished = true; report("FAIL " + (index < cases.size() ? cases.get(index).name : "setup") + ": " + error); }
     private void report(String result) {
+        android.util.Log.i("HomeboardMenuProbe",result);
         LinearLayout report = new LinearLayout(this); report.setOrientation(LinearLayout.VERTICAL); report.setBackgroundColor(0xff102333);
         TextView heading = new TextView(this); heading.setTextColor(Color.WHITE); heading.setTextSize(18); heading.setText(result); heading.setPadding(16, 8, 16, 8);
         report.addView(heading);

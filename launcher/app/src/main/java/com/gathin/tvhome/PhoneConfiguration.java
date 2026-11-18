@@ -21,15 +21,17 @@ final class PhoneConfiguration {
                     .put("page",cell.page).put("column",cell.column).put("row",cell.row).put("width",cell.width).put("height",cell.height).put("settings",settings));
         }
         return new JSONObject().put("widgets",widgets).put("favorites",new JSONArray(layout.favorites))
-                .put("columns",columns).put("rows",rows).put("artwork",layout.homeAppSize);
+                .put("headerClock",layout.headerClock.json()).put("columns",columns).put("rows",rows).put("artwork",layout.homeAppSize);
     }
     static JSONObject defaultAir()throws JSONException{return new JSONObject().put("source","model").put("location-mode","auto").put("location-name","").put("station","114");}
     static final class Result {final HomeLayout layout;final JSONObject air;Result(HomeLayout l,JSONObject a){layout=l;air=a;}}
     static Result validate(JSONObject draft,HomeLayout before,JSONObject beforeAir,Set<String> available)throws JSONException {
-        keys(draft,"draft","widgets","favorites","columns","rows","artwork");
+        keys(draft,"draft","widgets","favorites","columns","rows","artwork","headerClock");
         int columns=integer(draft,"columns",4,12),rows=integer(draft,"rows",2,12);
         String artwork=choice(draft,"artwork","small","banner");
         HomeLayout result=HomeLayout.parse(before.encode());
+        WorldClockSettings.validate(draft.getJSONObject("headerClock"));
+        result.headerClock=WorldClockSettings.parse(draft.getJSONObject("headerClock"));
         result.widgets.clear();result.homePositions.clear();result.panelSpans.clear();
         result.homeColumns=columns;result.homeRows=rows;result.homeAppSize=artwork;result.favoritesContainer=true;
         JSONObject air=new JSONObject(beforeAir.toString());

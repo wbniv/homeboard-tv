@@ -65,6 +65,25 @@ public class PhoneEditorTest {
             session.close();assertEquals(403,post(url,"/api/state","{}",token,url));
         }finally{server.stop();}
     }
+    @Test public void shortcutsPublishEscapedPerTVMetadataAndRejectAnotherTVBeforeApproval()throws Exception {
+        AtomicLong time=new AtomicLong();PhoneEditorSession session=new PhoneEditorSession(time::get);java.util.concurrent.atomic.AtomicInteger prompts=new java.util.concurrent.atomic.AtomicInteger();
+        PhoneEditorServer server=new PhoneEditorServer("127.0.0.1",0,new PhoneEditorServer.Host(){
+            public JSONObject command(String path,JSONObject body,String credential){return new JSONObject();}
+            public void pairing(String request,String code){prompts.incrementAndGet();}
+            public String id(){return "cast-one-id";}
+            public String name(){return "Cast1";}
+        },session,Map.of("/","<title>Homeboard · Your dashboard</title><meta name=\"apple-mobile-web-app-title\" content=\"Homeboard\">".getBytes(StandardCharsets.UTF_8),"/tv-icon.png",new byte[]{1,2,3}));
+        server.open();try{
+            String url=server.url(),name="<TV> & \"Family\"",query=java.net.URLEncoder.encode(name,"UTF-8");
+            String html=get(url+"/?tv=cast-one-id&name="+query);assertTrue(html.contains("&lt;TV&gt; &amp; &quot;Family&quot;"));assertFalse(html.contains("<TV>"));
+            JSONObject manifest=new JSONObject(get(url+"/shortcut.webmanifest?name="+query));assertEquals(name,manifest.getString("name"));assertEquals("/?tv=cast-one-id",manifest.getString("id"));assertFalse(manifest.toString().contains(session.invitation()));assertTrue(manifest.getString("start_url").startsWith("/?tv=cast-one-id&name="));
+            assertEquals(422,post(url,"/api/pair","{\"tvId\":\"cast-two-id\"}","",url));assertEquals(0,prompts.get());
+            assertEquals(200,post(url,"/api/pair","{\"tvId\":\"cast-one-id\"}","",url));assertEquals(1,prompts.get());
+        }finally{server.stop();}
+    }
+    private String get(String url)throws Exception {
+        try(BufferedReader reader=new BufferedReader(new InputStreamReader(new URL(url).openStream(),StandardCharsets.UTF_8))){return reader.lines().collect(java.util.stream.Collectors.joining("\n"));}
+    }
     @Test public void recreatedWidgetHasNewIdentityWhileOrdinaryEditsKeepIdentity()throws Exception {
         HomeLayout original=HomeLayout.firstRun();JSONObject generations=PhoneConfigurationStore.nextInstances(new HomeLayout(),original,new JSONObject());
         assertEquals(1,generations.getLong(HomeLayout.RAIN));
@@ -75,6 +94,22 @@ public class PhoneEditorTest {
         JSONObject recreated=PhoneConfigurationStore.nextInstances(removed,original,tombstones);
         assertEquals(2,recreated.getLong(HomeLayout.RAIN));assertEquals(1,recreated.getLong(HomeLayout.CALENDAR));
         assertEquals(1,generations.getLong(HomeLayout.RAIN));
+    }
+    @Test public void firstDashboardSaveCreatesWidgetIdentitiesWithoutParsingMissingLayout()throws Exception {
+        Map<String,String> staged=new HashMap<>();
+        android.content.SharedPreferences prefs=(android.content.SharedPreferences)java.lang.reflect.Proxy.newProxyInstance(getClass().getClassLoader(),new Class[]{android.content.SharedPreferences.class},(proxy,method,args)->{
+            if(method.getName().equals("getString"))return args[1];
+            throw new UnsupportedOperationException(method.getName());
+        });
+        android.content.SharedPreferences.Editor edit=(android.content.SharedPreferences.Editor)java.lang.reflect.Proxy.newProxyInstance(getClass().getClassLoader(),new Class[]{android.content.SharedPreferences.Editor.class},(proxy,method,args)->{
+            if(method.getName().equals("putString")){staged.put((String)args[0],(String)args[1]);return proxy;}
+            throw new UnsupportedOperationException(method.getName());
+        });
+        HomeLayout dashboard=HomeLayout.firstRun();
+        assertSame(edit,PhoneConfigurationStore.trackInstances(prefs,edit,dashboard));
+        JSONObject generations=new JSONObject(staged.get("widget-instance-generations"));
+        assertEquals(dashboard.widgets.size(),generations.length());
+        for(String key:dashboard.widgets)assertEquals(1,generations.getLong(key));
     }
     @Test public void failedDiskCommitCannotLeaveAnAcknowledgedOperationInMemory()throws Exception {
         Map<String,Object> values=new HashMap<>();HomeLayout before=HomeLayout.firstRun();values.put("layout",before.encode());values.put(PhoneConfigurationStore.REVISION,7L);

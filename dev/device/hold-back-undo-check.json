@@ -1,0 +1,64 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 75,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 1,
+      "key": "DPAD_DOWN",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 4,
+      "capture": "two-row-upgrade"
+    },
+    {
+      "at": 10,
+      "capture": "populated-header-all-apps"
+    },
+    {
+      "at": 16,
+      "capture": "widget-and-favorites-right-exits"
+    },
+    {
+      "at": 22,
+      "capture": "undo-right-exit"
+    },
+    {
+      "at": 28,
+      "capture": "default-immediate-apply"
+    },
+    {
+      "at": 35,
+      "capture": "preview-edge-exit"
+    },
+    {
+      "at": 44,
+      "capture": "undo-and-reapply"
+    },
+    {
+      "at": 50,
+      "capture": "empty-home-right-exit"
+    },
+    {
+      "at": 57,
+      "capture": "four-row-default"
+    },
+    {
+      "at": 63,
+      "capture": "dashboard-regressions-before-hold"
+    },
+    {
+      "at": 64,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 1400
+    },
+    {
+      "at": 68,
+      "capture": "physical-hold-back-undo-confirmation"
+    }
+  ]
+}

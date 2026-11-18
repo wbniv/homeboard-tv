@@ -1,0 +1,44 @@
+{
+  "Page0": {
+    "job": "J-1af746d716eb",
+    "sha256": "717ce6b18ce285da7e42a7fe244bdc4367703c60697ac5ad341b239c56a1d668",
+    "result": "pass",
+    "observations": "Three public Play cards readable; Overflight focus ring clear; installed/missing labels correct; Next wedge, no scrollbar."
+  },
+  "Page1": {
+    "job": "J-f827d1b82482",
+    "sha256": "e18b44c18e39de8937564345ce9cce288d5d1c9d136936d176f5628ff9ebb1fb",
+    "result": "pass",
+    "observations": "Three community cards readable; Daily Photos focused; version labels and Sofadrop missing state visible; Previous/Back/Next wedges fit."
+  },
+  "Page2": {
+    "job": "J-0f14425fac00",
+    "sha256": "03e4da0322de1fc8bcd1b655cd463dee7ab0bd19e0c02a216f928af9c774e408",
+    "result": "pass",
+    "observations": "Booru and Weather cards fit; exclusion explanation readable; previous wedge and Back only; no scrollbar."
+  },
+  "Weather": {
+    "job": "J-24b965103275",
+    "sha256": "e73318ed7ee10549f0a869f00306b71a9cc06a4fa669df33eed60eeecb88ed46",
+    "result": "pass",
+    "observations": "Readable exclusion and saved-location risk explanation; refresh and Back only; no install, publisher link or QR action."
+  },
+  "Movie": {
+    "job": "J-f17871f803c2",
+    "sha256": "69cbb57703461ae7f238238784535a61681b374f1e5c9140c2d956dc14d27471",
+    "result": "pass",
+    "observations": "Missing status, clear store focus, phone QR/full HTTPS address and region/account guidance all readable; Back visible. Actual store round trip not claimed."
+  },
+  "Daily": {
+    "job": "J-4d2deef3cfdb",
+    "sha256": "bae8e4f0d420d268cf5325304ef9f47db307a0949cc8a450a568e56b0b1b231d",
+    "result": "pass",
+    "observations": "Installed 1.10 with Configure focused, Preview and refresh actions; no redundant install/store/QR action; text and Back fit."
+  },
+  "Dashboard": {
+    "job": "J-c669be87900c",
+    "sha256": "9f70cf6fa46b09bc12d73a33014189c322e67ea05dcbd2ab086db8503ac6d273",
+    "result": "pass",
+    "observations": "Restored fresh test dashboard with Rain, Calendar, Air 24h/30d sparklines, full-width Favorites and fixed header clock; Rain focus visible; directory overlay gone. Household preferences separately unchanged."
+  }
+}

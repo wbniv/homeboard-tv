@@ -18,9 +18,11 @@ broader dashboard engine and traffic integrations remain undecided.
 
 ## Home interaction
 
-The optional [World clock widget](docs/how-to/world-clock.md) shows configurable
-places with shared city colors, an offline world map and a full-screen 24-hour
-time comparison. Its settings use named time zones and the TV system clock.
+The fixed [World clock](docs/how-to/world-clock.md) sits beside Settings on Home
+and All Apps, with configurable colored city cards and a full-screen meeting
+planner, 24-hour comparison and offline map. Its settings use named time zones
+and the TV system clock. [Phone shortcuts](docs/how-to/phone-tv-shortcuts.md) can
+open each TV’s controller from a separate named home-screen icon.
 
 **Short OK/click expands a widget; hold OK opens widget settings/actions.** Expanded
 views add four-week Calendar detail, Rain amount/probability charts, nearby air
@@ -40,6 +42,10 @@ documents the circular artwork, focus ring and halo reference, implementation
 and device evidence. Use `task deploy` for a newly numbered APK deployment;
 the About dialog displays the installed APK version.
 
+The [provider directory](docs/how-to/provider-directory.md) offers Google Play links,
+community publisher pages, phone QR links and explicit compatibility status.
+Providers remain separate apps; Homeboard does not install or bundle their APKs.
+
 Wallpaper-provider hosting, UI opacity and dense All Apps are described in the
 [Projectivy wallpaper how-to](docs/how-to/projectivy-wallpapers.md). The host uses
 the public v1 API; it does not need Projectivy Launcher. See the
@@ -54,7 +60,7 @@ the available space while retaining readable labels and focus clearance; Undo
 restores Home's previous style and placement. Grid rows/columns selectors now
 preview actual candidate grids, with vertical column or horizontal row emphasis.
 
-The combined **0.1.19** deployment includes wallpaper hosting, independent UI
+The earlier combined **0.1.19** deployment includes wallpaper hosting, independent UI
 background opacity, Home favorite sizes, dense icon/banner grids and English/Thai
 language selection. Solid color opens the palette picker; Background status & credits
 shows the saved source and live provider status. Retry refreshes a selected
@@ -75,6 +81,7 @@ Favorites or the layout in your phone browser. Tap a dashboard card, drag Favori
 rows to reorder, and review your shared draft before **Update TV**. One Undo
 restores the complete update. No phone app or account is needed.
 Keep Homeboard open on the TV and use your trusted home network.
+The controller also offers a provider directory and [a phone shortcut per TV](docs/how-to/phone-tv-shortcuts.md).
 See the [phone editor how-to](docs/how-to/phone-widget-editor.md).
 
 ## Default dashboard
@@ -116,11 +123,24 @@ Location to choose a fixed city, coordinates or street address, or return to
 Device location · Automatic. The default is the next 24 hours by hour followed by six daily forecasts;
 both ranges, units, label and cloud animation are configurable per widget.
 
-Hold OK for configuration and size presets. **4×3 is recommended**; 1×1 glance,
+Hold OK for configuration and size presets. The default dashboard uses a shallow
+full-width Rain row; **4×3** is an option for a larger standalone card. The 1×1 glance,
 compact, tall, wide and Fill Home layouts adapt to available space. OK opens exact
 hourly/daily values and full-screen details. Animated clouds respect Reduced motion.
 See the [rain plan and size gallery](docs/plans/2026-11-16-rain-widget.md) and
 [validation record](docs/testing/2026-11-16-rain-widget.md).
+
+## Current verification
+
+Build **0.1.59** passed 472 JVM tests and Android lint. Seven Cast1 directory and
+dashboard captures, four phone browser captures, and provider baseline evidence
+are in the [screenshot verification record](docs/testing/2026-11-18-provider-directory.md).
+Cast1 is installed and launch-verified; the identical Cast2 install is queued while
+its coordinator connection is unavailable. Actual Play installation/return and
+backend/account-dependent provider checks remain unverified.
+
+On Home or All Apps, **hold Back for one second to Undo**. A short Back keeps
+normal navigation. See the [Undo guide](docs/how-to/undo.md).
 
 ## Start here
 

@@ -29,8 +29,8 @@ public final class PhoneEditorProbeActivity extends MainActivity {
                 for(String key:household.favorites)seed.addFavorite(key);
                 // Read-only capture for reproducing Will's explicitly requested new-clock preset.
                 // Never copy other household settings or identifiers into the exported record.
-                for(String key:household.widgets)if(HomeLayout.isWorldClockWidget(key)){
-                    WorldClockSettings clock=household.clockSettings.get(key);
+                for(String key:java.util.Collections.singletonList(HomeLayout.HEADER_CLOCK)){
+                    WorldClockSettings clock=household.headerClock;
                     HomeLayout.PanelSpan span=household.panelSpans.get(key);
                     JSONObject snapshot=new JSONObject().put("key",key).put("settings",clock.json()).put("width",span==null?4:span.width).put("height",span==null?1:span.height);
                     String encoded=android.util.Base64.encodeToString(snapshot.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8),android.util.Base64.NO_WRAP);
@@ -50,7 +50,10 @@ public final class PhoneEditorProbeActivity extends MainActivity {
     private void stage(String text){probe.post(()->{report.setText(text);report.bringToFront();android.util.Log.i("HomeboardPhoneProbe",text);});}
     private void check(){
         try{
-            Thread.sleep(1500);JSONObject pairing=post("/api/pair",new JSONObject().put("invitation",""),false);credential=pairing.getString("token");
+            Thread.sleep(1500);
+            JSONObject manifest=new JSONObject(get("/shortcut.webmanifest?name=Cast1"));require(manifest.getString("name").equals("Cast1")&&manifest.getString("start_url").contains("?tv="),"Shortcut metadata missing");
+            require(!manifest.toString().contains("invitation")&&!manifest.toString().contains("token"),"Shortcut retained editing credentials");
+            JSONObject pairing=post("/api/pair",new JSONObject().put("invitation",""),false);credential=pairing.getString("token");
             probe.post(()->approveVisible(0));
             for(int i=0;i<20;i++){if("approved".equals(post("/api/status",new JSONObject(),true).getString("status")))break;Thread.sleep(300);}
             JSONObject baseline=post("/api/state",new JSONObject(),true),draft=new JSONObject(baseline.getJSONObject("draft").toString());
@@ -70,18 +73,16 @@ public final class PhoneEditorProbeActivity extends MainActivity {
             }
             JSONObject clockDefault=baseline.getJSONObject("worldClockDefaults");
             require(clockDefault.getInt("width")==8&&clockDefault.getInt("height")==1,"Clock default size differs from captured preset");
-            require(clockDefault.getJSONObject("settings").getJSONArray("places").length()==6,"Clock default places missing");
-            draft.getJSONArray("widgets").put(new JSONObject().put("key",HomeLayout.WORLD_CLOCK).put("type","world_clock").put("page",1).put("column",0).put("row",0)
-                    .put("width",clockDefault.getInt("width")).put("height",clockDefault.getInt("height")).put("settings",clockDefault.getJSONObject("settings")));
+            require(clockDefault.getJSONObject("settings").getJSONArray("places").length()==5,"Clock default places missing");
+            draft.getJSONObject("headerClock").put("title","Phone header verification").put("format","12");
             JSONArray favorites=draft.getJSONArray("favorites");if(favorites.length()>1){Object first=favorites.get(0);favorites.put(0,favorites.get(1));favorites.put(1,first);}
             Thread.sleep(2000);
             String operation=PhoneEditorSession.random();JSONObject request=new JSONObject().put("revision",baseline.getLong("revision")).put("operation",operation).put("draft",draft);
             applied=post("/api/apply",request,true);
             JSONObject repeated=post("/api/apply",request,true);require(applied.getLong("revision")==repeated.getLong("revision"),"Duplicate Apply changed revision");
             require(!canonical(applied.getJSONObject("draft")).equals(canonical(baseline.getJSONObject("draft"))),"Apply made no changes");
-            JSONObject addedClock=null;for(int i=0;i<applied.getJSONObject("draft").getJSONArray("widgets").length();i++){JSONObject candidate=applied.getJSONObject("draft").getJSONArray("widgets").getJSONObject(i);if(candidate.getString("type").equals("world_clock"))addedClock=candidate;}
-            require(addedClock!=null&&addedClock.getInt("width")==8&&addedClock.getInt("height")==1&&canonical(addedClock.getJSONObject("settings")).equals(canonical(clockDefault.getJSONObject("settings"))),"Created clock did not retain native preset");
-            stage("PHONE · mixed Rain / Air / Calendar / Favorites and new six-place Clock Apply and retry passed");Thread.sleep(4500);
+            require(applied.getJSONObject("draft").getJSONObject("headerClock").getString("title").equals("Phone header verification"),"Header settings missing from atomic Apply");
+            stage("PHONE · mixed Rain / Air / Calendar / Favorites and fixed header Clock Apply and retry passed");Thread.sleep(4500);
             post("/api/preview",new JSONObject().put("revision",applied.getLong("revision")).put("draft",applied.getJSONObject("draft")),true);
             stage("PHONE · native temporary preview active");Thread.sleep(4500);post("/api/cancel-preview",new JSONObject(),true);
             JSONObject restored=post("/api/undo",new JSONObject().put("revision",applied.getLong("revision")).put("operation",PhoneEditorSession.random()),true);applied=null;
@@ -103,6 +104,16 @@ public final class PhoneEditorProbeActivity extends MainActivity {
         if(view instanceof TextView&&view.isShown()&&view.isClickable()&&getString(R.string.hb_phone_accept).contentEquals(((TextView)view).getText()))return view;
         if(view instanceof ViewGroup)for(int i=0;i<((ViewGroup)view).getChildCount();i++){View result=findAllow(((ViewGroup)view).getChildAt(i));if(result!=null)return result;}
         return null;
+    }
+    private String get(String path)throws Exception {
+        URL u=new URL(origin);
+        // The probe exercises this app's LAN listener with the same bounded transport as POST.
+        try(Socket socket=new Socket()){socket.connect(new InetSocketAddress(u.getHost(),u.getPort()),4000);socket.setSoTimeout(12000);
+            OutputStream out=socket.getOutputStream();out.write(("GET "+path+" HTTP/1.1\r\nHost: "+u.getAuthority()+"\r\nConnection: close\r\n\r\n").getBytes(StandardCharsets.UTF_8));out.flush();
+            InputStream in=socket.getInputStream();String status=line(in);int length=-1;String h;while(!(h=line(in)).isEmpty())if(h.toLowerCase(Locale.ROOT).startsWith("content-length:"))length=Integer.parseInt(h.substring(h.indexOf(':')+1).trim());
+            if(!status.contains(" 200 ")||length<0||length>262144)throw new IOException("Invalid shortcut response: "+status);
+            ByteArrayOutputStream data=new ByteArrayOutputStream();for(int i=0;i<length;i++){int b=in.read();if(b<0)throw new EOFException();data.write(b);}return data.toString("UTF-8");
+        }
     }
     private JSONObject post(String path,JSONObject body,boolean auth)throws Exception{
         URL u=new URL(origin);byte[] bytes=body.toString().getBytes(StandardCharsets.UTF_8);

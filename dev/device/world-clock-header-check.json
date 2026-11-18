@@ -1,0 +1,150 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 58,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 2,
+      "capture": "fixed-filled-header"
+    },
+    {
+      "at": 4,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 5,
+      "capture": "homeboard-settings-focus"
+    },
+    {
+      "at": 6,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 8,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 11,
+      "capture": "header-opens-full-meeting-planner"
+    },
+    {
+      "at": 13,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 15,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 17,
+      "capture": "selected-city-details"
+    },
+    {
+      "at": 19,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 21,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 23,
+      "capture": "header-focus-restored"
+    },
+    {
+      "at": 25,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 800
+    },
+    {
+      "at": 28,
+      "capture": "hold-configures-cities"
+    },
+    {
+      "at": 30,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 32,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 33,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 34,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 37,
+      "capture": "header-on-all-apps"
+    },
+    {
+      "at": 39,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 40,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 42,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 45,
+      "capture": "planner-opened-from-all-apps"
+    },
+    {
+      "at": 47,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 50,
+      "capture": "all-apps-header-focus-restored"
+    },
+    {
+      "at": 52,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 55,
+      "capture": "return-to-home"
+    }
+  ]
+}

@@ -5,7 +5,9 @@
   let route={name:'overview'},working=false,pending=null,conflicts=[],pollTimer=0,lastTouch=0,lookups=0,sessionEnded=false,previewing=false;
   let reorderUndo=null,restoreRecord=null,disposers=[],expiry=0,iconCache=new Map();
   const scrolls=new Map(),queries=new Map();
-  history.replaceState({route},'',location.pathname);
+  let shortcutTV=new URLSearchParams(location.search).get('tv')||'',shortcutLabel=new URLSearchParams(location.search).get('name')||'';
+  const entryURL=()=>location.pathname+location.search;
+  history.replaceState({route},'',entryURL());
   const t=(key,values={})=>(PhoneStrings[language][key]??PhoneStrings.en[key]??key).replace(/\{(\w+)\}/g,(_,name)=>String(values[name]??''));
   function el(tag,text,cls){const node=document.createElement(tag);if(text!==undefined)node.textContent=text;if(cls)node.className=cls;return node;}
   function button(label,action,cls){const node=el('button',label,cls);node.type='button';node.onclick=()=>Promise.resolve().then(action).catch(showError);return node;}
@@ -23,6 +25,7 @@
   }
   function showError(error){
     if(error.status===403){disconnect('expired');return;}
+    if(error.field==='tvId'){message(t('shortcutWrongTV'),'warning');return;}
     if(error.field==='busy'){message(t('busy',{tv:tvName()}),'warning');return;}
     if(error.message==='noRoom'){message(t('noRoom'),'warning');return;}
     message(error.status===422?t('invalid'):t('failed',{tv:tvName()}),'warning');
@@ -38,17 +41,17 @@
   function touch(){if(connected&&Date.now()-lastTouch>60000){lastTouch=Date.now();api('touch').catch(()=>{});}}
   function changed(){persist();touch();updateActions();updateReview();}
   function routeKey(value=route){return value.name+':'+(value.key||'')+':'+(value.page||0);}
-  function navigate(next,replace=false){scrolls.set(routeKey(),window.scrollY);route=next;history[replace?'replaceState':'pushState']({route},'',location.pathname);render();window.scrollTo(0,scrolls.get(routeKey())||0);persist();}
+  function navigate(next,replace=false){scrolls.set(routeKey(),window.scrollY);route=next;history[replace?'replaceState':'pushState']({route},'',entryURL());render();window.scrollTo(0,scrolls.get(routeKey())||0);persist();}
   window.addEventListener('popstate',event=>{scrolls.set(routeKey(),window.scrollY);route=event.state?.route||{name:'overview'};render();window.scrollTo(0,scrolls.get(routeKey())||0);});
   function back(){if(route.name==='widget'||route.name==='arrange'||route.name==='add'||route.name==='recommended')navigate({name:'overview'});else if(route.name==='apps'||route.name==='favoriteActions')navigate({name:'favorites'});else navigate({name:'overview'});}
-  function currentWidget(){return draft?.widgets.find(w=>w.key===route.key);}
+  function currentWidget(){return route.key===M.HEADER&&draft?M.headerWidget(draft):draft?.widgets.find(w=>w.key===route.key);}
   const widgetType=w=>['rain','calendar','air','favorites','world_clock'].includes(w.type)?t(w.type):w.type==='app'?t('appShortcut'):w.type;
   const appName=key=>state.apps.find(app=>app.key===key)?.name||t('unavailable');
   function locationName(w){const s=w.settings;if(w.type==='rain')return s.label|| (s.locationSource==='device'?t('automatic'):s.name||t('unnamed'));
     if(w.type==='world_clock')return s.title;
     if(w.type==='air')return s.source==='airbkk'?(state.stations.find(x=>x.id===s.station)?.name||t('station')):s['location-mode']==='auto'?t('automatic'):s['location-name']||t('unnamed');return '';}
   function title(w){let name=widgetType(w),where=locationName(w);if(where)name+=' · '+where;
-    const duplicates=draft.widgets.filter(x=>x.type===w.type&&locationName(x)===where);if(duplicates.length>1)name+=' '+(duplicates.findIndex(x=>x.key===w.key)+1);return name;}
+    const duplicates=draft.widgets.filter(x=>x.type===w.type&&locationName(x)===where);if(!w.fixed&&duplicates.length>1)name+=' '+(duplicates.findIndex(x=>x.key===w.key)+1);return name;}
   function summary(w){const s=w.settings;if(w.type==='rain')return t('nextHours',{hours:s.hours})+' · '+t('followingDays',{days:s.days});
     if(w.type==='world_clock')return t('clockCount',{count:s.places.length})+' · '+PhoneClock.summary(s,t);
     if(w.type==='calendar')return t('holidays',{days:s.holidayLookaheadDays})+' · '+t(s.flowerWeeks);
@@ -69,10 +72,10 @@
   function choices(parent,label,current,values,onEdit){const group=el('fieldset',undefined,'segments');group.append(el('legend',label));
     for(const value of values){const control=button(String(value),()=>{onEdit(value);for(const b of group.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b===control));changed();});control.setAttribute('aria-pressed',String(value===current));group.append(control);}parent.append(group);}
   function header(){const root=$('heading');root.replaceChildren();if(state&&route.name!=='overview')root.append(button('‹ '+t('back'),back,'back'));
-    const name=route.name==='overview'?t('overview'):route.name==='widget'&&currentWidget()?title(currentWidget()):t(route.name==='favoriteActions'?'favorites':route.name==='apps'?'addApps':route.name==='recommended'?'recommended':route.name==='add'?'add':route.name==='arrange'?'arrange':route.name==='favorites'?'favorites':'overview');root.append(el('h1',name));
+    const name=route.name==='overview'?t('overview'):route.name==='widget'&&currentWidget()?title(currentWidget()):t(route.name==='favoriteActions'?'favorites':route.name==='apps'?'addApps':route.name==='recommended'?'recommended':route.name==='add'?'add':route.name==='arrange'?'arrange':route.name==='favorites'?'favorites':route.name==='shortcut'?'addTVIcon':route.name==='providers'?'providers':'overview');root.append(el('h1',name));
     const target=$('target');target.replaceChildren();if(!state)return;
     const menu=details(target,state.tv);menu.className='target-menu';
-    menu.append(button(t('changeTV'),()=>message(t('changeTVHelp'))),button(t('help'),()=>message(t('helpText'))),button(t('done'),finish));
+    menu.append(button(t('providers'),()=>navigate({name:'providers'})),button(t("addTVIcon"),()=>navigate({name:"shortcut"})),button(t('changeTV'),()=>message(t('changeTVHelp'))),button(t('help'),()=>message(t('helpText'))),button(t('done'),finish));
   }
   function diagram(parent,{arrange=false,page=0}={}){
     const grid=el('div',undefined,'dashboard-diagram'+(arrange?' arranging':''));grid.style.setProperty('--columns',draft.columns);grid.style.setProperty('--rows',draft.rows);grid.setAttribute('aria-label',t('page',{page:page+1}));parent.append(grid);
@@ -89,13 +92,36 @@
     }
     return grid;
   }
+  function topBar(parent,locked=false){
+    const box=section(parent,t('topBar')),w=M.headerWidget(draft);
+    box.append(button('◷ '+title(w)+' · '+t('fixedSlot'),()=>navigate({name:'widget',key:M.HEADER}),'widget-row'));
+    note(box,locked?t('fixedHelp'):summary(w));
+  }
   function overview(parent){
-    const intro=section(parent);diagram(intro);note(intro,t('tap'));
+    topBar(parent);
+    const intro=section(parent,t('dashboard'));diagram(intro);note(intro,t('tap'));
     const list=el('div',undefined,'widget-list');intro.append(list);
     for(const w of draft.widgets){const row=button('',()=>navigate({name:w.type==='favorites'?'favorites':'widget',key:w.key}),'widget-row');row.append(el('span',icon(w),'widget-icon'),el('span',undefined,'widget-copy'));
       row.lastChild.append(el('strong',title(w)),el('span',summary(w),'muted'));row.append(el('span','›','chevron'));list.append(row);}
     if(!draft.widgets.length)note(intro,t('empty'));
-    parent.append(button(t('arrange'),()=>navigate({name:'arrange',page:0}),'wide-action'),button('+ '+t('add'),()=>navigate({name:'add'}),'wide-action secondary'));
+    parent.append(button(t('arrange'),()=>navigate({name:'arrange',page:0}),'wide-action'),button('+ '+t('add'),()=>navigate({name:'add'}),'wide-action secondary'),button(t('providers'),()=>navigate({name:'providers'}),'wide-action secondary'));
+  }
+  function providerDirectory(parent){
+    note(parent,t('providerFor',{tv:tvName()}));
+    note(parent,t('providerHelp'));
+    for(const entry of state.providers||[]){
+      const card=section(parent,entry.name);card.className='provider-card';card.dataset.provider=entry.id;
+      note(card,entry.route);card.append(el('p',entry.detail));
+      note(card,entry.installed?t('providerInstalled',{version:entry.version}):t('providerMissing'));
+      // Read-only directory links never enter the shared dashboard draft.
+      if(!entry.excluded&&!entry.installed&&typeof entry.url==='string'){
+        let url;try{url=new URL(entry.url);}catch(_){continue;}
+        if(url.protocol!=='https:'||!(entry.play?url.hostname==='play.google.com'&&url.pathname==='/store/apps/details':url.hostname==='github.com'))continue;
+        const link=el('a',t(entry.play?'providerPlay':'providerPublisher'),'wide-action');
+        link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';card.append(link);
+      }
+      if(entry.installed&&!entry.excluded)note(card,t('providerOnTV'));
+    }
   }
   function locationForm(parent,w){
     const s=w.settings,air=w.type==='air',key=air?'location-mode':'locationSource',automatic=air?'auto':'device',fixed=air?'manual':'fixed';
@@ -139,6 +165,7 @@
       if(s.source==='model')locationForm(box,w);else select(box,t('station'),s.station,state.stations.map(station=>[station.id,station.name]),value=>s.station=value);
       note(box,t('sourceHelp'));
     }
+    if(w.fixed){note(box,t("positionFixed"));note(box,t("fixedHelp"));return;}
     box.append(button(t('arrange'),()=>navigate({name:'arrange',key:w.key,page:w.page}),'secondary'));
     parent.append(button(t('removeWidget'),()=>{draft.widgets=draft.widgets.filter(x=>x.key!==w.key);changed();navigate({name:'overview'});},'danger quiet'));
   }
@@ -196,10 +223,11 @@
   }
   function placementAction(w,change){const next={...w,...change};if(!M.validPosition(draft,next)){message(t('blocked'),'warning');return;}Object.assign(w,change);changed();render();}
   function arrange(parent){
+    topBar(parent,true);
     const page=route.page||0,box=section(parent);select(box,t('pageLabel'),page,Array.from({length:Math.max(1,...draft.widgets.map(w=>w.page+1))},(_,i)=>[i,t('page',{page:i+1})]),value=>navigate({name:'arrange',page:Number(value)},true));
     diagram(box,{arrange:true,page});note(box,t('schematic'));
     const selected=currentWidget();
-    if(selected){
+    if(selected&&!selected.fixed){
       const controls=section(parent,title(selected));
       const presets=el('div',undefined,'size-choices'),columns=draft.columns;
       const compact=selected.type==='air'?[Math.min(3,columns),2]:selected.type==='calendar'?[2,1]:selected.type==='favorites'?[Math.min(4,columns),1]:[Math.min(4,columns),1];
@@ -218,7 +246,7 @@
     parent.append(button(t('recommended'),()=>navigate({name:'recommended'}),'wide-action secondary'));
     const advanced=details(parent,t('advanced')),row=el('div',undefined,'two-fields');field(row,t('columns'),draft.columns,value=>draft.columns=value,'number',{min:4,max:12,step:1,required:true});field(row,t('rows'),draft.rows,value=>draft.rows=value,'number',{min:2,max:12,step:1,required:true});advanced.append(row);
   }
-  function addWidgets(parent){const box=section(parent);for(const type of ['rain','calendar','air','favorites','world_clock'])box.append(button('+ '+t(type),()=>{const w=M.add(draft,type,state.instances);changed();navigate({name:type==='favorites'?'favorites':'widget',key:w.key});},'wide-action'));}
+  function addWidgets(parent){const box=section(parent);for(const type of ['rain','calendar','air','favorites'])box.append(button('+ '+t(type),()=>{const w=M.add(draft,type,state.instances);changed();navigate({name:type==='favorites'?'favorites':'widget',key:w.key});},'wide-action'));}
   function recommended(parent){const box=section(parent);note(box,t('recommendHelp'));note(box,t('extraCards'));const selected={};
     for(const type of ['rain','air']){const cards=draft.widgets.filter(w=>w.type===type);if(cards.length>1){selected[type]=cards[0].key;select(box,t(type),selected[type],cards.map(w=>[w.key,title(w)]),value=>selected[type]=value);}}
     box.append(button(t('useLayout'),()=>{draft=M.recommended(payload(),state.instances,selected);changed();navigate({name:'arrange',page:0});},'primary wide-action'));
@@ -255,6 +283,7 @@
     for(const change of M.diff(state.draft,draft))list.append(el('li',changeText(change)));region.hidden=!list.childNodes.length;}
   function addReview(parent){const review=details(parent,t('review'));review.id='change-summary';review.append(el('ul'));updateReview();}
   function updateActions(){
+    if(route.name==='shortcut'||route.name==='providers'){$('actions').replaceChildren();return;}
     const root=$('actions');root.replaceChildren();if(!state)return;
     const changes=M.diff(state.draft,draft),issue=invalid();
     if(changes.length){const review=button(changes.length===1?t('oneChange'):t('changes',{count:changes.length}),()=>{const summary=$('change-summary');summary.open=true;summary.scrollIntoView({block:'center',behavior:'auto'});},'review-link');root.append(review);}
@@ -292,6 +321,8 @@
     for(const dispose of disposers)dispose?.();disposers=[];++lookups;
     header();const root=$('editor');root.replaceChildren();if(!state){intro();return;}
     if(conflicts.some(c=>!c.resolved))renderConflicts(root);
+    if(route.name==='providers'){providerDirectory(root);$('actions').replaceChildren();render.lastRoute=routeKey();return;}
+    if(route.name==='shortcut'){shortcutForm(root);$('actions').replaceChildren();render.lastRoute=routeKey();return;}
     if(route.name==='widget')widgetForm(root,currentWidget());else if(route.name==='favorites')favoriteList(root);else if(route.name==='favoriteActions')favoriteActions(root);
     else if(route.name==='apps')appPicker(root);else if(route.name==='arrange')arrange(root);else if(route.name==='add')addWidgets(root);else if(route.name==='recommended')recommended(root);else overview(root);
     addReview(root);
@@ -306,6 +337,19 @@
     updateActions();render.lastRoute=routeKey();
     if(sameRoute&&focused){const control=[...document.querySelectorAll('[aria-label]')].find(x=>x.getAttribute('aria-label')===focused);control?.focus({preventScroll:true});}
   }
+  function prepareShortcut(label){
+    shortcutTV=state.tvId;shortcutLabel=label.trim()||state.tv;
+    const url=new URL(location.href);url.hash='';url.search='';url.searchParams.set('tv',shortcutTV);url.searchParams.set('name',shortcutLabel);
+    history.replaceState({route},'',url.pathname+url.search);document.title=shortcutLabel;
+    document.querySelector('meta[name="apple-mobile-web-app-title"]').content=shortcutLabel;
+    document.querySelector('link[rel="manifest"]').href='/shortcut.webmanifest?name='+encodeURIComponent(shortcutLabel);
+  }
+  function shortcutForm(parent){
+    const box=section(parent);note(box,t('shortcutFor',{tv:state.tv}));
+    prepareShortcut(shortcutLabel||state.tv);
+    field(box,t('iconName'),shortcutLabel,value=>prepareShortcut(value),'text',{maxLength:60});
+    note(box,t('shortcutAndroid'));note(box,t('shortcutIPhone'));note(box,t('shortcutReconnect'));
+  }
   function intro(){
     const root=$('editor');root.replaceChildren();root.append(el('h1',t('app')),el('p',t('network')),button(t('connect'),connect,'primary'));$('actions').replaceChildren();
   }
@@ -315,12 +359,13 @@
     if(state){header();updateActions();}else intro();
   }
   async function connect(){
-    persist();sessionEnded=false;message('');const response=await api('pair',{invitation});invitation='';token=response.token;
+    persist();sessionEnded=false;message('');const response=await api('pair',{invitation,tvId:shortcutTV});invitation='';token=response.token;
     const root=$('editor');for(const dispose of disposers)dispose?.();disposers=[];
     root.replaceChildren(el('h1',t('waiting',{tv:response.tv||tvName()})),el('p',response.code,'pair-code'),el('p',t('match',{code:response.code})),el('p',t('network'),'muted'));
     $('actions').replaceChildren();poll();
   }
   async function approved(next){
+    if(shortcutTV&&shortcutTV!==next.tvId){token='';throw new Error(t('shortcutWrongTV'));}
     PhoneClock.configureDefaults(next.worldClockDefaults);
     if(state&&state.tvId===next.tvId){
       const merged=M.rebase(state,draft,next);state=next;draft=merged.draft;conflicts=merged.conflicts;message(t('rebased'));

@@ -32,6 +32,7 @@ final class PhoneEditor implements PhoneEditorServer.Host {
             session=new PhoneEditorSession(SystemClock::elapsedRealtime);
             Map<String,byte[]> assets=new HashMap<>();
             for(String name:List.of("index.html","editor.js","editor.css","model.js","strings.js","drag.js","clock.js"))try(java.io.InputStream in=activity.getAssets().open("phone/"+name)){assets.put(name.equals("index.html")?"/":"/"+name,read(in));}
+            assets.put("/tv-icon.png",shortcutIcon());
             // A stable origin lets this tab recover its draft after reopening the TV editor.
             // The listener still exists only during this foreground session.
             int port=PhoneConfigurationStore.preferences(activity).getInt("phone-editor-port",8765);
@@ -53,6 +54,7 @@ final class PhoneEditor implements PhoneEditorServer.Host {
                 new String[]{activity.getString(R.string.hb_phone_dashboard),activity.getString(R.string.hb_phone_stop)},i->{if(i==1)stop();activity.phoneDismiss();});
         }catch(Exception e){stop();activity.phoneMessage(R.string.hb_phone_unavailable);}
     }
+    @Override public String id(){return PhoneConfigurationStore.tvId(PhoneConfigurationStore.preferences(activity));}
     @Override public String name(){return activity.phoneName();}
     @Override public void pairing(String request,String code){activity.runOnUiThread(()->{
         if(server==null||!session.pending())return;
@@ -100,13 +102,21 @@ final class PhoneEditor implements PhoneEditorServer.Host {
         PhoneEditorServer old=server;server=null;if(old!=null)old.stop();
         activity.phoneCancelPreview();activity.phoneConnectionChanged(false);
     }
+    private byte[] shortcutIcon(){
+        Bitmap bitmap=Bitmap.createBitmap(192,192,Bitmap.Config.ARGB_8888);android.graphics.Canvas c=new android.graphics.Canvas(bitmap);
+        c.drawColor(0xff101a23);android.graphics.Paint p=new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        p.setColor(android.graphics.Color.HSVToColor(new float[]{Math.floorMod(id().hashCode(),360),.55f,.85f}));c.drawRoundRect(16,24,176,142,14,14,p);
+        p.setColor(0xff101a23);c.drawRoundRect(25,33,167,133,8,8,p);p.setColor(0xffffffff);p.setTypeface(android.graphics.Typeface.create(android.graphics.Typeface.MONOSPACE,android.graphics.Typeface.BOLD));p.setTextSize(34);p.setTextAlign(android.graphics.Paint.Align.CENTER);
+        String name=name();String suffix=name.substring(Math.max(0,name.length()-4));c.drawText(suffix.toUpperCase(java.util.Locale.ROOT),96,97,p);p.setStrokeWidth(8);c.drawLine(70,158,122,158,p);
+        java.io.ByteArrayOutputStream out=new java.io.ByteArrayOutputStream();bitmap.compress(Bitmap.CompressFormat.PNG,100,out);bitmap.recycle();return out.toByteArray();
+    }
     private static byte[] read(java.io.InputStream in)throws java.io.IOException{java.io.ByteArrayOutputStream out=new java.io.ByteArrayOutputStream();byte[] buffer=new byte[8192];int n;while((n=in.read(buffer))!=-1)out.write(buffer,0,n);return out.toByteArray();}
     static String address(Context context){
         ConnectivityManager cm=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         LinkProperties links=cm.getLinkProperties(cm.getActiveNetwork());if(links==null)return null;
         for(LinkAddress link:links.getLinkAddresses()){InetAddress a=link.getAddress();if(a instanceof Inet4Address&&a.isSiteLocalAddress())return a.getHostAddress();}return null;
     }
-    private Bitmap qr(String value)throws Exception{
+    static Bitmap qr(String value)throws Exception{
         BitMatrix bits=new MultiFormatWriter().encode(value,BarcodeFormat.QR_CODE,384,384);
         Bitmap bitmap=Bitmap.createBitmap(bits.getWidth(),bits.getHeight(),Bitmap.Config.ARGB_8888);
         for(int y=0;y<bits.getHeight();y++)for(int x=0;x<bits.getWidth();x++)bitmap.setPixel(x,y,bits.get(x,y)?0xff101820:0xffffffff);return bitmap;

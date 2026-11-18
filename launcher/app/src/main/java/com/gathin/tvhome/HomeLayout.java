@@ -15,6 +15,8 @@ import java.util.Set;
 final class HomeLayout {
     static final String AIR = "widget:air";
     static final String RAIN = "widget:rain";
+    static final String HEADER_CLOCK = "control:world-clock";
+    WorldClockSettings headerClock = new WorldClockSettings();
     static final String WORLD_CLOCK = "widget:world_clock";
     static final String FAVORITES = "widget:favorites";
     final List<String> favorites = new ArrayList<>();
@@ -152,8 +154,25 @@ final class HomeLayout {
         JSONObject clocks=j.optJSONObject("clockSettings");
         for(String key:s.widgets) if(isWorldClockWidget(key))
             s.clockSettings.put(key,WorldClockSettings.parse(clocks==null?null:clocks.optJSONObject(key)));
+        if(j.has("headerClock")) s.headerClock=WorldClockSettings.parse(j.optJSONObject("headerClock"));
+        else {
+            // Normalize old saved layouts and old Undo snapshots through the same transition.
+            String standard=s.widgets.contains(WORLD_CLOCK)?WORLD_CLOCK:null;
+            if(standard==null)for(String key:s.widgets)if(isWorldClockWidget(key)){standard=key;break;}
+            if(standard!=null){s.headerClock=s.clockSettings.get(standard);s.delete(standard,true);s.panelSizes.remove(standard);}
+            s.headerClock.removeStandardLocal();
+        }
         return s;
     }
+
+    /** Old Undo entries predate the fixed slot: undo their grid changes, retaining today's header. */
+    static HomeLayout restore(String encoded,WorldClockSettings currentHeader)throws JSONException {
+        HomeLayout result=parse(encoded);
+        if(!new JSONObject(encoded).has("headerClock"))result.headerClock=currentHeader.copy();
+        return result;
+    }
+
+    WorldClockSettings clock(String key) {return HEADER_CLOCK.equals(key)?headerClock:clockSettings.getOrDefault(key,new WorldClockSettings());}
 
     private static void read(JSONArray a, List<String> out) throws JSONException {
         for (int i = 0; i < a.length(); i++) {
@@ -171,7 +190,7 @@ final class HomeLayout {
                     .put("panelSpans", encodedSpans())
                     .put("homePositions", encodedHomePositions())
                     .put("calendarSettings", encodedCalendarSettings()).put("rainSettings", encodedRainSettings())
-                    .put("clockSettings",encodedClockSettings())
+                    .put("clockSettings",encodedClockSettings()).put("headerClock",headerClock.json())
                     .put("homeColumns", homeColumns).put("homeRows", homeRows)
                     .put("appBanners", appBanners).put("homeAppSize", homeAppSize).put("circularIcons", circularIcons)
                     .put("customWallpaper", customWallpaper)

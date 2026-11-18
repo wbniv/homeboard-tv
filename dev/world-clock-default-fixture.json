@@ -3,17 +3,10 @@
     "title": "",
     "ordering": "manual",
     "format": "24",
-    "primary": "local",
+    "primary": "bkk",
     "reference": "",
     "seconds": false,
     "places": [
-      {
-        "id": "local",
-        "label": "",
-        "zone": "device",
-        "country": "",
-        "code": ""
-      },
       {
         "id": "bkk",
         "label": "Bangkok",

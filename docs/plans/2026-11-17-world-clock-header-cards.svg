@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="700" viewBox="0 0 1280 700">
+<rect width="1280" height="700" fill="#10212e"/>
+<text x="30" y="39" font-family="sans-serif" font-size="26" fill="#f0f4f7">Filled city cards · five named cities</text>
+<text x="30" y="72" font-family="sans-serif" font-size="16" fill="#b8cad5">Bangkok covers local time here. The display uses named cities; its reference can still follow the TV.</text>
+<text x="30" y="108" font-family="sans-serif" font-size="18" fill="#dce8ee">Compact fixed header · Bangkok is primary</text>
+<rect x="30" y="124" width="234" height="114" fill="#6c3f7a" stroke="#a54cad"/>
+<text x="42" y="149" font-family="sans-serif" font-size="17" font-weight="600" fill="#f7d1f7">BANGKOK</text>
+<text x="42" y="170" font-family="sans-serif" font-size="12" fill="#edf2f5">Thailand · TH</text>
+<text x="42" y="214" font-family="monospace" font-size="36" font-weight="700" fill="#f7f9fb">21:00</text>
+<text x="185" y="211" font-family="sans-serif" font-size="23" fill="#f7d1f7">☾</text>
+<rect x="276" y="124" width="234" height="114" fill="#6c3f47" stroke="#a54c50"/>
+<text x="288" y="149" font-family="sans-serif" font-size="17" font-weight="600" fill="#f7d1d1">SEATTLE</text>
+<text x="288" y="170" font-family="sans-serif" font-size="12" fill="#edf2f5">United States · US</text>
+<text x="288" y="214" font-family="monospace" font-size="36" font-weight="700" fill="#f7f9fb">06:00</text>
+<text x="431" y="211" font-family="sans-serif" font-size="23" fill="#f7d1d1">☀</text>
+<rect x="522" y="124" width="234" height="114" fill="#5f7347" stroke="#8ea950"/>
+<text x="534" y="149" font-family="sans-serif" font-size="17" font-weight="600" fill="#edf7d1">DENVER</text>
+<text x="534" y="170" font-family="sans-serif" font-size="12" fill="#edf2f5">United States · US</text>
+<text x="534" y="214" font-family="monospace" font-size="36" font-weight="700" fill="#f7f9fb">07:00</text>
+<text x="677" y="211" font-family="sans-serif" font-size="23" fill="#edf7d1">☀</text>
+<rect x="768" y="124" width="234" height="114" fill="#384c7a" stroke="#4863ad"/>
+<text x="780" y="149" font-family="sans-serif" font-size="17" font-weight="600" fill="#d1daf7">MUNICH</text>
+<text x="780" y="170" font-family="sans-serif" font-size="12" fill="#edf2f5">Germany · DE</text>
+<text x="780" y="214" font-family="monospace" font-size="36" font-weight="700" fill="#f7f9fb">15:00</text>
+<text x="923" y="211" font-family="sans-serif" font-size="23" fill="#d1daf7">☀</text>
+<rect x="1014" y="124" width="234" height="114" fill="#387361" stroke="#48a97e"/>
+<text x="1026" y="149" font-family="sans-serif" font-size="17" font-weight="600" fill="#d1f7e4">BARCELONA</text>
+<text x="1026" y="170" font-family="sans-serif" font-size="12" fill="#edf2f5">Spain · ES</text>
+<text x="1026" y="214" font-family="monospace" font-size="36" font-weight="700" fill="#f7f9fb">15:00</text>
+<text x="1169" y="211" font-family="sans-serif" font-size="23" fill="#d1f7e4">☀</text>
+<text x="30" y="284" font-family="sans-serif" font-size="18" fill="#dce8ee">Card-detail study only · these cards sit inside the full-screen planner</text>
+<rect x="30" y="302" width="398" height="315" fill="#6c3f7a" stroke="#f3f7fa" stroke-width="3"/>
+<circle cx="52" cy="336" r="4" fill="#f7d1f7"/>
+<text x="66" y="345" font-family="sans-serif" font-size="25" font-weight="600" fill="#f7d1f7">BANGKOK</text>
+<text x="48" y="377" font-family="sans-serif" font-size="15" fill="#edf2f5">THAILAND · TH</text>
+<text x="48" y="463" font-family="monospace" font-size="62" font-weight="700" fill="#f7f9fb">21:00</text>
+<text x="254" y="458" font-family="sans-serif" font-size="35" fill="#f7d1f7">☾</text>
+<text x="48" y="515" font-family="sans-serif" font-size="17" fill="#edf2f5">Tue 17 Nov 2026</text>
+<rect x="48" y="548" width="153" height="37" rx="2" fill="#ffffff" fill-opacity=".05" stroke="#f7d1f7" stroke-opacity=".6"/>
+<text x="60" y="573" font-family="monospace" font-size="17" fill="#edf2f5">UTC +07:00</text>
+<rect x="444" y="302" width="398" height="315" fill="#6c3f47" stroke="#a54c50" stroke-width="1"/>
+<circle cx="466" cy="336" r="4" fill="#f7d1d1"/>
+<text x="480" y="345" font-family="sans-serif" font-size="25" font-weight="600" fill="#f7d1d1">SEATTLE</text>
+<text x="462" y="377" font-family="sans-serif" font-size="15" fill="#edf2f5">UNITED STATES · US</text>
+<text x="462" y="463" font-family="monospace" font-size="62" font-weight="700" fill="#f7f9fb">06:00</text>
+<text x="668" y="458" font-family="sans-serif" font-size="35" fill="#f7d1d1">☀</text>
+<text x="462" y="515" font-family="sans-serif" font-size="17" fill="#edf2f5">Tue 17 Nov 2026</text>
+<rect x="462" y="548" width="153" height="37" rx="2" fill="#ffffff" fill-opacity=".05" stroke="#f7d1d1" stroke-opacity=".6"/>
+<text x="474" y="573" font-family="monospace" font-size="17" fill="#edf2f5">UTC −08:00</text>
+<rect x="858" y="302" width="398" height="315" fill="#384c7a" stroke="#4863ad" stroke-width="1"/>
+<circle cx="880" cy="336" r="4" fill="#d1daf7"/>
+<text x="894" y="345" font-family="sans-serif" font-size="25" font-weight="600" fill="#d1daf7">MUNICH</text>
+<text x="876" y="377" font-family="sans-serif" font-size="15" fill="#edf2f5">GERMANY · DE</text>
+<text x="876" y="463" font-family="monospace" font-size="62" font-weight="700" fill="#f7f9fb">15:00</text>
+<text x="1082" y="458" font-family="sans-serif" font-size="35" fill="#d1daf7">☀</text>
+<text x="876" y="515" font-family="sans-serif" font-size="17" fill="#edf2f5">Tue 17 Nov 2026</text>
+<rect x="876" y="548" width="153" height="37" rx="2" fill="#ffffff" fill-opacity=".05" stroke="#d1daf7" stroke-opacity=".6"/>
+<text x="888" y="573" font-family="monospace" font-size="17" fill="#edf2f5">UTC +01:00</text>
+<text x="30" y="654" font-family="sans-serif" font-size="15" fill="#b8cad5">Source: ../wald3n.com/ · flat filled cards, uppercase city, country, tabular time and UTC-offset chip.</text>
+<text x="30" y="680" font-family="sans-serif" font-size="14" fill="#b8cad5">Illustrative times and stronger TV tints. The full-screen planner, timeline and map remain; see the complete view in the plan.</text>
+</svg>

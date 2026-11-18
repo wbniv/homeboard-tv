@@ -15,17 +15,25 @@ final class WorldClockSettings {
     static final String DEVICE = "device";
     static final int MAX_PLACES = 12;
     static final int DEFAULT_WIDTH=8,DEFAULT_HEIGHT=1;
-    String title = "", ordering = "manual", format = "24", primary = "local", reference = "";
+    String title = "", ordering = "manual", format = "24", primary = "bkk", reference = "";
     boolean seconds;
     final List<Place> places = new ArrayList<>();
 
     WorldClockSettings() {
-        places.add(new Place("local", "", DEVICE));
-        // Will's saved six-place preset, captured read-only from Cast1 on 17 November.
+        // Five named cities; Local remains available in the city editor.
         for(int index:new int[]{0,4,5,6,7}) {
             WorldClockCatalog.Entry city=WorldClockCatalog.CITIES.get(index);
             places.add(city.place(city.code.toLowerCase(java.util.Locale.ROOT)));
         }
+    }
+
+    /** Only the captured standard preset has a redundant Local card. Custom lists stay intact. */
+    void removeStandardLocal() {
+        String[] zones={DEVICE,"Asia/Bangkok","America/Los_Angeles","America/Denver","Europe/Berlin","Europe/Madrid"};
+        String[] labels={"","Bangkok","Seattle","Denver","Munich","Barcelona"};
+        if(places.size()!=zones.length||!title.isEmpty()||!"manual".equals(ordering)||!"24".equals(format)||seconds||!reference.isEmpty()||!primary.equals(places.get(0).id))return;
+        for(int i=0;i<zones.length;i++)if(!zones[i].equals(places.get(i).zone)||!labels[i].equals(places.get(i).label))return;
+        places.remove(0);primary=places.get(0).id;
     }
 
     static final class Place {

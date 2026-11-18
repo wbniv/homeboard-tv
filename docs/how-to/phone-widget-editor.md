@@ -14,10 +14,26 @@
    keyboard users can use Alt+Up/Down on the grip. **Add apps** opens a separate
    picker. Removing a favorite never uninstalls an app.
 6. Review the changes and choose **Update [TV name]**. Widget settings, layout and
-   app order are sent together. **Undo update** restores the complete update.
+   app order are sent together. **Undo update** restores the complete update. On the TV, return to Home or All
+   Apps and hold Back for one second to undo the latest saved change.
 7. Open the target-TV menu and choose **Done editing** when finished. Leaving
    Homeboard or 15 minutes without editor activity ends access. Pair again to
    reconnect; background status polling does not extend access.
+
+The **Top bar** section contains **World clock · Fixed**. Edit its cities, labels,
+order and display settings there; its position beside Settings is fixed. Short OK
+on the TV still opens the full-screen meeting planner. [Clock guide](world-clock.md).
+
+For one phone icon per TV, open the TV-name menu → **Add TV to home screen** and
+follow your browser’s shortcut instructions. The icon remembers the TV identity,
+not permanent editing permission. [Shortcut guide](phone-tv-shortcuts.md).
+
+**Get wallpaper providers** is available on the overview and TV-name menu. The
+page names the connected TV and shows installed versions, Google Play links and
+community publisher pages. In Play, choose the TV yourself; Homeboard pairing
+does not select it. Installed providers are configured and previewed on the TV.
+This directory does not modify the draft or require **Update TV**. Weather v2.11
+has no install link. [Provider guide](provider-directory.md).
 
 Rain and model air quality can use **TV location · Automatic** or a fixed place.
 One city/address search uses the TV's existing lookup providers; exact coordinates

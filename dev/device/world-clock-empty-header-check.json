@@ -1,0 +1,26 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 35,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 12,
+      "capture": "empty-home-or-all-apps"
+    },
+    {
+      "at": 20,
+      "capture": "empty-home-header-planner"
+    },
+    {
+      "at": 29,
+      "capture": "empty-home-final-result"
+    },
+    {
+      "at": 32,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    }
+  ]
+}

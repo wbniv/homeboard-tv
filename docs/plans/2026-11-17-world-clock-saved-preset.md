@@ -80,3 +80,11 @@ read-only capture and isolated API acceptance. Version 0.1.46 stopped during tes
 compilation, before packaging; its number was consumed and not reused. These
 checks do not claim a physical phone browser connected over the household LAN;
 see the [controller validation limits](../testing/2026-11-17-phone-controller-design.md).
+
+## Proposed next placement
+
+Will now proposes putting this clock in the fixed top bar, left of the settings
+buttons. The [header placement plan](2026-11-17-world-clock-header.md) keeps the
+five named cities, removes the redundant Local card, makes Bangkok primary and
+replaces the grid position/size after approval. The
+installed 0.1.47 behavior above remains the shipped baseline.

@@ -48,6 +48,16 @@ missing rows on commit.*
 
 | [World clock saved preset](2026-11-17-world-clock-saved-preset.md) | Uses Will’s captured six-place, 24-hour, 8×1 clock as the default for new TV and phone-created widgets. | 0.1.47 installed on both TVs; native preset creation and browser checks passed | Feature |
 
+| [World clock in the fixed top bar](2026-11-17-world-clock-header.md) | Places filled city cards left of settings, outside the dashboard grid, with fixed-slot navigation, phone controls and safe data transition. | 0.1.52 installed on both TVs; Cast1 native checks passed | UX / Feature |
+
+| [Phone icons for each TV](2026-11-17-phone-tv-shortcuts.md) | Adds named home-screen shortcut guidance, per-TV identity URLs and icon metadata without saving pairing credentials. | 0.1.52 installed on both TVs | Feature |
+| [Hold Back to undo on TV](2026-11-17-hold-back-undo.md) | Makes one-second Back undo one saved change on Home/All Apps, with progress, confirmation and preserved short Back/editor behavior. | Implemented; Cast1 verified, Cast2 install queued | UX / Fix |
+| [Opacity belongs to widget backgrounds](2026-11-18-widget-background-opacity.md) | Removes full-screen palette dimming from widget opacity and keeps wallpaper/video brightness independent. | Implemented; Cast1 verified, Cast2 install queued | UX / Fix |
+
+| [Wallpaper provider inventory and compatibility testing](2026-11-18-wallpaper-provider-compatibility.md) | Inventories all ten catalog entries and eight additional projects/leads, with per-provider cases and isolated coordinator testing. | 18 dispositions; partial compatibility evidence collected | Investigation / Tooling |
+
+| [Provider testing spike and user installation](2026-11-18-provider-testing-spike-and-installation.md) | Defines a bounded 18-provider spike, security exclusions, evidence requirements and a Google Play first installation flow without bundled APKs. | Implemented 0.1.59; seven Cast1 screenshots passed; Cast2 queued | Investigation / UX |
+
 ---
 
 ## How this index was derived

@@ -10,7 +10,7 @@
     <string name="hb_hint_from_home">" from Home"</string>
     <string name="hb_hint_hid">"Hid "</string>
     <string name="hb_hint_from_all_apps">" from All Apps"</string>
-    <string name="hb_hint_ui_opacity">"UI opacity: "</string>
+    <string name="hb_hint_ui_opacity">"Widget background opacity: "</string>
     <string name="hb_hint_circular_icon_mask">"Circular icon mask · "</string>
     <string name="hb_hint_uses">"Uses "</string>
     <string name="hb_hint_home_favorites_use">" · Home favorites use "</string>
@@ -30,4 +30,26 @@
     <string name="hb_hint_data">"Data: "</string>
     <string name="hb_hint_local">" local"</string>
     <string name="hb_hint_bangkok">" Bangkok"</string>
+    <string name="hb_get_providers">Get providers</string>
+    <string name="hb_provider_directory_hint">Install a separate app, then return here to configure and preview it. Installing never changes your background.</string>
+    <string name="hb_provider_play">Google Play</string>
+    <string name="hb_provider_community">Advanced · Publisher page</string>
+    <string name="hb_provider_excluded">Excluded · No install action</string>
+    <string name="hb_provider_installed">Installed · %1$s</string>
+    <string name="hb_provider_not_installed">Not installed on this TV</string>
+    <string name="hb_provider_open_play">Open Google Play on this TV</string>
+    <string name="hb_provider_phone_hint">Scan with your phone. In Google Play, choose this TV yourself. Availability depends on your account and region. Pairing does not choose a TV in Google Play.</string>
+    <string name="hb_provider_no_store">Google Play could not open. Use the phone link.</string>
+    <string name="hb_provider_configure">Configure provider</string>
+    <string name="hb_provider_preview">Preview installed provider</string>
+    <string name="hb_provider_refresh">Check installed apps</string>
+    <string name="hb_provider_overflight">Aerial videos. Baseline passed with GitHub 1.20; saved settings preserved. Full format testing remains incomplete.</string>
+    <string name="hb_provider_aerial">Video baseline and dashboard controls passed with GitHub 1.8.5. Play edition not yet tested.</string>
+    <string name="hb_provider_movie">Movie artwork. Play edition untested; source build needs a TMDB key.</string>
+    <string name="hb_provider_daily">Daily images. Baseline and dashboard controls passed with GitHub 1.10.</string>
+    <string name="hb_provider_motion">Video loops. Installation verified; rendering tests remain incomplete.</string>
+    <string name="hb_provider_sofadrop">Community provider. Play testing requires publisher enrollment; playback untested.</string>
+    <string name="hb_provider_booru">Community images. General-rated default query reviewed; playback untested.</string>
+    <string name="hb_provider_weather">Excluded: Google Play Protect blocked v2.11. Review found unprotected access to saved location settings. Keep protection enabled.</string>
+    <string name="hb_provider_scope">Store availability does not establish safety or Homeboard compatibility. Server-dependent and source-only projects are listed in the testing documentation.</string>
 </resources>

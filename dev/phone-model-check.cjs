@@ -3,7 +3,7 @@ const fs=require('fs'),vm=require('vm'),assert=require('assert');
 const scope={window:{}};vm.createContext(scope);for(const file of ['model.js','strings.js','clock.js'])vm.runInContext(fs.readFileSync('launcher/app/src/main/assets/phone/'+file,'utf8'),scope);
 scope.window.PhoneClock.configureDefaults(require('./phone-fixture.cjs').worldClockDefaults);
 const M=scope.window.PhoneModel,copy=v=>JSON.parse(JSON.stringify(v));
-const draft={columns:8,rows:4,artwork:'small',favorites:['a','b','c'],widgets:[]};
+const draft={headerClock:copy(require('./world-clock-default-fixture.json').settings),columns:8,rows:4,artwork:'small',favorites:['a','b','c'],widgets:[]};
 M.add(draft,'rain');M.add(draft,'calendar');M.add(draft,'air');M.add(draft,'favorites');
 assert.equal(M.validate(draft),null);assert.deepEqual(copy(M.move(draft.favorites,0,2)),['b','c','a']);assert.deepEqual(draft.favorites,['a','b','c']);
 const base={draft:copy(draft),instances:{'widget:rain':1}},local=copy(draft),remote=copy(base);

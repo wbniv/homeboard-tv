@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/67c700a) | Reveal wallpaper previews and align Appearance directions |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/c718d87) | Use saved six-place World clock defaults |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/d4264f9) | Record Cast1 world clock map and restoration acceptance |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/01eb586) | Add dashboard-first phone controls and native world clocks |
@@ -25,6 +26,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+67c700a	author	Will Norris
+67c700a	added	1
+67c700a	deleted	0
+67c700a	files	1
 c718d87	author	Will Norris
 c718d87	added	3
 c718d87	deleted	1

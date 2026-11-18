@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-18",
+  "scope": "18 inventory entries, not every Android screensaver",
+  "providers": [
+    {
+      "id": "overflight",
+      "status": "partial",
+      "reason": "Baseline pass J-325067405c22; settings preserved. Full formats/cache expiry/faults/soak remain untested."
+    },
+    {
+      "id": "daily-photos",
+      "status": "partial",
+      "reason": "Baseline J-7d6a96e9a8c5 and Home/All Apps controls J-574ba5b5263f passed. Cache expiry/network faults/actions/soak remain untested."
+    },
+    {
+      "id": "aerial-views",
+      "status": "partial",
+      "reason": "Baseline J-51149b48d317 and controls J-e29c57cd7fe3 passed. GitHub edition only; Play edition/cache expiry/faults/soak remain untested."
+    },
+    {
+      "id": "weather",
+      "status": "excluded",
+      "reason": "Play Protect blocked v2.11; security review found unprotected saved-location preferences. No retry or bypass."
+    },
+    {
+      "id": "sofadrop",
+      "status": "blocked",
+      "reason": "APK inspected. Install J-e14bc47f8e2e stalled during installer commit and ended uncertain/plugin-error; coordinator recovery completed. No install verification, no warning screenshot, no bypass or retry. Play testing enrollment requires publisher instructions."
+    },
+    {
+      "id": "immich",
+      "status": "blocked",
+      "reason": "Installation verified J-a4221af1b5a2. Needs a disposable authenticated Immich server and URI-grant interoperability checks; no household credentials used."
+    },
+    {
+      "id": "movie-art",
+      "status": "blocked",
+      "reason": "Public Play listing verified; no release APK. Source 980a766 failed unmodified container build: unresolved TMDB_API_KEY. Actual Play edition untested."
+    },
+    {
+      "id": "trakt",
+      "status": "blocked",
+      "reason": "APK inspected. Needs a disposable Trakt OAuth account; authorization/rendering/expiry not tested."
+    },
+    {
+      "id": "core-motion",
+      "status": "partial",
+      "reason": "Installation verified J-695cc70c19a6. Retry baseline J-eaf00a2dbd46 on 0.1.59 passed initial/timer/hide/resume/refresh, 5 renders and motion differences; household settings unchanged. Earlier target-left-foreground retained. Settings editing/cache expiry/actions/faults/full controls/soak remain untested."
+    },
+    {
+      "id": "booru",
+      "status": "partial",
+      "reason": "APK/signature and source d7c74be reviewed. Default query includes rating:general. Device installation/rendering not run after the third-party installer session stalled; compatibility remains unverified."
+    },
+    {
+      "id": "jellyfin-mikescher",
+      "status": "blocked",
+      "reason": "Unmodified source 6efcbdc built 1.2 in container. Needs disposable server/settings UI configuration. Household server/token not used."
+    },
+    {
+      "id": "jellyfin-z9m",
+      "status": "blocked",
+      "reason": "APK inspected. Needs disposable Jellyfin backend; sample package/UUID collision checks and rendering not run."
+    },
+    {
+      "id": "jellyfin-jfchenier",
+      "status": "not-applicable",
+      "reason": "Source 0be71ff still implements upstream sample media, not a Jellyfin integration."
+    },
+    {
+      "id": "tvbgsuite",
+      "status": "blocked",
+      "reason": "APK inspected. Requires disposable backend; filtering, links and real-backend rendering not run."
+    },
+    {
+      "id": "wallpaparr",
+      "status": "blocked",
+      "reason": "Debug APK inspected. Demo backend still needs isolated provisioning/network-policy validation; no rendering claim."
+    },
+    {
+      "id": "random",
+      "status": "blocked",
+      "reason": "APK is service-only, no activity. Current coordinator app registration needs an activity; no invented component or raw-device fallback."
+    },
+    {
+      "id": "unsplash",
+      "status": "blocked",
+      "reason": "Source 6e79206 only; YOUR_ACCESS_KEY placeholder and no published APK. No live operation without a legitimate key."
+    },
+    {
+      "id": "m3u8",
+      "status": "partial",
+      "reason": "Unmodified source 8b52e75 built 1.0 in container, SHA 6ead6ad32ae6102963231d3b4a1e82b3907aede18b47d821562d05dc7d0ffd50. No real stream/interruptions/decoder test; experimental source only."
+    }
+  ]
+}

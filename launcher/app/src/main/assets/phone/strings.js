@@ -1,6 +1,11 @@
 'use strict';
 window.PhoneStrings = {
  en:{
+  providers:'Get wallpaper providers',providerFor:'Providers for {tv}',providerHelp:'Install a separate app. In Google Play choose the TV yourself; pairing does not select a TV in Google Play. Availability depends on account and region. Installing never changes the background. Store availability does not establish safety or Homeboard compatibility.',providerInstalled:'Installed on this TV · {version}',providerMissing:'Not installed on this TV',providerPlay:'Open Google Play',providerPublisher:'Open publisher page',providerOnTV:'On this TV: Settings → Appearance → Background → Get providers → Configure / Preview. Then choose Use background.',
+
+  addTVIcon:'Add TV to home screen',iconName:'Icon name',shortcutFor:'Make a shortcut for {tv}.',shortcutAndroid:'Android Chrome: open the browser menu → Add to home screen → Create shortcut → Add.',shortcutIPhone:'iPhone Safari: Share → Add to Home Screen → Add.',shortcutReconnect:'To use the icon later, open Configure from phone on this TV first, then tap the icon and approve the connection. If the TV address changes, scan its current QR code and make the shortcut again.',shortcutWrongTV:'This shortcut belongs to another TV. Scan the current TV QR code.',
+
+  positionFixed:'Position: Top bar · Fixed',topBar:'Top bar',fixedSlot:'Fixed',dashboard:'Dashboard',fixedHelp:'World clock stays beside Settings. Change its cities here.',
   app:'Homeboard', overview:'Your dashboard', connected:'Connected', disconnected:'Disconnected', tv:'TV', yourTV:'your TV', back:'Back',
   connect:'Start editing', waiting:'Allow phone editing on {tv}', match:'Check code {code} on the TV, then choose Allow.',
   network:'Use your trusted home Wi-Fi. Keep Homeboard open on the TV.', reconnect:'Reconnect to {tv}', expired:'Editing access ended. Open Configure from phone on {tv}, then reconnect. Your draft is kept.',
@@ -29,6 +34,11 @@ window.PhoneStrings = {
   inputHours:'Forecast hours', inputDays:'Following-day count', refreshed:'Latest TV settings loaded.', pickAnother:'Choose another card', linkedDraft:'A draft belongs to a different TV. It has been kept separately.'
  },
  th:{
+  providers:'รับผู้ให้บริการพื้นหลัง',providerFor:'ผู้ให้บริการสำหรับ {tv}',providerHelp:'ติดตั้งแอปแยก แล้วเลือกทีวีเองใน Google Play การจับคู่ไม่ได้เลือกทีวีใน Play ความพร้อมขึ้นอยู่กับบัญชีและภูมิภาค การติดตั้งไม่เปลี่ยนพื้นหลัง การมีในร้านค้าไม่ได้ยืนยันความปลอดภัยหรือความเข้ากันได้',providerInstalled:'ติดตั้งบนทีวีนี้แล้ว · {version}',providerMissing:'ยังไม่ได้ติดตั้งบนทีวีนี้',providerPlay:'เปิด Google Play',providerPublisher:'เปิดหน้าผู้เผยแพร่',providerOnTV:'บนทีวีนี้: ตั้งค่า → รูปลักษณ์ → พื้นหลัง → รับผู้ให้บริการ → ตั้งค่า / ดูตัวอย่าง แล้วเลือกใช้พื้นหลัง',
+
+  addTVIcon:'เพิ่มทีวีไปยังหน้าจอโฮม',iconName:'ชื่อไอคอน',shortcutFor:'สร้างทางลัดสำหรับ {tv}',shortcutAndroid:'Android Chrome: เปิดเมนูเบราว์เซอร์ → เพิ่มไปยังหน้าจอหลัก → สร้างทางลัด → เพิ่ม',shortcutIPhone:'iPhone Safari: แชร์ → เพิ่มไปยังหน้าจอโฮม → เพิ่ม',shortcutReconnect:'เมื่อต้องการใช้อีกครั้ง เปิด ตั้งค่าจากโทรศัพท์ บนทีวีนี้ก่อน จากนั้นแตะไอคอนและอนุญาตการเชื่อมต่อ หากที่อยู่ทีวีเปลี่ยน ให้สแกนคิวอาร์ปัจจุบันและสร้างทางลัดใหม่',shortcutWrongTV:'ทางลัดนี้เป็นของทีวีอีกเครื่อง โปรดสแกนคิวอาร์ของทีวีปัจจุบัน',
+
+  positionFixed:'ตำแหน่ง: แถบด้านบน · คงที่',topBar:'แถบด้านบน',fixedSlot:'ตำแหน่งคงที่',dashboard:'แดชบอร์ด',fixedHelp:'นาฬิกาโลกอยู่ข้างการตั้งค่า เปลี่ยนเมืองได้ที่นี่',
   app:'Homeboard', overview:'แดชบอร์ดของคุณ', connected:'เชื่อมต่อแล้ว', disconnected:'ตัดการเชื่อมต่อ', tv:'ทีวี', yourTV:'ทีวีของคุณ', back:'ย้อนกลับ',
   connect:'เริ่มแก้ไข', waiting:'อนุญาตการแก้ไขบน {tv}', match:'ตรวจสอบรหัส {code} บนทีวี แล้วเลือก อนุญาต',
   network:'ใช้ Wi-Fi บ้านที่เชื่อถือได้ และเปิด Homeboard ค้างไว้บนทีวี', reconnect:'เชื่อมต่อกับ {tv} อีกครั้ง', expired:'สิทธิ์แก้ไขสิ้นสุดแล้ว เปิด ตั้งค่าจากโทรศัพท์ บน {tv} แล้วเชื่อมต่อใหม่ แบบร่างของคุณยังอยู่',

@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 
 public class WorldClockTest {
     private static final Instant NOW=Instant.parse("2026-11-17T10:30:00Z");
-    private WorldClockSettings localFixture(){WorldClockSettings s=new WorldClockSettings();s.places.clear();s.places.add(new WorldClockSettings.Place("local","",WorldClockSettings.DEVICE));return s;}
+    private WorldClockSettings localFixture(){WorldClockSettings s=new WorldClockSettings();s.places.clear();s.places.add(new WorldClockSettings.Place("local","",WorldClockSettings.DEVICE));s.primary="local";return s;}
     private void assertJsonEquals(Object expected,Object actual)throws Exception {
         if(expected instanceof JSONObject){
             assertTrue(actual instanceof JSONObject);JSONObject e=(JSONObject)expected,a=(JSONObject)actual;assertEquals(e.length(),a.length());
@@ -32,15 +32,37 @@ public class WorldClockTest {
     @Test public void newWidgetsUseWillsCapturedPresetAndExistingSettingsStayIntact()throws Exception {
         WorldClockSettings preset=new WorldClockSettings();
         JSONObject expected=new JSONObject(new String(Files.readAllBytes(Path.of("../../dev/world-clock-default-fixture.json")),java.nio.charset.StandardCharsets.UTF_8));assertJsonEquals(expected.getJSONObject("settings"),preset.json());
-        assertEquals(List.of("","Bangkok","Seattle","Denver","Munich","Barcelona"),preset.places.stream().map(p->p.label).collect(java.util.stream.Collectors.toList()));
-        assertEquals(List.of("device","Asia/Bangkok","America/Los_Angeles","America/Denver","Europe/Berlin","Europe/Madrid"),preset.places.stream().map(p->p.zone).collect(java.util.stream.Collectors.toList()));
-        assertEquals("24",preset.format);assertEquals("manual",preset.ordering);assertEquals("local",preset.primary);assertEquals("",preset.reference);assertFalse(preset.seconds);WorldClockSettings.validate(preset.json());
+        assertEquals(List.of("Bangkok","Seattle","Denver","Munich","Barcelona"),preset.places.stream().map(p->p.label).collect(java.util.stream.Collectors.toList()));
+        assertEquals(List.of("Asia/Bangkok","America/Los_Angeles","America/Denver","Europe/Berlin","Europe/Madrid"),preset.places.stream().map(p->p.zone).collect(java.util.stream.Collectors.toList()));
+        assertEquals("24",preset.format);assertEquals("manual",preset.ordering);assertEquals("bkk",preset.primary);assertEquals("",preset.reference);assertFalse(preset.seconds);WorldClockSettings.validate(preset.json());
         HomeLayout home=new HomeLayout();home.addPanel(HomeLayout.WORLD_CLOCK);home.addPanel(HomeLayout.WORLD_CLOCK+":2");
         assertEquals(8,home.panelSpans.get(HomeLayout.WORLD_CLOCK).width);assertEquals(1,home.panelSpans.get(HomeLayout.WORLD_CLOCK).height);
-        home.clockSettings.get(HomeLayout.WORLD_CLOCK).places.get(1).label="Private label";assertEquals("Bangkok",home.clockSettings.get(HomeLayout.WORLD_CLOCK+":2").places.get(1).label);
+        home.clockSettings.get(HomeLayout.WORLD_CLOCK).places.get(1).label="Private label";assertEquals("Seattle",home.clockSettings.get(HomeLayout.WORLD_CLOCK+":2").places.get(1).label);
         WorldClockSettings saved=localFixture();saved.format="12";saved.title="My existing clock";home.clockSettings.put(HomeLayout.WORLD_CLOCK,saved);home.setPanelSpan(HomeLayout.WORLD_CLOCK,3,2);
         HomeLayout restored=HomeLayout.parse(home.encode());assertEquals(1,restored.clockSettings.get(HomeLayout.WORLD_CLOCK).places.size());assertEquals("12",restored.clockSettings.get(HomeLayout.WORLD_CLOCK).format);assertEquals("My existing clock",restored.clockSettings.get(HomeLayout.WORLD_CLOCK).title);assertEquals(3,restored.panelSpans.get(HomeLayout.WORLD_CLOCK).width);assertEquals(2,restored.panelSpans.get(HomeLayout.WORLD_CLOCK).height);
         HomeLayout narrow=new HomeLayout();narrow.addPanel(HomeLayout.WORLD_CLOCK);assertEquals(4,narrow.cells(narrow.widgets,4,2).get(0).width);
+    }
+    @Test public void savedGridClockMovesToHeaderAndOldUndoNormalizesWithoutChangingOtherPanels()throws Exception {
+        HomeLayout before=HomeLayout.firstRun();before.addPanel(HomeLayout.WORLD_CLOCK);before.addPanel(HomeLayout.WORLD_CLOCK+":2");
+        WorldClockSettings clock=new WorldClockSettings();clock.places.add(0,new WorldClockSettings.Place("my-local","",WorldClockSettings.DEVICE));clock.primary="my-local";
+        clock.places.get(1).id="saved-bangkok-id";before.clockSettings.put(HomeLayout.WORLD_CLOCK,clock);
+        JSONObject old=new JSONObject(before.encode());old.remove("headerClock");
+        HomeLayout migrated=HomeLayout.parse(old.toString());assertFalse(migrated.widgets.contains(HomeLayout.WORLD_CLOCK));assertTrue(migrated.widgets.contains(HomeLayout.WORLD_CLOCK+":2"));
+        assertEquals(5,migrated.headerClock.places.size());assertEquals("saved-bangkok-id",migrated.headerClock.primary);
+        assertFalse(migrated.panelSpans.containsKey(HomeLayout.WORLD_CLOCK));assertFalse(migrated.homePositions.containsKey(HomeLayout.WORLD_CLOCK));
+        assertEquals(before.rainSettings.get(HomeLayout.RAIN).json().toString(),migrated.rainSettings.get(HomeLayout.RAIN).json().toString());
+        assertEquals(migrated.encode(),HomeLayout.parse(migrated.encode()).encode());
+        clock.title="My custom list";old.getJSONObject("clockSettings").put(HomeLayout.WORLD_CLOCK,clock.json());
+        assertEquals(6,HomeLayout.parse(old.toString()).headerClock.places.size());
+        WorldClockSettings current=new WorldClockSettings();current.title="Retain today's header";
+        HomeLayout undone=HomeLayout.restore(old.toString(),current);assertEquals(current.json().toString(),undone.headerClock.json().toString());assertFalse(undone.widgets.contains(HomeLayout.WORLD_CLOCK));
+        HomeLayout empty=HomeLayout.parse(new JSONObject(new HomeLayout().encode()).toString());assertTrue(empty.widgets.isEmpty());assertEquals(5,empty.headerClock.places.size());
+    }
+    @Test public void headerPhoneSettingsParticipateInAtomicValidation()throws Exception {
+        HomeLayout before=HomeLayout.firstRun();JSONObject air=new JSONObject(),draft=PhoneConfiguration.snapshot(before,air,8,4);
+        draft.getJSONObject("headerClock").put("format","12");
+        HomeLayout after=PhoneConfiguration.validate(draft,before,air,java.util.Set.of()).layout;assertEquals("12",after.headerClock.format);assertEquals(before.widgets,after.widgets);
+        draft.getJSONObject("headerClock").put("primary","missing");assertThrows(PhoneConfiguration.Invalid.class,()->PhoneConfiguration.validate(draft,before,air,java.util.Set.of()));
     }
     @Test public void convertsTheSameInstantAndHandlesDateLineHalfAndQuarterHours() {
         assertEquals("17:30",WorldClockModel.time(NOW,ZoneId.of("Asia/Bangkok"),Locale.US,false,false));
@@ -83,7 +105,7 @@ public class WorldClockTest {
         assertEquals("ny",sorted.get(0).id);assertEquals("bkk",sorted.get(1).id);assertEquals("local",sorted.get(2).id);
     }
     @Test public void settingsRoundTripPreservesNamesAndIndependentReferenceAcrossReordering()throws Exception {
-        WorldClockSettings s=new WorldClockSettings();s.places.add(WorldClockCatalog.CITIES.get(1).place("tivissa"));
+        WorldClockSettings s=localFixture();s.places.add(WorldClockCatalog.CITIES.get(1).place("tivissa"));
         s.primary="tivissa";s.reference="local";s.title="Family";s.format="12";s.seconds=true;
         WorldClockSettings copy=s.copy();java.util.Collections.reverse(copy.places);
         assertEquals("tivissa",copy.primary().id);assertEquals("local",copy.reference);assertEquals("Family",copy.title);assertTrue(copy.seconds);
@@ -108,7 +130,7 @@ public class WorldClockTest {
         assertThrows(PhoneConfiguration.Invalid.class,()->WorldClockSettings.validate(crowded));
     }
     @Test public void localZoneFollowsDeviceWhileFixedZonesRemainFixed() {
-        WorldClockSettings s=new WorldClockSettings();assertEquals(ZoneId.of("Asia/Bangkok"),s.primary().zone(ZoneId.of("Asia/Bangkok")));
+        WorldClockSettings s=localFixture();assertEquals(ZoneId.of("Asia/Bangkok"),s.primary().zone(ZoneId.of("Asia/Bangkok")));
         assertEquals(ZoneId.of("Europe/Madrid"),s.primary().zone(ZoneId.of("Europe/Madrid")));
         WorldClockSettings.Place fixed=WorldClockCatalog.CITIES.get(0).place("fixed");assertEquals(ZoneId.of("Asia/Bangkok"),fixed.zone(ZoneId.of("Europe/Madrid")));
     }

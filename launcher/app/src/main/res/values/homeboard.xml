@@ -69,8 +69,8 @@
     <string name="hb_background">"Background"</string>
     <string name="hb_palette">"Palette"</string>
     <string name="hb_icons">"Icons"</string>
-    <string name="hb_ui_opacity">"UI opacity · "</string>
-    <string name="hb_ui_opacity_70">"UI opacity"</string>
+    <string name="hb_ui_opacity">"Widget background opacity · "</string>
+    <string name="hb_ui_opacity_70">"Widget background opacity"</string>
     <string name="hb_midnight">"Midnight"</string>
     <string name="hb_forest">"Forest"</string>
     <string name="hb_ocean">"Ocean"</string>
@@ -177,7 +177,7 @@
     <string name="hb_projectivy_wallpaper_provider_selected">"Projectivy wallpaper provider selected"</string>
     <string name="hb_projectivy_plugins">"Images &amp; videos · Projectivy"</string>
     <string name="hb_background_details">"Background status &amp; credits"</string>
-    <string name="hb_wallpaper_preview_dashboard_hidden">"Wallpaper preview · dashboard hidden. Back cancels; Down uses background. Saved UI opacity is unchanged."</string>
+    <string name="hb_wallpaper_preview_dashboard_hidden">"Wallpaper preview · dashboard hidden. Back cancels; Down uses background. Saved widget opacity is unchanged."</string>
     <string name="hb_retry_provider">"Retry provider"</string>
     <string name="hb_no_providers_installed_install_a_wallpaper_provider_app_then_retu">"No providers installed. Install a wallpaper-provider app, then return here."</string>
     <string name="hb_choose_an_installed_provider_to_preview">"Choose an installed provider to preview"</string>
@@ -254,4 +254,10 @@
 <string name="hb_language_failed">Could not save language. Please try again.</string>
 <string-array name="hb_station_names"><item>Lumpini Park</item><item>Benchasiri Park</item><item>Benjakitti Park</item><item>Watthana · Ekkamai Road</item><item>Pathum Wan · Samyan Mitrtown</item></string-array>
 <string name="hb_near_coordinates">Near me · %1$.2f°, %2$.2f°</string>
+    <string name="hb_undo_hold_hint">"Hold Back to undo · Or select Undo and press OK · Later: Settings → Undo history"</string>
+    <string name="hb_undo_ok_hint">"Press OK to undo this change · Up returns to content"</string>
+    <string name="hb_undo_keep_holding">"Keep holding Back…"</string>
+    <string name="hb_undo_changed">"The saved change changed. Release Back and hold again."</string>
+    <string name="hb_undo_hold_target">"Hold Back to undo: %1$s"</string>
+    <string name="hb_undo_close_editor">"Close the editor, then hold Back on Home or All Apps to undo."</string>
 </resources>

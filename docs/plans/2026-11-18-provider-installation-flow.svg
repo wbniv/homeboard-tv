@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+ <title id="title">Provider installation and selection workflow</title>
+ <desc id="desc">Choose a provider. Verified store entries open Google Play; community entries open the publisher page on the phone. Excluded entries have no installation action. After the user installs, return to Homeboard, configure, preview, then use the background. Cancel or failure keeps the current background; applying creates one undoable change.</desc>
+ <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#9bc4df"/></marker></defs>
+ <rect width="1200" height="520" rx="18" fill="#0b1220"/>
+ <g fill="none" stroke="#9bc4df" stroke-width="2" marker-end="url(#arrow)">
+  <path d="M230 145 H285 V100 H335"/><path d="M230 145 H285 V220 H335"/><path d="M230 145 H285 V340 H335"/>
+  <path d="M615 100 H660 V160 H710"/><path d="M615 220 H660 V160 H710"/>
+  <path d="M925 160 H980 V295 H925"/><path d="M710 295 H620"/>
+  <path d="M375 295 H310 V438 H375"/>
+  <path d="M925 185 H1021 V403" stroke-dasharray="6 5"/>
+  <path d="M620 315 H668 V383 H1021 V403" stroke-dasharray="6 5"/>
+ </g>
+ <g font-family="sans-serif" fill="#eef4fc" text-anchor="middle">
+  <text x="32" y="38" text-anchor="start" font-size="23" font-weight="bold">INSTALL A PROVIDER · THEN CHOOSE ITS BACKGROUND</text>
+  <rect x="30" y="104" width="200" height="82" rx="12" fill="#233e56" stroke="#77d3ff"/>
+  <text x="130" y="138" font-size="19">Choose a provider</text><text x="130" y="164" font-size="15" fill="#c5d8e8">Homeboard directory</text>
+  <rect x="335" y="62" width="280" height="77" rx="12" fill="#1e4853" stroke="#77d3ff"/>
+  <text x="475" y="94" font-size="19">Open Google Play</text><text x="475" y="119" font-size="15" fill="#c5d8e8">Verified listing · preferred</text>
+  <rect x="335" y="181" width="280" height="77" rx="12" fill="#293447" stroke="#7a8fa9"/>
+  <text x="475" y="213" font-size="19">Publisher release page</text><text x="475" y="239" font-size="15" fill="#c5d8e8">Advanced · open on phone</text>
+  <rect x="335" y="309" width="280" height="65" rx="12" fill="#49352f" stroke="#db9d7d"/>
+  <text x="475" y="336" font-size="18">Excluded / unavailable</text><text x="475" y="359" font-size="15" fill="#efc9b1">Explain why · no install action</text>
+  <rect x="710" y="115" width="215" height="90" rx="12" fill="#233e56" stroke="#77d3ff"/>
+  <text x="818" y="149" font-size="19">User installs</text><text x="818" y="176" font-size="15" fill="#c5d8e8">Android owns confirmation</text>
+  <rect x="710" y="264" width="215" height="68" rx="12" fill="#233e56" stroke="#77d3ff"/>
+  <text x="818" y="292" font-size="18">Return to Homeboard</text><text x="818" y="316" font-size="15" fill="#c5d8e8">Detect installed provider</text>
+  <rect x="375" y="264" width="245" height="68" rx="12" fill="#233e56" stroke="#77d3ff"/>
+  <text x="498" y="292" font-size="18">Configure → Preview</text><text x="498" y="316" font-size="15" fill="#c5d8e8">Installation does not select it</text>
+  <rect x="375" y="403" width="315" height="70" rx="12" fill="#20483f" stroke="#87dcb4"/>
+  <text x="533" y="432" font-size="19">Use background</text><text x="533" y="457" font-size="15" fill="#c5d8e8">One saved change · Hold Back to undo</text>
+  <rect x="874" y="403" width="294" height="70" rx="12" fill="#293447" stroke="#7a8fa9"/>
+  <text x="1021" y="431" font-size="18">Cancel / fail / security block</text><text x="1021" y="457" font-size="15" fill="#c5d8e8">Keep the current background</text>
+  <text x="1010" y="190" text-anchor="start" font-size="14" fill="#a9bed1">No bundled APKs.</text>
+  <text x="1010" y="213" text-anchor="start" font-size="14" fill="#a9bed1">No silent installs.</text>
+ </g>
+</svg>

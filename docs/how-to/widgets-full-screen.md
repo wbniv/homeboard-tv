@@ -76,7 +76,8 @@ or metadata are labeled unavailable. Empty Favorites still has the restore actio
 World clock expands to city cards, a shared 24-hour comparison strip and an
 offline world map. Highlight a place for its exact date/time, zone, UTC offset,
 reference difference and next offset change. Compare time adds a shared future
-interval; Now restores live time. Back exits comparison first, then restores Home.
+interval; Now restores live time. Back exits comparison first, then restores the
+calling Home or All Apps screen and fixed header-clock focus.
 See [World clock controls](world-clock.md) for settings and map navigation.
 
 ## Adding a widget type

@@ -1,0 +1,134 @@
+{
+  "version": "0.1.59",
+  "timestamp_note": "Artifact filesystem timestamps: browser capture or coordinator evidence export time; job IDs identify the TV session.",
+  "screenshots": [
+    {
+      "file": "tv-page0.png",
+      "sha256": "717ce6b18ce285da7e42a7fe244bdc4367703c60697ac5ad341b239c56a1d668",
+      "artifact_timestamp_utc": "2026-11-18T03:19:42.824125+00:00",
+      "job": "J-1af746d716eb",
+      "device": "chromecast-test-01",
+      "version": "0.1.59",
+      "native_assertions": "pass",
+      "visual_review": "passed",
+      "observations": "Three public Play cards readable; Overflight focus ring clear; installed/missing labels correct; Next wedge, no scrollbar."
+    },
+    {
+      "file": "tv-page1.png",
+      "sha256": "e18b44c18e39de8937564345ce9cce288d5d1c9d136936d176f5628ff9ebb1fb",
+      "artifact_timestamp_utc": "2026-11-18T03:20:40.531039+00:00",
+      "job": "J-f827d1b82482",
+      "device": "chromecast-test-01",
+      "version": "0.1.59",
+      "native_assertions": "pass",
+      "visual_review": "passed",
+      "observations": "Three community cards readable; Daily Photos focused; version labels and Sofadrop missing state visible; Previous/Back/Next wedges fit."
+    },
+    {
+      "file": "tv-page2.png",
+      "sha256": "03e4da0322de1fc8bcd1b655cd463dee7ab0bd19e0c02a216f928af9c774e408",
+      "artifact_timestamp_utc": "2026-11-18T03:21:44.626943+00:00",
+      "job": "J-0f14425fac00",
+      "device": "chromecast-test-01",
+      "version": "0.1.59",
+      "native_assertions": "pass",
+      "visual_review": "passed",
+      "observations": "Booru and Weather cards fit; exclusion explanation readable; previous wedge and Back only; no scrollbar."
+    },
+    {
+      "file": "tv-weather.png",
+      "sha256": "e73318ed7ee10549f0a869f00306b71a9cc06a4fa669df33eed60eeecb88ed46",
+      "artifact_timestamp_utc": "2026-11-18T03:23:02.412826+00:00",
+      "job": "J-24b965103275",
+      "device": "chromecast-test-01",
+      "version": "0.1.59",
+      "native_assertions": "pass",
+      "visual_review": "passed",
+      "observations": "Readable exclusion and saved-location risk explanation; refresh and Back only; no install, publisher link or QR action."
+    },
+    {
+      "file": "tv-movie.png",
+      "sha256": "69cbb57703461ae7f238238784535a61681b374f1e5c9140c2d956dc14d27471",
+      "artifact_timestamp_utc": "2026-11-18T03:24:52.266661+00:00",
+      "job": "J-f17871f803c2",
+      "device": "chromecast-test-01",
+      "version": "0.1.59",
+      "native_assertions": "pass",
+      "visual_review": "passed",
+      "observations": "Missing status, clear store focus, phone QR/full HTTPS address and region/account guidance all readable; Back visible. Actual store round trip not claimed."
+    },
+    {
+      "file": "tv-daily.png",
+      "sha256": "bae8e4f0d420d268cf5325304ef9f47db307a0949cc8a450a568e56b0b1b231d",
+      "artifact_timestamp_utc": "2026-11-18T03:26:03.915554+00:00",
+      "job": "J-4d2deef3cfdb",
+      "device": "chromecast-test-01",
+      "version": "0.1.59",
+      "native_assertions": "pass",
+      "visual_review": "passed",
+      "observations": "Installed 1.10 with Configure focused, Preview and refresh actions; no redundant install/store/QR action; text and Back fit."
+    },
+    {
+      "file": "tv-dashboard.png",
+      "sha256": "9f70cf6fa46b09bc12d73a33014189c322e67ea05dcbd2ab086db8503ac6d273",
+      "artifact_timestamp_utc": "2026-11-18T03:27:41.250408+00:00",
+      "job": "J-c669be87900c",
+      "device": "chromecast-test-01",
+      "version": "0.1.59",
+      "native_assertions": "pass",
+      "visual_review": "passed",
+      "observations": "Restored fresh test dashboard with Rain, Calendar, Air 24h/30d sparklines, full-width Favorites and fixed header clock; Rain focus visible; directory overlay gone. Household preferences separately unchanged."
+    },
+    {
+      "file": "phone-chromium-en.png",
+      "sha256": "d3e309bff831fac79f11fd1e41472f294349df8224d09df1d3bef3043443bf44",
+      "artifact_timestamp_utc": "2026-11-18T03:05:29.863052+00:00",
+      "browser": "android-chrome",
+      "language": "en",
+      "version": "0.1.59",
+      "source": "Production phone assets, controlled JSON fixture",
+      "native_assertions": "not-applicable"
+    },
+    {
+      "file": "phone-chromium-th.png",
+      "sha256": "15b41e0f3a076be5034c37699e4eee131254535d3c09ab3fa77a87385fa9d1cb",
+      "artifact_timestamp_utc": "2026-11-18T03:05:37.504046+00:00",
+      "browser": "android-chrome",
+      "language": "th",
+      "version": "0.1.59",
+      "source": "Production phone assets, controlled JSON fixture",
+      "native_assertions": "not-applicable"
+    },
+    {
+      "file": "phone-webkit-en.png",
+      "sha256": "1b5d87d69685356d3fac691a31fd7a9d5253464a9619e6d972027c5c4427fbf4",
+      "artifact_timestamp_utc": "2026-11-18T03:05:43.750041+00:00",
+      "browser": "iphone-webkit",
+      "language": "en",
+      "version": "0.1.59",
+      "source": "Production phone assets, controlled JSON fixture",
+      "native_assertions": "not-applicable"
+    },
+    {
+      "file": "phone-webkit-th.png",
+      "sha256": "87f369ab6191521d6dbc405f9e7dc07a9a0b230c56b14d0551bb231822d6b19e",
+      "artifact_timestamp_utc": "2026-11-18T03:06:01.140028+00:00",
+      "browser": "iphone-webkit",
+      "language": "th",
+      "version": "0.1.59",
+      "source": "Production phone assets, controlled JSON fixture",
+      "native_assertions": "not-applicable"
+    },
+    {
+      "file": "baseline-core-motion.png",
+      "sha256": "310163a707c397b4570dd2a1d455829c089a36bc8d5e7ef5125846ff71d4af00",
+      "artifact_timestamp_utc": "2026-11-18T03:32:39.043978+00:00",
+      "job": "J-eaf00a2dbd46",
+      "device": "chromecast-test-01",
+      "version": "0.1.59",
+      "provider_version": "1.0.0",
+      "native_assertions": "pass",
+      "source": "Independent provider baseline, separate from directory UI"
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="920" viewBox="0 0 1400 920">
+<rect width="1400" height="920" fill="#f0f4f7"/>
+<text x="45" y="38" font-family="sans-serif" font-size="24" fill="#173044">Proposed: World clock in the fixed top bar</text>
+<text x="45" y="65" font-family="sans-serif" font-size="16" fill="#526674">Five filled, color-coded city cards, immediately left of settings. The dashboard grid keeps its space.</text>
+<rect x="45" y="85" width="1310" height="737" rx="18" fill="#101b29"/>
+<rect x="72" y="99" width="1060" height="97" rx="4" fill="none" stroke="#d2e6df" stroke-width="2"/>
+<rect x="80" y="105" width="202" height="85" fill="#6c3f7a" stroke="#a54cad"/>
+<text x="92" y="125" font-family="sans-serif" font-size="16" font-weight="600" fill="#f7d1f7">BANGKOK</text>
+<text x="92" y="143" font-family="sans-serif" font-size="11" fill="#edf2f5">Thailand · TH</text>
+<text x="92" y="177" font-family="monospace" font-size="32" font-weight="700" fill="#f7f9fb">21:00</text>
+<text x="210" y="176" font-family="sans-serif" font-size="21" fill="#f7d1f7">☾</text>
+<rect x="291" y="105" width="202" height="85" fill="#6c3f47" stroke="#a54c50"/>
+<text x="303" y="125" font-family="sans-serif" font-size="16" font-weight="600" fill="#f7d1d1">SEATTLE</text>
+<text x="303" y="143" font-family="sans-serif" font-size="11" fill="#edf2f5">United States · US</text>
+<text x="303" y="177" font-family="monospace" font-size="32" font-weight="700" fill="#f7f9fb">06:00</text>
+<text x="421" y="176" font-family="sans-serif" font-size="21" fill="#f7d1d1">☀</text>
+<rect x="502" y="105" width="202" height="85" fill="#5f7347" stroke="#8ea950"/>
+<text x="514" y="125" font-family="sans-serif" font-size="16" font-weight="600" fill="#edf7d1">DENVER</text>
+<text x="514" y="143" font-family="sans-serif" font-size="11" fill="#edf2f5">United States · US</text>
+<text x="514" y="177" font-family="monospace" font-size="32" font-weight="700" fill="#f7f9fb">07:00</text>
+<text x="632" y="176" font-family="sans-serif" font-size="21" fill="#edf7d1">☀</text>
+<rect x="713" y="105" width="202" height="85" fill="#384c7a" stroke="#4863ad"/>
+<text x="725" y="125" font-family="sans-serif" font-size="16" font-weight="600" fill="#d1daf7">MUNICH</text>
+<text x="725" y="143" font-family="sans-serif" font-size="11" fill="#edf2f5">Germany · DE</text>
+<text x="725" y="177" font-family="monospace" font-size="32" font-weight="700" fill="#f7f9fb">15:00</text>
+<text x="843" y="176" font-family="sans-serif" font-size="21" fill="#d1daf7">☀</text>
+<rect x="924" y="105" width="202" height="85" fill="#387361" stroke="#48a97e"/>
+<text x="936" y="125" font-family="sans-serif" font-size="16" font-weight="600" fill="#d1f7e4">BARCELONA</text>
+<text x="936" y="143" font-family="sans-serif" font-size="11" fill="#edf2f5">Spain · ES</text>
+<text x="936" y="177" font-family="monospace" font-size="32" font-weight="700" fill="#f7f9fb">15:00</text>
+<text x="1054" y="176" font-family="sans-serif" font-size="21" fill="#d1f7e4">☀</text>
+<circle cx="1190" cy="148" r="29" fill="#253d4e" stroke="#8a9da9"/>
+<path d="M1174 137h32m-32 11h32m-32 11h32" stroke="#edf5f7" stroke-width="3"/><g fill="#253d4e" stroke="#edf5f7" stroke-width="2"><circle cx="1181" cy="137" r="4"/><circle cx="1198" cy="148" r="4"/><circle cx="1185" cy="159" r="4"/></g>
+<circle cx="1211" cy="125" r="5" fill="#a2e4cb"/>
+<circle cx="1277" cy="148" r="29" fill="#253d4e" stroke="#8a9da9"/>
+<text x="1277" y="161" text-anchor="middle" font-family="sans-serif" font-size="35" fill="#edf5f7">⚙</text>
+<rect x="72" y="211" width="1256" height="110" rx="14" fill="#263a4d"/>
+<text x="91" y="240" font-family="sans-serif" font-size="19" fill="#e3edf3">Rain · next 24 hours by hour</text>
+<rect x="94" y="287" width="35" height="2" fill="#7fc6ee"/>
+<text x="110" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">00</text>
+<rect x="144" y="286" width="35" height="3" fill="#7fc6ee"/>
+<text x="160" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">01</text>
+<rect x="194" y="285" width="35" height="4" fill="#7fc6ee"/>
+<text x="210" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">02</text>
+<rect x="244" y="281" width="35" height="8" fill="#7fc6ee"/>
+<text x="260" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">03</text>
+<rect x="294" y="269" width="35" height="20" fill="#7fc6ee"/>
+<text x="310" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">04</text>
+<rect x="344" y="255" width="35" height="34" fill="#7fc6ee"/>
+<text x="360" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">05</text>
+<rect x="394" y="263" width="35" height="26" fill="#7fc6ee"/>
+<text x="410" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">06</text>
+<rect x="444" y="274" width="35" height="15" fill="#7fc6ee"/>
+<text x="460" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">07</text>
+<rect x="494" y="282" width="35" height="7" fill="#7fc6ee"/>
+<text x="510" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">08</text>
+<rect x="544" y="286" width="35" height="3" fill="#7fc6ee"/>
+<text x="560" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">09</text>
+<rect x="594" y="287" width="35" height="2" fill="#7fc6ee"/>
+<text x="610" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">10</text>
+<rect x="644" y="287" width="35" height="2" fill="#7fc6ee"/>
+<text x="660" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">11</text>
+<rect x="694" y="287" width="35" height="2" fill="#7fc6ee"/>
+<text x="710" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">12</text>
+<rect x="744" y="286" width="35" height="3" fill="#7fc6ee"/>
+<text x="760" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">13</text>
+<rect x="794" y="285" width="35" height="4" fill="#7fc6ee"/>
+<text x="810" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">14</text>
+<rect x="844" y="281" width="35" height="8" fill="#7fc6ee"/>
+<text x="860" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">15</text>
+<rect x="894" y="269" width="35" height="20" fill="#7fc6ee"/>
+<text x="910" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">16</text>
+<rect x="944" y="255" width="35" height="34" fill="#7fc6ee"/>
+<text x="960" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">17</text>
+<rect x="994" y="263" width="35" height="26" fill="#7fc6ee"/>
+<text x="1010" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">18</text>
+<rect x="1044" y="274" width="35" height="15" fill="#7fc6ee"/>
+<text x="1060" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">19</text>
+<rect x="1094" y="282" width="35" height="7" fill="#7fc6ee"/>
+<text x="1110" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">20</text>
+<rect x="1144" y="286" width="35" height="3" fill="#7fc6ee"/>
+<text x="1160" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">21</text>
+<rect x="1194" y="287" width="35" height="2" fill="#7fc6ee"/>
+<text x="1210" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">22</text>
+<rect x="1244" y="287" width="35" height="2" fill="#7fc6ee"/>
+<text x="1260" y="310" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#c9d7e0">23</text>
+<rect x="72" y="338" width="774" height="298" rx="14" fill="#2d3645"/>
+<text x="95" y="372" font-family="sans-serif" font-size="22" fill="#eef3f6">Calendar</text>
+<text x="95" y="399" font-family="sans-serif" font-size="16" fill="#b8c7d1">Upcoming dates · existing settings and placement</text>
+<rect x="96" y="425" width="225" height="179" rx="9" fill="#3a4556"/>
+<text x="208" y="465" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#e6edf2">Today</text>
+<text x="208" y="541" text-anchor="middle" font-family="sans-serif" font-size="48" fill="#cfdcec">▦</text>
+<rect x="340" y="425" width="225" height="179" rx="9" fill="#3a4556"/>
+<text x="452" y="465" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#e6edf2">This week</text>
+<text x="452" y="541" text-anchor="middle" font-family="sans-serif" font-size="48" fill="#cfdcec">▦</text>
+<rect x="584" y="425" width="225" height="179" rx="9" fill="#3a4556"/>
+<text x="696" y="465" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#e6edf2">Next week</text>
+<text x="696" y="541" text-anchor="middle" font-family="sans-serif" font-size="48" fill="#cfdcec">▦</text>
+<rect x="864" y="338" width="464" height="298" rx="14" fill="#29463e"/>
+<text x="887" y="373" font-family="sans-serif" font-size="22" fill="#eaf4ed">Air quality</text>
+<text x="887" y="421" font-family="sans-serif" font-size="33" fill="#a8e7c6">PM2.5 · Good</text>
+<text x="887" y="462" font-family="sans-serif" font-size="15" fill="#c3d7cd">24 hours</text>
+<path d="M888 493l37-6 35 3 39-13 42 8 34-6 37 8 39-3 41-12 39 9" fill="none" stroke="#94d9b6" stroke-width="4"/>
+<text x="887" y="533" font-family="sans-serif" font-size="15" fill="#c3d7cd">30 days</text>
+<path d="M888 588l29-18 29 6 35-24 33 13 36-6 37 18 34-26 38 19 35-13 37 17" fill="none" stroke="#84c4e5" stroke-width="4"/>
+<rect x="72" y="653" width="1256" height="129" rx="14" fill="#283443"/>
+<circle cx="155" cy="701" r="25" fill="#49657a"/>
+<text x="155" y="710" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#e9f1f6">1</text>
+<text x="155" y="757" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#c6d3dd">YouTube</text>
+<circle cx="312" cy="701" r="25" fill="#49657a"/>
+<text x="312" y="710" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#e9f1f6">2</text>
+<text x="312" y="757" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#c6d3dd">Movies</text>
+<circle cx="469" cy="701" r="25" fill="#49657a"/>
+<text x="469" y="710" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#e9f1f6">3</text>
+<text x="469" y="757" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#c6d3dd">Music</text>
+<circle cx="626" cy="701" r="25" fill="#49657a"/>
+<text x="626" y="710" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#e9f1f6">4</text>
+<text x="626" y="757" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#c6d3dd">Photos</text>
+<circle cx="783" cy="701" r="25" fill="#49657a"/>
+<text x="783" y="710" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#e9f1f6">5</text>
+<text x="783" y="757" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#c6d3dd">Radio</text>
+<circle cx="940" cy="701" r="25" fill="#49657a"/>
+<text x="940" y="710" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#e9f1f6">6</text>
+<text x="940" y="757" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#c6d3dd">Games</text>
+<circle cx="1097" cy="701" r="25" fill="#49657a"/>
+<text x="1097" y="710" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#e9f1f6">7</text>
+<text x="1097" y="757" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#c6d3dd">Browser</text>
+<circle cx="1254" cy="701" r="25" fill="#49657a"/>
+<text x="1254" y="710" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#e9f1f6">8</text>
+<text x="1254" y="757" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#c6d3dd">More</text>
+<text x="72" y="808" font-family="sans-serif" font-size="14" fill="#b7c8d4">Home · Right reaches All Apps</text>
+<text x="45" y="856" font-family="sans-serif" font-size="18" fill="#18384c">Focus: World clock → Homeboard settings → Device settings → existing page / All Apps route</text>
+<text x="45" y="884" font-family="sans-serif" font-size="15" fill="#526674">Illustrative content. Short OK opens clock details; hold configures. Position is fixed; city order remains editable.</text>
+</svg>

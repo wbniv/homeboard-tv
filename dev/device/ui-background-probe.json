@@ -1,6 +1,6 @@
 {
   "workflow": "check",
   "app": "homeboard-tv",
-  "duration": 28,
+  "duration": 35,
   "panel": "require-hidden"
 }

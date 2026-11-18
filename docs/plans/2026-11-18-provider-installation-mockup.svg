@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
+ <title id="title">Proposed provider installation on TV and phone</title>
+ <desc id="desc">TV cards offer Open Google Play for a verified listing and an advanced publisher release page for community apps. Phone guidance names Cast1 and asks the user to choose the TV in Google Play. Weather 2.11 is excluded.</desc>
+ <rect width="1200" height="470" rx="20" fill="#0b1220"/>
+ <g font-family="sans-serif" fill="#eef4fc">
+  <text x="30" y="36" font-size="20" font-weight="bold">PROPOSED FLOW · REVIEW MOCKUP</text>
+  <rect x="24" y="58" width="805" height="388" rx="16" fill="#142337" stroke="#52657d"/>
+  <text x="48" y="94" font-size="24">Get wallpaper providers</text>
+  <text x="48" y="121" font-size="15" fill="#b4c2d5">Install a separate app, then return here to configure and preview.</text>
+  <rect x="48" y="145" width="367" height="218" rx="14" fill="#233e56" stroke="#77d3ff" stroke-width="3"/>
+  <text x="68" y="179" font-size="23" font-weight="bold">Aerial Views</text>
+  <text x="68" y="207" font-size="16">Video and photos</text>
+  <text x="68" y="234" font-size="14" fill="#c5d8e8">Google Play · Not installed</text>
+  <rect x="68" y="254" width="258" height="47" rx="10" fill="#84d8ff"/>
+  <text x="92" y="284" fill="#102337" font-size="19" font-weight="bold">Open Google Play</text>
+  <text x="68" y="334" font-size="14" fill="#c5d8e8">Install there. Come back to choose it.</text>
+  <rect x="437" y="145" width="367" height="218" rx="14" fill="#293447" stroke="#5d6a80"/>
+  <text x="457" y="179" font-size="23" font-weight="bold">Daily Photos</text>
+  <text x="457" y="207" font-size="16">Daily photography</text>
+  <text x="457" y="234" font-size="14" fill="#c5d8e8">Advanced · Community release</text>
+  <rect x="457" y="254" width="278" height="47" rx="10" fill="#435670"/>
+  <text x="477" y="284" font-size="18">Publisher release page</text>
+  <text x="457" y="334" font-size="14" fill="#c5d8e8">Homeboard does not download the APK.</text>
+  <text x="48" y="394" font-size="15" fill="#b4c2d5">After installation: Configure → Preview → Use background</text>
+  <text x="48" y="423" font-size="14" fill="#f6c7a7">Weather Wallpaper 2.11: excluded · no install action</text>
+  <rect x="862" y="58" width="310" height="388" rx="26" fill="#1c2b40" stroke="#52657d"/>
+  <text x="885" y="100" font-size="18" font-weight="bold">Homeboard · Cast1</text>
+  <text x="885" y="139" font-size="23">Aerial Views</text>
+  <text x="885" y="171" font-size="16" fill="#c5d8e8">Install through Google Play.</text>
+  <text x="885" y="202" font-size="15" fill="#c5d8e8">In Play, choose your TV</text>
+  <text x="885" y="226" font-size="15" fill="#c5d8e8">from the device selector.</text>
+  <rect x="883" y="252" width="267" height="49" rx="11" fill="#84d8ff"/>
+  <text x="905" y="283" fill="#102337" font-size="19" font-weight="bold">Open Google Play</text>
+  <text x="885" y="337" font-size="14" fill="#c5d8e8">TV not listed? Open its store</text>
+  <text x="885" y="360" font-size="14" fill="#c5d8e8">using the TV remote instead.</text>
+  <text x="885" y="407" font-size="14" fill="#a4b7cd">Installation is not selection.</text>
+ </g>
+</svg>

@@ -1,15 +1,19 @@
 # Projectivy wallpaper providers in Homeboard
 
 Homeboard implements the public Projectivy wallpaper-provider v1 interface.
-Projectivy Launcher itself is not required. Install a provider app through the
-normal Android app installation flow, then use **Home settings → Appearance →
+Projectivy Launcher itself is not required. Open **Home settings → Appearance →
+Background → Get providers** for Google Play links, community publisher pages and
+phone QR codes. Providers are separate apps; Homeboard does not bundle or install
+their APKs. [Installation guide and exclusions](provider-directory.md).
+
+After installing a provider, use **Home settings → Appearance →
 Background → Images & videos · Projectivy**. Choose a provider, select **Preview**, and
 choose **Use background** after usable media appears. Back discards the preview.
 Undo restores the previous Homeboard background selection.
 
 Preview temporarily hides dashboard widgets and the palette backdrop, removes the
 menu scrim, and puts directional controls on the right so the wallpaper remains
-visible on the left. Saved UI opacity stays unchanged. Back cancels the draft;
+visible on the left. Saved widget opacity stays unchanged. Back cancels the draft;
 Down chooses Use background and restores the dashboard.
 In Appearance, **Up opens Icons** and **Down opens Background**.
 
@@ -17,7 +21,7 @@ In Appearance, **Up opens Icons** and **Down opens Background**.
 color; OK or Back returns to the invoking screen. Source and color changes share
 one Undo entry, so Undo can restore a previous provider and its palette together.
 **Background status & credits** shows the active source, palette or provider status/credits,
-and UI-background opacity. Its Choose color and Choose provider buttons open
+and widget-background opacity. Its Choose color and Choose provider buttons open
 those screens; Back returns to Details and then the invoking Background menu.
 **Retry provider** appears only with a saved provider. It refreshes that source
 and opens Details, which updates when loading succeeds or fails.
@@ -28,13 +32,14 @@ Homeboard does not import, reset or back them up. **More options** controls
 wallpaper rotation (default 15 minutes) and wallpaper dimming (default 35%).
 These settings are separate from the cache lifetime requested by the provider.
 
-**Appearance → UI opacity** changes the colored backgrounds on Home and All Apps,
-defaulting to **75%**. Text, icons, widget readings and focus indicators keep their
-normal opacity. **0%** removes colored backdrop/panel fills so wallpaper shows
-through; **100%** covers wallpaper with the selected palette. Up/Down preview
-changes of five percentage points; Left resets to 75%; Right chooses 100%; OK
-saves one undoable change. Back cancels. Pie backgrounds always use **95% opacity**,
-with opaque text and icons. Wallpaper dimming is a separate setting.
+**Appearance → Widget background opacity** changes only widget card fills on
+Home and the fixed World clock on All Apps. Text, artwork, focus borders and
+Settings controls stay opaque. **0%** makes card interiors transparent; **100%**
+makes cards opaque. Wallpaper/video stays visible at its configured brightness
+between cards at every setting. The slider does not control the wallpaper or its
+independent dimming. Done saves one undoable change; Back cancels the draft.
+On Home/All Apps, hold Back for one second to undo the saved change. Pie controls
+keep their own 95% background opacity.
 
 **Appearance → Icons** contains **Home favorites**, **All Apps artwork** and **Circular icon mask**.
 New layouts use dense icons: a typical TV viewport fits at least 36 icon slots, with the exact count

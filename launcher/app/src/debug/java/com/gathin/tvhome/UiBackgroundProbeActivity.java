@@ -32,8 +32,13 @@ public final class UiBackgroundProbeActivity extends MainActivity {
     private void field(String name, Object value) throws Exception {
         Field f = MainActivity.class.getDeclaredField(name); f.setAccessible(true); f.set(this, value);
     }
+    @Override public android.content.SharedPreferences getSharedPreferences(String name,int mode){
+        if(name.equals("widget-home")||name.startsWith("rain-cache-")||name.startsWith("air-quality-widget-"))name="widget-opacity-probe-"+name;
+        return super.getSharedPreferences(name,mode);
+    }
     @Override protected void onCreate(Bundle state) {
-        originalLayout = getSharedPreferences("widget-home", MODE_PRIVATE).getString("layout", null);
+        originalLayout = super.getSharedPreferences("widget-home", MODE_PRIVATE).getString("layout", null);
+        if(state==null)getSharedPreferences("widget-home",MODE_PRIVATE).edit().clear().putString("layout",HomeLayout.firstRun().encode()).putBoolean("single-screen-default-v1",true).apply();
         super.onCreate(state);
         probe.postDelayed(() -> {
             try {
@@ -68,14 +73,13 @@ public final class UiBackgroundProbeActivity extends MainActivity {
                 actualRoot.draw(new Canvas(full));
                 int pixel = full.getPixel(full.getWidth() - 2, full.getHeight() - 2);
                 int palette = (Integer) field("background");
-                if (percent == 0) { wallpaperPixel = pixel; require(pixel != palette, "wallpaper is covered at zero"); }
-                else if (percent == 100) require(pixel == palette, "wallpaper visible at 100");
-                else {
-                    int mixed = PaletteColors.mix(wallpaperPixel, palette, .75f);
-                    require(Math.abs(Color.red(mixed) - Color.red(pixel)) <= 2
-                            && Math.abs(Color.green(mixed) - Color.green(pixel)) <= 2
-                            && Math.abs(Color.blue(mixed) - Color.blue(pixel)) <= 2, "backdrop is not a 75% blend");
-                }
+                if(stage%3==0){wallpaperPixel=pixel;require(pixel!=palette,"Offline wallpaper missing");}
+                else require(pixel==wallpaperPixel,"Widget opacity changed uncovered wallpaper brightness");
+                @SuppressWarnings("unchecked") java.util.Map<String,View> tiles=(java.util.Map<String,View>)field("tiles");
+                int alpha=Math.round(255*percent/100f);
+                require(viewAlpha(tiles.get(HomeLayout.HEADER_CLOCK))==alpha,"Header clock fill differs from selected widget opacity");
+                if(stage<3)require(backgroundAlpha(tiles.get(HomeLayout.FAVORITES))==alpha,"Favorites card fill differs from selected widget opacity");
+                require(backgroundAlpha(tiles.get("control:homeboard-settings"))==255,"Widget opacity changed Settings fill");
                 screens[stage] = Bitmap.createScaledBitmap(full, 600, 338, true); full.recycle();
                 stage++;
                 if (stage == 3) startSurface(true);
@@ -86,13 +90,19 @@ public final class UiBackgroundProbeActivity extends MainActivity {
     }
     private void assertForeground(View view, int percent) {
         if (view instanceof TextView || view instanceof ImageView) require(view.getAlpha() == 1f, "label or artwork faded");
-        if (view.getBackground() instanceof UiBackgroundDrawable)
-            require((((UiBackgroundDrawable) view.getBackground()).getColor().getDefaultColor() >>> 24)
-                    == Math.round(255 * percent / 100f), "panel fill differs from draft");
         if (view instanceof ViewGroup) {
             ViewGroup group = (ViewGroup) view;
             for (int i = 0; i < group.getChildCount(); i++) assertForeground(group.getChildAt(i), percent);
         }
+    }
+    private int backgroundAlpha(View view){
+        require(view!=null&&view.getBackground()!=null,"Missing actual card/control background");
+        Bitmap pixels=Bitmap.createBitmap(view.getWidth(),view.getHeight(),Bitmap.Config.ARGB_8888);view.getBackground().draw(new Canvas(pixels));
+        int alpha=Color.alpha(pixels.getPixel(pixels.getWidth()/2,pixels.getHeight()/2));pixels.recycle();return alpha;
+    }
+    private int viewAlpha(View view){
+        require(view!=null,"Missing actual header widget");Bitmap pixels=Bitmap.createBitmap(view.getWidth(),view.getHeight(),Bitmap.Config.ARGB_8888);view.draw(new Canvas(pixels));
+        float density=getResources().getDisplayMetrics().density;int alpha=Color.alpha(pixels.getPixel(Math.round(8*density),pixels.getHeight()-Math.round(6*density)));pixels.recycle();return alpha;
     }
     private void finishProbe() throws Exception {
         // An opaque focus border must survive a zero-opacity fill.
@@ -107,10 +117,10 @@ public final class UiBackgroundProbeActivity extends MainActivity {
         states.addState(new int[]{}, new UiBackgroundDrawable(Color.BLUE));
         states.setFillOpacity(0); states.setState(new int[]{android.R.attr.state_focused});
         require((selected.getColor().getDefaultColor() >>> 24) == 0, "hidden focus fill ignored draft");
-        require(java.util.Objects.equals(originalLayout, getSharedPreferences("widget-home", MODE_PRIVATE).getString("layout", null)), "probe changed saved layout");
+        require(java.util.Objects.equals(originalLayout, super.getSharedPreferences("widget-home", MODE_PRIVATE).getString("layout", null)), "probe changed saved layout");
         apply.invoke(this, ((HomeLayout) field("layout")).uiOpacityPercent);
         LinearLayout deck = new LinearLayout(this); deck.setOrientation(LinearLayout.VERTICAL); deck.setBackgroundColor(0xff101b2b);
-        TextView title = label("ALL CHECKS PASSED · background fills only\n0%: wallpaper visible · 75%: blend · 100%: wallpaper covered\nText/artwork/focus stay opaque · saved settings unchanged"); deck.addView(title);
+        TextView title = label("ALL CHECKS PASSED · widget backgrounds only\n0 / 75 / 100%: uncovered wallpaper stays identical\nWidget fills change · Settings/text/artwork/focus stay opaque · saved settings unchanged"); deck.addView(title);
         for (int row = 0; row < 2; row++) {
             TextView heading = label(row == 0 ? "HOME: 0%                                  75%                                  100%" : "ALL APPS: 0%                              75%                                  100%");
             deck.addView(heading);

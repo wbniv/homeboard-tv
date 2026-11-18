@@ -35,7 +35,8 @@ final class PhoneConfigurationStore {
     }
     static SharedPreferences.Editor trackInstances(SharedPreferences prefs,SharedPreferences.Editor edit,HomeLayout next){
         try{
-            HomeLayout previous=HomeLayout.parse(prefs.getString("layout","{}"));JSONObject generations=instances(prefs);
+            String saved=prefs.getString("layout",null);
+            HomeLayout previous=saved==null?new HomeLayout():HomeLayout.parse(saved);JSONObject generations=instances(prefs);
             return edit.putString("widget-instance-generations",nextInstances(previous,next,generations).toString());
         }catch(JSONException invalid){throw new IllegalStateException("Widget identity unreadable",invalid);}
     }

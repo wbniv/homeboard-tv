@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/67c700a) | Reveal wallpaper previews and align Appearance directions |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/01eb586) | Add dashboard-first phone controls and native world clocks |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/460eea9) | Add a TV-approved phone editor for widgets and dashboard layout |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/4fdbaf9) | Add full-screen widget drilldowns and dense dashboard browsing |
@@ -18,6 +19,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+67c700a	author	Will Norris
+67c700a	added	1
+67c700a	deleted	1
+67c700a	files	1
 01eb586	author	Will Norris
 01eb586	added	7
 01eb586	deleted	2

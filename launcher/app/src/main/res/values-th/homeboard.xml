@@ -69,8 +69,8 @@
     <string name="hb_background">"พื้นหลัง"</string>
     <string name="hb_palette">"ชุดสี"</string>
     <string name="hb_icons">"ไอคอน"</string>
-    <string name="hb_ui_opacity">"ความทึบส่วนติดต่อ · "</string>
-    <string name="hb_ui_opacity_70">"ความทึบของส่วนติดต่อ"</string>
+    <string name="hb_ui_opacity">"ความทึบพื้นหลังวิดเจ็ต · "</string>
+    <string name="hb_ui_opacity_70">"ความทึบพื้นหลังวิดเจ็ต"</string>
     <string name="hb_midnight">"เที่ยงคืน"</string>
     <string name="hb_forest">"ป่า"</string>
     <string name="hb_ocean">"มหาสมุทร"</string>
@@ -254,4 +254,10 @@
 <string name="hb_language_failed">บันทึกภาษาไม่ได้ กรุณาลองอีกครั้ง</string>
 <string-array name="hb_station_names"><item>สวนลุมพินี</item><item>สวนเบญจสิริ</item><item>สวนเบญจกิติ</item><item>วัฒนา · ถนนเอกมัย</item><item>ปทุมวัน · สามย่านมิตรทาวน์</item></string-array>
 <string name="hb_near_coordinates">ใกล้ฉัน · %1$.2f°, %2$.2f°</string>
+    <string name="hb_undo_hold_hint">"กดกลับค้างเพื่อเลิกทำ · หรือเลือกเลิกทำแล้วกด OK · ภายหลัง: การตั้งค่า → ประวัติการเลิกทำ"</string>
+    <string name="hb_undo_ok_hint">"กด OK เพื่อเลิกทำรายการนี้ · กดขึ้นเพื่อกลับไปยังเนื้อหา"</string>
+    <string name="hb_undo_keep_holding">"กดกลับค้างไว้…"</string>
+    <string name="hb_undo_changed">"รายการที่บันทึกเปลี่ยนแล้ว ปล่อยปุ่มกลับแล้วกดค้างอีกครั้ง"</string>
+    <string name="hb_undo_hold_target">"กดกลับค้างเพื่อเลิกทำ: %1$s"</string>
+    <string name="hb_undo_close_editor">"ปิดหน้าต่างแก้ไขก่อน แล้วกดกลับค้างบนหน้าหลักหรือแอปทั้งหมดเพื่อเลิกทำ"</string>
 </resources>

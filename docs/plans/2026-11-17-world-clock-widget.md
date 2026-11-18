@@ -4,6 +4,11 @@
 pass. Cast1 0.1.44 map, selection, dashboard restoration and hold checks passed;
 selected timeline rows can still remain outside the viewport.**
 
+**Proposed placement update:** [Fixed top-bar clock left of settings](2026-11-17-world-clock-header.md).
+This moves the standard clock out of the dashboard grid, uses filled colored city
+cards, and omits the redundant Local entry in favor of five named cities with
+Bangkok primary. It awaits approval; the current shipped preset is documented below.
+
 The first isolated container run passed **456 JVM tests** with zero failures,
 including twelve clock tests, English/Thai parity for **603** resources and Android
 lint. The native APK assembles. These checks do not establish TV interaction or
@@ -28,7 +33,7 @@ over older plans where the reference has evolved.
 | Reference feature | Homeboard decision |
 |---|---|
 | City-specific rainbow color repeated on map pins, names, card tints and hourly blocks | Adopt. Rank known longitudes west-to-east over a 0–300° hue range; one place's color is shared by every presentation. Recompute only after the configured place set changes, not on each tick or DST change. Unknown coordinates use a palette accent. Color supplements names and focus outlines. |
-| Flat cards, thin borders, large monospaced times, colored city name, country on its own smaller line and UTC-offset chip | Adopt the hierarchy with native views, tabular digits, subtle city tints and Homeboard's existing palette/opacity. Use the usual Homeboard focus geometry; do not import website fonts or CSS dependencies. |
+| Flat cards, thin borders, large monospaced times, colored city name, country on its own smaller line and UTC-offset chip | Adopt the hierarchy with native views, tabular digits, subtle city tints and Homeboard's existing palette/opacity. Use the usual Homeboard focus geometry; do not import website fonts or CSS dependencies. Will’s later correction calls for clearly filled colored cards; see the updated header/card mockups. |
 | Very narrow cards show airport code, country code, large hour and smaller colored minutes | Offer compact codes when a verified catalog code or explicit user abbreviation exists. Never invent an airport code from the zone ID or replace Tivissa with a nearby airport's name. Keep the full place name in accessibility text and highlighted details. Stack hour/minute only when width makes it useful. |
 | Outline world map with color-matched city pins and live times | Include an offline **Map** view in full screen, synchronized with the selected-place pane. The default **Compare** view keeps the dense clocks and timeline prominent. Known catalog coordinates give pins; manually labeled zone-only entries remain usable without a guessed map location. |
 | Sun/moon immediately beside its time, with matching subdued night accents and hourly strip shading | Adopt with an explicit initial meaning: **Daytime hours 06:00–18:00 local**, not sunrise/sunset. Keep time digits at readable contrast. The source now uses a latitude/season approximation centered on local noon; do not describe that as exact solar timing or silently copy its assumptions about longitude/DST. Validated solar calculations can replace the approximation later. |

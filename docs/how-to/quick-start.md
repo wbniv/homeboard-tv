@@ -3,11 +3,15 @@
 Homeboard opens on **Home**, your space for widgets and favorite apps. **All Apps**
 is one screen to the right. Home can be completely empty if you prefer.
 
-Screenshots below come from earlier Chromecast builds. The Favorites container
-changes described here are in candidate 0.1.23; its Cast1 installation and visual
-review remain pending. Design illustrations are labeled; weather values are examples.
+The current dashboard puts hourly Rain across the top, Calendar beside compact
+Air quality, and one row of Favorites across the bottom. The fixed World clock
+sits left of the Settings buttons.
 
-![Home with the air-quality widget — actual TV screenshot](quick-start/home.png)
+![Default dashboard — actual Cast1 capture, 0.1.59](../testing/2026-11-18-provider-directory/tv-dashboard.png)
+
+This capture uses fresh test preferences, including an empty Favorites list.
+Other screenshots below are historical and may show older arrangements; design
+illustrations are labeled. See the [current screenshot proof](../testing/2026-11-18-provider-directory.md).
 
 ## Open Homeboard
 
@@ -26,7 +30,8 @@ No account, API key, Home Assistant or dashboard server is needed for air qualit
 | Short OK | Expand a widget full screen, or launch the selected app |
 | Hold OK | Open widget settings/actions, or the selected app's menu |
 | Back in a full-screen widget | Restore its dashboard page, focus and size; nested details close first |
-| Back in a menu | Close the menu |
+| Back in a menu | Close the menu or cancel its draft |
+| Hold Back for one second on Home / All Apps | Undo the latest saved change, once per hold |
 | Menu button, if your remote has one | Open Home settings |
 
 If Homeboard is your default launcher, pressing Home returns to its widget dashboard.
@@ -52,7 +57,7 @@ and is still available in All Apps. Favoriting twice does not create duplicate t
 
 ## Browse and size Favorites
 
-Rain and Favorites are placed together on Home page 1 once. Arrows browse apps
+The default Favorites panel spans the bottom of Home as one row. Arrows browse apps
 inside Favorites; more rows scroll vertically, while a one-row panel scrolls
 sideways. Down/right wedges show more apps; up/left wedges show a return direction.
 There are no scrollbars. Reaching a list edge lets focus move to another widget.
@@ -62,11 +67,13 @@ Move/Resize. Hold OK on an app for internal reorder, Unfavorite, or **Favorites
 widget actions**. A 1×1 panel opens a larger Favorites browser with OK. Removing
 Favorites keeps its list, and re-adding the widget restores it.
 
-The initial layout supports Undo. To rearrange it later, use **Favorites widget
+To restore all four default widgets on one screen, use **Home settings → Widgets /
+Restore → Default dashboard**. Undo restores the prior arrangement. For the optional
+Rain-and-Favorites arrangement, use **Favorites widget
 actions → More → Arrange Rain and Favorites on page 1**, choose a Rain widget,
 and review the preview. OK saves; Back cancels.
 
-![Rain and Favorites together — design mockup, pending TV review](../plans/2026-11-16-first-page-rain-and-favorites-container/first-page.svg)
+![Optional Rain and Favorites arrangement — design mockup](../plans/2026-11-16-first-page-rain-and-favorites-container/first-page.svg)
 
 ## Choose app density and artwork
 
@@ -97,10 +104,9 @@ grid. Changing All Apps artwork alone does not change the dashboard.
 
 To check the installed version, open **Home settings**, press **OK** to show the
 second menu page, then choose **About Homeboard TV**. About reads the installed
-APK version. A higher version number alone does not establish which branch's
-features it contains: the separate Projectivy 0.1.9 build lacked the Home changes
-present in 0.1.8. See the [build validation record](../testing/2026-11-16-home-favorite-app-sizes.md)
-for the combined-merge status and what has actually been verified on the TV.
+APK version. The current implementation and screenshots use **0.1.59**. See the
+[verification record](../testing/2026-11-18-provider-directory.md) for the exact
+build, device, screenshots and outstanding checks.
 
 ![Home favorites: size choice, Small icons, Banners and Undo — design mockup](../plans/2026-11-16-home-favorite-app-sizes/mockups.svg)
 
@@ -119,13 +125,49 @@ does not honor the default Home app for that key.
 
 ![Homeboard settings and Android device Settings buttons — design mockup](../plans/2026-11-15-widget-home/compact-grid-settings.svg)
 
+## Clock and meeting planner
+
+The fixed World clock starts with Bangkok, Seattle, Denver, Munich and Barcelona.
+Short OK opens its full-screen clocks, meeting comparison and map; hold OK edits
+cities and display settings. Back or **Restore dashboard** returns to the calling
+screen. The clock stays in the top bar. [World clock guide](world-clock.md).
+
+## Configure from your phone
+
+Open **Home settings → More → Configure from phone**, scan the QR code and approve
+the matching code on the TV. Tap a widget to edit it, drag list grips to reorder,
+and review the draft before **Update TV**. Choose the fixed clock under **Top bar**.
+Each TV keeps independent settings.
+
+The TV-name menu offers **Add TV to home screen** for a phone shortcut per TV.
+A shortcut still needs a fresh editing session and approval on its TV.
+**Get wallpaper providers** opens the provider directory; its links do not edit
+or apply the dashboard draft. [Phone guide](phone-widget-editor.md) ·
+[TV shortcuts](phone-tv-shortcuts.md).
+
+## Undo a saved change
+
+On Home or All Apps, hold **Back for one second**, then release. Each hold undoes
+one change; a short Back keeps normal navigation. Inside a menu, Back cancels or
+closes it first. You can also focus the visible Undo button or use **Homeboard
+Settings → Undo history**. [Undo guide](undo.md).
+
 ## Color palette
 
-On `main`, open **Home settings → Appearance → Background** to choose from twenty
-colors arranged in five rows on one screen. The focused color previews immediately;
-the current selection is marked. The selected color generates the launcher
-surfaces, text tones, and focus highlight.
-Projectivy wallpaper controls are a separate workstream pending the combined merge.
+Open **Home settings → Appearance → Background → Solid color** to choose a
+palette. The focused color previews immediately; the current selection is marked.
+The palette sets surface colors, text tones and focus highlights.
+
+For images or video, open **Background → Get providers**. Install a separate
+provider using its Google Play link or phone QR code, return to Homeboard, then
+**Configure → Preview → Use background**. Installation alone never changes the
+background. **Images & videos · Projectivy** lists installed providers.
+[Provider installation guide](provider-directory.md).
+
+**Appearance → Widget background opacity** adjusts card fills from transparent to
+opaque. It leaves text, controls and wallpaper/video brightness alone. Wallpaper
+rotation and dimming are separate provider options. Back cancels a preview;
+**Done** saves one undoable change. [Wallpaper controls](projectivy-wallpapers.md).
 
 ![Background and wallpaper menu with the current-color swatch](../plans/2026-11-16-palette-trend-resize/background.svg)
 
@@ -219,7 +261,7 @@ on the saved reading; a missing value is shown as a dash, not zero.
 
 ## App language
 
-In the Thai-language implementation, open **Home settings → Language / ภาษา**.
+Open **Home settings → Language / ภาษา**.
 Press Up for **English**, Right for **ไทย**, or Down for **Follow device**.
 The directional choice applies immediately. Left or Back returns without a new
 choice. The saved choice has a current marker; explicit English/Thai remains

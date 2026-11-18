@@ -14,7 +14,7 @@ window.PhoneModel = (() => {
     return [...(location.length ? [{name:'location', fields:location}] : []),
       ...Object.keys(w.settings).filter(k => !location.includes(k)).map(k => ({name:k, fields:[k]}))];
   }
-  function diff(base, draft) {
+  function gridDiff(base, draft) {
     const changes = [];
     if (!same(pick(base, ['columns','rows']), pick(draft, ['columns','rows']))) changes.push({kind:'grid'});
     if (base.artwork !== draft.artwork) changes.push({kind:'artwork', value:draft.artwork});
@@ -37,6 +37,7 @@ window.PhoneModel = (() => {
       && w.column+w.width > other.column && w.row < other.row+other.height && w.row+w.height > other.row);
   }
   function validate(draft) {
+    if(!window.PhoneClock.valid(draft.headerClock))return {kind:"range",key:HEADER};
     if (!Number.isInteger(draft.columns) || draft.columns < 4 || draft.columns > 12 || !Number.isInteger(draft.rows) || draft.rows < 2 || draft.rows > 12) return {kind:'grid'};
     for (const w of draft.widgets) {
       if (!validPosition(draft,w)) return {kind:'placement', key:w.key};
@@ -84,7 +85,7 @@ window.PhoneModel = (() => {
     for(const w of extras)result.widgets.push(freePosition(result,{...w,width:Math.min(w.width,8),height:Math.min(w.height,4)},1));
     return result;
   }
-  function rebase(baseState, local, latest) {
+  function gridRebase(baseState, local, latest) {
     const base=baseState.draft,remote=latest.draft,merged=clone(remote),conflicts=[];
     const resolve=(b,l,r,conflict,apply)=>{if(same(l,b)||same(l,r))return;if(same(r,b))apply(l);else conflicts.push({...conflict,mine:clone(l),tv:clone(r)});};
     resolve(pick(base,['columns','rows']),pick(local,['columns','rows']),pick(remote,['columns','rows']),{kind:'grid'},v=>Object.assign(merged,v));
@@ -106,7 +107,7 @@ window.PhoneModel = (() => {
     }
     return {draft:merged,conflicts};
   }
-  function resolveConflict(draft,conflict,choice,instances={}) {
+  function gridResolveConflict(draft,conflict,choice,instances={}) {
     if(choice==='tv')return;
     const value=clone(conflict.mine),target=draft.widgets.find(w=>w.key===conflict.key);
     if(conflict.kind==='grid'){Object.assign(draft,value);return;}
@@ -121,5 +122,12 @@ window.PhoneModel = (() => {
     if(conflict.kind==='placement')Object.assign(target,value);
     else {for(const k of conflict.fields)delete target.settings[k];Object.assign(target.settings,value);}
   }
-  return {clone,same,diff,validPosition,validate,move,add,newKey,recommended,rebase,resolveConflict};
+  const HEADER='control:world-clock';
+  const headerWidget=draft=>({key:HEADER,type:'world_clock',fixed:true,page:0,column:0,row:0,width:1,height:1,settings:draft.headerClock});
+  const wrapped=draft=>({...draft,widgets:[...draft.widgets,headerWidget(draft)]});
+  function unwrapped(draft){const header=draft.widgets.find(w=>w.key===HEADER);return {...draft,headerClock:header.settings,widgets:draft.widgets.filter(w=>w.key!==HEADER)};}
+  function diff(base,draft){return gridDiff(wrapped(base),wrapped(draft));}
+  function rebase(base,local,latest){const result=gridRebase({...base,draft:wrapped(base.draft)},wrapped(local),{...latest,draft:wrapped(latest.draft)});return {...result,draft:unwrapped(result.draft)};}
+  function resolveConflict(draft,conflict,choice,instances={}){const value=wrapped(draft);gridResolveConflict(value,conflict,choice,instances);Object.assign(draft,unwrapped(value));}
+  return {HEADER,headerWidget,clone,same,diff,validPosition,validate,move,add,newKey,recommended,rebase,resolveConflict};
 })();

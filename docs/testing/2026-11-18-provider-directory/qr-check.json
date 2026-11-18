@@ -1,0 +1,8 @@
+{
+  "status": "pass",
+  "job": "J-f17871f803c2",
+  "version": "0.1.59",
+  "screenshot_sha256": "69cbb57703461ae7f238238784535a61681b374f1e5c9140c2d956dc14d27471",
+  "decoded": "https://play.google.com/store/apps/details?id=com.danielkorgel.projectivy.plugin.cinemaglow",
+  "command": "Container: node dev/provider-directory-qr-check.cjs <Movie/evidence/screenshot.png>"
+}

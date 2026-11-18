@@ -10,7 +10,7 @@
     <string name="hb_hint_from_home">" จากหน้าหลัก"</string>
     <string name="hb_hint_hid">"ซ่อน"</string>
     <string name="hb_hint_from_all_apps">" จากแอปทั้งหมด"</string>
-    <string name="hb_hint_ui_opacity">"ความทึบส่วนติดต่อ:"</string>
+    <string name="hb_hint_ui_opacity">"ความทึบพื้นหลังวิดเจ็ต: "</string>
     <string name="hb_hint_circular_icon_mask">"กรอบไอคอนวงกลม ·"</string>
     <string name="hb_hint_uses">"ใช้"</string>
     <string name="hb_hint_home_favorites_use">" · แอปโปรดบนหน้าหลักใช้"</string>
@@ -30,4 +30,26 @@
     <string name="hb_hint_data">"ข้อมูล:"</string>
     <string name="hb_hint_local">" เวลาท้องถิ่น"</string>
     <string name="hb_hint_bangkok">" กรุงเทพฯ"</string>
+    <string name="hb_get_providers">รับผู้ให้บริการ</string>
+    <string name="hb_provider_directory_hint">ติดตั้งแอปแยก แล้วกลับมาตั้งค่าและดูตัวอย่าง การติดตั้งจะไม่เปลี่ยนพื้นหลัง</string>
+    <string name="hb_provider_play">Google Play</string>
+    <string name="hb_provider_community">ขั้นสูง · หน้าผู้เผยแพร่</string>
+    <string name="hb_provider_excluded">ไม่รวม · ไม่มีปุ่มติดตั้ง</string>
+    <string name="hb_provider_installed">ติดตั้งแล้ว · %1$s</string>
+    <string name="hb_provider_not_installed">ยังไม่ได้ติดตั้งบนทีวีนี้</string>
+    <string name="hb_provider_open_play">เปิด Google Play บนทีวีนี้</string>
+    <string name="hb_provider_phone_hint">สแกนด้วยโทรศัพท์ แล้วเลือกทีวีนี้เองใน Google Play ความพร้อมขึ้นอยู่กับบัญชีและภูมิภาค การจับคู่ไม่ได้เลือกทีวีใน Google Play</string>
+    <string name="hb_provider_no_store">เปิด Google Play ไม่ได้ ใช้ลิงก์บนโทรศัพท์</string>
+    <string name="hb_provider_configure">ตั้งค่าผู้ให้บริการ</string>
+    <string name="hb_provider_preview">ดูตัวอย่างผู้ให้บริการที่ติดตั้ง</string>
+    <string name="hb_provider_refresh">ตรวจสอบแอปที่ติดตั้ง</string>
+    <string name="hb_provider_overflight">วิดีโอมุมสูง การแสดงผลพื้นฐานผ่านกับ GitHub 1.20 คงการตั้งค่าเดิม ยังทดสอบรูปแบบทั้งหมดไม่ครบ</string>
+    <string name="hb_provider_aerial">วิดีโอและการควบคุมผ่านกับ GitHub 1.8.5 ยังไม่ได้ทดสอบรุ่น Play</string>
+    <string name="hb_provider_movie">ภาพภาพยนตร์ ยังไม่ได้ทดสอบรุ่น Play การสร้างจากซอร์สต้องใช้คีย์ TMDB</string>
+    <string name="hb_provider_daily">ภาพรายวัน การแสดงผลและการควบคุมผ่านกับ GitHub 1.10</string>
+    <string name="hb_provider_motion">วิดีโอวนซ้ำ ยืนยันการติดตั้งแล้ว ยังทดสอบการแสดงผลไม่ครบ</string>
+    <string name="hb_provider_sofadrop">ผู้ให้บริการชุมชน การทดสอบ Play ต้องสมัครกับผู้เผยแพร่ ยังไม่ทดสอบการเล่น</string>
+    <string name="hb_provider_booru">ภาพจากชุมชน ตรวจสอบคำค้นเริ่มต้นสำหรับทุกวัยแล้ว ยังไม่ทดสอบการเล่น</string>
+    <string name="hb_provider_weather">ไม่รวม: Google Play Protect บล็อกรุ่น 2.11 พบการเข้าถึงตำแหน่งที่บันทึกโดยไม่มีการป้องกัน โปรดเปิดการป้องกันไว้</string>
+    <string name="hb_provider_scope">การมีในร้านค้าไม่ได้ยืนยันความปลอดภัยหรือความเข้ากันได้ โครงการที่ต้องใช้เซิร์ฟเวอร์หรือมีเฉพาะซอร์สอยู่ในเอกสารทดสอบ</string>
 </resources>

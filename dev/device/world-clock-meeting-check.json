@@ -1,0 +1,26 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 21,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 7,
+      "capture": "shared-interval-and-five-city-timeline"
+    },
+    {
+      "at": 11,
+      "capture": "map-retains-comparison"
+    },
+    {
+      "at": 16,
+      "capture": "now-and-nested-back-return-live"
+    },
+    {
+      "at": 18,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    }
+  ]
+}

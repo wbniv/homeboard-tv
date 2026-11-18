@@ -1,18 +1,23 @@
 # World clock
 
-New clocks start with **Local · Follow TV, Bangkok, Seattle, Denver, Munich and
-Barcelona**, in that manual order, using 24-hour time. The preferred size is
-**8×1**, fitted to smaller grids. Local is primary; the reference follows the TV,
-with seconds off. Existing cards keep their saved configuration. This preset
-matches Will’s saved Cast1 clock and is shared by TV and phone creation.
+The fixed **World clock** sits immediately left of both Settings buttons on Home
+and All Apps. It uses the reserved 60 dp top bar; dashboard widgets keep their
+space. Filled city cards show uppercase names, countries, tabular time and a
+sun/moon. When space or enlarged text limits the list, the primary remains
+visible and **+N** opens the complete list.
 
-Add **Home settings → Widgets / Restore → Add widget → World clock**. Each new
-instance receives its own copy of the six-place preset above.
-Small panels show the primary clock; wider/taller panels show more places. A
-count indicates configured places beyond the compact panel's capacity.
+The default cities are **Bangkok, Seattle, Denver, Munich and Barcelona**, in
+manual order with Bangkok primary, 24-hour time, Follow TV reference and seconds
+off. The list is fully configurable (1–12 places); Local remains an explicit
+choice. Existing custom lists keep their settings and saved city IDs.
 
-**Short OK/click opens full screen. Hold OK opens Configure, Move, Resize and
-Remove.** Adding a clock preserves the existing dashboard.
+**Short OK/click opens full screen. Hold OK configures the clock.** The header
+has no Move, Resize or Remove action. Left from Homeboard Settings selects it;
+Right selects Homeboard Settings, then Device Settings, then the existing
+next-page / All Apps route. Back restores the calling screen and header focus.
+On an empty Home with no grid focus, one Right still opens All Apps. Up reaches
+Settings; Left then reaches the clock. Previously saved extra grid clocks remain
+editable.
 
 ## Settings
 
@@ -28,9 +33,9 @@ TV system zone. Display offers a title, Manual or West → east ordering, 24-hou
 (default), 12-hour or device format, and optional full-screen seconds.
 
 Changes stay in a draft until **Save changes**. Back cancels; normal Undo restores
-a saved change. Removing the widget does not remove any other clock instance.
+a saved change. The fixed clock stays in the top bar.
 
-In **Configure from phone**, select the World clock card. Add/search places,
+In **Configure from phone**, select **Top bar → World clock · Fixed**. Add/search places,
 edit labels, choose primary/reference and drag the place grips to reorder.
 Alt+Up/Down and explicit movement buttons are also available. A move selects
 Manual ordering; draft Undo restores the previous order and ordering mode.
