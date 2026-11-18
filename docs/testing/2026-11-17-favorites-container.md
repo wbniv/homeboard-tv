@@ -98,8 +98,9 @@ default Home and app data were not changed. The queued evidence is exported at
 `artifacts/deployments/0.1.23/cast2-launch-evidence/`; machine-readable outcomes
 are in `artifacts/deployments/0.1.23/cast2-deployment.json`.
 
-Cast2 installation and visual acceptance remain unconfirmed. End Personal use in
-the coordinator when ready for the queued foreground install/check to run.
+At this checkpoint Cast2 installation and visual acceptance were unconfirmed.
+The foreground check was held. **Correction:** installation must be submitted
+independently during personal use; ending the hold is not an install prerequisite.
 
 
 ## Cast1 recovered: installation confirmed · 17 November 2026, 01:17
@@ -128,8 +129,10 @@ old queued foreground job **J‑800413b165cc** so it would not block that instal
 The background attempt connected but again failed pre-install verification with
 `personal-install-unverified`; no installation was confirmed. Evidence is in
 `artifacts/deployments/0.1.23/cast2-retry-install-evidence/`. A replacement normal
-install/check was then submitted, and Will was asked to turn off Personal use in
-the coordinator GUI. No personal-use setting was changed by the agent.
+install/check was then submitted, and Will was incorrectly asked to turn off
+Personal use in the coordinator GUI. This was stale advice: the hold does not
+block independent installation admission. No personal-use setting was changed
+by the agent.
 
 
 ## Reserved/background install verification follow-up · 17 November 2026

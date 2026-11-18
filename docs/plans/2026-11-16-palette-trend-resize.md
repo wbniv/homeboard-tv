@@ -75,7 +75,8 @@ flowchart LR
 - [x] Up/Left shrink the matching axis; Down/Right grow it by one cell.
 - [x] OK persists exact dimensions; Back restores the previous layout.
 - [x] Container tests, lint and APK build pass.
-- [ ] Install and capture this revision on Cast2 after its personal-use pause clears.
+- [ ] Submit an independent Cast2 install-only job, including during personal use;
+  record installed-hash proof separately from capture acceptance.
 - [ ] Coordinator launch/capture on Cast2 after its personal-use pause clears.
 
 ## Verification record

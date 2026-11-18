@@ -53,3 +53,15 @@ Cast2 replacement check **J‑f092d5411da9** is accepted and held by personal us
 this queue entry is not installation proof. Temporary deferred job **J‑dd3f5bc6c5d2**
 was cancelled while the catalog was pinned to Cast1 probes, then replaced after
 MainActivity registration was restored.
+
+## Operation-policy correction · 18 November 2026
+
+Installation remains independent of foreground verification. Cast2 install-only
+retry **J‑564b0cee277f** was accepted and granted during personal use, then failed
+execution with `personal-install-in-use`; its installation record is `unverified`.
+This is not a reservation/admission denial and does not make ending personal use
+an installation prerequisite. Private evidence is retained under
+`artifacts/deployments/0.1.62/cast2-install-retry/`. Foreground check
+**J‑f092d5411da9** is a separate held job, not a pending independent installation.
+The earlier conversational description that implied otherwise is superseded by
+the [operation-specific policy](../how-to/chromecast.md#personal-use-and-reservations-operation-specific-policy).

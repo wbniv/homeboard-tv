@@ -55,9 +55,17 @@
     "dashboard-en.png": "fd3630339d4e0bddd4c77aa5b624bd21e32cafbe67b8bfee3b561a2be0977ea7"
   },
   "cast2": {
-    "job": "J-f092d5411da9",
-    "status": "queued",
-    "reason": "personal-use",
-    "installed": false
+    "installed": false,
+    "install_only": {
+      "job": "J-564b0cee277f",
+      "admission": "granted",
+      "status": "failed",
+      "reason": "personal-install-in-use"
+    },
+    "foreground_check": {
+      "job": "J-f092d5411da9",
+      "status": "queued",
+      "reason": "personal-use"
+    }
   }
 }

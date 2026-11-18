@@ -15,6 +15,11 @@ docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
   Java/Android tooling on the host or run Gradle there. Never install via Gradle or raw ADB.
 - Shared device sessions must follow [the Chromecast how-to](docs/how-to/chromecast.md):
   devices, queue, complete submitted job, watch, evidence. No direct-device fallback.
+  Personal use and reservations are not blanket operation bans. Read the shared
+  [command policy matrix](../chromecast-coordinator/docs/plans/2026-11-16-nondisruptive-work-during-personal-use-command-matrix.md)
+  for each operation and its parameters. Submit authorized install-only and passive
+  jobs independently of foreground tests; the coordinator owns admission. Old
+  plans, conversation summaries and failed-job receipts do not override that policy.
 - The native widget Home, All Apps and public Bangkok air-quality card are implemented.
   Wallpaper-provider v1 hosting and independent UI opacity are implemented; consult
   [the wallpaper how-to](docs/how-to/projectivy-wallpapers.md) and testing record for

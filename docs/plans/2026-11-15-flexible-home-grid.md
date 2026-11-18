@@ -1,10 +1,11 @@
 # Flexible Home grid
 
-**Status: PM2.5 30D capture reviewed on Cast1; iterative testing remains on Cast1 until Will says Homeboard is usable, then moves to Cast2 · 16 November 2026**
+**Status: PM2.5 30D capture reviewed on Cast1 · 16 November 2026**
 
-Keep iterative installs on Cast1 while Will is still testing Homeboard. Move to
-Cast2 after Will says the app is usable. Cast2 is currently reserved for personal
-use; its earlier status does not change the active Cast1 test target.
+Deploy every working build to both TVs; Cast1 remains the routine foreground
+test target. Installation is independent of foreground verification. Reservations
+and personal use do not add an agent-side install gate; use the shared
+[operation-specific policy](../how-to/chromecast.md#personal-use-and-reservations-operation-specific-policy).
 
 Replace the fixed 2 × 2 dashboard placement with a responsive, configurable grid.
 Home favorites use one cell for Small icons or two columns for Banners, selected

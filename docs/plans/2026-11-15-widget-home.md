@@ -288,7 +288,8 @@ flowchart LR
 ```
 
 Current iteration adds persisted **App artwork: Launcher icons / TV banners** for
-both app surfaces. On 16 November Will moved iterative testing from Cast1 to
-Cast2. The coordinator currently reports Cast2 paused for another owner's
-personal use; wait for availability before installing. Automated remote-input
-sequences are paused while Will tests.
+both app surfaces. The historical 16 November testing target was Cast2. Current
+policy deploys every working build to both TVs, with Cast1 the routine foreground
+target. Submit install-only work during reservations/personal use; let the
+coordinator admit it independently of held remote-input tests. See the
+[operation-specific policy](../how-to/chromecast.md#personal-use-and-reservations-operation-specific-policy).

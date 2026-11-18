@@ -22,6 +22,30 @@ with escalation, not bypassing the coordinator.
 
 Creating this project does not select Homeboard as the default Home or screensaver on any device.
 
+## Personal use and reservations: operation-specific policy
+
+Use the shared [command policy matrix](../../../chromecast-coordinator/docs/plans/2026-11-16-nondisruptive-work-during-personal-use-command-matrix.md).
+Personal use is not a blanket block on device work. Metadata/status/evidence
+reads, current-screen screenshots, preview/live capture and safe owned cleanup
+are permitted within their documented conditions. Passive inspection/recovery,
+profiling and background APK installation have operation-specific preconditions.
+Launch, scripted navigation and settings changes are separate foreground effects.
+Consult the matrix for the actual command and parameters rather than inferring
+permission from a device's reserved/paused badge.
+
+Submit authorized install-only jobs independently of foreground verification,
+including during another authorized owner's reservation or personal use. Do not
+replace an unsuccessful install-only attempt with a held launch/check and call
+installation "waiting for personal use to end." Keep the independent install
+result and foreground queue status separate.
+
+An admitted install can still fail execution preconditions. Report its exact
+reason and evidence: `personal-install-in-use` is not a reservation denial, and
+`personal-install-unverified` is not a pending installation. Never clear a hold or
+use direct device commands as a workaround. Old plans and transcript advice to
+wait before installing are superseded by this policy; historical receipts remain
+records of what happened, not rules for future admission.
+
 ## Air-quality smoke test
 
 After container compilation, register the app using `task chromecast:app-register`
