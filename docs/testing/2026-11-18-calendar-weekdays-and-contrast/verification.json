@@ -1,0 +1,63 @@
+{
+  "version": "0.1.62",
+  "apk_sha256": "9b6436400c90d028ed3c0df17f9cbb993c19a2c899a17102c747cd7855612d71",
+  "cast1_install_job": "J-9f2b717c763b",
+  "cast1_installations": [
+    {
+      "input": "9b6436400c90d028ed3c0df17f9cbb993c19a2c899a17102c747cd7855612d71.apk",
+      "package": "net.biohack.homeboard.debug",
+      "before_sha256": "e170a097cbe65e86afc9aa257d987c6f785d87dd0eefcd7a45a086c45236b4a4",
+      "action": "install",
+      "reason": "different-hash",
+      "variant": null,
+      "status": "verified",
+      "start": 1794996094.8934221,
+      "journal_key": "install:1",
+      "installed_sha256": "9b6436400c90d028ed3c0df17f9cbb993c19a2c899a17102c747cd7855612d71",
+      "end": 1794996115.5257895
+    }
+  ],
+  "native": [
+    {
+      "job": "J-5c83f846feb6",
+      "version": "0.1.62",
+      "device": "chromecast-test-01",
+      "coordinator": "succeeded",
+      "proof": {
+        "status": "pass",
+        "language": "th",
+        "screen": "dashboard",
+        "detail": "BE/CE, units, selective icons and clean clock; household preferences/language unchanged",
+        "airData": "not-applicable",
+        "homeboardVersion": "0.1.62",
+        "widgetOpacity": 65
+      }
+    },
+    {
+      "job": "J-61fd9b4b3b83",
+      "version": "0.1.62",
+      "device": "chromecast-test-01",
+      "coordinator": "succeeded",
+      "proof": {
+        "status": "pass",
+        "language": "th",
+        "screen": "calendar",
+        "detail": "BE/CE, units, selective icons and clean clock; household preferences/language unchanged",
+        "airData": "not-applicable",
+        "homeboardVersion": "0.1.62",
+        "widgetOpacity": 65
+      }
+    }
+  ],
+  "screenshots": {
+    "calendar-th.png": "16f8eb2c0cab5bea60d3bae597942a1c14747a202e574ac4fbfff4f3c2974072",
+    "dashboard-th.png": "a5e430fa53ab97362aa294875fad6e395d5e28ecd566d411375af4bf9fa5e580",
+    "dashboard-en.png": "fd3630339d4e0bddd4c77aa5b624bd21e32cafbe67b8bfee3b561a2be0977ea7"
+  },
+  "cast2": {
+    "job": "J-f092d5411da9",
+    "status": "queued",
+    "reason": "personal-use",
+    "installed": false
+  }
+}

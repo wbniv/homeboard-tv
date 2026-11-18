@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Homeboard TV — Your TV. Your home base.</title>
+<style>
+@page { size: A4 portrait; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; color: #15283a; background: #f8f7f3; font-family: Arial, sans-serif; }
+body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+main { width: 210mm; height: 297mm; padding: 12mm 16mm 10mm; position: relative; }
+.brand { display: flex; align-items: center; gap: 3mm; font-size: 16pt; font-weight: 800; letter-spacing: -.4pt; }
+.brand img { width: 9mm; height: 9mm; border-radius: 2.5mm; }
+.edition { margin-left: auto; font-size: 7.5pt; line-height: 1.5; font-weight: 400; text-align: right; color: #566779; letter-spacing: .3pt; }
+h1 { font-size: 28pt; line-height: 1.1; letter-spacing: -1.1pt; margin: 6mm 0 3mm; white-space: nowrap; }
+h1 span { color: #137b79; }
+.intro { font-size: 10pt; line-height: 1.4; margin: 0 0 4mm; color: #42566a; }
+.screen { height: 69mm; overflow: hidden; border: 1.5mm solid #15283a; border-radius: 3mm; background: #101722; box-shadow: 0 2mm 5mm #15283a18; }
+.screen img { width: 100%; height: auto; display: block; }
+.caption { font-size: 7pt; color: #647384; margin: 1.5mm 0 3mm; }
+.examples { margin-top: 3mm; display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }
+.examples figure { margin: 0; }
+.examples figcaption { font-size: 9pt; font-weight: 700; margin-bottom: 1.5mm; }
+.examples figcaption span { color: #137b79; margin-right: 1.5mm; }
+.examples img { display: block; width: 100%; border: .6mm solid #15283a; border-radius: 1.5mm; }
+.features { display: grid; grid-template-columns: 1fr 1fr; column-gap: 7mm; row-gap: 3mm; }
+h2 { font-size: 11pt; margin: 0 0 1.3mm; letter-spacing: -.15pt; }
+.features h2:before { content: ''; display: inline-block; width: 2mm; height: 2mm; background: #137b79; border-radius: 50%; margin-right: 2mm; vertical-align: 1px; }
+p { margin: 0; }
+.features p { font-size: 9pt; line-height: 1.35; color: #42566a; }
+.phone { margin-top: 4mm; padding: 3mm 4mm; background: #e6eeea; border-radius: 2mm; border-left: 1.2mm solid #137b79; }
+.phone h2 { font-size: 11pt; }
+.phone p { font-size: 9pt; line-height: 1.35; color: #314e59; }
+.controls { display: flex; justify-content: space-between; margin-top: 3mm; padding-bottom: 3mm; border-bottom: .3mm solid #d7dfdf; font-size: 8pt; color: #42566a; }
+.controls strong { color: #15283a; }
+footer { display: flex; align-items: center; gap: 4mm; margin-top: 3mm; }
+footer img { width: 18mm; height: 18mm; }
+.cta { font-size: 12pt; font-weight: 700; margin-bottom: 1.5mm; }
+a { color: #137b79; text-decoration: none; }
+.url { font-size: 10pt; }
+.fine { font-size: 7pt; line-height: 1.5; color: #647384; margin-top: 2mm; }
+</style>
+<main>
+  <div class="brand">
+    <img src="../branding/homeboard-icon-master.png" alt="Homeboard TV icon">
+    Homeboard TV
+    <div class="edition">ANDROID TV &amp; GOOGLE TV<br>OPEN SOURCE · IN DEVELOPMENT</div>
+  </div>
+  <h1>Your TV. <span>Your home base.</span></h1>
+  <p class="intro">Turn your TV’s home screen into a useful daily dashboard.
+    Rain, upcoming dates, air quality, world clocks and favorite apps—arranged your way.</p>
+
+  <div class="screen"><img src="../testing/2026-11-18-provider-directory/tv-dashboard.png" alt="Homeboard dashboard showing world clocks, hourly rain, Calendar and air-quality trends"></div>
+  <p class="caption">Actual TV dashboard detail · Example layout and readings, captured November 2026.</p>
+
+
+  <div class="features">
+    <section><h2>Add the widgets you want</h2>
+      <p>Choose built-in Rain, Calendar, Air quality and Favorites widgets from Add widget. Configure each one for your home.</p></section>
+    <section><h2>Size them to suit your screen</h2>
+      <p>Resize widgets on the dashboard grid. Keep summaries compact or give charts more room; press OK for the full-screen view.</p></section>
+    <section><h2>Arrange your dashboard your way</h2>
+      <p>Move widgets into place, group what matters and add pages when you need them. Change your mind? Hold Back to undo.</p></section>
+    <section><h2>Built on shared foundations</h2>
+      <p>Based on CleanYourTV. Supports Projectivy wallpaper-provider v1, including Overflight backgrounds. Install providers separately; Projectivy Launcher is not required.</p></section>
+  </div>
+
+  <section class="phone"><h2>Set it up from your phone. Enjoy it from the sofa.</h2>
+    <p>Scan, approve and customize in your phone browser. Edit widgets, reorder favorites and save a shortcut for each TV. No extra phone app or account.</p></section>
+
+  <div class="controls">
+    <span><strong>Press OK</strong> for a bigger view</span>
+    <span><strong>Hold OK</strong> to customize</span>
+    <span><strong>Hold Back</strong> to undo</span>
+  </div>
+  <!-- Unmodified coordinator captures from 0.1.35/fullscreen-final-evidence, frames 002 and 003. -->
+  <div class="examples">
+    <figure><figcaption><span>01</span> Calendar · expanded view</figcaption>
+      <img src="calendar-expanded.png" alt="Full-screen Calendar with four weeks of date cards and selected-day details"></figure>
+    <figure><figcaption><span>02</span> PM2.5 · expanded view</figcaption>
+      <img src="pm25-expanded.png" alt="Full-screen air quality with a Bangkok map, nearby stations and selected-station PM2.5 reading"></figure>
+  </div>
+  <p class="caption">Press OK to go deeper: four weeks of dates, or a map of nearby air-quality stations. Actual TV captures.</p>
+
+  <footer>
+    <img src="homeboard-tv-project-qr.svg" alt="QR code linking to the Homeboard TV project">
+    <div>
+      <p class="cta">Make your home screen your own.</p>
+      <p class="url"><a href="https://github.com/wbniv/homeboard-tv">github.com/wbniv/homeboard-tv</a></p>
+      <p class="fine">Explore the source, screenshots and setup guide.<br>
+        Independent project built on CleanYourTV · MIT licensed · English &amp; Thai</p>
+    </div>
+  </footer>
+</main>
+</html>

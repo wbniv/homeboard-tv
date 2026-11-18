@@ -9,6 +9,10 @@ Add it with **Home settings → Widgets & restore → Add widget → Calendar**.
 Adding it again focuses the existing Calendar. It contains only dates with
 matching upcoming events, sorted by date. Events on the same date share one
 card; flower/Buddha icons and flag-colored edges identify their meaning/origin.
+Date cards show the localized weekday above the large day number, on both the
+dashboard and the full-screen calendar. Full dates remain available in day details.
+Card backgrounds contrast with the surrounding panel in light and dark palettes;
+their fills still follow the widget-background opacity setting.
 
 Hold OK on the widget, choose **Configure calendar → Number of days**, then
 choose **7 days**, **30 days** or **Custom…**. The number includes today and applies

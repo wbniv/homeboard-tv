@@ -19,6 +19,7 @@ final class CalendarWidgetView extends View {
     private final CalendarSnapshot snapshot;
     private final CalendarWidgetSettings settings;
     private final PaletteColors palette;
+    private final int cardBackground;
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final android.text.TextPaint textPaint = new android.text.TextPaint(Paint.ANTI_ALIAS_FLAG);
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -29,7 +30,9 @@ final class CalendarWidgetView extends View {
         @Override public void run() { if (active) { refresh(); handler.postDelayed(this, 30_000L); } }
     };
     CalendarWidgetView(Context context, CalendarSnapshot snapshot, CalendarWidgetSettings settings, PaletteColors palette) {
-        super(context); this.snapshot = snapshot; this.settings = settings; this.palette = palette; refresh();
+        super(context); this.snapshot = snapshot; this.settings = settings; this.palette = palette;
+        cardBackground = PaletteColors.mix(palette.surface, palette.text, 0.22f);
+        refresh();
     }
     void start() { stop(); active = true; tick.run(); }
     void stop() { active = false; handler.removeCallbacks(tick); }
@@ -98,7 +101,7 @@ final class CalendarWidgetView extends View {
         canvas.restoreToCount(outer);
     }
     void card(Canvas canvas, CalendarSnapshot.Day day, boolean compact, float dpSize) {
-        paint.setColor(palette.raised); paint.setAlpha(255 * fillOpacity / 100);
+        paint.setColor(cardBackground); paint.setAlpha(255 * fillOpacity / 100);
         canvas.drawRoundRect(1, 1, 199, 199, 12, 12, paint); paint.setAlpha(255);
         Path clip = new Path(); clip.addRoundRect(new RectF(1, 1, 199, 199), 12, 12, Path.Direction.CW);
         int saved = canvas.save(); canvas.clipPath(clip);
@@ -112,10 +115,10 @@ final class CalendarWidgetView extends View {
             }
         }
         canvas.restoreToCount(saved);
-        String month = DisplayTime.formatter("MMM uuuu", DisplayTime.locale(getContext())).format(day.date);
+        String weekday = day.date.getDayOfWeek().getDisplayName(java.time.format.TextStyle.SHORT, DisplayTime.locale(getContext()));
         float scale = dpSize / 200;
         if (!compact || dpSize >= 64)
-            text(canvas, month, 13, 34, compact ? Math.max(16, 10 / scale) : 16, palette.muted, 174, false);
+            text(canvas, weekday, 13, 34, compact ? Math.max(16, 10 / scale) : 16, palette.text, 174, false);
         text(canvas, String.valueOf(day.date.getDayOfMonth()), 10, 130, 87, palette.text, 130, true);
         boolean flowers = day.events.stream().anyMatch(e -> e.kind == CalendarSnapshot.Kind.MAKE || e.kind == CalendarSnapshot.Kind.SELL);
         boolean phra = day.events.stream().anyMatch(e -> e.kind == CalendarSnapshot.Kind.WAN_PHRA);
@@ -129,7 +132,7 @@ final class CalendarWidgetView extends View {
         } else {
             text(canvas, CalendarLabels.event(getContext(), day.events.get(0), settings, now), 13, 164, 15, palette.text, 174, false);
             String second = day.events.size() > 1 ? CalendarLabels.event(getContext(), day.events.get(1), settings, now) : String.join(" / ", countries);
-            text(canvas, second, 13, 185, 13, palette.muted, 174, false);
+            text(canvas, second, 13, 185, 13, palette.text, 174, false);
         }
     }
     private void band(Canvas canvas, String country, float y, float x, float width) {

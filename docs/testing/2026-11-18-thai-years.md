@@ -77,3 +77,13 @@ coordinator control is unavailable. It is not a confirmed Cast2 installation.
 Cast1 is the routine foreground target. Cast2 installation and foreground outcomes
 are recorded separately; unreachable/personal-use deferrals are never counted as
 successful installs or screenshot acceptance.
+
+## Follow-up on 0.1.62
+
+After returning to the Chromecast network, Cast1 installed 0.1.62 and the Thai
+dashboard and expanded Calendar probes passed with version-matched reports and
+reviewed screenshots. These verify BE **2569**, Thai weekdays, localized duration
+assertions and unchanged household preferences/language. See the
+[Calendar verification record](2026-11-18-calendar-weekdays-and-contrast.md).
+The earlier 0.1.61 failure remains historical; the other native clock, air,
+Favorites and Restore screenshot cases remain open.

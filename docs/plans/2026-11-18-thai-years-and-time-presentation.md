@@ -234,3 +234,10 @@ BE/CE checks passed with screenshots. Cast1 installation is hash verified, but t
 first native probe left foreground before producing a report or screenshot. Cast2
 installation remains queued while unreachable. Native visual and Restore checks
 remain open; see the [verification record](../testing/2026-11-18-thai-years.md).
+
+## Follow-up: 0.1.62
+
+Cast1 installation, Thai Home and expanded Calendar checks passed, with BE years,
+Thai weekday labels and stronger date-card contrast visible in reviewed captures.
+See the [Calendar verification record](../testing/2026-11-18-calendar-weekdays-and-contrast.md).
+Other native screenshot cases remain open.
