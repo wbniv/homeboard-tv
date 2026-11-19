@@ -217,3 +217,13 @@ once and submits `dev/device/install-only.json` to each TV. It does not release
 Personal use. Installation and later foreground/visual verification are separate
 coordinator jobs. The default of `task build` remains compilation only; use
 `task deploy` for working app iterations.
+
+
+## Coordinator-owned scripted Remote
+
+For normal Android settings UI during a test, use `task chromecast:remote-start
+DEVICE=<id>`, then `remote-tap JOB=<id> KEY=<key>` or `remote-hold` with
+`MILLISECONDS`. `remote-frame` writes only under `docs/diagnostics`; finish with
+`remote-stop` and export evidence. These forward to the coordinator's enrolled,
+owner-checked Remote protocol. They do not use direct device transport. Preserve
+unrelated settings and let the coordinator restore the prior foreground.
