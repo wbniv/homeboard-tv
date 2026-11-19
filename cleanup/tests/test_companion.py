@@ -53,8 +53,20 @@ class CompanionTest(unittest.TestCase):
         self.assertEqual(state['status'], 'scan-only')
         self.assertFalse(state['apply_available'])
         self.assertEqual(self.inspector.calls, ['fixture-tv'])
+    def test_standalone_routes_require_confirmation_and_authorization(self):
+        self.inspector.standalone = True
+        self.inspector.pair = lambda address, code: {'message':'paired'}
+        self.assertEqual(self.request('/api/config')[0], 200)
+        self.assertEqual(self.request('/api/pair', {'address':'192.168.1.9:1234','code':'123456'}, {'Origin':'https://evil.example'})[0],403)
+        self.assertEqual(self.request('/api/pair', {'address':'192.168.1.9:1234','code':'123456'})[0],200)
+        self.assertEqual(self.request('/api/scan', {'device':'fixture-tv'})[0],400)
+        self.assertEqual(self.request('/api/scan', {'device':'fixture-tv','confirmed':True})[0],202)
+        self.server.lock.acquire()
+        try:self.assertEqual(self.request('/api/pair', {})[0],409)
+        finally:self.server.lock.release()
+
     def test_no_mutation_routes(self):
-        for route in ('apply', 'shell', 'restore', 'enable', 'disable'):
+        for route in ('apply', 'shell', 'restore', 'enable', 'disable', 'pair', 'connect', 'disconnect'):
             self.assertEqual(self.request('/api/' + route, {})[0], 404)
         self.assertEqual(self.inspector.calls, [])
     def test_csrf_dns_rebinding_and_missing_token_are_refused(self):

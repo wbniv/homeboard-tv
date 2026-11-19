@@ -74,3 +74,6 @@ missing rows on commit.*
   and categories filled by hand.
 - **Updated** 2026-11-16 to ten plans, including the Google TV app focus implementation.
 - **Draft added** 2026-11-16 for Home favorite app sizes, bringing the index to eleven plans.
+
+- [Standalone cleanup connections](2026-11-19-cleanup-connections.md): private pairing,
+  connection, identity confirmation and inspection; container/browser fixture proof.

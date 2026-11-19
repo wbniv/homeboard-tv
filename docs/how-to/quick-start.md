@@ -16,6 +16,22 @@ This capture uses fresh test preferences, including an empty Favorites list.
 Other screenshots below are historical and may show older arrangements; design
 illustrations are labeled. See the [current screenshot proof](../testing/2026-11-18-provider-directory.md).
 
+## Install on your own TV
+
+Obtain the Homeboard APK from the project maintainer. Transfer it to the TV using a USB drive (where supported) or
+a TV file-transfer app, then open it in a TV file manager. If Android prompts,
+allow **Install unknown apps** for that file manager and choose **Install**.
+Turn that permission off afterward. Menu names and available transfer methods
+vary by TV. This setup does not require developer mode, wireless debugging,
+a computer service or device enrollment.
+
+For updates, install a newer APK from the same maintainer over the existing app;
+uninstalling first removes its saved data. A differently signed APK cannot update
+the existing installation. If Android rejects an update, ask the maintainer for a
+matching build rather than uninstalling to work around it.
+
+Android documents its [APK installation permission](https://developer.android.com/distribute/marketing-tools/alternative-distribution).
+
 ## Open Homeboard
 
 Open **Homeboard TV** from your TV's app list. It does not have to be the default

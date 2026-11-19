@@ -14,6 +14,7 @@ header { border-bottom: 2px solid #16766f; padding-bottom: 3mm; margin-bottom: 4
 h1 { margin: 1mm 0; font-size: 25pt; line-height: 1.1; letter-spacing: -.7pt; }
 .intro { margin: 2mm 0 0; color: #466071; }
 .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
+main + main { break-before: page; }
 section { margin: 0 0 3mm; break-inside: avoid; }
 h2 { font-size: 12pt; margin: 0 0 1.5mm; color: #12655f; }
 p { margin: 0 0 1.5mm; }
@@ -42,25 +43,53 @@ code { font-size: 9pt; }
 }
 </style>
 </head>
-<body><main>
-<header>
-  <div class="eyebrow">HOMEBOARD TV · ANDROID TV / GOOGLE TV</div>
-  <h1>Quick start &amp; user guide</h1>
-  <p class="intro">Your rain, dates, air quality and favorite apps, together on one dashboard.</p>
-</header>
-<div class="columns">
-<div>
-  <section>
-    <h2>1 · Start on a new TV</h2>
-    <ol>
-      <li>Complete the TV’s normal setup and connect it to your home network.</li>
-      <li>Enroll through the device coordinator’s <strong>Add a device</strong> flow; have Homeboard installed through that service. No Play Store release yet.</li>
-      <li>Open <strong>Homeboard TV</strong> from the TV’s app list. You can try it without changing the default launcher.</li>
-    </ol>
-    <p class="small">Optional: Home settings → <strong>Default Home app</strong>. Some TVs’ Home buttons still open their original launcher.</p>
-  </section>
-  <section>
-    <h2>2 · Learn five controls</h2>
+<body><main><header><div class="eyebrow">HOMEBOARD TV · ANDROID TV / GOOGLE TV</div><h1>Quick start &amp; user guide</h1><p class="intro">Your rain, dates, air quality and favorite apps, together on one dashboard.</p></header><div class="columns"><div>
+<section><h2>1 · Install Homeboard</h2>
+<ol>
+<li>Finish the TV’s normal setup and connect it to your home network.</li>
+<li>Get the <strong>Homeboard APK from the project maintainer</strong>.</li>
+<li>Copy it to the TV using a USB drive (if supported) or a TV file-transfer app. Open the APK in a TV file manager.</li>
+<li>If prompted, allow <strong>Install unknown apps</strong> for that file manager, then choose <strong>Install</strong>. Menu names vary by TV. Turn that permission off afterward.</li>
+<li>Open <strong>Homeboard TV</strong> from Apps. You can use it without changing your default launcher.</li>
+</ol>
+<p>Optional: Home settings → <strong>Default Home app</strong> → choose Homeboard in Android’s prompt. Some TVs’ Home buttons still open their original launcher.</p>
+<p><strong>Updates:</strong> install a newer APK from the same maintainer over the existing app to retain settings. If Android rejects the update, request a matching build; do not uninstall first.</p>
+</section>
+<section><h2>Connect for optional cleaning</h2>
+<ol>
+<li>Open Homeboard’s <strong>setup companion on your computer</strong>. Keep the computer and TV on the same trusted network.</li>
+<li>Follow its connection instructions. If asked, enable the TV’s developer options and wireless debugging. Approve the computer on the TV; enter a pairing code only in the companion’s pairing prompt.</li>
+<li>Check the displayed TV name, model and identity before continuing. Repeat the connection process for each TV.</li>
+</ol>
+<p>The setup companion is separate from the phone dashboard editor. You can use the dashboard without cleaning anything.</p>
+</section>
+<section class="note"><h2>What cleaning changes</h2>
+<p>Cleaning disables only the apps you select for your TV user. It keeps their data and records their original states for restoration.</p>
+<p>Homeboard, launchers, casting, streaming, remote controls, networking and essential system services are kept. Uncertain items stay unchanged.</p>
+</section>
+</div><div>
+<section><h2>2 · Review and clean your TV</h2>
+<ol>
+<li>In the companion, choose your connected TV and <strong>Inspect this TV</strong>. Inspection changes nothing.</li>
+<li>Review the suggested apps and their purposes. Nothing starts selected. Select only items you want disabled; leave anything you use unchecked.</li>
+<li>Review the final list and target TV. Save the <strong>restore point</strong> and keep its recovery copy on your computer. Apply remains unavailable if the TV is unsupported or recovery is not ready.</li>
+<li>Choose <strong>Apply selected changes</strong> and confirm the listed items. Keep the connection open while each result is verified. Use <strong>Stop</strong> to stop after the current command.</li>
+<li>Check the results, then try your remote, favorite streaming apps, casting, sound and inputs. Restore a changed item if something you use stops working.</li>
+</ol>
+<p>Cleaning never means uninstalling every suggested app, clearing data or resetting the TV. A TV update can re-enable apps; inspect again before making further changes.</p>
+</section>
+<section><h2>Restore changes</h2>
+<ol>
+<li>Open the companion’s saved cleanup session for the <strong>same TV</strong>.</li>
+<li>Review its changed apps. Restore one item or the whole session.</li>
+<li>Wait for verification. Check any unresolved items before considering recovery complete. Apps disabled before cleaning keep their original state.</li>
+</ol>
+<p><strong>Lost connection?</strong> Reconnect to the same TV and choose <strong>Check result</strong> before retrying. A missing reply does not mean a change succeeded or failed.</p>
+<p><strong>Homeboard won’t open?</strong> Use the computer companion and saved recovery copy; restoration does not depend on the TV dashboard being open.</p>
+<p>Keep recovery files until you are satisfied with the TV. Finish the companion connection when done; keep recovery access available until any unresolved result is settled.</p>
+</section>
+</div></div><footer><span><a href="https://github.com/wbniv/homeboard-tv/blob/main/docs/how-to/quick-start.md">Full illustrated guide</a> · <a href="https://developer.android.com/distribute/marketing-tools/alternative-distribution">Android APK installation</a></span><span>Homeboard TV · 1 / 2</span></footer></main><main><header><div class="eyebrow">HOMEBOARD TV · ANDROID TV / GOOGLE TV</div><h1>Quick start &amp; user guide</h1><p class="intro">Your rain, dates, air quality and favorite apps, together on one dashboard.</p></header><div class="columns"><div>  <section>
+    <h2>3 · Learn five controls</h2>
     <table aria-label="Remote controls">
       <tr><td>Arrows</td><td>Move focus. Right past Home opens <strong>All Apps</strong>; Back there returns Home.</td></tr>
       <tr><td>Press OK</td><td>Expand a widget or launch an app. On the clock, open the meeting planner.</td></tr>
@@ -71,7 +100,7 @@ code { font-size: 9pt; }
     <p class="small" style="margin-top:2mm">Top-right <strong>sliders = Homeboard settings</strong>; <strong>gear = Android settings</strong>. Full-screen widgets also have a visible <strong>Restore dashboard</strong> button.</p>
   </section>
   <section>
-    <h2>3 · Arrange your dashboard</h2>
+    <h2>4 · Arrange your dashboard</h2>
     <div class="map" aria-label="Default dashboard arrangement">
       <span class="wide">World clock · Settings buttons</span>
       <span class="wide">Rain · next 24 hours</span>
@@ -82,10 +111,8 @@ code { font-size: 9pt; }
     <p><strong>Home settings → Widgets / Restore</strong> adds widgets or restores the <strong>Default dashboard</strong>. An empty Home still allows Right to All Apps.</p>
     <p>To add a favorite: All Apps → hold OK on an app → <strong>Favorite</strong>. Wedges show more apps inside Favorites; OK launches the focused app.</p>
   </section>
-</div>
-<div>
-  <section>
-    <h2>4 · Configure from your phone</h2>
+</div><div>  <section>
+    <h2>5 · Configure from your phone</h2>
     <ol>
       <li>Use the same trusted home network. On the TV: <strong>Home settings → More → Configure from phone</strong>.</li>
       <li>Scan the QR code, match the connection code and choose <strong>Allow</strong> on the TV. Keep Homeboard open.</li>
@@ -95,16 +122,11 @@ code { font-size: 9pt; }
     <p>Phone icon per TV: TV-name menu → <strong>Add TV to home screen</strong>. A fresh TV session and approval are still required.</p>
   </section>
   <section>
-    <h2>5 · Make each widget useful</h2>
+    <h2>6 · Make each widget useful</h2>
     <p><strong>Rain:</strong> next 24 hours by hour, then six days. Allow TV location, or hold OK → <strong>Location</strong> for a city, address or coordinates. Ranges and units are configurable.</p>
     <p><strong>Calendar:</strong> OK opens four weeks and day details. <strong>Sources &amp; offline data</strong> shows coverage, last checks and refresh. Published holidays are cached; Wan Phra/flower dates calculate offline, validated for 2024–2027. Missing coverage is shown explicitly.</p>
     <p><strong>Air quality:</strong> hold OK to choose location/source. Check the timestamp and label: hourly model estimates differ from station 24-hour averages. OK opens the map.</p>
     <p><strong>World clock:</strong> hold OK to edit cities; its position beside Settings is fixed.</p>
-  </section>
-  <section class="note">
-    <h2>New-TV cleanup: inspection only</h2>
-    <p><strong>No real app cleaning yet.</strong> TV: Home settings → More → <strong>TV cleanup · Inspect only</strong>.</p>
-    <p>On the setup computer: <code>task cleanup:serve</code> → choose the enrolled TV → <strong>Inspect this TV</strong>. Reports list hardware, firmware and package count. Apply stays unavailable pending device-specific cleanup review and restore proof.</p>
   </section>
   <section>
     <h2>Change your mind or get unstuck</h2>
@@ -112,10 +134,4 @@ code { font-size: 9pt; }
     <p><strong>Stale data?</strong> Check timestamps and source status; new rain/air data needs internet. Saved data remains during failures. If location fails, choose a fixed place.</p>
     <p><strong>Settings:</strong> choose language, colors and <strong>Widget background opacity</strong>. Thai dates use Buddhist Era years.</p>
   </section>
-</div>
-</div>
-<footer>
-  <span><a href="https://github.com/wbniv/homeboard-tv/blob/main/docs/how-to/quick-start.md">Full illustrated guide</a> · <a href="https://github.com/wbniv/homeboard-tv/blob/main/docs/how-to/tv-cleanup.md">Cleanup status</a></span>
-  <span>Development build 0.1.69 · 19 November 2026</span>
-</footer>
-</main></body></html>
+</div></div><footer><span><a href="https://github.com/wbniv/homeboard-tv/blob/main/docs/how-to/quick-start.md">Full illustrated guide</a> · <a href="https://developer.android.com/distribute/marketing-tools/alternative-distribution">Android APK installation</a></span><span>Homeboard TV · 2 / 2</span></footer></main></body></html>

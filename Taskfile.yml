@@ -27,9 +27,16 @@ tasks:
   cleanup:check:
     desc: Verify copied cleanup code and run fake-TV recovery/fault tests in the container
     cmds: ['dev/container.sh run python3 /workspace/dev/test_cleanup.py']
+  cleanup:standalone:
+    desc: Open the standalone TV connection companion in the existing tool container (Linux)
+    cmds: ['bash dev/cleanup-standalone.sh {{.CLI_ARGS}}']
   cleanup:serve:
     desc: Open the local read-only TV cleanup inspection companion
     cmds: ['python3 dev/cleanup_companion.py {{.CLI_ARGS}}']
+  cleanup:connection-browser-check:
+    desc: Verify standalone connection controls using browser fixtures
+    cmds:
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/cleanup-connection-browser-check.cjs'
   cleanup:browser-check:
     desc: Verify English/Thai cleanup inspection in Chromium and WebKit
     cmds:

@@ -165,7 +165,7 @@ normal navigation. See the [Undo guide](docs/how-to/undo.md).
 
 - [Product direction: our brand and the CleanYourTV community](docs/product-direction.md)
 
-- [One-page quick start and user guide](docs/how-to/quick-start-print.html) · [A4 PDF](docs/how-to/quick-start-print.pdf)
+- [Quick start and user guide](docs/how-to/quick-start-print.html) · [A4 PDF](docs/how-to/quick-start-print.pdf)
 - [User quick start with illustrations](docs/how-to/quick-start.md)
 
 - [Existing dashboard integration comparison](docs/investigations/2026-11-15-dashboard-systems-for-homeboard.md)

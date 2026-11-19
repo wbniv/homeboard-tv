@@ -6,7 +6,40 @@ execution profiles and no package-change, restore or shell route in the running
 companion. The full cleanup integration remains tracked in the
 [plan](../plans/2026-11-18-tv-cleanup-and-restore.md).
 
-## Open the companion
+## Connect a standalone TV
+
+On a Linux setup computer with Docker and Task, run `task build-image` once, then:
+
+```sh
+task cleanup:standalone
+```
+
+Open the loopback address printed in the terminal. The tool container supplies
+platform-tools; no host Android SDK or coordinator enrollment is needed. State,
+pairing identity and inspection reports are private under
+`~/.local/state/homeboard-cleanup-standalone/`. Keep the terminal open while using
+the companion. This command uses Linux host networking; Docker Desktop networking
+on macOS/Windows has not been verified.
+
+On the TV, enable its developer options and **Wireless debugging**, then choose
+**Pair using pairing code**. Enter the pairing address and six-digit code in the
+companion's Pair section. After pairing, return to the main Wireless debugging
+screen and enter its **debugging address** under Connect; these ports differ.
+**Find wireless TVs** can fill discovered addresses, or type them manually.
+This flow requires code-based wireless debugging support on the TV.
+
+After connecting, check the model and serial identity, tick **This is the TV I want
+to inspect**, then choose **Inspect this TV**. Changing the selected TV clears that
+confirmation. **Disconnect** closes only that endpoint; it does not revoke pairing
+or switch off TV debugging. To forget this computer, use the TV's paired-device
+list. Reports remain read-only and do not approve a cleanup profile.
+
+The standalone adapter has its own ADB server socket and identity. It never falls
+back from coordinator jobs. Use the coordinator mode below for shared lab TVs.
+Connection/browser verification uses controlled fixtures; physical standalone
+pairing on the new hardware remains to be checked.
+
+## Open the coordinator companion
 
 On the TV, open **Home settings → More → TV cleanup · Inspect only**. This shows
 instructions and returns to Settings with Back. Opening it changes no packages.
@@ -34,7 +67,7 @@ Task and an authorized coordinator client. It is a separate computer tool; the
 existing TV-hosted phone widget editor still edits the dashboard only. No public
 standalone cleaner or mobile cleanup application is claimed.
 
-## A new TV
+## A new TV in coordinator mode
 
 1. Connect it normally and complete the manufacturer's setup.
 2. Enroll it through the coordinator's **Add a device** workflow. Keep pairing

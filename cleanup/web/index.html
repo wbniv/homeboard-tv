@@ -5,7 +5,15 @@
 <main><header><span class="brand">Homeboard TV</span><label><span id="language-label">Language</span> <select id="language"><option value="en">English</option><option value="th">ไทย</option></select></label></header>
 <p class="eyebrow" id="eyebrow">OPTIONAL TV CLEANUP</p><h1 id="title">Start by inspecting your TV.</h1>
 <p class="intro" id="intro">See the exact model and firmware before considering changes. Inspection keeps your apps, dashboard and settings as they are.</p>
-<section aria-labelledby="choose"><h2 id="choose">Choose your TV</h2><div class="form"><select id="device" aria-label="TV"></select><button id="refresh">Find TVs</button></div><button id="scan" disabled>Inspect this TV</button><p id="enroll" class="hint">New TV? Enroll it through the shared device coordinator first. Pairing codes stay in its secure prompts.</p></section>
+<section id="connection" hidden>
+<h2 id="connection-title">Connect your TV</h2><p id="connection-help"></p>
+<button id="discover">Find wireless TVs</button><div id="services"></div>
+<form id="pair-form"><label><span id="pair-address-label">Pairing address</span><input id="pair-address" placeholder="192.168.1.20:12345" required maxlength="80"></label>
+<label><span id="code-label">Pairing code</span><input id="pair-code" type="password" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="off" required></label><button id="pair-button">Pair</button></form>
+<form id="connect-form"><label><span id="connect-address-label">Debugging address</span><input id="connect-address" placeholder="192.168.1.20:54321" required maxlength="80"></label><button id="connect-button">Connect</button></form>
+<p id="connection-message" role="status"></p>
+</section>
+<section aria-labelledby="choose"><h2 id="choose">Choose your TV</h2><div class="form"><select id="device" aria-label="TV"></select><button id="refresh">Find TVs</button></div><p id="identity"></p><label id="confirm-row" hidden><input type="checkbox" id="confirm"><span id="confirm-label"></span></label><button id="disconnect" hidden>Disconnect</button><button id="scan" disabled>Inspect this TV</button><p id="enroll" class="hint">New TV? Enroll it through the shared device coordinator first. Pairing codes stay in its secure prompts.</p></section>
 <section id="result" hidden aria-live="polite"></section>
 <section><h2 id="kept-title">Everyday TV features stay on.</h2><p id="kept">Homeboard and other launchers · Casting and streaming · Voice and updates · Network, remote, keyboard and inputs</p></section>
 <footer id="footer">Inspection only. Cleanup needs an exact reviewed profile and a proven independent restore path.</footer></main></html>

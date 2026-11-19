@@ -52,6 +52,8 @@ class Handler(BaseHTTPRequestHandler):
             self.respond(200, html.encode(), 'text/html; charset=utf-8')
         elif self.path in ('/style.css', '/app.js'):
             self.respond(200, (WEB / self.path[1:]).read_bytes(), 'text/css' if self.path.endswith('css') else 'text/javascript')
+        elif self.path == '/api/config' and self.headers.get('X-Homeboard-Token') == self.server.token:
+            self.respond(200, {'standalone': getattr(self.server.inspector, 'standalone', False)})
         elif self.path == '/api/state' and self.headers.get('X-Homeboard-Token') == self.server.token:
             self.respond(200, self.server.state)
         else:
@@ -62,7 +64,8 @@ class Handler(BaseHTTPRequestHandler):
                 or not secrets.compare_digest(self.headers.get('X-Homeboard-Token', ''), self.server.token)):
             self.respond(403, {'error': 'Open the companion directly on this computer'})
             return
-        if self.path not in ('/api/devices', '/api/scan'):
+        connection_actions = ('/api/discover', '/api/pair', '/api/connect', '/api/disconnect')
+        if self.path not in ('/api/devices', '/api/scan') + (connection_actions if getattr(self.server.inspector, 'standalone', False) else ()):
             self.respond(404, {'error': 'No such action'})
             return
         try:
@@ -72,6 +75,23 @@ class Handler(BaseHTTPRequestHandler):
             data = json.loads(self.rfile.read(length))
             if not isinstance(data, dict):
                 raise ValueError('Invalid request')
+            if self.path in connection_actions:
+                if not self.server.lock.acquire(blocking=False):
+                    self.respond(409, {'error': 'A TV operation is already running'})
+                    return
+                try:
+                    inspector = self.server.inspector
+                    if self.path == '/api/discover': value = {'services': inspector.discover()}
+                    elif self.path == '/api/pair': value = inspector.pair(data.get('address'), data.get('code'))
+                    elif self.path == '/api/connect': value = inspector.connect(data.get('address'))
+                    else: value = inspector.disconnect(data.get('device'))
+                    self.server.state = {'status':'idle', 'apply_available':False}
+                    self.respond(200, value)
+                finally:
+                    self.server.lock.release()
+                return
+            if self.path == '/api/scan' and getattr(self.server.inspector, 'standalone', False) and data.get('confirmed') is not True:
+                raise ValueError('Confirm the TV identity before inspecting')
             if self.path == '/api/devices':
                 self.respond(200, {'devices': self.server.inspector.devices()})
                 return
@@ -92,18 +112,23 @@ class Handler(BaseHTTPRequestHandler):
                     self.server.lock.release()
             threading.Thread(target=work, daemon=True).start()
             self.respond(202, {'status': 'inspecting'})
-        except (ValueError, OSError):
-            self.respond(400, {'error': 'Invalid companion request'})
+        except (ValueError, OSError) as error:
+            from .core import Refused
+            self.respond(400, {'error': str(error) if isinstance(error, Refused) else 'Invalid companion request'})
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data', type=Path, default=Path.home() / '.local/state/homeboard-cleanup')
     parser.add_argument('--no-open', action='store_true')
+    parser.add_argument('--transport', choices=('coordinator','standalone'), default='coordinator')
+    parser.add_argument('--adb', default='adb', help='Existing platform-tools executable for standalone mode')
     args = parser.parse_args()
     os.umask(0o077)
     verify_vendor()
-    with Companion(Inspector(args.data)) as server:
+    from .standalone import Standalone
+    inspector = Standalone(args.data, args.adb) if args.transport == 'standalone' else Inspector(args.data)
+    with Companion(inspector) as server:
         print('Homeboard TV cleanup companion: ' + server.origin, flush=True)
         print('Read-only inspection. Package changes require a reviewed device profile and execution integration.', flush=True)
         if not args.no_open:
@@ -112,6 +137,9 @@ def main():
             server.serve_forever()
         except KeyboardInterrupt:
             pass
+        finally:
+            if args.transport == 'standalone':
+                inspector.close()
 
 
 if __name__ == '__main__':
