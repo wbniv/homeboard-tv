@@ -144,6 +144,12 @@ See the [rain plan and size gallery](docs/plans/2026-11-16-rain-widget.md) and
 
 ## Current verification
 
+Groceries debug build **0.1.78** passed 506 JVM tests, Android lint, Chromium/WebKit
+phone workflows and coordinator-owned Cast1 input/restoration/stock-detail
+acceptance. Cast1 is installed; the identical Cast2 install failed
+`personal-install-in-use` and is unconfirmed. See the
+[grocery verification record](docs/testing/2026-11-19-groceries.md).
+
 An optional [TV cleanup inspection companion](docs/how-to/tv-cleanup.md) can inspect
 an enrolled TV through the coordinator, with an English/Thai report and a TV setup
 entry. It is currently read-only. Real cleanup requires a reviewed device profile,

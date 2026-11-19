@@ -41,28 +41,40 @@ public final class GroceryProbeActivity extends MainActivity {
             set("homePage",1);set("focused",HomeLayout.GROCERY);call("render",new Class<?>[]{int.class},0);before=layout().encode();
         });
         step(4500,()->press(KeyEvent.KEYCODE_DPAD_CENTER));
-        step(6500,()->whenExpanded(()->{
-            WidgetExpansion e=expanded();View item=find(e.getWindow().getDecorView(),"Oat milk · 3 carton");require(item!=null,"Quantity row missing");item.performClick();
-            step(700,()->{require(text(expanded().getWindow().getDecorView()).contains("3000"),"Product quantity breakdown missing");back(expanded());
-                step(700,()->{back(expanded());restored();
-                    dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_CENTER));
-                    step(900,()->{dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DPAD_CENTER));
-                        step(500,()->{require(field("overlay")!=null,"Hold OK did not open actions");require(expanded()==null,"Hold release also expanded");press(KeyEvent.KEYCODE_BACK);
-                            step(500,()->{press(KeyEvent.KEYCODE_DPAD_CENTER);whenExpanded(()->{
-                                View restore=find(expanded().getWindow().getDecorView(),getString(R.string.hb_fs_restore));require(restore!=null,"Missing visible Restore dashboard");restore.performClick();restored();
-                                step(500,()->{press(KeyEvent.KEYCODE_DPAD_CENTER);whenExpanded(()->{
-                                    View staples=find(expanded().getWindow().getDecorView(),getString(R.string.hb_grocery_staples));require(staples!=null,"Missing Staples tab");staples.performClick();
-                                    require(text(expanded().getWindow().getDecorView()).contains("500"),"Reported stock missing");require(text(expanded().getWindow().getDecorView()).contains("3 carton"),"Rounded suggestion missing");
-                                    require(household.equals(super.getSharedPreferences("widget-home",0).getAll()),"Household data changed");
-                                    report("pass","Short/hold OK, nested Back, visible Restore, page/focus/size and data unchanged; native phone aggregate Apply/retry/Undo; staple stock detail");
-                                },50);});
-                            },50);});
-                        });
-                    });
-                });
-            });
-        },50));
+        step(6500,()->whenExpanded(this::checkDetails,50));
     }
+    private void checkDetails()throws Exception{
+        View item=find(expanded().getWindow().getDecorView(),"Oat milk · 3 carton");require(item!=null,"Quantity row missing");item.performClick();
+        step(700,()->{
+            require(text(expanded().getWindow().getDecorView()).contains("3000"),"Product quantity breakdown missing");back(expanded());
+            step(700,()->{back(expanded());whenRestored(this::checkHold,50);});
+        });
+    }
+    private void checkHold(){
+        dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DPAD_CENTER));
+        step(900,()->{
+            dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DPAD_CENTER));
+            step(500,()->{
+                require(field("overlay")!=null,"Hold OK did not open actions");require(expanded()==null,"Hold release also expanded");press(KeyEvent.KEYCODE_BACK);
+                step(500,()->{press(KeyEvent.KEYCODE_DPAD_CENTER);whenExpanded(this::checkRestore,50);});
+            });
+        });
+    }
+    private void checkRestore()throws Exception{
+        View restore=find(expanded().getWindow().getDecorView(),getString(R.string.hb_fs_restore));require(restore!=null,"Missing visible Restore dashboard");restore.performClick();
+        whenRestored(()->{press(KeyEvent.KEYCODE_DPAD_CENTER);whenExpanded(this::checkStock,50);},50);
+    }
+    private void checkStock()throws Exception{
+        View staples=find(expanded().getWindow().getDecorView(),getString(R.string.hb_grocery_staples));require(staples!=null,"Missing Staples tab");staples.performClick();
+        require(text(expanded().getWindow().getDecorView()).contains("500"),"Reported stock missing");require(text(expanded().getWindow().getDecorView()).contains("3 carton"),"Rounded suggestion missing");
+        require(household.equals(super.getSharedPreferences("widget-home",0).getAll()),"Household data changed");
+        report("pass","Short/hold OK, nested Back, visible Restore, page/focus/size and data unchanged; native phone aggregate Apply/retry/Undo; staple stock detail");
+    }
+    private void whenRestored(Stage action,int remaining)throws Exception{
+        if(expanded()==null){restored();action.run();return;}
+        require(remaining>0,"Timed out waiting for dashboard restoration");step(200,()->whenRestored(action,remaining-1));
+    }
+
     private void whenExpanded(Stage action,int remaining)throws Exception{
         WidgetExpansion e=expanded();if(e!=null&&text(e.getWindow().getDecorView()).contains("Unsweetened")){action.run();return;}
         require(remaining>0,"Timed out waiting for expanded grocery content");step(200,()->whenExpanded(action,remaining-1));

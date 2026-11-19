@@ -1,10 +1,12 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Grocery list — Phase 1 and Phase 2 design</title><style>body{margin:0;background:#0d1c25;color:#e8f0f1;font:17px/1.65 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:40px 28px 100px}h1,h2,h3{line-height:1.25;scroll-margin-top:24px}h1{font-size:40px;color:#9ae7c9}h2{margin-top:56px;border-top:1px solid #38515d;padding-top:24px}h3{margin-top:32px}a{color:#9ae7c9}p,li{max-width:90ch}img{display:block;width:100%;height:auto;margin:28px 0;border-radius:16px}table{border-collapse:collapse;width:100%;font-size:15px;display:block;overflow-x:auto}th,td{border:1px solid #3b5561;padding:12px;text-align:left;vertical-align:top}th{background:#223e49}code{background:#223e49;padding:2px 5px;border-radius:4px}.note{background:#223e49;border-left:4px solid #8be0be;padding:15px 20px} @media(max-width:640px){main{padding:24px 16px}h1{font-size:30px}}</style></head><body><main><p class="note">Design proposal · <a href="../2026-11-19-grocery-list-widget.md">Canonical Markdown plan</a> · <a href="mockups.svg">Open mockups at full size</a> · <a href="workflow.svg">Open workflow diagram</a></p><h1>Grocery list: phone entry, product knowledge and household staples</h1>
-<p>Status: <strong>Phases 1 and 2 authorized; implementation in progress</strong>, November 19,
-2026, in <code>.worktrees/grocery-list</code> on <code>feature/grocery-list</code>. Phase 3 remains future
-work. The Phase 1/2 code and container checks are complete; replacement build 0.1.77
-and coordinator-owned device acceptance are in progress. The <a href="../../testing/2026-11-19-groceries.md">verification record</a>
-separates passing checks, superseded builds, install receipts and remaining limits.
-Mockups show intended behavior, not verified captures.</p>
+<p>Status: <strong>Phases 1 and 2 implemented</strong>, November 19, 2026, in
+<code>.worktrees/grocery-list</code> on <code>feature/grocery-list</code>, separate from main. Container
+checks and Cast1 native acceptance passed on debug build <strong>0.1.78</strong>. The identical
+Cast2 installation was admitted but failed <code>personal-install-in-use</code>; it remains
+unconfirmed. Phase 3 remains future work. See the
+<a href="../../testing/2026-11-19-groceries.md">verification record</a> for exact checks, receipts,
+physical captures and remaining acceptance limits. Mockups illustrate the design;
+the verification record distinguishes actual implemented behavior and follow-ups.</p>
 <p>TL;DR: Phase 1 makes adding groceries from a phone quick and shows the saved list
 on Homeboard. Phase 2 adds reusable product knowledge, meaningful quantities and
 stock-aware staples. Phase 3 adds purchase check-off away from home and reliable
@@ -469,7 +471,7 @@ color-only stock status or provider account requirement in Phase 1/2.</p>
 <li>[ ] Draft versus saved state is clear; one Update TV commits all reviewed rows
   with one Undo entry. Cancel, disconnect, stale revision, uncertain result and
   storage failure preserve work without duplicate or partial commits.</li>
-<li>[ ] Keep as staple persists a reusable entry. Removing a current need preserves
+<li>[x] Keep as staple persists a reusable entry. Removing a current need preserves
   its staple; adding it again avoids accidental duplicates; deleting a staple
   explicitly leaves its current row as an ordinary item.</li>
 <li>[ ] Empty, unavailable, limits, multiple lists, shared-list widget instances,
@@ -487,17 +489,17 @@ color-only stock status or provider account requirement in Phase 1/2.</p>
 <ul>
 <li>[ ] Saved product suggestions accelerate input; unknown products remain addable.
   Aliases/variants stay distinct until an explicit merge; merge previews all effects.</li>
-<li>[ ] Exact decimal mass/volume/count conversion, confirmed package sizes, fractional
+<li>[x] Exact decimal mass/volume/count conversion, confirmed package sizes, fractional
   amounts, whole-package rounding and incompatible/unknown units behave as specified.
   Ambiguous text stays unstructured until confirmed.</li>
-<li>[ ] Manual need and quantitative stock both work. Unknown stock has no fabricated
+<li>[x] Manual need and quantitative stock both work. Unknown stock has no fabricated
   quantity; report timestamps and threshold/target validation are visible.</li>
-<li>[ ] Low stock suggests an explained quantity. Confirming adds/updates one need;
+<li>[x] Low stock suggests an explained quantity. Confirming adds/updates one need;
   refresh/retry creates no duplicate; a stock correction requests review instead of
   silently clearing the shopping list. No consumption is inferred from time.</li>
 <li>[ ] Staples remain present independently of active needs. Both tabs add real
   full-screen product/stock detail and preserve the Phase 1 restoration contract.</li>
-<li>[ ] Existing Phase 1 data is retained verbatim until structured by its owner.</li>
+<li>[x] Existing Phase 1 data is retained verbatim until structured by its owner.</li>
 </ul>
 <p>For each implemented phase, run appropriate model and phone browser checks plus
 <code>task check</code> and <code>task build</code> in containers, following the build how-to. Use

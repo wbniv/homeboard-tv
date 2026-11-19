@@ -1,11 +1,13 @@
 # Grocery list: phone entry, product knowledge and household staples
 
-Status: **Phases 1 and 2 authorized; implementation in progress**, November 19,
-2026, in `.worktrees/grocery-list` on `feature/grocery-list`. Phase 3 remains future
-work. The Phase 1/2 code and container checks are complete; replacement build 0.1.77
-and coordinator-owned device acceptance are in progress. The [verification record](../testing/2026-11-19-groceries.md)
-separates passing checks, superseded builds, install receipts and remaining limits.
-Mockups show intended behavior, not verified captures.
+Status: **Phases 1 and 2 implemented**, November 19, 2026, in
+`.worktrees/grocery-list` on `feature/grocery-list`, separate from main. Container
+checks and Cast1 native acceptance passed on debug build **0.1.78**. The identical
+Cast2 installation was admitted but failed `personal-install-in-use`; it remains
+unconfirmed. Phase 3 remains future work. See the
+[verification record](../testing/2026-11-19-groceries.md) for exact checks, receipts,
+physical captures and remaining acceptance limits. Mockups illustrate the design;
+the verification record distinguishes actual implemented behavior and follow-ups.
 
 TL;DR: Phase 1 makes adding groceries from a phone quick and shows the saved list
 on Homeboard. Phase 2 adds reusable product knowledge, meaningful quantities and
@@ -405,7 +407,7 @@ color-only stock status or provider account requirement in Phase 1/2.
 - [ ] Draft versus saved state is clear; one Update TV commits all reviewed rows
   with one Undo entry. Cancel, disconnect, stale revision, uncertain result and
   storage failure preserve work without duplicate or partial commits.
-- [ ] Keep as staple persists a reusable entry. Removing a current need preserves
+- [x] Keep as staple persists a reusable entry. Removing a current need preserves
   its staple; adding it again avoids accidental duplicates; deleting a staple
   explicitly leaves its current row as an ordinary item.
 - [ ] Empty, unavailable, limits, multiple lists, shared-list widget instances,
@@ -423,17 +425,17 @@ color-only stock status or provider account requirement in Phase 1/2.
 
 - [ ] Saved product suggestions accelerate input; unknown products remain addable.
   Aliases/variants stay distinct until an explicit merge; merge previews all effects.
-- [ ] Exact decimal mass/volume/count conversion, confirmed package sizes, fractional
+- [x] Exact decimal mass/volume/count conversion, confirmed package sizes, fractional
   amounts, whole-package rounding and incompatible/unknown units behave as specified.
   Ambiguous text stays unstructured until confirmed.
-- [ ] Manual need and quantitative stock both work. Unknown stock has no fabricated
+- [x] Manual need and quantitative stock both work. Unknown stock has no fabricated
   quantity; report timestamps and threshold/target validation are visible.
-- [ ] Low stock suggests an explained quantity. Confirming adds/updates one need;
+- [x] Low stock suggests an explained quantity. Confirming adds/updates one need;
   refresh/retry creates no duplicate; a stock correction requests review instead of
   silently clearing the shopping list. No consumption is inferred from time.
 - [ ] Staples remain present independently of active needs. Both tabs add real
   full-screen product/stock detail and preserve the Phase 1 restoration contract.
-- [ ] Existing Phase 1 data is retained verbatim until structured by its owner.
+- [x] Existing Phase 1 data is retained verbatim until structured by its owner.
 
 For each implemented phase, run appropriate model and phone browser checks plus
 `task check` and `task build` in containers, following the build how-to. Use
