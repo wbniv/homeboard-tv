@@ -35,4 +35,5 @@
     <string name="hb_timer_phone">ควบคุมจากโทรศัพท์</string>
     <string name="hb_timer_live">การควบคุมตัวจับเวลามีผลทันที การเลิกทำผังไม่ย้อนเวลาจับเวลา</string>
     <string name="hb_timer_notification">แสดงการแจ้งเตือนนาฬิกาปลุก</string>
+    <string name="hb_timer_finished">ครบเวลา</string>
 </resources>

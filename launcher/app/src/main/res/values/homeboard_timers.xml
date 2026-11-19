@@ -35,4 +35,5 @@
     <string name="hb_timer_phone">Control from phone</string>
     <string name="hb_timer_live">Timer actions happen immediately; layout Undo does not rewind timers.</string>
     <string name="hb_timer_notification">Show alarm notifications</string>
+    <string name="hb_timer_finished">Done</string>
 </resources>
