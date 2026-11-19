@@ -24,6 +24,10 @@ installed; existing favorite lists are preserved. [Screenshot evidence](docs/tes
 | Android app widgets (0.1.95+) | Host widgets from installed apps; Chromecast requires one-time permission setup. Provider remote support varies. [Setup and limits](docs/how-to/android-app-widgets.md). |
 | World clock | Choose cities and compare times in the full-screen meeting planner. |
 
+![Expanded cooking timers and event alarms on Cast1, with direct controls and time entry](docs/testing/2026-11-19-cooking-timers/cast1-expanded.png)
+
+*Actual Cast1 native capture with demonstration timers. [Timers & alarms guide](docs/how-to/timers-and-alarms.md).*
+
 **Press OK** for a bigger widget view. **Hold OK** to configure, move or resize.
 **Hold Back for one second** on Home or All Apps to undo a saved change.
 

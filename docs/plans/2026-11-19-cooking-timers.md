@@ -130,5 +130,7 @@ Cancel, acknowledge Done, and create another alarm; no arbitrary +1 minute
 pretending a fixed appointment is a cooking duration. Test both timer kinds due
 together and restoration after reboot/time changes.
 
-Disposition: conditional pending implementation/device
-verification; the main workflow is duration-first cooking.
+Disposition: implemented; native UI and background audio API acceptance passed.
+See the [verification record](../testing/2026-11-19-cooking-timers.md). Cast1’s final
+public install remains queued for coordinator connection recovery; physical speaker
+audibility and other listed hardware checks are separate from the API proof.

@@ -13,7 +13,11 @@ alert/power/permission sentence. Preserve the existing dashboard image and capti
 
 [Desktop/phone browser preview](2026-11-19-timers-publication.html)
 
-<iframe src="2026-11-19-timers-publication.html" title="Timer feature section mockup" width="100%" height="540"></iframe>
+Built page previews, verified at 1365px and 390px viewport widths:
+
+![Desktop timer feature section](2026-11-19-timers-publication/desktop.png)
+
+![Phone timer feature section](2026-11-19-timers-publication/phone.png)
 
 Apply the [Alan Cooper design filter](/home/will/docs/howtos/alan-cooper-design-filter.md):
 primary visitor wants a useful household command center and an understandable install
@@ -47,3 +51,6 @@ captions and versions; published source ledger maps quantitative and capability
 claims to app sources and measured test results. Run website tests/build/link checks
 inside a container and inspect phone/desktop screenshots. Verify deployment receipts
 before claiming the live site changed.
+
+Delivered: [Homeboard TV](https://biohack.net/homeboard/), public 0.1.92.
+[Publication verification](../testing/2026-11-19-timers-publication.md).

@@ -18,6 +18,9 @@ env:
   WF_CC_VALIDATOR: '{{.VALIDATOR | default ""}}'
   WF_CC_DURATION: '{{.DURATION | default ""}}'
   WF_CC_DRY_RUN: '{{.DRY_RUN | default ""}}'
+  WF_CC_KEY: '{{.KEY | default ""}}'
+  WF_CC_MILLISECONDS: '{{.MILLISECONDS | default ""}}'
+  WF_CC_TOKEN: '{{.TOKEN | default ""}}'
   WF_CC_TEXT: '{{.TEXT | default ""}}'
   WF_CC_RETRY: '{{.RETRY | default ""}}'
   WF_CC_SCENE: '{{.SCENE | default ""}}'
@@ -75,3 +78,22 @@ tasks:
   cancel:
     desc: 'Coordinator cancel'
     cmds: ['"{{.CC_CLIENT}}" cancel']
+
+  remote-start:
+    desc: Start a coordinator-owned Remote session
+    cmds: ['"{{.CC_CLIENT}}" remote-start']
+  remote-tap:
+    desc: Send one key through the owned coordinator Remote session
+    cmds: ['"{{.CC_CLIENT}}" remote-tap']
+  remote-hold:
+    desc: Hold a key through the owned coordinator Remote session
+    cmds: ['"{{.CC_CLIENT}}" remote-hold']
+  remote-frame:
+    desc: Capture the owned Remote session without direct device transport
+    cmds: ['"{{.CC_CLIENT}}" remote-frame']
+  remote-status:
+    desc: Inspect the owned Remote session
+    cmds: ['"{{.CC_CLIENT}}" remote-status']
+  remote-stop:
+    desc: Finish the complete coordinator-owned Remote session
+    cmds: ['"{{.CC_CLIENT}}" remote-stop']

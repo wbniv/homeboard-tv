@@ -19,7 +19,7 @@ summaries use the Buddhist Era.
 On Android 12 or later, **Allow alarms on this TV** opens Alarms & reminders access
 when needed. After granting it, return to Homeboard and start the timer. Allow
 notifications as well to get the Stop alert sound notification action. Homeboard
-uses an alarm sound even over another app; it never opens itself automatically,
+uses a bundled original alarm tone even over another app; it never opens itself automatically,
 changes your volume, or unmutes the TV. A sound lasts at most one minute; Done
 remains visible until you Stop or Restart. Multiple finished timers retain their names.
 

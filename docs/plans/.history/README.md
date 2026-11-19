@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/e44944d) | Host Android app widgets with TV setup, full-screen controls and Undo |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/467eae0) | Select API Gateway Lambda and DynamoDB for grocery sync |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/c368e40) | Require away-from-home and offline grocery shopping in Phase 3 |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/77f4536) | Make grocery capture and staple review goal-directed |
@@ -40,6 +41,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+e44944d	author	Will Norris
+e44944d	added	1
+e44944d	deleted	0
+e44944d	files	1
 467eae0	author	Will Norris
 467eae0	added	1
 467eae0	deleted	1

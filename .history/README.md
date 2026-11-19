@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/e44944d) | Host Android app widgets with TV setup, full-screen controls and Undo |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/97bdbc9) | Add cooking timers and one-off household alarms with phone controls |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/219392c) | Add dashboard and widget screenshots to README |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/015f574) | Publish signed Homeboard APK and update installation guides |
@@ -30,6 +31,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+e44944d	author	Will Norris
+e44944d	added	1
+e44944d	deleted	0
+e44944d	files	1
 97bdbc9	author	Will Norris
 97bdbc9	added	2
 97bdbc9	deleted	0

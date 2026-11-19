@@ -73,6 +73,9 @@ missing rows on commit.*
 
 | [Grocery Phase 3: away-from-home and offline shopping](2026-11-19-grocery-shopping-sync.md) | Records required offline resilience, the selected API Gateway/Lambda/DynamoDB backend, durable phone operations, purchase/Undo semantics and distinct TV delivery, with mockups and state/backend diagrams. | AWS backend selected; implementation planned | Feature / UX |
 
+| [Cooking timers and event alarms](2026-11-19-cooking-timers.md) | Defines cooking-first duration timers, one-off event alarms, background sound, native sizes and direct phone controls with lifecycle and screenshot acceptance. | [`97bdbc9`](https://github.com/wbniv/homeboard-tv/commit/97bdbc9) | Feature / UX |
+| [Publish cooking timers and household alarms](2026-11-19-timers-publication.md) | Updates the signed public download, user guides and website with reviewed timer screenshots and scoped publication checks. | [`97bdbc9`](https://github.com/wbniv/homeboard-tv/commit/97bdbc9) | Release / Docs |
+
 ---
 
 ## How this index was derived
@@ -80,6 +83,7 @@ missing rows on commit.*
 - **Order** = each plan's *creation* commit (oldest commit that touched the file), by committer date.
 - **Commit(s)** = the full `git log --follow` set per plan, oldest → newest.
 - **Summaries / categories** are concise editorial descriptions of each plan.
+- **Updated** 2026-11-19 with cooking timers and their public-release workflow.
 - **Seeded** 2026-11-15 via `seed-plan-index.sh` — eight plan rows, with summaries
   and categories filled by hand.
 - **Updated** 2026-11-16 to ten plans, including the Google TV app focus implementation.
