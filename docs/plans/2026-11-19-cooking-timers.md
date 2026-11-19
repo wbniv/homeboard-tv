@@ -36,7 +36,9 @@ runtime, monotonic deadlines, and explicit immediate controls.
   are running. At **1×1**, show the soonest timer and its remaining time. Larger
   widgets show more named timers, using the actual available height. Finished
   timers take priority. No scrollbars; overflow is a count/wedge.
-- Short OK opens full screen. Show all timers, names, exact remaining times, state,
+- Short OK opens full screen. Put the timer list on the left and new-timer entry
+  on the right so the form does not crowd several dishes off screen. Show all timers,
+  names, exact remaining times, state,
   original duration, and per-timer Pause/Resume, +1 minute, Restart and Stop.
 - Quick presets: 1, 3, 5, 10, 15, 20 and 30 minutes. Custom timer: optional dish name,
   minutes and seconds. Defaults describe time rather than assuming a recipe's cooking
