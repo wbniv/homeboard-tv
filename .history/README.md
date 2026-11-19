@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/015f574) | Publish signed Homeboard APK and update installation guides |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/6b13054) | Add reviewed cleanup execution and seed YouTube favorites |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/eb9adf6) | Add standalone cleanup connections and update setup manual |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/99e0a61) | Add one-page Homeboard TV quick start and printable user guide |
@@ -25,6 +26,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+015f574	author	Will Norris
+015f574	added	6
+015f574	deleted	2
+015f574	files	1
 6b13054	author	Will Norris
 6b13054	added	3
 6b13054	deleted	0

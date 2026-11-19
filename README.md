@@ -1,22 +1,54 @@
 # Homeboard TV
 
-A personal Google TV home screen, with scheduled dashboard scenes planned, built from CleanYourTV's
-Java launcher. Start with small native cards backed directly by public APIs; evaluate
-a dashboard engine or custom bridge when a feature actually needs one.
+A customizable home screen for Android TV and Google TV. See the rain ahead,
+upcoming dates, air quality and world clocks, with your favorite apps within reach.
+Arrange and resize widgets with the remote or your phone browser.
 
-**Current state: native widget Home and All Apps.** A Bangkok air-quality card reads AirBKK's
-public station feed directly, with no account, Home Assistant, MagicMirror or custom
-server. PM2.5 is labeled as a 24-hour station average. Choose from five Bangkok
-stations using the remote; Lumpini Park is the default. See the
-[air-quality implementation plan](docs/plans/2026-11-15-air-quality.md).
+[Download & install](https://biohack.net/homeboard/) ·
+[Quick start](docs/how-to/quick-start.md) ·
+[Printable manual](docs/how-to/quick-start-print.pdf) ·
+[A4 promotional sheet](docs/promo/homeboard-tv-one-sheet.pdf)
 
-The [Calendar widget](docs/how-to/calendar.md) combines upcoming holiday and
-flower/Buddhist dates, with a shared 7/30/custom holiday lookahead and independent
-Monday-week ranges. Wan Phra and flower anchors are calculated locally; published
-holidays use a persistent two-year offline cache with automatic/manual source
-checks and explicit coverage gaps. See [calendar data](docs/how-to/calendar-data.md)
-for supported years, source availability and closure-parser limits. The
-broader dashboard engine and traffic integrations remain undecided.
+![Homeboard TV dashboard: hourly rain, Calendar, PM2.5 trends, world clocks and YouTube in Favorites](docs/how-to/quick-start/dashboard-youtube.png)
+
+*Actual Cast1 capture, 0.1.74, using fresh test settings. YouTube is seeded when
+installed; existing favorite lists are preserved. [Screenshot evidence](docs/testing/2026-11-19-youtube-dashboard-images.md).*
+
+| On your dashboard | What you can do |
+|---|---|
+| Rain | See the next 24 hours by hour and six daily forecasts; use TV location or choose a city, address or coordinates. |
+| Calendar | Browse holidays, locally calculated Wan Phra and flower-work dates; check offline coverage and refresh sources. |
+| Air quality | View nearby hourly PM2.5 model estimates or Bangkok station averages, with 24-hour and 30-day trends. |
+| Favorites | Keep apps in a scrolling row; fresh dashboards start with YouTube when installed. All Apps is to the right. |
+| World clock | Choose cities and compare times in the full-screen meeting planner. |
+
+**Press OK** for a bigger widget view. **Hold OK** to configure, move or resize.
+**Hold Back for one second** on Home or All Apps to undo a saved change.
+
+## A closer look
+
+<table>
+<tr>
+<th>Calendar · four weeks and day details</th>
+<th>Air quality · nearby stations and map</th>
+</tr>
+<tr>
+<td><a href="docs/testing/2026-11-19-calendar-data/offline-boundary-en.png"><img src="docs/testing/2026-11-19-calendar-data/offline-boundary-en.png" alt="Expanded Calendar showing four weeks across December and January, with flower preparation and Wan Phra lunar-day details" width="460"></a></td>
+<td><a href="docs/promo/pm25-expanded.png"><img src="docs/promo/pm25-expanded.png" alt="Expanded PM2.5 widget showing a Bangkok map, nearby monitoring stations and selected-station readings" width="460"></a></td>
+</tr>
+</table>
+
+*Actual TV captures: Calendar 0.1.69 with controlled offline test dates; air-quality
+map from an earlier build. Click either image to inspect it at full size.*
+
+[Calendar & offline data](docs/how-to/calendar-data.md) ·
+[Full-screen widget controls](docs/how-to/widgets-full-screen.md) ·
+[World clock & meeting planner](docs/how-to/world-clock.md)
+
+Native widgets need no Home Assistant, MagicMirror, dashboard server or API key.
+Wallpaper providers are optional separate apps. Homeboard is an independent,
+MIT-licensed project based on CleanYourTV's Java launcher; scheduled scenes and
+broader dashboard integrations remain future work.
 
 ## Home interaction
 
@@ -86,6 +118,17 @@ Keep Homeboard open on the TV and use your trusted home network.
 The controller also offers a provider directory and [a phone shortcut per TV](docs/how-to/phone-tv-shortcuts.md).
 See the [phone editor how-to](docs/how-to/phone-widget-editor.md).
 
+<details>
+<summary>See the phone layout editor</summary>
+
+<p><a href="docs/images/phone-layout-editor.png"><img src="docs/images/phone-layout-editor.png" width="280" alt="Phone controller with a dashboard layout preview, a Rain card move grip and resize handle, and widget size controls"></a></p>
+
+Browser-fixture capture in an Android Chrome phone viewport; this is not a
+physical handset photo. [Controller verification](docs/testing/2026-11-17-phone-controller-design.md).
+
+</details>
+
+
 ## Default dashboard
 
 New installations start with Rain, Calendar, Air quality and Favorites. The revised
@@ -137,16 +180,23 @@ See the [rain plan and size gallery](docs/plans/2026-11-16-rain-widget.md) and
 
 ## Current verification
 
-An optional [TV cleanup inspection companion](docs/how-to/tv-cleanup.md) can inspect
-an enrolled TV through the coordinator, with an English/Thai report and a TV setup
-entry. It is currently read-only. Real cleanup requires a reviewed device profile,
-an approved package selection and independent restore acceptance. Selected
-CleanYourTV recovery code and original tests are separately pinned and licensed.
+The dashboard images above have [capture receipts and visual review](docs/testing/2026-11-19-youtube-dashboard-images.md).
+The [default Favorites checks](docs/testing/2026-11-19-default-youtube-favorite.md)
+cover one-time YouTube seeding. The standalone cleanup companion’s
+[execution and recovery checks](docs/testing/2026-11-19-cleanup-execution.md)
+use controlled fixtures; physical cleanup acceptance remains separate.
 
-Build **0.1.69** adds calculated offline Wan Phra/flower dates, persistent
+The optional [TV cleanup companion](docs/how-to/tv-cleanup.md) connects standalone
+TVs and provides coordinator-owned inspection for shared devices. Its standalone
+review, execution and recovery workflow is fixture-tested; real cleanup requires
+an exact approved device profile, a reviewed package selection and physical restore
+acceptance. Selected CleanYourTV recovery code and original tests are separately
+pinned and licensed.
+
+Earlier build **0.1.69** added calculated offline Wan Phra/flower dates, persistent
 current/next-year holiday storage, automatic checks and manual source refresh.
 It passed 500 JVM tests, 7 calendar pipeline tests, 52 cleanup/recovery tests and
-Android lint. Cast1 is installed and launch-verified. The identical Cast2 install
+Android lint. For that build, Cast1 was installed and launch-verified. The identical Cast2 install
 was submitted and admitted, but failed `personal-install-in-use`; installation
 there is unconfirmed. See the [calendar data guide](docs/how-to/calendar-data.md)
 and [calendar verification record](docs/testing/2026-11-19-calendar-data.md) for
