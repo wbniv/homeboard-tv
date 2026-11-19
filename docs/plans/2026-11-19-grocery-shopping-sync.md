@@ -1,6 +1,6 @@
 # Grocery Phase 3: shopping away from home, including offline
 
-Status: **requirements confirmed; architecture direction proposed**, November 19,
+Status: **requirements and AWS backend selected; implementation planned**, November 19,
 2026. Will confirmed that shopping must work away from home and when offline,
 although a connection will normally be available. Phases 1/2 remain implemented
 on `feature/grocery-list`; this plan adds no running service or shopping code.
@@ -19,10 +19,47 @@ without contacting the TV. Connected phones exchange changes through the service
 the TV catches up when connected and acknowledges the revision it actually shows.
 Returning to home Wi-Fi is not required for synchronization.
 
-This selects the direction over return-home-only synchronization. Service hosting,
-identity/enrollment, client technology, storage guarantees and operating cost still
-need a focused implementation decision. No provider or account is selected here.
-Do not expose the temporary TV configuration editor to the internet.
+Will accepted **AWS API Gateway + Lambda + DynamoDB** for the shared backend.
+The AWS account/region, identity/enrollment, client technology, storage guarantees
+and operating-cost budget remain implementation decisions. No AWS resources have
+been provisioned by this plan. The temporary TV configuration editor remains local.
+
+## Selected AWS backend
+
+| Component | Responsibility |
+|---|---|
+| API Gateway | HTTPS API for authenticated household/list operations, incremental changes and delivery acknowledgements. |
+| Lambda | Validate membership and operations, enforce quantity/purchase rules, deduplicate retries and return meaningful sync/conflict results. |
+| DynamoDB | Persist household/list records, purchase operations, receipts and revision state. Define and test atomic operation/receipt/projection writes; choosing this database alone does not establish correct sync. |
+| Phone storage | Durable local list, shopping interface and pending operations; offline purchases must succeed locally without calling AWS or the TV. |
+| TV client | Fetch accepted changes, update its local grocery view and acknowledge the revision shown, retaining full-screen restoration and dashboard configuration boundaries. |
+
+This follows the documented
+[API Gateway → Lambda → DynamoDB integration pattern](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-dynamo-db.html).
+Authentication/enrollment and this application's consistency protocol still need
+implementation and acceptance beyond that basic AWS example.
+
+```mermaid
+flowchart LR
+    P[Phone shopping view] <--> L[Durable local list and operation queue]
+    P <-->|Authenticated sync when connected| A[API Gateway]
+    T[Enrolled TV: fetch changes and acknowledge display] <--> A
+    A <--> F[Lambda: authorization, validation and operation receipts]
+    F <--> D[DynamoDB: household lists, events and revisions]
+```
+
+Start with TV fetch-on-resume and bounded polling while Homeboard is active;
+choose the interval against delivery latency and cost. Live sockets or a separate
+push service are not required for the first implementation. Phone retries run
+when the shopping client is active or resumes; background execution is an optional,
+platform-dependent improvement to verify, not a promise of delivery from a closed
+browser. Queued work remains durable until the client can reconnect.
+
+Before provisioning, specify the account/region, household/device enrollment,
+least-privilege access, table keys and transaction boundaries, API contract,
+retention/recovery and infrastructure-as-code deployment. Preserve existing
+independent TV lists through explicit adoption. No household credentials belong
+in the APK or repository.
 
 ## Cooper scenarios and boundaries
 
@@ -118,14 +155,19 @@ flowchart TD
 
 ## Implementation sequence and acceptance
 
-1. Decide the service, durable client storage and enrollment design against this
-   contract; specify cost/maintenance and how existing TV lists are adopted.
+1. Design the selected API Gateway/Lambda/DynamoDB service, durable client storage
+   and enrollment against this contract; specify the account/region, cost budget,
+   infrastructure deployment and adoption of existing TV lists.
 2. Deliver remote list read/add with phone persistence and TV revision delivery.
    Keep grocery synchronization separate from dashboard configuration transactions.
 3. Add purchase events, partial amounts, explicit stock effects and compensating
    Undo; preserve reusable staples and make Purchased reachable.
 4. Verify interruption, concurrency, conflicts and delivery states before rollout.
 
+- [x] Select AWS API Gateway, Lambda and DynamoDB for the shared backend, with
+  durable phone storage providing offline behavior.
+- [ ] Specify and implement account/region, enrollment, authorization, storage and
+  transaction contracts, retention/recovery and infrastructure deployment.
 - [ ] Normally connected: phone additions/purchases made away from home reach an
   enrolled TV automatically; a sleeping/disconnected TV catches up on reconnect.
 - [ ] Prepared phone: launch, browse, add, purchase, Undo, close and reopen with no

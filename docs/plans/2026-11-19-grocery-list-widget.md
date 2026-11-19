@@ -35,7 +35,7 @@ for the original Phases 1/2. The separate cleanup completion-race correction is
 | Phase 1 | Phone Add/Enter and batch entry, quantities/notes, named lists, reorder/removal, persistent staples, explicit Update TV and whole-update Undo. | Browser/model checks pass; Cast1 native full-screen/restoration proof passes. Physical handset pairing remains to be checked. |
 | Phase 2 | Direct product reuse, contextual quantities and custom text, exact package conversions, simple/measured stock, counted staple filters and explained replenishment. | Browser/model checks pass, including package correction and explicit quantity replacement; Cast1 shows richer product/stock detail. Household usability observation remains open. |
 | Cooper revision | Capture precedes management; ordinary edits recover across navigation/reload/conflicts; removed widgets/lists retain an explicit recovery path; publication names all affected outcomes. | Committed in `77f4536`; checked in Chromium and WebKit at 390×844 and with 200% text. |
-| Phase 3 | Purchase check-off, away-from-home editing and reliable dashboard sync. | Away-from-home and offline use required; durable phone storage plus authenticated remote sync proposed. Hosting/enrollment/client decisions remain open. |
+| Phase 3 | Purchase check-off, away-from-home editing and reliable dashboard sync. | Away-from-home and offline use required; API Gateway/Lambda/DynamoDB selected with durable phone storage. Enrollment/client/account decisions remain open; implementation is planned. |
 
 Frozen debug build **0.1.81** passed 510 JVM tests, Android lint and the shared
 phone checks. Cast1 installation `J‑f1c8ca8cfac7` and native proof
@@ -372,9 +372,12 @@ not a claim about the current temporary home-network controller.
 The [Phase 3 shopping and sync plan](2026-11-19-grocery-shopping-sync.md) defines
 the scenarios, screen mockups, state diagram, operation contract and acceptance.
 Architecture direction: a durable phone copy and operation queue, with an
-**authenticated household sync service** for remote updates. A connected TV
-catches up automatically; returning to home Wi-Fi is not required. Service hosting,
-enrollment and durable client technology remain implementation decisions.
+**authenticated household sync service using API Gateway, Lambda and DynamoDB**
+for remote updates, as accepted by Will. A connected TV catches up automatically;
+returning to home Wi-Fi is not required. Account/region, enrollment, durable client
+technology and the operation/transaction protocol remain implementation decisions.
+The [selected backend diagram](2026-11-19-grocery-shopping-sync.md) separates phone
+offline durability, shared service acceptance and actual TV delivery.
 
 - Record purchases, partial amounts and package changes locally before showing
   success. Prepared phones must reopen their shopping view and list while offline.
@@ -497,15 +500,16 @@ require a build, deployment or device session.
   additional target; record its own receipt. Personal use remains operation-specific.
 - [x] Confirm that Phase 3 must support away-from-home shopping and occasional
   offline use; record the durable-phone-copy plus remote-sync direction.
-- [ ] Resolve Phase 3 service hosting, enrollment and durable client technology
-  against the [shopping/sync acceptance contract](2026-11-19-grocery-shopping-sync.md)
-  before implementation.
+- [x] Select AWS API Gateway, Lambda and DynamoDB as the Phase 3 backend.
+- [ ] Resolve account/region, enrollment, durable phone storage, API/table/transaction
+  contracts and operating-cost budget against the
+  [shopping/sync acceptance contract](2026-11-19-grocery-shopping-sync.md).
 
 ## Open product decisions
 
 Validate the proposed stock threshold/target workflow with real household items,
 especially loose produce and partial packs. Away-from-home and offline shopping
-are required for Phase 3; the service/provider, enrollment and durable client
-implementation remain to be chosen. Barcode
+are required for Phase 3. The AWS backend is selected; account/region, enrollment,
+durable client storage and the consistency protocol still need detailed design. Barcode
 lookup, retailer prices, recipes, automatic consumption prediction and retailer
 ordering remain separate future features.
