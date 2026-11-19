@@ -52,7 +52,7 @@ final class WidgetExpansion extends Dialog {
         header.addView(button(R.string.hb_fs_restore,this::dismiss));
         TextView heading=text(title,20);heading.setTypeface(null,android.graphics.Typeface.BOLD);
         header.addView(heading,new LinearLayout.LayoutParams(0,-2,1));
-        configureButton=button(R.string.hb_fs_configure,()->{configuring=true;setRunning(false);hide();configure.run();});
+        configureButton=button(R.string.hb_fs_configure,()->configure(configure));
         configureButton.setEnabled(false);header.addView(configureButton);
         root.addView(header,new LinearLayout.LayoutParams(-1,dp(48)));
         body=new FrameLayout(activity);root.addView(body,new LinearLayout.LayoutParams(-1,0,1));
@@ -102,6 +102,7 @@ final class WidgetExpansion extends Dialog {
         configureButton.setEnabled(true);content.active(running);
         content.view().post(()->{if(!released&&content.view().findFocus()==null)content.view().requestFocus();});
     }
+    void configure(Runnable action){configuring=true;setRunning(false);hide();action.run();}
     void resumeAfterConfiguration() {
         if(!configuring||released)return;configuring=false;
         Bundle state=content.state();content.close();body.removeAllViews();stack.clear();

@@ -63,6 +63,8 @@ missing rows on commit.*
 | [Client-side Wan Phra calculation](2026-11-19-client-side-wan-phra.md) | Implements the pinned Java Thai civil calendar and shared flower anchors, with independently checked 2024–2027 observances and screenshot acceptance. | Working tree | Feature |
 | [Two-year offline holiday updates](2026-11-19-offline-holiday-updates.md) | Implements persistent annual data, source updates, safe publication, native refresh controls and rollover checks, with explicit publisher/coverage limits. | Working tree | Feature |
 
+| [Grocery list: phone entry, products and household staples](2026-11-19-grocery-list-widget.md) | Phone-first list entry, persistent staples, confirmed units and optional pantry stock, informed by Out of Milk, Remember The Milk and other apps. | Worktree implementation | Feature / UX |
+
 ---
 
 ## How this index was derived

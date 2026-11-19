@@ -1,7 +1,7 @@
 /* Container-only clock draft identity/recovery checks using the real editor model. */
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
 const scope={window:{}};vm.createContext(scope);
-for(const file of ['strings.js','clock.js','model.js'])vm.runInContext(fs.readFileSync('launcher/app/src/main/assets/phone/'+file,'utf8'),scope);
+for(const file of ['strings.js','clock.js','grocery.js','model.js'])vm.runInContext(fs.readFileSync('launcher/app/src/main/assets/phone/'+file,'utf8'),scope);
 const M=scope.window.PhoneModel,C=scope.window.PhoneClock,copy=x=>JSON.parse(JSON.stringify(x));
 C.configureDefaults(require('./phone-fixture.cjs').worldClockDefaults);
 const draft={headerClock:copy(C.defaults()),columns:8,rows:4,artwork:'small',favorites:[],widgets:[]};

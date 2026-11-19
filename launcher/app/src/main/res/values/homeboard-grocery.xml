@@ -1,0 +1,33 @@
+<resources>
+    <string name="hb_grocery_title">Groceries</string>
+    <string name="hb_grocery_unavailable">List unavailable</string>
+    <string name="hb_grocery_empty">No groceries listed · Add from phone</string>
+    <string name="hb_grocery_count">%1$d items</string>
+    <string name="hb_grocery_list">Shopping list</string>
+    <string name="hb_grocery_staples">Staples</string>
+    <string name="hb_grocery_edit">Edit list</string>
+    <string name="hb_grocery_phone">Add from phone</string>
+    <string name="hb_grocery_phone_hint">Use the phone controller for products, units and stock. Return the TV to Home before Update TV.</string>
+    <string name="hb_grocery_no_staples">Keep regularly bought products as staples to reuse them.</string>
+    <string name="hb_grocery_unknown">Stock unknown</string>
+    <string name="hb_grocery_stock">Reported stock</string>
+    <string name="hb_grocery_threshold">Low at</string>
+    <string name="hb_grocery_target">Target</string>
+    <string name="hb_grocery_need">Need more</string>
+    <string name="hb_grocery_enough">Enough</string>
+    <string name="hb_grocery_not_tracked">Stock not tracked yet</string>
+    <string name="hb_grocery_reported">Reported</string>
+    <string name="hb_grocery_suggested">Suggested purchase</string>
+    <string name="hb_grocery_updated">Groceries updated</string>
+    <string name="hb_grocery_draft">Draft · Save applies all changes</string>
+    <string name="hb_grocery_lists">Choose list</string>
+    <string name="hb_grocery_add">Add item</string>
+    <string name="hb_grocery_name">Item name</string>
+    <string name="hb_grocery_quantity">Quantity text</string>
+    <string name="hb_grocery_note">Note</string>
+    <string name="hb_grocery_remove">Remove from list</string>
+    <string name="hb_grocery_unsaved">Save or discard your list changes?</string>
+    <string name="hb_grocery_discard">Discard changes</string>
+    <string name="hb_grocery_keep_editing">Keep editing</string>
+<string name="hb_grocery_more">+%1$d more</string>
+</resources>

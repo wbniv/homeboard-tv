@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="760" viewBox="0 0 1440 760" role="img" aria-labelledby="title desc"><title id="title">Grocery list workflow and persistent staple lifecycle</title><desc id="desc">Phase 1 phone draft and update to TV. Phase 2 product and stock suggestions feed the same reviewed draft. Future Phase 3 purchases fulfill shopping needs while keeping persistent staples.</desc><style>text{font-family:Arial,sans-serif;fill:#edf4f5} .muted{fill:#b8cbd0} .accent{fill:#8be0be}</style><rect width="100%" height="100%" fill="#0d1c25"/>
+<text x="32" y="45" font-size="28" fill="#edf4f5">GROCERY LIST / WORKFLOW</text>
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#8be0be"/></marker></defs>
+<text x="32" y="88" font-size="17" fill="#8be0be" style="fill:#8be0be">PHASE 1 · AT HOME</text>
+<rect x="32" y="112" width="270" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="49" y="146" font-size="21" fill="#edf4f5">Phone: add groceries</text>
+<text x="49" y="176" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Text + quantity note</text>
+<rect x="370" y="112" width="280" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="387" y="146" font-size="21" fill="#edf4f5">Review draft</text>
+<text x="387" y="176" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Keep as staple · optional</text>
+<rect x="718" y="112" width="290" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="735" y="146" font-size="21" fill="#edf4f5">Update TV</text>
+<text x="735" y="176" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Atomic save + acknowledgement</text>
+<rect x="1076" y="112" width="332" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="1093" y="146" font-size="21" fill="#edf4f5">Home widget</text>
+<text x="1093" y="176" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Short OK opens richer detail</text>
+<path d="M302 157H370" fill="none" stroke="#8be0be" stroke-width="2" marker-end="url(#a)"/>
+<path d="M650 157H718" fill="none" stroke="#8be0be" stroke-width="2" marker-end="url(#a)"/>
+<path d="M1008 157H1076" fill="none" stroke="#8be0be" stroke-width="2" marker-end="url(#a)"/>
+<text x="32" y="247" font-size="18" fill="#b8cbd0" style="fill:#b8cbd0">Cancel keeps the saved list. Disconnect/conflict keeps the draft for review. No purchase check-off.</text>
+<text x="32" y="301" font-size="17" fill="#8be0be" style="fill:#8be0be">PHASE 2 · PRODUCT AND STOCK KNOWLEDGE</text>
+<rect x="32" y="324" width="340" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="49" y="358" font-size="21" fill="#edf4f5">Persistent product / staple</text>
+<text x="49" y="388" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Variant · package size · usual amount</text>
+<rect x="438" y="324" width="320" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="455" y="358" font-size="21" fill="#edf4f5">Report stock / Need more</text>
+<text x="455" y="388" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Threshold + target or manual need</text>
+<rect x="824" y="324" width="365" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="841" y="358" font-size="21" fill="#edf4f5">Review replenishment suggestion</text>
+<text x="841" y="388" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Confirm product, amount and units</text>
+<path d="M372 369H438" fill="none" stroke="#8be0be" stroke-width="2" marker-end="url(#a)"/>
+<path d="M758 369H824" fill="none" stroke="#8be0be" stroke-width="2" marker-end="url(#a)"/>
+<path d="M1189 369H1380V281H510V202" fill="none" stroke="#8be0be" stroke-width="2" marker-end="url(#a)"/>
+<text x="32" y="458" font-size="18" fill="#b8cbd0" style="fill:#b8cbd0">Staples survive removal of their current shopping row. Unknown stock stays unknown.</text>
+<rect x="20" y="490" width="1400" height="245" rx="14" fill="#152b34" stroke="#486674" stroke-width="2"/>
+<text x="40" y="526" font-size="17" fill="#8be0be" style="fill:#8be0be">PHASE 3 · FUTURE PURCHASE AND SYNC</text>
+<rect x="40" y="548" width="320" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="57" y="582" font-size="21" fill="#edf4f5">At shop: record purchase</text>
+<text x="57" y="612" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Partial quantity · offline pending</text>
+<rect x="435" y="548" width="355" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="452" y="582" font-size="21" fill="#edf4f5">Sync purchase once</text>
+<text x="452" y="612" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Fulfill need + confirmed stock delta</text>
+<rect x="865" y="548" width="525" height="90" rx="14" fill="#223e49" stroke="#486674" stroke-width="2"/>
+<text x="882" y="582" font-size="21" fill="#edf4f5">Keep staple; finish current shopping need</text>
+<text x="882" y="612" font-size="16" fill="#b8cbd0" style="fill:#b8cbd0">Later low stock → review a new shopping need</text>
+<path d="M360 593H435" fill="none" stroke="#8be0be" stroke-width="2" marker-end="url(#a)"/>
+<path d="M790 593H865" fill="none" stroke="#8be0be" stroke-width="2" marker-end="url(#a)"/>
+<text x="40" y="682" font-size="19" fill="#edf4f5">Architecture decision: sync on return to home Wi-Fi OR authenticated remote household service.</text>
+<text x="40" y="711" font-size="17" fill="#b8cbd0" style="fill:#b8cbd0">A purchase changes the current need. It does not delete the reusable product or staple.</text>
+</svg>

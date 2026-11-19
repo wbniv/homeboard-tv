@@ -31,7 +31,7 @@ final class PhoneEditor implements PhoneEditorServer.Host {
         try{
             session=new PhoneEditorSession(SystemClock::elapsedRealtime);
             Map<String,byte[]> assets=new HashMap<>();
-            for(String name:List.of("index.html","editor.js","editor.css","model.js","strings.js","drag.js","clock.js"))try(java.io.InputStream in=activity.getAssets().open("phone/"+name)){assets.put(name.equals("index.html")?"/":"/"+name,read(in));}
+            for(String name:List.of("index.html","editor.js","editor.css","model.js","strings.js","drag.js","clock.js","grocery.js"))try(java.io.InputStream in=activity.getAssets().open("phone/"+name)){assets.put(name.equals("index.html")?"/":"/"+name,read(in));}
             assets.put("/tv-icon.png",shortcutIcon());
             // A stable origin lets this tab recover its draft after reopening the TV editor.
             // The listener still exists only during this foreground session.

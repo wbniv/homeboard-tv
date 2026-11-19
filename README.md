@@ -75,6 +75,16 @@ with independent persistence and Undo. Full bilingual UI and Thai copy acceptanc
 remain pending; see the [language plan](docs/plans/2026-11-16-language-setting-and-translations.md)
 and [validation limits](docs/testing/2026-11-16-thai-language.md).
 
+## Groceries
+
+The [Groceries widget](docs/how-to/groceries.md) supports phone-first list entry,
+reusable staples, saved products and confirmed quantities/packages. Optional
+pantry tracking offers Need more / Enough / Unknown or reported stock with
+replenishment suggestions. Short OK opens the complete list, notes and stock
+details; Back restores Home. Changes use the phone controller’s reviewed draft,
+Update TV and Undo. Purchase check-off and away-from-home synchronization remain
+Phase 3. See the [design and app survey](docs/plans/2026-11-19-grocery-list-widget.md).
+
 ## Configure from a phone
 
 **Home settings → More → Configure from phone** opens a temporary local web editor.

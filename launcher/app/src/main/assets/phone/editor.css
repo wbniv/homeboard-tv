@@ -3,3 +3,5 @@
 .provider-card {padding:1rem;margin-block:1rem;border-radius:1rem;background:#192c3b;overflow-wrap:anywhere}.provider-card a {display:block;text-align:center;color:inherit;text-decoration:underline}
 
 #actions:empty{display:none}.provider-card a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+.grocery-row{display:flex;align-items:center;gap:6px;margin:8px 0;list-style:none}.grocery-row>button:nth-child(2){flex:1;min-width:0;overflow-wrap:anywhere;text-align:left}.grocery-row [data-reorder]{touch-action:none;cursor:grab}.grocery-row>button{min-width:44px;padding:10px}.grocery-list{padding:0}.grocery-entry input,textarea{width:100%;box-sizing:border-box}.grocery-entry{margin-bottom:20px}

@@ -15,6 +15,9 @@ import java.util.Set;
 final class HomeLayout {
     static final String AIR = "widget:air";
     static final String RAIN = "widget:rain";
+    static final String GROCERY = "widget:grocery";
+    JSONObject groceries=GroceryData.defaults();
+    final Map<String,String> groceryLists=new LinkedHashMap<>();
     static final String HEADER_CLOCK = "control:world-clock";
     WorldClockSettings headerClock = new WorldClockSettings();
     static final String WORLD_CLOCK = "widget:world_clock";
@@ -151,6 +154,9 @@ final class HomeLayout {
         JSONObject calendars = j.optJSONObject("calendarSettings");
         for (String key : s.widgets) if (isCalendarWidget(key))
             s.calendarSettings.put(key, CalendarWidgetSettings.parse(calendars == null ? null : calendars.optJSONObject(key)));
+        if(j.has("groceries")){s.groceries=j.getJSONObject("groceries");GroceryData.validate(s.groceries);}
+        JSONObject groceryRefs=j.optJSONObject("groceryLists");
+        if(groceryRefs!=null)for(java.util.Iterator<String> i=groceryRefs.keys();i.hasNext();){String k=i.next();s.groceryLists.put(k,groceryRefs.getString(k));}
         JSONObject clocks=j.optJSONObject("clockSettings");
         for(String key:s.widgets) if(isWorldClockWidget(key))
             s.clockSettings.put(key,WorldClockSettings.parse(clocks==null?null:clocks.optJSONObject(key)));
@@ -190,6 +196,7 @@ final class HomeLayout {
                     .put("panelSpans", encodedSpans())
                     .put("homePositions", encodedHomePositions())
                     .put("calendarSettings", encodedCalendarSettings()).put("rainSettings", encodedRainSettings())
+                    .put("groceries",groceries).put("groceryLists",new JSONObject(groceryLists))
                     .put("clockSettings",encodedClockSettings()).put("headerClock",headerClock.json())
                     .put("homeColumns", homeColumns).put("homeRows", homeRows)
                     .put("appBanners", appBanners).put("homeAppSize", homeAppSize).put("circularIcons", circularIcons)
@@ -223,6 +230,7 @@ final class HomeLayout {
         if (!key.startsWith("widget:")) throw new IllegalArgumentException("Panel keys must start with widget:");
         favorite(key);
         panelSizes.putIfAbsent(key, defaultPanelSize);
+        if(isGroceryWidget(key)){groceryLists.putIfAbsent(key,GroceryData.DEFAULT);panelSpans.putIfAbsent(key,new PanelSpan(4,2));}
         if (FAVORITES.equals(key)) panelSpans.putIfAbsent(key, new PanelSpan(4, 2));
         if (isRainWidget(key)) {
             rainSettings.putIfAbsent(key, new RainSettings());
@@ -277,6 +285,8 @@ final class HomeLayout {
         for (Cell cell : resolved) homePositions.put(cell.key, new HomePosition(cell.page, cell.row, cell.column));
     }
     static boolean isRainWidget(String key) { return RAIN.equals(key) || key != null && key.startsWith(RAIN + ":"); }
+    static boolean isGroceryWidget(String key){return GROCERY.equals(key)||key!=null&&key.startsWith(GROCERY+":");}
+    JSONObject grocery(String key){return groceries.optJSONObject(groceryLists.getOrDefault(key,GroceryData.DEFAULT));}
     static boolean isWorldClockWidget(String key) { return WORLD_CLOCK.equals(key)||key!=null&&key.startsWith(WORLD_CLOCK+":"); }
     private JSONObject encodedClockSettings() throws JSONException {
         JSONObject result=new JSONObject();for(Map.Entry<String,WorldClockSettings> entry:clockSettings.entrySet())result.put(entry.getKey(),entry.getValue().json());return result;

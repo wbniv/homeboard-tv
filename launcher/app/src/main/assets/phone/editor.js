@@ -45,19 +45,20 @@
   window.addEventListener('popstate',event=>{scrolls.set(routeKey(),window.scrollY);route=event.state?.route||{name:'overview'};render();window.scrollTo(0,scrolls.get(routeKey())||0);});
   function back(){if(route.name==='widget'||route.name==='arrange'||route.name==='add'||route.name==='recommended')navigate({name:'overview'});else if(route.name==='apps'||route.name==='favoriteActions')navigate({name:'favorites'});else navigate({name:'overview'});}
   function currentWidget(){return route.key===M.HEADER&&draft?M.headerWidget(draft):draft?.widgets.find(w=>w.key===route.key);}
-  const widgetType=w=>['rain','calendar','air','favorites','world_clock'].includes(w.type)?t(w.type):w.type==='app'?t('appShortcut'):w.type;
+  const widgetType=w=>['rain','calendar','air','favorites','world_clock','grocery'].includes(w.type)?t(w.type):w.type==='app'?t('appShortcut'):w.type;
   const appName=key=>state.apps.find(app=>app.key===key)?.name||t('unavailable');
-  function locationName(w){const s=w.settings;if(w.type==='rain')return s.label|| (s.locationSource==='device'?t('automatic'):s.name||t('unnamed'));
+  function locationName(w){const s=w.settings;if(w.type==='grocery')return t('gCount',{count:draft.groceries?.[s.listId]?.items.length||0});if(w.type==='rain')return s.label|| (s.locationSource==='device'?t('automatic'):s.name||t('unnamed'));
+    if(w.type==='grocery')return draft.groceries?.[s.listId]?.title||'';
     if(w.type==='world_clock')return s.title;
     if(w.type==='air')return s.source==='airbkk'?(state.stations.find(x=>x.id===s.station)?.name||t('station')):s['location-mode']==='auto'?t('automatic'):s['location-name']||t('unnamed');return '';}
   function title(w){let name=widgetType(w),where=locationName(w);if(where)name+=' · '+where;
     const duplicates=draft.widgets.filter(x=>x.type===w.type&&locationName(x)===where);if(!w.fixed&&duplicates.length>1)name+=' '+(duplicates.findIndex(x=>x.key===w.key)+1);return name;}
-  function summary(w){const s=w.settings;if(w.type==='rain')return t('nextHours',{hours:s.hours})+' · '+t('followingDays',{days:s.days});
+  function summary(w){const s=w.settings;if(w.type==='grocery')return t('gCount',{count:draft.groceries?.[s.listId]?.items.length||0});if(w.type==='rain')return t('nextHours',{hours:s.hours})+' · '+t('followingDays',{days:s.days});
     if(w.type==='world_clock')return t('clockCount',{count:s.places.length})+' · '+PhoneClock.summary(s,t);
     if(w.type==='calendar')return t('holidays',{days:s.holidayLookaheadDays})+' · '+t(s.flowerWeeks);
     if(w.type==='air')return t(s.source==='airbkk'?'airbkk':'model')+' · '+t('trends');
     if(w.type==='favorites')return t('appsCount',{count:draft.favorites.length})+' · '+(w.height===1?t('bottomRow'):t('favorites'));return widgetType(w);}
-  const icon=w=>({rain:'☂',calendar:'▦',air:'∿',favorites:'★',app:'▣'}[w.type]||'◷');
+  const icon=w=>({rain:'☂',calendar:'▦',air:'∿',favorites:'★',grocery:'▤',app:'▣'}[w.type]||'◷');
   function field(parent,label,value,onEdit,type='text',limits={}){
     const wrap=el('label'),caption=el('span',label),input=el('input');input.type=type;input.setAttribute('aria-label',label);
     if(type==='checkbox'){input.checked=!!value;wrap.className='check';}else input.value=value??'';
@@ -144,7 +145,9 @@
   function widgetForm(parent,w){
     if(!w){navigate({name:'overview'},true);return;}
     const box=section(parent),s=w.settings;note(box,summary(w));
-    if(w.type==='world_clock'){
+    if(w.type==='grocery'){
+      PhoneGrocery.form(box,w,{draft,state,el,button,field,select,details,note,t,changed,render,uid,disposers,announce});
+    } else if(w.type==='world_clock'){
       PhoneClock.form(box,w,{state,el,button,field,select,details,note,t,changed,render,uid,language,disposers,announce});
     } else if(w.type==='rain'){
       locationForm(box,w);choices(box,t('hours'),s.hours,[6,12,24,48],value=>s.hours=value);
@@ -246,14 +249,14 @@
     parent.append(button(t('recommended'),()=>navigate({name:'recommended'}),'wide-action secondary'));
     const advanced=details(parent,t('advanced')),row=el('div',undefined,'two-fields');field(row,t('columns'),draft.columns,value=>draft.columns=value,'number',{min:4,max:12,step:1,required:true});field(row,t('rows'),draft.rows,value=>draft.rows=value,'number',{min:2,max:12,step:1,required:true});advanced.append(row);
   }
-  function addWidgets(parent){const box=section(parent);for(const type of ['rain','calendar','air','favorites'])box.append(button('+ '+t(type),()=>{const w=M.add(draft,type,state.instances);changed();navigate({name:type==='favorites'?'favorites':'widget',key:w.key});},'wide-action'));}
+  function addWidgets(parent){const box=section(parent);for(const type of ['rain','calendar','air','favorites','grocery'])box.append(button('+ '+t(type),()=>{const w=M.add(draft,type,state.instances);changed();navigate({name:type==='favorites'?'favorites':'widget',key:w.key});},'wide-action'));}
   function recommended(parent){const box=section(parent);note(box,t('recommendHelp'));note(box,t('extraCards'));const selected={};
     for(const type of ['rain','air']){const cards=draft.widgets.filter(w=>w.type===type);if(cards.length>1){selected[type]=cards[0].key;select(box,t(type),selected[type],cards.map(w=>[w.key,title(w)]),value=>selected[type]=value);}}
     box.append(button(t('useLayout'),()=>{draft=M.recommended(payload(),state.instances,selected);changed();navigate({name:'arrange',page:0});},'primary wide-action'));
   }
   function payload(){return M.clone(draft);}
   function invalid(){if(!draft)return null;return M.validate(draft)||([...$('editor').querySelectorAll('input,select')].some(input=>!input.checkValidity())?{kind:'input'}:null);}
-  function validationText(issue){return t({grid:'gridError',placement:'placementError',range:'rangeError',coordinates:'coordinateError',input:'invalid'}[issue?.kind]||'invalid');}
+  function validationText(issue){return t({grid:'gridError',placement:'placementError',range:'rangeError',coordinates:'coordinateError',grocery:'gInvalid',input:'invalid'}[issue?.kind]||'invalid');}
   function showValidation(){const issue=invalid();if(issue?.key&&route.name!=='arrange')navigate({name:'widget',key:issue.key});message(validationText(issue),'warning');
     const bad=[...$('editor').querySelectorAll('input,select')].find(input=>!input.checkValidity());if(bad){for(let p=bad.parentElement;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;bad.focus();bad.reportValidity();}}
   const settingLabel=key=>t({holidayLookaheadDays:'lookahead',enabled:'calendar',inches:'units',name:'placeName',locationSource:'location','location-mode':'location','location-name':'placeName'}[key]||key);
@@ -273,6 +276,7 @@
     return String(value??'');
   }
   function changeText(change){
+    if(change.kind==='grocery')return t('gChanged',{name:change.after?.title||change.before?.title||t('grocery')});
     if(change.kind==='grid')return t('change_grid');if(change.kind==='artwork')return t('change_artwork')+' · '+t(change.value);
     if(change.kind==='favorites')return t('change_favorites')+' · '+(change.after.map(appName).join(' → ')||t('empty'));
     const name=title(change.widget);if(change.kind==='add')return t('change_add',{name,page:t('page',{page:change.widget.page+1})});
@@ -296,6 +300,7 @@
   }
   function conflictText(conflict,value){
     if(value===undefined)return t('removed');
+    if(conflict.kind==='grocery')return (value.title||t('grocery'))+' · '+t('gCount',{count:value.items.length});
     const w=draft.widgets.find(w=>w.key===conflict.key)||conflict.mine||conflict.tv;
     if(conflict.kind==='widget'||conflict.kind==='instance')return widgetType(value)+' · '+(locationName(value)||t('page',{page:value.page+1}));
     if(conflict.kind==='favorites')return value.map(appName).join(', ');
@@ -305,7 +310,7 @@
   function renderConflicts(parent){
     const region=section(parent,t('conflictTitle',{tv:tvName()}));
     for(const conflict of conflicts.filter(c=>!c.resolved)){
-      const card=section(region,conflict.kind==='setting'?settingLabel(conflict.group):conflict.kind==='favorites'?t('favorites'):conflict.key?widgetType(conflict.mine||conflict.tv||{type:'app'}):t('arrange'));
+      const card=section(region,conflict.kind==='grocery'?t('grocery'):conflict.kind==='setting'?settingLabel(conflict.group):conflict.kind==='favorites'?t('favorites'):conflict.key?widgetType(conflict.mine||conflict.tv||{type:'app'}):t('arrange'));
       if(conflict.kind==='instance')note(card,t('replaced'));
       card.append(el('p',t('tvValue')+': '+conflictText(conflict,conflict.tv)),el('p',t('mineValue')+': '+conflictText(conflict,conflict.mine)));
       for(const choice of ['tv','mine']){
