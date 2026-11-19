@@ -23,6 +23,33 @@ purchase; its current shopping need is a separate record.
 
 ![Phase 1 phone entry and TV list; Phase 2 product quantities and stock-aware staples](2026-11-19-grocery-list-widget/mockups.svg)
 
+## Delivery checkpoint — November 19, 2026
+
+Implementation and evidence are committed and pushed on `feature/grocery-list`:
+`77f4536` implements the Cooper revision, following `15f1061` and `421d56f`
+for the original Phases 1/2. The separate cleanup completion-race correction is
+`919b733`. This feature branch has not been merged into main.
+
+| Scope | Delivered behavior | Current acceptance |
+|---|---|---|
+| Phase 1 | Phone Add/Enter and batch entry, quantities/notes, named lists, reorder/removal, persistent staples, explicit Update TV and whole-update Undo. | Browser/model checks pass; Cast1 native full-screen/restoration proof passes. Physical handset pairing remains to be checked. |
+| Phase 2 | Direct product reuse, contextual quantities and custom text, exact package conversions, simple/measured stock, counted staple filters and explained replenishment. | Browser/model checks pass, including package correction and explicit quantity replacement; Cast1 shows richer product/stock detail. Household usability observation remains open. |
+| Cooper revision | Capture precedes management; ordinary edits recover across navigation/reload/conflicts; removed widgets/lists retain an explicit recovery path; publication names all affected outcomes. | Committed in `77f4536`; checked in Chromium and WebKit at 390×844 and with 200% text. |
+| Phase 3 | Purchase check-off, away-from-home editing and reliable dashboard sync. | Planned; choose the sync architecture before implementation. |
+
+Frozen debug build **0.1.81** passed 510 JVM tests, Android lint and the shared
+phone checks. Cast1 installation `J‑f1c8ca8cfac7` and native proof
+`J‑0d317527642f` succeeded. Cast2's identical-APK installation
+`J‑3e40923b3c88` was submitted and admitted, then failed
+`personal-install-in-use`; installation there remains unconfirmed.
+
+The [verification record](../testing/2026-11-19-grocery-cooper.md) contains the
+APK hash, source verification, precise test boundaries and actual
+[phone capture](../testing/2026-11-19-grocery-cooper/phone-capture.png),
+[staple review](../testing/2026-11-19-grocery-cooper/phone-staples.png) and
+[Cast1 full-screen capture](../testing/2026-11-19-grocery-cooper/cast1-staples.png).
+The original mockups and workflow below remain design references.
+
 ## Goals and agreed boundaries
 
 - People primarily add items on a phone. The TV is a readable household reminder,
@@ -403,7 +430,7 @@ color-only stock status or provider account requirement in Phase 1/2.
 
 ### Phase 1
 
-- [ ] Phone: quickly add several English/Thai items; Enter retains entry focus;
+- [x] Phone: quickly add several English/Thai items; Enter retains entry focus;
   optional quantity/notes, duplicate choice, batch preview, edit/reorder/remove and
   draft Undo work. No purchase checkboxes appear.
 - [ ] Draft versus saved state is clear; one Update TV commits all reviewed rows
@@ -419,14 +446,20 @@ color-only stock status or provider account requirement in Phase 1/2.
 - [ ] Remote row/detail/editor navigation, cancel/save and dirty-editor restoration
   work. Back and visible Restore recover the exact Home page, focus and dimensions.
   Full-screen browsing changes neither saved geometry nor Undo history.
+- [x] Cast1 scripted short/held OK, native view clicks, nested Back and visible
+  Restore preserve the original page, widget focus, dimensions and list data.
+  Aggregate Apply/retry/Undo also passes in the isolated native probe.
 - [ ] Phone pairing from full screen and return-to-Home-before-update behavior are
   understandable; real phone LAN testing establishes connectivity separately from
   browser fixture tests. English/Thai, larger text and reduced-motion checks pass.
 
 ### Phase 2
 
-- [ ] Saved product suggestions accelerate input; unknown products remain addable.
-  Aliases/variants stay distinct until an explicit merge; merge previews all effects.
+- [x] Saved product suggestions reuse known defaults directly; unknown products
+  and unconfirmed units remain addable as text. Repeated reuse does not increase
+  an existing need.
+- [ ] Complete a dedicated product-merge walkthrough: aliases/variants remain
+  distinct until explicitly merged, with all surviving/discarded effects reviewed.
 - [x] Exact decimal mass/volume/count conversion, confirmed package sizes, fractional
   amounts, whole-package rounding and incompatible/unknown units behave as specified.
   Ambiguous text stays unstructured until confirmed.
@@ -435,7 +468,7 @@ color-only stock status or provider account requirement in Phase 1/2.
 - [x] Low stock suggests an explained quantity. Confirming adds/updates one need;
   refresh/retry creates no duplicate; a stock correction requests review instead of
   silently clearing the shopping list. No consumption is inferred from time.
-- [ ] Staples remain present independently of active needs. Both tabs add real
+- [x] Staples remain present independently of active needs. Both tabs add real
   full-screen product/stock detail and preserve the Phase 1 restoration contract.
 - [x] Existing Phase 1 data is retained verbatim until structured by its owner.
 
@@ -446,6 +479,22 @@ app data. Coordinator devices/queue/complete job/watch/evidence owns every devic
 session; Cast1 is the routine foreground acceptance target. Capture phone draft,
 saved dashboard, full-screen detail, empty/error states and restoration. Implementation now requires these checks; the earlier design-only revision did not
 require a build, deployment or device session.
+
+## Next acceptance work
+
+- [ ] Observe capture, simple stock and replenishment with real household items;
+  record hesitation and whether the publication state is understood.
+- [ ] Verify physical phone LAN pairing/reconnection and enlarged English/Thai
+  TV presentation, including physical remote/pointer use.
+- [ ] Finish the remaining broad acceptance items above, especially native editor
+  interruption/cancellation, size variants, limits and product merging. Checked
+  items record verified scenarios; an unchecked composite item is not a claim
+  that its entire feature is absent.
+- [ ] Confirm Cast2 installation through the coordinator when the reported
+  execution precondition changes. Reuse the identical frozen 0.1.81 APK for this
+  additional target; record its own receipt. Personal use remains operation-specific.
+- [ ] Select and document the Phase 3 sync architecture before adding purchase
+  completion, offline shopping or remote/cross-TV editing.
 
 ## Open product decisions
 

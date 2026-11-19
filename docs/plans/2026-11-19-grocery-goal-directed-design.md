@@ -18,6 +18,20 @@ and its six-app survey. It applies the same filter as the
 The [verification record](../testing/2026-11-19-groceries.md) establishes baseline
 correctness; passing tests do not establish that the interaction is easy to use.
 
+## Delivery checkpoint
+
+The implementation is committed and pushed as **`77f4536`** on
+`feature/grocery-list`; it remains separate from main. The
+[main grocery plan's delivery checkpoint](2026-11-19-grocery-list-widget.md)
+now consolidates Phase 1/2 completion, the Cooper revision and the Phase 3 boundary.
+
+Build **0.1.81** passes the container gate (510 JVM tests and zero lint errors),
+Chromium/WebKit phone scenarios and Cast1 native acceptance. Cast2 installation
+was attempted with the identical frozen APK and rejected at execution with
+`personal-install-in-use`; it is unconfirmed. Actual screenshots, job receipts
+and remaining physical/usability checks are in the
+[verification record](../testing/2026-11-19-grocery-cooper.md).
+
 ## Method and evidence
 
 Governing reference: [shared Alan Cooper design filter, v1.0](/home/will/docs/howtos/alan-cooper-design-filter.md).
