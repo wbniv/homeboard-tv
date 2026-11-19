@@ -15,6 +15,13 @@ final class GroceryData {
     static JSONObject copy(JSONObject value){try{return new JSONObject(value.toString());}catch(JSONException e){throw new IllegalStateException(e);}}
     static JSONObject find(JSONArray records,String id){for(int i=0;i<records.length();i++){JSONObject r=records.optJSONObject(i);if(r!=null&&id.equals(r.optString("id")))return r;}return null;}
     static String text(JSONObject item){String q=item.optString("quantity");JSONObject structured=item.optJSONObject("structured");if(structured!=null)q=structured.optString("amount")+" "+structured.optString("unit");return item.optString("name")+(q.isEmpty()?"":" · "+q);}
+    /** Familiar display units without rounding the exact household report. */
+    static String display(String value,String unit){
+        if(value.isEmpty())return "";
+        BigDecimal n=decimal(value,false);
+        if("ml".equals(unit)||"g".equals(unit))return n.movePointLeft(3).stripTrailingZeros().toPlainString()+" "+("ml".equals(unit)?"L":"kg");
+        return n.stripTrailingZeros().toPlainString()+" "+unit;
+    }
     static void string(JSONObject o,String key,int max,boolean required)throws JSONException {
         Object v=o.get(key);if(!(v instanceof String)||((String)v).codePointCount(0,((String)v).length())>max||required&&((String)v).trim().isEmpty())throw new PhoneConfiguration.Invalid("groceries",key+": invalid or too long");
     }

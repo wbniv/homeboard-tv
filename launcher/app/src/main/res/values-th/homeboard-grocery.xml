@@ -4,7 +4,7 @@
     <string name="hb_grocery_empty">ยังไม่มีรายการ · เพิ่มจากโทรศัพท์</string>
     <string name="hb_grocery_count">%1$d รายการ</string>
     <string name="hb_grocery_list">รายการซื้อของ</string>
-    <string name="hb_grocery_staples">ของที่ซื้อประจำ</string>
+    <string name="hb_grocery_staples">ตรวจของที่ซื้อประจำ</string>
     <string name="hb_grocery_edit">แก้ไขรายการ</string>
     <string name="hb_grocery_phone">เพิ่มจากโทรศัพท์</string>
     <string name="hb_grocery_phone_hint">ใช้โทรศัพท์จัดการสินค้า หน่วย และสต็อก กลับหน้าหลักทีวีก่อนอัปเดต</string>

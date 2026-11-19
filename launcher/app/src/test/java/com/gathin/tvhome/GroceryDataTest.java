@@ -13,6 +13,12 @@ public class GroceryDataTest {
     }
     static JSONObject milk()throws Exception{return product("milk").put("baseUnit","ml").put("packageUnit","carton").put("packageSize","1000").put("tracking","quantity").put("stock","500").put("reported","2026-11-19T02:10:00Z").put("threshold","1000").put("target","3000");}
     static JSONObject item(String id,String product)throws Exception{return new JSONObject().put("id",id).put("name","นม · Milk").put("quantity","2 cartons").put("note","Unsweetened").put("productId",product);}
+    @Test public void stockDisplayKeepsExactReportsInFamiliarUnits(){
+        assertEquals("0.5 L",GroceryData.display("500","ml"));
+        assertEquals("3.5 L",GroceryData.display("3500","ml"));
+        assertEquals("0.000000001 L",GroceryData.display("0.000001","ml"));
+        assertEquals("0.25 kg",GroceryData.display("250","g"));
+    }
     @Test public void exactDimensionsPackagesAndNoDensityGuesses()throws Exception {
         JSONObject p=milk();assertEquals("1500",GroceryData.base(p,"1.5","l").stripTrailingZeros().toPlainString());assertEquals("2000",GroceryData.base(p,"2","carton").toPlainString());
         assertThrows(PhoneConfiguration.Invalid.class,()->GroceryData.base(p,"1","kg"));assertThrows(PhoneConfiguration.Invalid.class,()->GroceryData.base(p,"1","bag"));

@@ -1,8 +1,10 @@
 # Groceries: Alan Cooper goal-directed design review
 
-Status: **proposed interaction revision, reviewed against shared filter v1.0**, November 19, 2026. Design only; no app
-changes or deployment. Review baseline: Phase 1/2 implementation on
-`feature/grocery-list` in `.worktrees/grocery-list`, debug build 0.1.78.
+Status: **implemented in the grocery worktree; 0.1.81 verified on Cast1**,
+November 19, 2026. Governing review: shared filter v1.0. Original baseline:
+Phase 1/2 on `feature/grocery-list`, debug build 0.1.78. The revision preserves the
+existing data model and explicit publication boundary. See the
+[revision verification record](../testing/2026-11-19-grocery-cooper.md).
 
 TL;DR: Help someone remember what the household needs, then return to what they
 were doing. Lead with **Add an item** and the shopping list. Offer **Check staples**
@@ -37,9 +39,10 @@ options, but their complete feature inventories are not requirements.
 
 ## Shared-filter disposition
 
-**Revise the interaction before the next grocery UX implementation.** The existing
-Phase 1/2 functionality and verification remain valid; this assessment identifies
-usability work, not a retroactive claim that the APK failed its functional checks.
+**The interaction revision is implemented.** The table below preserves the
+baseline findings that drove it; the implementation record gives their current
+disposition. Functional and browser acceptance are evidence of behavior, while
+observing people with the provisional profiles remains a separate usability check.
 
 | Shared filter coverage | Grocery finding and disposition |
 |---|---|
@@ -242,39 +245,79 @@ remain separate later work. This plan adds no purchase checkboxes to Phases 1/2.
 Use scenario walkthroughs before implementation and actual phone/TV checks afterward.
 Timing goals below are hypotheses, not measured baseline performance.
 
-- [ ] On a 390×844 phone viewport at normal text size, Add is visible without
+- [x] On a 390×844 phone viewport at normal text size, Add is visible without
   scrolling, ahead of list management and product setup. With larger text it remains
   early in the page and accessible without horizontal scrolling.
-- [ ] Add three English/Thai names using Enter without visiting details or losing
-  entry focus. Aim for one entry action per item after typing; measure whether
-  explicit publication and saved state are understood without explanation.
-- [ ] Reuse a known item with one tap; change its amount optionally. Repeated taps
+- [x] Add three English/Thai names using Enter without visiting details or losing
+  entry focus. One entry action per item after typing is verified; understanding
+  explicit publication and saved state remains part of the observation check.
+- [x] Reuse a known item with one tap; change its amount optionally. Repeated taps
   do not duplicate a product need or silently increase quantity. Unknown items and
   unknown units remain addable as text.
-- [ ] Report Enough/Need more/Not sure and add a staple without selecting base
+- [x] Report Enough/Need more/Not sure and add a staple without selecting base
   units or entering thresholds. The reusable item survives removal of its need.
-- [ ] Correct a 1 L carton and review the 0.5 L / 1 L / 3 L example without manual
+- [x] Correct a 1 L carton and review the 0.5 L / 1 L / 3 L example without manual
   conversion to milliliters. Show exact meaning, rounding and resulting stock.
   Reject incompatible dimensions inline without clearing fields.
-- [ ] Back retains ordinary phone edits; refresh, reconnect and session recovery
+- [x] Back retains ordinary phone edits; refresh, reconnect and session recovery
   retain them for the correct TV. Cancel and merge preview discard only their
   documented scope. Open-editor conflicts show both meaningful alternatives.
-- [ ] Review a grocery change mixed with another widget change: the publication
+- [x] Review a grocery change mixed with another widget change: the publication
   summary names both. One acknowledged update and one complete Undo cover both;
   uncertain responses reconcile the existing operation.
-- [ ] Filters show scope and counts; hidden, Enough and already-listed items remain
+- [x] Filters show scope and counts; hidden, Enough and already-listed items remain
   reachable. Changing stock does not delete confirmed needs. Filter changes do not
   alter order or create Undo entries; reorder cancellation is lossless.
-- [ ] Real TV short OK and pointer click open richer content; hold does not also
-  expand. Nested Back and visible Restore preserve page, widget focus and size.
-  English/Thai, large text, empty and unavailable states retain reachable actions.
+- [x] Real TV scripted short OK and native view click open richer content; hold does
+  not also expand. Nested Back and visible Restore preserve page, widget focus and
+  size. The isolated native probe reports pass on 0.1.81.
+- [ ] Physical remote/pointer study and enlarged English/Thai TV review. Browser
+  English/Thai, large text, empty and unavailable paths are separately verified.
 - [ ] Observe a few people with relevant habits trying capture and staple-review
   scenarios. Record hesitation, wrong turns, publication misunderstandings and
   whether simple stock status is sufficient; revise the provisional profiles.
-- [ ] Run model/browser checks and `task check`/`task build` in containers for the
+- [x] Run model/browser checks and `task check`/`task build` in containers for the
   implementation. Deploy through `task deploy` with a new number and identical
   frozen APK for both TVs. Use coordinator-owned Cast1 acceptance and preserve
   settings; record Cast2 admission/installation separately from foreground checks.
 
-The plan itself needs document/link/diagram validation only; it does not authorize
-an app change, a deployment or a new service integration.
+Will subsequently authorized implementation. The original design-only boundary is
+superseded for this UI revision and the project's required build/deployment workflow;
+no new service integration or Phase 3 purchase/sync scope is added.
+
+## Implementation record
+
+- Capture leads. The named-list title opens management; a single list has no
+  selector. Add/Enter keeps focus, successive additions show a readable pending
+  result, suggestions reuse confirmed defaults directly, and unconfirmed purchase
+  units stay readable text. Shopping rows remain a single named touch target with
+  their amount, rather than separate small chips; this preserves the complete
+  item action and is a deliberate touch-target choice pending observation.
+- **Check staples** has counted All / Need more / Not sure filters. Simple stock
+  controls do not remove confirmed needs. Recommendations name the purchase amount;
+  existing needs show their current amount and a deliberate before/after change.
+- Item detail shows either quantity text or amount/unit with **Use custom text**,
+  without a representation checkbox. Product name and usual purchase lead;
+  brand/variant, aliases/category, packaging and optional stock setup are disclosed
+  in context. Package and reported-stock entry accept familiar L/ml and kg/g;
+  normalization and display preserve exact decimal values. Changed definitions show
+  the old/new package and affected needs before explicit confirmation.
+- Ordinary fields are recoverable component buffers inside the shared TV-specific
+  session record. Back retains valid edits in the shared draft; Done is an optional
+  return action, Cancel discards only its open buffer, and incomplete fields remain
+  editable but block publication. Reload/reconnect offers explicit draft recovery.
+  A removed or redirected widget leaves an unfinished-edit panel; finishing it
+  preserves list data without adding a widget. A removed list requires an explicit
+  restore-in-draft action; missing product links become readable free text.
+- Publication reviews name grocery outcomes together with other widget changes;
+  long reviews disclose their details from a count. Atomic Update, operation-receipt
+  reconciliation and whole-update Undo are retained. Rebase compares the original
+  record before replacing a concurrently edited item.
+- Reordering keeps the grip, keyboard alternative and named row options. TV data
+  precedes secondary actions; the duplicate Edit list action is removed in favor
+  of the shared Configure action. Full-screen data and Restore/Back behavior remain.
+
+The design is **conditional on observed usability**, not an official Cooper
+certification. Household task observation, physical handset pairing and expanded
+English/Thai TV large-text review remain distinct from container/browser/native
+probe evidence. See the verification record for exact tested boundaries.

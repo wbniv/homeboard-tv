@@ -15,3 +15,18 @@ assert.equal(M.diff(base.draft,local)[0].kind,'grocery');const invalid=copy(draf
 const unicode=G.defaults();unicode.groceries.items.push(G.item('a','🥛'.repeat(120)));assert(G.valid(unicode));unicode.groceries.items[0].name+='🥛';assert(!G.valid(unicode));
 assert.deepEqual(Object.keys(scope.window.PhoneStrings.en).sort(),Object.keys(scope.window.PhoneStrings.th).sort());
 console.log('Groceries: exact units, package rounding, unknown stock, manual reuse, free-text preservation, validation, per-list conflict and independent-list merge passed');
+
+// Interrupted editors are recoverable but only a valid, owned proposal may publish.
+const owner={tvId:'kitchen'},raw={groceries:G.defaults()};raw.groceries.groceries.items.push(G.item('eggs','Eggs'));
+const original=copy(raw.groceries.groceries.items[0]),edited={...copy(original),note:'Breakfast'};
+const buffer={tvId:'kitchen',key:'widget:grocery',listId:'groceries',edit:{kind:'item',original,value:edited,touched:true,open:true}};
+G.restore('kitchen',[['kitchen-editor',buffer]]);assert.equal(G.proposal(owner,raw).book.groceries.items[0].note,'Breakfast');assert.equal(raw.groceries.groceries.items[0].note,'','Proposal is not publication');
+assert.equal(G.proposal({tvId:'other'},raw).book.groceries.items[0].note,'','TV ownership is enforced');
+const retained=copy(G.snapshot('kitchen'));G.clear('kitchen');G.restore('kitchen',retained);assert.equal(G.proposal(owner,raw).book.groceries.items[0].note,'Breakfast');
+retained[0][1].edit.value.name='';G.restore('kitchen',retained);assert.equal(G.proposal(owner,raw).issue.code,'gNameRequired');assert.equal(G.proposal(owner,raw).book.groceries.items[0].name,'Eggs');
+G.restore('kitchen',[['kitchen-editor',buffer]]);raw.groceries.groceries.items[0].note='Other cook';assert.equal(G.proposal(owner,raw).issue.code,'gEditorConflict');G.clear('kitchen');
+assert.equal(G.display('500','ml'),'0.5 L');assert.equal(G.display('0.000001','ml'),'0.000000001 L','Never round away a precise report');
+console.log('Groceries: interrupted editor validation, TV-scoped recovery, original-value conflict, and exact familiar display passed');
+
+const unitBuffer={tvId:'units',key:'grocery',listId:'groceries',edit:{kind:'product',original:copy(p),value:copy(p),touched:true,measureErrors:{stock:'half'}}};
+const stockDraft={groceries:G.defaults()};stockDraft.groceries.groceries.products.push(copy(p));G.restore('units',[['units-editor',unitBuffer]]);assert.equal(G.proposal({tvId:'units'},stockDraft).issue.code,'gDecimalRequired','Invalid display input blocks publication even when normalized value is unchanged');G.clear('units');

@@ -4,7 +4,7 @@
     <string name="hb_grocery_empty">No groceries listed · Add from phone</string>
     <string name="hb_grocery_count">%1$d items</string>
     <string name="hb_grocery_list">Shopping list</string>
-    <string name="hb_grocery_staples">Staples</string>
+    <string name="hb_grocery_staples">Check staples</string>
     <string name="hb_grocery_edit">Edit list</string>
     <string name="hb_grocery_phone">Add from phone</string>
     <string name="hb_grocery_phone_hint">Use the phone controller for products, units and stock. Return the TV to Home before Update TV.</string>

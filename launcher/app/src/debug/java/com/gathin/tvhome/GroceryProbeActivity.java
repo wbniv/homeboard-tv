@@ -66,7 +66,7 @@ public final class GroceryProbeActivity extends MainActivity {
     }
     private void checkStock()throws Exception{
         View staples=find(expanded().getWindow().getDecorView(),getString(R.string.hb_grocery_staples));require(staples!=null,"Missing Staples tab");staples.performClick();
-        require(text(expanded().getWindow().getDecorView()).contains("500"),"Reported stock missing");require(text(expanded().getWindow().getDecorView()).contains("3 carton"),"Rounded suggestion missing");
+        require(text(expanded().getWindow().getDecorView()).contains("0.5 L"),"Reported stock missing");require(text(expanded().getWindow().getDecorView()).contains("3 carton"),"Rounded suggestion missing");
         require(household.equals(super.getSharedPreferences("widget-home",0).getAll()),"Household data changed");
         report("pass","Short/hold OK, nested Back, visible Restore, page/focus/size and data unchanged; native phone aggregate Apply/retry/Undo; staple stock detail");
     }

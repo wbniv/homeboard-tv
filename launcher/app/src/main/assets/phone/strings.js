@@ -265,3 +265,91 @@ window.PhoneStrings.th.gUseSuggestion="ใช้จำนวนที่แน�
 
 window.PhoneStrings.en.gEditorConflict="This item changed on the TV while this form was open. Review both versions.";
 window.PhoneStrings.th.gEditorConflict="รายการนี้เปลี่ยนบนทีวีระหว่างเปิดแบบฟอร์ม ตรวจสอบทั้งสองเวอร์ชัน";
+
+Object.assign(window.PhoneStrings.en, {
+  "gCheckStaples": "Check staples",
+  "gFilter": "Show staples",
+  "gAllStaples": "All staples",
+  "gNoMatches": "No staples in this view. Choose All staples to see the rest.",
+  "gRowOptions": "Options for {name}",
+  "gResumeEdit": "Continue editing {name}",
+  "gListed": "Already on list · Tap the item to change its quantity.",
+  "gAdded": "Added {name} · Not on TV yet",
+  "gStockReason": "Low at {low} · Target {target} · Would leave {expected} after purchase.",
+  "gPackageMeaning": "1 {unit} contains {amount}. Round up to whole packages.",
+  "gNameRequired": "Enter an item name.",
+  "gDecimalRequired": "Enter a non-negative decimal, up to 6 decimal places; purchase amounts must be above zero.",
+  "gPackageRequired": "Enter a package name and choose what it contains (volume, weight or pieces).",
+  "gUnitRequired": "Choose a unit for the reported stock.",
+  "gTargetRequired": "Desired stock must be above the low-stock point.",
+  "gPackageReview": "Review the changed package and its listed quantities in item details before updating TV.",
+  "gMeasureUnit": "Measure in",
+  "gOutcomeAdded": "Add {name}",
+  "gOutcomeEdited": "Change {name}",
+  "gOutcomeRemoved": "Remove {name}",
+  "gOutcomeKept": "Keep {name} for reuse",
+  "gOutcomeProduct": "Update product: {name}",
+  "gOutcomeForgot": "Forget saved product: {name}",
+  "gListDetailsChanged": "Change list name or item order",
+  "gKeepStaple": "Keep for next time",
+  "gManual": "Simple status",
+  "gTrackQuantity": "Measured amount",
+  "gState_unknown": "Not sure",
+  "gPackageSize": "One package contains",
+  "gReviewExisting": "Already on list · Change quantity",
+  "gEditorConflict": "This item changed while you were editing. Review both versions before continuing."
+});
+
+Object.assign(window.PhoneStrings.th, {
+  "gCheckStaples": "ตรวจของที่ซื้อประจำ",
+  "gFilter": "แสดงของที่ซื้อประจำ",
+  "gAllStaples": "ทั้งหมด",
+  "gNoMatches": "ไม่มีสินค้าในมุมมองนี้ เลือกทั้งหมดเพื่อดูสินค้าอื่น",
+  "gRowOptions": "ตัวเลือกสำหรับ {name}",
+  "gResumeEdit": "แก้ไข {name} ต่อ",
+  "gListed": "มีในรายการแล้ว · แตะสินค้าเพื่อแก้จำนวน",
+  "gAdded": "เพิ่ม {name} แล้ว · ยังไม่ได้อัปเดตทีวี",
+  "gStockReason": "เกณฑ์ต่ำ {low} · เป้าหมาย {target} · หลังซื้อจะมี {expected}",
+  "gPackageMeaning": "1 {unit} มี {amount} ปัดขึ้นเป็นบรรจุเต็ม",
+  "gNameRequired": "กรอกชื่อสินค้า",
+  "gDecimalRequired": "กรอกทศนิยมที่ไม่ติดลบ ไม่เกิน 6 ตำแหน่ง จำนวนซื้อต้องมากกว่าศูนย์",
+  "gPackageRequired": "กรอกชื่อบรรจุและเลือกหน่วยปริมาตร น้ำหนัก หรือชิ้น",
+  "gUnitRequired": "เลือกหน่วยของสต็อกที่รายงาน",
+  "gTargetRequired": "สต็อกเป้าหมายต้องมากกว่าเกณฑ์ต่ำ",
+  "gPackageReview": "ตรวจขนาดบรรจุที่เปลี่ยนและจำนวนในรายการก่อนอัปเดตทีวี",
+  "gMeasureUnit": "หน่วยที่ใช้วัด",
+  "gOutcomeAdded": "เพิ่ม {name}",
+  "gOutcomeEdited": "แก้ไข {name}",
+  "gOutcomeRemoved": "นำ {name} ออก",
+  "gOutcomeKept": "เก็บ {name} เพื่อใช้ซ้ำ",
+  "gOutcomeProduct": "อัปเดตสินค้า: {name}",
+  "gOutcomeForgot": "ลบสินค้าที่บันทึก: {name}",
+  "gListDetailsChanged": "เปลี่ยนชื่อหรือลำดับรายการ",
+  "gKeepStaple": "เก็บไว้ซื้อครั้งต่อไป",
+  "gManual": "สถานะอย่างง่าย",
+  "gTrackQuantity": "ปริมาณที่วัด",
+  "gState_unknown": "ไม่แน่ใจ",
+  "gPackageSize": "ปริมาณต่อหนึ่งบรรจุ",
+  "gReviewExisting": "มีในรายการแล้ว · แก้จำนวน",
+  "gEditorConflict": "สินค้านี้เปลี่ยนระหว่างแก้ไข ตรวจสอบทั้งสองแบบก่อนดำเนินการต่อ"
+});
+
+window.PhoneStrings.en.gDone='Done';
+window.PhoneStrings.th.gDone='เสร็จ';
+
+window.PhoneStrings.en.gFinishEdit='Finish or cancel the unfinished item before changing lists.';
+window.PhoneStrings.th.gFinishEdit='แก้ไขสินค้าให้เสร็จหรือยกเลิกก่อนเปลี่ยนรายการ';
+
+window.PhoneStrings.en.gOutcomeCount='{count} item/product changes';
+window.PhoneStrings.th.gOutcomeCount='เปลี่ยนแปลง {count} รายการ/สินค้า';
+
+window.PhoneStrings.en.gUnfinished='An item edit needs attention';
+window.PhoneStrings.th.gUnfinished='มีสินค้าที่ยังแก้ไขไม่เสร็จ';
+
+Object.assign(window.PhoneStrings.en, {"gHowMuch": "How much?", "gCustomText": "Use custom text", "gChooseAmount": "Choose amount and unit", "gUsualPurchase": "Usual purchase", "gStockPolicy": "Track stock", "gOnList": "On list: {amount}", "gAddAmount": "Add {amount} {unit}", "gChangeAmount": "Change {before} → {after}"});
+
+Object.assign(window.PhoneStrings.th, {"gHowMuch": "จำนวนเท่าไร?", "gCustomText": "ใช้ข้อความอิสระ", "gChooseAmount": "เลือกจำนวนและหน่วย", "gUsualPurchase": "จำนวนที่ซื้อประจำ", "gStockPolicy": "ติดตามสต็อก", "gOnList": "ในรายการ: {amount}", "gAddAmount": "เพิ่ม {amount} {unit}", "gChangeAmount": "เปลี่ยน {before} → {after}"});
+
+Object.assign(window.PhoneStrings.en, {"gRecoveredEdit": "Unfinished grocery edit: {name}", "gRecoveredHelp": "Its widget or list changed on the TV. Finish or cancel this edit here; keeping the edit does not add a dashboard widget.", "gRestoreDraftList": "Restore list in my draft to keep this edit"});
+
+Object.assign(window.PhoneStrings.th, {"gRecoveredEdit": "การแก้ไขที่ยังไม่เสร็จ: {name}", "gRecoveredHelp": "วิดเจ็ตหรือรายการเปลี่ยนบนทีวี แก้ไขต่อหรือยกเลิกที่นี่ การเก็บฉบับร่างไม่เพิ่มวิดเจ็ตบนแดชบอร์ด", "gRestoreDraftList": "คืนรายการในฉบับร่างเพื่อเก็บการแก้ไขนี้"});

@@ -1,13 +1,15 @@
 # Grocery list: phone entry, product knowledge and household staples
 
-Status: **Phases 1 and 2 implemented**, November 19, 2026, in
-`.worktrees/grocery-list` on `feature/grocery-list`, separate from main. Container
-checks and Cast1 native acceptance passed on debug build **0.1.78**. The identical
-Cast2 installation was admitted but failed `personal-install-in-use`; it remains
-unconfirmed. Phase 3 remains future work. See the
-[verification record](../testing/2026-11-19-groceries.md) for exact checks, receipts,
-physical captures and remaining acceptance limits. Mockups illustrate the design;
-the verification record distinguishes actual implemented behavior and follow-ups.
+Status: **Phases 1 and 2 implemented, with the Cooper interaction revision**,
+November 19, 2026, in `.worktrees/grocery-list` on `feature/grocery-list`, separate
+from main. The revision adds capture-first phone entry, direct reuse, counted
+staple review, familiar quantities and recoverable ordinary edits. See the
+[Cooper implementation record](2026-11-19-grocery-goal-directed-design.md) and
+[0.1.81 verification](../testing/2026-11-19-grocery-cooper.md). Original Phase 1/2
+acceptance on 0.1.78 is retained in the [baseline record](../testing/2026-11-19-groceries.md).
+Phase 3 purchase check-off and remote sync remain future work. Mockups illustrate
+the design; verification records distinguish implemented behavior and remaining
+physical/usability acceptance.
 
 TL;DR: Phase 1 makes adding groceries from a phone quick and shows the saved list
 on Homeboard. Phase 2 adds reusable product knowledge, meaningful quantities and
