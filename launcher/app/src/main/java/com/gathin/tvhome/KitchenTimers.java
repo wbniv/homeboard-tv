@@ -18,10 +18,10 @@ final class KitchenTimers {
         boolean changed=false;
         for(int i=0;i<items().length();i++){
             JSONObject t=items().getJSONObject(i);String state=t.getString("state");boolean event="event".equals(t.getString("kind"));
-            if(!event&&"running".equals(state)&&t.optInt("boot",-1)!=boot){t.put("state","interrupted").put("soundUntil",0);changed=true;continue;}
-            if(event&&"running".equals(state)&&t.optInt("boot",-1)!=boot){t.put("boot",boot);changed=true;if(t.getLong("at")<=wall){t.put("state","missed").put("soundUntil",0);continue;}}
-            if("running".equals(state)&&remaining(t,elapsed,wall)==0){t.put("state","done").put("remaining",0).put("soundUntil",wall+60_000);changed=true;}
-            if(t.optLong("soundUntil")>0&&t.optInt("boot",-1)!=boot){t.put("soundUntil",0).put("boot",boot);changed=true;}
+            if(!event&&"running".equals(state)&&t.optInt("boot",-1)!=boot){t.put("state","interrupted").put("soundDeadline",0);changed=true;continue;}
+            if(event&&"running".equals(state)&&t.optInt("boot",-1)!=boot){t.put("boot",boot);changed=true;if(t.getLong("at")<=wall){t.put("state","missed").put("soundDeadline",0);continue;}}
+            if("running".equals(state)&&remaining(t,elapsed,wall)==0){t.put("state","done").put("remaining",0).put("soundDeadline",elapsed+60_000);changed=true;}
+            if(t.optLong("soundDeadline")>0&&t.optInt("boot",-1)!=boot){t.put("soundDeadline",0).put("boot",boot);changed=true;}
         }
         if(changed)data.put("revision",revision()+1);return changed;
     }
@@ -35,7 +35,7 @@ final class KitchenTimers {
         if("create".equals(action)){
             if(items().length()>=24)throw new IllegalArgumentException("Remove an old timer first (maximum 24)");
             String name=command.getString("name").trim();if(name.length()>80)throw new IllegalArgumentException("Name is too long");
-            String kind=command.getString("kind");JSONObject t=new JSONObject().put("id",UUID.randomUUID().toString()).put("name",name).put("kind",kind).put("state","running").put("boot",boot).put("soundUntil",0);
+            String kind=command.getString("kind");JSONObject t=new JSONObject().put("id",UUID.randomUUID().toString()).put("name",name).put("kind",kind).put("state","running").put("boot",boot).put("soundDeadline",0);
             if("timer".equals(kind)){long duration=whole(command,"duration",1000,MAX_DURATION);t.put("duration",duration).put("remaining",duration).put("deadline",elapsed+duration);}
             else if("event".equals(kind)){
                 // ISO dates on the wire; locale-specific dates are presentation only.
@@ -46,16 +46,16 @@ final class KitchenTimers {
                 t.put("at",at).put("zone",zone.getId());
             }else throw new IllegalArgumentException("Unknown timer type");
             items().put(t);
-        }else if("silence".equals(action)){for(int i=0;i<items().length();i++)items().getJSONObject(i).put("soundUntil",0);}
+        }else if("silence".equals(action)){for(int i=0;i<items().length();i++)items().getJSONObject(i).put("soundDeadline",0);}
         else {
             JSONObject t=find(command.getString("id"));String state=t.getString("state");boolean event="event".equals(t.getString("kind"));
             switch(action){
                 case "pause":if(event||!"running".equals(state))throw new IllegalArgumentException("This timer cannot be paused");t.put("remaining",remaining(t,elapsed,wall)).put("state","paused");break;
                 case "resume":if(event||!"paused".equals(state))throw new IllegalArgumentException("This timer cannot be resumed");t.put("deadline",elapsed+t.getLong("remaining")).put("boot",boot).put("state","running");break;
                 case "add":if(event||!("running".equals(state)||"paused".equals(state)))throw new IllegalArgumentException("Add time to a running or paused cooking timer");long rem=remaining(t,elapsed,wall)+60_000;if(rem>MAX_DURATION)throw new IllegalArgumentException("Maximum 24 hours");t.put("remaining",rem);if("running".equals(state))t.put("deadline",elapsed+rem);break;
-                case "restart":if(event)throw new IllegalArgumentException("Create another event alarm");t.put("deadline",elapsed+t.getLong("duration")).put("remaining",t.getLong("duration")).put("boot",boot).put("state","running").put("soundUntil",0);break;
-                case "stop":t.put("state","stopped").put("remaining",0).put("soundUntil",0);break;
-                case "remove":if("running".equals(state)||"paused".equals(state)||t.optLong("soundUntil")>wall)throw new IllegalArgumentException("Stop this timer before removing it");for(int i=0;i<items().length();i++)if(items().getJSONObject(i)==t){items().remove(i);break;}break;
+                case "restart":if(event)throw new IllegalArgumentException("Create another event alarm");t.put("deadline",elapsed+t.getLong("duration")).put("remaining",t.getLong("duration")).put("boot",boot).put("state","running").put("soundDeadline",0);break;
+                case "stop":t.put("state","stopped").put("remaining",0).put("soundDeadline",0);break;
+                case "remove":if("running".equals(state)||"paused".equals(state)||t.optLong("soundDeadline")>elapsed)throw new IllegalArgumentException("Stop this timer before removing it");for(int i=0;i<items().length();i++)if(items().getJSONObject(i)==t){items().remove(i);break;}break;
                 default:throw new IllegalArgumentException("Unknown timer action");
             }
         }
@@ -65,5 +65,6 @@ final class KitchenTimers {
     }
     private static long whole(JSONObject o,String key,long min,long max)throws JSONException{Object v=o.get(key);if(!(v instanceof Number)||!Double.isFinite(((Number)v).doubleValue())||((Number)v).doubleValue()!=((Number)v).longValue())throw new IllegalArgumentException("Whole seconds required");long n=((Number)v).longValue();if(n<min||n>max)throw new IllegalArgumentException("Duration must be between 1 second and 24 hours");return n;}
     private static String canonical(JSONObject o)throws JSONException{List<String> keys=new ArrayList<>();o.keys().forEachRemaining(keys::add);Collections.sort(keys);StringBuilder s=new StringBuilder();for(String key:keys)s.append(key).append(':').append(new JSONArray().put(o.get(key)).toString()).append(';');return s.toString();}
+    boolean sounding(long elapsed){for(int i=0;i<items().length();i++)if(items().optJSONObject(i).optLong("soundDeadline")>elapsed)return true;return false;}
     static String clock(long millis){long seconds=(Math.max(0,millis)+999)/1000;return seconds>=3600?String.format(Locale.ROOT,"%d:%02d:%02d",seconds/3600,seconds/60%60,seconds%60):String.format(Locale.ROOT,"%02d:%02d",seconds/60,seconds%60);}
 }
