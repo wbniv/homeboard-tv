@@ -1,0 +1,516 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Grocery list — Phase 1 and Phase 2 design</title><style>body{margin:0;background:#0d1c25;color:#e8f0f1;font:17px/1.65 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:40px 28px 100px}h1,h2,h3{line-height:1.25;scroll-margin-top:24px}h1{font-size:40px;color:#9ae7c9}h2{margin-top:56px;border-top:1px solid #38515d;padding-top:24px}h3{margin-top:32px}a{color:#9ae7c9}p,li{max-width:90ch}img{display:block;width:100%;height:auto;margin:28px 0;border-radius:16px}table{border-collapse:collapse;width:100%;font-size:15px;display:block;overflow-x:auto}th,td{border:1px solid #3b5561;padding:12px;text-align:left;vertical-align:top}th{background:#223e49}code{background:#223e49;padding:2px 5px;border-radius:4px}.note{background:#223e49;border-left:4px solid #8be0be;padding:15px 20px} @media(max-width:640px){main{padding:24px 16px}h1{font-size:30px}}</style></head><body><main><p class="note">Design proposal · <a href="../2026-11-19-grocery-list-widget.md">Canonical Markdown plan</a> · <a href="mockups.svg">Open mockups at full size</a> · <a href="workflow.svg">Open workflow diagram</a></p><h1>Grocery list: phone entry, product knowledge and household staples</h1>
+<p>Status: <strong>Phases 1 and 2 implemented</strong>, November 19, 2026, in
+<code>.worktrees/grocery-list</code> on <code>feature/grocery-list</code>, separate from main. Container
+checks and Cast1 native acceptance passed on debug build <strong>0.1.78</strong>. The identical
+Cast2 installation was admitted but failed <code>personal-install-in-use</code>; it remains
+unconfirmed. Phase 3 remains future work. See the
+<a href="../../testing/2026-11-19-groceries.md">verification record</a> for exact checks, receipts,
+physical captures and remaining acceptance limits. Mockups illustrate the design;
+the verification record distinguishes actual implemented behavior and follow-ups.</p>
+<p>TL;DR: Phase 1 makes adding groceries from a phone quick and shows the saved list
+on Homeboard. Phase 2 adds reusable product knowledge, meaningful quantities and
+stock-aware staples. Phase 3 adds purchase check-off away from home and reliable
+sync back to the dashboard. A staple remains in the household's catalog after a
+purchase; its current shopping need is a separate record.</p>
+<p><a href="index.html">Open the illustrated plan</a> ·
+<a href="mockups.svg">Phase 1 and Phase 2 mockups</a> ·
+<a href="workflow.svg">Interaction workflow</a></p>
+<p><img alt="Phase 1 phone entry and TV list; Phase 2 product quantities and stock-aware staples" src="mockups.svg" /></p>
+<h2>Goals and agreed boundaries</h2>
+<ul>
+<li>People primarily add items on a phone. The TV is a readable household reminder,
+  with full-screen detail and a secondary remote-entry route.</li>
+<li>Phase 1 is basic list entry. Phase 2 understands products and units. Purchase
+  check-off and synchronization from the shop belong to Phase 3.</li>
+<li>Some products are regularly bought and must remain available even when there
+  is currently enough stock. Buying something and deleting its product record
+  are different actions.</li>
+<li>Build on the Java launcher and current phone-controller pairing, draft,
+  <strong>Update TV</strong>, revision and Undo behavior. No account or server is needed for
+  Phase 1 or Phase 2. Each TV owns its list initially.</li>
+</ul>
+<p>The current phone controller needs a temporary approved session on the home
+network, with Homeboard open. That supports adding groceries at home; it does
+not support editing from a shop or automatic Cast1/Cast2 list synchronization.
+Phase 3 must deliberately add that capability rather than imply it already exists.</p>
+<h2>Existing-app survey and design decisions</h2>
+<p>Surveyed official product pages and help documentation on November 19, 2026,
+after the initial design and first implementation pass. This is a documentation
+survey, not hands-on testing or a claim that integrations are available. Will
+identified <strong>Out of Milk</strong> as a feature-rich reference; it is the primary reference
+for pantry behavior. No external app, service or account has been selected.</p>
+<table>
+<thead>
+<tr>
+<th>Reference</th>
+<th>Documented pattern</th>
+<th>Homeboard decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Out of Milk</strong></td>
+<td>Separate pantry and shopping lists; pantry items can use <strong>Low/Full</strong> or numerical quantities with units. Items can be copied from pantry to shopping while remaining in pantry.</td>
+<td>Adopt the distinction between <strong>what we regularly keep</strong>, <strong>what we have</strong>, and <strong>what to buy now</strong>. Offer simple <strong>Need more / Enough / Unknown</strong> first, with optional measured stock. Adding a shopping need keeps the persistent staple. <a href="https://support.outofmilk.com/hc/en-us/articles/115002181512-Pantry-List-Low-Full-vs-Quantities">Pantry modes</a>, <a href="https://support.outofmilk.com/hc/en-us/articles/206157726-Android-Move-or-Copy-items-between-lists">copy versus move</a>.</td>
+</tr>
+<tr>
+<td><strong>AnyList</strong></td>
+<td>Favorites form a reusable master list; favorites are suggested while typing and preserve saved item details. Separate item details include quantities, package sizes and notes.</td>
+<td>Adopt quick entry, explicit <strong>Keep as staple</strong>, suggestions from confirmed products, and optional details. Reuse must not require re-entering brand/variant or package size. <a href="https://help.anylist.com/articles/favorites/">Favorites</a>, <a href="https://help.anylist.com/articles/feature-overview-item-details/">item details</a>.</td>
+</tr>
+<tr>
+<td><strong>OurGroceries</strong></td>
+<td>A master list remembers entered items; typing narrows suggestions. Crossing off moves a current item out of the active section without removing it from reusable history.</td>
+<td>Adopt identity-based reuse and a clear separation between active needs and retained products. In Phase 3, purchase completion must remain reversible and must not delete the staple. Automatic history of every free-text entry is a possible follow-up, distinct from explicitly saved staples. <a href="https://www.ourgroceries.com/user-guide">User guide</a>.</td>
+</tr>
+<tr>
+<td><strong>Bring!</strong></td>
+<td>Fast item entry plus optional quantities/descriptions, variant refinements and categories; descriptions distinguish otherwise similar items.</td>
+<td>Adopt progressive detail: a name is sufficient. Keep variants distinct and require confirmation before combining quantities or products. Store/category ordering can follow observed household use. <a href="https://www.getbring.com/help-center-main-categories/items-lists">Items and lists</a>.</td>
+</tr>
+<tr>
+<td><strong>grocy</strong></td>
+<td>Product-based inventory, minimum-stock shopping suggestions and purchase tracking; self-hosted with an API.</td>
+<td>Use as a reference for explicit stock units and replenishment policies. Keep inventory optional in Homeboard and preserve the quick-list workflow. A grocy adapter is a candidate for a later integration investigation, not a required server. <a href="https://grocy.info/">Official overview</a>.</td>
+</tr>
+<tr>
+<td><strong>Remember The Milk</strong></td>
+<td>One-line Smart Add; saved searches as Smart Lists; calendar-based <strong>Every…</strong> versus completion-based <strong>After…</strong> recurrence; shared lists and task assignment.</td>
+<td>Learn fast capture, filtered views over one underlying record, and explicit repeat triggers. Keep time-based reminders separate from stock-based replenishment. <a href="https://www.rememberthemilk.com/tour/">Tour</a>, <a href="https://www.rememberthemilk.com/help/?ctx=basics.smartlists.createlist">Smart Lists</a>, <a href="https://www.rememberthemilk.com/help/?ctx=basics.basics.repeatformat">repeat semantics</a>.</td>
+</tr>
+</tbody>
+</table>
+<p>The Out of Milk pantry help pages are older documentation (2017–2019); they
+establish the reference interaction, not present-day platform parity or an API
+contract. Its <a href="https://outofmilkapp.com/features">feature overview</a> also describes
+pantry management, quantities, item history, categories, barcode entry and shared
+lists. Those additional capabilities inform the roadmap; none implies that
+Homeboard currently supports barcode lookup or remote shared-list sync.</p>
+<h3>Adopt in Phases 1 and 2</h3>
+<ul>
+<li><strong>Phone-first, one-field entry.</strong> Keep name-only Add/Enter prominent; reveal
+  quantities, product identity and stock only when the person wants them.</li>
+<li><strong>Reusable staples / pantry.</strong> A persistent household item is independent of a
+  shopping row. Enough stock hides its current shopping need, not its identity;
+  until purchase handling exists, removing a row remains an explicit manual edit.</li>
+<li><strong>Simple status or measured stock.</strong> People can report Need more, Enough or
+  Unknown without counting grams or milliliters. Quantitative tracking is optional
+  per product, with a report timestamp and explicit units.</li>
+<li><strong>Remember confirmed detail.</strong> Product suggestions can reuse names, aliases,
+  brand/variant, normal purchase quantity and known package sizes. Unknown items
+  remain addable immediately.</li>
+<li><strong>Review replenishment.</strong> Low-stock suggestions are separate from confirmed
+  shopping needs. Show the deficit, package rounding and expected resulting stock
+  before adding; never duplicate needs during a refresh.</li>
+<li><strong>Preserve user intent.</strong> Quantity increases, product merges, deletion and stock
+  corrections require clear actions and reversible drafts. A stock edit alone
+  does not mark a purchase or silently clear someone's shopping row.</li>
+</ul>
+<h3>Keep for Phase 3 or later</h3>
+<p>Phase 3 owns shopping-away-from-home use, check-off, partial purchases, offline
+pending state and household/dashboard synchronization. Later candidates include
+barcode/product lookup, recent-item history beyond saved products, configurable
+store/category ordering, prices and product photos. Recipes, coupons and retailer
+ordering are separate needs to validate; Out of Milk's breadth is a reference,
+not a requirement to expose all those features in the first form.</p>
+<h3>Remember The Milk: strengths and what to take</h3>
+<p>Remember The Milk is a task-management reference rather than a pantry inventory
+model. Its strongest contribution here is making capture and follow-through easy
+without requiring the person to open a large editor. The following are Homeboard
+design judgments informed by its official documentation, not claims that RTM has
+stock-aware grocery behavior.</p>
+<table>
+<thead>
+<tr>
+<th>Strength</th>
+<th>What Homeboard can learn</th>
+<th>Phase and acceptance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fast capture with progressive detail.</strong> Smart Add accepts several task properties in one line; mobile entry also offers visible shortcuts for people who do not know the syntax.</td>
+<td>Preserve the one-field Add/Enter path. Consider optional quantity/category chips when an interpretation is confident, with the interpreted product/amount/unit visible before confirmation. Keep the original text and an ordinary editor available; do not require syntax or silently reinterpret Thai/English names. <a href="https://www.rememberthemilk.com/help/?ctx=basics.smartadd.whatis">Smart Add</a>, <a href="https://www.rememberthemilk.com/services/iphone/faq/">mobile entry</a>.</td>
+<td>Phase 1 fast entry and Phase 2 explicit confirmed fields are current scope. Natural-language parsing is a later enhancement; an ambiguous <code>2 milk</code> must stay text until confirmed.</td>
+</tr>
+<tr>
+<td><strong>Useful views over shared records.</strong> Smart Lists save search criteria and update as matching tasks change.</td>
+<td>Offer named, understandable views such as <strong>Need more</strong>, <strong>Check stock</strong>, and <strong>Already on shopping list</strong> over the same products/needs. A view must not create a second inventory. Any future store/category filters must say what they exclude. <a href="https://www.rememberthemilk.com/help/?ctx=basics.smartlists.createlist">Create a Smart List</a>.</td>
+<td>Phase 2 follow-up: filtered staple review, without importing a general query language. Changing a status updates view membership; an existing shopping need remains reachable and is never duplicated.</td>
+</tr>
+<tr>
+<td><strong>Two distinct recurrence rules.</strong> <code>Every…</code> follows the calendar; <code>After…</code> generates another occurrence after completion.</td>
+<td>Distinguish <strong>review stock every Sunday</strong>, <strong>review again 7 days after purchase</strong>, and <strong>suggest buying when reported stock is low</strong>. A calendar reminder is not evidence of consumption, an actual purchase, or depleted stock. <a href="https://www.rememberthemilk.com/help/?ctx=basics.basics.repeatformat">Repeat formats</a>.</td>
+<td>Stock thresholds/manual need remain Phase 2. Scheduled review reminders are later work. Completion-relative review belongs after Phase 3 has real purchase events. Test late/missed reviews, purchase reversal and duplicate prevention before enabling recurrence.</td>
+</tr>
+<tr>
+<td><strong>Shared responsibility and reminders.</strong> Lists can be shared with edit/view permissions, tasks assigned, and reminders configured.</td>
+<td>A future <strong>Who is shopping?</strong> assignment and <strong>Check stock</strong> reminder can support household coordination. Preserve one shopping need; show assignment/sync state instead of copying a row per person or TV. <a href="https://www.rememberthemilk.com/help/guide/">Getting started</a>.</td>
+<td>Phase 3 or later: decide household identity, permissions, offline acknowledgements and notification delivery first. Do not add a required account or background alert service to Phases 1/2.</td>
+</tr>
+</tbody>
+</table>
+<p>The key modeling lesson is <strong>a persistent product is not a repeating task</strong>.
+A staple can stay visible indefinitely with enough or unknown stock. A shopping
+need represents a particular decision to buy. A reminder requests a review.
+An actual purchase is an event. They may reference each other, but checking off a
+future reminder must not increase stock or fulfill a shopping need.</p>
+<p><img alt="Stock-based need, calendar review and review after purchase have different triggers" src="review-triggers.svg" /></p>
+<p>For a later review-reminder feature, specify <code>calendar schedule</code> versus <code>after
+purchase</code>, the relevant time zone, next review time and the event that advances
+it. Preserve product identity, usual amount and package knowledge across cycles;
+keep purchase-specific notes/history separate. A missed reminder must not create
+multiple identical shopping needs. Do not estimate inventory from elapsed time
+unless a separately designed, explicit prediction feature is chosen.</p>
+<p>This survey expands the design vocabulary and roadmap. It does <strong>not</strong> expand the
+currently authorized Phase 1/2 build into a general task manager, scheduled-reminder
+service or RTM integration. Provider/API availability, authentication, terms and
+product/unit mapping would need separate verification before any adapter choice.</p>
+<h3>Shared implementation sequence</h3>
+<p>Will authorized Phases 1 and 2 together, or sequentially if more efficient. Use one
+shared list/product/staple model and transaction path in this worktree:</p>
+<ol>
+<li>Persist lists, current needs and reusable products; register compact and richer
+   full-screen presentations and preserve widget restoration.</li>
+<li>Extend the existing phone draft with fast Add/Enter, batch entry, edit/reorder,
+   multiple lists and reusable staples; commit through Update TV with Undo.</li>
+<li>Add confirmed quantities, product/package knowledge, optional stock reports and
+   replenishment review. Use exact decimal arithmetic and matching validation on TV
+   and phone; do not infer consumption.</li>
+<li>Run container model/browser/lint checks and record screenshots, then deploy the
+   identical newly numbered APK to both TVs through the coordinator. Record actual
+   install and foreground acceptance separately. Keep unrelated main-worktree edits
+   out of this feature branch and coordinate a combined deployment when necessary.</li>
+</ol>
+<h2>Phase 1 — a useful list, fast to add to</h2>
+<h3>Phone: the primary surface</h3>
+<p>Open the existing named TV controller and tap the <strong>Groceries</strong> card. The header
+identifies the TV and list. Keep an <strong>Add an item…</strong> input and <strong>Add</strong> action
+above the ordered draft list. The keyboard's Add/Enter action adds the row,
+clears the field and keeps the keyboard ready for the next item. Accept Thai,
+English and mixed text without requiring a catalog selection.</p>
+<p>An optional quantity field is plain text, for example <strong>2 cartons</strong>, <strong>500 g</strong> or
+<strong>a few</strong>. It is a human-readable note in this phase, never silently parsed or
+converted. Row details provide quantity text and a longer note. A new row needs
+only a nonblank name. <strong>Add several</strong> accepts one item per line and previews the
+result before putting the rows in the draft; blank lines are ignored.</p>
+<p>Adding changes the phone draft immediately. A persistent summary says, for
+example, <strong>3 items added · Not on TV yet</strong>, beside the existing <strong>Update TV</strong>
+action. One update commits the entire reviewed draft and creates one Undo entry.
+Typing or adding individual rows must not produce repeated TV writes. After a
+successful acknowledgement, say <strong>Saved to Cast1</strong>. A lost acknowledgement is
+<strong>Checking update…</strong>, not an invitation to create duplicate entries.</p>
+<p>People can edit names, quantity text and notes, reorder by drag grip or explicit
+move actions, and remove a row with draft Undo. There are <strong>no checkboxes or
+Bought actions</strong> in Phase 1. The list is maintained manually through editing and
+removal until Phase 3 introduces purchase semantics. Removal must say <strong>Remove
+from list</strong>, never <strong>Purchased</strong>.</p>
+<p>Matching names show a gentle <strong>Already on the list — edit it or add another?</strong>
+choice. Case and surrounding whitespace may help find a possible duplicate, but
+never merge entries automatically: two Milk rows may describe different products.
+Preserve entered names, punctuation and language. Stable row IDs distinguish them.</p>
+<h3>TV: glance and richer full screen</h3>
+<p>Add <strong>Groceries</strong> through the existing widget picker; do not rearrange the default
+dashboard. Start with an empty list, not the sample groceries in the mockup.
+Propose a <strong>4×2</strong> size preset, subject to the current grid and collision checks.</p>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Phase 1 content and interaction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1×1</td>
+<td>Basket icon, list name, item count and first item when space permits.</td>
+</tr>
+<tr>
+<td>Wide one-row</td>
+<td>Title/count and a few item names with a clear remaining count.</td>
+</tr>
+<tr>
+<td>Standard/tall</td>
+<td>Ordered names and quantity text; show <strong>+N more</strong> instead of auto-scrolling.</td>
+</tr>
+<tr>
+<td>Full screen</td>
+<td>Entire scrollable list, full names, quantities and a highlighted-item pane with complete notes. Edit list opens the remote Add item/Edit item fallback; Add from phone and Configure are explicit actions.</td>
+</tr>
+</tbody>
+</table>
+<p>Home focuses the whole widget. Short OK/click opens the existing expansion shell;
+hold OK opens Configure/Move/Resize/Remove widget. In full screen, Up/Down moves
+through rows and updates details; Right reaches the detail actions and Left returns
+to the selected row. OK on a row opens its detail, without changing list data.
+An explicit Edit item action opens a draft editor with Save/Cancel. Add item uses
+the same fields and Android's available input method; built-in voice recognition
+is not a feature requirement.</p>
+<p><strong>Add from phone</strong> in full screen enters the existing temporary phone-pairing
+flow, restoring the originating dashboard first so Update TV can proceed once paired. Reuse its TV approval and session
+lifecycle rather than exposing a permanent unauthenticated list URL. Follow the
+current controller rule that Update TV waits until the TV leaves an active
+full-screen interaction; the phone explains <strong>Return the TV to Home to update</strong>
+and retains the draft. The Home card refreshes after the acknowledged update.</p>
+<p>Back closes nested details/editors first, then restores the original Home page,
+widget focus and saved size. <strong>Restore dashboard</strong> is always visible in the
+expansion and returns directly, resolving any dirty editor with Save/Discard/Keep
+editing first. Browsing, expansion and restoration create no Undo entries.</p>
+<h3>Recurring items begin as “Keep as staple”</h3>
+<p>An optional <strong>Keep as staple</strong> switch is available in item details. Saving creates
+a persistent, named staple and links the current shopping row to it. The phone has
+two clearly labeled views: <strong>Shopping list</strong> and <strong>Staples</strong>. A staple remains in
+Staples if its shopping row is removed. <strong>Add to shopping list</strong> reuses its saved
+name and default quantity text; if already listed, open that row instead.</p>
+<p>Phase 1 staples are reusable entries, not automatic stock tracking. Show <strong>Stock
+not tracked yet</strong> in their details, with no guessed low-stock badge. Deleting a
+staple is a separate explicit action: explain that any current shopping row is
+kept as an ordinary item. Removing a widget keeps its list and staples so re-adding
+can restore them; deleting a list is separate and has Undo. Multiple widget instances
+can select the same local list by stable ID; separate named lists are independent.
+Start with one <strong>Groceries</strong> list; keep list management in Configure rather than
+requiring it during first use.</p>
+<h3>Phase 1 empty, failure and limit behavior</h3>
+<p>An empty TV card says <strong>No groceries listed · Add from phone</strong>. Full screen also
+offers Add item; the phone focuses the add field. A blank Staples view explains
+<strong>Keep regularly bought items here to add them again</strong>.</p>
+<p>Keep saved TV data visible without network access. The phone distinguishes a
+draft from saved data, preserves pending edits on disconnect and requires fresh
+approval/conflict checks after reconnecting. Use the current operation receipt
+and conflict resolution path, never last-writer-wins. Two concurrent edits to the
+same list require explicit review; independent lists may merge independently.
+If storage fails, retain the draft and show that saving failed; do not show a saved
+confirmation. A failed load is <strong>List unavailable</strong>, not an empty list; never
+overwrite unreadable data automatically.</p>
+<p>Server-validated limits: 32 named lists, 200 rows and 200 saved products per list,
+and 256 KiB of grocery JSON across all lists, 120 Unicode
+code points for names, 40 for quantity text and 500 for notes. Explain limits at
+the relevant input; do not truncate silently. Validate every row before atomic
+commit. Large lists scroll normally with identity-based focus.</p>
+<h2>Phase 2 — understand what and how much</h2>
+<p>Phase 2 keeps the fast free-text path. Product knowledge begins with what the
+household has entered and confirmed; a global commercial product database or AI
+service is not a prerequisite. No catalog lookup may prevent adding an unknown item.</p>
+<h3>Phone: recognize, suggest, confirm</h3>
+<p>Typing <strong>milk</strong> can suggest a saved product, such as <strong>Milk · oat · 1 L carton</strong>,
+with its usual purchase quantity and staple status. Selecting it fills editable
+fields; typing a new name still creates a new product. Product details contain:</p>
+<ul>
+<li>Name, optional brand/variant, household-confirmed aliases and optional category.</li>
+<li>Usual purchase quantity and package definition, such as <strong>1 carton contains 1 L</strong>.</li>
+<li>Optional staple status, stock tracking choice and replenishment threshold/target.</li>
+</ul>
+<p>Distinct brands, sizes and variants remain separate unless a person explicitly
+merges them with a preview of affected rows and stock records. Suggestions must
+not turn every item named Milk into the same product. Categories are optional,
+manually editable grouping aids; changing them does not change quantity or stock.</p>
+<p>Quantity entry accepts explicit <strong>amount + unit</strong>, and an optional package count:
+<strong>2 cartons × 1 L = 2 L</strong>, <strong>500 g</strong>, <strong>6 eggs</strong>. Show a confirmation chip after
+parsing and let people edit it. Ambiguous <strong>2 milk</strong> stays unstructured until
+confirmed. Original free text remains available for items that do not fit the
+model; do not force a false structured interpretation.</p>
+<table>
+<thead>
+<tr>
+<th>Unit rule</th>
+<th>Example and decision</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Same dimension</td>
+<td>1 kg + 500 g can be displayed as 1.5 kg when the product is the same. Use exact decimal values and explicit conversions.</td>
+</tr>
+<tr>
+<td>Packaging</td>
+<td>2 cartons becomes 2 L only when that product's carton size is confirmed as 1 L. A carton has no universal size.</td>
+</tr>
+<tr>
+<td>Count</td>
+<td>Eggs may use pieces; <strong>1 dozen = 12 pieces</strong> can be an explicit supported count unit. A bag/bunch remains a package without a confirmed content quantity.</td>
+</tr>
+<tr>
+<td>Different dimensions</td>
+<td>Never convert mass to volume without a product-specific, reviewed rule. Phase 2 does not need density conversions.</td>
+</tr>
+<tr>
+<td>Missing knowledge</td>
+<td>Preserve <strong>2 packs</strong> as packages with unknown content; explain what information is missing rather than inventing grams.</td>
+</tr>
+</tbody>
+</table>
+<p>When a matching product is already listed, offer <strong>Increase quantity</strong> only if
+the quantities are compatible; preview the resulting total before commit. Otherwise
+offer a separate row or edit. Keep brand/variant and unit identity in the decision.</p>
+<h3>Staples: inventory is separate from shopping demand</h3>
+<p>Each staple chooses <strong>Manual need</strong> or <strong>Track quantity</strong>. The first allows
+<strong>Enough / Need more / Unknown</strong>, without claiming an exact stock count. The second
+records an explicit amount in a compatible base unit, plus a low-stock threshold
+and a desired stock target. A person updates stock from the phone; there is no
+automatic inference that elapsed days imply consumption.</p>
+<p>Example: oat milk comes in 1 L cartons; reported stock is 0.5 L, the threshold is
+1 L, and the target is 3 L. Recommend <strong>3 cartons</strong> to cover a 2.5 L deficit,
+showing the expected 3.5 L after that purchase. Threshold means <strong>at or below</strong>;
+round upward only in whole-package mode. Loose goods can use their supported
+purchase increment. Targets must exceed thresholds; negative stock and invalid or
+incompatible units block saving with a field-level explanation.</p>
+<p>Show a phone <strong>Needs review</strong> section for low-stock/Need more staples. Its
+<strong>Add to list</strong> action confirms the proposed quantity and creates or updates one
+linked shopping need. In Phase 2 low stock suggests a need; it does not silently
+append groceries every time the dashboard refreshes. Existing listed quantities
+are shown before any replacement or increase. A later stock correction marks a
+linked need for review rather than silently removing a manually confirmed row.</p>
+<p>Every stock value shows <strong>Reported [date/time]</strong>. Unknown stock stays unknown;
+allow <strong>Check stock</strong> reminders and explicit manual entry. Show the report age
+instead of an arbitrary claim that stock is still accurate. Until Phase 3, manually
+adjusting stock does not imply a purchase transaction or erase a list row.</p>
+<h3>TV: more information without more friction</h3>
+<p>The compact card prioritizes the current shopping list and counts only confirmed
+shopping rows. Expanded Staples provides stock review. The mockup also explores a
+secondary <strong>2 staples need review</strong> line, separate from <strong>8 items on list</strong>; this
+compact stock summary and a standalone Staples display choice remain follow-up
+layout work. Unconfirmed suggestions must never count as shopping rows.</p>
+<p>Full screen has <strong>Shopping list / Staples</strong> tabs. The shopping detail adds the
+selected product, brand/variant, package size, quantity breakdown and notes. The
+staple detail adds reported stock and its timestamp, threshold, target and a
+human-readable explanation of the proposed purchase. All records remain reachable
+regardless of compact size. Add to list and Edit stock are explicit phone draft
+actions. The native remote editor is the basic names/quantity-text/notes fallback;
+product, packaging and stock-policy configuration uses the phone controller.
+Back/Restore/focus follow Phase 1's expansion contract. There is still no purchase
+check-off in this phase.</p>
+<h2>Phase 3 — purchase at the shop and sync home</h2>
+<p>This is the future behavior boundary, not a delivery commitment for Phase 1/2:</p>
+<ol>
+<li>Take a phone-accessible list away from the TV; check off an actual purchase,
+   including partial amounts and a changed package size. Phone feedback distinguishes
+   <strong>Saved on this phone · Waiting to sync</strong> from <strong>Synced to dashboard</strong>.</li>
+<li>Store a purchase event with a unique operation ID. Applying it removes/reduces
+   the current need, optionally increases tracked stock by the confirmed purchased
+   amount, and keeps the staple/product record. Retrying must not double stock.</li>
+<li>A bought staple moves out of the active shopping list when fulfilled but remains
+   in Staples. New low stock or Need more later starts the next shopping need; the
+   old purchase stays in history. Buying does not permanently pin a checked row
+   among things still needed.</li>
+<li>Handle offline edits, concurrent additions/quantity changes, purchase reversal,
+   conflicts and delayed TV connectivity. Undoing a purchase reverses that event's
+   effect without overwriting later stock corrections or someone else's purchase.</li>
+</ol>
+<p>Before implementation, choose between <strong>local-first phone storage with sync on
+return to the home network</strong> and <strong>an authenticated shared service for remote
+sync</strong>. The former cannot update the TV live from the shop. The latter needs a
+deliberate household identity, device enrollment and storage/service decision.
+Evaluate existing shopping services only when a service is selected; do not
+invent provider capabilities or install a custom bridge for the early phases.
+Cross-TV household sharing belongs in that decision too. The TV must not need to
+keep its temporary configuration editor running as an always-on public server.</p>
+<h2>Data and implementation design</h2>
+<p><img alt="Persistent staple versus temporary shopping need and the future purchase cycle" src="staple-lifecycle.svg" /></p>
+<table>
+<thead>
+<tr>
+<th>Record</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GroceryList</td>
+<td>Stable ID, title, ordered shopping-row IDs, staple IDs and revision.</td>
+</tr>
+<tr>
+<td>ShoppingItem</td>
+<td>Stable ID, product/staple link if any, entered label, quantity text/structured quantity, note and explicit order. Represents a current need.</td>
+</tr>
+<tr>
+<td>Staple</td>
+<td>Stable ID, reusable product/default quantity and, in Phase 2, manual need or stock policy. Persists independently of the current need.</td>
+</tr>
+<tr>
+<td>Product (Phase 2)</td>
+<td>Stable ID, confirmed name/aliases/variant/category, quantity dimension and package definitions. Package sizes belong to this product.</td>
+</tr>
+<tr>
+<td>Stock report (Phase 2)</td>
+<td>Product/staple identity, reported amount/unit or qualitative state, timestamp and revision. It is a report, not an inferred consumption rate.</td>
+</tr>
+<tr>
+<td>Purchase event (Phase 3)</td>
+<td>Unique operation ID, need/product references, actual quantities, effects and acknowledgement/sync state.</td>
+</tr>
+<tr>
+<td>Widget settings</td>
+<td>List reference and display choice; geometry belongs to HomeLayout. Two views of one list share data, not duplicate inventories.</td>
+</tr>
+</tbody>
+</table>
+<p>Keep content in the existing atomic configuration transaction and revision/Undo
+boundary, with widget settings referencing list IDs. A phone update must not restore
+an old list snapshot over later TV edits. Extend aggregate snapshots and composite
+Undo to include groceries. Removing a widget preserves list records; an explicit
+list deletion cannot leave dangling widget references. Apply deletion and affected
+widget choices atomically with Undo. Do not store pairing credentials in list data.</p>
+<p>Use native Java compact/expanded views and one controller/model per list. Reuse
+<code>WidgetExpansion</code> restoration/lifecycle and the phone editor's approved session,
+draft recovery, operation receipts and conflict UI. Data mutations share one path
+whether initiated by TV or phone. Do not add a legacy compatibility layer for an
+unreleased model. When Phase 2 arrives, preserve actual Phase 1 lists as free-text
+rows; structure quantities only after confirmation, never by a lossy rewrite.</p>
+<p>Localize controls and quantities in English/Thai, leaving product names as entered.
+Use explicit units, readable text, visible focus and accessible movement controls.
+Palette/opacity, larger text and Reduced motion must work. No automatic carousel,
+color-only stock status or provider account requirement in Phase 1/2.</p>
+<h2>Workflow</h2>
+<p><img alt="Phone add, review, TV update, product/stock refinement and future purchase sync" src="workflow.svg" /></p>
+<h2>Delivery and acceptance</h2>
+<h3>Phase 1</h3>
+<ul>
+<li>[ ] Phone: quickly add several English/Thai items; Enter retains entry focus;
+  optional quantity/notes, duplicate choice, batch preview, edit/reorder/remove and
+  draft Undo work. No purchase checkboxes appear.</li>
+<li>[ ] Draft versus saved state is clear; one Update TV commits all reviewed rows
+  with one Undo entry. Cancel, disconnect, stale revision, uncertain result and
+  storage failure preserve work without duplicate or partial commits.</li>
+<li>[x] Keep as staple persists a reusable entry. Removing a current need preserves
+  its staple; adding it again avoids accidental duplicates; deleting a staple
+  explicitly leaves its current row as an ordinary item.</li>
+<li>[ ] Empty, unavailable, limits, multiple lists, shared-list widget instances,
+  widget removal/re-add and relaunch preserve correct content and identity.</li>
+<li>[ ] Compact size variants show honest counts/overflow. Short OK opens the entire
+  list with additional quantities/notes; hold opens actions without also expanding.</li>
+<li>[ ] Remote row/detail/editor navigation, cancel/save and dirty-editor restoration
+  work. Back and visible Restore recover the exact Home page, focus and dimensions.
+  Full-screen browsing changes neither saved geometry nor Undo history.</li>
+<li>[ ] Phone pairing from full screen and return-to-Home-before-update behavior are
+  understandable; real phone LAN testing establishes connectivity separately from
+  browser fixture tests. English/Thai, larger text and reduced-motion checks pass.</li>
+</ul>
+<h3>Phase 2</h3>
+<ul>
+<li>[ ] Saved product suggestions accelerate input; unknown products remain addable.
+  Aliases/variants stay distinct until an explicit merge; merge previews all effects.</li>
+<li>[x] Exact decimal mass/volume/count conversion, confirmed package sizes, fractional
+  amounts, whole-package rounding and incompatible/unknown units behave as specified.
+  Ambiguous text stays unstructured until confirmed.</li>
+<li>[x] Manual need and quantitative stock both work. Unknown stock has no fabricated
+  quantity; report timestamps and threshold/target validation are visible.</li>
+<li>[x] Low stock suggests an explained quantity. Confirming adds/updates one need;
+  refresh/retry creates no duplicate; a stock correction requests review instead of
+  silently clearing the shopping list. No consumption is inferred from time.</li>
+<li>[ ] Staples remain present independently of active needs. Both tabs add real
+  full-screen product/stock detail and preserve the Phase 1 restoration contract.</li>
+<li>[x] Existing Phase 1 data is retained verbatim until structured by its owner.</li>
+</ul>
+<p>For each implemented phase, run appropriate model and phone browser checks plus
+<code>task check</code> and <code>task build</code> in containers, following the build how-to. Use
+<code>task deploy</code> for one newly numbered frozen APK on both Cast1 and Cast2, preserving
+app data. Coordinator devices/queue/complete job/watch/evidence owns every device
+session; Cast1 is the routine foreground acceptance target. Capture phone draft,
+saved dashboard, full-screen detail, empty/error states and restoration. Implementation now requires these checks; the earlier design-only revision did not
+require a build, deployment or device session.</p>
+<h2>Open product decisions</h2>
+<p>Validate the proposed stock threshold/target workflow with real household items,
+especially loose produce and partial packs. Decide Phase 3's local-return versus
+remote-sync architecture before promising shopping-away-from-home behavior. Barcode
+lookup, retailer prices, recipes, automatic consumption prediction and retailer
+ordering remain separate future features.</p></main></body></html>

@@ -65,7 +65,11 @@ missing rows on commit.*
 
 | [Publish Homeboard TV APK downloads on biohack.net](2026-11-19-biohack-apk-publication.md) | Publishes a signed public APK, a biohack.net download page, versioned hosting and updated installation guides, with phone/desktop review previews. | Public 0.1.73 published | Infra / Docs |
 
+| [Grocery list: phone entry, products and household staples](2026-11-19-grocery-list-widget.md) | Designs Phase 1 phone-first list entry and persistent staples, Phase 2 products/units and reported stock, and the Phase 3 purchase/sync boundary, with TV/phone mockups and workflow diagrams. | Implemented on feature/grocery-list; Cast1 verified on 0.1.78; Cast2 unconfirmed | Feature / UX |
+
 | [Opt-in ads that pay the user (Homeboard Rewards)](2026-11-19-ads-that-pay-the-user.md) | Designs off-by-default rewards: a 50% commission share paid to PromptPay without stored balances, gated sponsored offers, a PDPA consent ladder, a no-commerce build, the data boundary, a legal checklist and kill criteria, with TV/phone mockups. | Plan proposed | Feature / Policy |
+
+| [Groceries: Cooper goal-directed design review](2026-11-19-grocery-goal-directed-design.md) | Applies shared Cooper filter v1.0 to quick capture, staple review, contextual quantities and recoverable drafts. | Proposed | UX |
 
 ---
 

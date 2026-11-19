@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="530" viewBox="0 0 1200 530" role="img" aria-labelledby="title desc">
+<title id="title">Persistent staples and temporary shopping needs</title>
+<desc id="desc">A saved staple persists while stock changes. Low or unknown stock is reviewed before adding a current shopping need. In future Phase 3 a purchase fulfills that need and updates confirmed stock, while the staple remains.</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#8be0be"/></marker></defs>
+<rect width="1200" height="530" fill="#0d1c25"/>
+<g font-family="Arial,sans-serif" fill="#edf4f5">
+<text x="30" y="44" font-size="27">A staple stays. A shopping need comes and goes.</text>
+<rect x="30" y="80" width="1140" height="100" rx="15" fill="#284a50" stroke="#8be0be" stroke-width="2"/>
+<text x="52" y="117" font-size="24">SAVED STAPLE: Oat milk · 1 L carton</text>
+<text x="52" y="151" font-size="18">Name + usual quantity in Phase 1; product, units and stock policy in Phase 2. Kept until explicitly deleted.</text>
+<g fill="#223e49" stroke="#54727f" stroke-width="2">
+<rect x="30" y="254" width="295" height="102" rx="12"/>
+<rect x="451" y="254" width="295" height="102" rx="12"/>
+<rect x="872" y="254" width="298" height="102" rx="12"/>
+</g>
+<text x="50" y="288" font-size="22">Stock report / manual need</text>
+<text x="50" y="322" font-size="17">0.5 L left · Low at 1 L</text>
+<text x="471" y="288" font-size="22">Review suggested amount</text>
+<text x="471" y="322" font-size="17">Target 3 L → 3 whole cartons</text>
+<text x="892" y="288" font-size="22">Current shopping need</text>
+<text x="892" y="322" font-size="17">Buy 3 cartons · confirmed</text>
+<g fill="none" stroke="#8be0be" stroke-width="2" marker-end="url(#arrow)">
+<path d="M177 180V254"/><path d="M1021 180V254"/>
+<path d="M325 305H451"/><path d="M746 305H872"/>
+<path d="M1021 356V414H177V356"/>
+</g>
+<text x="353" y="292" font-size="15" fill="#b8cbd0">Phase 2</text>
+<text x="765" y="292" font-size="15" fill="#b8cbd0">Add to list</text>
+<rect x="308" y="394" width="626" height="42" rx="8" fill="#0d1c25"/>
+<text x="325" y="421" font-size="18">Phase 3 purchase: fulfill need + update confirmed stock once</text>
+<text x="30" y="476" font-size="18" fill="#8be0be">Buying never deletes the staple. Later low stock can start the next shopping need.</text>
+<text x="30" y="507" font-size="16" fill="#b8cbd0">Unknown stock requests a check. Phase 1 reuses saved staples manually, without calculating stock.</text>
+</g>
+</svg>

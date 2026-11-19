@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/015f574) | Publish signed Homeboard APK and update installation guides |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/26ac8a2) | Plan opt-in ads that pay the user (Homeboard Rewards) |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/6b13054) | Add reviewed cleanup execution and seed YouTube favorites |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/eb9adf6) | Add standalone cleanup connections and update setup manual |
@@ -34,6 +35,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+015f574	author	Will Norris
+015f574	added	2
+015f574	deleted	0
+015f574	files	1
 26ac8a2	author	Will Norris
 26ac8a2	added	2
 26ac8a2	deleted	0

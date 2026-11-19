@@ -25,6 +25,7 @@ docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
   [the wallpaper how-to](docs/how-to/projectivy-wallpapers.md) and testing record for
   verified behavior and remaining compatibility limits.
   Other network integrations, scheduled scenes and Play release signing remain future work.
+- Apply the shared [Alan Cooper design filter](/home/will/docs/howtos/alan-cooper-design-filter.md) to every new or revised UI design. Record its application in the relevant project plan; reuse the shared guidance instead of reconstructing it.
 - Keep mockups and the workflow diagram current before implementing a new UI workflow.
 - Every current and future widget type must provide a full-screen presentation with
   more data and/or more detailed data, opened from the widget with click/short OK.

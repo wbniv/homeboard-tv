@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc"><title id="title">Proposed grocery tasks: capture, review staples and refine an amount</title><desc id="desc">Three phone wireframes put quick entry first, simple staple status second, and product units in contextual details. These are proposed changes, not current screens.</desc><rect width="1200" height="650" fill="#10212b"/><g font-family="Arial,sans-serif" fill="#ecf3f5"><text x="26" y="40" font-size="25">Grocery review · goals before administration · proposed screens</text>
+<rect x="26" y="76" width="364" height="538" rx="18" fill="#203944" stroke="#65818e"/><text x="44" y="114" font-size="23">1 · Capture</text>
+<text x="44" y="155" font-size="17">Groceries · Cast1</text>
+<text x="44" y="194" font-size="17">Add an item…          Add</text>
+<text x="44" y="233" font-size="17">Milk · 2 cartons</text>
+<text x="44" y="272" font-size="17">Eggs · 6</text>
+<text x="44" y="311" font-size="17">Limes · a few</text>
+<text x="44" y="350" font-size="17"></text>
+<text x="44" y="389" font-size="17">Check staples    Add several</text>
+<text x="44" y="428" font-size="17"></text>
+<text x="44" y="467" font-size="17">Added Eggs · Not on TV yet</text>
+<text x="44" y="506" font-size="17">Undo</text>
+<rect x="38" y="520" width="340" height="35" rx="6" fill="#385c58"/>
+<text x="44" y="545" font-size="17">Update Cast1</text>
+<rect x="418" y="76" width="364" height="538" rx="18" fill="#203944" stroke="#65818e"/><text x="436" y="114" font-size="23">2 · Check staples</text>
+<text x="436" y="155" font-size="17">Need more   Not sure   All</text>
+<text x="436" y="194" font-size="17">Oat milk</text>
+<text x="436" y="233" font-size="17">Enough / Need more / Not sure</text>
+<text x="436" y="272" font-size="17"></text>
+<text x="436" y="311" font-size="17">Reported 0.5 L · Today, 09:10</text>
+<text x="436" y="350" font-size="17">Low at 1 L · Target 3 L</text>
+<text x="436" y="389" font-size="17">3 cartons × 1 L</text>
+<text x="436" y="428" font-size="17">Would leave 3.5 L</text>
+<rect x="430" y="442" width="340" height="35" rx="6" fill="#385c58"/>
+<text x="436" y="467" font-size="17">Add 3 cartons to list</text>
+<text x="436" y="506" font-size="17"></text>
+<text x="436" y="545" font-size="17">Back keeps draft</text>
+<rect x="810" y="76" width="364" height="538" rx="18" fill="#203944" stroke="#65818e"/><text x="828" y="114" font-size="23">3 · Refine when needed</text>
+<text x="828" y="155" font-size="17">Oat milk · Unsweetened</text>
+<text x="828" y="194" font-size="17">How much?  3 cartons</text>
+<text x="828" y="233" font-size="17">1 carton contains 1 L</text>
+<text x="828" y="272" font-size="17">Use custom text</text>
+<text x="828" y="311" font-size="17"></text>
+<text x="828" y="350" font-size="17">Note: For breakfast</text>
+<text x="828" y="389" font-size="17">Keep for next time · On</text>
+<text x="828" y="428" font-size="17">Track stock · Optional</text>
+<text x="828" y="467" font-size="17"></text>
+<text x="828" y="506" font-size="17">Back keeps draft</text>
+<rect x="822" y="520" width="340" height="35" rx="6" fill="#385c58"/>
+<text x="828" y="545" font-size="17">Update Cast1</text>
+</g></svg>
