@@ -10,14 +10,14 @@ import org.json.*;
 public final class KitchenTimerSound extends Service {
     private final Handler handler=new Handler(Looper.getMainLooper());private MediaPlayer player;private AudioManager audio;private AudioFocusRequest focus;
     private static final int NOTICE=9103;private static final String CHANNEL="kitchen-timer-alerts";
-    private final Runnable tick=new Runnable(){public void run(){try{if(!KitchenTimerStore.sounding(KitchenTimerStore.load(KitchenTimerSound.this),System.currentTimeMillis())){stopSelf();return;}}catch(JSONException e){stopSelf();return;}handler.postDelayed(this,500);}};
+    private final Runnable tick=new Runnable(){public void run(){try{if(!KitchenTimerStore.sounding(KitchenTimerStore.load(KitchenTimerSound.this),SystemClock.elapsedRealtime())){stopSelf();return;}}catch(JSONException e){stopSelf();return;}handler.postDelayed(this,500);}};
     @Override protected void attachBaseContext(Context base){super.attachBaseContext(AppLanguage.wrap(base));}
     @Override public IBinder onBind(Intent intent){return null;}
     @Override public int onStartCommand(Intent intent,int flags,int id){
         NotificationManager nm=getSystemService(NotificationManager.class);NotificationChannel channel=new NotificationChannel(CHANNEL,getString(R.string.hb_timer_title),NotificationManager.IMPORTANCE_HIGH);channel.setSound(null,null);nm.createNotificationChannel(channel);
         PendingIntent stop=PendingIntent.getService(this,NOTICE,new Intent(this,KitchenTimerSound.class).setAction("silence"),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
         PendingIntent open=PendingIntent.getActivity(this,NOTICE,new Intent(this,MainActivity.class).setAction("homeboard.timers"),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
-        StringBuilder names=new StringBuilder();try{KitchenTimers model=KitchenTimerStore.load(this);for(int i=0;i<model.items().length();i++){JSONObject t=model.items().getJSONObject(i);if(t.optLong("soundUntil")>System.currentTimeMillis()){if(names.length()>0)names.append(" · ");names.append(t.optString("name").isEmpty()?getString(R.string.hb_timer_title):t.optString("name"));}}}catch(JSONException ignored){}
+        StringBuilder names=new StringBuilder();try{KitchenTimers model=KitchenTimerStore.load(this);for(int i=0;i<model.items().length();i++){JSONObject t=model.items().getJSONObject(i);if(t.optLong("soundDeadline")>SystemClock.elapsedRealtime()){if(names.length()>0)names.append(" · ");names.append(t.optString("name").isEmpty()?getString(R.string.hb_timer_title):t.optString("name"));}}}catch(JSONException ignored){}
         Notification notification=new Notification.Builder(this,CHANNEL).setSmallIcon(android.R.drawable.ic_lock_idle_alarm).setContentTitle(getString(R.string.hb_timer_done)).setContentText(names.toString()).setCategory(Notification.CATEGORY_ALARM).setOngoing(true).setContentIntent(open).addAction(new Notification.Action.Builder(null,getString(R.string.hb_timer_silence),stop).build()).build();
         startForeground(NOTICE,notification);
         if(intent!=null&&"silence".equals(intent.getAction())){KitchenTimerStore.silence(this);stopSelf();return START_NOT_STICKY;}

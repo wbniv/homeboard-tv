@@ -24,7 +24,7 @@ public class KitchenTimersTest {
     @Test public void rebootInterruptsCookingAndDoesNotRingMissedEvents()throws Exception{
         KitchenTimers m=KitchenTimers.empty();create(m,"Rice",300000);long wall=Instant.now().toEpochMilli();String local=LocalDateTime.ofInstant(Instant.ofEpochMilli(wall+60000),ZoneId.systemDefault()).toString();
         m.command(command(m,"create").put("kind","event").put("name","Call Grab").put("local",local).put("zone",ZoneId.systemDefault().getId()),1000,wall,1);
-        m.reconcile(1,wall+120000,2);assertEquals("interrupted",m.items().getJSONObject(0).getString("state"));assertEquals("missed",m.items().getJSONObject(1).getString("state"));assertEquals(0,m.items().getJSONObject(1).getLong("soundUntil"));
+        m.reconcile(1,wall+120000,2);assertEquals("interrupted",m.items().getJSONObject(0).getString("state"));assertEquals("missed",m.items().getJSONObject(1).getString("state"));assertEquals(0,m.items().getJSONObject(1).getLong("soundDeadline"));
     }
     @Test public void eventAndTimerCanFinishTogetherFutureEventSurvivesReboot()throws Exception{
         KitchenTimers m=KitchenTimers.empty();long wall=Instant.now().toEpochMilli();
@@ -42,9 +42,15 @@ public class KitchenTimersTest {
         for(String local:new String[]{"2025-12-01T12:00","2026-03-08T02:30","2026-11-01T01:30"})assertThrows(IllegalArgumentException.class,()->m.command(command(m,"create").put("kind","event").put("name","School").put("local",local).put("zone","America/New_York"),1,now,1));
         assertEquals(0,m.items().length());}finally{TimeZone.setDefault(before);}
     }
+    @Test public void alertLimitIgnoresWallClockCorrections()throws Exception{
+        KitchenTimers m=KitchenTimers.empty();create(m,"Rice",1000);m.reconcile(2000,100000,1);
+        assertTrue(m.sounding(61999));m.reconcile(62000,-3600000,1);assertFalse(m.sounding(62000));
+        m.reconcile(62001,Long.MAX_VALUE-100000,1);assertFalse(m.sounding(62001));
+        m.reconcile(1,100000,2);assertFalse(m.sounding(1));
+    }
     @Test public void stopCancelsSoundAndRestartUsesOriginalDuration()throws Exception{
         KitchenTimers m=KitchenTimers.empty();create(m,"Rice",1000);String id=m.items().getJSONObject(0).getString("id");m.reconcile(2000,100000,1);assertEquals("done",m.find(id).getString("state"));
-        m.command(command(m,"stop").put("id",id),3000,101000,1);assertEquals(0,m.find(id).getLong("soundUntil"));m.command(command(m,"restart").put("id",id),4000,102000,1);assertEquals(5000,m.find(id).getLong("deadline"));
+        m.command(command(m,"stop").put("id",id),3000,101000,1);assertEquals(0,m.find(id).getLong("soundDeadline"));m.command(command(m,"restart").put("id",id),4000,102000,1);assertEquals(5000,m.find(id).getLong("deadline"));
         assertEquals("00:01",KitchenTimers.clock(1));assertEquals("1:00:00",KitchenTimers.clock(3600000));
     }
 }

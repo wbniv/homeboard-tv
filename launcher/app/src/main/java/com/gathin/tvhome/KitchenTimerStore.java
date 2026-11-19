@@ -24,10 +24,10 @@ final class KitchenTimerStore {
         if(changed)persist(c,model);schedule(c,model);ring(c,model);return snapshot(c);
     }catch(JSONException e){throw new IllegalArgumentException("Invalid timer command",e);}}
     static synchronized void reconcile(Context c){try{KitchenTimers model=load(c);boolean changed=model.reconcile(SystemClock.elapsedRealtime(),System.currentTimeMillis(),boot(c));if(changed)persist(c,model);boolean running=false;for(int i=0;i<model.items().length();i++)running|="running".equals(model.items().optJSONObject(i).optString("state"));if(changed||running)schedule(c,model);ring(c,model);}catch(JSONException e){error(c,true);}}
-    static synchronized void silence(Context c){try{KitchenTimers m=load(c);for(int i=0;i<m.items().length();i++)m.items().getJSONObject(i).put("soundUntil",0);m.data.put("revision",m.revision()+1);persist(c,m);}catch(JSONException e){error(c,true);}}
+    static synchronized void silence(Context c){try{KitchenTimers m=load(c);for(int i=0;i<m.items().length();i++)m.items().getJSONObject(i).put("soundDeadline",0);m.data.put("revision",m.revision()+1);persist(c,m);}catch(JSONException e){error(c,true);}}
     static void error(Context c,boolean value){prefs(c).edit().putBoolean("alert-error",value).apply();}
-    static boolean sounding(KitchenTimers m,long now){for(int i=0;i<m.items().length();i++)if(m.items().optJSONObject(i).optLong("soundUntil")>now)return true;return false;}
-    private static void ring(Context c,KitchenTimers m){if(sounding(m,System.currentTimeMillis()))try{c.startForegroundService(new Intent(c,KitchenTimerSound.class));}catch(RuntimeException e){error(c,true);}}
+    static boolean sounding(KitchenTimers m,long elapsed){return m.sounding(elapsed);}
+    private static void ring(Context c,KitchenTimers m){if(sounding(m,SystemClock.elapsedRealtime()))try{c.startForegroundService(new Intent(c,KitchenTimerSound.class));}catch(RuntimeException e){error(c,true);}}
     private static PendingIntent pending(Context c){return PendingIntent.getBroadcast(c,9101,new Intent(c,KitchenTimerReceiver.class).setAction("timer-due"),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);}
     private static void schedule(Context c,KitchenTimers m){
         AlarmManager alarms=c.getSystemService(AlarmManager.class);PendingIntent intent=pending(c);alarms.cancel(intent);long next=Long.MAX_VALUE,wall=System.currentTimeMillis(),elapsed=SystemClock.elapsedRealtime();
