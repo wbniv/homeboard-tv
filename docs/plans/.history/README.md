@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/26ac8a2) | Plan opt-in ads that pay the user (Homeboard Rewards) |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/6b13054) | Add reviewed cleanup execution and seed YouTube favorites |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/eb9adf6) | Add standalone cleanup connections and update setup manual |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/7db11d2) | Calculate Wan Phra locally and persist offline holiday updates |
@@ -33,6 +34,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+26ac8a2	author	Will Norris
+26ac8a2	added	2
+26ac8a2	deleted	0
+26ac8a2	files	1
+26ac8a2	body	Design plan for the only advertising Homeboard may carry: off by\ndefault, a 50% commission share paid to PromptPay through a licensed\nprovider without stored balances, GrabRewards as a later payout rail,\ngated pull-only sponsored offers, AdMob rejected. Covers the PDPA\nconsent ladder and no-commerce flavour, sponsored-surface rules and\nPlay risk, the data boundary, a legal checklist, honest economics and\nkill criteria, with TV/phone mockups and Mermaid diagrams.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQ3BQQdQih1iYy7vJS
 6b13054	author	Will Norris
 6b13054	added	5
 6b13054	deleted	0

@@ -3,6 +3,7 @@
 import contextlib
 import importlib.util
 import io
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -17,18 +18,23 @@ spec.loader.exec_module(deploy)
 
 
 class DeploymentTest(unittest.TestCase):
-    def run_deploy(self, failure=False):
+    def run_deploy(self, failure=False, variant='debug', tamper=False):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
         (root / 'dev/device').mkdir(parents=True)
         (root / 'dev/device/install-only.json').write_text('{"workflow":"install"}')
         (root / 'version.properties').write_text('major=0\nminor=1\nversion_code=100\n')
-        output = root / 'launcher/app/build/outputs/apk/debug'
+        output = root / 'launcher/app/build/outputs/apk' / variant
         output.mkdir(parents=True)
         (output / 'homeboard.apk').write_bytes(b'one immutable APK')
         (output / 'output-metadata.json').write_text(json.dumps({'elements': [
             {'versionCode': 100, 'versionName': '0.1.100', 'outputFile': 'homeboard.apk'}]}))
+        if variant == 'release':
+            (root / 'artifacts').mkdir()
+            (root / 'artifacts/release-verification.json').write_text(json.dumps({
+                'sha256': '0'*64 if tamper else hashlib.sha256(b'one immutable APK').hexdigest(),
+                'packageId': 'net.biohack.homeboard', 'versionCode': 100}))
         calls = []
         def run(command, **kwargs):
             calls.append(command)
@@ -45,13 +51,16 @@ class DeploymentTest(unittest.TestCase):
                 raise subprocess.CalledProcessError(201, command)
             return subprocess.CompletedProcess(command, 0, stdout='')
         def output(command, **kwargs):
+            if command[1] == 'ls-files': return b'version.properties\0'
             return 'fake-revision\n' if command[1] == 'rev-parse' else ' M launcher/example.java\n'
         with patch.object(deploy, '__file__', str(root / 'dev/deploy.py')), \
-             patch.object(sys, 'argv', ['deploy', '--device', 'cast1,cast2', '--recipe', 'dev/device/install-only.json']), \
+             patch.object(sys, 'argv', ['deploy', '--device', 'cast1,cast2', '--recipe', 'dev/device/install-only.json', '--variant', variant]), \
              patch.object(deploy.subprocess, 'run', side_effect=run), \
              patch.object(deploy.subprocess, 'check_output', side_effect=output), \
              contextlib.redirect_stdout(io.StringIO()):
-            if failure:
+            if tamper:
+                with self.assertRaises(SystemExit): deploy.main()
+            elif failure:
                 with self.assertRaisesRegex(RuntimeError, 'cast1'):
                     deploy.main()
             else:
@@ -77,6 +86,20 @@ class DeploymentTest(unittest.TestCase):
         self.assertEqual('failed', record['targets']['cast1']['status'])
         self.assertEqual('succeeded', record['targets']['cast2']['status'])
         self.assertEqual(2, sum(call[1] == 'chromecast:evidence' for call in calls))
+
+    def test_public_release_uses_separate_catalog_entry_and_archives_exact_sources(self):
+        root, calls = self.run_deploy(variant='release')
+        recipe = json.loads((root / 'artifacts/deployments/0.1.100/recipe.json').read_text())
+        self.assertEqual('homeboard-tv-public', recipe['app'])
+        self.assertTrue((root / 'artifacts/deployments/0.1.100/source.tar.gz').is_file())
+        for call in calls:
+            if call[1] in ('chromecast:app-register', 'chromecast:submit'):
+                self.assertIn('APP=homeboard-tv-public', call)
+
+    def test_modified_release_apk_is_rejected_before_coordinator_calls(self):
+        root, calls = self.run_deploy(variant='release', tamper=True)
+        self.assertEqual([], calls)
+        self.assertFalse((root / 'artifacts/deployments/0.1.100').exists())
 
 
 if __name__ == '__main__':

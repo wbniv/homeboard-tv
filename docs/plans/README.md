@@ -63,6 +63,8 @@ missing rows on commit.*
 | [Client-side Wan Phra calculation](2026-11-19-client-side-wan-phra.md) | Implements the pinned Java Thai civil calendar and shared flower anchors, with independently checked 2024–2027 observances and screenshot acceptance. | Working tree | Feature |
 | [Two-year offline holiday updates](2026-11-19-offline-holiday-updates.md) | Implements persistent annual data, source updates, safe publication, native refresh controls and rollover checks, with explicit publisher/coverage limits. | Working tree | Feature |
 
+| [Publish Homeboard TV APK downloads on biohack.net](2026-11-19-biohack-apk-publication.md) | Publishes a signed public APK, a biohack.net download page, versioned hosting and updated installation guides, with phone/desktop review previews. | Public 0.1.73 published | Infra / Docs |
+
 | [Opt-in ads that pay the user (Homeboard Rewards)](2026-11-19-ads-that-pay-the-user.md) | Designs off-by-default rewards: a 50% commission share paid to PromptPay without stored balances, gated sponsored offers, a PDPA consent ladder, a no-commerce build, the data boundary, a legal checklist and kill criteria, with TV/phone mockups. | Plan proposed | Feature / Policy |
 
 ---

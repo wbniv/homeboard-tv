@@ -70,7 +70,7 @@ inside the image. CI is configured but has not run on a hosted repository. Tests
 do not establish TV focus, rendering or performance; device testing uses the shared
 Chromecast coordinator. `task fixture` builds a disposable app for testing app
 launch and uninstall without removing an existing user app.
-Production signing and Play distribution remain open work.
+Google Play distribution remains future work. Public APK signing is described below.
 
 ## Shared worktree debug signing
 
@@ -81,3 +81,45 @@ Android then rejects updates with `INSTALL_FAILED_UPDATE_INCOMPATIBLE`.
 Preserve the existing cache/key to preserve installed app data. Do not uninstall
 Homeboard to work around this failure. This is development signing, not release
 signing or an embedded household credential.
+
+## Public signed APK and publication
+
+`task signing:init` provisions a durable RSA release key and password in
+`~/.local/share/homeboard-tv/signing` and a separate private local backup in
+`~/.local/share/homeboard-tv/signing-backup`. It refuses to replace existing key
+material. Preserve both files and keep an additional protected off-machine backup;
+losing this key prevents ordinary updates to existing public installations.
+`HOMEBOARD_SIGNING_DIR` and `HOMEBOARD_SIGNING_BACKUP_DIR` override those paths.
+Never put their contents in Git, build logs, a published source archive or site assets.
+
+`task release` mounts the private signing directory read-only using
+`docker-compose.signing.yaml`, builds/lints a signed release APK and verifies its
+identity, signature, non-debuggable status, version and absence of test fixtures.
+It writes non-secret metadata to `artifacts/release-verification.json`.
+Ordinary `task build` and the unsigned `task bundle` workflow are unchanged when
+run without the signing override.
+
+Use `task deploy VARIANT=release` for public device acceptance. It performs the
+normal bump/check/build/freeze/coordinator sequence, uses a distinct
+`homeboard-tv-public` catalog entry and installs the identical artifact on both TVs.
+The release package is `net.biohack.homeboard`; `.debug` remains separate, so
+existing test-app preferences do not transfer. Both installs retain their data.
+The frozen deployment includes exact app build inputs and license/provenance records in `source.tar.gz`,
+APK hash, signing-certificate fingerprint and per-device receipts.
+
+`task guide` regenerates the download-page QR and two-page A4 PDF in the browser
+container. It uses the existing pinned Playwright dependencies in
+`artifacts/phone-browser` (prepare with `task phone:setup` if missing) and biohack.net's
+existing QR dependency. After freezing the public APK, export it to the site:
+
+```sh
+docker run --rm -v "$PWD:/workspace" -v "$PWD/../biohack.net:/site" \
+  homeboard-tv-build:local python3 /workspace/dev/export-publication.py \
+  --deployment /workspace/artifacts/deployments/0.1.NUMBER --site /site
+```
+
+The exporter checks frozen bytes, refuses to overwrite different versioned APKs,
+copies the guides and all images, and generates the Astro page/release metadata.
+The site validates APK/source hashes during build and tests. Run its tests, build
+and link checks in a Node container, review the result, then use the existing
+site publication workflow. See the [publication plan](../plans/2026-11-19-biohack-apk-publication.md).

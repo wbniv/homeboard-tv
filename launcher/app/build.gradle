@@ -38,6 +38,19 @@ android {
         versionName "${versionPrefix}.${apkVersionCode}"
     }
 
+    def releaseSecrets = file('/run/homeboard-signing/release.json')
+    if (releaseSecrets.isFile()) {
+        def secrets = new groovy.json.JsonSlurper().parse(releaseSecrets)
+        signingConfigs {
+            publicRelease {
+                storeFile file('/run/homeboard-signing/release.jks')
+                storePassword secrets.password
+                keyAlias 'homeboard'
+                keyPassword secrets.password
+            }
+        }
+    }
+
     buildTypes {
         debug { applicationIdSuffix '.debug' }
         release {
@@ -45,7 +58,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // Release stays unsigned until Homeboard production signing is configured.
+            if (releaseSecrets.isFile()) signingConfig signingConfigs.publicRelease
         }
     }
 
@@ -96,5 +109,5 @@ tasks.register('checkTranslations') {
     }
 }
 tasks.configureEach {
-    if (name in ['testDebugUnitTest', 'lintDebug', 'assembleDebug', 'bundleRelease']) dependsOn 'checkTranslations'
+    if (name in ['testDebugUnitTest', 'lintDebug', 'assembleDebug', 'assembleRelease', 'bundleRelease']) dependsOn 'checkTranslations'
 }

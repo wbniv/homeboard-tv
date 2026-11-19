@@ -10,5 +10,10 @@ fi
 case "${1:-}" in
   image) exec docker compose build build ;;
   run) shift; exec docker compose run --rm --no-deps build "$@" ;;
+  release)
+    shift
+    export HOMEBOARD_SIGNING_DIR=${HOMEBOARD_SIGNING_DIR:-$HOME/.local/share/homeboard-tv/signing}
+    test -f "$HOMEBOARD_SIGNING_DIR/release.json" || { echo 'Run task signing:init first.' >&2; exit 2; }
+    exec docker compose -f docker-compose.yaml -f docker-compose.signing.yaml run --rm --no-deps build "$@" ;;
   *) echo 'Usage: dev/container.sh image | run COMMAND [ARG...]' >&2; exit 2 ;;
 esac

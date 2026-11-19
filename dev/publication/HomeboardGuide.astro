@@ -1,0 +1,9 @@
+---
+import Base from './Base.astro';
+---
+<Base title="Homeboard TV — Illustrated user guide" description="Install Homeboard TV, arrange your widgets and configure your TV from a phone.">
+<main class="guide"><nav><a href="/homeboard/">← Homeboard download</a> · <a href="/homeboard/guide/print.html">Print guide</a> · <a href="/homeboard/guide/quick-start.pdf">A4 PDF</a></nav><slot /></main>
+</Base>
+<style is:global>
+.guide{max-width:900px;margin:auto;padding:28px 24px 70px;line-height:1.7}.guide a{color:#7dd3fc}.guide a:focus-visible{outline:3px solid #f7cb72;outline-offset:4px}.guide img{max-width:100%;height:auto;border-radius:8px}.guide h1{font-size:clamp(30px,6vw,42px);line-height:1.2}.guide h2{margin-top:2em}.guide table{display:block;overflow-x:auto;border-collapse:collapse}.guide th,.guide td{padding:10px;border-bottom:1px solid #444;text-align:left}.guide nav{font-size:14px;border-bottom:1px solid #444;padding-bottom:18px}
+</style>

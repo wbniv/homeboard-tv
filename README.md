@@ -166,6 +166,8 @@ normal navigation. See the [Undo guide](docs/how-to/undo.md).
 
 ## Start here
 
+- [Download Homeboard TV and get started](https://biohack.net/homeboard/) · public early releases for Android TV / Google TV, Android 8.0+
+
 - [Product direction: our brand and the CleanYourTV community](docs/product-direction.md)
 
 - [Quick start and user guide](docs/how-to/quick-start-print.html) · [A4 PDF](docs/how-to/quick-start-print.pdf)
@@ -194,8 +196,10 @@ volume. See the build how-to for image overrides and rootless Docker behavior.
 
 The application ID is `net.biohack.homeboard`; debug builds use
 `net.biohack.homeboard.debug`. The imported Java namespace remains `com.gathin.tvhome`
-to keep upstream diffs focused. Release output is unsigned until production signing is designed.
-The name and package identity are provisional until publication.
+to keep upstream diffs focused. `task release` builds and verifies the public APK
+using a private durable signing key; `task deploy VARIANT=release` freezes and
+submits the identical numbered APK to both TVs. See the build guide for key
+storage and the distinction between public and debug installations.
 
 ## Community contributions
 
