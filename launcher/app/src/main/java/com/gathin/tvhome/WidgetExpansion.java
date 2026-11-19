@@ -35,6 +35,7 @@ final class WidgetExpansion extends Dialog {
     private final FrameLayout body;
     private final LinearLayout root;
     private final Button configureButton;
+    private final TextView hint;
     private final Bundle initialState;
     private Content content;
     private ViewTreeObserver.OnPreDrawListener firstDraw;
@@ -55,7 +56,7 @@ final class WidgetExpansion extends Dialog {
         configureButton.setEnabled(false);header.addView(configureButton);
         root.addView(header,new LinearLayout.LayoutParams(-1,dp(48)));
         body=new FrameLayout(activity);root.addView(body,new LinearLayout.LayoutParams(-1,0,1));
-        root.addView(text(activity.getString(R.string.hb_fs_hint),13));
+        hint=text(activity.getString(R.string.hb_fs_hint),13);root.addView(hint);
         setContentView(root);
         Bundle initial=saved==null?null:saved.getBundle("content");
         initialState=initial==null?new Bundle():new Bundle(initial);
@@ -111,6 +112,7 @@ final class WidgetExpansion extends Dialog {
     private void back(){
         if(!stack.isEmpty()){
             View[] prior=stack.pop();body.removeAllViews();body.addView(prior[0],new FrameLayout.LayoutParams(-1,-1));
+            hint.setVisibility(prior[0] instanceof CalendarSourcePanel?View.GONE:View.VISIBLE);
             if(prior[1]!=null)prior[1].requestFocus();else prior[0].requestFocus();
         }else if(content==null||!content.back())dismiss();
     }
@@ -120,6 +122,11 @@ final class WidgetExpansion extends Dialog {
         ScrollView scroll=new ScrollView(activity);TextView text=text(detail,18);text.setTextIsSelectable(true);scroll.addView(text);
         panel.addView(scroll,new LinearLayout.LayoutParams(-1,0,1));
         Button back=button(R.string.hb_fs_back,this::back);panel.addView(back);body.addView(panel,new FrameLayout.LayoutParams(-1,-1));back.requestFocus();
+    }
+    void calendarSources(CalendarData data,CalendarWidgetSettings settings){
+        View old=body.getChildAt(0);stack.push(new View[]{old,old.findFocus()});body.removeAllViews();
+        body.addView(new CalendarSourcePanel(activity,data,settings,palette,opacity,this::back),new FrameLayout.LayoutParams(-1,-1));
+        hint.setVisibility(View.GONE);
     }
     Bundle state(){Bundle b=new Bundle();b.putString("key",widgetKey);b.putInt("originPage",originPage);b.putBundle("content",content==null?new Bundle(initialState):content.state());return b;}
     private void releaseContent(){

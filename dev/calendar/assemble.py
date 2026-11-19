@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 def require(condition, message):
     if not condition: raise ValueError(message)
 
-IDS=['thai','flowers','buddhist','spain','usa','china']
+IDS=['thai','spain','usa','china']
 KINDS={'HOLIDAY','OBSERVED','MAKE','SELL','WAN_PHRA','WORKING'}
 SCOPES={'national','bangkok','catalunya','tarragona-province','tivissa'}
 def assemble(input_dir, output):

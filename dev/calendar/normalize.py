@@ -21,7 +21,8 @@ def normalize(input_dir, output_dir):
         return dict(id=id, country='TH', timeZone='Asia/Bangkok', status='offline',
                     reviewedOn=thai['reviewedOn'], coverageStart=thai['coverageStart'],
                     coverageEnd=end or thai['coverageEnd'], events=[])
-    government, flowers, buddhist = base('thai'), base('flowers', thai['wanPhra'][-1]), base('buddhist', thai['wanPhra'][-1])
+    government = base('thai')
+    government['coverage']={'2026':{'national':'complete','bangkok':'partial'}}
     for h in thai['government']:
         e = dict(id=f"thai:{h['date']}:{h['scope']}", date=h['date'], title=h['english'], original=h['thai'],
                  scope=h['scope'], kind='OBSERVED' if 'substituteFor' in h else 'HOLIDAY', url=thai['sources'][h['source']]['url'])
@@ -31,15 +32,9 @@ def normalize(input_dir, output_dir):
         government['events'].append(dict(id='thai:'+day+':bangkok',date=day,
             title='Flood closure · online/essential services may continue',original='วันหยุดราชการพิเศษเนื่องจากน้ำท่วม',
             scope='bangkok',kind='HOLIDAY',url='https://www.thaigov.go.th/th/news/169370'))
-    for anchor in thai['wanPhra']:
-        common=dict(anchor=anchor,scope='national',url=thai['sources']['wan-phra']['url'])
-        buddhist['events'].append(dict(common,id='buddhist:'+anchor,date=anchor,title='Wan Phra',original='วันพระ',kind='WAN_PHRA'))
-        for offset in range(4):
-            day = (date.fromisoformat(anchor)-timedelta(days=offset)).isoformat()
-            if day < flowers['coverageStart']: continue
-            kind = 'SELL' if offset <= 1 else 'MAKE'
-            flowers['events'].append(dict(common,id=f'flowers:{anchor}:{day}',date=day,title='Flower work',original='',kind=kind))
-    providers=[government,flowers,buddhist]
+    # Wan Phra and flower blocks are calculated by Java at runtime. The reviewed
+    # dates remain independent regression fixtures and are not bundled as events.
+    providers=[government]
     for id in ['spain','usa','china']:
         p=json.loads((input_dir / (id+'.json')).read_text())
         for period in p.pop('periods',[]):
@@ -48,6 +43,9 @@ def normalize(input_dir, output_dir):
             for offset in range((end-start).days+1):
                 day=(start+timedelta(days=offset)).isoformat()
                 p['events'].append(dict(id=f'{id}:{day}:HOLIDAY:national',date=day,title=period['title'],original=period['original'],url=period['url'],scope='national',kind='HOLIDAY'))
+        p.setdefault('coverage',{str(year):{'national':'complete'} for year in range(date.fromisoformat(p['coverageStart']).year,date.fromisoformat(p['coverageEnd']).year+1)})
+        if id=='usa':p['timeZone']='America/New_York'
+        if id=='spain':p['coverage']['2026'].update({'catalunya':'complete','tivissa':'complete','tarragona-province':'partial'})
         providers.append(p)
     for p in providers:
         p['events'].sort(key=lambda e:(e['date'],e['id']))

@@ -1,0 +1,21 @@
+{
+  "capturedOn": "2026-11-19",
+  "files": {
+    "boe-2027.xml": {
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254",
+      "sha256": "51618c4cade77e5d60c5599a7fd51afb8efa97cb3f9c9b7d09e65c339df05948"
+    },
+    "china-2026.html": {
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html",
+      "sha256": "de08af42e2e7caa894e612baa6607dbae1596a3abdc406cd966a0d74d78510c7"
+    },
+    "china-2027.html": {
+      "url": "https://chinajob.mohrss.gov.cn/h5/c/2026-11-09/635850.shtml",
+      "sha256": "6505bad3d5db4a305ae30b9d59d5bad3f117a06e1a059aa0596c24d8f80babb2"
+    },
+    "tivissa.json": {
+      "url": "https://analisi.transparenciacatalunya.cat/resource/b4eh-r8up.json?codi_municipi_ine=43150&%24limit=100",
+      "sha256": "f4d31bac297ff5375d8b40ea76be6d6487b1cc73c9060941e066a98b46ee53a6"
+    }
+  }
+}

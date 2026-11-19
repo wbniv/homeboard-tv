@@ -1,0 +1,13 @@
+{
+  "repository": "https://github.com/hmmbug/pythaidate",
+  "commit": "f526c4d9d9ee2a854bf790aaf6d6ee6db90f3f25",
+  "license": "MIT; Copyright 2023 Mark Hollow",
+  "files": {
+    "LICENSE.txt": "d528fa0604c347dd51a9894f7be41f0e2281d532bff11f2727bc6b6e85dd188a",
+    "reference/constants.py": "22da9e64adf5a9621f80da515e81d5357306337ef9a6c9b2c7580fbf74148af0",
+    "reference/csdate.py": "bae68943de518bdab764677ba8d26a28aec74f731c7b01e610381e3066c33525",
+    "reference/helpers.py": "7e2eb5ec4a8433be27a63e8df0476c8c6aa78bf335cd9f6d8716ba8ca5ad244d",
+    "reference/julianday.py": "68ae2bd2f7cf519548a22d036d37044153a6aa3511282c25c1ee07b4389c565f",
+    "reference/lsyear.py": "f152bb994ea39a42090390336da8914654da3902770e023f0a855f50388b31d6"
+  }
+}

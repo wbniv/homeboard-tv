@@ -140,7 +140,7 @@ public class CalendarSnapshotTest {
         CalendarSnapshot data=snapshot();
         for(int anchor:new int[]{3,9,17,24}) for(int offset:new int[]{0,1}) {
             LocalDate day=LocalDate.of(2026,11,anchor).minusDays(offset);
-            CalendarSnapshot.Event event=data.providers.get("flowers").events.stream().filter(e->e.date.equals(day)).findFirst().get();
+            CalendarSnapshot.Event event=data.display(settings("flowers"),day,day).days.get(0).events.get(0);
             assertFalse(CalendarSnapshot.sellingBreak(event,now(day+"T10:59:59")));
             assertTrue(CalendarSnapshot.sellingBreak(event,now(day+"T11:00:00")));
             assertTrue(CalendarSnapshot.sellingBreak(event,now(day+"T15:59:59")));
@@ -148,7 +148,7 @@ public class CalendarSnapshotTest {
         }
     }
     @Test public void badSnapshotNeverPassesValidation() throws Exception {
-        for(String bad:Arrays.asList(asset().replace("\"schemaVersion\": 1","\"schemaVersion\": 99"),asset().replace("https://www.opm.gov","http://www.opm.gov"),asset().replace("\"kind\": \"SELL\"","\"kind\": \"BOGUS\""))) {
+        for(String bad:Arrays.asList(asset().replace("\"schemaVersion\": 1","\"schemaVersion\": 99"),asset().replace("https://www.opm.gov","http://www.opm.gov"),asset().replace("\"kind\": \"HOLIDAY\"","\"kind\": \"BOGUS\""))) {
             try {CalendarSnapshot.parse(bad);fail("Invalid snapshot accepted");}catch(org.json.JSONException expected) { }
         }
     }

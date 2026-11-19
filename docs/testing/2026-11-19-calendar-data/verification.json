@@ -1,0 +1,147 @@
+{
+  "version": "0.1.69",
+  "baseCommit": "dbfef718c22bcfb1ccf6b478832d22f0e9d22eb5",
+  "localChanges": true,
+  "apkSha256": "313dbc7a02c5bd667c85177549c71cba03dec0474ed8cf1ff8269aab4b452415",
+  "sourceManifestSha256": "98fb09046a2338c90bf15c96cfef498922451d23554bfa0282823a52218f87fc",
+  "jvmTests": 500,
+  "jvmFailures": 0,
+  "pipelineTests": 7,
+  "cleanupTests": 52,
+  "deploymentHelperTests": 2,
+  "translationResources": 661,
+  "lint": "pass",
+  "supportedObservanceYears": [
+    2024,
+    2027
+  ],
+  "referenceCommit": "f526c4d9d9ee2a854bf790aaf6d6ee6db90f3f25",
+  "networkFixture": "Native cases use synthetic OPM transport and isolated preferences. Live publisher requests are documented separately.",
+  "cases": [
+    {
+      "case": "sources-en",
+      "version": "0.1.68",
+      "job": "J‑3e7570aeccd9",
+      "assertions": {
+        "status": "pass",
+        "language": "en",
+        "screen": "sources",
+        "homeboardVersion": "0.1.68",
+        "detail": "Reopened two-year revision, calculated boundary anchor and unchanged household preferences; visible source/refresh actions and repeated-request coalescing",
+        "network": "controlled fixture; no publisher/device network changes",
+        "offlineTransport": false
+      },
+      "screenshot": "sources-en.png",
+      "screenshotSha256": "ed4b7a81877f50a89329c69f90d6dd53c333b4620a688b5461f3e546cbd18d68",
+      "receiptSha256": "487c5b826f21860e6f5b1b450aeb2e7a9cd913e0fe96bae0db044ee0845449e9"
+    },
+    {
+      "case": "sources-th",
+      "version": "0.1.68",
+      "job": "J‑990563b83d70",
+      "assertions": {
+        "status": "pass",
+        "language": "th",
+        "screen": "sources",
+        "homeboardVersion": "0.1.68",
+        "detail": "Reopened two-year revision, calculated boundary anchor and unchanged household preferences; visible source/refresh actions and repeated-request coalescing",
+        "network": "controlled fixture; no publisher/device network changes",
+        "offlineTransport": false
+      },
+      "screenshot": "sources-th.png",
+      "screenshotSha256": "55d3ff87f8abbfb9c8ce470042cf44e828aced1fd6e205ac2b34cd0d88dc322b",
+      "receiptSha256": "4b0368a334339a659d92dac40ea048aa18ab18a4d7c0742e0601a285b3691022"
+    },
+    {
+      "case": "failed-refresh",
+      "version": "0.1.68",
+      "job": "J‑c579c8613c18",
+      "assertions": {
+        "status": "pass",
+        "language": "en",
+        "screen": "failure",
+        "homeboardVersion": "0.1.68",
+        "detail": "Reopened two-year revision, calculated boundary anchor and unchanged household preferences; failed refresh preserved dates and successful-check time",
+        "network": "controlled fixture; no publisher/device network changes",
+        "offlineTransport": true
+      },
+      "screenshot": "failed-refresh.png",
+      "screenshotSha256": "85a159d0f5cf6f506eab2ad9f1873c388a832d7189379295b4820d1280b236c9",
+      "receiptSha256": "564cf6c8d411591858681d54178c261f94ca04925d0331b8f8403d97e5232cd6"
+    },
+    {
+      "case": "offline-boundary-en",
+      "version": "0.1.69",
+      "job": "J‑dc2f4d4c8840",
+      "assertions": {
+        "status": "pass",
+        "language": "en",
+        "screen": "boundary",
+        "homeboardVersion": "0.1.69",
+        "detail": "Reopened two-year revision, calculated boundary anchor and unchanged household preferences; next-year calendar displayed with offline fixture transport",
+        "network": "controlled fixture; no publisher/device network changes",
+        "offlineTransport": true
+      },
+      "screenshot": "offline-boundary-en.png",
+      "screenshotSha256": "ea1e83a01f6c2a62b7dd2d7a2e2665c0d5e8595f170655dee8879838363165bc",
+      "receiptSha256": "9fd64b707a602f0b0840bf118c96c4ad70c0c247b1847aa203c4e6ca22fc77d2"
+    },
+    {
+      "case": "offline-boundary-th",
+      "version": "0.1.69",
+      "job": "J‑c9ac0ccefb79",
+      "assertions": {
+        "status": "pass",
+        "language": "th",
+        "screen": "boundary",
+        "homeboardVersion": "0.1.69",
+        "detail": "Reopened two-year revision, calculated boundary anchor and unchanged household preferences; next-year calendar displayed with offline fixture transport",
+        "network": "controlled fixture; no publisher/device network changes",
+        "offlineTransport": true
+      },
+      "screenshot": "offline-boundary-th.png",
+      "screenshotSha256": "994059c34aa630d0ab1201f82ee372f8e3e63a0a22eb8e5c48dd3192b1ff4994",
+      "receiptSha256": "041ab2da32d93ca5e9f357434dd603c31c1e9642c4e2ed5f01ca468099e4317f"
+    },
+    {
+      "case": "restore",
+      "version": "0.1.69",
+      "job": "J‑182634641ade",
+      "assertions": {
+        "status": "pass",
+        "language": "en",
+        "screen": "restore",
+        "homeboardVersion": "0.1.69",
+        "detail": "Reopened two-year revision, calculated boundary anchor and unchanged household preferences; visible Restore and short Back returned to Calendar focus",
+        "network": "controlled fixture; no publisher/device network changes",
+        "offlineTransport": true
+      },
+      "screenshot": "restore.png",
+      "screenshotSha256": "c2edacc8593d8c4e21fe75911e2d0f9d7183c0aa98e1799fba2670590f57c000",
+      "receiptSha256": "fd9d2029136bd44d04256de65fdfd269169bb511d17f2184959f772bd604423e"
+    },
+    {
+      "case": "compact",
+      "version": "0.1.69",
+      "job": "J‑654ffa0f6541",
+      "assertions": {
+        "status": "pass",
+        "language": "en",
+        "screen": "compact",
+        "homeboardVersion": "0.1.69",
+        "detail": "Reopened two-year revision, calculated boundary anchor and unchanged household preferences",
+        "network": "controlled fixture; no publisher/device network changes",
+        "offlineTransport": false
+      },
+      "screenshot": "compact.png",
+      "screenshotSha256": "45aee0bf9f117dcad7a6932b51a737e38e25c2d7df3485751727b2ccf1e21911",
+      "receiptSha256": "b417b34f55126ded4a4a562125e27c45d6a474dcc660dd54c9b4925d224969a2"
+    }
+  ],
+  "sourceFailureCapturesProductionUnchangedFrom": "0.1.68",
+  "normalLauncher": {
+    "job": "J‑a5850090b7f8",
+    "status": "succeeded",
+    "receiptSha256": "a1546062ba37bf72dd2e0b6c1145b1d83c684339d236bb90bad8703fe6d0d789"
+  }
+}

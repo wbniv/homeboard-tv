@@ -28,6 +28,15 @@ Source: https://github.com/spocky/projectivy-plugin-wallpaper-provider/tree/60ec
 Lottie Android by Airbnb and contributors: Apache License 2.0.
 Source: https://github.com/airbnb/lottie-android/tree/v6.6.2
 
+## Thai civil-calendar arithmetic
+
+The Thai civil-calendar Java arithmetic is adapted from pythaidate by Mark Hollow,
+copyright 2023, MIT license. Reference revision:
+`f526c4d9d9ee2a854bf790aaf6d6ee6db90f3f25`.
+Original reference files and hashes are in `vendor/pythaidate/`; the MIT notice is
+also packaged as `assets/licenses/pythaidate-mit.txt`. The APK uses the Java port,
+not a Python runtime. Source: https://github.com/hmmbug/pythaidate
+
 ## About source QR assets and verification
 
 The four offline source-link QR images are generated from public URLs with Python

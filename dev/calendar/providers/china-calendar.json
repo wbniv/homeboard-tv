@@ -665,12 +665,20 @@
       "original": "调休上班"
     }
   ],
+  "coverage": {
+    "2026": {
+      "national": "complete"
+    },
+    "2027": {
+      "national": "complete"
+    }
+  },
   "schemaVersion": 1,
   "stage": "normalize",
   "producerVersion": "1",
   "inputHashes": {
     "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
-    "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+    "spain.json": "99997d884b515d9d9f6fd3ed67faede7494f6fe2b2a3a826a9ad6cb86310b94a",
     "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
     "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
   }

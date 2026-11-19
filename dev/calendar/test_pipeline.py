@@ -1,5 +1,6 @@
 import copy
 import json
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
@@ -7,17 +8,22 @@ from normalize import normalize, write
 from assemble import assemble
 
 class PipelineTest(unittest.TestCase):
+    def test_reference_sources_match_pinned_hashes(self):
+        root=Path(__file__).resolve().parents[2]/'vendor/pythaidate'
+        manifest=json.loads((root/'provenance.json').read_text())
+        for name,expected in manifest['files'].items():
+            self.assertEqual(expected,hashlib.sha256((root/name).read_bytes()).hexdigest(),name)
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.root=Path(self.temp.name)
         self.providers=self.root/'providers';self.out=self.root/'snapshot.json'
         self.facts=Path(__file__).parent/'reviewed'
     def tearDown(self):self.temp.cleanup()
-    def test_replay_is_deterministic_and_has_all_six_providers(self):
+    def test_replay_is_deterministic_and_bundles_only_published_providers(self):
         normalize(self.facts,self.providers);assemble(self.providers,self.out)
         before=self.out.read_bytes()
         normalize(self.facts,self.providers);assemble(self.providers,self.out)
         self.assertEqual(before,self.out.read_bytes())
-        self.assertEqual(6,len(json.loads(before)['providers']))
+        self.assertEqual(4,len(json.loads(before)['providers']))
     def test_packaged_snapshot_matches_reviewed_provider_facts(self):
         normalize(self.facts,self.providers);assemble(self.providers,self.out)
         packaged=Path(__file__).resolve().parents[2]/'launcher/app/src/main/assets/calendar-snapshot.json'
@@ -47,7 +53,6 @@ class PipelineTest(unittest.TestCase):
         provider=json.loads((self.providers/'spain-calendar.json').read_text())
         local=[e['date'] for e in provider['events'] if e['scope']=='tivissa']
         self.assertEqual(['2026-07-23','2026-07-24'],local)
-        flowers=json.loads((self.providers/'flowers-calendar.json').read_text())
-        event=next(e for e in flowers['events'] if e['date']=='2026-11-29')
-        self.assertEqual('2026-12-02',event['anchor'])
+        self.assertFalse((self.providers/'flowers-calendar.json').exists())
+        self.assertFalse((self.providers/'buddhist-calendar.json').exists())
 if __name__=='__main__':unittest.main()

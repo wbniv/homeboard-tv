@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hb_data_title">Sources &amp; offline data</string>
+    <string name="hb_data_details">Coverage &amp; last check</string>
+    <string name="hb_data_refresh">Refresh holiday data</string>
+    <string name="hb_data_refresh_short">Refreshing…</string>
+    <string name="hb_data_stopped">Refresh stopped. Saved dates remain available.</string>
+    <string name="hb_data_refreshing">Updating holidays… Your saved calendar stays available.</string>
+    <string name="hb_data_offline_explain">Keep this year and next year offline. Official sources are checked automatically.</string>
+    <string name="hb_data_calculated">Calculated on this TV · Thai civil calendar</string>
+    <string name="hb_data_complete">Complete offline</string>
+    <string name="hb_data_partial">Partial offline coverage</string>
+    <string name="hb_data_missing">No validated annual publication cached</string>
+    <string name="hb_data_last_check">Latest successful source check</string>
+    <string name="hb_data_closure_check">Thai closure announcements last checked · Bangkok time</string>
+    <string name="hb_data_never">Not checked yet</string>
+    <string name="hb_data_failed">Some source checks need attention. Saved dates have been retained.</string>
+    <string name="hb_data_overdue">An automatic check is overdue.</string>
+    <string name="hb_data_storage">Offline storage could not be updated. Existing dates remain available.</string>
+    <string name="hb_data_lunar">%1$s %2$d · Lunar month %3$s</string>
+    <string name="hb_data_waxing">Waxing</string>
+    <string name="hb_data_waning">Waning</string>
+    <string name="hb_data_month8_again">8 (second)</string>
+</resources>

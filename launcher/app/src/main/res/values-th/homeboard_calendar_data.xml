@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hb_data_title">แหล่งข้อมูลและข้อมูลออฟไลน์</string>
+    <string name="hb_data_details">ช่วงข้อมูลและการตรวจสอบล่าสุด</string>
+    <string name="hb_data_refresh">อัปเดตข้อมูลวันหยุด</string>
+    <string name="hb_data_refresh_short">กำลังอัปเดต…</string>
+    <string name="hb_data_stopped">หยุดอัปเดตแล้ว วันที่บันทึกไว้ยังใช้ได้</string>
+    <string name="hb_data_refreshing">กำลังอัปเดตวันหยุด… ปฏิทินที่บันทึกไว้ยังใช้ได้</string>
+    <string name="hb_data_offline_explain">เก็บข้อมูลปีนี้และปีถัดไปแบบออฟไลน์ ตรวจสอบแหล่งทางการโดยอัตโนมัติ</string>
+    <string name="hb_data_calculated">คำนวณบนทีวีเครื่องนี้ · ปฏิทินจันทรคติไทย</string>
+    <string name="hb_data_complete">ข้อมูลออฟไลน์ครบถ้วน</string>
+    <string name="hb_data_partial">ข้อมูลออฟไลน์ยังไม่ครบ</string>
+    <string name="hb_data_missing">ยังไม่มีประกาศรายปีที่ตรวจสอบแล้วในเครื่อง</string>
+    <string name="hb_data_last_check">ตรวจสอบแหล่งข้อมูลสำเร็จล่าสุด</string>
+    <string name="hb_data_closure_check">ตรวจสอบประกาศหยุดราชการล่าสุด · เวลากรุงเทพฯ</string>
+    <string name="hb_data_never">ยังไม่ได้ตรวจสอบ</string>
+    <string name="hb_data_failed">บางแหล่งข้อมูลต้องตรวจสอบเพิ่มเติม ยังคงเก็บวันที่เดิมไว้</string>
+    <string name="hb_data_overdue">เลยกำหนดตรวจสอบอัตโนมัติแล้ว</string>
+    <string name="hb_data_storage">อัปเดตพื้นที่เก็บข้อมูลออฟไลน์ไม่ได้ วันที่เดิมยังใช้ได้</string>
+    <string name="hb_data_lunar">%1$s %2$d ค่ำ · เดือน %3$s</string>
+    <string name="hb_data_waxing">ขึ้น</string>
+    <string name="hb_data_waning">แรม</string>
+    <string name="hb_data_month8_again">8 หลัง</string>
+</resources>

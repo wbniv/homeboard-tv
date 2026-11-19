@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/dbfef71) | Show today's date in Calendar and plan offline holiday updates |
 | [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/0a7ba57) | Add read-only TV cleanup inspection and recovery foundation |
 | [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/a4aa25c) | Use Thai Buddhist Era dates and 65% widget backgrounds |
 | [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/539e9fc) | Complete TV controls and wallpaper provider directory |
@@ -29,6 +30,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+dbfef71	author	Will Norris
+dbfef71	added	2
+dbfef71	deleted	0
+dbfef71	files	1
 0a7ba57	author	Will Norris
 0a7ba57	added	2
 0a7ba57	deleted	0

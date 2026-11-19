@@ -1,0 +1,2 @@
+# Preserve captured publisher responses byte-for-byte for provenance hashes.
+launcher/app/src/test/resources/calendar/sources/*.html -text -whitespace

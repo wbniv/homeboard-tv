@@ -32,4 +32,10 @@ final class CalendarLabels {
     static String date(Context c, java.time.LocalDate date) {
         return DisplayTime.formatter("EEE d MMM uuuu", DisplayTime.locale(c)).format(date);
     }
+    static String lunar(Context c, java.time.LocalDate date) {
+        if(!ThaiCivilCalendar.supported(date))return "";
+        ThaiCivilCalendar.Date value=ThaiCivilCalendar.convert(date);
+        return c.getString(R.string.hb_data_lunar,c.getString(value.waxing()?R.string.hb_data_waxing:R.string.hb_data_waning),
+                value.halfDay(),value.month==88?c.getString(R.string.hb_data_month8_again):String.valueOf(value.month));
+    }
 }

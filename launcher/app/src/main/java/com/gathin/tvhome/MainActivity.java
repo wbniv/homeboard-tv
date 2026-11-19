@@ -160,6 +160,11 @@ public class MainActivity extends Activity {
     private boolean applyingUndo;
     private GridSelector gridSelector;
     private CalendarSnapshot calendarSnapshot;
+    private CalendarData calendarData;
+    private final Runnable calendarUpdated = this::refreshCalendarViews;
+    protected CalendarData createCalendarData() { return CalendarData.get(this); }
+    CalendarData calendarData() { return calendarData; }
+    private void refreshCalendarViews() { for (CalendarWidgetView view : calendarWidgets.values()) view.refresh(); }
     private WidgetExpansion expandedWidget;
     private boolean calendarDayEditor;
     private final Map<String, CalendarWidgetView> calendarWidgets = new LinkedHashMap<>();
@@ -273,12 +278,7 @@ public class MainActivity extends Activity {
         }
         if(layoutReadable&&encoded!=null&&!encoded.equals(layout.encode()))saveWithoutUndo();
         lastSavedLayout = layout.encode();
-        try (java.io.InputStream data = getAssets().open("calendar-snapshot.json")) {
-            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-            byte[] buffer = new byte[4096]; int count;
-            while ((count = data.read(buffer)) != -1) out.write(buffer, 0, count);
-            calendarSnapshot = CalendarSnapshot.parse(out.toString("UTF-8"));
-        } catch (Exception failure) { calendarSnapshot = CalendarSnapshot.unavailable(); }
+        calendarData=createCalendarData();calendarSnapshot=calendarData.snapshot;
         Config config = Config.load(this);
         configReducedMotion = config.reducedMotion;
         background = paletteColor();
@@ -360,6 +360,7 @@ public class MainActivity extends Activity {
 
     @Override protected void onResume() {
         super.onResume(); active = true;
+        calendarData.listen(calendarUpdated);calendarData.schedule();calendarData.refresh(false,null);
         if(expandedWidget!=null)expandedWidget.setRunning(true);
         for (RainWidgetController widget : rainWidgets.values()) widget.resumeDetails();
         updateAir();
@@ -383,6 +384,7 @@ public class MainActivity extends Activity {
         });
     }
     @Override protected void onPause() {
+        calendarData.unlisten(calendarUpdated);
         cancelBackUndo(false);
         if(phoneEditor!=null)phoneEditor.stop();
         active = false; restoringSurface = true; cancelOk();
@@ -1358,7 +1360,14 @@ public class MainActivity extends Activity {
     private CalendarWidgetController calendarController(String key) {
         return new CalendarWidgetController(this, calendarSnapshot, layout.calendarSettings.get(key), this::menu,
                 this::calendarDetails, this::calendarDayEditor, () -> { save(getString(R.string.hb_cal_updated)); render(0); },
-                () -> calendarWidgets.get(key));
+                () -> calendarWidgets.get(key), () -> openMenu(new MenuSpec(getString(R.string.hb_data_title), () -> drawCalendarSources(key))));
+    }
+    private void drawCalendarSources(String key) {
+        if(overlay!=null)root.removeView(overlay);overlay=new FrameLayout(this);overlay.setBackgroundColor(paletteColors.scrim);
+        CalendarSourcePanel panel=new CalendarSourcePanel(this,calendarData,layout.calendarSettings.get(key),paletteColors,uiBackgroundOpacity,this::backMenu);
+        int width=Math.min(dp(840),getResources().getDisplayMetrics().widthPixels-dp(64));
+        int height=Math.min(dp(510),getResources().getDisplayMetrics().heightPixels-dp(48));
+        overlay.addView(panel,new FrameLayout.LayoutParams(width,height,Gravity.CENTER));root.addView(overlay,new FrameLayout.LayoutParams(-1,-1));updateUndoHint();
     }
     private void configureCalendar(String key) { calendarController(key).configure(); }
     private View calendarTile(String key) {
@@ -1412,7 +1421,7 @@ public class MainActivity extends Activity {
         TextView body = text(detail, 18); body.setPadding(0, dp(12), 0, dp(12));
         scroll.addView(body, new android.widget.ScrollView.LayoutParams(-1, -2));
         panel.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1));
-        aboutBackButton = infoButton("Back", this::backMenu);
+        aboutBackButton = infoButton(getString(R.string.hb_fs_back), this::backMenu);
         panel.addView(aboutBackButton, new LinearLayout.LayoutParams(-1, dp(52)));
         int width = Math.min(dp(840), getResources().getDisplayMetrics().widthPixels - dp(64));
         int height = Math.min(dp(510), getResources().getDisplayMetrics().heightPixels - dp(48));

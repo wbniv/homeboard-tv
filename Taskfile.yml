@@ -71,6 +71,12 @@ tasks:
   calendar:normalize:
     desc: Normalize reviewed calendar facts into provider JSON in the container
     cmds: ['dev/container.sh run python3 /workspace/dev/calendar/normalize.py --input /workspace/dev/calendar/reviewed --output /workspace/dev/calendar/providers']
+  calendar:replay:
+    desc: Replay captured official holiday documents with the native Java modules
+    cmds: ['dev/container.sh run python3 /workspace/dev/calendar/replay.py {{.CLI_ARGS}}']
+  calendar:proof:
+    desc: Capture native calendar cache/source UI acceptance through the coordinator
+    cmds: ['python3 dev/calendar-data-proof.py {{.CLI_ARGS}}']
   calendar:assemble:
     desc: Validate provider JSON and atomically assemble the calendar asset
     cmds: ['dev/container.sh run python3 /workspace/dev/calendar/assemble.py --input /workspace/dev/calendar/providers --output /workspace/launcher/app/src/main/assets/calendar-snapshot.json']

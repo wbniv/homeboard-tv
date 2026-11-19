@@ -21,10 +21,11 @@ final class CalendarWidgetController {
     private final NumberEditor editor;
     private final Runnable changed;
     private final Supplier<CalendarWidgetView> view;
+    private final Runnable dataUi;
     CalendarWidgetController(Context c, CalendarSnapshot snapshot, CalendarWidgetSettings settings, Menus menus,
-                             Details details, NumberEditor editor, Runnable changed, Supplier<CalendarWidgetView> view) {
+                             Details details, NumberEditor editor, Runnable changed, Supplier<CalendarWidgetView> view, Runnable dataUi) {
         this.c = c; this.snapshot = snapshot; this.settings = settings; this.menus = menus;
-        this.details = details; this.editor = editor; this.changed = changed; this.view = view;
+        this.details = details; this.editor = editor; this.changed = changed; this.view = view; this.dataUi = dataUi;
     }
     private String t(int resource) { return c.getString(resource); }
     private String toggle(int name, boolean enabled) { return c.getString(enabled ? R.string.hb_cal_enabled : R.string.hb_cal_disabled, t(name)); }
@@ -37,9 +38,10 @@ final class CalendarWidgetController {
     }
     void configure() {
         menus.show(t(R.string.hb_cal_configure), c.getString(R.string.hb_cal_days, settings.holidayLookaheadDays),
-                new String[]{t(R.string.hb_cal_day_count), t(R.string.hb_cal_sources), t(R.string.hb_cal_weeks), t(R.string.hb_cal_week_start)}, choice -> {
+                new String[]{t(R.string.hb_cal_day_count), t(R.string.hb_cal_sources), t(R.string.hb_cal_weeks), t(R.string.hb_cal_week_start), t(R.string.hb_data_title)}, choice -> {
                     if (choice == 0) dayCount(); else if (choice == 1) sources(); else if (choice == 2) weeks();
-                    else details.show(t(R.string.hb_cal_week_start), t(R.string.hb_cal_week_explain));
+                    else if(choice==3) details.show(t(R.string.hb_cal_week_start), t(R.string.hb_cal_week_explain));
+                    else coverage();
                 });
     }
     private void dayCount() {
@@ -89,13 +91,7 @@ final class CalendarWidgetController {
         });
     }
     private void coverage() {
-        StringBuilder body = new StringBuilder(t(R.string.hb_cal_live_pending));
-        for (String id : CalendarWidgetSettings.SOURCES) {
-            CalendarSnapshot.Provider p = snapshot.providers.get(id);
-            body.append("\n\n").append(p == null ? CalendarLabels.source(c, id) + ": " + t(R.string.hb_cal_unknown)
-                    : c.getString(R.string.hb_cal_coverage_detail, CalendarLabels.source(c, id), CalendarLabels.date(c,p.start), CalendarLabels.date(c,p.end), t(R.string.hb_cal_offline)));
-        }
-        details.show(t(R.string.hb_cal_data_sources), body.toString());
+        dataUi.run();
     }
     void dates() {
         CalendarSnapshot.Display display = snapshot.display(settings, Instant.now());

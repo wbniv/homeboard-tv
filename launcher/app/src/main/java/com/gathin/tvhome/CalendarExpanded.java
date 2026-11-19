@@ -18,6 +18,8 @@ final class CalendarExpanded implements WidgetExpansion.Content {
     private final WidgetExpansion h;
     private final CalendarSnapshot snapshot;
     private final CalendarWidgetSettings settings;
+    private final CalendarData data;
+    private final Runnable updated=this::refresh;
     final CalendarWeekWindow window;
     private final LinearLayout root;
     private final TextView range,detail;
@@ -26,6 +28,7 @@ final class CalendarExpanded implements WidgetExpansion.Content {
     private final Map<LocalDate,CalendarSnapshot.Day> days=new HashMap<>();
     CalendarExpanded(WidgetExpansion host,CalendarSnapshot snapshot,CalendarWidgetSettings settings,LocalDate anchor,Bundle state){
         h=host;this.snapshot=snapshot;this.settings=settings;
+        data=((MainActivity)h.activity).calendarData();
         LocalDate selected=anchor==null?LocalDate.now(CalendarSnapshot.BANGKOK):anchor;
         try{selected=LocalDate.parse(state.getString("selected",selected.toString()));}catch(RuntimeException ignored){}
         window=new CalendarWeekWindow(selected);
@@ -38,6 +41,10 @@ final class CalendarExpanded implements WidgetExpansion.Content {
             StringBuilder text=new StringBuilder();for(CalendarSnapshot.Day day:display.days)text.append(describe(day.date,true)).append("\n\n");h.details(h.activity.getString(R.string.hb_fs_all_dates),text.toString());
         }));
         root.addView(controls);range=h.text("",16);root.addView(range);
+        LinearLayout sourceControls=h.row();
+        sourceControls.addView(h.button(R.string.hb_data_title,()->h.calendarSources(data,settings)));
+        sourceControls.addView(h.button(R.string.hb_data_refresh,()->data.refresh(true,null)));
+        root.addView(sourceControls);
         LinearLayout content=h.row();grid=new WeekGrid();content.addView(grid,new LinearLayout.LayoutParams(0,-1,1.45f));
         detail=h.detailPane(content,1);root.addView(content,new LinearLayout.LayoutParams(-1,0,1));refresh();
         grid.post(grid::requestFocus);
@@ -52,7 +59,7 @@ final class CalendarExpanded implements WidgetExpansion.Content {
     private String describe(LocalDate date,boolean full){
         StringBuilder text=new StringBuilder(CalendarLabels.date(h.activity,date));CalendarSnapshot.Day day=day(date);
         boolean covered=!settings.enabled.isEmpty();
-        for(String id:settings.enabled){CalendarSnapshot.Provider p=snapshot.providers.get(id);if(p==null||date.isBefore(p.start)||date.isAfter(p.end)||"partial".equals(p.status)||"stale".equals(p.status))covered=false;}
+        for(String id:settings.enabled)if(!snapshot.covered(id,date,settings))covered=false;
         if(day.events.isEmpty())text.append("\n\n").append(h.activity.getString(settings.enabled.isEmpty()?R.string.hb_fs_no_sources:covered?R.string.hb_fs_empty:R.string.hb_fs_coverage));
         for(CalendarSnapshot.Event e:day.events){
             text.append("\n\n").append(CalendarLabels.event(h.activity,e,settings,Instant.now()));
@@ -67,12 +74,17 @@ final class CalendarExpanded implements WidgetExpansion.Content {
                 text.append("\n").append(h.activity.getString(R.string.hb_fs_selling)).append(": ").append(CalendarLabels.date(h.activity,e.anchor.minusDays(1))).append(" — ").append(CalendarLabels.date(h.activity,e.anchor));
             }
             text.append("\n").append(CalendarLabels.source(h.activity,e.provider));if(full)text.append("\n").append(e.url);
+            if(CalendarSnapshot.calculated(e.provider)){
+                text.append("\n").append(CalendarLabels.lunar(h.activity,e.anchor==null?e.date:e.anchor));
+                if(full)text.append("\n").append(h.activity.getString(R.string.hb_data_calculated)).append("\n").append(ThaiCivilCalendar.REVISION);
+            }
         }
         if(!covered&&!settings.enabled.isEmpty()&&!day.events.isEmpty())text.append("\n\n").append(h.activity.getString(R.string.hb_fs_coverage));
         if(!display.offline.isEmpty())text.append("\n\n").append(h.activity.getString(R.string.hb_cal_offline));
         return text.toString();
     }
     public View view(){return root;}
+    public void active(boolean active){data.unlisten(updated);if(active){data.listen(updated);refresh();}}
     public Bundle state(){Bundle b=new Bundle();b.putString("start",window.start.toString());b.putString("selected",window.selected.toString());return b;}
     private final class WeekGrid extends View {
         private final Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);

@@ -1,6 +1,6 @@
 # Two-year offline holidays and automatic updates
 
-**Status: implementation requested; this document defines the work before coding.**
+**Status: runtime repository, updater, scheduling and source UI implemented in candidate 0.1.69; source/device verification and limits recorded below.**
 
 TL;DR: keep the complete current and following calendar years in persistent local
 storage for each enabled holiday source/scope. Refresh official data in the
@@ -19,8 +19,9 @@ for country/scope choices and special Thai government-closure semantics.
 
 The APK has reviewed static holiday snapshots, with Thai/Spanish coverage through
 2026 and US/China coverage through 2027. The existing container tools normalize
-reviewed JSON and atomically assemble an asset. Android currently reads the asset;
-live source retrieval, runtime snapshot storage and scheduling are not implemented.
+reviewed JSON and atomically assemble an asset. That was the pre-implementation
+state. Android now reads persisted revisions seeded from the asset and runs the
+native updater described below. The seed also includes 2027 national/Catalunya dates.
 
 The existing `coverageStart`/`coverageEnd` envelope alone cannot establish that
 every selected national/regional/local scope is complete. Add year-and-scope
@@ -129,7 +130,7 @@ its Calendar settings are extended; refresh on the TV is the same underlying
 operation. Do not introduce a second independent phone cache.
 
 ```text
-Calendar → Sources & data
+Calendar → Sources & offline data
 
 Thai government holidays
 Offline coverage       2026 complete · 2027 not yet published
@@ -142,29 +143,31 @@ Missing                Tivissa local dates
 US federal holidays    2026–2027 complete
 China                  2026–2027 complete
 
+                [▼ more / ▲ previous]
 [Refresh holiday data]                    [Back]
 ```
 
 This mockup illustrates states, not verified current coverage. Use English/Thai,
 localized timestamps and BE years in Thai. Show progress and per-source results.
+Use a focusable wedge to page long details, with no visible scrollbar.
 The widget only needs a concise warning if its visible dates lack coverage.
 Keep today's date first and the page counter short. Existing short OK expansion,
 Back and visible Restore dashboard preserve original page, focus and saved size.
 
 ## Implementation sequence
 
-- [ ] Add provider/year/scope coverage and revision contracts, validators, persistent
+- [x] Add provider/year/scope coverage and revision contracts, validators, persistent
   storage and atomic publication. Exercise seed/upgrade/rollback behavior first.
 - [ ] Implement and fixture-test each official-source adapter and discovery path.
   Close Thai/Spanish 2027 gaps wherever the relevant publications exist; retain
   explicit missing/unpublished status for remaining scopes.
 - [ ] Add reconciler handling complete replacements, incremental amendments,
   cancellations and per-provider failures. Preserve all unaffected cached data.
-- [ ] Wire the native scheduler, missed-check catch-up, retry/coalescing and
+- [x] Wire the native scheduler, missed-check catch-up, retry/coalescing and
   current/following-year rollover. Keep Thai announcement checks twice daily.
-- [ ] Add bilingual source details, manual refresh and visible coverage/error states.
+- [x] Add bilingual source details, manual refresh and visible coverage/error states.
   Keep dashboard and phone settings using the same persisted provider data.
-- [ ] Integrate the separately validated local Wan Phra/flower branch and update
+- [x] Integrate the separately validated local Wan Phra/flower branch and update
   user docs/provenance. Do not label bundled religious lists as calculated.
 - [ ] Complete container checks and physical screenshot acceptance, then deploy
   one newly numbered frozen APK to both TVs through `task deploy`.
@@ -204,3 +207,27 @@ Completion requires operational updates without APK replacement, demonstrated
 two-year offline coverage for supported scopes, accurate gaps for unpublished
 data and the failure/rollover evidence above. A Refresh button or a larger bundled
 JSON file alone does not satisfy this plan.
+
+## Implementation checkpoint
+
+Candidate 0.1.69 implements the persistent provider store, conditional HTTPS
+captures, source-specific extraction, independent reconciliation, retry/coalescing,
+year rollover and safe pruning, the network-constrained native job and bilingual
+live source/refresh screen. Runtime Java modules also run through the container
+`calendar:replay` command. There is no hosted service or runtime Python dependency.
+
+500 JVM tests, 7 pipeline tests, 52 cleanup/recovery tests and Android lint passed.
+Real Java HTTPS runs updated China 2026/2027, Spanish national/Catalunya 2026/2027
+and Tivissa 2026. Tivissa 2027 had no records in the official dataset. OPM/Thai
+annual requests were blocked and the configured Thai feed did not resolve from
+the development network; those are unresolved live-source limits, with last-good
+data retained. Ambiguous Thai cancellation/jurisdiction wording requires review.
+No complete Thai 2027 or Tarragona-province coverage is claimed.
+
+Cast1 installation succeeded; Cast2's independent install was admitted but failed
+`personal-install-in-use`. Physical English/Thai source, offline boundary,
+failure-retention and restore acceptance is recorded in the
+[verification record](../testing/2026-11-19-calendar-data.md). The remaining unchecked rollout
+items cover unresolved publisher validation, ambiguous amendment handling and the
+unsuccessful Cast2 install; they are not a claim of verified completeness
+for publishers or future years that could not be validated.

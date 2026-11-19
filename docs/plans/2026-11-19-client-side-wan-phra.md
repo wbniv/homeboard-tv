@@ -1,6 +1,6 @@
 # Calculate Wan Phra on the TV
 
-**Status: proposed; calculator implementation has not started.**
+**Status: implemented in candidate 0.1.69; container verification passed; native source, boundary and restore evidence is linked below.**
 
 TL;DR: calculate Thai civil-calendar Wan Phra dates locally in Java, then derive
 the existing flower preparation/selling blocks from those dates. Validate the
@@ -128,12 +128,14 @@ Current bundled coverage, checked against the APK asset on 19 November 2026:
 | Published source | Coverage ends |
 |---|---|
 | Thai government | 31 December 2026 |
-| Spain and configured regional/local sources | 31 December 2026 |
+| Spain national/Catalunya | 31 December 2027 |
+| Tivissa-centre local dates | 31 December 2026; future/local amendments incomplete |
 | US | 31 December 2027 |
 | China, including published working-day adjustments | 31 December 2027 |
 
-These are bundled offline snapshots, not automatic rolling downloads. Thai/Spanish
-2027 coverage is currently missing.
+These are the offline seed's coverage bounds. Runtime source updates now maintain
+the persistent cache. Thai 2027 and Tivissa 2027 coverage remains missing; Spanish
+national/Catalunya 2027 dates have been added from the official BOE publication.
 
 **Requirement confirmed by Will: keep the entire current calendar year and the
 entire following year offline for every enabled holiday source.** Interpret the
@@ -296,3 +298,19 @@ widget and full-screen view, the supported interval is documented with independe
 date evidence, no annual runtime list is required, and the screenshot/restore
 checks pass. Merely importing a library or matching four November dates is not
 completion.
+
+## Implementation checkpoint
+
+The Java civil-calendar port, runtime Buddhist/flower event generation and lunar
+detail labels are implemented. Original reference files/license/hashes are pinned
+under `vendor/pythaidate/`; production assets no longer bundle religious event
+lists. Exact conversion hashes cover every day of 1900–2100, with independently
+published observance fixtures for 2024–2027. Supported display coverage remains
+2024–2027; flower windows needing a later anchor report incomplete coverage.
+
+The shared repository, live English/Thai source panel, manual refresh and native
+background job are implemented with the holiday-update workstream. The offline
+seed now includes 2027 Spanish national/Catalunya data. Source availability and
+unpublished/local coverage gaps remain explicit; see the
+[verification record](../testing/2026-11-19-calendar-data.md) for actual live checks
+and device acceptance rather than treating the mockups as proof.

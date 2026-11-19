@@ -12,8 +12,10 @@ stations using the remote; Lumpini Park is the default. See the
 
 The [Calendar widget](docs/how-to/calendar.md) combines upcoming holiday and
 flower/Buddhist dates, with a shared 7/30/custom holiday lookahead and independent
-Monday-week ranges. Its initial provider snapshot is reviewed offline data; live
-emergency updates and the validated lunar calculator remain future work. The
+Monday-week ranges. Wan Phra and flower anchors are calculated locally; published
+holidays use a persistent two-year offline cache with automatic/manual source
+checks and explicit coverage gaps. See [calendar data](docs/how-to/calendar-data.md)
+for supported years, source availability and closure-parser limits. The
 broader dashboard engine and traffic integrations remain undecided.
 
 ## Home interaction
@@ -138,11 +140,17 @@ entry. It is currently read-only. Real cleanup requires a reviewed device profil
 an approved package selection and independent restore acceptance. Selected
 CleanYourTV recovery code and original tests are separately pinned and licensed.
 
-Build **0.1.64** passed 478 JVM tests, 52 cleanup/recovery tests and Android lint.
-Cast1 is installed and launch-verified. The identical Cast2 install was submitted
-and admitted, but failed `personal-install-in-use`; installation there is
-unconfirmed. English/Thai companion captures, the real read-only Cast1 inspection
-and native instructions verification are recorded in the
+Build **0.1.69** adds calculated offline Wan Phra/flower dates, persistent
+current/next-year holiday storage, automatic checks and manual source refresh.
+It passed 500 JVM tests, 7 calendar pipeline tests, 52 cleanup/recovery tests and
+Android lint. Cast1 is installed and launch-verified. The identical Cast2 install
+was submitted and admitted, but failed `personal-install-in-use`; installation
+there is unconfirmed. See the [calendar data guide](docs/how-to/calendar-data.md)
+and [calendar verification record](docs/testing/2026-11-19-calendar-data.md) for
+source coverage, live-network limits and physical screenshot evidence.
+
+Earlier English/Thai companion captures, real read-only Cast1 inspection and
+native instructions verification remain in the
 [cleanup verification record](docs/testing/2026-11-18-tv-cleanup.md).
 
 Earlier directory/dashboard captures and provider baseline evidence remain in the

@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/0a7ba57) | Add read-only TV cleanup inspection and recovery foundation |
 | [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/539e9fc) | Complete TV controls and wallpaper provider directory |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/67c700a) | Reveal wallpaper previews and align Appearance directions |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/01eb586) | Add dashboard-first phone controls and native world clocks |
@@ -20,6 +21,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+0a7ba57	author	Will Norris
+0a7ba57	added	17
+0a7ba57	deleted	6
+0a7ba57	files	1
 539e9fc	author	Will Norris
 539e9fc	added	25
 539e9fc	deleted	5

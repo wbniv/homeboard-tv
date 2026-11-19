@@ -49,16 +49,15 @@ available through OK. Move/Delete/Undo work like other dashboard widgets.
 
 ## Current data limits
 
-This implementation reads **reviewed offline provider JSON**. It does not yet
-perform live emergency-closure checks or run the validated Thai lunar calculator.
-Those remain explicit work in the [plan](../plans/2026-11-16-thai-calendar-widgets.md).
-Do not rely on this offline snapshot alone for an office visit.
+Calendar calculates Wan Phra/flower blocks locally and reads published holidays
+from a persistent, automatically refreshed offline cache. See
+[offline data, refresh controls and source limits](calendar-data.md).
 
 - Thai government baseline: 2026, including separately scoped Bangkok closures.
-- Flower/Wan Phra anchors: reviewed 2026 dates through 24 December, with derived
-  work blocks. Dates beyond that coverage remain unknown.
-- Spanish national/regional and Tivissa-centre local dates: 2026. No 2027 local
-  dates or other Tivissa population centres are inferred.
+- Flower/Wan Phra anchors: independently checked civil-calendar calculations for
+  2024–2027. Dates outside the validated interval report incomplete coverage.
+- Spanish national/regional dates: 2026–2027. Tivissa-centre local dates: 2026.
+  No unpublished local dates or other Tivissa population centres are inferred.
 - US federal actual/observed dates: 2026–2027, including the 31 December 2027
   observed New Year date from the adjoining OPM schedule.
 - Mainland China holiday periods and separate make-up work days: 2026–2027.
@@ -78,13 +77,16 @@ task calendar:check
 ```
 
 `dev/calendar/reviewed/*.json` contains reviewed facts and source links.
-Normalize expands periods and flower anchors into
+Normalize expands published holiday periods into
 `dev/calendar/providers/*-calendar.json`. Assemble validates those files and
-atomically writes `launcher/app/src/main/assets/calendar-snapshot.json`, which
-the native Java widget consumes. Input hashes make the handoffs replayable.
+atomically writes `launcher/app/src/main/assets/calendar-snapshot.json`, the
+initial offline seed. Input hashes make the handoffs replayable. Buddhist/flower
+event arrays are no longer bundled; the TV derives them for each viewing window.
 Python is a build-container tool only; the APK has no Python dependency.
-The live fetch/extract/reconciliation stages remain pending; these commands
-never mark the offline snapshot as freshly checked official data.
+The runtime Java fetch/extract/reconciliation modules update private provider
+revisions. `task calendar:replay -- ...` can replay captured publications or run
+the same network updater in the build container. Generating the bundled asset
+never marks it as a freshly checked official source.
 
 English/Thai resources are included. Machine-assisted Thai copy has not received
 an independent human linguistic signoff; structural resource parity is checked.

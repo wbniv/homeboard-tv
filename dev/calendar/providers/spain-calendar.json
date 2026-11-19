@@ -3,9 +3,9 @@
   "country": "ES",
   "timeZone": "Europe/Madrid",
   "coverageStart": "2026-01-01",
-  "coverageEnd": "2026-12-31",
+  "coverageEnd": "2027-12-31",
   "status": "offline",
-  "reviewedOn": "2026-11-16",
+  "reviewedOn": "2026-11-19",
   "events": [
     {
       "id": "spain:2026-01-01:HOLIDAY:national",
@@ -132,15 +132,137 @@
       "kind": "HOLIDAY",
       "scope": "catalunya",
       "original": "Sant Esteve"
+    },
+    {
+      "date": "2027-01-01",
+      "original": "Año Nuevo.",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "id": "spain:2027-01-01:HOLIDAY:national",
+      "title": "Año Nuevo.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-01-06",
+      "original": "Epifanía del Señor.",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "id": "spain:2027-01-06:HOLIDAY:national",
+      "title": "Epifanía del Señor.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-03-26",
+      "original": "Viernes Santo.",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "id": "spain:2027-03-26:HOLIDAY:national",
+      "title": "Viernes Santo.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-03-29",
+      "original": "Lunes de Pascua.",
+      "kind": "HOLIDAY",
+      "scope": "catalunya",
+      "id": "spain:2027-03-29:HOLIDAY:catalunya",
+      "title": "Lunes de Pascua.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-05-01",
+      "original": "Fiesta del Trabajo.",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "id": "spain:2027-05-01:HOLIDAY:national",
+      "title": "Fiesta del Trabajo.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-06-24",
+      "original": "Día de San Juan.",
+      "kind": "HOLIDAY",
+      "scope": "catalunya",
+      "id": "spain:2027-06-24:HOLIDAY:catalunya",
+      "title": "Día de San Juan.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-09-11",
+      "original": "Fiesta Nacional de Cataluña.",
+      "kind": "HOLIDAY",
+      "scope": "catalunya",
+      "id": "spain:2027-09-11:HOLIDAY:catalunya",
+      "title": "Fiesta Nacional de Cataluña.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-10-12",
+      "original": "Fiesta Nacional de España.",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "id": "spain:2027-10-12:HOLIDAY:national",
+      "title": "Fiesta Nacional de España.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-11-01",
+      "original": "Todos los Santos.",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "id": "spain:2027-11-01:HOLIDAY:national",
+      "title": "Todos los Santos.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-12-06",
+      "original": "Día de la Constitución Española.",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "id": "spain:2027-12-06:HOLIDAY:national",
+      "title": "Día de la Constitución Española.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-12-08",
+      "original": "Inmaculada Concepción.",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "id": "spain:2027-12-08:HOLIDAY:national",
+      "title": "Inmaculada Concepción.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
+    },
+    {
+      "date": "2027-12-25",
+      "original": "Natividad del Señor.",
+      "kind": "HOLIDAY",
+      "scope": "national",
+      "id": "spain:2027-12-25:HOLIDAY:national",
+      "title": "Natividad del Señor.",
+      "url": "https://www.boe.es/diario_boe/xml.php?id=BOE-A-2026-21254"
     }
   ],
   "notes": "No province-wide holiday asserted without a notice. Municipal coverage is Tivissa centre (INE 43150, pedania 000); 2027 local dates not verified.",
+  "coverage": {
+    "2026": {
+      "national": "complete",
+      "catalunya": "complete",
+      "tivissa": "complete",
+      "tarragona-province": "partial"
+    },
+    "2027": {
+      "national": "complete",
+      "catalunya": "complete",
+      "tivissa": "partial",
+      "tarragona-province": "partial"
+    }
+  },
   "schemaVersion": 1,
   "stage": "normalize",
   "producerVersion": "1",
   "inputHashes": {
     "china.json": "cc1fb11549c5daa76142acf52c185b953a166f556e99d21c38c77ffb8f375017",
-    "spain.json": "d4cf36c80ea390759278180df21fe65008a2d5e854045140a978b5314d0cd2bf",
+    "spain.json": "99997d884b515d9d9f6fd3ed67faede7494f6fe2b2a3a826a9ad6cb86310b94a",
     "thai.json": "5a116dabf0a2848e541aa1f7587b1e863c920f580cb17a30dd91b320fe089fda",
     "usa.json": "dc7130bdceb70f78067536099dbaca99011a0eb9ebf6b98d314b6ed92d9d8f45"
   }

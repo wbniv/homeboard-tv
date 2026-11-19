@@ -2,6 +2,14 @@
 
 **Status: combined Calendar widget and persisted 7/30/custom lookahead implemented against reviewed offline provider JSON; live ingestion and lunar calculator remain pending · 16 November 2026**
 
+**19 November update:** the client-side calculator and persistent holiday updater
+are implemented in the [Wan Phra workstream](2026-11-19-client-side-wan-phra.md)
+and [offline-update workstream](2026-11-19-offline-holiday-updates.md).
+The “pending” descriptions below preserve the original 16 November baseline;
+current behavior, supported years and source limits are in the
+[calendar-data guide](../how-to/calendar-data.md) and
+[verification record](../testing/2026-11-19-calendar-data.md).
+
 Add **one native Calendar display widget** through **Home settings → Widgets &
 restore → Add widget → Calendar**. It combines enabled Thai government, flower
 work, Wan Phra, Spanish, US and mainland China holiday sources. These are inputs to one display, not

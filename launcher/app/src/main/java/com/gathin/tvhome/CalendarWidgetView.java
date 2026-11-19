@@ -45,7 +45,7 @@ final class CalendarWidgetView extends View {
         return getContext().getString(R.string.hb_cal_today, today) + " · "
                 + getContext().getString(R.string.hb_cal_days, settings.holidayLookaheadDays);
     }
-    private void refresh() {
+    void refresh() {
         display = snapshot.display(settings, Instant.now()); page = Math.min(page, pages() - 1);
         StringBuilder description = new StringBuilder(header());
         for (CalendarSnapshot.Day day : display.days) {
