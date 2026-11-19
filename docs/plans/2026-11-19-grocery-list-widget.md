@@ -35,7 +35,7 @@ for the original Phases 1/2. The separate cleanup completion-race correction is
 | Phase 1 | Phone Add/Enter and batch entry, quantities/notes, named lists, reorder/removal, persistent staples, explicit Update TV and whole-update Undo. | Browser/model checks pass; Cast1 native full-screen/restoration proof passes. Physical handset pairing remains to be checked. |
 | Phase 2 | Direct product reuse, contextual quantities and custom text, exact package conversions, simple/measured stock, counted staple filters and explained replenishment. | Browser/model checks pass, including package correction and explicit quantity replacement; Cast1 shows richer product/stock detail. Household usability observation remains open. |
 | Cooper revision | Capture precedes management; ordinary edits recover across navigation/reload/conflicts; removed widgets/lists retain an explicit recovery path; publication names all affected outcomes. | Committed in `77f4536`; checked in Chromium and WebKit at 390×844 and with 200% text. |
-| Phase 3 | Purchase check-off, away-from-home editing and reliable dashboard sync. | Planned; choose the sync architecture before implementation. |
+| Phase 3 | Purchase check-off, away-from-home editing and reliable dashboard sync. | Away-from-home and offline use required; durable phone storage plus authenticated remote sync proposed. Hosting/enrollment/client decisions remain open. |
 
 Frozen debug build **0.1.81** passed 510 JVM tests, Android lint and the shared
 phone checks. Cast1 installation `J‑f1c8ca8cfac7` and native proof
@@ -364,30 +364,32 @@ check-off in this phase.
 
 ## Phase 3 — purchase at the shop and sync home
 
-This is the future behavior boundary, not a delivery commitment for Phase 1/2:
+**Confirmed requirement, November 19:** shopping must work away from home and
+when offline. A connection will normally be available; occasional loss must not
+interrupt shopping or lose purchases. This requirement applies to Phase 3 and is
+not a claim about the current temporary home-network controller.
 
-1. Take a phone-accessible list away from the TV; check off an actual purchase,
-   including partial amounts and a changed package size. Phone feedback distinguishes
-   **Saved on this phone · Waiting to sync** from **Synced to dashboard**.
-2. Store a purchase event with a unique operation ID. Applying it removes/reduces
-   the current need, optionally increases tracked stock by the confirmed purchased
-   amount, and keeps the staple/product record. Retrying must not double stock.
-3. A bought staple moves out of the active shopping list when fulfilled but remains
-   in Staples. New low stock or Need more later starts the next shopping need; the
-   old purchase stays in history. Buying does not permanently pin a checked row
-   among things still needed.
-4. Handle offline edits, concurrent additions/quantity changes, purchase reversal,
-   conflicts and delayed TV connectivity. Undoing a purchase reverses that event's
-   effect without overwriting later stock corrections or someone else's purchase.
+The [Phase 3 shopping and sync plan](2026-11-19-grocery-shopping-sync.md) defines
+the scenarios, screen mockups, state diagram, operation contract and acceptance.
+Architecture direction: a durable phone copy and operation queue, with an
+**authenticated household sync service** for remote updates. A connected TV
+catches up automatically; returning to home Wi-Fi is not required. Service hosting,
+enrollment and durable client technology remain implementation decisions.
 
-Before implementation, choose between **local-first phone storage with sync on
-return to the home network** and **an authenticated shared service for remote
-sync**. The former cannot update the TV live from the shop. The latter needs a
-deliberate household identity, device enrollment and storage/service decision.
-Evaluate existing shopping services only when a service is selected; do not
-invent provider capabilities or install a custom bridge for the early phases.
-Cross-TV household sharing belongs in that decision too. The TV must not need to
-keep its temporary configuration editor running as an always-on public server.
+- Record purchases, partial amounts and package changes locally before showing
+  success. Prepared phones must reopen their shopping view and list while offline.
+- Distinguish **Saved on phone · Waiting to sync**, **Shared list updated ·
+  Dashboard waiting**, and actual TV delivery. Reconcile lost responses with the
+  same operation ID; do not duplicate purchases or stock effects.
+- Fulfilled needs move out of To buy, with reachable purchase history and Undo.
+  Keep the reusable staple/product. Any measured-stock increase uses confirmed
+  actual amounts and checks for a later report; simple stock is not guessed.
+- Merge concurrent edits and handle purchase reversal without overwriting later
+  reports, another shopper's purchase or a newer replenishment cycle.
+- Scope shopping sync to groceries. Keep household/list ownership explicit, adopt
+  existing independent TV lists deliberately, and preserve the full-screen
+  Back/Restore/page/focus/size contract. The temporary configuration editor is
+  not an always-on public shopping server.
 
 ## Data and implementation design
 
@@ -493,13 +495,17 @@ require a build, deployment or device session.
 - [ ] Confirm Cast2 installation through the coordinator when the reported
   execution precondition changes. Reuse the identical frozen 0.1.81 APK for this
   additional target; record its own receipt. Personal use remains operation-specific.
-- [ ] Select and document the Phase 3 sync architecture before adding purchase
-  completion, offline shopping or remote/cross-TV editing.
+- [x] Confirm that Phase 3 must support away-from-home shopping and occasional
+  offline use; record the durable-phone-copy plus remote-sync direction.
+- [ ] Resolve Phase 3 service hosting, enrollment and durable client technology
+  against the [shopping/sync acceptance contract](2026-11-19-grocery-shopping-sync.md)
+  before implementation.
 
 ## Open product decisions
 
 Validate the proposed stock threshold/target workflow with real household items,
-especially loose produce and partial packs. Decide Phase 3's local-return versus
-remote-sync architecture before promising shopping-away-from-home behavior. Barcode
+especially loose produce and partial packs. Away-from-home and offline shopping
+are required for Phase 3; the service/provider, enrollment and durable client
+implementation remain to be chosen. Barcode
 lookup, retailer prices, recipes, automatic consumption prediction and retailer
 ordering remain separate future features.

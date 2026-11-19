@@ -32,6 +32,17 @@ was attempted with the identical frozen APK and rejected at execution with
 and remaining physical/usability checks are in the
 [verification record](../testing/2026-11-19-grocery-cooper.md).
 
+## Phase 3 requirement update
+
+Will confirmed that shopping must work away from home and offline, though a
+connection will usually be available. The
+[Phase 3 shopping/sync plan](2026-11-19-grocery-shopping-sync.md) now specifies a
+durable phone copy, offline operation queue and proposed authenticated household
+sync, with distinct phone/service/TV acknowledgement states. This is future scope;
+the delivered Phase 1/2 controller still requires the home network and approved TV
+session. The earlier local-return-only option no longer satisfies the intended
+remote-sync direction.
+
 ## Method and evidence
 
 Governing reference: [shared Alan Cooper design filter, v1.0](/home/will/docs/howtos/alan-cooper-design-filter.md).

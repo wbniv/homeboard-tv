@@ -71,6 +71,8 @@ missing rows on commit.*
 
 | [Groceries: Cooper goal-directed design review](2026-11-19-grocery-goal-directed-design.md) | Applies shared Cooper filter v1.0 to quick capture, staple review, contextual quantities and recoverable drafts. | Implemented in grocery worktree; Cast1 0.1.81 verified | UX |
 
+| [Grocery Phase 3: away-from-home and offline shopping](2026-11-19-grocery-shopping-sync.md) | Records required offline resilience, proposed authenticated household sync, durable phone operations, purchase/Undo semantics and distinct TV delivery, with mockups and a state diagram. | Requirements confirmed; implementation proposed | Feature / UX |
+
 ---
 
 ## How this index was derived
