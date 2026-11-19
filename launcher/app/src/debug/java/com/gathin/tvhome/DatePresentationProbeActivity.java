@@ -55,6 +55,12 @@ public class DatePresentationProbeActivity extends MainActivity {
     }
     private void finishProof(String screen){try{
         boolean thai=language().equals("th");String year=thai?"2569":"2026";
+        if(screen.equals("dashboard")){
+            Map<?,?> calendars=(Map<?,?>)get(this,MainActivity.class,"calendarWidgets");
+            require(!calendars.isEmpty(),"Missing Calendar widget");
+            String today=getString(R.string.hb_cal_today,CalendarLabels.date(this,LocalDate.now()));
+            for(Object widget:calendars.values())require(((View)widget).getContentDescription().toString().startsWith(today),"Calendar header lacks today's local date");
+        }
         require(DisplayTime.locale(this).getLanguage().equals(language()),"Effective locale mismatch");
         require(((HomeLayout)get(this,MainActivity.class,"layout")).uiOpacityPercent==65,"Fresh widget opacity is not 65%");
         require(CalendarLabels.date(this,LocalDate.of(2026,11,18)).contains(year),"Calendar era");

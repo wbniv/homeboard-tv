@@ -4,6 +4,7 @@
     <string name="hb_cal_calendar">ปฏิทิน</string>
     <string name="hb_cal_configure">ตั้งค่าปฏิทิน</string>
     <string name="hb_cal_days">วันหยุดทั้งหมด · %1$d วันข้างหน้า</string>
+    <string name="hb_cal_today">วันนี้ · %1$s</string>
     <string name="hb_cal_day_count">จำนวนวัน</string>
     <string name="hb_cal_seven">7 วัน</string>
     <string name="hb_cal_thirty">30 วัน</string>
@@ -42,7 +43,7 @@
     <string name="hb_cal_offline">ข้อมูลวันที่แบบออฟไลน์</string>
     <string name="hb_cal_incomplete">ข้อมูลปฏิทินครอบคลุมไม่ครบ</string>
     <string name="hb_cal_status">%1$s · %2$s</string>
-    <string name="hb_cal_page">%1$d/%2$d · กด OK เพื่อเปิดปฏิทินเต็มหน้าจอ</string>
+    <string name="hb_cal_page">%1$d/%2$d</string>
     <string name="hb_cal_all_dates">วันที่ที่ตรงเงื่อนไขทั้งหมด</string>
     <string name="hb_cal_next_page">หน้าถัดไป</string>
     <string name="hb_cal_previous_page">หน้าก่อนหน้า</string>

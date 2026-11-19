@@ -40,9 +40,14 @@ final class CalendarWidgetView extends View {
     int pages() { return Math.max(1, (display.days.size() + pageSize - 1) / pageSize); }
     void turnPage(int direction) { page = Math.floorMod(page + direction, pages()); invalidate(); }
     java.time.LocalDate firstVisibleDate() { return display.days.isEmpty()?null:display.days.get(Math.min(display.days.size()-1,page*pageSize)).date; }
+    private String header() {
+        String today = CalendarLabels.date(getContext(), java.time.LocalDate.now());
+        return getContext().getString(R.string.hb_cal_today, today) + " · "
+                + getContext().getString(R.string.hb_cal_days, settings.holidayLookaheadDays);
+    }
     private void refresh() {
         display = snapshot.display(settings, Instant.now()); page = Math.min(page, pages() - 1);
-        StringBuilder description = new StringBuilder(getContext().getString(R.string.hb_cal_days, settings.holidayLookaheadDays));
+        StringBuilder description = new StringBuilder(header());
         for (CalendarSnapshot.Day day : display.days) {
             description.append(". ").append(CalendarLabels.date(getContext(), day.date));
             for (CalendarSnapshot.Event event : day.events) description.append(". ").append(CalendarLabels.event(getContext(), event, settings, Instant.now()));
@@ -73,10 +78,10 @@ final class CalendarWidgetView extends View {
         if (grid.compact) {
             textPaint.setTextSize(10); textPaint.setTypeface(Typeface.DEFAULT);
             float pageWidth = pageLabel.isEmpty() ? 0 : Math.min((width - 20) / 2, textPaint.measureText(pageLabel) + 8);
-            text(canvas, getContext().getString(R.string.hb_cal_days, settings.holidayLookaheadDays), 10, 17, 11, palette.text, width - 20 - pageWidth, true);
+            text(canvas, header(), 10, 17, 11, palette.text, width - 20 - pageWidth, true);
             if (pageWidth > 0) text(canvas, pageLabel, width - 10 - pageWidth, 17, 10, palette.muted, pageWidth, false);
         } else {
-            text(canvas, getContext().getString(R.string.hb_cal_days, settings.holidayLookaheadDays), 10, 22, 13, palette.text, width - 20, true);
+            text(canvas, header(), 10, 22, 13, palette.text, width - 20, true);
             int[] weekLabels = {R.string.hb_cal_week_this, R.string.hb_cal_week_next, R.string.hb_cal_week_both};
             text(canvas, getContext().getString(R.string.hb_cal_windows, getContext().getString(weekLabels[settings.flowerWeeks.ordinal()]),
                     getContext().getString(weekLabels[settings.buddhistWeeks.ordinal()])), 10, 38, 10, palette.muted, width - 20, false);

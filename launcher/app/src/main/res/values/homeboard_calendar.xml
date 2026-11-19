@@ -4,6 +4,7 @@
     <string name="hb_cal_calendar">Calendar</string>
     <string name="hb_cal_configure">Configure calendar</string>
     <string name="hb_cal_days">All holidays · Next %1$d days</string>
+    <string name="hb_cal_today">Today · %1$s</string>
     <string name="hb_cal_day_count">Number of days</string>
     <string name="hb_cal_seven">7 days</string>
     <string name="hb_cal_thirty">30 days</string>
@@ -42,7 +43,7 @@
     <string name="hb_cal_offline">Offline dates</string>
     <string name="hb_cal_incomplete">Calendar coverage incomplete</string>
     <string name="hb_cal_status">%1$s · %2$s</string>
-    <string name="hb_cal_page">%1$d/%2$d · OK for full-screen Calendar</string>
+    <string name="hb_cal_page">%1$d/%2$d</string>
     <string name="hb_cal_all_dates">All matching dates</string>
     <string name="hb_cal_next_page">Next page</string>
     <string name="hb_cal_previous_page">Previous page</string>

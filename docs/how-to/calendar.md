@@ -14,6 +14,10 @@ dashboard and the full-screen calendar. Full dates remain available in day detai
 Card backgrounds contrast with the surrounding panel in light and dark palettes;
 their fills still follow the widget-background opacity setting.
 
+The widget header begins with **Today · weekday day month year**, using the TV's
+local date. Thai uses Buddhist Era years. Today stays first when a narrow widget
+truncates the following holiday/lookahead text, and refreshes across midnight.
+
 Hold OK on the widget, choose **Configure calendar → Number of days**, then
 choose **7 days**, **30 days** or **Custom…**. The number includes today and applies
 to every enabled holiday source. Custom accepts a positive whole number up to
