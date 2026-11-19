@@ -140,8 +140,11 @@ public class PhoneEditorTest {
         URL target=new URL(url);byte[] bytes=body.getBytes(StandardCharsets.UTF_8);
         try(Socket socket=new Socket(target.getHost(),target.getPort())){
             socket.setSoTimeout(3000);OutputStream out=socket.getOutputStream();
-            out.write(("POST "+path+" HTTP/1.1\r\nHost: "+target.getAuthority()+"\r\nOrigin: "+origin+"\r\nContent-Type: application/json\r\nX-Homeboard-Session: "+token+"\r\nContent-Length: "+bytes.length+"\r\nConnection: close\r\n\r\n").getBytes(StandardCharsets.UTF_8));
-            out.write(bytes);out.flush();BufferedReader in=new BufferedReader(new InputStreamReader(socket.getInputStream(),StandardCharsets.UTF_8));
+            byte[] headers=("POST "+path+" HTTP/1.1\r\nHost: "+target.getAuthority()+"\r\nOrigin: "+origin+"\r\nContent-Type: application/json\r\nX-Homeboard-Session: "+token+"\r\nContent-Length: "+bytes.length+"\r\nConnection: close\r\n\r\n").getBytes(StandardCharsets.UTF_8);
+            // An oversized Content-Length must be rejected before reading a body.
+            // Sending its half-megabyte payload races the valid early close (EPIPE).
+            ByteArrayOutputStream request=new ByteArrayOutputStream();request.write(headers);
+            if(bytes.length<=524288)request.write(bytes);out.write(request.toByteArray());out.flush();BufferedReader in=new BufferedReader(new InputStreamReader(socket.getInputStream(),StandardCharsets.UTF_8));
             return Integer.parseInt(in.readLine().split(" ")[1]);
         }
     }
