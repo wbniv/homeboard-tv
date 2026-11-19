@@ -14,6 +14,8 @@ import java.util.function.IntConsumer;
 
 /** One platform host, durable pending setup, and reference-based ID cleanup. */
 final class AndroidWidgetHostController {
+    private static final String TAG="HomeboardWidgets";
+    private void trace(String message){if((activity.getApplicationInfo().flags&android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE)!=0)android.util.Log.i(TAG,message);}
     static final int HOST_ID=8723,REQUEST_BIND=7411,REQUEST_CONFIGURE=7412;
     static final String PENDING=AndroidWidgetPending.KEY;
     interface Ui {
@@ -100,27 +102,29 @@ final class AndroidWidgetHostController {
         notice(text(R.string.hb_aw_empty));
     }
     private void begin(AppWidgetProviderInfo p,String existingKey){
+        trace("begin provider="+p.provider.flattenToShortString()+" pending="+!pending().isEmpty());
         if(!pending().isEmpty()){recover();return;}
         int id=-1;
         try{
             id=host.allocateAppWidgetId();
+            trace("allocated id="+id);
             AndroidWidgetSpec s=spec(id,p);int[] minimum=minimum(s);
             if(minimum[0]>ui.columns()||minimum[1]>ui.rows()){host.deleteAppWidgetId(id);notice(text(R.string.hb_aw_no_fit));return;}
             JSONObject record=new JSONObject().put("id",id).put("provider",s.provider).put("key",existingKey==null?HomeLayout.ANDROID+":"+UUID.randomUUID():existingKey).put("phase","binding");
             writePending(record);
-            if(manager.bindAppWidgetIdIfAllowed(id,p.provider))configureAdded(p);
+            if(manager.bindAppWidgetIdIfAllowed(id,p.provider)){trace("bound id="+id);configureAdded(p);}
             else {
                 Intent consent=new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND).putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,id).putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER,p.provider);
                 if(consent.resolveActivity(activity.getPackageManager())==null){cancel();setup();}
                 else activity.startActivityForResult(consent,REQUEST_BIND);
             }
-        }catch(Exception failure){if(pending().isEmpty()){if(id>0)host.deleteAppWidgetId(id);}else cancel();notice(text(R.string.hb_aw_failed)+"\n"+failure.getClass().getSimpleName());}
+        }catch(Exception failure){android.util.Log.e(TAG,"Widget setup failed id="+id,failure);if(pending().isEmpty()){if(id>0)host.deleteAppWidgetId(id);}else cancel();notice(text(R.string.hb_aw_failed)+"\n"+failure.getClass().getSimpleName());}
     }
     void configure(String key){
         AndroidWidgetSpec s=ui.layout().androidWidget(key);AppWidgetProviderInfo p=info(s);
         if(p==null){repair(key);return;}
         if(!reconfigurable(key)){notice(text(R.string.hb_aw_no_config));return;}
-        try{writePending(new JSONObject().put("id",s.id).put("key",key).put("provider",s.provider).put("phase","reconfigure"));host.startAppWidgetConfigureActivityForResult(activity,s.id,0,REQUEST_CONFIGURE,null);}
+        try{writePending(new JSONObject().put("id",s.id).put("key",key).put("provider",s.provider).put("phase","reconfigure"));launchConfiguration(s.id);}
         catch(Exception failure){cancel();notice(text(R.string.hb_aw_failed));}
     }
     void repair(String key){
@@ -131,11 +135,23 @@ final class AndroidWidgetHostController {
     private void configureAdded(AppWidgetProviderInfo p)throws JSONException {
         JSONObject record=readPending();
         boolean optional=Build.VERSION.SDK_INT>=31&&(p.widgetFeatures&AppWidgetProviderInfo.WIDGET_FEATURE_CONFIGURATION_OPTIONAL)!=0&&(p.widgetFeatures&AppWidgetProviderInfo.WIDGET_FEATURE_RECONFIGURABLE)!=0;
-        if(p.configure!=null&&!optional){record.put("phase","configuration");writePending(record);host.startAppWidgetConfigureActivityForResult(activity,record.getInt("id"),0,REQUEST_CONFIGURE,null);}
+        trace("configure id="+record.getInt("id")+" activity="+p.configure+" optional="+optional);
+        if(p.configure!=null&&!optional){record.put("phase","configuration");writePending(record);launchConfiguration(record.getInt("id"));}
         else{record.put("phase","ready");writePending(record);review();}
+    }
+    private void launchConfiguration(int id){
+        Bundle options=null;
+        if(Build.VERSION.SDK_INT>=34){
+            // Android's widget service creates this IntentSender with creator BAL denied.
+            // Opt in as the visible sender for this explicit provider-setup action only.
+            options=android.app.ActivityOptions.makeBasic().setPendingIntentBackgroundActivityStartMode(
+                android.app.ActivityOptions.MODE_BACKGROUND_ACTIVITY_START_ALLOWED).toBundle();
+        }
+        host.startAppWidgetConfigureActivityForResult(activity,id,0,REQUEST_CONFIGURE,options);
     }
     boolean result(int request,int result,Intent data){
         if(request!=REQUEST_BIND&&request!=REQUEST_CONFIGURE)return false;
+        trace("result request="+request+" result="+result+" id="+(data==null?-1:data.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,-1))+" pending="+!pending().isEmpty());
         try{
             if(pending().isEmpty())return true;
             JSONObject r=readPending();int id=r.getInt("id");String phase=r.getString("phase");
@@ -160,7 +176,7 @@ final class AndroidWidgetHostController {
     String pending(){return preferences.getString(PENDING,"");}
     private JSONObject readPending()throws JSONException{return new JSONObject(pending());}
     private void writePending(JSONObject value){AndroidWidgetPending.write(preferences,value);}
-    void cancel(){offering=false;try{AndroidWidgetPending.write(preferences,null);}catch(IllegalStateException failure){Toast.makeText(activity,text(R.string.hb_configuration_save_failed),Toast.LENGTH_LONG).show();return;}reconcile();}
+    void cancel(){trace("cancel pending="+!pending().isEmpty());offering=false;try{AndroidWidgetPending.write(preferences,null);}catch(IllegalStateException failure){Toast.makeText(activity,text(R.string.hb_configuration_save_failed),Toast.LENGTH_LONG).show();return;}reconcile();}
     void menuDismissed(){if(offering){offering=false;cancel();}}
     boolean busy(){return !pending().isEmpty();}
     void recover(){

@@ -1,8 +1,11 @@
 # Android app widgets: implementation and testing
 
-**Current:** development build **0.1.95** is installed and hash-verified on Cast1
-and Cast2, with one-time widget binding enabled through the coordinator. Cast1
-normal menus rendered/expanded the fixture; Cast2 passed isolated host assertions
+**Current:** development build **0.1.97** is installed and hash-verified on Cast2;
+Cast1 still has **0.1.95**, with 97 queued pending reconnection. Both have one-time
+widget binding enabled through the coordinator. Android 14's missing configuration
+launch opt-in was diagnosed and corrected in 97; live Save/Cancel acceptance is
+pending confirmation that Cast2 is available after unexpected YouTube navigation.
+Cast1 normal menus rendered/expanded the fixture; Cast2 passed isolated host assertions
 and ordinary-menu Breezy placeholder Add/expand/Undo. All 525 JVM tests, lint and
 Chromium/WebKit checks passed. The final setup/review explanations are visually
 verified. Pixel 94 ordinary entry passed; local mobile widgets, configured real
@@ -362,3 +365,133 @@ project command. Both TV app registrations point back to ordinary MainActivity.
 ![Readable one-time setup command in 0.1.95](2026-11-19-android-app-widgets/v95-permission-help.png)
 
 Final 0.1.95 release bundle packaging passed (`task bundle`, 4 min 16 sec). The refreshed quick-start PDF remains two A4 pages, with its updated page boundaries inspected. The final queue snapshot has both TVs ready/unowned and no waiting jobs.
+
+
+## Real-provider setup follow-up · November 20
+
+Breezy Weather 6.2.2 opened to an empty Locations screen on Cast2 in check
+J‑7ca9719bf592. Interactive session J‑5c70d8486393 used the same pinned APK,
+owned D-pad input, per-action screenshots and a process sample. Down moved focus
+away from the toolbar; Center did not activate Add a new location. Up restored
+the toolbar focus; the alternative Left/Down route was also inspected. No location
+was configured and no live-weather acceptance is claimed. This is an observed
+limitation of the tested remote paths, not proof that every input route fails.
+The sampled process stayed alive with unchanged PID and PSS 46,936 KiB.
+The interactive session was finished through the coordinator. A mouse was
+suggested as a setup workaround; Will declined that approach. Remote-only
+acceptance remains the requirement being tested. Bluetooth mouse pairing itself
+was not performed.
+
+### Fossify Calendar launcher and required configuration
+
+The earlier Calendar launcher failures used its private `SplashActivity` directly.
+APK manifest inspection identified the enabled, exported launcher alias
+`org.fossify.calendar.activities.SplashActivity.Green`; the existing coordinator
+registration was corrected without replacing the APK or clearing its data.
+J‑80effa1a0c88 then opened Calendar 1.12.2 successfully and D-pad Down visibly
+focused its month header. The session finished normally, with 19 verified artifacts.
+
+Homeboard entry check J‑ed7ae8872b0f passed. Owned remote session J‑f09377570dce
+opened Homeboard from Google TV's app row, then followed Home settings → Widgets
+& restore → Add → Android app widgets. The picker showed Calendar's event-list,
+monthly and today's-date providers. Selecting **Calendar event list** returned to
+the unchanged dashboard before a configuration screen or Add review appeared.
+A second attempt behaved the same way. No Calendar tile was committed, and no
+Undo was executed. The remote session was explicitly stopped; its receipt records
+completed coordinator cleanup and no unresolved effects. Its 17 artifacts include
+the provider picker and both return-to-dashboard captures.
+
+Scripted check J‑edefab920904 reproduced the same result with on-time picker/result
+captures. Homeboard's process-scoped logs did not identify the cause. Passive
+inspection J‑c0cfdb4b24e7 completed with 146 verified artifacts; no Calendar crash
+was retained, but the recent system log no longer covered the handoff. Required
+configuration and configured Calendar widget acceptance therefore remain open;
+neither a provider defect nor a Homeboard defect has been established.
+
+Final reproduction J‑0808bc441636 was followed immediately by passive inspection
+J‑13ba3aa30d11. Both completed, exporting 19 and 146 verified artifacts respectively.
+The retained system log covers this reproduction's Homeboard launch and subsequent
+activity, but contains no Calendar configuration activity start or Calendar crash.
+This narrows the observed failure to the setup handoff; it does not establish why
+the configuration activity was not reached. The next diagnostic is a controlled
+provider with required configuration and explicit launch/result markers. The
+existing disposable provider has no configure activity and cannot validate that
+part of the contract. The final queue has Cast2 ready/unowned and no waiting jobs.
+
+Raw receipts and platform diagnostics remain under ignored
+`artifacts/android-widgets/fossify-*`; platform logs are private device evidence.
+
+### Controlled required-configuration provider
+
+The separate diagnostic provider 0.0.2 (version code 2) retains its no-configuration
+widget and adds **Required configuration test**, with received-ID text and
+remote-accessible Save/Cancel. Its design and recovery flow were recorded in the
+plan before implementation. `task widget-fixture` passed container compilation and
+lint. Frozen SHA-256:
+`85a3d9e795194c2d8b2909fcc7e107b469d0a786b6264179f2bf4284c898e450`.
+
+Cast2 install J‑83dd0a8272ff verified these installed bytes. Its separate launcher
+continuation reported `plugin-error`; automatic recovery J‑e66991b3445d completed
+ready. This is an installed-hash pass, not a launcher-verification pass. Identical
+Cast1 installation J‑33272ffdc56a is queued pending reconnection.
+
+Owned Cast2 remote session J‑0b6b5c3bd8a7 selected the new provider through normal
+Homeboard menus (page 4, left). It also returned to the dashboard without showing
+configuration. Thus the symptom is independently reproducible with a controlled
+provider; configuration launch, Save, Cancel and result-ID acceptance remain
+unverified. The session was explicitly stopped with no unresolved effects and
+12 verified artifacts exported under `artifacts/android-widgets/provider-v2`.
+Homeboard debug tracing around begin/bind/configuration/result is the next
+diagnostic; the existing no-configuration provider does not test this handoff.
+
+### Android 14 configuration-launch diagnosis
+
+Homeboard diagnostic build 0.1.96, SHA-256
+`9e08f1c3a298b0a434fc216b39f12a0fd14f0210d5f23585b9993a98136dee13`,
+passed `task deploy`'s container checks/build stages. Cast2's first install
+J‑b1426f8d4321 safely refused `install-over-foreground`; owned remote
+J‑df7c18c58789 returned to the existing default Home app. The identical frozen
+APK then installed and launcher-verified in J‑08fa38a0ca2a. Cast1 install
+J‑f234dcd7b8ee was queued for reconnection, then cancelled when 97 superseded it.
+
+Calendar reproduction J‑6482134f6d17 logged successful allocation/binding of ID 14
+and the correct configure component, followed immediately by `RESULT_CANCELED`
+with no returned ID. Passive inspection J‑6367e1307868 captured the decisive
+system message: **Background activity launch blocked**, with `BAL_BLOCK` result
+102. It explicitly identifies Homeboard as visible/TOP and the system-created
+configuration PendingIntent as lacking sender launch privileges. This establishes
+a host handoff defect, superseding the earlier unknown-cause observations.
+
+Android 14's widget service creates that IntentSender with creator launch
+privileges denied. The host's configuration call supplied null activity options.
+The next build opts in through
+`ActivityOptions.setPendingIntentBackgroundActivityStartMode` for the explicit
+setup/reconfiguration action on API 34+, preserving the platform's widget-ID
+ownership checks and normal result flow. It is not yet an acceptance pass until
+the controlled provider and Calendar are observed on the corrected build.
+
+References: [Android 14 widget-service implementation](https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/services/appwidget/java/com/android/server/appwidget/AppWidgetServiceImpl.java),
+[ActivityOptions sender mode](https://developer.android.com/reference/android/app/ActivityOptions#setPendingIntentBackgroundActivityStartMode(int)).
+
+Corrected build **0.1.97**, SHA-256
+`3de5284a7297798e86d6c0a0a6ae308ef91b8e23d18a9158b27755d4035a9f8b`,
+passed all 525 JVM tests, Android lint and APK assembly in `task deploy`.
+Cast2 J‑3c16a3abe9f3 verified installation of those bytes, but its launcher
+continuation ended `launcher-unverified`. Cast1 J‑13983f52a13a is queued for
+reconnection; its superseded diagnostic 96 job was cancelled before admission.
+The 96 deployment wrapper then attempted to read a nonexistent receipt for that
+pre-admission cancellation; its process failure is not an APK test failure.
+
+Owned remote J‑622fac07bb54 observed YouTube, sent Home and captured Google TV
+Home, then sent only three Down taps. Its next capture showed YouTube again.
+This unexpected foreground transition may indicate concurrent manual input; it
+is not proof of Homeboard failure. Input was stopped and Will was asked whether
+Cast2 is available. The session ended with no unresolved effects; 10 artifacts
+were exported to `artifacts/android-widgets/v97-navigation-conflict`.
+The corrected build's provider Save/Cancel acceptance is still pending.
+
+The deployment wrapper now records a missing device receipt as **unconfirmed**
+and continues following other submitted targets instead of raising
+`FileNotFoundError`. Its new pre-admission-cancellation regression and all four
+existing tests passed in the container. This tooling-only follow-up changes no
+APK bytes or deployment number.

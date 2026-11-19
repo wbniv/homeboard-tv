@@ -56,4 +56,7 @@ _Auto-added from plan "Out of scope"/"Deferred" sections at commit time. Triage 
 
 <!-- BEGIN auto-captured-deferrals (managed by audit-plan-deferrals.sh — triage these into the curated sections above; the fingerprint ledger means a deleted item is NOT re-added) -->
 - [verify] **2026-11-19-cleanup-execution** — Verification section present but no PASS recorded — run + record the steps. _from [2026-11-19-cleanup-execution.md](docs/plans/2026-11-19-cleanup-execution.md)_  <!-- fp:973775ad1f11e4dc -->
+- [x] Add the disposable required-configuration provider with received-ID text, remote Save/Cancel and launch/result logs; retain the no-configuration control. Container build and lint passed. — _from [2026-11-19-android-app-widgets.md](docs/plans/2026-11-19-android-app-widgets.md)_  <!-- fp:92bf3cfd7500c37e -->
+- [ ] **(triage)** Through normal Homeboard menus, verify Save reaches Add review with the same ID, Cancel leaves the dashboard unchanged, and interruption preserves Retry/Cancel. Inspect bindings so cancellation releases only the disposable pending instance. — _from [2026-11-19-android-app-widgets.md](docs/plans/2026-11-19-android-app-widgets.md)_  <!-- fp:71203b73c32ff16d -->
+- [ ] **(triage)** Use those results to isolate any host handoff defect, then repeat Fossify's required configuration. Keep configured-provider acceptance open until actual configuration and rendering are observed. — _from [2026-11-19-android-app-widgets.md](docs/plans/2026-11-19-android-app-widgets.md)_  <!-- fp:2187b8266804d7e0 -->
 <!-- END auto-captured-deferrals -->

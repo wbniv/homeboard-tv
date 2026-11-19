@@ -673,6 +673,52 @@ consent gate; host acceptance remains pending. The isolated
 `feature/android-app-widgets` worktree is prepared for implementation, keeping
 the separate in-progress cooking-timer edits untouched.
 
+## Required-configuration follow-up · November 20
+
+The implemented host was first deployed as 0.1.95 on both TVs. Real-provider checks on
+Cast2 found that Fossify Calendar launches and accepts D-pad focus, while selecting
+its event-list widget returns to Homeboard without reaching configuration or Add
+review. A controlled required-configuration provider reproduced the same result.
+Diagnostic build 0.1.96 established successful binding followed by Android 14's
+`BAL_BLOCK` of the system-created configure IntentSender. Build 0.1.97 supplies the
+explicit sender ActivityOptions opt-in for setup/reconfiguration; on-device
+acceptance is pending. See the [testing record](../testing/2026-11-19-android-app-widgets.md#fossify-calendar-launcher-and-required-configuration).
+
+Before treating required configuration as accepted:
+
+- Extend the disposable provider with a separate required-configuration widget,
+  retaining its existing no-configuration widget as a control. Show the received
+  widget ID and offer remote-accessible Save and Cancel; log launch and result.
+- Through normal Homeboard menus, verify Save reaches Add review with the same ID,
+  Cancel leaves the dashboard unchanged, and interruption preserves Retry/Cancel.
+  Inspect bindings so cancellation releases only the disposable pending instance.
+- Use those results to isolate any host handoff defect, then repeat Fossify's
+  required configuration. Keep configured-provider acceptance open until actual
+  configuration and rendering are observed.
+
+This diagnostic uses the existing setup/review workflow. Any product workflow
+change still requires current mockups and workflow diagrams before implementation.
+
+Diagnostic UI review applies the shared [Cooper filter](/home/will/docs/howtos/alan-cooper-design-filter.md).
+The operator's goal is to establish whether Android delivers a widget ID and result
+across applications using the TV remote. A single screen shows the received ID,
+Save and Cancel, with Save initially focused. No data entry, network or account is
+needed. Back cancels; Save only configures the disposable provider instance and
+still requires Homeboard's separate Add review. Invalid/missing IDs cannot save.
+Disposition: conditional until observed launch, Save, Cancel and restoration pass.
+
+![Required configuration diagnostic screen](2026-11-19-android-app-widgets/required-config-fixture.svg)
+
+```mermaid
+flowchart LR
+    P[Pick required-configuration test widget] --> C[Configuration: received widget ID]
+    C -->|Save and RESULT_OK with same ID| R[Homeboard Add review]
+    C -->|Cancel or Back| H[Original dashboard; pending ID released]
+    R -->|Cancel| H
+    R -->|Add| W[Configured widget; short OK expands]
+    W -->|Remove and Undo| W
+```
+
 ## References
 
 - [Widget and plugin investigation](../investigations/2026-11-19-widget-plugin-systems.md)

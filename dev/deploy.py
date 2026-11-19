@@ -114,8 +114,14 @@ def main():
             # be downloaded, and the other target still needs to be followed.
             pass
         task('evidence', f'JOB={job}', f'OUT={evidence}')
-        receipt = json.loads((evidence / 'receipt.json').read_text())
+        receipt_path = evidence / 'receipt.json'
+        # Jobs cancelled before admission have no device effects or receipt.
+        # Missing evidence is unconfirmed, never success; still follow other TVs.
+        receipt = (json.loads(receipt_path.read_text()) if receipt_path.is_file()
+                   else {'status': 'unconfirmed', 'health': 'unknown', 'error': 'no-device-receipt'})
         target.update(status=receipt.get('status'), health=receipt.get('health'), evidence=str(evidence))
+        if receipt.get('error'):
+            target['error'] = receipt['error']
         save_record()
         if target['status'] != 'succeeded':
             failed.append(device)

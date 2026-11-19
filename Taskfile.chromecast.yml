@@ -19,6 +19,7 @@ env:
   WF_CC_DURATION: '{{.DURATION | default ""}}'
   WF_CC_DRY_RUN: '{{.DRY_RUN | default ""}}'
   WF_CC_KEY: '{{.KEY | default ""}}'
+  WF_CC_KEYS: '{{.KEYS | default ""}}'
   WF_CC_MILLISECONDS: '{{.MILLISECONDS | default ""}}'
   WF_CC_TOKEN: '{{.TOKEN | default ""}}'
   WF_CC_TEXT: '{{.TEXT | default ""}}'
@@ -97,3 +98,19 @@ tasks:
   remote-stop:
     desc: Finish the complete coordinator-owned Remote session
     cmds: ['"{{.CC_CLIENT}}" remote-stop']
+
+  input-hold:
+    desc: Coordinator-owned interactive input-hold
+    cmds: ['"{{.CC_CLIENT}}" input-hold']
+
+  input-frame:
+    desc: Coordinator-owned interactive input-frame
+    cmds: ['"{{.CC_CLIENT}}" input-frame']
+
+  input-sample:
+    desc: Coordinator-owned interactive input-sample
+    cmds: ['"{{.CC_CLIENT}}" input-sample']
+
+  input-finish:
+    desc: Coordinator-owned interactive input-finish
+    cmds: ['"{{.CC_CLIENT}}" input-finish']

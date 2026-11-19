@@ -227,3 +227,7 @@ DEVICE=<id>`, then `remote-tap JOB=<id> KEY=<key>` or `remote-hold` with
 `remote-stop` and export evidence. These forward to the coordinator's enrolled,
 owner-checked Remote protocol. They do not use direct device transport. Preserve
 unrelated settings and let the coordinator restore the prior foreground.
+
+## Adaptive app input checks
+
+For a coordinator-owned `record` job with `interactive: true` and `record: false`, use `task chromecast:input-hold JOB=<job> KEYS=DPAD_CENTER MILLISECONDS=100`, `input-frame` with an `OUT` PNG, `input-sample`, and `input-finish`. Wait for the `interacting` phase before input. Observe each result before sending dependent input; finish, watch and export evidence. The coordinator owns input and foreground checks throughout. These commands do not provide cross-app or raw transport exceptions.

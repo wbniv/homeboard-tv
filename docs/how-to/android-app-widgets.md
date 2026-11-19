@@ -61,7 +61,8 @@ visible Home page. Additional labeled tiles open their live view full screen.
 
 See the [testing record](../testing/2026-11-19-android-app-widgets.md) for actual
 provider/device evidence. The disposable provider proved cross-app hosting on
-both Chromecasts; Homeboard 0.1.95 is installed on both TVs. The fixture rendered and expanded on
+both Chromecasts; hosting was checked on both TVs from 0.1.95. See the testing
+record for current builds and required-configuration acceptance. The fixture rendered and expanded on
 Cast1; integrated host and phone-Undo assertions passed on Cast2, and Breezy's unconfigured Current widget was added, expanded and undone through normal
 TV menus. Configured weather data and provider controls remain unverified. Pixel's
 provider/consent census passed; local hosting and tablet acceptance remain

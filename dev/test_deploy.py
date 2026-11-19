@@ -18,7 +18,7 @@ spec.loader.exec_module(deploy)
 
 
 class DeploymentTest(unittest.TestCase):
-    def run_deploy(self, failure=False, variant='debug', tamper=False):
+    def run_deploy(self, failure=False, variant='debug', tamper=False, missing_first_receipt=False):
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         root = Path(temporary.name)
@@ -46,8 +46,9 @@ class DeploymentTest(unittest.TestCase):
             if operation == 'evidence':
                 evidence = Path(values['OUT']); evidence.mkdir(parents=True)
                 status = 'failed' if failure and values['JOB'].endswith('1') else 'succeeded'
-                (evidence / 'receipt.json').write_text(json.dumps({'status': status, 'health': 'ready'}))
-            if operation == 'watch' and failure and values['JOB'].endswith('1'):
+                if not (missing_first_receipt and values['JOB'].endswith('1')):
+                    (evidence / 'receipt.json').write_text(json.dumps({'status': status, 'health': 'ready'}))
+            if operation == 'watch' and (failure or missing_first_receipt) and values['JOB'].endswith('1'):
                 raise subprocess.CalledProcessError(201, command)
             return subprocess.CompletedProcess(command, 0, stdout='')
         def output(command, **kwargs):
@@ -60,7 +61,7 @@ class DeploymentTest(unittest.TestCase):
              contextlib.redirect_stdout(io.StringIO()):
             if tamper:
                 with self.assertRaises(SystemExit): deploy.main()
-            elif failure:
+            elif failure or missing_first_receipt:
                 with self.assertRaisesRegex(RuntimeError, 'cast1'):
                     deploy.main()
             else:
@@ -95,6 +96,14 @@ class DeploymentTest(unittest.TestCase):
         for call in calls:
             if call[1] in ('chromecast:app-register', 'chromecast:submit'):
                 self.assertIn('APP=homeboard-tv-public', call)
+
+    def test_pre_admission_cancellation_without_receipt_still_follows_second_target(self):
+        root, calls = self.run_deploy(missing_first_receipt=True)
+        record = json.loads((root / 'artifacts/deployments/0.1.100/deployment.json').read_text())
+        self.assertEqual('unconfirmed', record['targets']['cast1']['status'])
+        self.assertEqual('no-device-receipt', record['targets']['cast1']['error'])
+        self.assertEqual('succeeded', record['targets']['cast2']['status'])
+        self.assertEqual(2, sum(call[1] == 'chromecast:evidence' for call in calls))
 
     def test_modified_release_apk_is_rejected_before_coordinator_calls(self):
         root, calls = self.run_deploy(variant='release', tamper=True)
