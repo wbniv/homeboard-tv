@@ -1,0 +1,19 @@
+{
+  "kind": "Design preview verification, not device implementation proof",
+  "widgetProposals": 7,
+  "embeddedSvgMockups": 7,
+  "embeddedWorkflowDiagrams": 7,
+  "desktopAndPhonePreviews": 14,
+  "fullProposalHtmlPages": 7,
+  "browser": "Chromium in pinned Playwright container",
+  "checks": [
+    "All local Markdown links resolve",
+    "All SVG documents parse",
+    "Desktop 1360px: no horizontal page overflow",
+    "Phone 390px: no horizontal page overflow",
+    "Phone Review changes is draft-only",
+    "All full-proposal images decode",
+    "Visual spot-check: noticeboard desktop and energy phone"
+  ],
+  "artifacts": "artifacts/widget-proposals/"
+}
