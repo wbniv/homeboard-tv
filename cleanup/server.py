@@ -151,8 +151,11 @@ class Handler(BaseHTTPRequestHandler):
             threading.Thread(target=work,daemon=True).start()
             self.respond(202,{'status':'working','action':action})
         else:
-            try:self.respond(200,operation())
+            # Finish the operation and release its lock before sending completion.
+            # A client may dispatch the next request as soon as it receives this body.
+            try:result=operation()
             finally:self.server.lock.release()
+            self.respond(200,result)
 
 
 def main():
