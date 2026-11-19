@@ -35,29 +35,30 @@
   const recordKey=()=>state?'homeboard-controller:'+state.tvId:null;
   function readRecord(){try{return JSON.parse(sessionStorage.getItem(recordKey())||'null');}catch(_){return null;}}
   function persist(){if(!state)return;try{
-    const record={tvId:state.tvId,base:state,draft,route,pending};
-    if(M.diff(state.draft,draft).length||pending)sessionStorage.setItem(recordKey(),JSON.stringify(record));else sessionStorage.removeItem(recordKey());
+    const record={tvId:state.tvId,base:state,draft,route,pending,groceryEditors:PhoneGrocery.snapshot(state.tvId)};
+    if(M.diff(state.draft,payload()).length||pending||record.groceryEditors.some(([,s])=>s.edit?.touched||s.quick||s.batch||s.newName))sessionStorage.setItem(recordKey(),JSON.stringify(record));else sessionStorage.removeItem(recordKey());
   }catch(_){/* Session storage is optional; edits remain in this tab's memory. */}}
   function touch(){if(connected&&Date.now()-lastTouch>60000){lastTouch=Date.now();api('touch').catch(()=>{});}}
   function changed(){persist();touch();updateActions();updateReview();}
   function routeKey(value=route){return value.name+':'+(value.key||'')+':'+(value.page||0);}
-  function navigate(next,replace=false){scrolls.set(routeKey(),window.scrollY);route=next;history[replace?'replaceState':'pushState']({route},'',entryURL());render();window.scrollTo(0,scrolls.get(routeKey())||0);persist();}
-  window.addEventListener('popstate',event=>{scrolls.set(routeKey(),window.scrollY);route=event.state?.route||{name:'overview'};render();window.scrollTo(0,scrolls.get(routeKey())||0);});
-  function back(){if(route.name==='widget'||route.name==='arrange'||route.name==='add'||route.name==='recommended')navigate({name:'overview'});else if(route.name==='apps'||route.name==='favoriteActions')navigate({name:'favorites'});else navigate({name:'overview'});}
+  function navigate(next,replace=false){if(state&&route.name==='widget'&&next.key!==route.key)PhoneGrocery.leave(state,draft);scrolls.set(routeKey(),window.scrollY);route=next;history[replace?'replaceState':'pushState']({route},'',entryURL());render();window.scrollTo(0,scrolls.get(routeKey())||0);persist();}
+  window.addEventListener('popstate',event=>{if(state)PhoneGrocery.leave(state,draft);scrolls.set(routeKey(),window.scrollY);route=event.state?.route||{name:'overview'};render();window.scrollTo(0,scrolls.get(routeKey())||0);});
+  function back(){const w=currentWidget();if(route.name==='widget'&&w?.type==='grocery'&&PhoneGrocery.back(state,draft,w)){changed();render();return;}if(route.name==='widget'||route.name==='arrange'||route.name==='add'||route.name==='recommended')navigate({name:'overview'});else if(route.name==='apps'||route.name==='favoriteActions')navigate({name:'favorites'});else navigate({name:'overview'});}
   function currentWidget(){return route.key===M.HEADER&&draft?M.headerWidget(draft):draft?.widgets.find(w=>w.key===route.key);}
-  const widgetType=w=>['rain','calendar','air','favorites','world_clock'].includes(w.type)?t(w.type):w.type==='app'?t('appShortcut'):w.type;
+  const widgetType=w=>['rain','calendar','air','favorites','world_clock','grocery'].includes(w.type)?t(w.type):w.type==='app'?t('appShortcut'):w.type;
   const appName=key=>state.apps.find(app=>app.key===key)?.name||t('unavailable');
-  function locationName(w){const s=w.settings;if(w.type==='rain')return s.label|| (s.locationSource==='device'?t('automatic'):s.name||t('unnamed'));
+  function locationName(w){const s=w.settings;if(w.type==='grocery')return draft.groceries?.[s.listId]?.title||'';if(w.type==='rain')return s.label|| (s.locationSource==='device'?t('automatic'):s.name||t('unnamed'));
+    if(w.type==='grocery')return draft.groceries?.[s.listId]?.title||'';
     if(w.type==='world_clock')return s.title;
     if(w.type==='air')return s.source==='airbkk'?(state.stations.find(x=>x.id===s.station)?.name||t('station')):s['location-mode']==='auto'?t('automatic'):s['location-name']||t('unnamed');return '';}
   function title(w){let name=widgetType(w),where=locationName(w);if(where)name+=' · '+where;
     const duplicates=draft.widgets.filter(x=>x.type===w.type&&locationName(x)===where);if(!w.fixed&&duplicates.length>1)name+=' '+(duplicates.findIndex(x=>x.key===w.key)+1);return name;}
-  function summary(w){const s=w.settings;if(w.type==='rain')return t('nextHours',{hours:s.hours})+' · '+t('followingDays',{days:s.days});
+  function summary(w){const s=w.settings;if(w.type==='grocery')return t('gCount',{count:draft.groceries?.[s.listId]?.items.length||0});if(w.type==='rain')return t('nextHours',{hours:s.hours})+' · '+t('followingDays',{days:s.days});
     if(w.type==='world_clock')return t('clockCount',{count:s.places.length})+' · '+PhoneClock.summary(s,t);
     if(w.type==='calendar')return t('holidays',{days:s.holidayLookaheadDays})+' · '+t(s.flowerWeeks);
     if(w.type==='air')return t(s.source==='airbkk'?'airbkk':'model')+' · '+t('trends');
     if(w.type==='favorites')return t('appsCount',{count:draft.favorites.length})+' · '+(w.height===1?t('bottomRow'):t('favorites'));return widgetType(w);}
-  const icon=w=>({rain:'☂',calendar:'▦',air:'∿',favorites:'★',app:'▣'}[w.type]||'◷');
+  const icon=w=>({rain:'☂',calendar:'▦',air:'∿',favorites:'★',grocery:'▤',app:'▣'}[w.type]||'◷');
   function field(parent,label,value,onEdit,type='text',limits={}){
     const wrap=el('label'),caption=el('span',label),input=el('input');input.type=type;input.setAttribute('aria-label',label);
     if(type==='checkbox'){input.checked=!!value;wrap.className='check';}else input.value=value??'';
@@ -144,7 +145,9 @@
   function widgetForm(parent,w){
     if(!w){navigate({name:'overview'},true);return;}
     const box=section(parent),s=w.settings;note(box,summary(w));
-    if(w.type==='world_clock'){
+    if(w.type==='grocery'){
+      PhoneGrocery.form(box,w,{draft,state,el,button,field,select,details,note,t,changed,render,uid,disposers,announce});
+    } else if(w.type==='world_clock'){
       PhoneClock.form(box,w,{state,el,button,field,select,details,note,t,changed,render,uid,language,disposers,announce});
     } else if(w.type==='rain'){
       locationForm(box,w);choices(box,t('hours'),s.hours,[6,12,24,48],value=>s.hours=value);
@@ -167,7 +170,7 @@
     }
     if(w.fixed){note(box,t("positionFixed"));note(box,t("fixedHelp"));return;}
     box.append(button(t('arrange'),()=>navigate({name:'arrange',key:w.key,page:w.page}),'secondary'));
-    parent.append(button(t('removeWidget'),()=>{draft.widgets=draft.widgets.filter(x=>x.key!==w.key);changed();navigate({name:'overview'});},'danger quiet'));
+    parent.append(button(t('removeWidget'),()=>{if(PhoneGrocery.proposal(state,draft).issue?.key===w.key){showValidation();return;}draft.widgets=draft.widgets.filter(x=>x.key!==w.key);changed();navigate({name:'overview'});},'danger quiet'));
   }
   function appArt(key){
     const art=el('span',Array.from(appName(key))[0]||'▣','app-art'),image=el('img');image.alt='';image.hidden=true;art.append(image);
@@ -246,15 +249,16 @@
     parent.append(button(t('recommended'),()=>navigate({name:'recommended'}),'wide-action secondary'));
     const advanced=details(parent,t('advanced')),row=el('div',undefined,'two-fields');field(row,t('columns'),draft.columns,value=>draft.columns=value,'number',{min:4,max:12,step:1,required:true});field(row,t('rows'),draft.rows,value=>draft.rows=value,'number',{min:2,max:12,step:1,required:true});advanced.append(row);
   }
-  function addWidgets(parent){const box=section(parent);for(const type of ['rain','calendar','air','favorites'])box.append(button('+ '+t(type),()=>{const w=M.add(draft,type,state.instances);changed();navigate({name:type==='favorites'?'favorites':'widget',key:w.key});},'wide-action'));}
+  function addWidgets(parent){const box=section(parent);for(const type of ['rain','calendar','air','favorites','grocery'])box.append(button('+ '+t(type),()=>{const w=M.add(draft,type,state.instances);changed();navigate({name:type==='favorites'?'favorites':'widget',key:w.key});},'wide-action'));}
   function recommended(parent){const box=section(parent);note(box,t('recommendHelp'));note(box,t('extraCards'));const selected={};
     for(const type of ['rain','air']){const cards=draft.widgets.filter(w=>w.type===type);if(cards.length>1){selected[type]=cards[0].key;select(box,t(type),selected[type],cards.map(w=>[w.key,title(w)]),value=>selected[type]=value);}}
     box.append(button(t('useLayout'),()=>{draft=M.recommended(payload(),state.instances,selected);changed();navigate({name:'arrange',page:0});},'primary wide-action'));
   }
-  function payload(){return M.clone(draft);}
-  function invalid(){if(!draft)return null;return M.validate(draft)||([...$('editor').querySelectorAll('input,select')].some(input=>!input.checkValidity())?{kind:'input'}:null);}
-  function validationText(issue){return t({grid:'gridError',placement:'placementError',range:'rangeError',coordinates:'coordinateError',input:'invalid'}[issue?.kind]||'invalid');}
-  function showValidation(){const issue=invalid();if(issue?.key&&route.name!=='arrange')navigate({name:'widget',key:issue.key});message(validationText(issue),'warning');
+  function payload(){return {...M.clone(draft),groceries:PhoneGrocery.proposal(state,draft).book};}
+  function invalid(){if(!draft)return null;return PhoneGrocery.proposal(state,draft).issue||M.validate(payload())||([...$('editor').querySelectorAll('input,select')].some(input=>!input.checkValidity())?{kind:'input'}:null);}
+  function validationText(issue){if(issue?.kind==='groceryEditor')return t(issue.code);return t({grid:'gridError',placement:'placementError',range:'rangeError',coordinates:'coordinateError',grocery:'gInvalid',input:'invalid'}[issue?.kind]||'invalid');}
+  function showValidation(){const issue=invalid();if(issue?.kind==='groceryEditor'){const records=PhoneGrocery.snapshot(state.tvId);for(const [key,s]of records)if(key===issue.screen&&s.edit)s.edit.open=true;PhoneGrocery.restore(state.tvId,records);}
+    if(issue?.key&&route.name!=='arrange'){if(draft.widgets.some(w=>w.key===issue.key))navigate({name:'widget',key:issue.key});else render();}message(validationText(issue),'warning');
     const bad=[...$('editor').querySelectorAll('input,select')].find(input=>!input.checkValidity());if(bad){for(let p=bad.parentElement;p;p=p.parentElement)if(p.tagName==='DETAILS')p.open=true;bad.focus();bad.reportValidity();}}
   const settingLabel=key=>t({holidayLookaheadDays:'lookahead',enabled:'calendar',inches:'units',name:'placeName',locationSource:'location','location-mode':'location','location-name':'placeName'}[key]||key);
   function settingsText(w,group,values){
@@ -273,6 +277,15 @@
     return String(value??'');
   }
   function changeText(change){
+    if(change.kind==='grocery'){
+      const outcomes=[];
+      for(const [collection,added,edited,removed]of [['items','gOutcomeAdded','gOutcomeEdited','gOutcomeRemoved'],['products','gOutcomeKept','gOutcomeProduct','gOutcomeForgot']]){
+        const before=change.before?.[collection]||[],after=change.after?.[collection]||[];
+        for(const value of after){const old=before.find(x=>x.id===value.id);if(!M.same(old,value)){let name=value.name;if(collection==='items')name+=[value.structured?value.structured.amount+' '+value.structured.unit:value.quantity,value.note].filter(Boolean).map(s=>' · '+s).join('');else if(value.tracking==='manual')name+=' · '+t('gState_'+value.stockState);else if(value.tracking==='quantity')name+=' · '+t('gStock')+' '+(value.stock===''?t('gUnknown'):PhoneGrocery.display(value.stock,value.baseUnit));outcomes.push(t(old?edited:added,{name}));}}
+        for(const value of before)if(!after.some(x=>x.id===value.id))outcomes.push(t(removed,{name:value.name}));
+      }
+      return t('gChanged',{name:change.after?.title||change.before?.title||t('grocery')})+' · '+(outcomes.join('; ')||t('gListDetailsChanged'));
+    }
     if(change.kind==='grid')return t('change_grid');if(change.kind==='artwork')return t('change_artwork')+' · '+t(change.value);
     if(change.kind==='favorites')return t('change_favorites')+' · '+(change.after.map(appName).join(' → ')||t('empty'));
     const name=title(change.widget);if(change.kind==='add')return t('change_add',{name,page:t('page',{page:change.widget.page+1})});
@@ -280,22 +293,23 @@
     return t('change_setting',{name,setting:change.group==='location'?t('location'):settingLabel(change.group)})+' · '+settingsText(change.widget,change.group,change.after);
   }
   function updateReview(){const region=$('change-summary');if(!region||!state)return;const list=region.querySelector('ul');list.replaceChildren();
-    for(const change of M.diff(state.draft,draft))list.append(el('li',changeText(change)));region.hidden=!list.childNodes.length;}
+    for(const change of M.diff(state.draft,payload())){const text=changeText(change),row=el('li');if(change.kind==='grocery'&&text.length>360){let count=0;for(const collection of ['items','products']){const before=change.before?.[collection]||[],after=change.after?.[collection]||[];count+=new Set([...before,...after].filter(v=>!M.same(before.find(x=>x.id===v.id),after.find(x=>x.id===v.id))).map(v=>v.id)).size;}const more=details(row,t('gChanged',{name:change.after?.title||change.before?.title||t('grocery')})+' · '+t('gOutcomeCount',{count}));more.append(el('p',text));}else row.textContent=text;list.append(row);}region.hidden=!list.childNodes.length;}
   function addReview(parent){const review=details(parent,t('review'));review.id='change-summary';review.append(el('ul'));updateReview();}
   function updateActions(){
     if(route.name==='shortcut'||route.name==='providers'){$('actions').replaceChildren();return;}
     const root=$('actions');root.replaceChildren();if(!state)return;
-    const changes=M.diff(state.draft,draft),issue=invalid();
+    const changes=M.diff(state.draft,payload()),issue=invalid();
     if(changes.length){const review=button(changes.length===1?t('oneChange'):t('changes',{count:changes.length}),()=>{const summary=$('change-summary');summary.open=true;summary.scrollIntoView({block:'center',behavior:'auto'});},'review-link');root.append(review);}
-    else root.append(el('span',t('noChanges'),'muted'));
+    else root.append(el('span',t(issue?'gUnfinished':'noChanges'),'muted'));
     if(pending){root.append(button(t('checkResult'),()=>connected?reconcile():connect(),'primary'));}
     else {const action=button(working?t('updating',{tv:tvName()}):t('update',{tv:tvName()}),update,'primary');action.disabled=working||!connected||!changes.length||!!issue||conflicts.some(c=>!c.resolved);root.append(action);}
-    if(issue&&changes.length)root.append(button(validationText(issue),showValidation,'validation-link'));
+    if(issue)root.append(button(validationText(issue),showValidation,'validation-link'));
     $('editor').inert=working;$('heading').inert=working;
     $('connection').textContent=!connected?t('disconnected'):expiry>0&&expiry<120000?t('remaining',{minutes:Math.ceil(expiry/60000)}):t('connected');
   }
   function conflictText(conflict,value){
     if(value===undefined)return t('removed');
+    if(conflict.kind==='grocery')return (value.title||t('grocery'))+' · '+t('gCount',{count:value.items.length});
     const w=draft.widgets.find(w=>w.key===conflict.key)||conflict.mine||conflict.tv;
     if(conflict.kind==='widget'||conflict.kind==='instance')return widgetType(value)+' · '+(locationName(value)||t('page',{page:value.page+1}));
     if(conflict.kind==='favorites')return value.map(appName).join(', ');
@@ -305,7 +319,7 @@
   function renderConflicts(parent){
     const region=section(parent,t('conflictTitle',{tv:tvName()}));
     for(const conflict of conflicts.filter(c=>!c.resolved)){
-      const card=section(region,conflict.kind==='setting'?settingLabel(conflict.group):conflict.kind==='favorites'?t('favorites'):conflict.key?widgetType(conflict.mine||conflict.tv||{type:'app'}):t('arrange'));
+      const card=section(region,conflict.kind==='grocery'?t('grocery'):conflict.kind==='setting'?settingLabel(conflict.group):conflict.kind==='favorites'?t('favorites'):conflict.key?widgetType(conflict.mine||conflict.tv||{type:'app'}):t('arrange'));
       if(conflict.kind==='instance')note(card,t('replaced'));
       card.append(el('p',t('tvValue')+': '+conflictText(conflict,conflict.tv)),el('p',t('mineValue')+': '+conflictText(conflict,conflict.mine)));
       for(const choice of ['tv','mine']){
@@ -321,6 +335,7 @@
     for(const dispose of disposers)dispose?.();disposers=[];++lookups;
     header();const root=$('editor');root.replaceChildren();if(!state){intro();return;}
     if(conflicts.some(c=>!c.resolved))renderConflicts(root);
+    PhoneGrocery.recovery(root,{draft,state,el,button,field,select,details,note,t,changed,render,uid,disposers,announce});
     if(route.name==='providers'){providerDirectory(root);$('actions').replaceChildren();render.lastRoute=routeKey();return;}
     if(route.name==='shortcut'){shortcutForm(root);$('actions').replaceChildren();render.lastRoute=routeKey();return;}
     if(route.name==='widget')widgetForm(root,currentWidget());else if(route.name==='favorites')favoriteList(root);else if(route.name==='favoriteActions')favoriteActions(root);
@@ -328,11 +343,11 @@
     addReview(root);
     const secondary=details(root,t('more'));
     const refreshButton=button(t('refresh'),async()=>{await refresh();message(t('refreshed'));});refreshButton.disabled=!!pending;secondary.append(refreshButton);
-    secondary.append(button(t('discard'),()=>{draft=M.clone(state.draft);conflicts=[];reorderUndo=null;restoreRecord=null;changed();message('');render();},'danger quiet'));
+    secondary.append(button(t('discard'),()=>{draft=M.clone(state.draft);PhoneGrocery.clear(state.tvId);conflicts=[];reorderUndo=null;restoreRecord=null;changed();message('');render();},'danger quiet'));
     if(state.undo){const undo=button(t('undo'),undoUpdate);undo.disabled=!connected||!!pending||working;secondary.append(undo);}
     if(restoreRecord)secondary.append(button(t('restore'),()=>{
       if(restoreRecord.tvId!==state.tvId){message(t('linkedDraft'));return;}
-      const merged=M.rebase(restoreRecord.base,restoreRecord.draft,state);draft=merged.draft;conflicts=merged.conflicts;route=restoreRecord.route||route;restoreRecord=null;changed();message(t('draftRestored'));render();
+      PhoneGrocery.restore(state.tvId,restoreRecord.groceryEditors);const merged=M.rebase(restoreRecord.base,restoreRecord.draft,state);draft=merged.draft;conflicts=merged.conflicts;route=restoreRecord.route||route;restoreRecord=null;changed();message(t('draftRestored'));render();
     }));
     updateActions();render.lastRoute=routeKey();
     if(sameRoute&&focused){const control=[...document.querySelectorAll('[aria-label]')].find(x=>x.getAttribute('aria-label')===focused);control?.focus({preventScroll:true});}
@@ -371,7 +386,7 @@
       const merged=M.rebase(state,draft,next);state=next;draft=merged.draft;conflicts=merged.conflicts;message(t('rebased'));
     }else{
       persist();state=next;draft=M.clone(next.draft);pending=null;conflicts=[];route={name:'overview'};iconCache.clear();restoreRecord=readRecord();
-      if(restoreRecord?.tvId===state.tvId&&restoreRecord.pending){pending=restoreRecord.pending;draft=M.clone(restoreRecord.draft);route=restoreRecord.route||route;}
+      if(restoreRecord?.tvId===state.tvId&&restoreRecord.pending){pending=restoreRecord.pending;draft=M.clone(restoreRecord.draft);PhoneGrocery.restore(state.tvId,restoreRecord.groceryEditors);route=restoreRecord.route||route;}
       else if(restoreRecord)message(t('retained'));
     }
     language=next.language==='th'?'th':'en';document.documentElement.lang=language;connected=true;working=false;render();if(pending)await reconcile();
@@ -388,9 +403,9 @@
     const merged=M.rebase(state,draft,next);state=next;draft=merged.draft;conflicts=merged.conflicts;changed();render();
   }
   function accepted(next,operation){
-    const hadNewEdits=operation.kind==='apply'&&!M.same(draft,operation.body.draft);
-    const merged=operation.kind==='undo'?M.rebase(operation.base||state,draft,next):hadNewEdits?M.rebase({...state,draft:operation.body.draft},draft,next):{draft:M.clone(next.draft),conflicts:[]};
-    state=next;draft=merged.draft;conflicts=merged.conflicts;pending=null;working=false;restoreRecord=null;reorderUndo=null;connected=true;
+    const hadNewEdits=operation.kind==='apply'&&!M.same(payload(),operation.body.draft);
+    const merged=operation.kind==='undo'?M.rebase(operation.base||state,draft,next):hadNewEdits?M.rebase({...state,draft:operation.body.draft},payload(),next):{draft:M.clone(next.draft),conflicts:[]};
+    PhoneGrocery.acknowledge(state.tvId,operation.groceryEditors);state=next;draft=merged.draft;conflicts=merged.conflicts;pending=null;working=false;restoreRecord=null;reorderUndo=null;connected=true;
     persist();render();message(t(operation.kind==='undo'?'undoSuccess':'updated',{tv:tvName()}),'success',operation.kind==='apply'?{label:t('undo'),run:undoUpdate}:undefined);
   }
   async function submit(operation){
@@ -407,7 +422,7 @@
   async function update(){
     if(!connected||working||pending)return;if(invalid()){showValidation();return;}
     if(conflicts.some(c=>!c.resolved))return;
-    await submit({kind:'apply',tvId:state.tvId,body:{revision:state.revision,operation:uid(),draft:payload()}});
+    await submit({kind:'apply',tvId:state.tvId,groceryEditors:PhoneGrocery.snapshot(state.tvId),body:{revision:state.revision,operation:uid(),draft:payload()}});
   }
   async function undoUpdate(){if(!connected||working||pending)return;await submit({kind:'undo',tvId:state.tvId,body:{revision:state.revision,operation:uid()}});}
   async function reconcile(){

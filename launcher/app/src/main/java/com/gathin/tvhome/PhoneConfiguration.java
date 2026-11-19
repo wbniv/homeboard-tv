@@ -15,21 +15,23 @@ final class PhoneConfiguration {
         JSONArray widgets=new JSONArray();
         for(HomeLayout.Cell cell:layout.cells(layout.widgets,columns,rows)) {
             String key=cell.key;WidgetKind kind=kind(key);
-            JSONObject settings=kind==WidgetKind.RAIN?layout.rainSettings.get(key).json():kind==WidgetKind.CALENDAR?layout.calendarSettings.get(key).json():kind==WidgetKind.WORLD_CLOCK?layout.clockSettings.get(key).json():kind==WidgetKind.AIR?air.optJSONObject(key):new JSONObject();
+            JSONObject settings=kind==WidgetKind.GROCERY?new JSONObject().put("listId",layout.groceryLists.getOrDefault(key,GroceryData.DEFAULT)):kind==WidgetKind.RAIN?layout.rainSettings.get(key).json():kind==WidgetKind.CALENDAR?layout.calendarSettings.get(key).json():kind==WidgetKind.WORLD_CLOCK?layout.clockSettings.get(key).json():kind==WidgetKind.AIR?air.optJSONObject(key):new JSONObject();
             if(settings==null)settings=defaultAir();
             widgets.put(new JSONObject().put("key",key).put("type",kind==null?"app":kind.name().toLowerCase(Locale.ROOT))
                     .put("page",cell.page).put("column",cell.column).put("row",cell.row).put("width",cell.width).put("height",cell.height).put("settings",settings));
         }
         return new JSONObject().put("widgets",widgets).put("favorites",new JSONArray(layout.favorites))
-                .put("headerClock",layout.headerClock.json()).put("columns",columns).put("rows",rows).put("artwork",layout.homeAppSize);
+                .put("groceries",GroceryData.copy(layout.groceries)).put("headerClock",layout.headerClock.json()).put("columns",columns).put("rows",rows).put("artwork",layout.homeAppSize);
     }
     static JSONObject defaultAir()throws JSONException{return new JSONObject().put("source","model").put("location-mode","auto").put("location-name","").put("station","114");}
     static final class Result {final HomeLayout layout;final JSONObject air;Result(HomeLayout l,JSONObject a){layout=l;air=a;}}
     static Result validate(JSONObject draft,HomeLayout before,JSONObject beforeAir,Set<String> available)throws JSONException {
-        keys(draft,"draft","widgets","favorites","columns","rows","artwork","headerClock");
+        keys(draft,"draft","widgets","favorites","columns","rows","artwork","headerClock","groceries");
         int columns=integer(draft,"columns",4,12),rows=integer(draft,"rows",2,12);
         String artwork=choice(draft,"artwork","small","banner");
         HomeLayout result=HomeLayout.parse(before.encode());
+        GroceryData.validate(draft.getJSONObject("groceries"));
+        result.groceries=GroceryData.copy(draft.getJSONObject("groceries"));
         WorldClockSettings.validate(draft.getJSONObject("headerClock"));
         result.headerClock=WorldClockSettings.parse(draft.getJSONObject("headerClock"));
         result.widgets.clear();result.homePositions.clear();result.panelSpans.clear();
@@ -43,7 +45,7 @@ final class PhoneConfiguration {
             WidgetKind kind=kind(key);
             if(!seen.add(key))throw new Invalid("widgets","Duplicate widget instance");
             if(kind==null) {if(!before.widgets.contains(key)||!key.startsWith("app:")||!"app".equals(type))throw new Invalid("widgets","Unknown widget");}
-            else if(!kind.name().toLowerCase(Locale.ROOT).equals(type)||!key.matches("widget:(air|rain|calendar|favorites|world_clock)(:[1-9][0-9]{0,5})?"))throw new Invalid("widgets","Invalid widget identity");
+            else if(!kind.name().toLowerCase(Locale.ROOT).equals(type)||!key.matches("widget:(air|rain|calendar|favorites|world_clock|grocery)(:[1-9][0-9]{0,5})?"))throw new Invalid("widgets","Invalid widget identity");
             if(kind==WidgetKind.CALENDAR&&!HomeLayout.CALENDAR.equals(key)||kind==WidgetKind.FAVORITES&&!HomeLayout.FAVORITES.equals(key))throw new Invalid("widgets","This widget has one instance");
             int page=integer(w,"page",0,15),x=integer(w,"column",0,columns-1),y=integer(w,"row",0,rows-1),width=integer(w,"width",1,columns),height=integer(w,"height",1,rows);
             if(kind==WidgetKind.CALENDAR&&width<2)throw new Invalid(key,"Calendar needs at least two columns");
@@ -51,7 +53,8 @@ final class PhoneConfiguration {
             if(x+width>columns||y+height>rows)throw new Invalid(key,"Widget extends outside the grid");
             for(int yy=y;yy<y+height;yy++)for(int xx=x;xx<x+width;xx++)if(!occupied.add(page+":"+xx+":"+yy))throw new Invalid(key,"Widgets overlap; adjust position or size");
             JSONObject settings=w.getJSONObject("settings");
-            if(kind==WidgetKind.RAIN){validateRain(settings);result.rainSettings.put(key,RainSettings.parse(settings));}
+            if(kind==WidgetKind.GROCERY){keys(settings,"groceries","listId");String listId=bounded(settings,"listId",100);if(!result.groceries.has(listId))throw new Invalid("groceries","List unavailable");result.groceryLists.put(key,listId);}
+            else if(kind==WidgetKind.RAIN){validateRain(settings);result.rainSettings.put(key,RainSettings.parse(settings));}
             else if(kind==WidgetKind.CALENDAR){validateCalendar(settings);result.calendarSettings.put(key,CalendarWidgetSettings.parse(settings));}
             else if(kind==WidgetKind.AIR){validateAir(settings);air.put(key,settings);}
             else if(kind==WidgetKind.WORLD_CLOCK){WorldClockSettings.validate(settings);result.clockSettings.put(key,WorldClockSettings.parse(settings));}

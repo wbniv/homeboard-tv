@@ -10,4 +10,5 @@ initial.providers=[
 ];
 initial.worldClockDefaults=require('./world-clock-default-fixture.json');
 initial.draft.headerClock=JSON.parse(JSON.stringify(initial.worldClockDefaults.settings));
+initial.draft.groceries={groceries:{id:'groceries',title:'',items:[],products:[]}};
 module.exports=initial;

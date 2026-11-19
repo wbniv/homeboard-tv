@@ -1,13 +1,15 @@
 # Grocery list: phone entry, product knowledge and household staples
 
-Status: **Phases 1 and 2 implemented**, November 19, 2026, in
-`.worktrees/grocery-list` on `feature/grocery-list`, separate from main. Container
-checks and Cast1 native acceptance passed on debug build **0.1.78**. The identical
-Cast2 installation was admitted but failed `personal-install-in-use`; it remains
-unconfirmed. Phase 3 remains future work. See the
-[verification record](../testing/2026-11-19-groceries.md) for exact checks, receipts,
-physical captures and remaining acceptance limits. Mockups illustrate the design;
-the verification record distinguishes actual implemented behavior and follow-ups.
+Status: **Phases 1 and 2 implemented, with the Cooper interaction revision**,
+November 19, 2026, developed in `.worktrees/grocery-list` on
+`feature/grocery-list` and merged into `main`. The revision adds capture-first phone entry, direct reuse, counted
+staple review, familiar quantities and recoverable ordinary edits. See the
+[Cooper implementation record](2026-11-19-grocery-goal-directed-design.md) and
+[0.1.81 verification](../testing/2026-11-19-grocery-cooper.md). Original Phase 1/2
+acceptance on 0.1.78 is retained in the [baseline record](../testing/2026-11-19-groceries.md).
+Phase 3 purchase check-off and remote sync remain future work. Mockups illustrate
+the design; verification records distinguish implemented behavior and remaining
+physical/usability acceptance.
 
 TL;DR: Phase 1 makes adding groceries from a phone quick and shows the saved list
 on Homeboard. Phase 2 adds reusable product knowledge, meaningful quantities and
@@ -20,6 +22,34 @@ purchase; its current shopping need is a separate record.
 [Interaction workflow](2026-11-19-grocery-list-widget/workflow.svg)
 
 ![Phase 1 phone entry and TV list; Phase 2 product quantities and stock-aware staples](2026-11-19-grocery-list-widget/mockups.svg)
+
+## Delivery checkpoint — November 19, 2026
+
+Implementation and evidence are committed and pushed on `feature/grocery-list`:
+`77f4536` implements the Cooper revision, following `15f1061` and `421d56f`
+for the original Phases 1/2. The separate cleanup completion-race correction is
+`919b733`. The feature branch is now merged into main; the tested Android source
+is unchanged by the documentation conflict resolution.
+
+| Scope | Delivered behavior | Current acceptance |
+|---|---|---|
+| Phase 1 | Phone Add/Enter and batch entry, quantities/notes, named lists, reorder/removal, persistent staples, explicit Update TV and whole-update Undo. | Browser/model checks pass; Cast1 native full-screen/restoration proof passes. Physical handset pairing remains to be checked. |
+| Phase 2 | Direct product reuse, contextual quantities and custom text, exact package conversions, simple/measured stock, counted staple filters and explained replenishment. | Browser/model checks pass, including package correction and explicit quantity replacement; Cast1 shows richer product/stock detail. Household usability observation remains open. |
+| Cooper revision | Capture precedes management; ordinary edits recover across navigation/reload/conflicts; removed widgets/lists retain an explicit recovery path; publication names all affected outcomes. | Committed in `77f4536`; checked in Chromium and WebKit at 390×844 and with 200% text. |
+| Phase 3 | Purchase check-off, away-from-home editing and reliable dashboard sync. | Away-from-home and offline use required; API Gateway/Lambda/DynamoDB selected with durable phone storage. Enrollment/client/account decisions remain open; implementation is planned. |
+
+Frozen debug build **0.1.81** passed 510 JVM tests, Android lint and the shared
+phone checks. Cast1 installation `J‑f1c8ca8cfac7` and native proof
+`J‑0d317527642f` succeeded. Cast2's identical-APK installation
+`J‑3e40923b3c88` was submitted and admitted, then failed
+`personal-install-in-use`; installation there remains unconfirmed.
+
+The [verification record](../testing/2026-11-19-grocery-cooper.md) contains the
+APK hash, source verification, precise test boundaries and actual
+[phone capture](../testing/2026-11-19-grocery-cooper/phone-capture.png),
+[staple review](../testing/2026-11-19-grocery-cooper/phone-staples.png) and
+[Cast1 full-screen capture](../testing/2026-11-19-grocery-cooper/cast1-staples.png).
+The original mockups and workflow below remain design references.
 
 ## Goals and agreed boundaries
 
@@ -335,30 +365,35 @@ check-off in this phase.
 
 ## Phase 3 — purchase at the shop and sync home
 
-This is the future behavior boundary, not a delivery commitment for Phase 1/2:
+**Confirmed requirement, November 19:** shopping must work away from home and
+when offline. A connection will normally be available; occasional loss must not
+interrupt shopping or lose purchases. This requirement applies to Phase 3 and is
+not a claim about the current temporary home-network controller.
 
-1. Take a phone-accessible list away from the TV; check off an actual purchase,
-   including partial amounts and a changed package size. Phone feedback distinguishes
-   **Saved on this phone · Waiting to sync** from **Synced to dashboard**.
-2. Store a purchase event with a unique operation ID. Applying it removes/reduces
-   the current need, optionally increases tracked stock by the confirmed purchased
-   amount, and keeps the staple/product record. Retrying must not double stock.
-3. A bought staple moves out of the active shopping list when fulfilled but remains
-   in Staples. New low stock or Need more later starts the next shopping need; the
-   old purchase stays in history. Buying does not permanently pin a checked row
-   among things still needed.
-4. Handle offline edits, concurrent additions/quantity changes, purchase reversal,
-   conflicts and delayed TV connectivity. Undoing a purchase reverses that event's
-   effect without overwriting later stock corrections or someone else's purchase.
+The [Phase 3 shopping and sync plan](2026-11-19-grocery-shopping-sync.md) defines
+the scenarios, screen mockups, state diagram, operation contract and acceptance.
+Architecture direction: a durable phone copy and operation queue, with an
+**authenticated household sync service using API Gateway, Lambda and DynamoDB**
+for remote updates, as accepted by Will. A connected TV catches up automatically;
+returning to home Wi-Fi is not required. Account/region, enrollment, durable client
+technology and the operation/transaction protocol remain implementation decisions.
+The [selected backend diagram](2026-11-19-grocery-shopping-sync.md) separates phone
+offline durability, shared service acceptance and actual TV delivery.
 
-Before implementation, choose between **local-first phone storage with sync on
-return to the home network** and **an authenticated shared service for remote
-sync**. The former cannot update the TV live from the shop. The latter needs a
-deliberate household identity, device enrollment and storage/service decision.
-Evaluate existing shopping services only when a service is selected; do not
-invent provider capabilities or install a custom bridge for the early phases.
-Cross-TV household sharing belongs in that decision too. The TV must not need to
-keep its temporary configuration editor running as an always-on public server.
+- Record purchases, partial amounts and package changes locally before showing
+  success. Prepared phones must reopen their shopping view and list while offline.
+- Distinguish **Saved on phone · Waiting to sync**, **Shared list updated ·
+  Dashboard waiting**, and actual TV delivery. Reconcile lost responses with the
+  same operation ID; do not duplicate purchases or stock effects.
+- Fulfilled needs move out of To buy, with reachable purchase history and Undo.
+  Keep the reusable staple/product. Any measured-stock increase uses confirmed
+  actual amounts and checks for a later report; simple stock is not guessed.
+- Merge concurrent edits and handle purchase reversal without overwriting later
+  reports, another shopper's purchase or a newer replenishment cycle.
+- Scope shopping sync to groceries. Keep household/list ownership explicit, adopt
+  existing independent TV lists deliberately, and preserve the full-screen
+  Back/Restore/page/focus/size contract. The temporary configuration editor is
+  not an always-on public shopping server.
 
 ## Data and implementation design
 
@@ -401,7 +436,7 @@ color-only stock status or provider account requirement in Phase 1/2.
 
 ### Phase 1
 
-- [ ] Phone: quickly add several English/Thai items; Enter retains entry focus;
+- [x] Phone: quickly add several English/Thai items; Enter retains entry focus;
   optional quantity/notes, duplicate choice, batch preview, edit/reorder/remove and
   draft Undo work. No purchase checkboxes appear.
 - [ ] Draft versus saved state is clear; one Update TV commits all reviewed rows
@@ -417,14 +452,20 @@ color-only stock status or provider account requirement in Phase 1/2.
 - [ ] Remote row/detail/editor navigation, cancel/save and dirty-editor restoration
   work. Back and visible Restore recover the exact Home page, focus and dimensions.
   Full-screen browsing changes neither saved geometry nor Undo history.
+- [x] Cast1 scripted short/held OK, native view clicks, nested Back and visible
+  Restore preserve the original page, widget focus, dimensions and list data.
+  Aggregate Apply/retry/Undo also passes in the isolated native probe.
 - [ ] Phone pairing from full screen and return-to-Home-before-update behavior are
   understandable; real phone LAN testing establishes connectivity separately from
   browser fixture tests. English/Thai, larger text and reduced-motion checks pass.
 
 ### Phase 2
 
-- [ ] Saved product suggestions accelerate input; unknown products remain addable.
-  Aliases/variants stay distinct until an explicit merge; merge previews all effects.
+- [x] Saved product suggestions reuse known defaults directly; unknown products
+  and unconfirmed units remain addable as text. Repeated reuse does not increase
+  an existing need.
+- [ ] Complete a dedicated product-merge walkthrough: aliases/variants remain
+  distinct until explicitly merged, with all surviving/discarded effects reviewed.
 - [x] Exact decimal mass/volume/count conversion, confirmed package sizes, fractional
   amounts, whole-package rounding and incompatible/unknown units behave as specified.
   Ambiguous text stays unstructured until confirmed.
@@ -433,7 +474,7 @@ color-only stock status or provider account requirement in Phase 1/2.
 - [x] Low stock suggests an explained quantity. Confirming adds/updates one need;
   refresh/retry creates no duplicate; a stock correction requests review instead of
   silently clearing the shopping list. No consumption is inferred from time.
-- [ ] Staples remain present independently of active needs. Both tabs add real
+- [x] Staples remain present independently of active needs. Both tabs add real
   full-screen product/stock detail and preserve the Phase 1 restoration contract.
 - [x] Existing Phase 1 data is retained verbatim until structured by its owner.
 
@@ -445,10 +486,31 @@ session; Cast1 is the routine foreground acceptance target. Capture phone draft,
 saved dashboard, full-screen detail, empty/error states and restoration. Implementation now requires these checks; the earlier design-only revision did not
 require a build, deployment or device session.
 
+## Next acceptance work
+
+- [ ] Observe capture, simple stock and replenishment with real household items;
+  record hesitation and whether the publication state is understood.
+- [ ] Verify physical phone LAN pairing/reconnection and enlarged English/Thai
+  TV presentation, including physical remote/pointer use.
+- [ ] Finish the remaining broad acceptance items above, especially native editor
+  interruption/cancellation, size variants, limits and product merging. Checked
+  items record verified scenarios; an unchecked composite item is not a claim
+  that its entire feature is absent.
+- [ ] Confirm Cast2 installation through the coordinator when the reported
+  execution precondition changes. Reuse the identical frozen 0.1.81 APK for this
+  additional target; record its own receipt. Personal use remains operation-specific.
+- [x] Confirm that Phase 3 must support away-from-home shopping and occasional
+  offline use; record the durable-phone-copy plus remote-sync direction.
+- [x] Select AWS API Gateway, Lambda and DynamoDB as the Phase 3 backend.
+- [ ] Resolve account/region, enrollment, durable phone storage, API/table/transaction
+  contracts and operating-cost budget against the
+  [shopping/sync acceptance contract](2026-11-19-grocery-shopping-sync.md).
+
 ## Open product decisions
 
 Validate the proposed stock threshold/target workflow with real household items,
-especially loose produce and partial packs. Decide Phase 3's local-return versus
-remote-sync architecture before promising shopping-away-from-home behavior. Barcode
+especially loose produce and partial packs. Away-from-home and offline shopping
+are required for Phase 3. The AWS backend is selected; account/region, enrollment,
+durable client storage and the consistency protocol still need detailed design. Barcode
 lookup, retailer prices, recipes, automatic consumption prediction and retailer
 ordering remain separate future features.

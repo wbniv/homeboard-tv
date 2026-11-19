@@ -61,7 +61,7 @@ public class PhoneEditorTest {
             String url=server.url();assertEquals(403,post(url,"/api/state","{}","",url));
             assertEquals(403,post(url,"/api/state","{}","", "http://attacker.invalid"));
             String token=session.request("");assertEquals(403,post(url,"/api/state","{}",token,url));session.approve(token,true);
-            assertEquals(200,post(url,"/api/state","{}",token,url));assertEquals(200,post(url,"/api/icon","{}",token,url));assertEquals(200,post(url,"/api/touch","{}",token,url));assertEquals(413,post(url,"/api/state"," ".repeat(65537),token,url));
+            assertEquals(200,post(url,"/api/state","{}",token,url));assertEquals(200,post(url,"/api/icon","{}",token,url));assertEquals(200,post(url,"/api/touch","{}",token,url));assertEquals(413,post(url,"/api/state"," ".repeat(524289),token,url));
             session.close();assertEquals(403,post(url,"/api/state","{}",token,url));
         }finally{server.stop();}
     }

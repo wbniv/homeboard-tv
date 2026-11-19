@@ -1,0 +1,33 @@
+<resources>
+    <string name="hb_grocery_title">ของชำ</string>
+    <string name="hb_grocery_unavailable">ไม่สามารถเปิดรายการได้</string>
+    <string name="hb_grocery_empty">ยังไม่มีรายการ · เพิ่มจากโทรศัพท์</string>
+    <string name="hb_grocery_count">%1$d รายการ</string>
+    <string name="hb_grocery_list">รายการซื้อของ</string>
+    <string name="hb_grocery_staples">ตรวจของที่ซื้อประจำ</string>
+    <string name="hb_grocery_edit">แก้ไขรายการ</string>
+    <string name="hb_grocery_phone">เพิ่มจากโทรศัพท์</string>
+    <string name="hb_grocery_phone_hint">ใช้โทรศัพท์จัดการสินค้า หน่วย และสต็อก กลับหน้าหลักทีวีก่อนอัปเดต</string>
+    <string name="hb_grocery_no_staples">เก็บสินค้าที่ซื้อบ่อยไว้เพื่อเพิ่มครั้งต่อไป</string>
+    <string name="hb_grocery_unknown">ไม่ทราบสต็อก</string>
+    <string name="hb_grocery_stock">สต็อกที่รายงาน</string>
+    <string name="hb_grocery_threshold">ต่ำเมื่อเหลือ</string>
+    <string name="hb_grocery_target">เป้าหมาย</string>
+    <string name="hb_grocery_need">ต้องซื้อเพิ่ม</string>
+    <string name="hb_grocery_enough">มีพอ</string>
+    <string name="hb_grocery_not_tracked">ยังไม่ติดตามสต็อก</string>
+    <string name="hb_grocery_reported">รายงานเมื่อ</string>
+    <string name="hb_grocery_suggested">จำนวนที่แนะนำ</string>
+    <string name="hb_grocery_updated">อัปเดตรายการของชำแล้ว</string>
+    <string name="hb_grocery_draft">ฉบับร่าง · บันทึกเพื่อใช้การเปลี่ยนแปลง</string>
+    <string name="hb_grocery_lists">เลือกรายการ</string>
+    <string name="hb_grocery_add">เพิ่มรายการ</string>
+    <string name="hb_grocery_name">ชื่อสินค้า</string>
+    <string name="hb_grocery_quantity">ข้อความจำนวน</string>
+    <string name="hb_grocery_note">หมายเหตุ</string>
+    <string name="hb_grocery_remove">นำออกจากรายการ</string>
+    <string name="hb_grocery_unsaved">บันทึกหรือละทิ้งการเปลี่ยนแปลง?</string>
+    <string name="hb_grocery_discard">ละทิ้งการเปลี่ยนแปลง</string>
+    <string name="hb_grocery_keep_editing">แก้ไขต่อ</string>
+<string name="hb_grocery_more">อีก %1$d รายการ</string>
+</resources>

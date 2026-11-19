@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/dae0a38) | Document grocery design and shared Cooper review standard |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/015f574) | Publish signed Homeboard APK and update installation guides |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/26ac8a2) | Plan opt-in ads that pay the user (Homeboard Rewards) |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/6b13054) | Add reviewed cleanup execution and seed YouTube favorites |
@@ -35,6 +36,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+dae0a38	author	Will Norris
+dae0a38	added	4
+dae0a38	deleted	0
+dae0a38	files	1
 015f574	author	Will Norris
 015f574	added	2
 015f574	deleted	0

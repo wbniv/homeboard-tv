@@ -50,7 +50,7 @@ final class PhoneEditorServer extends NanoHTTPD {
             if(request.getMethod()!=Method.POST||!url().equals(origin)||!request.getHeaders().getOrDefault("content-type","").split(";")[0].trim().equals("application/json"))return json(403,"JSON requests from this editor required");
             if(request.getHeaders().containsKey("transfer-encoding"))return json(400,"Chunked requests unsupported");
             int length=Integer.parseInt(request.getHeaders().getOrDefault("content-length","-1"));
-            if(length<2||length>65536)return json(413,"Request is too large");
+            if(length<2||length>524288)return json(413,"Request is too large");
             byte[] bytes=new byte[length];int offset=0;
             while(offset<length){int read=request.getInputStream().read(bytes,offset,length-offset);if(read<0)return json(400,"Incomplete request");offset+=read;}
             JSONObject body=new JSONObject(new String(bytes,StandardCharsets.UTF_8));

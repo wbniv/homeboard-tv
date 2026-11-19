@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="680" viewBox="0 0 1260 680" role="img" aria-labelledby="title desc">
+<title id="title">Phase 3 shopping with occasional offline use</title><desc id="desc">Design mockups of an online shopping list, offline purchase saved on the phone, and TV detail after synchronization. These screens are not implemented.</desc>
+<rect width="1260" height="680" fill="#10212b"/><g font-family="Arial,sans-serif" fill="#edf5f7">
+<text x="28" y="38" font-size="25">Phase 3 · shop anywhere · keep working offline · proposed screens</text>
+<g fill="#203944" stroke="#65818e"><rect x="28" y="70" width="350" height="570" rx="20"/><rect x="408" y="70" width="350" height="570" rx="20"/><rect x="788" y="70" width="444" height="570" rx="20"/></g>
+<text x="48" y="110" font-size="20">Groceries · Our household</text><text x="48" y="143" font-size="15" fill="#99e1c6">Shared list up to date</text>
+<rect x="46" y="168" width="314" height="46" rx="8" fill="#10212b"/><text x="60" y="197" font-size="18">Add an item…                  Add</text>
+<text x="48" y="252" font-size="18">To buy (3)     Purchased</text>
+<rect x="49" y="282" width="26" height="26" rx="4" fill="none" stroke="#99e1c6"/><text x="88" y="301" font-size="19">Milk · 2 × 1 L cartons</text>
+<rect x="49" y="337" width="26" height="26" rx="4" fill="none" stroke="#99e1c6"/><text x="88" y="356" font-size="19">Eggs · 6</text>
+<rect x="49" y="392" width="26" height="26" rx="4" fill="none" stroke="#99e1c6"/><text x="88" y="411" font-size="19">Limes · a few</text>
+<text x="48" y="478" font-size="16">Tap to record a purchase.</text><text x="48" y="507" font-size="16">Change amount in item details.</text><text x="48" y="597" font-size="16">Ready to use offline on this phone</text>
+<text x="428" y="110" font-size="20">Groceries · Our household</text><text x="428" y="143" font-size="15" fill="#ffd1b0">Offline · showing your local list</text>
+<text x="428" y="195" font-size="18">To buy (2)     Purchased (1)</text><text x="428" y="250" font-size="19">□ Eggs · 6</text><text x="428" y="298" font-size="19">□ Limes · a few</text>
+<rect x="426" y="342" width="314" height="142" rx="10" fill="#294b47"/><text x="443" y="374" font-size="18">✓ Bought Milk · 2 cartons</text><text x="443" y="408" font-size="16">Saved on phone · Waiting to sync</text><text x="443" y="451" font-size="18" fill="#99e1c6">Undo purchase</text>
+<text x="428" y="538" font-size="16">Keep shopping. Sync resumes</text><text x="428" y="564" font-size="16">when a connection is available.</text><text x="428" y="603" font-size="15">Milk stays in your saved staples.</text>
+<text x="808" y="110" font-size="21">TV full-screen · Groceries</text><text x="808" y="150" font-size="16" fill="#99e1c6">Restore dashboard             Configure</text>
+<text x="808" y="211" font-size="21">To buy · 2 items</text><text x="808" y="254" font-size="20">Eggs · 6</text><text x="808" y="297" font-size="20">Limes · a few</text>
+<text x="808" y="363" font-size="18">Recently purchased: Milk · 2 cartons</text><text x="808" y="401" font-size="16">Reusable staple retained.</text><text x="808" y="439" font-size="16">Stock report changes only as confirmed.</text>
+<text x="808" y="505" font-size="16" fill="#99e1c6">On dashboard · received revision</text><text x="808" y="543" font-size="15">Before delivery: Shared list updated ·</text><text x="808" y="567" font-size="15">Dashboard waiting</text><text x="808" y="609" font-size="16">Back restores original page, focus and size.</text>
+</g></svg>

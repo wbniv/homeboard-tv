@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/219392c) | Add dashboard and widget screenshots to README |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/015f574) | Publish signed Homeboard APK and update installation guides |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/6b13054) | Add reviewed cleanup execution and seed YouTube favorites |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/eb9adf6) | Add standalone cleanup connections and update setup manual |
@@ -26,6 +27,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+219392c	author	Will Norris
+219392c	added	74
+219392c	deleted	24
+219392c	files	1
 015f574	author	Will Norris
 015f574	added	6
 015f574	deleted	2

@@ -116,4 +116,27 @@ class CompanionTest(unittest.TestCase):
             self.assertEqual(result['status'], 'scan-only')
 
 
+
+class CompletionLockTest(unittest.TestCase):
+    def test_client_can_start_next_request_when_completion_is_sent(self):
+        """A response must not advertise completion while the next request is refused."""
+        from types import SimpleNamespace
+        from cleanup.server import Handler
+        server = SimpleNamespace(lock=threading.Lock(), workflow=SimpleNamespace(
+            export=lambda session: {'session': session}, sessions=lambda: []))
+        export, followup = object.__new__(Handler), object.__new__(Handler)
+        export.server = followup.server = server
+        export.path, followup.path = '/api/cleanup/export', '/api/cleanup/sessions'
+        responses = []
+        followup.respond = lambda code, body: responses.append(('followup', code))
+        def received(code, body):
+            responses.append(('export', code))
+            # Model a client sending its next request at the first completion byte.
+            followup.cleanup_action({})
+        export.respond = received
+        export.cleanup_action({'session': 'fixture'})
+        self.assertEqual(responses, [('export', 200), ('followup', 200)])
+        self.assertFalse(server.lock.locked())
+
+
 if __name__ == '__main__': unittest.main()

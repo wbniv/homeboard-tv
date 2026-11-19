@@ -16,6 +16,7 @@ window.PhoneModel = (() => {
   }
   function gridDiff(base, draft) {
     const changes = [];
+    for(const key of new Set([...Object.keys(base.groceries||{}),...Object.keys(draft.groceries||{})]))if(!same(base.groceries?.[key],draft.groceries?.[key]))changes.push({kind:"grocery",key,before:base.groceries?.[key],after:draft.groceries?.[key]});
     if (!same(pick(base, ['columns','rows']), pick(draft, ['columns','rows']))) changes.push({kind:'grid'});
     if (base.artwork !== draft.artwork) changes.push({kind:'artwork', value:draft.artwork});
     if (!same(base.favorites, draft.favorites)) changes.push({kind:'favorites', before:base.favorites, after:draft.favorites});
@@ -37,11 +38,13 @@ window.PhoneModel = (() => {
       && w.column+w.width > other.column && w.row < other.row+other.height && w.row+w.height > other.row);
   }
   function validate(draft) {
+    if(draft.groceries&&!window.PhoneGrocery.valid(draft.groceries))return {kind:"grocery"};
     if(!window.PhoneClock.valid(draft.headerClock))return {kind:"range",key:HEADER};
     if (!Number.isInteger(draft.columns) || draft.columns < 4 || draft.columns > 12 || !Number.isInteger(draft.rows) || draft.rows < 2 || draft.rows > 12) return {kind:'grid'};
     for (const w of draft.widgets) {
       if (!validPosition(draft,w)) return {kind:'placement', key:w.key};
       const s=w.settings;
+      if(w.type==='grocery'&&!draft.groceries?.[s.listId])return {kind:'grocery',key:w.key};
       if(w.type==='world_clock'&&!window.PhoneClock.valid(s))return {kind:'range',key:w.key};
       if (w.type === 'rain' && (![6,12,24,48].includes(s.hours) || !Number.isInteger(s.days) || s.days<0 || s.days>6)) return {kind:'range',key:w.key};
       if (w.type === 'calendar' && (!Number.isInteger(s.holidayLookaheadDays) || s.holidayLookaheadDays<1 || s.holidayLookaheadDays>2147483647)) return {kind:'range',key:w.key};
@@ -58,6 +61,7 @@ window.PhoneModel = (() => {
     throw new Error('No free instance');
   }
   function defaults(type) {
+    if(type==='grocery')return {listId:'groceries'};
     if(type==='world_clock')return window.PhoneClock.defaults();
     if(type==='rain') return {locationSource:'device',name:'',label:'',hours:24,days:6,inches:false,animation:true};
     if(type==='air') return {source:'model','location-mode':'auto','location-name':'',station:'114'};
@@ -71,9 +75,10 @@ window.PhoneModel = (() => {
     throw new Error('noRoom');
   }
   function add(draft,type,instances={}) {
+    if(type==='grocery'){draft.groceries??=window.PhoneGrocery.defaults();if(!draft.groceries.groceries)draft.groceries.groceries=window.PhoneGrocery.emptyList("groceries");}
     if(['calendar','favorites'].includes(type)){const existing=draft.widgets.find(w=>w.type===type);if(existing)return existing;}
     const key=['calendar','favorites'].includes(type)?'widget:'+type:newKey(type,draft.widgets,instances);
-    const size=type==='world_clock'?window.PhoneClock.defaultSize():{width:type==='calendar'?2:1,height:1};
+    const size=type==='grocery'?{width:4,height:2}:type==='world_clock'?window.PhoneClock.defaultSize():{width:type==='calendar'?2:1,height:1};
     const w=freePosition(draft,{key,type,width:Math.min(draft.columns,size.width),height:Math.min(draft.rows,size.height),settings:defaults(type)});draft.widgets.push(w);return w;
   }
   function recommended(draft,instances={},chosen={}) {
@@ -89,6 +94,7 @@ window.PhoneModel = (() => {
     const base=baseState.draft,remote=latest.draft,merged=clone(remote),conflicts=[];
     const resolve=(b,l,r,conflict,apply)=>{if(same(l,b)||same(l,r))return;if(same(r,b))apply(l);else conflicts.push({...conflict,mine:clone(l),tv:clone(r)});};
     resolve(pick(base,['columns','rows']),pick(local,['columns','rows']),pick(remote,['columns','rows']),{kind:'grid'},v=>Object.assign(merged,v));
+    for(const key of new Set([...Object.keys(base.groceries||{}),...Object.keys(local.groceries||{})]))resolve(base.groceries?.[key],local.groceries?.[key],remote.groceries?.[key],{kind:'grocery',key},v=>{merged.groceries??={};if(v)merged.groceries[key]=clone(v);else delete merged.groceries[key];});
     for(const field of ['artwork','favorites'])resolve(base[field],local[field],remote[field],{kind:field},v=>merged[field]=clone(v));
     const keys=new Set([...base.widgets,...local.widgets].map(w=>w.key));
     for(const key of keys){
@@ -110,9 +116,10 @@ window.PhoneModel = (() => {
   function gridResolveConflict(draft,conflict,choice,instances={}) {
     if(choice==='tv')return;
     const value=clone(conflict.mine),target=draft.widgets.find(w=>w.key===conflict.key);
+    if(conflict.kind==='grocery'){draft.groceries??={};if(value)draft.groceries[conflict.key]=value;else delete draft.groceries[conflict.key];return;}
     if(conflict.kind==='grid'){Object.assign(draft,value);return;}
     if(conflict.kind==='artwork'||conflict.kind==='favorites'){draft[conflict.kind]=value;return;}
-    if(conflict.kind==='instance'&&value&&['rain','air','world_clock'].includes(value.type)){
+    if(conflict.kind==='instance'&&value&&['rain','air','world_clock','grocery'].includes(value.type)){
       value.key=newKey(value.type,draft.widgets,instances);draft.widgets.push(freePosition(draft,value));return;
     }
     if(conflict.kind==='widget'||conflict.kind==='instance'){
