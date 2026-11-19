@@ -27,7 +27,9 @@ Check conformance with `task todo:lint`.
 
 ## Open
 
-- [T4] **Opt-in ads that pay the user**: the only kind of advertising Homeboard may carry. Will, 2026‑11‑19: "add TODO for ads which pay user. i don't otherwise want to have ads". Write a plan before building anything. It covers who funds the ads, the user's share and how it is paid in Thailand (cash, PromptPay or points), Play/PDPA/disclosure limits, an off-by-default consent flow and a no-ads guarantee for everyone else. Tier T4: the design is open and the payout, policy and legal risks make a wrong turn expensive. See [investigation](docs/investigations/2026-11-19-widget-monetization.md#ads-that-pay-the-user).
+- [wip T4] <!-- agent:ad004e92406994819 --> **Opt-in ads that pay the user (Homeboard Rewards)**: the only kind of advertising Homeboard may carry. Will, 2026‑11‑19: "add TODO for ads which pay user. i don't otherwise want to have ads". The plan is written: commission share first, then GrabRewards, with sponsored offers last behind gates; PromptPay payouts with no wallet; off by default; and a `nocommerce` build. It is waiting on Will's seven decisions and on gate 0 (affiliate terms) and gate 1 (counsel) before any code. Tier T4: the payout, policy and legal risks make a wrong turn expensive. See [plan](docs/plans/2026-11-19-ads-that-pay-the-user.md) and [investigation](docs/investigations/2026-11-19-widget-monetization.md#ads-that-pay-the-user).
+- [T4] **Shop this list: handoff and the commerce setting**. On the phone, a panel offers Copy for Grab (for its Shopping Agent), a pre-filled LINE message to the household's shop, a Grab checklist mode, and copy or share. The TV's full screen gets a QR code. The Off/Plain/Tagged setting adds disclosed tagged links: Plain needs no accounts, while Tagged waits for verified affiliate terms. It is a prerequisite for Rewards. Write the plan with mockups first, linking to the Groceries plan (owned by another session) rather than editing it. Tier T4: a new design across the phone controller, the TV full screen and consent. See [investigation](docs/investigations/2026-11-19-widget-monetization.md#recommendation-and-sequence).
+- [T5] **Rewards gates 0–1: affiliate accounts, payout provider, counsel**. Apply to the Lazada TH programme and to Involve Asia, then read the Thai offer terms on app traffic, cashback and sub-IDs. Confirm 7‑Eleven ALL ONLINE's terms, choose and price a licensed PromptPay payout provider, and decide on Thai counsel for checklist items L1–L14. Do this after Will's Rewards decisions. Tier T5: it needs Will, vendor consoles and contracts. See [plan](docs/plans/2026-11-19-ads-that-pay-the-user.md).
 
 ## Watch
 
@@ -36,9 +38,9 @@ trigger that promotes it back to Open._
 
 ## Parked
 
-_Nothing parked. Entries here are plain bullets — intentionally shelved work, with the
-condition that would unpark it. A parked bullet may keep its tier (`- [T3] …`) so the
-ranking work is not thrown away; re-check it when the item is unparked._
+- [T4] **Rewards stage 2: GrabRewards points payout.** It needs a Grab partnership. Unpark when Will authorizes approaching Grab and stage 1 has payees. See [plan](docs/plans/2026-11-19-ads-that-pay-the-user.md).
+- [T4] **Rewards stage 3: sponsored offers, ad server and sponsor reporting.** Unpark only when at least 2,000 households are in Shared, a sponsor has asked, and counsel and Play review have cleared it. See [plan](docs/plans/2026-11-19-ads-that-pay-the-user.md).
+- [T2] **SMS one-time-code check of payout numbers.** In v1 the provider's name check and the payee's confirmation are enough. Unpark if a misdirected payout happens in the pilot. See [plan](docs/plans/2026-11-19-ads-that-pay-the-user.md).
 
 ## Done
 
