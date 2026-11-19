@@ -26,3 +26,8 @@ publication also ran in a container with the existing authentication profile.
 ![Desktop: actual built website feature section](../plans/2026-11-19-timers-publication/desktop.png)
 
 ![Phone: actual built website feature section](../plans/2026-11-19-timers-publication/phone.png)
+
+Final passive evidence collection for Cast1 returned `status: uncertain`,
+`health: recovery-required`, `reason: plugin-error`, with no installation receipt
+(`J‑edd8bd12e247`). Its public 0.1.92 installation is **unconfirmed**, not a
+completed install. Cast2’s independent install and sound result remain verified.

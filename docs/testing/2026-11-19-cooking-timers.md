@@ -117,3 +117,8 @@ Subsequent full checks passed. This changes the test client, not server limits.
 [Live website and download verification](2026-11-19-timers-publication.md).
 The coordinator socket later became unavailable during Cast1 evidence collection;
 its public 0.1.92 installation remains submitted/unverified in this record.
+
+Final passive evidence collection for Cast1 returned `status: uncertain`,
+`health: recovery-required`, `reason: plugin-error`, with no installation receipt
+(`J‑edd8bd12e247`). Its public 0.1.92 installation is **unconfirmed**, not a
+completed install. Cast2’s independent install and sound result remain verified.
