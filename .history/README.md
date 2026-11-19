@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/eb9adf6) | Add standalone cleanup connections and update setup manual |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/99e0a61) | Add one-page Homeboard TV quick start and printable user guide |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/7db11d2) | Calculate Wan Phra locally and persist offline holiday updates |
 | [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/0a7ba57) | Add read-only TV cleanup inspection and recovery foundation |
@@ -23,6 +24,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+eb9adf6	author	Will Norris
+eb9adf6	added	1
+eb9adf6	deleted	1
+eb9adf6	files	1
 99e0a61	author	Will Norris
 99e0a61	added	1
 99e0a61	deleted	0

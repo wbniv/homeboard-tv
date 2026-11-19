@@ -743,6 +743,7 @@ public class MainActivity extends Activity {
                 }
                 apps.clear();
                 for (App app : found) apps.put(app.key, app);
+                migrated |= layout.seedFavoritesFromApps(new ArrayList<>(apps.keySet()));
                 if (migrated) saveWithoutUndo();
                 // A missing activity may be temporarily disabled. Keep its dashboard tile, marked unavailable.
                 if (!moving && overlay == null) render(0);

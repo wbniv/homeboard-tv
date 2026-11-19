@@ -21,6 +21,7 @@ final class HomeLayout {
     static final String FAVORITES = "widget:favorites";
     final List<String> favorites = new ArrayList<>();
     boolean favoritesContainer;
+    boolean seedDefaultFavorites;
     static final String CALENDAR = "widget:calendar";
     final List<String> widgets = new ArrayList<>();
     final List<String> order = new ArrayList<>();
@@ -47,9 +48,24 @@ final class HomeLayout {
 
     static HomeLayout firstRun() {
         HomeLayout s = new HomeLayout();
+        s.seedDefaultFavorites = true;
         s.homeColumns = 8; s.homeRows = 4;
         s.arrangeDefaultDashboard(RAIN, AIR, 8, 4);
         return s;
+    }
+
+    /** Seed once from a successfully discovered installed-app catalog. */
+    boolean seedFavoritesFromApps(List<String> installedKeys) {
+        if (!seedDefaultFavorites) return false;
+        seedDefaultFavorites = false;
+        if (!favorites.isEmpty() || !widgets.contains(FAVORITES)) return true;
+        for (String packageName : new String[]{"com.google.android.youtube.tv", "com.google.android.youtube"}) {
+            for (String key : installedKeys) if (key.startsWith("app:" + packageName + "/") && !hidden.contains(key)) {
+                addFavorite(key);
+                return true;
+            }
+        }
+        return true;
     }
 
     /** Explicit preset: preserve all data/settings and place the requested panels first. */
@@ -99,6 +115,7 @@ final class HomeLayout {
         JSONArray favoriteKeys = j.optJSONArray("favorites");
         if (favoriteKeys != null) read(favoriteKeys, s.favorites);
         s.favorites.removeIf(key -> !key.startsWith("app:"));
+        s.seedDefaultFavorites = j.optBoolean("seedDefaultFavorites", false);
         s.favoritesContainer = j.optBoolean("favoritesContainer", false);
         List<String> hidden = new ArrayList<>();
         read(j.getJSONArray("hidden"), hidden);
@@ -186,6 +203,7 @@ final class HomeLayout {
             return new JSONObject().put("widgets", new JSONArray(widgets)).put("order", new JSONArray(order))
                     .put("hidden", new JSONArray(new java.util.TreeSet<>(hidden)))
                     .put("favorites", new JSONArray(favorites)).put("favoritesContainer", favoritesContainer)
+                    .put("seedDefaultFavorites", seedDefaultFavorites)
                     .put("defaultPanelSize", defaultPanelSize).put("panelSizes", new JSONObject(panelSizes))
                     .put("panelSpans", encodedSpans())
                     .put("homePositions", encodedHomePositions())

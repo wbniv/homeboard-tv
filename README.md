@@ -105,6 +105,9 @@ See the [default dashboard and navigation plan](docs/plans/2026-11-17-default-da
 
 ## Favorites on the first page
 
+Fresh dashboards seed YouTube into Favorites when the installed app is discovered.
+Existing lists and removals are preserved; missing YouTube creates no unavailable tile.
+
 Rain and a resizable **Favorites** panel share Home page 1. Existing favorite apps
 keep their order inside the panel; adding more apps scrolls within its fixed area.
 Directional wedges show additional apps, with no scrollbars. One-row panels scroll

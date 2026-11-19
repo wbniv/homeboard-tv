@@ -25,4 +25,13 @@ class Fixture:
 
 with Companion(Fixture()) as server:
     print(server.origin, flush=True)
+    if os.environ.get('CLEANUP_WORKFLOW_FIXTURE') == '1':
+        import tempfile
+        from cleanup.workflow import Workflow
+        from cleanup.tests.test_core import TV
+        fixture_tv=TV()
+        profile={'approved':True,'revision':'fixture','source_commit':'fixture',
+                 'match':fixture_tv.state['device'], 'packages':[{'package':'org.example.promotions','label':'Fixture promotions','reason':'Disposable fixture only'}]}
+        directory=tempfile.TemporaryDirectory()
+        server.workflow=Workflow(None,Path(directory.name),[profile],lambda device:fixture_tv)
     server.serve_forever()

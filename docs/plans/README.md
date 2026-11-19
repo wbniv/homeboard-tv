@@ -77,3 +77,8 @@ missing rows on commit.*
 
 - [Standalone cleanup connections](2026-11-19-cleanup-connections.md): private pairing,
   connection, identity confirmation and inspection; container/browser fixture proof.
+
+- [Cleanup execution and recovery](2026-11-19-cleanup-execution.md): full inventory,
+  reviewed selections, recovery-before-confirmation, execution and saved sessions.
+- [Default YouTube favorite](2026-11-19-default-youtube-favorite.md): seed installed
+  YouTube on new dashboards while preserving saved choices.
