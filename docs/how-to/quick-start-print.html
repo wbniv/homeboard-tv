@@ -11,6 +11,7 @@ body { margin: 0; background: #e8edf0; color: #172d3c; font: 10pt/1.3 Arial, san
 main { max-width: 210mm; margin: 20px auto; padding: 12mm; background: white; }
 header { border-bottom: 2px solid #16766f; padding-bottom: 3mm; margin-bottom: 4mm; }
 .eyebrow { color: #16766f; font-size: 9pt; font-weight: bold; letter-spacing: .08em; }
+.download-qr { float: right; width: 20mm; height: 20mm; margin: -1mm 0 1mm 3mm; }
 h1 { margin: 1mm 0; font-size: 25pt; line-height: 1.1; letter-spacing: -.7pt; }
 .intro { margin: 2mm 0 0; color: #466071; }
 .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
@@ -43,17 +44,17 @@ code { font-size: 9pt; }
 }
 </style>
 </head>
-<body><main><header><div class="eyebrow">HOMEBOARD TV · ANDROID TV / GOOGLE TV</div><h1>Quick start &amp; user guide</h1><p class="intro">Your rain, dates, air quality and favorite apps, together on one dashboard.</p></header><div class="columns"><div>
+<body><main><header><a href="https://biohack.net/homeboard/" aria-label="Homeboard downloads"><img class="download-qr" src="quick-start/download-qr.svg" alt="QR code for https://biohack.net/homeboard/"></a><div class="eyebrow">HOMEBOARD TV · ANDROID TV / GOOGLE TV</div><h1>Quick start &amp; user guide</h1><p class="intro">Your rain, dates, air quality and favorite apps, together on one dashboard.</p></header><div class="columns"><div>
 <section><h2>1 · Install Homeboard</h2>
 <ol>
 <li>Finish the TV’s normal setup and connect it to your home network.</li>
-<li>Get the <strong>Homeboard APK from the project maintainer</strong>.</li>
+<li>Open <strong><a href="https://biohack.net/homeboard/">biohack.net/homeboard</a></strong> on your phone or computer → <strong>Download APK</strong>. Requires Android TV / Google TV, Android 8.0+.</li>
 <li>Copy it to the TV using a USB drive (if supported) or a TV file-transfer app. Open the APK in a TV file manager.</li>
 <li>If prompted, allow <strong>Install unknown apps</strong> for that file manager, then choose <strong>Install</strong>. Menu names vary by TV. Turn that permission off afterward.</li>
 <li>Open <strong>Homeboard TV</strong> from Apps. You can use it without changing your default launcher.</li>
 </ol>
 <p>Optional: Home settings → <strong>Default Home app</strong> → choose Homeboard in Android’s prompt. Some TVs’ Home buttons still open their original launcher.</p>
-<p><strong>Updates:</strong> install a newer APK from the same maintainer over the existing app to retain settings. If Android rejects the update, request a matching build; do not uninstall first.</p>
+<p><strong>Updates:</strong> install a newer public APK from the same page over the public app. If rejected, keep the installed app to preserve its dashboard and settings; check that the download is a newer public release. Earlier debug builds are separate apps; their settings do not transfer.</p>
 </section>
 <section><h2>Connect for optional cleaning</h2>
 <ol>
@@ -105,7 +106,7 @@ code { font-size: 9pt; }
       <span class="wide">World clock · Settings buttons</span>
       <span class="wide">Rain · next 24 hours</span>
       <span>Calendar</span><span>Air quality</span>
-      <span class="wide">Favorites · one scrolling row</span>
+      <span class="wide">Favorites · YouTube · one scrolling row</span>
     </div>
     <p>Hold OK on a widget → <strong>Move</strong> or <strong>Resize</strong>. Arrows adjust the preview; <strong>OK saves, Back cancels</strong>.</p>
     <p><strong>Home settings → Widgets / Restore</strong> adds widgets or restores the <strong>Default dashboard</strong>. An empty Home still allows Right to All Apps.</p>
