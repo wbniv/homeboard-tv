@@ -62,7 +62,7 @@ final class PhoneEditorServer extends NanoHTTPD {
             String token=request.getHeaders().getOrDefault("x-homeboard-session","");
             if(path.equals("/api/status"))return response(new JSONObject().put("status",session.status(token)).put("remaining",session.remaining()));
             if(!session.authorized(token,!path.equals("/api/operation")))return json(403,"Approval expired or revoked; reconnect on TV");
-            if(!Set.of("/api/touch","/api/icon","/api/state","/api/apply","/api/undo","/api/preview","/api/cancel-preview","/api/lookup","/api/operation","/api/stop").contains(path))return json(404,"Unknown action");
+            if(!Set.of("/api/timers","/api/timer-state","/api/touch","/api/icon","/api/state","/api/apply","/api/undo","/api/preview","/api/cancel-preview","/api/lookup","/api/operation","/api/stop").contains(path))return json(404,"Unknown action");
             return response(host.command(path,body,token));
         }catch(PhoneConfiguration.Invalid invalid){return error(422,invalid.field,invalid.getMessage());}
         catch(IllegalArgumentException|JSONException bad){return error(422,"request",bad.getMessage());}

@@ -76,15 +76,15 @@ window.PhoneModel = (() => {
   }
   function add(draft,type,instances={}) {
     if(type==='grocery'){draft.groceries??=window.PhoneGrocery.defaults();if(!draft.groceries.groceries)draft.groceries.groceries=window.PhoneGrocery.emptyList("groceries");}
-    if(['calendar','favorites'].includes(type)){const existing=draft.widgets.find(w=>w.type===type);if(existing)return existing;}
-    const key=['calendar','favorites'].includes(type)?'widget:'+type:newKey(type,draft.widgets,instances);
-    const size=type==='grocery'?{width:4,height:2}:type==='world_clock'?window.PhoneClock.defaultSize():{width:type==='calendar'?2:1,height:1};
+    if(['calendar','favorites','timer'].includes(type)){const existing=draft.widgets.find(w=>w.type===type);if(existing)return existing;}
+    const key=['calendar','favorites','timer'].includes(type)?'widget:'+type:newKey(type,draft.widgets,instances);
+    const size=type==='timer'?{width:2,height:1}:type==='grocery'?{width:4,height:2}:type==='world_clock'?window.PhoneClock.defaultSize():{width:type==='calendar'?2:1,height:1};
     const w=freePosition(draft,{key,type,width:Math.min(draft.columns,size.width),height:Math.min(draft.rows,size.height),settings:defaults(type)});draft.widgets.push(w);return w;
   }
   function recommended(draft,instances={},chosen={}) {
     const result=clone(draft); result.columns=8; result.rows=4;
     const selected=['rain','calendar','air','favorites'].map(type => result.widgets.find(w=>w.key===chosen[type]) || result.widgets.find(w=>w.type===type)
-      || {key:['calendar','favorites'].includes(type)?'widget:'+type:newKey(type,result.widgets,instances),type,settings:defaults(type)});
+      || {key:['calendar','favorites','timer'].includes(type)?'widget:'+type:newKey(type,result.widgets,instances),type,settings:defaults(type)});
     const shapes=[[0,0,8,1],[0,1,5,2],[5,1,3,2],[0,3,8,1]],extras=result.widgets.filter(w=>!selected.some(s=>s.key===w.key));
     result.widgets=selected.map((w,i)=>({...w,page:0,column:shapes[i][0],row:shapes[i][1],width:shapes[i][2],height:shapes[i][3]}));
     for(const w of extras)result.widgets.push(freePosition(result,{...w,width:Math.min(w.width,8),height:Math.min(w.height,4)},1));

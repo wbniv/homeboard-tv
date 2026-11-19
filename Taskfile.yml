@@ -67,6 +67,11 @@ tasks:
     desc: Install pinned test-only browser packages inside the browser container
     cmds:
       - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble npm install --prefix artifacts/phone-browser --no-save playwright@1.59.1 jsqr@1.4.0 pngjs@7.0.0'
+  timer:check:
+    desc: Verify cooking timers, event alarms and phone controls in containers
+    cmds:
+      - 'dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest --tests com.gathin.tvhome.KitchenTimersTest'
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/timer-phone-check.cjs'
   grocery:check:
     desc: Verify grocery quantities, draft conflicts and phone entry in containers
     cmds:

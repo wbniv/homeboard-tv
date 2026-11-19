@@ -1,0 +1,30 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 22,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 0.5,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 0.2,
+      "capture": "early-expanded"
+    },
+    {
+      "at": 1.8,
+      "capture": "expanded-or-restore"
+    },
+    {
+      "at": 3.2,
+      "capture": "compact"
+    },
+    {
+      "at": 4.4,
+      "capture": "larger"
+    }
+  ]
+}

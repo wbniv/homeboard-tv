@@ -2,6 +2,8 @@
 |------|--------|
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/219392c) | Add dashboard and widget screenshots to README |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/015f574) | Publish signed Homeboard APK and update installation guides |
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/421d56f) | Verify grocery restoration on Cast1 and record deployment evidence |
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/15f1061) | Add phone-first grocery lists and optional pantry stock |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/6b13054) | Add reviewed cleanup execution and seed YouTube favorites |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/eb9adf6) | Add standalone cleanup connections and update setup manual |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/99e0a61) | Add one-page Homeboard TV quick start and printable user guide |
@@ -35,6 +37,14 @@
 015f574	added	6
 015f574	deleted	2
 015f574	files	1
+421d56f	author	Will Norris
+421d56f	added	6
+421d56f	deleted	0
+421d56f	files	1
+15f1061	author	Will Norris
+15f1061	added	10
+15f1061	deleted	0
+15f1061	files	1
 6b13054	author	Will Norris
 6b13054	added	3
 6b13054	deleted	0

@@ -45,8 +45,8 @@ final class PhoneConfiguration {
             WidgetKind kind=kind(key);
             if(!seen.add(key))throw new Invalid("widgets","Duplicate widget instance");
             if(kind==null) {if(!before.widgets.contains(key)||!key.startsWith("app:")||!"app".equals(type))throw new Invalid("widgets","Unknown widget");}
-            else if(!kind.name().toLowerCase(Locale.ROOT).equals(type)||!key.matches("widget:(air|rain|calendar|favorites|world_clock|grocery)(:[1-9][0-9]{0,5})?"))throw new Invalid("widgets","Invalid widget identity");
-            if(kind==WidgetKind.CALENDAR&&!HomeLayout.CALENDAR.equals(key)||kind==WidgetKind.FAVORITES&&!HomeLayout.FAVORITES.equals(key))throw new Invalid("widgets","This widget has one instance");
+            else if(!kind.name().toLowerCase(Locale.ROOT).equals(type)||!key.matches("widget:(air|rain|calendar|favorites|world_clock|grocery|timer)(:[1-9][0-9]{0,5})?"))throw new Invalid("widgets","Invalid widget identity");
+            if(kind==WidgetKind.TIMER&&!HomeLayout.TIMER.equals(key)||kind==WidgetKind.CALENDAR&&!HomeLayout.CALENDAR.equals(key)||kind==WidgetKind.FAVORITES&&!HomeLayout.FAVORITES.equals(key))throw new Invalid("widgets","This widget has one instance");
             int page=integer(w,"page",0,15),x=integer(w,"column",0,columns-1),y=integer(w,"row",0,rows-1),width=integer(w,"width",1,columns),height=integer(w,"height",1,rows);
             if(kind==WidgetKind.CALENDAR&&width<2)throw new Invalid(key,"Calendar needs at least two columns");
             if(kind==null&&(height!=1||width!=(HomeLayout.APP_BANNER.equals(artwork)?2:1)))throw new Invalid(key,"App shortcut size must match its artwork");

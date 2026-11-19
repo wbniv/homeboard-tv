@@ -15,6 +15,7 @@ import java.util.Set;
 final class HomeLayout {
     static final String AIR = "widget:air";
     static final String RAIN = "widget:rain";
+    static final String TIMER = "widget:timer";
     static final String GROCERY = "widget:grocery";
     JSONObject groceries=GroceryData.defaults();
     final Map<String,String> groceryLists=new LinkedHashMap<>();
@@ -248,6 +249,7 @@ final class HomeLayout {
         if (!key.startsWith("widget:")) throw new IllegalArgumentException("Panel keys must start with widget:");
         favorite(key);
         panelSizes.putIfAbsent(key, defaultPanelSize);
+        if(TIMER.equals(key))panelSpans.putIfAbsent(key,new PanelSpan(2,1));
         if(isGroceryWidget(key)){groceryLists.putIfAbsent(key,GroceryData.DEFAULT);panelSpans.putIfAbsent(key,new PanelSpan(4,2));}
         if (FAVORITES.equals(key)) panelSpans.putIfAbsent(key, new PanelSpan(4, 2));
         if (isRainWidget(key)) {

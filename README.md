@@ -20,6 +20,7 @@ installed; existing favorite lists are preserved. [Screenshot evidence](docs/tes
 | Calendar | Browse holidays, locally calculated Wan Phra and flower-work dates; check offline coverage and refresh sources. |
 | Air quality | View nearby hourly PM2.5 model estimates or Bangkok station averages, with 24-hour and 30-day trends. |
 | Favorites | Keep apps in a scrolling row; fresh dashboards start with YouTube when installed. All Apps is to the right. |
+| Timers & alarms | Run named cooking timers together or set one-off date/time alarms; manage them from TV or paired phone. |
 | World clock | Choose cities and compare times in the full-screen meeting planner. |
 
 **Press OK** for a bigger widget view. **Hold OK** to configure, move or resize.
@@ -41,6 +42,7 @@ installed; existing favorite lists are preserved. [Screenshot evidence](docs/tes
 *Actual TV captures: Calendar 0.1.69 with controlled offline test dates; air-quality
 map from an earlier build. Click either image to inspect it at full size.*
 
+[Timers & alarms](docs/how-to/timers-and-alarms.md) ·
 [Calendar & offline data](docs/how-to/calendar-data.md) ·
 [Full-screen widget controls](docs/how-to/widgets-full-screen.md) ·
 [World clock & meeting planner](docs/how-to/world-clock.md)

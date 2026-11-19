@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hb_timer_title">Timers &amp; alarms</string>
+    <string name="hb_timer_cooking">Cooking timer</string>
+    <string name="hb_timer_event">Event alarm</string>
+    <string name="hb_timer_name">Name (optional)</string>
+    <string name="hb_timer_minutes">Minutes</string>
+    <string name="hb_timer_seconds">Seconds</string>
+    <string name="hb_timer_date">Date (YYYY-MM-DD)</string>
+    <string name="hb_timer_time">Time (HH:mm, 24-hour)</string>
+    <string name="hb_timer_start">Start timer</string>
+    <string name="hb_timer_set">Set alarm</string>
+    <string name="hb_timer_pause">Pause</string>
+    <string name="hb_timer_resume">Resume</string>
+    <string name="hb_timer_add">+1 minute</string>
+    <string name="hb_timer_restart">Restart</string>
+    <string name="hb_timer_stop">Stop</string>
+    <string name="hb_timer_remove">Remove</string>
+    <string name="hb_timer_silence">Stop alert sound</string>
+    <string name="hb_timer_done">Done — needs attention</string>
+    <string name="hb_timer_running">Running</string>
+    <string name="hb_timer_paused">Paused</string>
+    <string name="hb_timer_stopped">Stopped</string>
+    <string name="hb_timer_interrupted">Interrupted by TV restart — restart when ready</string>
+    <string name="hb_timer_missed">Missed while TV was off</string>
+    <string name="hb_timer_empty">Start a cooking timer or set an event alarm</string>
+    <string name="hb_timer_more">%1$d more ▾</string>
+    <string name="hb_timer_permission">Allow Alarms &amp; reminders on this TV before starting a timer or alarm.</string>
+    <string name="hb_timer_access">Allow alarms on this TV</string>
+    <string name="hb_timer_ready">Sound plays even over other apps. TV must be on and audible.</string>
+    <string name="hb_timer_audio_error">The last alert could not play. Check TV audio and app permissions.</string>
+    <string name="hb_timer_invalid">Check the name, duration, date and time. Events must be in the future.</string>
+    <string name="hb_timer_zone">TV timezone: %1$s</string>
+    <string name="hb_timer_original">Original duration: %1$s</string>
+    <string name="hb_timer_phone">Control from phone</string>
+    <string name="hb_timer_live">Timer actions happen immediately; layout Undo does not rewind timers.</string>
+    <string name="hb_timer_notification">Show alarm notifications</string>
+</resources>

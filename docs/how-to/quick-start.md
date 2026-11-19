@@ -16,6 +16,22 @@ This capture uses fresh test preferences, with the installed YouTube app seeded 
 Other screenshots below are historical and may show older arrangements; design
 illustrations are labeled. See the [current screenshot proof](../testing/2026-11-19-youtube-dashboard-images.md).
 
+## Cooking timers and household alarms
+
+Add **Timers & alarms** from Home settings → Widgets / Restore → Add widget.
+A **2×1** widget is a useful starting size. Press OK for the full controls.
+Choose a minute preset or enter a dish name, minutes and seconds; run several
+cooking timers together, Pause/Resume, add one minute or Stop each one.
+Switch to **Event alarm** for a one-off date and time, such as calling a ride
+or leaving the house. The TV timezone is shown on both TV and phone.
+
+Grant **Alarms & reminders** access when needed. Alarms can sound over another
+app; the TV must be on and audible. Stop alert sound silences the current alert;
+Done remains until acknowledged. Cooking timers interrupted by a TV reboot need
+an explicit restart. Future event alarms are restored; missed ones are labeled.
+Paired phone timer controls take effect immediately, separately from layout Undo.
+See [Timers & alarms](timers-and-alarms.md) for setup, recovery and limits.
+
 ## Install on your own TV
 
 Open **[biohack.net/homeboard](https://biohack.net/homeboard/)** on your phone or
