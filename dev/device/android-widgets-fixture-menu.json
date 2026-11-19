@@ -1,0 +1,86 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 56,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 2,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 3,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 4,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 5,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 6,
+      "capture": "installed-widget-picker"
+    },
+    {
+      "at": 11,
+      "capture": "fixture-provider-choice"
+    },
+    {
+      "at": 12,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 20,
+      "capture": "fixture-add-review"
+    },
+    {
+      "at": 24,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 30,
+      "capture": "fixture-compact"
+    },
+    {
+      "at": 34,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 38,
+      "capture": "fixture-expanded"
+    },
+    {
+      "at": 42,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 48,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 1200
+    },
+    {
+      "at": 53,
+      "capture": "dashboard-restored"
+    }
+  ]
+}

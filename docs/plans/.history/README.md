@@ -1,7 +1,11 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/467eae0) | Select API Gateway Lambda and DynamoDB for grocery sync |
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/c368e40) | Require away-from-home and offline grocery shopping in Phase 3 |
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/77f4536) | Make grocery capture and staple review goal-directed |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/dae0a38) | Document grocery design and shared Cooper review standard |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/015f574) | Publish signed Homeboard APK and update installation guides |
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/15f1061) | Add phone-first grocery lists and optional pantry stock |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/26ac8a2) | Plan opt-in ads that pay the user (Homeboard Rewards) |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/6b13054) | Add reviewed cleanup execution and seed YouTube favorites |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/eb9adf6) | Add standalone cleanup connections and update setup manual |
@@ -36,6 +40,19 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+467eae0	author	Will Norris
+467eae0	added	1
+467eae0	deleted	1
+467eae0	files	1
+c368e40	author	Will Norris
+c368e40	added	2
+c368e40	deleted	0
+c368e40	files	1
+77f4536	author	Will Norris
+77f4536	added	2
+77f4536	deleted	2
+77f4536	files	1
+77f4536	body	Lead with quick entry, direct reuse and contextual amounts. Keep ordinary edits in TV-owned recovery buffers, preserve explicit publication and review meaningful outcomes. Simplify TV actions while retaining richer detail and restoration. Verified with container checks, Chromium/WebKit and Cast1 native proof on 0.1.81; Cast2 installation remains unconfirmed.
 dae0a38	author	Will Norris
 dae0a38	added	4
 dae0a38	deleted	0
@@ -44,6 +61,10 @@ dae0a38	files	1
 015f574	added	2
 015f574	deleted	0
 015f574	files	1
+15f1061	author	Will Norris
+15f1061	added	2
+15f1061	deleted	0
+15f1061	files	1
 26ac8a2	author	Will Norris
 26ac8a2	added	2
 26ac8a2	deleted	0

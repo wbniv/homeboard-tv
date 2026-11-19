@@ -1,0 +1,27 @@
+<resources>
+ <string name="hb_aw_title">Android app widgets</string>
+ <string name="hb_aw_installed">Choose a widget from an app installed on this device.</string>
+ <string name="hb_aw_empty">No widget apps are installed on this device. Install a widget app, then return here.</string>
+ <string name="hb_aw_unsupported">Android widget hosting is unavailable on this device.</string>
+ <string name="hb_aw_setup">Widget permission setup</string>
+ <string name="hb_aw_setup_help">Some TVs have no Android widget approval screen. A one-time developer connection can enable widget binding for this installation. Run this command from your computer after connecting Android debugging:</string>
+ <string name="hb_aw_retry">Try again</string>
+ <string name="hb_aw_failed">Widget setup could not be completed. Your dashboard is kept.</string>
+ <string name="hb_aw_no_fit">This widget needs more space than the current grid provides. Change the Home grid or choose another widget.</string>
+ <string name="hb_aw_review">Add this widget at its minimum supported size? Existing tiles will keep their data.</string>
+ <string name="hb_aw_no_config">This provider cannot reconfigure an existing widget. Remove it and add it again to run setup. Homeboard Undo restores layout, not changes made in the provider app.</string>
+ <string name="hb_aw_unavailable">Widget unavailable. Hold OK to set it up again or remove it.</string>
+ <string name="hb_aw_open">Open full screen to use this widget.</string>
+ <string name="hb_aw_too_small">Size not supported at this grid setting. Hold OK to resize, or change the Home grid.</string>
+ <string name="hb_aw_resume">Finish widget setup</string>
+ <string name="hb_aw_resume_help">Setup was interrupted. Retry setup or cancel without changing your dashboard.</string>
+ <string name="hb_aw_interact">Interact with widget</string>
+ <string name="hb_aw_display_only">No remote-focusable controls were found. This widget may be display-only on TV. Touch controls remain available here.</string>
+ <string name="hb_aw_interact_hint">Back leaves the widget controls. Back again restores the dashboard.</string>
+ <string name="hb_aw_saved_size">Saved dashboard size</string>
+ <string name="hb_aw_provider">Provider app</string>
+ <string name="hb_aw_repair">Set up again</string>
+ <string name="hb_aw_unknown">Widget not supported by this version</string>
+ <string name="hb_aw_newer_layout">This dashboard was saved by a newer Homeboard version. Update Homeboard to edit it. The saved dashboard has been preserved.</string>
+ <string name="hb_configuration_save_failed">Could not save this change. Please try again.</string>
+</resources>

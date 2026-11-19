@@ -93,3 +93,7 @@ Specify the richer information/timeframes, empty/errors and restoration tests in
 the widget plan and mockups before implementation. Run all checks in the build
 container and validate real TV input through the coordinator. See the
 [full-screen plan](../plans/2026-11-17-widget-full-screen.md).
+
+## Android app widgets
+
+The full-screen view hosts the actual provider view alongside its app/version and saved dashboard size. Choose **Interact with widget** to enter its controls; Back exits controls, then restores Home. Providers may need touch. Configure appears only for reconfigurable providers. See [Android app widgets](android-app-widgets.md).

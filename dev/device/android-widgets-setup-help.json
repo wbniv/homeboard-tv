@@ -1,0 +1,76 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 30,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 2,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 100
+    },
+    {
+      "at": 4,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 100
+    },
+    {
+      "at": 6,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 100
+    },
+    {
+      "at": 8,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 100
+    },
+    {
+      "at": 10,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 100
+    },
+    {
+      "at": 12,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 100
+    },
+    {
+      "at": 14,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 100
+    },
+    {
+      "at": 16,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 100
+    },
+    {
+      "at": 18,
+      "capture": "last-widget-picker-page"
+    },
+    {
+      "at": 20,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 100
+    },
+    {
+      "at": 23,
+      "capture": "widget-permission-instructions"
+    },
+    {
+      "at": 27,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 100
+    }
+  ]
+}

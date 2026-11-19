@@ -22,6 +22,7 @@ final class WidgetExpansion extends Dialog {
         View view();
         Bundle state();
         default void active(boolean active) { }
+        default boolean configurable() { return true; }
         default boolean back() { return false; }
         default void close() { active(false); }
     }
@@ -99,7 +100,7 @@ final class WidgetExpansion extends Dialog {
         if(released||!running||!isShowing()||content!=null)return;
         content=factory.create(this,new Bundle(initialState));
         body.removeAllViews();body.addView(content.view(),new FrameLayout.LayoutParams(-1,-1));
-        configureButton.setEnabled(true);content.active(running);
+        configureButton.setEnabled(true);configureButton.setVisibility(content.configurable()?View.VISIBLE:View.GONE);content.active(running);
         content.view().post(()->{if(!released&&content.view().findFocus()==null)content.view().requestFocus();});
     }
     void configure(Runnable action){configuring=true;setRunning(false);hide();action.run();}

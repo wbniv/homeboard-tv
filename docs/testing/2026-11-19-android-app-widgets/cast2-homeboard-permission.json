@@ -1,0 +1,15 @@
+{
+  "kind": "homeboard-widget-binding",
+  "package": "net.biohack.homeboard.debug",
+  "user": 0,
+  "before": false,
+  "target": true,
+  "verified": true,
+  "changed": true,
+  "reverse_recipe": {
+    "workflow": "widget-binding",
+    "app": "homeboard-tv",
+    "apk": "2d68114e75c81aef022fdc3724710bb7cede8a2fe7b06e9a90e96f138564bb4a.apk",
+    "enabled": false
+  }
+}

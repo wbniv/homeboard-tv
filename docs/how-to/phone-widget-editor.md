@@ -74,3 +74,7 @@ Run `task phone:setup` once to install the pinned test-only packages in the
 browser container, then use `task phone:check` for container browser acceptance. The fixture checks real
 Chromium/WebKit rendering and input with controlled API responses. It does not
 establish connectivity from a separate physical phone to a Chromecast.
+
+## Android app widgets
+
+Configured Android app widgets appear by their provider label. Move, resize and remove them in the shared draft; Update TV and Undo retain their host-owned bindings. The browser constrains provider resize directions and minimums, and Homeboard validates changes again. Add and configure widgets on the host TV/device. The browser shows arrangement, not live provider content. See [Android app widgets](android-app-widgets.md).

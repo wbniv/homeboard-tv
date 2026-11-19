@@ -45,7 +45,7 @@
   window.addEventListener('popstate',event=>{if(state)PhoneGrocery.leave(state,draft);scrolls.set(routeKey(),window.scrollY);route=event.state?.route||{name:'overview'};render();window.scrollTo(0,scrolls.get(routeKey())||0);});
   function back(){const w=currentWidget();if(route.name==='widget'&&w?.type==='grocery'&&PhoneGrocery.back(state,draft,w)){changed();render();return;}if(route.name==='widget'||route.name==='arrange'||route.name==='add'||route.name==='recommended')navigate({name:'overview'});else if(route.name==='apps'||route.name==='favoriteActions')navigate({name:'favorites'});else navigate({name:'overview'});}
   function currentWidget(){return route.key===M.HEADER&&draft?M.headerWidget(draft):draft?.widgets.find(w=>w.key===route.key);}
-  const widgetType=w=>['rain','calendar','air','favorites','world_clock','grocery','timer'].includes(w.type)?t(w.type):w.type==='app'?t('appShortcut'):w.type;
+  const widgetType=w=>w.type==='android'?(w.presentation?.label||t('androidWidget')):w.type==='unsupported'?t('unsupportedWidget'):['rain','calendar','air','favorites','world_clock','grocery','timer'].includes(w.type)?t(w.type):w.type==='app'?t('appShortcut'):w.type;
   const appName=key=>state.apps.find(app=>app.key===key)?.name||t('unavailable');
   function locationName(w){const s=w.settings;if(w.type==='grocery')return draft.groceries?.[s.listId]?.title||'';if(w.type==='rain')return s.label|| (s.locationSource==='device'?t('automatic'):s.name||t('unnamed'));
     if(w.type==='grocery')return draft.groceries?.[s.listId]?.title||'';
@@ -58,7 +58,7 @@
     if(w.type==='calendar')return t('holidays',{days:s.holidayLookaheadDays})+' · '+t(s.flowerWeeks);
     if(w.type==='air')return t(s.source==='airbkk'?'airbkk':'model')+' · '+t('trends');
     if(w.type==='favorites')return t('appsCount',{count:draft.favorites.length})+' · '+(w.height===1?t('bottomRow'):t('favorites'));return widgetType(w);}
-  const icon=w=>({rain:'☂',calendar:'▦',air:'∿',favorites:'★',grocery:'▤',timer:'⏱',app:'▣'}[w.type]||'◷');
+  const icon=w=>({android:'▣',unsupported:'▣',rain:'☂',calendar:'▦',air:'∿',favorites:'★',grocery:'▤',timer:'⏱',app:'▣'}[w.type]||'◷');
   function field(parent,label,value,onEdit,type='text',limits={}){
     const wrap=el('label'),caption=el('span',label),input=el('input');input.type=type;input.setAttribute('aria-label',label);
     if(type==='checkbox'){input.checked=!!value;wrap.className='check';}else input.value=value??'';
@@ -145,7 +145,10 @@
   function widgetForm(parent,w){
     if(!w){navigate({name:'overview'},true);return;}
     const box=section(parent),s=w.settings;note(box,summary(w));
-    if(w.type==='timer'){
+    if(w.type==='android'||w.type==='unsupported'){
+      note(box,t(w.type==='android'?'androidSetup':'unsupportedWidget'));
+      if(w.type==='android'&&w.presentation?.available===false)note(box,t('unavailable'));
+    } else if(w.type==='timer'){
       PhoneTimers.render(box,{state,el,button,note,field,t,api,uid,disposers});
     } else if(w.type==='grocery'){
       PhoneGrocery.form(box,w,{draft,state,el,button,field,select,details,note,t,changed,render,uid,disposers,announce});
@@ -222,7 +225,13 @@
     const fields=el('div',undefined,'two-fields');
     for(const [key,min,max]of [['page',1,16],['column',1,draft.columns],['row',1,draft.rows],['width',w.type==='calendar'?2:1,draft.columns],['height',1,draft.rows]]){
       const oneBased=['page','column','row'].includes(key);
-      field(fields,t(key==='page'?'pageLabel':key),w[key]+(oneBased?1:0),value=>{w[key]=value-(oneBased?1:0);},'number',{min,max,step:1,required:true});
+      const bounds={min,max,step:1,required:true},p=w.presentation;
+      if(w.type==='android'&&p&&(key==='width'||key==='height')){
+        bounds.disabled=key==='width'?!p.horizontal:!p.vertical;
+        const minimum=key==='width'?p.minWidth:p.minHeight;
+        if(draft.columns===p.columns&&draft.rows===p.rows&&w[key]>=minimum)bounds.min=minimum;
+      }
+      field(fields,t(key==='page'?'pageLabel':key),w[key]+(oneBased?1:0),value=>{w[key]=value-(oneBased?1:0);},'number',bounds);
     }
     parent.append(fields);
   }
@@ -251,7 +260,7 @@
     parent.append(button(t('recommended'),()=>navigate({name:'recommended'}),'wide-action secondary'));
     const advanced=details(parent,t('advanced')),row=el('div',undefined,'two-fields');field(row,t('columns'),draft.columns,value=>draft.columns=value,'number',{min:4,max:12,step:1,required:true});field(row,t('rows'),draft.rows,value=>draft.rows=value,'number',{min:2,max:12,step:1,required:true});advanced.append(row);
   }
-  function addWidgets(parent){const box=section(parent);for(const type of ['rain','calendar','air','favorites','grocery','timer'])box.append(button('+ '+t(type),()=>{const w=M.add(draft,type,state.instances);changed();navigate({name:type==='favorites'?'favorites':'widget',key:w.key});},'wide-action'));}
+  function addWidgets(parent){const box=section(parent);note(box,t('androidSetup'));for(const type of ['rain','calendar','air','favorites','grocery','timer'])box.append(button('+ '+t(type),()=>{const w=M.add(draft,type,state.instances);changed();navigate({name:type==='favorites'?'favorites':'widget',key:w.key});},'wide-action'));}
   function recommended(parent){const box=section(parent);note(box,t('recommendHelp'));note(box,t('extraCards'));const selected={};
     for(const type of ['rain','air']){const cards=draft.widgets.filter(w=>w.type===type);if(cards.length>1){selected[type]=cards[0].key;select(box,t(type),selected[type],cards.map(w=>[w.key,title(w)]),value=>selected[type]=value);}}
     box.append(button(t('useLayout'),()=>{draft=M.recommended(payload(),state.instances,selected);changed();navigate({name:'arrange',page:0});},'primary wide-action'));

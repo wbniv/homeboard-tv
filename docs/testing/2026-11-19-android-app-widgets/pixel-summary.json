@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "probeVersion": 1,
+  "observedAt": 1795095145386,
+  "feature": true,
+  "sdk": 37,
+  "service": true,
+  "bindResolver": "com.android.settings/com.android.settings.AllowBindAppWidgetActivity",
+  "bindActivities": [
+    "com.android.settings/com.android.settings.AllowBindAppWidgetActivity"
+  ],
+  "providerCount": 172,
+  "outcome": "consent-ui-resolves"
+}

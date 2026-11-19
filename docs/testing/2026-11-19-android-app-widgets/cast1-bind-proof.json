@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "bound": true,
+  "rendered": true,
+  "idsReleased": true,
+  "widgetId": 3,
+  "provider": "net.biohack.homeboard.widgetprovider/.ProbeProvider",
+  "message": "Bound and rendered \u00b7 test widget released",
+  "grant": {
+    "before": false,
+    "during": true
+  },
+  "cleanup": {
+    "grant_restored": false,
+    "ids_released": true,
+    "package": "net.biohack.homeboard.widgetfixture",
+    "user": 0
+  }
+}

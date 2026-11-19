@@ -21,6 +21,7 @@ installed; existing favorite lists are preserved. [Screenshot evidence](docs/tes
 | Air quality | View nearby hourly PM2.5 model estimates or Bangkok station averages, with 24-hour and 30-day trends. |
 | Favorites | Keep apps in a scrolling row; fresh dashboards start with YouTube when installed. All Apps is to the right. |
 | Timers & alarms | Run named cooking timers together or set one-off date/time alarms; manage them from TV or paired phone. |
+| Android app widgets (0.1.95+) | Host widgets from installed apps; Chromecast requires one-time permission setup. Provider remote support varies. [Setup and limits](docs/how-to/android-app-widgets.md). |
 | World clock | Choose cities and compare times in the full-screen meeting planner. |
 
 **Press OK** for a bigger widget view. **Hold OK** to configure, move or resize.

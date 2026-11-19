@@ -1,0 +1,184 @@
+{
+  "schema": 1,
+  "probeVersion": 1,
+  "observedAt": 1795104103310,
+  "feature": true,
+  "sdk": 34,
+  "service": true,
+  "bindResolver": "",
+  "bindActivities": [],
+  "providerCount": 17,
+  "outcome": "new-binding-unavailable",
+  "providers": [
+    {
+      "component": "net.biohack.homeboard.widgetprovider/net.biohack.homeboard.widgetprovider.ProbeProvider",
+      "label": "Homeboard Widget Provider Test",
+      "minWidthPx": 480,
+      "minHeightPx": 200,
+      "resizeMode": 3,
+      "configure": "",
+      "widgetFeatures": 0,
+      "versionCode": 1
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetClockDayDetailsProvider",
+      "label": "Clock + Daily (Details)",
+      "minWidthPx": 500,
+      "minHeightPx": 220,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.ClockDayDetailsWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetClockDayHorizontalProvider",
+      "label": "Clock + Daily (Horizontal style)",
+      "minWidthPx": 500,
+      "minHeightPx": 80,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.ClockDayHorizontalWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetClockDayVerticalProvider",
+      "label": "Clock + Daily (Vertical style)",
+      "minWidthPx": 360,
+      "minHeightPx": 220,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.ClockDayVerticalWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetClockDayWeekProvider",
+      "label": "Clock + Daily + Weekly",
+      "minWidthPx": 500,
+      "minHeightPx": 220,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.ClockDayWeekWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetDayProvider",
+      "label": "Daily",
+      "minWidthPx": 360,
+      "minHeightPx": 80,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.DayWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetDayWeekProvider",
+      "label": "Daily + Weekly",
+      "minWidthPx": 500,
+      "minHeightPx": 220,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.DayWeekWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetMaterialYouCurrentProvider",
+      "label": "Material You \u2013 Current",
+      "minWidthPx": 320,
+      "minHeightPx": 280,
+      "resizeMode": 3,
+      "configure": "",
+      "widgetFeatures": 0,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetMaterialYouForecastProvider",
+      "label": "Material You \u2013 Forecast",
+      "minWidthPx": 580,
+      "minHeightPx": 360,
+      "resizeMode": 3,
+      "configure": "",
+      "widgetFeatures": 0,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetMultiCityProvider",
+      "label": "Multi city",
+      "minWidthPx": 500,
+      "minHeightPx": 80,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.MultiCityWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetTextProvider",
+      "label": "Text",
+      "minWidthPx": 220,
+      "minHeightPx": 80,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.TextWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetTrendDailyProvider",
+      "label": "Daily trend",
+      "minWidthPx": 500,
+      "minHeightPx": 220,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.DailyTrendWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetTrendHourlyProvider",
+      "label": "Hourly trend",
+      "minWidthPx": 500,
+      "minHeightPx": 80,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.HourlyTrendWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.breezyweather/org.breezyweather.background.receiver.widget.WidgetWeekProvider",
+      "label": "Weekly",
+      "minWidthPx": 500,
+      "minHeightPx": 80,
+      "resizeMode": 3,
+      "configure": "org.breezyweather/org.breezyweather.remoteviews.config.WeekWidgetConfigActivity",
+      "widgetFeatures": 1,
+      "versionCode": 60202
+    },
+    {
+      "component": "org.fossify.calendar/org.fossify.calendar.helpers.MyWidgetDateProvider",
+      "label": "Calendar today's date",
+      "minWidthPx": 80,
+      "minHeightPx": 80,
+      "resizeMode": 3,
+      "configure": "org.fossify.calendar/org.fossify.calendar.activities.WidgetDateConfigureActivity",
+      "widgetFeatures": 0,
+      "versionCode": 25
+    },
+    {
+      "component": "org.fossify.calendar/org.fossify.calendar.helpers.MyWidgetListProvider",
+      "label": "Calendar event list",
+      "minWidthPx": 500,
+      "minHeightPx": 500,
+      "resizeMode": 3,
+      "configure": "org.fossify.calendar/org.fossify.calendar.activities.WidgetListConfigureActivity",
+      "widgetFeatures": 0,
+      "versionCode": 25
+    },
+    {
+      "component": "org.fossify.calendar/org.fossify.calendar.helpers.MyWidgetMonthlyProvider",
+      "label": "Calendar monthly",
+      "minWidthPx": 500,
+      "minHeightPx": 500,
+      "resizeMode": 3,
+      "configure": "org.fossify.calendar/org.fossify.calendar.activities.WidgetMonthlyConfigureActivity",
+      "widgetFeatures": 0,
+      "versionCode": 25
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+<resources>
+ <string name="hb_aw_title">วิดเจ็ตจากแอป Android</string>
+ <string name="hb_aw_installed">เลือกวิดเจ็ตจากแอปที่ติดตั้งในอุปกรณ์นี้</string>
+ <string name="hb_aw_empty">ยังไม่มีแอปวิดเจ็ตในอุปกรณ์นี้ ติดตั้งแอปวิดเจ็ตแล้วกลับมาที่นี่</string>
+ <string name="hb_aw_unsupported">อุปกรณ์นี้ไม่รองรับการแสดงวิดเจ็ต Android</string>
+ <string name="hb_aw_setup">ตั้งค่าสิทธิ์วิดเจ็ต</string>
+ <string name="hb_aw_setup_help">ทีวีบางรุ่นไม่มีหน้าจออนุญาตวิดเจ็ตของ Android สามารถเปิดสิทธิ์เพิ่มวิดเจ็ตให้แอปนี้ผ่านการเชื่อมต่อสำหรับนักพัฒนาเพียงครั้งเดียว เมื่อเชื่อมต่อการแก้ไขข้อบกพร่องของ Android แล้ว ให้เรียกคำสั่งนี้จากคอมพิวเตอร์</string>
+ <string name="hb_aw_retry">ลองอีกครั้ง</string>
+ <string name="hb_aw_failed">ตั้งค่าวิดเจ็ตไม่สำเร็จ แดชบอร์ดเดิมยังคงอยู่</string>
+ <string name="hb_aw_no_fit">วิดเจ็ตนี้ต้องการพื้นที่มากกว่าตารางปัจจุบัน เปลี่ยนตารางหน้าแรกหรือเลือกวิดเจ็ตอื่น</string>
+ <string name="hb_aw_review">เพิ่มวิดเจ็ตนี้ด้วยขนาดขั้นต่ำที่รองรับหรือไม่ ข้อมูลของไทล์เดิมจะยังอยู่</string>
+ <string name="hb_aw_no_config">แอปนี้ไม่รองรับการตั้งค่าวิดเจ็ตเดิมใหม่ หากต้องการตั้งค่า ให้ลบวิดเจ็ตแล้วเพิ่มใหม่ การเลิกทำของ Homeboard คืนค่าเค้าโครง แต่ไม่ย้อนการเปลี่ยนแปลงในแอปวิดเจ็ต</string>
+ <string name="hb_aw_unavailable">วิดเจ็ตไม่พร้อมใช้งาน กด OK ค้างเพื่อตั้งค่าใหม่หรือลบ</string>
+ <string name="hb_aw_open">เปิดเต็มหน้าจอเพื่อใช้วิดเจ็ตนี้</string>
+ <string name="hb_aw_too_small">ขนาดนี้ใช้ไม่ได้กับตารางปัจจุบัน กด OK ค้างเพื่อปรับขนาดหรือเปลี่ยนตารางหน้าแรก</string>
+ <string name="hb_aw_resume">ตั้งค่าวิดเจ็ตต่อ</string>
+ <string name="hb_aw_resume_help">การตั้งค่าถูกขัดจังหวะ ลองตั้งค่าอีกครั้งหรือยกเลิกโดยไม่เปลี่ยนแดชบอร์ด</string>
+ <string name="hb_aw_interact">ใช้ตัวควบคุมวิดเจ็ต</string>
+ <string name="hb_aw_display_only">ไม่พบตัวควบคุมที่เลือกด้วยรีโมตได้ วิดเจ็ตนี้อาจแสดงข้อมูลได้อย่างเดียวบนทีวี แต่ยังใช้ระบบสัมผัสในหน้านี้ได้</string>
+ <string name="hb_aw_interact_hint">กด Back เพื่อออกจากตัวควบคุมวิดเจ็ต กดอีกครั้งเพื่อคืนแดชบอร์ด</string>
+ <string name="hb_aw_saved_size">ขนาดที่บันทึกบนแดชบอร์ด</string>
+ <string name="hb_aw_provider">แอปที่ให้บริการวิดเจ็ต</string>
+ <string name="hb_aw_repair">ตั้งค่าใหม่</string>
+ <string name="hb_aw_unknown">Homeboard เวอร์ชันนี้ไม่รองรับวิดเจ็ตนี้</string>
+ <string name="hb_aw_newer_layout">แดชบอร์ดนี้บันทึกด้วย Homeboard เวอร์ชันใหม่กว่า โปรดอัปเดตเพื่อแก้ไข แดชบอร์ดที่บันทึกไว้ยังคงอยู่</string>
+ <string name="hb_configuration_save_failed">บันทึกการเปลี่ยนแปลงไม่สำเร็จ โปรดลองอีกครั้ง</string>
+</resources>

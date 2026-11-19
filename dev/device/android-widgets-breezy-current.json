@@ -1,0 +1,104 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 33,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 2,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 3,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 4,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 5,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 6,
+      "capture": "installed-widget-picker"
+    },
+    {
+      "at": 8,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 9,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 10,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 11,
+      "capture": "breezy-provider-choice"
+    },
+    {
+      "at": 12,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 14,
+      "capture": "breezy-add-review"
+    },
+    {
+      "at": 16,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 18,
+      "capture": "breezy-compact"
+    },
+    {
+      "at": 20,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 23,
+      "capture": "breezy-expanded"
+    },
+    {
+      "at": 25,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 27,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 1200
+    },
+    {
+      "at": 30,
+      "capture": "dashboard-restored"
+    }
+  ]
+}

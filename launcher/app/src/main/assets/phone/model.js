@@ -34,6 +34,11 @@ window.PhoneModel = (() => {
     if (![...placement.map(k => w[k]), draft.columns, draft.rows].every(Number.isInteger)) return false;
     if (w.page < 0 || w.page > 15 || w.column < 0 || w.row < 0 || w.width < (w.type === 'calendar' ? 2 : 1) || w.height < 1
       || w.column+w.width > draft.columns || w.row+w.height > draft.rows) return false;
+    const p=w.presentation,original=draft.widgets.find(other=>other.key===w.key);
+    if(w.type==='android'&&p&&original&&(w.width!==p.width||w.height!==p.height)){
+      if(!p.horizontal&&w.width!==p.width||!p.vertical&&w.height!==p.height)return false;
+      if(draft.columns===p.columns&&draft.rows===p.rows&&(w.width<p.minWidth||w.height<p.minHeight))return false;
+    }
     return !draft.widgets.some(other => other.key !== w.key && other.page === w.page && w.column < other.column+other.width
       && w.column+w.width > other.column && w.row < other.row+other.height && w.row+w.height > other.row);
   }

@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const scope={window:{}};vm.createContext(scope);for(const file of ['model.js','clock.js','grocery.js','strings.js'])vm.runInContext(fs.readFileSync('launcher/app/src/main/assets/phone/'+file,'utf8'),scope);
+const M=scope.window.PhoneModel,clone=x=>JSON.parse(JSON.stringify(x));
+const w={key:'widget:android:12345678-1234-1234-1234-123456789abc',type:'android',page:0,column:0,row:0,width:3,height:2,settings:{},presentation:{label:'Agenda',minWidth:2,minHeight:2,horizontal:true,vertical:false,width:3,height:2,columns:8,rows:4,available:true}};
+const d={columns:8,rows:4,artwork:'small',favorites:[],widgets:[w],headerClock:require('./world-clock-default-fixture.json').settings};
+assert.equal(M.validPosition(d,{...w,width:2}),true);assert.equal(M.validPosition(d,{...w,width:1}),false);assert.equal(M.validPosition(d,{...w,height:3}),false);
+assert.equal(M.validPosition(d,{...w,page:1}),true);
+const resized=clone(d);resized.widgets[0].width=1;assert.equal(M.validate(resized).kind,'placement');
+const dense=clone(d);dense.columns=12;assert.equal(M.validate(dense),null,'grid change preserves a too-small tile');
+const removed=clone(d);removed.widgets=[];assert.equal(M.diff(d,removed)[0].kind,'remove');
+const base={draft:clone(d),instances:{[w.key]:1}},local=clone(d),latest=clone(base);local.widgets[0].page=1;latest.draft.artwork='banner';const rebased=M.rebase(base,local,latest);assert.equal(rebased.conflicts.length,0);assert.equal(rebased.draft.widgets[0].page,1);assert.equal(rebased.draft.widgets[0].presentation.label,'Agenda');
+for(const key of ['androidWidget','androidSetup','unsupportedWidget'])assert.ok(scope.window.PhoneStrings.en[key]&&scope.window.PhoneStrings.th[key]);
+console.log('PASS Android widget constraints, global-grid placeholder, remove/draft/rebase and bilingual setup guidance');

@@ -13,6 +13,11 @@ import java.util.Set;
 
 /** Persisted product state; page/focus and uncommitted move previews live in the activity. */
 final class HomeLayout {
+    static final String ANDROID="widget:android";
+    static final int SCHEMA_VERSION=2;
+    JSONObject androidWidgets=new JSONObject();
+    static final class NewerSchema extends JSONException { NewerSchema(){super("Layout needs a newer Homeboard version");} }
+    AndroidWidgetSpec androidWidget(String key){try{return AndroidWidgetSpec.parse(androidWidgets.getJSONObject(key));}catch(Exception invalid){return null;}}
     static final String AIR = "widget:air";
     static final String RAIN = "widget:rain";
     static final String TIMER = "widget:timer";
@@ -113,7 +118,9 @@ final class HomeLayout {
 
     static HomeLayout parse(String encoded) throws JSONException {
         JSONObject j = new JSONObject(encoded);
+        if(j.optInt("schemaVersion",1)>SCHEMA_VERSION)throw new NewerSchema();
         HomeLayout s = new HomeLayout();
+        if(j.has("androidWidgets"))s.androidWidgets=new JSONObject(j.getJSONObject("androidWidgets").toString());
         read(j.getJSONArray("widgets"), s.widgets);
         read(j.getJSONArray("order"), s.order);
         JSONArray favoriteKeys = j.optJSONArray("favorites");
@@ -207,7 +214,7 @@ final class HomeLayout {
 
     String encode() {
         try {
-            return new JSONObject().put("widgets", new JSONArray(widgets)).put("order", new JSONArray(order))
+            return new JSONObject().put("schemaVersion",SCHEMA_VERSION).put("androidWidgets",androidWidgets).put("widgets", new JSONArray(widgets)).put("order", new JSONArray(order))
                     .put("hidden", new JSONArray(new java.util.TreeSet<>(hidden)))
                     .put("favorites", new JSONArray(favorites)).put("favoritesContainer", favoritesContainer)
                     .put("seedDefaultFavorites", seedDefaultFavorites)
@@ -346,7 +353,7 @@ final class HomeLayout {
     }
     private static int validPanelSize(int size) { return size < PANEL_SMALL || size > PANEL_LARGE ? PANEL_MEDIUM : size; }
     void delete(String key, boolean dashboard) {
-        if (dashboard) { widgets.remove(key); panelSpans.remove(key); homePositions.remove(key); calendarSettings.remove(key); rainSettings.remove(key); clockSettings.remove(key); }
+        if (dashboard) { androidWidgets.remove(key); widgets.remove(key); panelSpans.remove(key); homePositions.remove(key); calendarSettings.remove(key); rainSettings.remove(key); clockSettings.remove(key); }
         else hidden.add(key);
     }
     List<String> visibleApps(List<String> installed) {

@@ -69,6 +69,7 @@ public class MainActivity extends Activity {
     private static final String PREF_UNDO_HISTORY = "undo_history";
     private static final class MenuSpec {
         final String title, subtitle;
+        String explanation="";
         final String[] labels;
         final java.util.function.IntConsumer action;
         int selectedIndex;
@@ -166,6 +167,8 @@ public class MainActivity extends Activity {
     CalendarData calendarData() { return calendarData; }
     private void refreshCalendarViews() { for (CalendarWidgetView view : calendarWidgets.values()) view.refresh(); }
     private WidgetExpansion expandedWidget;
+    private AndroidWidgetHostController androidWidgets;
+    private boolean layoutReadOnly;
     private boolean calendarDayEditor;
     private final Map<String, CalendarWidgetView> calendarWidgets = new LinkedHashMap<>();
     private final Map<String, RainWidgetController> rainWidgets = new LinkedHashMap<>();
@@ -263,11 +266,11 @@ public class MainActivity extends Activity {
         boolean layoutReadable=true;
         try { layout = encoded == null ? HomeLayout.firstRun() : HomeLayout.parse(encoded); }
         catch (Exception e) {
-            layoutReadable=false;
+            layoutReadable=false;layoutReadOnly=e instanceof HomeLayout.NewerSchema;
             // Preserve an unreadable user's layout for diagnosis; never replace it silently with defaults.
             preferences.edit().putString("unreadable-layout", encoded).apply();
             layout = new HomeLayout();
-            Toast.makeText(this, getString(R.string.hb_saved_layout_could_not_be_read_starting_with_empty_home), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(layoutReadOnly?R.string.hb_aw_newer_layout:R.string.hb_saved_layout_could_not_be_read_starting_with_empty_home), Toast.LENGTH_LONG).show();
         }
         if ("theme".equals(layout.palette)) {
             // Move former theme defaults to a deterministic palette; retain any saved image data.
@@ -280,6 +283,14 @@ public class MainActivity extends Activity {
         }
         if(layoutReadable&&encoded!=null&&!encoded.equals(layout.encode()))saveWithoutUndo();
         lastSavedLayout = layout.encode();
+        androidWidgets=new AndroidWidgetHostController(this,new AndroidWidgetHostController.Ui(){
+            public HomeLayout layout(){return layout;}
+            public int columns(){return homeGridColumns();} public int rows(){return homeGridRows();}
+            public int gridWidth(){return androidGridWidth();}public int gridHeight(){return androidGridHeight();}
+            public void menu(String title,String detail,String[] choices,java.util.function.IntConsumer selected){MenuSpec menu=new MenuSpec(title,detail,choices,selected,-1);menu.explanation=detail;openMenu(menu);}
+            public void added(String key,AndroidWidgetSpec spec,int width,int height){addAndroidWidget(key,spec,width,height);}
+            public void redraw(){render(0);}public boolean busy(){return overlay!=null||expandedWidget!=null;}
+        });
         calendarData=createCalendarData();calendarSnapshot=calendarData.snapshot;
         Config config = Config.load(this);
         configReducedMotion = config.reducedMotion;
@@ -362,6 +373,7 @@ public class MainActivity extends Activity {
 
     @Override protected void onResume() {
         super.onResume(); active = true;
+        root.post(()->{if(active&&androidWidgets!=null&&!layoutReadOnly)androidWidgets.resume();});
         calendarData.listen(calendarUpdated);calendarData.schedule();calendarData.refresh(false,null);
         if(expandedWidget!=null)expandedWidget.setRunning(true);
         for (RainWidgetController widget : rainWidgets.values()) widget.resumeDetails();
@@ -386,6 +398,7 @@ public class MainActivity extends Activity {
         });
     }
     @Override protected void onPause() {
+        if(androidWidgets!=null)androidWidgets.pause();
         calendarData.unlisten(calendarUpdated);
         cancelBackUndo(false);
         if(phoneEditor!=null)phoneEditor.stop();
@@ -416,6 +429,7 @@ public class MainActivity extends Activity {
         super.onPause();
     }
     @Override protected void onDestroy() {
+        if(androidWidgets!=null)androidWidgets.close();
         if(groceryEditor!=null){groceryEditor.setOnDismissListener(null);groceryEditor.dismiss();groceryEditor=null;}
         if(clockEditor!=null){clockEditor.setOnDismissListener(null);clockEditor.dismiss();clockEditor=null;}
         for(WorldClockWidgetView widget:clockWidgets.values())widget.stop();
@@ -442,6 +456,7 @@ public class MainActivity extends Activity {
     }
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(androidWidgets!=null&&androidWidgets.result(requestCode,resultCode,data))return;
         if (requestCode == REQUEST_HOME_ROLE) {
             toast(isDefaultHomeApp() ? getString(R.string.hb_homeboard_tv_is_now_the_default_home_app)
                     : getString(R.string.hb_default_home_app_was_not_changed));
@@ -472,29 +487,44 @@ public class MainActivity extends Activity {
     }
     private void save() { save(getString(R.string.hb_hint_home_layout)); }
     private void save(String label) {
-        String next = layout.encode();
-        boolean changed = lastSavedLayout != null && !lastSavedLayout.equals(next);
-        if (changed && !applyingUndo) {
-            if (undoGroupStart != null) {
-                // A focus-preview sequence (the palette) is one user action.
-            } else {
-                pushUndo("layout", "", lastSavedLayout, label);
-            }
-        }
-        SharedPreferences.Editor edit=PhoneConfigurationStore.trackInstances(preferences,preferences.edit(),layout).putString("layout",next);
-        if(changed)PhoneConfigurationStore.revision(preferences,edit);
-        edit.apply();
-        lastSavedLayout = next;
-        if (changed && !applyingUndo && undoGroupStart == null) showUndoBanner(label);
+        if(layoutReadOnly){toast(getString(R.string.hb_aw_newer_layout));return;}
+        String next=layout.encode();boolean changed=lastSavedLayout!=null&&!lastSavedLayout.equals(next);
+        if(!changed)return;
+        try{
+            JSONArray undo=storedUndoEntries();
+            if(!applyingUndo&&undoGroupStart==null)undo=appendedUndo(undo,"layout","",lastSavedLayout,label);
+            PhoneConfigurationStore.commit(preferences,layout,PhoneConfigurationStore.air(preferences),undo,null,null);
+            lastSavedLayout=next;
+            if(androidWidgets!=null)androidWidgets.reconcile();
+            if(!applyingUndo&&undoGroupStart==null)showUndoBanner(label);
+        }catch(Exception failed){try{layout=HomeLayout.parse(lastSavedLayout);}catch(Exception ignored){}toast(getString(R.string.hb_configuration_save_failed));}
     }
+    private JSONArray appendedUndo(JSONArray old,String kind,String key,String state,String label)throws org.json.JSONException {
+        JSONArray next=new JSONArray();for(int i=Math.max(0,old.length()-MAX_UNDO_ENTRIES+1);i<old.length();i++)next.put(old.getJSONObject(i));
+        return next.put(new JSONObject().put("kind",kind).put("key",key).put("state",state).put("label",label));
+    }
+    private int androidGridWidth(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getWidth()>0?surface.getWidth():getResources().getDisplayMetrics().widthPixels)/density)-AppGridSizing.SIDE_MARGIN*2);}
+    private int androidGridHeight(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getHeight()>0?surface.getHeight():getResources().getDisplayMetrics().heightPixels)/density)-AppGridSizing.HOME_TOP-AppGridSizing.BOTTOM_MARGIN);}
+    private void addAndroidWidget(String key,AndroidWidgetSpec spec,int width,int height){
+        if(layoutReadOnly)return;
+        try{
+            HomeLayout next=HomeLayout.parse(layout.encode());next.androidWidgets.put(key,spec.json());next.addPanel(key);if(!layout.widgets.contains(key))next.setPanelSpan(key,width,height);
+            JSONArray undo=appendedUndo(storedUndoEntries(),"layout","",layout.encode(),getString(R.string.hb_aw_title));
+            PhoneConfigurationStore.commit(preferences,next,PhoneConfigurationStore.air(preferences),undo,null,null,true);
+            layout=next;lastSavedLayout=next.encode();androidWidgets.reconcile();allApps=false;focused=homeFocus=key;homePage=homePageOf(key,layout.widgets);render(0);showUndoBanner(getString(R.string.hb_aw_title));
+        }catch(Exception failed){androidWidgets.notice(getString(R.string.hb_aw_failed));}
+    }
+    int androidWidgetHostId(){return AndroidWidgetHostController.HOST_ID;}
+    void beginAndroidWidgetTest(ComponentName component){androidWidgets.beginProvider(component);}
     private void saveWithoutUndo() {
+        if(layoutReadOnly)return;
         String next=layout.encode();SharedPreferences.Editor edit=PhoneConfigurationStore.trackInstances(preferences,preferences.edit(),layout).putString("layout",next);
         if(!next.equals(preferences.getString("layout","")))PhoneConfigurationStore.revision(preferences,edit);
         edit.apply();lastSavedLayout=next;
     }
     private JSONArray storedUndoEntries() {
         try { return new JSONArray(preferences.getString(PREF_UNDO_HISTORY, "[]")); }
-        catch (Exception invalid) { return new JSONArray(); }
+        catch (Exception invalid) { throw new IllegalStateException("Undo history unreadable",invalid); }
     }
     private void pushUndo(String kind, String key, String state, String label) {
         JSONArray old = storedUndoEntries();
@@ -504,7 +534,7 @@ public class MainActivity extends Activity {
                 next.put(old.getJSONObject(i));
             next.put(new JSONObject().put("kind", kind).put("key", key)
                     .put("state", state).put("label", label));
-            preferences.edit().putString(PREF_UNDO_HISTORY, next.toString()).apply();
+            if(preferences.edit().putString(PREF_UNDO_HISTORY, next.toString()).commit()&&androidWidgets!=null)androidWidgets.reconcile();
         } catch (Exception ignored) { }
     }
     private void recordAirUndo(String key, String previousConfiguration, String label) {
@@ -600,6 +630,7 @@ public class MainActivity extends Activity {
                 labels, this::undoThrough);
     }
     private void undoThrough(int displayedIndex) {
+        if(layoutReadOnly){toast(getString(R.string.hb_aw_newer_layout));return;}
         List<UndoEntry> entries = readUndoHistory();
         if (displayedIndex < 0 || displayedIndex >= entries.size()) return;
         int targetIndex = entries.size() - 1 - displayedIndex;
@@ -643,6 +674,7 @@ public class MainActivity extends Activity {
         handler.removeCallbacks(hideUndoBanner);
         if (undoBanner != null) root.removeView(undoBanner);
         undoBanner = null; undoButton = null;
+        if(androidWidgets!=null)androidWidgets.reconcile();
         menuStack.clear(); activeMenu = null; gridSelector = null;
         if (overlay != null) { root.removeView(overlay); overlay = null; }
         syncBackground();
@@ -841,6 +873,7 @@ public class MainActivity extends Activity {
 
     private void render(int direction) {
         if (closed) return;
+        if(androidWidgets!=null)androidWidgets.beginRender();
         String requestedFocus = focused;
         FrameLayout old = surface;
         if (appFocusX != null) appFocusX.cancel();
@@ -864,6 +897,7 @@ public class MainActivity extends Activity {
         if (overlay != null) overlay.bringToFront();
         else if (undoBanner != null) undoBanner.bringToFront();
         if (allApps) buildApps(); else buildHome();
+        if(androidWidgets!=null)androidWidgets.endRender();
         applyUiBackgroundOpacity(uiBackgroundOpacity);
         updateAir();
         focused = requestedFocus;
@@ -1249,11 +1283,12 @@ public class MainActivity extends Activity {
             visibleCells.add(cell);
             if (cell.key.startsWith("app:")) hasAppTile = true;
             View tile = phonePreviewBefore!=null&&(isAirWidgetKey(cell.key)||HomeLayout.isRainWidget(cell.key))?phonePreviewTile(cell.key):HomeLayout.FAVORITES.equals(cell.key) ? favoritesTile(cell.height == 1) : isAirWidgetKey(cell.key) ? airTile(cell.key, cell.width, cell.height)
+                    : AndroidWidgetSpec.key(cell.key) ? androidWidgets.tile(cell.key,moving||resizing||phonePreviewBefore!=null)
                     : HomeLayout.isRainWidget(cell.key) ? rainTile(cell.key)
                     : HomeLayout.TIMER.equals(cell.key) ? new KitchenTimerWidgetView(this,paletteColors,uiBackgroundOpacity)
                     : HomeLayout.isGroceryWidget(cell.key) ? groceryTile(cell.key)
                     : HomeLayout.isWorldClockWidget(cell.key) ? clockTile(cell.key)
-                    : HomeLayout.isCalendarWidget(cell.key) ? calendarTile(cell.key) : appTile(cell.key, true);
+                    : HomeLayout.isCalendarWidget(cell.key) ? calendarTile(cell.key) : cell.key.startsWith("widget:") ? text(getString(R.string.hb_aw_unknown),16) : appTile(cell.key, true);
             if(HomeLayout.FAVORITES.equals(cell.key)) {
                 tiles.put(cell.key,tile);
                 favoritesWidget.interactive(!moving&&!resizing&&firstPageBefore==null);
@@ -2033,6 +2068,7 @@ public class MainActivity extends Activity {
         if (SETTINGS.equals(key)) { homeSettings(); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
+        if(AndroidWidgetSpec.key(key)){expandWidget(key,null);return;}
         if(HomeLayout.FAVORITES.equals(key)){activateFavorite();return;}
         if (HomeLayout.TIMER.equals(key)||HomeLayout.isRainWidget(key)||HomeLayout.isCalendarWidget(key)||isAirWidgetKey(key)||HomeLayout.isWorldClockWidget(key)||HomeLayout.isGroceryWidget(key)) { expandWidget(key,null); return; }
         App app = apps.get(key);
@@ -2041,18 +2077,19 @@ public class MainActivity extends Activity {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED));
     }
     private int widgetTitle(WidgetKind kind){return switch(kind){
-        case AIR -> R.string.hb_air_quality_widget;case CALENDAR -> R.string.hb_cal_calendar;
+        case ANDROID -> R.string.hb_aw_title;case AIR -> R.string.hb_air_quality_widget;case CALENDAR -> R.string.hb_cal_calendar;
         case RAIN -> R.string.hb_rain_rain;case FAVORITES -> R.string.hb_fav_title;
         case TIMER -> R.string.hb_timer_title;case GROCERY -> R.string.hb_grocery_title;case WORLD_CLOCK -> R.string.hb_wc_title;
     };}
     private void expandWidget(String key,Bundle saved){
-        if(closed)return;WidgetKind kind=WidgetKind.of(key);cancelOk();consumeOkUp=false;
+        if(closed)return;WidgetKind kind=PhoneConfiguration.kind(key);if(kind==null)return;cancelOk();consumeOkUp=false;
         if(expandedWidget!=null){expandedWidget.release();expandedWidget=null;}
         CalendarWidgetView compact=calendarWidgets.get(key);
         java.time.LocalDate anchor=compact==null?null:compact.firstVisibleDate();
         if(anchor!=null&&anchor.isBefore(java.time.LocalDate.now(CalendarSnapshot.BANGKOK)))anchor=null;
         final java.time.LocalDate initialDate=anchor;
         WidgetExpansion.Factory factory=(host,state)->switch(kind){
+            case ANDROID -> new AndroidWidgetExpanded(host,androidWidgets,key,layout);
             case CALENDAR -> new CalendarExpanded(host,calendarSnapshot,layout.calendarSettings.getOrDefault(key,new CalendarWidgetSettings()),initialDate,state);
             case RAIN -> new RainExpanded(host,rainFor(key),state);
             case AIR -> new AirExpanded(host,airFor(key),this::requestAirLocation,state);
@@ -2066,9 +2103,10 @@ public class MainActivity extends Activity {
         final int origin=saved==null?homePage:saved.getInt("originPage",homePage);
         final boolean originApps=saved==null?allApps:saved.getBoolean("originApps",allApps);
         String expandedTitle=getString(widgetTitle(kind));
+        if(kind==WidgetKind.ANDROID&&layout.androidWidget(key)!=null)expandedTitle=layout.androidWidget(key).label;
         if(kind==WidgetKind.WORLD_CLOCK&&!layout.clock(key).title.isEmpty())expandedTitle=layout.clock(key).title;
         expandedWidget=new WidgetExpansion(this,key,expandedTitle,paletteColors,uiBackgroundOpacity,origin,saved,factory,
-            ()->{switch(kind){case TIMER:KitchenTimerUi.access(this);expandedWidget.resumeAfterConfiguration();break;case GROCERY:configureGroceries(key);break;case CALENDAR:configureCalendar(key);break;case RAIN:rainFor(key).configure();break;case AIR:airFor(key).configureWidget();break;case FAVORITES:favoritesActions();break;case WORLD_CLOCK:configureClock(key);break;}},
+            ()->{switch(kind){case ANDROID:androidWidgets.configure(key);break;case TIMER:KitchenTimerUi.access(this);expandedWidget.resumeAfterConfiguration();break;case GROCERY:configureGroceries(key);break;case CALENDAR:configureCalendar(key);break;case RAIN:rainFor(key).configure();break;case AIR:airFor(key).configureWidget();break;case FAVORITES:favoritesActions();break;case WORLD_CLOCK:configureClock(key);break;}},
             ()->{expandedWidget=null;allApps=originApps;homePage=origin;focused=HomeLayout.HEADER_CLOCK.equals(key)||layout.widgets.contains(key)?key:"";if(allApps)appsFocus=focused;else homeFocus=focused;render(0);});
         expandedWidget.open(saved==null||saved.getBoolean("fresh",false)?tiles.get(key):null,(saved==null||saved.getBoolean("fresh",false))&&!reducedMotion());
     }
@@ -2078,6 +2116,12 @@ public class MainActivity extends Activity {
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (key.isEmpty() || SETTINGS.equals(key)) { homeSettings(); return; }
         if(HomeLayout.FAVORITES.equals(key)){favoriteContext();return;}
+        if(AndroidWidgetSpec.key(key)){
+            java.util.List<String> labels=new ArrayList<>(java.util.List.of(getString(R.string.hb_move),getString(R.string.hb_resize),getString(R.string.hb_delete_widget),getString(R.string.hb_aw_repair)));
+            if(androidWidgets.reconfigurable(key))labels.add(getString(R.string.hb_fs_configure));
+            AndroidWidgetSpec widget=layout.androidWidget(key);
+            menu(widget==null?getString(R.string.hb_aw_title):widget.label,labels.toArray(new String[0]),i->{if(i==0)startMove(key);else if(i==1)startResize(key);else if(i==2)deleteTile(key);else if(i==3)androidWidgets.repair(key);else androidWidgets.configure(key);});return;
+        }
         if(HomeLayout.TIMER.equals(key)){menu(getString(R.string.hb_timer_title),new String[]{getString(R.string.hb_fs_configure),getString(R.string.hb_move),getString(R.string.hb_resize),getString(R.string.hb_delete_widget)},i->{if(i==0)expandWidget(key,null);else if(i==1)startMove(key);else if(i==2)startResize(key);else deleteTile(key);});return;}
         if(HomeLayout.isGroceryWidget(key)){menu(getString(R.string.hb_grocery_title),new String[]{getString(R.string.hb_fs_configure),getString(R.string.hb_move),getString(R.string.hb_resize),getString(R.string.hb_delete_widget)},i->{if(i==0)configureGroceries(key);else if(i==1)startMove(key);else if(i==2)startResize(key);else deleteTile(key);});return;}
         if(HomeLayout.isWorldClockWidget(key)) {
@@ -2111,6 +2155,7 @@ public class MainActivity extends Activity {
                         });
             }); return;
         }
+        if(key.startsWith("widget:")){menu(getString(R.string.hb_aw_unknown),new String[]{getString(R.string.hb_delete_widget)},i->deleteTile(key));return;}
         App app = apps.get(key);
         String deleteLabel = allApps ? getString(R.string.hb_hide_from_all_apps) : getString(R.string.hb_remove_from_home);
         menu(app == null ? getString(R.string.hb_unavailable_app) : app.label, getString(R.string.hb_choose_an_action_for_this_app),
@@ -2198,7 +2243,7 @@ public class MainActivity extends Activity {
     private final Runnable phonePreviewTimeout=()->phoneCancelPreview();
     boolean phoneForeground(){return active&&!closed;}
     boolean phoneCanPair(){return phonePanelOpen||!phoneBusy();}
-    private boolean phoneBusy(){return backUndo.down()||!active||closed||overlay!=null||clockEditor!=null||groceryEditor!=null||moving||resizing||firstPageBefore!=null||favoriteOrderPreview!=null||expandedWidget!=null||undoGroupStart!=null;}
+    private boolean phoneBusy(){return layoutReadOnly||(androidWidgets!=null&&androidWidgets.busy())||backUndo.down()||!active||closed||overlay!=null||clockEditor!=null||groceryEditor!=null||moving||resizing||firstPageBefore!=null||favoriteOrderPreview!=null||expandedWidget!=null||undoGroupStart!=null;}
     String phoneName(){String name=android.provider.Settings.Global.getString(getContentResolver(),"device_name");if(name==null||name.isBlank())name=android.os.Build.MODEL;String id=android.provider.Settings.Secure.getString(getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);return name+" · "+(id==null?"TV":id.substring(Math.max(0,id.length()-4)));}
     void phoneMessage(int id){toast(getString(id));}
     void phoneDismiss(){dismissMenu();activeMenu=null;menuStack.clear();}
@@ -2238,7 +2283,7 @@ public class MainActivity extends Activity {
         JSONArray catalog=new JSONArray();for(App app:apps.values())catalog.put(new JSONObject().put("key",app.key).put("name",app.label));
         List<UndoEntry> undo=readUndoHistory();
         JSONObject state=new JSONObject().put("timers",KitchenTimerStore.snapshot(this)).put("tv",phoneName()).put("tvId",PhoneConfigurationStore.tvId(preferences)).put("instances",PhoneConfigurationStore.initializeInstances(preferences,saved)).put("revision",preferences.getLong(PhoneConfigurationStore.REVISION,0))
-                .put("providers",phoneProviders()).put("draft",PhoneConfiguration.snapshot(saved,air,cols,rows)).put("apps",catalog).put("busy",phoneBusy()||phonePreviewBefore!=null)
+                .put("providers",phoneProviders()).put("draft",androidWidgets.presentation(PhoneConfiguration.snapshot(saved,air,cols,rows))).put("apps",catalog).put("busy",phoneBusy()||phonePreviewBefore!=null)
                 .put("undo",undo.isEmpty()?"":undo.get(0).label).put("language",getResources().getConfiguration().getLocales().get(0).getLanguage());
         JSONArray stations=new JSONArray();String[] ids={"114","119","122","70","65"},names=getResources().getStringArray(R.array.hb_station_names);
         for(int i=0;i<ids.length;i++)stations.put(new JSONObject().put("id",ids[i]).put("name",names[i]));
@@ -2258,6 +2303,7 @@ public class MainActivity extends Activity {
         if(phonePreviewBefore!=null)phoneCancelPreview();
         phoneRequireRevision(body);if(phoneBusy())throw new PhoneConfiguration.Invalid("busy",getString(R.string.hb_phone_busy));
         PhoneConfiguration.Result next=PhoneConfiguration.validate(body.getJSONObject("draft"),layout,PhoneConfigurationStore.air(preferences),apps.keySet());
+        androidWidgets.validateDraft(layout,next.layout);
         JSONObject before=PhoneConfigurationStore.aggregate(preferences);
         boolean changed=!layout.encode().equals(next.layout.encode())||!PhoneConfigurationStore.air(preferences).toString().equals(next.air.toString());
         long rev=preferences.getLong(PhoneConfigurationStore.REVISION,0)+(changed?1:0);
@@ -2286,6 +2332,7 @@ public class MainActivity extends Activity {
         PhoneConfigurationStore.commit(preferences,restored,air,remaining,id,outcome.toString());phoneReload();showUndoBanner(getString(R.string.hb_undid)+entry.label,false);return phoneState();
     }
     private void phoneReload(){
+        if(androidWidgets!=null)androidWidgets.reconcile();
         for(AirQualityCard a:airWidgets.values())a.close();airWidgets.clear();for(RainWidgetController r:rainWidgets.values())r.close();rainWidgets.clear();
         try{layout=HomeLayout.parse(preferences.getString("layout",layout.encode()));}catch(Exception e){throw new IllegalStateException(e);}
         lastSavedLayout=layout.encode();if(!layout.widgets.contains(homeFocus))homeFocus=layout.widgets.isEmpty()?"":layout.widgets.get(0);if(!allApps){focused=homeFocus;homePage=homeFocus.isEmpty()?0:homePageOf(homeFocus,layout.widgets);}render(0);
@@ -2294,6 +2341,7 @@ public class MainActivity extends Activity {
         if(phonePreviewBefore!=null)phoneCancelPreview();phoneRequireRevision(body);
         if(phoneBusy())throw new PhoneConfiguration.Invalid("busy",getString(R.string.hb_phone_busy));
         PhoneConfiguration.Result draft=PhoneConfiguration.validate(body.getJSONObject("draft"),layout,PhoneConfigurationStore.air(preferences),apps.keySet());
+        androidWidgets.validateDraft(layout,draft.layout);
         phonePreviewBefore=layout;phonePreviewAir=draft.air;phonePreviewFocus=focused;phonePreviewHomeFocus=homeFocus;phonePreviewPage=homePage;phonePreviewAllApps=allApps;
         layout=draft.layout;allApps=false;homePage=0;focused=layout.widgets.isEmpty()?"":layout.widgets.get(0);render(0);
         if(footer!=null)footer.setText(getString(R.string.hb_phone_preview));handler.postDelayed(phonePreviewTimeout,30_000);return new JSONObject().put("ok",true);
@@ -2310,6 +2358,7 @@ public class MainActivity extends Activity {
     }
 
     private void homeSettings() {
+        if(layoutReadOnly){androidWidgets.notice(getString(R.string.hb_aw_newer_layout));return;}
         menu(getString(R.string.hb_home_settings), getString(R.string.hb_choose_an_area_to_customize), new String[]{
                 getString(R.string.hb_widgets_restore), getString(R.string.hb_appearance), getString(R.string.hb_home_behavior), getString(R.string.hb_language), getString(R.string.hb_undo_history),
                 getString(R.string.hb_default_home_app) + (isDefaultHomeApp() ? "Homeboard" : getString(R.string.hb_choose)), getString(R.string.hb_about_homeboard_tv),getString(R.string.hb_phone_title),getString(R.string.hb_cleanup_title)}, choice -> {
@@ -2359,12 +2408,12 @@ public class MainActivity extends Activity {
     }
 
     private void addWidgetMenu(){
-        WidgetKind[] kinds={WidgetKind.AIR,WidgetKind.CALENDAR,WidgetKind.RAIN,WidgetKind.FAVORITES,WidgetKind.GROCERY,WidgetKind.TIMER};String[] labels=new String[kinds.length+1];
+        WidgetKind[] kinds={WidgetKind.ANDROID,WidgetKind.AIR,WidgetKind.CALENDAR,WidgetKind.RAIN,WidgetKind.FAVORITES,WidgetKind.GROCERY,WidgetKind.TIMER};String[] labels=new String[kinds.length+1];
         for(int i=0;i<kinds.length;i++)labels[i]=getString(widgetTitle(kinds[i]));
         labels[kinds.length]=getString(R.string.hb_favorite_an_app_from_all_apps);
         menu(getString(R.string.hb_add_to_home),getString(R.string.hb_choose_a_tile_to_add),labels,add->{
             if(add==kinds.length){allApps=false;showApps();return;}
-            WidgetKind kind=kinds[add];String key=kind==WidgetKind.GROCERY||kind==WidgetKind.AIR||kind==WidgetKind.RAIN||kind==WidgetKind.WORLD_CLOCK?newWidgetKey(kind.key):kind.key;
+            WidgetKind kind=kinds[add];if(kind==WidgetKind.ANDROID){androidWidgets.picker();return;}String key=kind==WidgetKind.GROCERY||kind==WidgetKind.AIR||kind==WidgetKind.RAIN||kind==WidgetKind.WORLD_CLOCK?newWidgetKey(kind.key):kind.key;
             if(!layout.widgets.contains(key)){layout.addPanel(key);if(kind==WidgetKind.RAIN)layout.setPanelSpan(key,Math.min(4,homeGridColumns()),Math.min(3,homeGridRows()));save(getString(R.string.hb_cal_added));}
             allApps=false;focused=key;homePage=homePageOf(key,layout.widgets);render(0);
         });
@@ -2543,6 +2592,7 @@ public class MainActivity extends Activity {
 
     private void finishResize(boolean commit) {
         if (!resizing) return;
+        if(commit&&AndroidWidgetSpec.key(resizingKey)&&!androidWidgets.legalResize(resizingKey,resizeOriginalWidth,resizeOriginalHeight,resizeWidth,resizeHeight)){toast(getString(R.string.hb_aw_too_small));commit=false;}
         if (commit) { save(getString(R.string.hb_resized_panel)); }
         else if (resizePreviousSpan == null) { layout.panelSpans.remove(resizingKey); }
         else { layout.setPanelSpan(resizingKey, resizePreviousSpan.width, resizePreviousSpan.height); }
@@ -3161,6 +3211,13 @@ public class MainActivity extends Activity {
             captionLp.leftMargin = dp(16); captionLp.topMargin = dp(16);
             overlay.addView(caption, captionLp);
         }
+        if(!spec.explanation.isEmpty()&&spec.labels.length<=2){
+            TextView explanation=text(spec.explanation,18);explanation.setPadding(dp(12),dp(12),dp(12),dp(12));
+            explanation.setAutoSizeTextTypeUniformWithConfiguration(12,18,1,android.util.TypedValue.COMPLEX_UNIT_SP);
+            explanation.setGravity(Gravity.CENTER_VERTICAL);UiBackgroundDrawable helpBackground=shape(paletteColors.raised,paletteColors.edge,1);helpBackground.setFillOpacity(WallpaperSettings.PIE_BACKGROUND_OPACITY);explanation.setBackground(helpBackground);
+            FrameLayout.LayoutParams help=new FrameLayout.LayoutParams(Math.min(dp(250),getResources().getDisplayMetrics().widthPixels/3),getResources().getDisplayMetrics().heightPixels-dp(32),Gravity.LEFT|Gravity.TOP);
+            help.leftMargin=dp(16);help.topMargin=dp(16);overlay.addView(explanation,help);
+        }
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));updateUndoHint();
         pie.requestFocus();
     }
@@ -3187,6 +3244,7 @@ public class MainActivity extends Activity {
         } else if (!menuStack.isEmpty()) {
             backMenu();
         } else {
+            if(androidWidgets!=null)androidWidgets.menuDismissed();
             dismissMenu(); activeMenu = null; menuStack.clear();
         }
     }
@@ -3323,6 +3381,7 @@ public class MainActivity extends Activity {
         handler.post(()->{if(active&&hasWindowFocus()&&overlay==null&&expandedWidget!=null&&expandedWidget.configuring())expandedWidget.resumeAfterConfiguration();});
     }
     private void backMenu() {
+        if(androidWidgets!=null)androidWidgets.menuDismissed();
         if (overlay == null) return;
         if (adjustmentCancel != null) { backAdjustment(); return; }
         if (activeMenu != null && getString(R.string.hb_provider_background).equals(activeMenu.title)) cancelWallpaperPreview();

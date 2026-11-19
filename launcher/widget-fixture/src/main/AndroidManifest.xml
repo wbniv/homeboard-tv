@@ -1,0 +1,20 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+    <!-- Normal host declaration; the test grant is independently owned/restored by the coordinator. -->
+    <uses-permission android:name="android.permission.BIND_APPWIDGET" tools:ignore="ProtectedPermissions" />
+    <uses-feature android:name="android.software.leanback" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature android:name="android.software.app_widgets" android:required="false" />
+    <queries>
+        <package android:name="net.biohack.homeboard.widgetprovider" />
+        <intent><action android:name="android.appwidget.action.APPWIDGET_BIND" /></intent>
+        <intent><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent>
+    </queries>
+    <application android:banner="@drawable/census_banner" android:icon="@drawable/census_banner" android:label="Homeboard Widget Census" android:allowBackup="false" android:theme="@android:style/Theme.Material.NoActionBar">
+        <activity android:name=".BindActivity" android:exported="true" />
+        <receiver android:name=".CleanupReceiver" android:exported="true" />
+        <activity android:name=".CensusActivity" android:exported="true">
+            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
+            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LEANBACK_LAUNCHER" /></intent-filter>
+        </activity>
+    </application>
+</manifest>

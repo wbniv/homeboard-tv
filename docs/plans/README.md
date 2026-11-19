@@ -92,3 +92,4 @@ missing rows on commit.*
   reviewed selections, recovery-before-confirmation, execution and saved sessions.
 - [Default YouTube favorite](2026-11-19-default-youtube-favorite.md): seed installed
   YouTube on new dashboards while preserving saved choices.
+| [Android app widgets](2026-11-19-android-app-widgets.md) | Hosts installed Android widgets with saved instances, expansion, Undo and explicit Chromecast permission setup; records device and provider acceptance gates. | This change | Feature |

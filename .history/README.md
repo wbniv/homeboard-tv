@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/97bdbc9) | Add cooking timers and one-off household alarms with phone controls |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/219392c) | Add dashboard and widget screenshots to README |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/015f574) | Publish signed Homeboard APK and update installation guides |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/421d56f) | Verify grocery restoration on Cast1 and record deployment evidence |
@@ -29,6 +30,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+97bdbc9	author	Will Norris
+97bdbc9	added	2
+97bdbc9	deleted	0
+97bdbc9	files	1
 219392c	author	Will Norris
 219392c	added	74
 219392c	deleted	24

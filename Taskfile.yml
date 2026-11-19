@@ -2,6 +2,16 @@ version: '3'
 includes:
   chromecast: Taskfile.chromecast.yml
 tasks:
+  widget-fixture:
+    desc: Build and lint the separate Android widget census/fixture APK in the container
+    cmds: ['dev/container.sh run ./gradlew --no-daemon :widget-fixture:assembleDebug :widget-fixture:lintDebug :widget-provider:assembleDebug :widget-provider:lintDebug']
+  android-widgets:phone-check:
+    desc: Verify browser editing constraints for host-owned Android widgets
+    cmds: ['docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/android-widgets-phone-check.cjs', 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/android-widgets-browser-check.cjs']
+  android-widgets:plan-check:
+    desc: Validate and capture Android widget design mockups in the browser container
+    cmds:
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/android-widget-plan-check.cjs'
   bump:
     desc: Advance the Android APK version code and displayed subversion
     cmds: ['dev/container.sh run ./gradlew --no-daemon :app:bumpVersion']

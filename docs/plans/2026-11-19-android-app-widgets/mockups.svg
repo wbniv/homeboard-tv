@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1360" viewBox="0 0 1200 1360" role="img" aria-labelledby="title desc">
+<title id="title">Android app widgets: proposed Homeboard screens</title>
+<desc id="desc">Six design panels show installed widget selection, dashboard placement, a richer full-screen view, widget actions, touch controls, and recovery when a provider is missing. Sample Agenda is a fictional test provider.</desc>
+<defs><style>
+text{font-family:system-ui,sans-serif;fill:#eef2fa;font-size:17px}.heading{font-size:24px;font-weight:650}.small{font-size:15px;fill:#b9c7dc}.accent{fill:#9ad7ff}.screen{fill:#182332;stroke:#46566c;stroke-width:2}.card{fill:#243449;stroke:#4c607c}.focus{fill:#29465b;stroke:#9ad7ff;stroke-width:3}.button{fill:#354c68;stroke:#8297b3}.light{fill:#142d44}.note{font-size:16px;fill:#bbdbf0}
+</style></defs>
+<rect width="1200" height="1360" fill="#0d1521"/>
+<text x="30" y="40" class="heading">Android app widgets on Homeboard</text>
+<text x="30" y="70" class="small">PROPOSED SCREENS · not device captures · provider content illustrated with a fictional fixture</text>
+
+<g transform="translate(30 100)">
+<rect width="555" height="370" rx="16" class="screen"/>
+<text x="22" y="38" class="heading">1. Add → Android app widgets</text>
+<text x="22" y="70" class="small">Apps installed on this device</text>
+<rect x="20" y="91" width="515" height="98" rx="10" class="focus"/>
+<text x="36" y="121">Sample Agenda · Upcoming</text>
+<text x="36" y="149" class="small">Minimum 2 × 2 · setup required</text>
+<text x="36" y="175" class="accent">Select → Android permission → app setup</text>
+<rect x="20" y="204" width="515" height="71" rx="10" class="card"/>
+<text x="36" y="235">Sample Agenda · Date</text>
+<text x="36" y="260" class="small">Minimum 2 × 1</text>
+<text x="22" y="311" class="small">Missing preview? Keep the name and size visible.</text>
+<text x="22" y="343" class="note">Back cancels without changing Home.</text>
+</g>
+
+<g transform="translate(615 100)">
+<rect width="555" height="370" rx="16" class="screen"/>
+<text x="22" y="38" class="heading">2. Place on Home</text>
+<text x="22" y="70" class="small">Preview a legal size, then Add</text>
+<rect x="20" y="92" width="245" height="179" rx="10" class="focus"/>
+<text x="36" y="123">Sample Agenda</text>
+<text x="36" y="160">Today</text>
+<text x="36" y="189" class="small">09:00 · Sample appointment</text>
+<text x="36" y="220" class="small">14:00 · Sample reminder</text>
+<text x="36" y="251" class="accent">2 × 2 · selected</text>
+<rect x="280" y="92" width="255" height="179" rx="10" class="card"/>
+<text x="299" y="129">Homeboard Rain</text>
+<text x="299" y="166" class="small">Existing native widgets</text>
+<text x="299" y="194" class="small">keep their settings.</text>
+<rect x="20" y="292" width="100" height="45" rx="8" class="button"/>
+<text x="47" y="321">Add</text>
+<text x="145" y="321">Cancel</text>
+<text x="22" y="355" class="small">After adding: short OK / tap opens details.</text>
+</g>
+
+<g transform="translate(30 500)">
+<rect width="1140" height="360" rx="16" class="screen"/>
+<text x="22" y="38" class="heading">3. Expanded widget: live content + useful app details</text>
+<rect x="20" y="57" width="190" height="43" rx="8" class="focus"/>
+<text x="35" y="85">Restore dashboard</text>
+<text x="233" y="85">Sample Agenda · Upcoming</text>
+<rect x="20" y="117" width="646" height="190" rx="10" class="card"/>
+<text x="40" y="150">Today · complete fixture entries</text>
+<text x="40" y="187">09:00 · Sample appointment · full label</text>
+<text x="40" y="218">14:00 · Sample reminder · full label</text>
+<text x="40" y="260" class="small">Provider draws this region at a supported size.</text>
+<text x="40" y="287" class="small">Additional content here depends on the provider.</text>
+<rect x="687" y="117" width="433" height="190" rx="10" class="light"/>
+<text x="706" y="150">Sample Agenda · Upcoming widget</text>
+<text x="706" y="177" class="small">App version: fixture · Dashboard size: 2 × 2</text>
+<text x="706" y="213" class="accent">Interact with widget     Configure</text>
+<text x="706" y="250" class="accent">Open app     App info</text>
+<text x="706" y="285" class="small">Only show actions that are available.</text>
+<text x="22" y="338" class="note">Back: leave widget controls → host controls → original Home page, focus and saved size</text>
+</g>
+
+<g transform="translate(30 890)">
+<rect width="360" height="375" rx="16" class="screen"/>
+<text x="20" y="36" class="heading">4. Hold OK / long press</text>
+<rect x="18" y="59" width="324" height="48" rx="8" class="focus"/>
+<text x="35" y="89">Move</text>
+<text x="35" y="141">Resize · provider limits apply</text>
+<text x="35" y="190">Configure in provider app</text>
+<text x="35" y="239">Remove from dashboard</text>
+<text x="20" y="290" class="small">Removal keeps the binding while</text>
+<text x="20" y="315" class="small">Undo can restore this instance.</text>
+<text x="20" y="350" class="note">No app uninstall required.</text>
+</g>
+
+<g transform="translate(420 890)">
+<rect width="360" height="375" rx="16" class="screen"/>
+<text x="20" y="36" class="heading">5. Pixel / tablet</text>
+<rect x="18" y="59" width="324" height="148" rx="10" class="card"/>
+<text x="35" y="93">Sample Agenda</text>
+<text x="35" y="130">Today · two entries</text>
+<text x="35" y="170" class="accent">Tap to expand</text>
+<text x="20" y="243">Long press for Move / Resize</text>
+<text x="20" y="279" class="small">Setup occurs on this device.</text>
+<text x="20" y="309" class="small">Same saved-instance model;</text>
+<text x="20" y="334" class="small">touch controls and readable sizing.</text>
+<text x="20" y="360" class="note">Mobile host acceptance pending.</text>
+</g>
+
+<g transform="translate(810 890)">
+<rect width="360" height="375" rx="16" class="screen"/>
+<text x="20" y="36" class="heading">6. Provider removed</text>
+<rect x="18" y="59" width="324" height="209" rx="10" class="card"/>
+<text x="35" y="96">Widget unavailable</text>
+<text x="35" y="133" class="small">Sample Agenda is unavailable.</text>
+<text x="35" y="160" class="small">Your dashboard space is kept.</text>
+<rect x="33" y="184" width="178" height="46" rx="8" class="focus"/>
+<text x="48" y="214">Set up again</text>
+<text x="234" y="214">Remove</text>
+<text x="20" y="310" class="small">Empty picker: explain no widget</text>
+<text x="20" y="335" class="small">apps are installed on this device.</text>
+<text x="20" y="360" class="note">Keep Back / Restore reachable.</text>
+</g>
+<text x="30" y="1310" class="small">Native controls: English / Thai · provider content retains its own language and theme.</text>
+<text x="30" y="1338" class="small">Design acceptance: normal consent, provider interaction, richer detail, restoration, persistence and Undo on all four devices.</text>
+</svg>

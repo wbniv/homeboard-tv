@@ -17,7 +17,7 @@ final class PhoneConfiguration {
             String key=cell.key;WidgetKind kind=kind(key);
             JSONObject settings=kind==WidgetKind.GROCERY?new JSONObject().put("listId",layout.groceryLists.getOrDefault(key,GroceryData.DEFAULT)):kind==WidgetKind.RAIN?layout.rainSettings.get(key).json():kind==WidgetKind.CALENDAR?layout.calendarSettings.get(key).json():kind==WidgetKind.WORLD_CLOCK?layout.clockSettings.get(key).json():kind==WidgetKind.AIR?air.optJSONObject(key):new JSONObject();
             if(settings==null)settings=defaultAir();
-            widgets.put(new JSONObject().put("key",key).put("type",kind==null?"app":kind.name().toLowerCase(Locale.ROOT))
+            widgets.put(new JSONObject().put("key",key).put("type",kind==null?(key.startsWith("widget:")?"unsupported":"app"):kind.name().toLowerCase(Locale.ROOT))
                     .put("page",cell.page).put("column",cell.column).put("row",cell.row).put("width",cell.width).put("height",cell.height).put("settings",settings));
         }
         return new JSONObject().put("widgets",widgets).put("favorites",new JSONArray(layout.favorites))
@@ -40,16 +40,18 @@ final class PhoneConfiguration {
         JSONArray widgets=draft.getJSONArray("widgets");if(widgets.length()>32)throw new Invalid("widgets","At most 32 widgets");
         Set<String> seen=new HashSet<>(),occupied=new HashSet<>();
         for(int i=0;i<widgets.length();i++) {
-            JSONObject w=widgets.getJSONObject(i);keys(w,"widgets","key","type","page","column","row","width","height","settings");
+            JSONObject w=widgets.getJSONObject(i);keys(w,"widgets","key","type","page","column","row","width","height","settings","presentation");
             String key=bounded(w,"key",180),type=w.getString("type");
             WidgetKind kind=kind(key);
             if(!seen.add(key))throw new Invalid("widgets","Duplicate widget instance");
-            if(kind==null) {if(!before.widgets.contains(key)||!key.startsWith("app:")||!"app".equals(type))throw new Invalid("widgets","Unknown widget");}
+            if(kind==WidgetKind.ANDROID){if(!before.widgets.contains(key)||before.androidWidget(key)==null||!"android".equals(type))throw new Invalid("widgets","Android widgets must be added on the host device");}
+            else if(kind==null) {if(!before.widgets.contains(key)||!(key.startsWith("app:")&&"app".equals(type)||key.startsWith("widget:")&&"unsupported".equals(type)))throw new Invalid("widgets","Unknown widget");}
             else if(!kind.name().toLowerCase(Locale.ROOT).equals(type)||!key.matches("widget:(air|rain|calendar|favorites|world_clock|grocery|timer)(:[1-9][0-9]{0,5})?"))throw new Invalid("widgets","Invalid widget identity");
             if(kind==WidgetKind.TIMER&&!HomeLayout.TIMER.equals(key)||kind==WidgetKind.CALENDAR&&!HomeLayout.CALENDAR.equals(key)||kind==WidgetKind.FAVORITES&&!HomeLayout.FAVORITES.equals(key))throw new Invalid("widgets","This widget has one instance");
             int page=integer(w,"page",0,15),x=integer(w,"column",0,columns-1),y=integer(w,"row",0,rows-1),width=integer(w,"width",1,columns),height=integer(w,"height",1,rows);
+            if(kind==WidgetKind.ANDROID){HomeLayout.PanelSpan span=before.panelSpan(key);if(span!=null&&!before.androidWidget(key).legalResize(span.width,span.height,width,height))throw new Invalid(key,"Provider does not support resizing in that direction");}
             if(kind==WidgetKind.CALENDAR&&width<2)throw new Invalid(key,"Calendar needs at least two columns");
-            if(kind==null&&(height!=1||width!=(HomeLayout.APP_BANNER.equals(artwork)?2:1)))throw new Invalid(key,"App shortcut size must match its artwork");
+            if(kind==null&&key.startsWith("app:")&&(height!=1||width!=(HomeLayout.APP_BANNER.equals(artwork)?2:1)))throw new Invalid(key,"App shortcut size must match its artwork");
             if(x+width>columns||y+height>rows)throw new Invalid(key,"Widget extends outside the grid");
             for(int yy=y;yy<y+height;yy++)for(int xx=x;xx<x+width;xx++)if(!occupied.add(page+":"+xx+":"+yy))throw new Invalid(key,"Widgets overlap; adjust position or size");
             JSONObject settings=w.getJSONObject("settings");
@@ -63,6 +65,7 @@ final class PhoneConfiguration {
         }
         result.rainSettings.keySet().retainAll(seen);result.calendarSettings.keySet().retainAll(seen);
         result.clockSettings.keySet().retainAll(seen);
+        for(Iterator<String> i=result.androidWidgets.keys();i.hasNext();){String key=i.next();if(!seen.contains(key))i.remove();}
         JSONArray favorites=draft.getJSONArray("favorites");if(favorites.length()>256)throw new Invalid("favorites","Too many favorites");
         result.favorites.clear();
         for(int i=0;i<favorites.length();i++){

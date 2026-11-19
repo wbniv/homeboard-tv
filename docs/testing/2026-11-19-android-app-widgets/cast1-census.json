@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "probeVersion": 1,
+  "observedAt": 1795093438131,
+  "feature": true,
+  "sdk": 34,
+  "service": true,
+  "bindResolver": "",
+  "bindActivities": [],
+  "providerCount": 0,
+  "outcome": "new-binding-unavailable",
+  "providers": []
+}

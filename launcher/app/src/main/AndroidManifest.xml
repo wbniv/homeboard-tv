@@ -7,6 +7,8 @@
     <uses-feature android:name="android.hardware.wifi" android:required="false" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 
+    <!-- Declared by standard widget hosts; Android user consent or explicit developer setup grants binding. -->
+    <uses-permission android:name="android.permission.BIND_APPWIDGET" tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -32,6 +34,8 @@
     <!-- Android 11+ package visibility: lets the launcher list the TV apps it shows as tiles, and the
          apps that declare a module card (docs/specs/card.md). -->
     <queries>
+        <intent><action android:name="android.appwidget.action.APPWIDGET_BIND" /></intent>
+        <intent><action android:name="android.appwidget.action.APPWIDGET_UPDATE" /></intent>
         <intent>
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.BROWSABLE" />
@@ -127,6 +131,7 @@
                      docs/devices/oppo-k9-55-oppocnm632.md (prior art: aerial-tv oppo-coloros-tv.md). -->
                 <category android:name="com.heytap.tv.launcher.category.MODERN_HOME" />
             </intent-filter>
+            <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" /></intent-filter>
             <!-- Listed in the TV's own app list, so it can be opened from the stock home screen too. -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

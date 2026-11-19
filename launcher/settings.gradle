@@ -19,3 +19,7 @@ include ':fixture'
 
 include ':projectivy-api'
 include ':wallpaper-fixture'
+
+include ":widget-fixture"
+
+include ":widget-provider"

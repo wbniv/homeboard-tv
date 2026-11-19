@@ -50,12 +50,17 @@ final class PhoneConfigurationStore {
     static JSONObject operations(SharedPreferences prefs)throws JSONException{return new JSONObject(prefs.getString(OPERATIONS,"{}"));}
     static String result(SharedPreferences prefs,String id)throws JSONException{return operations(prefs).optString(id,"");}
     static long commit(SharedPreferences prefs,HomeLayout layout,JSONObject air,JSONArray undo,String id,String outcome)throws JSONException {
+        return commit(prefs,layout,air,undo,id,outcome,false);
+    }
+    static long commit(SharedPreferences prefs,HomeLayout layout,JSONObject air,JSONArray undo,String id,String outcome,boolean completeWidgetSetup)throws JSONException {
         long revision=prefs.getLong(REVISION,0)+1;
         JSONObject operations=operations(prefs);
         if(id!=null){if(operations.length()>=32)operations.remove(operations.keys().next());operations.put(id,outcome);}
-        String[] keys={"layout",AIR,"undo_history",OPERATIONS,REVISION,"widget-instance-generations"};
+        String[] keys={"layout",AIR,"undo_history",OPERATIONS,REVISION,"widget-instance-generations","android-widget-pending"};
         java.util.Map<String,?> before=prefs.getAll();
-        if(!trackInstances(prefs,prefs.edit(),layout).putString("layout",layout.encode()).putString(AIR,air.toString()).putString("undo_history",undo.toString())
+        SharedPreferences.Editor transaction=trackInstances(prefs,prefs.edit(),layout);
+        if(completeWidgetSetup)transaction.remove("android-widget-pending");
+        if(!transaction.putString("layout",layout.encode()).putString(AIR,air.toString()).putString("undo_history",undo.toString())
                 .putString(OPERATIONS,operations.toString()).putLong(REVISION,revision).commit()){
             // SharedPreferences updates memory even when its disk commit fails. Restore the
             // complete transaction so a retry cannot mistake a failed write for a receipt.

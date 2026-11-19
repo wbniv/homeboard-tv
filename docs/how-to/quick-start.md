@@ -32,6 +32,21 @@ an explicit restart. Future event alarms are restored; missed ones are labeled.
 Paired phone timer controls take effect immediately, separately from layout Undo.
 See [Timers & alarms](timers-and-alarms.md) for setup, recovery and limits.
 
+## Widgets from other Android apps
+
+In Homeboard **0.1.95 or newer**, install a widget provider on the same device, then choose **Home settings →
+Widgets / Restore → Add widget → Android app widgets**. Finish Android/provider
+setup and review **Add to Home**. On Chromecast, **Widget permission setup**
+explains the one-time developer connection needed because its Android approval
+screen is missing. Built-in widgets work without that setup.
+
+Press OK for the live widget and provider details; choose **Interact with widget**
+for its controls. Back or **Restore dashboard** returns to the original place.
+Hold OK to move, resize or remove; Undo retains the configured instance while it
+remains in history. Providers may require touch. The phone browser arranges
+configured widgets; adding and provider setup happen on the host device.
+See [Android app widgets](android-app-widgets.md) for permission setup and limits.
+
 ## Install on your own TV
 
 Open **[biohack.net/homeboard](https://biohack.net/homeboard/)** on your phone or
