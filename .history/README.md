@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/7db11d2) | Calculate Wan Phra locally and persist offline holiday updates |
 | [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/0a7ba57) | Add read-only TV cleanup inspection and recovery foundation |
 | [2026-11-18](https://github.com/wbniv/homeboard-tv/commit/539e9fc) | Complete TV controls and wallpaper provider directory |
 | [2026-11-17](https://github.com/wbniv/homeboard-tv/commit/67c700a) | Reveal wallpaper previews and align Appearance directions |
@@ -21,6 +22,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+7db11d2	author	Will Norris
+7db11d2	added	15
+7db11d2	deleted	7
+7db11d2	files	1
 0a7ba57	author	Will Norris
 0a7ba57	added	17
 0a7ba57	deleted	6

@@ -1,5 +1,8 @@
 # Homeboard TV quick start
 
+For a compact new-TV guide, use the [printable quick start](quick-start-print.html)
+or [A4 PDF](quick-start-print.pdf). The illustrated reference follows below.
+
 Homeboard opens on **Home**, your space for widgets and favorite apps. **All Apps**
 is one screen to the right. Home can be completely empty if you prefer.
 
