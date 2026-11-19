@@ -1,4 +1,4 @@
-"""Loopback-only cleanup inspection companion. No package mutation HTTP route."""
+"""Loopback-only reviewed cleanup companion with independent recovery."""
 import argparse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
@@ -19,6 +19,8 @@ class Companion(ThreadingHTTPServer):
     def __init__(self, inspector, address=('127.0.0.1', 0)):
         super().__init__(address, Handler)
         self.inspector = inspector
+        self.workflow = None
+        self.cleanup_state = {'status':'idle'}
         self.token = secrets.token_urlsafe(32)
         self.lock = threading.Lock()
         self.state = {'status': 'idle', 'apply_available': False}
@@ -53,7 +55,7 @@ class Handler(BaseHTTPRequestHandler):
         elif self.path in ('/style.css', '/app.js'):
             self.respond(200, (WEB / self.path[1:]).read_bytes(), 'text/css' if self.path.endswith('css') else 'text/javascript')
         elif self.path == '/api/config' and self.headers.get('X-Homeboard-Token') == self.server.token:
-            self.respond(200, {'standalone': getattr(self.server.inspector, 'standalone', False)})
+            self.respond(200, {'standalone': getattr(self.server.inspector, 'standalone', False), 'cleanup': self.server.workflow is not None})
         elif self.path == '/api/state' and self.headers.get('X-Homeboard-Token') == self.server.token:
             self.respond(200, self.server.state)
         else:
@@ -65,7 +67,8 @@ class Handler(BaseHTTPRequestHandler):
             self.respond(403, {'error': 'Open the companion directly on this computer'})
             return
         connection_actions = ('/api/discover', '/api/pair', '/api/connect', '/api/disconnect')
-        if self.path not in ('/api/devices', '/api/scan') + (connection_actions if getattr(self.server.inspector, 'standalone', False) else ()):
+        cleanup_actions = tuple('/api/cleanup/'+name for name in ('review','prepare','apply','sessions','restore','check','export','stop','status')) if self.server.workflow else ()
+        if self.path not in cleanup_actions + ('/api/devices', '/api/scan') + (connection_actions if getattr(self.server.inspector, 'standalone', False) else ()):
             self.respond(404, {'error': 'No such action'})
             return
         try:
@@ -75,6 +78,9 @@ class Handler(BaseHTTPRequestHandler):
             data = json.loads(self.rfile.read(length))
             if not isinstance(data, dict):
                 raise ValueError('Invalid request')
+            if self.path in cleanup_actions:
+                self.cleanup_action(data)
+                return
             if self.path in connection_actions:
                 if not self.server.lock.acquire(blocking=False):
                     self.respond(409, {'error': 'A TV operation is already running'})
@@ -116,6 +122,38 @@ class Handler(BaseHTTPRequestHandler):
             from .core import Refused
             self.respond(400, {'error': str(error) if isinstance(error, Refused) else 'Invalid companion request'})
 
+    def cleanup_action(self, data):
+        flow=self.server.workflow; action=self.path.rsplit('/',1)[-1]
+        if action=='status':
+            self.respond(200,self.server.cleanup_state);return
+        if action=='stop':
+            flow.stop_event.set();self.respond(200,{'status':'stop-requested'});return
+        if action in ('review','prepare','restore','check') and data.get('confirmed') is not True:
+            self.respond(400,{'error':'Confirm the TV identity first'});return
+        if not self.server.lock.acquire(blocking=False):
+            self.respond(409,{'error':'A TV operation is already running'});return
+        def operation():
+            if action=='review':return flow.inspect(data.get('device'))
+            if action=='prepare':return flow.prepare(data.get('device'),data.get('chosen'))
+            if action=='apply':return flow.apply(data.get('token'),data.get('confirmation'))
+            if action=='sessions':return {'status':'sessions','sessions':flow.sessions()}
+            if action=='restore':return flow.restore(data.get('device'),data.get('session'),data.get('chosen'))
+            if action=='check':return flow.check(data.get('device'),data.get('session'))
+            return {'status':'export','record':flow.export(data.get('session'))}
+        if action in ('apply','restore','review','check'):
+            if action=='apply':flow.stop_event.clear()
+            self.server.cleanup_state={'status':'working','action':action}
+            def work():
+                try:self.server.cleanup_state=operation()
+                except Exception:
+                    self.server.cleanup_state={'status':'error','message':'Operation incomplete. Check saved sessions and actual TV state before retrying.'}
+                finally:self.server.lock.release()
+            threading.Thread(target=work,daemon=True).start()
+            self.respond(202,{'status':'working','action':action})
+        else:
+            try:self.respond(200,operation())
+            finally:self.server.lock.release()
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -129,8 +167,11 @@ def main():
     from .standalone import Standalone
     inspector = Standalone(args.data, args.adb) if args.transport == 'standalone' else Inspector(args.data)
     with Companion(inspector) as server:
+        if args.transport == 'standalone':
+            from .workflow import Workflow
+            server.workflow=Workflow(inspector,args.data)
         print('Homeboard TV cleanup companion: ' + server.origin, flush=True)
-        print('Read-only inspection. Package changes require a reviewed device profile and execution integration.', flush=True)
+        print('Inspect first. Cleanup requires an exact approved profile, confirmed choices and verified recovery copies.', flush=True)
         if not args.no_open:
             webbrowser.open(server.origin)
         try:

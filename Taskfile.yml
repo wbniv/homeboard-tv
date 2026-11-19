@@ -7,11 +7,26 @@ tasks:
     cmds: ['dev/container.sh run ./gradlew --no-daemon :app:bumpVersion']
   deploy:
     desc: Bump, check, build and deploy the same numbered APK to Cast1 and Cast2
+    preconditions:
+      - sh: 'test "{{.VARIANT | default "debug"}}" = debug || test "{{.VARIANT | default "debug"}}" = release'
+        msg: 'VARIANT must be debug or release'
     cmds:
       - task: bump
       - task: check
-      - task: build
-      - 'python3 dev/deploy.py --device "{{.DEVICE | default "chromecast-test-01,chromecast-test-02"}}" --recipe "{{.RECIPE | default "dev/device/install-only.json"}}"'
+      - task: '{{if eq (.VARIANT | default "debug") "release"}}release{{else}}build{{end}}'
+      - 'python3 dev/deploy.py --variant "{{.VARIANT | default "debug"}}" --device "{{.DEVICE | default "chromecast-test-01,chromecast-test-02"}}" --recipe "{{.RECIPE | default "dev/device/install-only.json"}}"'
+  signing:init:
+    desc: Create the private release signing key and a separate local backup once
+    cmds: ['bash dev/init-signing.sh']
+  release:
+    desc: Build and verify a public signed release APK in the container
+    cmds:
+      - 'dev/container.sh release ./gradlew --no-daemon :app:assembleRelease :app:lintRelease'
+      - 'dev/container.sh release python3 /workspace/dev/verify-release.py /workspace/launcher/app/build/outputs/apk/release/app-release.apk --output /workspace/artifacts/release-verification.json'
+  guide:
+    desc: Generate the download QR and printable quick-start PDF in the browser container
+    cmds:
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -v "{{.ROOT_DIR}}/../biohack.net:/site:ro" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/generate-guide.cjs'
   fixture:
     desc: Build the disposable Android UI test app in the container
     cmds: ['dev/container.sh run ./gradlew --no-daemon :fixture:assembleDebug']

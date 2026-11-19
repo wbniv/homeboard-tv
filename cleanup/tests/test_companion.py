@@ -65,6 +65,33 @@ class CompanionTest(unittest.TestCase):
         try:self.assertEqual(self.request('/api/pair', {})[0],409)
         finally:self.server.lock.release()
 
+    def test_workflow_http_apply_restore_and_export_are_authenticated(self):
+        from cleanup.workflow import Workflow
+        from cleanup.tests.test_core import TV
+        with tempfile.TemporaryDirectory() as root:
+            tv=TV();profile={'approved':True,'revision':'fixture','source_commit':'fixture',
+                'match':tv.state['device'],'packages':[{'package':'org.example.promotions','label':'Fixture','reason':'Test only'}]}
+            self.server.workflow=Workflow(None,Path(root),[profile],lambda device:tv)
+            self.assertEqual(self.request('/api/cleanup/prepare',{'device':'tv','chosen':['org.example.promotions']})[0],400)
+            code,body,_=self.request('/api/cleanup/prepare',{'device':'tv','confirmed':True,'chosen':['org.example.promotions']})
+            self.assertEqual(code,200);plan=json.loads(body)
+            self.assertEqual(self.request('/api/cleanup/apply',plan,{'X-Homeboard-Token':''})[0],403)
+            self.assertEqual(tv.calls,[])
+            self.assertEqual(self.request('/api/cleanup/apply',plan)[0],202)
+            for _ in range(100):
+                state=json.loads(self.request('/api/cleanup/status',{})[1])
+                if state['status']!='working':break
+                time.sleep(.01)
+            self.assertEqual(state['record']['status'],'applied');key=state['session']
+            code,body,_=self.request('/api/cleanup/export',{'session':key})
+            self.assertEqual(code,200);self.assertEqual(json.loads(body)['record']['session'],key)
+            self.assertEqual(self.request('/api/cleanup/restore',{'device':'tv','confirmed':True,'session':key})[0],202)
+            for _ in range(100):
+                state=json.loads(self.request('/api/cleanup/status',{})[1])
+                if state['status']!='working':break
+                time.sleep(.01)
+            self.assertEqual(state['record']['status'],'restored')
+
     def test_no_mutation_routes(self):
         for route in ('apply', 'shell', 'restore', 'enable', 'disable', 'pair', 'connect', 'disconnect'):
             self.assertEqual(self.request('/api/' + route, {})[0], 404)

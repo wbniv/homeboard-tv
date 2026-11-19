@@ -8,12 +8,14 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import tarfile
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--device', required=True, help='Comma-separated coordinator devices; one frozen APK for all')
     parser.add_argument('--recipe', required=True)
+    parser.add_argument('--variant', choices=['debug', 'release'], default='debug')
     args = parser.parse_args()
     devices = list(dict.fromkeys(device.strip() for device in args.device.split(',') if device.strip()))
     if not devices:
@@ -25,11 +27,19 @@ def main():
     properties = dict(line.split('=', 1) for line in (root / 'version.properties').read_text().splitlines() if line)
     code = int(properties['version_code'])
     name = f"{properties['major']}.{properties['minor']}.{code}"
-    output = root / 'launcher/app/build/outputs/apk/debug'
+    output = root / 'launcher/app/build/outputs/apk' / args.variant
     metadata = json.loads((output / 'output-metadata.json').read_text())
     artifact, = metadata['elements']
     if artifact['versionCode'] != code or artifact['versionName'] != name:
         parser.error('APK metadata does not match version.properties; rebuild before deploying')
+    app = 'homeboard-tv-public' if args.variant == 'release' else 'homeboard-tv'
+    verification = None
+    if args.variant == 'release':
+        verification = json.loads((root / 'artifacts/release-verification.json').read_text())
+        if verification['sha256'] != hashlib.sha256((output / artifact['outputFile']).read_bytes()).hexdigest():
+            parser.error('Release verification does not match APK bytes')
+        if verification['packageId'] != 'net.biohack.homeboard' or verification['versionCode'] != code:
+            parser.error('Unexpected public package or version')
     destination = root / 'artifacts/deployments' / name
     if destination.exists():
         parser.error(f'{name} already has a deployment artifact; use task deploy to bump again')
@@ -51,26 +61,41 @@ def main():
     destination.mkdir(parents=True)
     apk = destination / 'homeboard.apk'
     shutil.copyfile(output / artifact['outputFile'], apk)
-    shutil.copyfile(recipe, destination / 'recipe.json')
+    recipe_data = json.loads(recipe.read_text())
+    recipe_data['app'] = app
+    (destination / 'recipe.json').write_text(json.dumps(recipe_data, indent=2) + '\n')
     record = {'versionName': name, 'versionCode': code, 'devices': devices, 'targets': {},
-              'apk': str(apk), 'sha256': hashlib.sha256(apk.read_bytes()).hexdigest(),
+              'apk': str(apk), 'variant': args.variant, 'app': app,
+              'verification': verification, 'sha256': hashlib.sha256(apk.read_bytes()).hexdigest(),
               'base_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip(),
               'local_changes': subprocess.check_output(['git', 'status', '--short'], cwd=root, text=True).splitlines()}
     source_files = [path for path in (root / 'launcher').rglob('*') if path.is_file()
                     and 'build' not in path.relative_to(root).parts and '.gradle' not in path.relative_to(root).parts]
     (destination / 'source-sha256.json').write_text(json.dumps({str(path.relative_to(root)): hashlib.sha256(path.read_bytes()).hexdigest()
                                                              for path in sorted(source_files)}, indent=2) + '\n')
+    if args.variant == 'release':
+        # Archive current tracked bytes, including the deployment's version bump.
+        # The base commit alone cannot describe a build with working-tree changes.
+        tracked = subprocess.check_output(['git', 'ls-files', '-z'], cwd=root).decode().split('\0')
+        with tarfile.open(destination / 'source.tar.gz', 'w:gz') as archive:
+            for relative in tracked:
+                # Publish app build inputs and license/provenance records, not
+                # household/device evidence or unrelated companion development.
+                if '/' in relative and not relative.startswith(('launcher/', 'docs/upstream/', 'vendor/pythaidate/')) and relative != 'dev/container.sh':
+                    continue
+                if relative and (root / relative).is_file():
+                    archive.add(root / relative, arcname=relative, recursive=False)
 
     def save_record():
         (destination / 'deployment.json').write_text(json.dumps(record, indent=2) + '\n')
 
     save_record()
-    task('app-register', 'APP=homeboard-tv', f'APK={apk}',
+    task('app-register', f'APP={app}', f'APK={apk}',
          'ACTIVITY=com.gathin.tvhome.MainActivity', 'REPLACE=true')
     # Submit all targets before following any job: a held device must not prevent
     # the other device receiving its requested installation.
     for device in devices:
-        result = task('submit', f'DEVICE={device}', f'APK={apk}',
+        result = task('submit', f'DEVICE={device}', f'APP={app}', f'APK={apk}',
                       f'RECIPE={destination / "recipe.json"}', capture=True)
         print(result.stdout, end='', flush=True)
         match = re.search(r'Accepted (J-[0-9a-f]+):', result.stdout)

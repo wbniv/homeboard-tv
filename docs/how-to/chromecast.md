@@ -97,6 +97,20 @@ remove it using raw ADB or alter the shared coordinator to bypass its guard.
 
 ## Iterative install target
 
+For the signed public package use `task deploy VARIANT=release`. It preserves the
+same version/freeze/device workflow below while using the independent
+`homeboard-tv-public` catalog entry and `net.biohack.homeboard` package. The normal
+debug catalog entry is not replaced. Release jobs and later acceptance must use
+`APP=homeboard-tv-public`; public and `.debug` preferences remain separate.
+Fresh public installs can show Android's location-permission window. Complete that
+choice through a coordinator-owned live Remote session before running an
+app-only scripted check. Keep the foreground guard in place; a system prompt is
+not evidence of an app crash. The shared Task include at
+`/opt/wf-device-coordinator/Taskfile.chromecast.yml` provides the supported
+`remote:start`, `remote:tap`, `remote:frame` and `remote:stop` operations. Export
+Remote frames only under `docs/diagnostics/`, and finish the owned session with
+coordinator cleanup.
+
 Cast1 remains the default for routine foreground testing. Will's November 17
 Cast2 availability is temporary and permits checks that specifically need Cast2;
 it does not change that testing default. Installation targets and foreground

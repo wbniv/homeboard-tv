@@ -1,10 +1,10 @@
 # Inspect a TV before cleanup
 
-This pilot provides **read-only inspection** and a tested recovery/policy
-foundation. It does not yet clean packages on real TVs. There are no approved
-execution profiles and no package-change, restore or shell route in the running
-companion. The full cleanup integration remains tracked in the
-[plan](../plans/2026-11-18-tv-cleanup-and-restore.md).
+The companion supports standalone connection, full inventory and a reviewed
+cleanup/recovery workflow. Real-device execution remains gated by exact approved
+profiles; no real TV profiles are supplied yet. The coordinator mode currently
+supports read-only inspection, pending a reviewed apply/restore workflow.
+See the [execution plan](../plans/2026-11-19-cleanup-execution.md).
 
 ## Connect a standalone TV
 
@@ -100,3 +100,30 @@ task cleanup:browser-check
 The browser screenshots use a controlled fake TV. Real-device reports and native
 TV menu captures are recorded separately in
 [the verification record](../testing/2026-11-18-tv-cleanup.md).
+
+## Review, apply and recover
+
+In standalone mode, connect and confirm the TV, then choose **Review cleanup
+suggestions**. This gathers exact primary-user package state, Home providers and
+active process ownership. Missing or ambiguous facts stop the review. Unknown
+TVs show no eligible changes. Suggestions require a trusted exact device/firmware
+profile with package-version-specific dependency review; nothing is preselected.
+
+Select eligible apps and choose **Review selected changes**. The companion saves
+and verifies both private recovery copies before offering **Apply these changes**.
+Export a recovery copy from that screen. Confirm the target TV and listed apps;
+confirmation expires after two minutes. Package changes are reversible per-user
+disabling, preserving original states. **Stop after current item** prevents the
+next change. Interrupted operations require **Check result**, not a blind retry.
+
+**Saved sessions** remains available after companion restart. Reconnect and confirm
+the same TV to check results, restore an individual item or restore the session.
+This works independently of Homeboard running on the TV. Original default versus
+explicitly enabled states are retained. Changed firmware/Home/package identity or
+unresolved external state stops restoration for review. Recovery files are under
+`/data/sessions` and `/data/recovery-copy` in the standalone container's private
+host-mounted state directory; preserve that directory across restarts/updates.
+
+The complete browser execution flow has controlled-fixture proof; it is not a
+claim of cleaning/restore acceptance on physical new TVs. See
+[execution verification](../testing/2026-11-19-cleanup-execution.md).

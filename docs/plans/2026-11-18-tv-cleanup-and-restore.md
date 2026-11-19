@@ -306,3 +306,20 @@ milestone contains the TV instructions and read-only companion screens; candidat
 selection, real progress and interactive restore screens remain future gated work,
 not hidden working features. [User guide](../how-to/tv-cleanup.md) and
 [verification record](../testing/2026-11-18-tv-cleanup.md).
+
+## November 19 execution integration
+
+Will authorized autonomous implementation, tests and disposable-app rehearsals;
+real TV app cleanup still waits for a concrete reviewed selection. The existing
+review/apply/stop/restore mockups above define the workflow. Extend standalone
+connections with exact user-0 package inventory, Home providers and active-process
+protection, then wire the already-tested Session journal through authenticated
+review/confirmation and recovery screens. All fresh dependency facts remain
+unknown unless an exact reviewed profile establishes eligibility. Use stable TV
+serial identity in recovery records, not the ephemeral connection identifier.
+
+Coordinator capability inspection on November 19 reports inspect and
+reactivate-package but no cleanup apply/restore workflow. The latter cannot be
+substituted for disable/restore rehearsal or bypassed with raw device access.
+A narrowly reviewed coordinator workflow is required before the Cast1 rehearsal.
+The standalone implementation and controlled tests can proceed independently.

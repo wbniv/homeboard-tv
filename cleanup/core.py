@@ -1,7 +1,7 @@
 """Strict Homeboard policy around the copied CleanYourTV recovery primitives.
 
 There is deliberately no subprocess, ADB client or arbitrary shell interface here.
-The executor must be supplied by an owned coordinator job. Profiles are reviewed
+The executor must be supplied by an explicitly owned device session. Profiles are reviewed
 release resources, never browser-provided input.
 """
 from copy import deepcopy
@@ -51,7 +51,7 @@ def validate_snapshot(snapshot, *, fresh=True, now=None):
         if not isinstance(device.get(key), str) or not device[key].strip():
             raise Refused('Missing verified device field: ' + key)
     if snapshot.get('identity_verified') is not True:
-        raise Refused('Device identity was not verified by the coordinator')
+        raise Refused('Device identity has not been verified')
     age = now - snapshot.get('collected_at', 0)
     if fresh and not -5 <= age <= 300:
         raise Refused('Inspect the TV again; inventory is stale')
@@ -165,7 +165,7 @@ def write_durable(path, record):
 
 
 class Session:
-    """An exact-state journal; transport is injected by a coordinator-owned job."""
+    """An exact-state journal; transport is injected by an explicitly owned device session."""
     def __init__(self, primary, mirror, session_id=None):
         self.primary, self.mirror = private_directory(primary), private_directory(mirror)
         if self.primary.resolve() == self.mirror.resolve():
@@ -201,9 +201,23 @@ class Session:
                 raise Refused('Invalid recovery item; no commands will be sent')
         return self.record
 
+    def prepare(self, snapshot, plan):
+        if self.record is not None or any((f / (self.id + '.json')).exists() for f in (self.primary,self.mirror)):
+            raise Refused('Session already exists')
+        validate_snapshot(snapshot)
+        if state_digest(snapshot)!=plan['state_digest']:
+            raise Refused('Inventory changed before recovery preparation')
+        self.record={'format':1,'session':self.id,'plan':deepcopy(plan),'baseline':deepcopy(snapshot),
+                     'status':'prepared','items':{n:{'before':snapshot['packages'][n]['enabled'],'phase':'pending'} for n in plan['selected']}}
+        self.save()
+        return self.record
+
     def apply(self, executor, profiles, plan, confirmation, *, now=None, stop=lambda: False):
-        if self.record is not None or any((f / (self.id + '.json')).exists() for f in (self.primary, self.mirror)):
-            raise Refused('Session already exists; inspect its result instead of replaying Apply')
+        existing=self.record is not None or any((f / (self.id + '.json')).exists() for f in (self.primary,self.mirror))
+        if existing:
+            record=self.load()
+            if record['status']!='prepared' or record['plan']!=plan or any(i['phase']!='pending' for i in record['items'].values()):
+                raise Refused('Session already exists; inspect its result instead of replaying Apply')
         now = time.time() if now is None else now
         current = executor.inspect()
         expected = selection(current, profiles, plan['selected'], now=now)
@@ -211,9 +225,8 @@ class Session:
         expected['confirmation'] = digest({k: v for k, v in expected.items() if k != 'confirmation'})
         if not 0 <= now - plan['created_at'] <= 120 or expected != plan or confirmation != plan['confirmation']:
             raise Refused('Review changed or expired; inspect and confirm again')
-        self.record = {'format': 1, 'session': self.id, 'plan': deepcopy(plan), 'baseline': deepcopy(current),
-                       'status': 'prepared', 'items': {n: {'before': current['packages'][n]['enabled'], 'phase': 'pending'} for n in plan['selected']}}
-        self.save()  # No mutation can precede both verified recovery records.
+        if not existing:self.prepare(current,plan)
+        else:self.save()  # Reverify both copies before the first command.
         for name, item in self.record['items'].items():
             if stop():
                 self.record['status'] = 'stopped'

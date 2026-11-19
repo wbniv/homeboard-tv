@@ -1,0 +1,34 @@
+{
+  "transport": "controlled fake TV; no physical package changes",
+  "tests": 70,
+  "browsers": [
+    "Chromium",
+    "WebKit"
+  ],
+  "captures": [
+    {
+      "file": "chromium-confirm.png",
+      "sha256": "407110feaceb1e1c9442bc9c97bca491b97791b7f39ed7f14bf99842b892608e"
+    },
+    {
+      "file": "chromium-sessions.png",
+      "sha256": "1b863808d12c9ad6bf2a9d4d88c82de95b2e765d465277b5d6ce502a7b4e1055"
+    },
+    {
+      "file": "chromium-restore-th.png",
+      "sha256": "d4f2bcd316402da3a85cf1232c77371d891078fd2d7ad4486ff0164308d80954"
+    },
+    {
+      "file": "webkit-confirm.png",
+      "sha256": "7160c5ba009799c84030217b9fc343bf2f1ee128f60becc2fb4940812ec9f39a"
+    },
+    {
+      "file": "webkit-sessions.png",
+      "sha256": "a1ad7654bba39f36f60f7fdfb0b01ca50e959f84c1e04f90e2034756269dfd43"
+    },
+    {
+      "file": "webkit-restore-th.png",
+      "sha256": "6cc7df28e2623258f5b447c9d3ceeea16579dc749a86f807c8fa52333c0347ff"
+    }
+  ]
+}

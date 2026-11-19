@@ -44,7 +44,7 @@ class Standalone:
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=25, env=env)
         except (OSError, subprocess.TimeoutExpired):
             raise Refused('Connection command failed or timed out. Check platform-tools and the TV address.') from None
-        if result.returncode or len(result.stdout) > 2_000_000:
+        if result.returncode or len(result.stdout) > 16_000_000:
             raise Refused('TV command failed. Check the TV prompt, address and connection.')
         return result.stdout
 

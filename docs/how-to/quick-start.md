@@ -10,25 +10,33 @@ The current dashboard puts hourly Rain across the top, Calendar beside compact
 Air quality, and one row of Favorites across the bottom. The fixed World clock
 sits left of the Settings buttons.
 
-![Default dashboard — actual Cast1 capture, 0.1.59](../testing/2026-11-18-provider-directory/tv-dashboard.png)
+![Default dashboard with YouTube in Favorites — actual Cast1 capture, 0.1.74](quick-start/dashboard-youtube.png)
 
-This capture uses fresh test preferences, including an empty Favorites list.
+This capture uses fresh test preferences, with the installed YouTube app seeded into Favorites.
 Other screenshots below are historical and may show older arrangements; design
-illustrations are labeled. See the [current screenshot proof](../testing/2026-11-18-provider-directory.md).
+illustrations are labeled. See the [current screenshot proof](../testing/2026-11-19-youtube-dashboard-images.md).
 
 ## Install on your own TV
 
-Obtain the Homeboard APK from the project maintainer. Transfer it to the TV using a USB drive (where supported) or
+Open **[biohack.net/homeboard](https://biohack.net/homeboard/)** on your phone or
+computer and choose **Download APK**. Homeboard supports Android TV / Google TV
+with Android 8.0 or newer. Transfer the APK to the TV using a USB drive (where supported) or
 a TV file-transfer app, then open it in a TV file manager. If Android prompts,
 allow **Install unknown apps** for that file manager and choose **Install**.
 Turn that permission off afterward. Menu names and available transfer methods
 vary by TV. This setup does not require developer mode, wireless debugging,
 a computer service or device enrollment.
 
-For updates, install a newer APK from the same maintainer over the existing app;
+For updates, download a newer public APK from the same page and install it over the existing public app;
 uninstalling first removes its saved data. A differently signed APK cannot update
-the existing installation. If Android rejects an update, ask the maintainer for a
-matching build rather than uninstalling to work around it.
+the existing installation. If Android rejects an update, keep the installed app
+to preserve its dashboard and settings. Check that you downloaded a newer public
+release, rather than the separate debug build. A matching update can resolve a
+version or signing mismatch without deleting your data.
+
+Earlier test builds use a separate debug app. The public release installs alongside
+that app; its dashboard settings do not transfer automatically. Keep the test app
+and its data if you still use it.
 
 Android documents its [APK installation permission](https://developer.android.com/distribute/marketing-tools/alternative-distribution).
 

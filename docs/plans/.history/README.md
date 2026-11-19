@@ -1,5 +1,7 @@
 | Date | Change |
 |------|--------|
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/421d56f) | Verify grocery restoration on Cast1 and record deployment evidence |
+| [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/15f1061) | Add phone-first grocery lists and optional pantry stock |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/eb9adf6) | Add standalone cleanup connections and update setup manual |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/99e0a61) | Add one-page Homeboard TV quick start and printable user guide |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/7db11d2) | Calculate Wan Phra locally and persist offline holiday updates |
@@ -24,6 +26,14 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/b2c5553) | homeboard: initialize TV dashboard project |
 
 <!--history-meta v1
+421d56f	author	Will Norris
+421d56f	added	6
+421d56f	deleted	0
+421d56f	files	1
+15f1061	author	Will Norris
+15f1061	added	10
+15f1061	deleted	0
+15f1061	files	1
 eb9adf6	author	Will Norris
 eb9adf6	added	1
 eb9adf6	deleted	1

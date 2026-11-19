@@ -1,0 +1,4 @@
+services:
+  build:
+    volumes:
+      - ${HOMEBOARD_SIGNING_DIR:?Set HOMEBOARD_SIGNING_DIR}:/run/homeboard-signing:ro
