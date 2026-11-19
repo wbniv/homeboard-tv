@@ -113,3 +113,7 @@ hardware sound failure was found. Assigned deployment numbers remain consumed.
 now sends an oversized Content-Length without sending a rejected half-megabyte
 body, retaining the 413 assertion and additionally checking rejection from headers.
 Subsequent full checks passed. This changes the test client, not server limits.
+
+[Live website and download verification](2026-11-19-timers-publication.md).
+The coordinator socket later became unavailable during Cast1 evidence collection;
+its public 0.1.92 installation remains submitted/unverified in this record.
