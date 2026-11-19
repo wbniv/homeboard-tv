@@ -25,9 +25,12 @@ public final class KitchenTimerSound extends Service {
             audio=getSystemService(AudioManager.class);AudioAttributes attributes=new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();
             focus=new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK).setAudioAttributes(attributes).setOnAudioFocusChangeListener(change->{if(player!=null){if(change==AudioManager.AUDIOFOCUS_LOSS||change==AudioManager.AUDIOFOCUS_LOSS_TRANSIENT){player.pause();KitchenTimerStore.error(this,true);}else if(change==AudioManager.AUDIOFOCUS_GAIN)player.start();}}).build();
             if(audio.requestAudioFocus(focus)!=AudioManager.AUDIOFOCUS_REQUEST_GRANTED)throw new IllegalStateException("Audio focus unavailable");
-            android.net.Uri uri=RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);if(uri==null)uri=RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            player=new MediaPlayer();player.setWakeMode(this,PowerManager.PARTIAL_WAKE_LOCK);player.setAudioAttributes(attributes);player.setDataSource(this,uri);player.setLooping(true);player.prepare();player.start();getSharedPreferences("kitchen-timers",MODE_PRIVATE).edit().putLong("last-sound-started",System.currentTimeMillis()).commit();KitchenTimerStore.error(this,false);
-        }catch(Exception failure){KitchenTimerStore.error(this,true);stopSelf();return START_NOT_STICKY;}
+            player=new MediaPlayer();player.setWakeMode(this,PowerManager.PARTIAL_WAKE_LOCK);player.setAudioAttributes(attributes);
+            try(android.content.res.AssetFileDescriptor tone=getResources().openRawResourceFd(R.raw.homeboard_alarm)){
+                player.setDataSource(tone.getFileDescriptor(),tone.getStartOffset(),tone.getLength());player.setLooping(true);player.prepare();
+            }
+            player.start();getSharedPreferences("kitchen-timers",MODE_PRIVATE).edit().putLong("last-sound-started",System.currentTimeMillis()).commit();KitchenTimerStore.error(this,false);
+        }catch(Exception failure){android.util.Log.w("HomeboardAlarm","Unable to play alarm",failure);KitchenTimerStore.error(this,true);stopSelf();return START_NOT_STICKY;}
         handler.removeCallbacks(tick);handler.post(tick);return START_NOT_STICKY;
     }
     @Override public void onDestroy(){handler.removeCallbacks(tick);if(player!=null){player.release();player=null;}if(audio!=null&&focus!=null)audio.abandonAudioFocusRequest(focus);stopForeground(STOP_FOREGROUND_REMOVE);super.onDestroy();}
