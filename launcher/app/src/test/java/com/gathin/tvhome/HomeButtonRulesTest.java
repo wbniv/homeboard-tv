@@ -90,6 +90,18 @@ public class HomeButtonRulesTest {
         assertTrue(guard.allow(3_500));
     }
 
+    /** Cast1, 0.1.108: with the redirect on and keys filtered, holding Right for 1.5 s moved one tile, not eleven. */
+    @Test public void theRedirectAloneDoesNotFilterKeys() {
+        assertFalse(HomeButtonRules.filterKeys(true, true, false));
+    }
+
+    @Test public void keysAreFilteredForRemoteButtonFeaturesAndWhenNothingIsRedirected() {
+        assertTrue(HomeButtonRules.filterKeys(true, true, true));
+        assertTrue(HomeButtonRules.filterKeys(true, false, false));
+        assertFalse(HomeButtonRules.filterKeys(false, false, true));
+        assertFalse(HomeButtonRules.filterKeys(false, true, true));
+    }
+
     @Test public void theGuardForgetsRedirectsOutsideItsWindow() {
         HomeButtonRules.RedirectGuard guard = new HomeButtonRules.RedirectGuard();
         assertTrue(guard.allow(0));

@@ -62,6 +62,16 @@ final class HomeButtonRules {
     }
 
     /**
+     * Whether the helper filters remote keys. Filtering any key stops held keys repeating on Google TV, in every
+     * app, so the redirect, which needs only window changes, does not ask for it: keys are filtered when key_filter
+     * is on and either nothing is being redirected (the helper is there for remote buttons) or a remote-button
+     * feature is configured.
+     */
+    static boolean filterKeys(boolean keyFilter, boolean redirecting, boolean keyFeatures) {
+        return keyFilter && (!redirecting || keyFeatures);
+    }
+
+    /**
      * Whether Home's resume, boot or an update puts the helper back without asking: only in the clear cases, where
      * Android took it off the list (a force stop does) or turned the accessibility switch off. A helper still listed
      * but not bound may simply be starting, so that case waits for the person's "Start it again".

@@ -248,14 +248,19 @@ public class HomeKeyService extends AccessibilityService {
         // and give them up again when the Home button setting is turned off while the helper stays bound (reload).
         AccessibilityServiceInfo info = getServiceInfo();
         boolean watchWindows = !stockHome.isEmpty() || !powerOnLiveTv.isEmpty() || watchFront;
-        boolean watching = info != null && (info.eventTypes & AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) != 0;
-        if (info != null && watchWindows != watching) {
+        // Filtering any key stops held keys repeating on Google TV (Chromecast, Android 14: a 1.5 s hold moved one
+        // step with the filter on and about eleven without). The Home button redirect works from window changes
+        // alone, so with it on keys are filtered only when a configured remote-button feature needs them.
+        boolean keyFeatures = settingsScancodes.length > 0 || settingsKeycodes.length > 0 || !config.appKeys.isEmpty()
+                || homeLongPressHome || consumeVolumeKeys;
+        boolean filterKeys = HomeButtonRules.filterKeys(config.keyFilter, !stockHome.isEmpty(), keyFeatures);
+        if (info != null) {
             if (watchWindows) info.eventTypes |= AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
             else info.eventTypes &= ~AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
-            // setServiceInfo() rewrites flags and drops the XML's flagRequestFilterKeyEvents, so a
-            // key_filter build that also uses a window-watching redirect loses key filtering (gear/app
-            // keys stop reaching the helper). Re-assert the filter flag here when key_filter is on.
-            if (config.keyFilter) info.flags |= AccessibilityServiceInfo.FLAG_REQUEST_FILTER_KEY_EVENTS;
+            // Written every time, both ways: setServiceInfo() rewrites the flags and drops the XML's
+            // flagRequestFilterKeyEvents, and turning the Home button setting off must bring filtering back.
+            if (filterKeys) info.flags |= AccessibilityServiceInfo.FLAG_REQUEST_FILTER_KEY_EVENTS;
+            else info.flags &= ~AccessibilityServiceInfo.FLAG_REQUEST_FILTER_KEY_EVENTS;
             setServiceInfo(info);
         }
         if (!stockHome.isEmpty() || !powerOnLiveTv.isEmpty()) probeAtBoot();
