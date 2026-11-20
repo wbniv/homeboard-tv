@@ -81,6 +81,9 @@ final class BannerAppTile extends LinearLayout {
         image.layout(imageLeft, imageTop, imageLeft + image.getMeasuredWidth(), imageTop + image.getMeasuredHeight());
     }
 
+    /** The resting plate, for callers that draw focus behind it. */
+    View artwork() { return image; }
+
     void setAppFocused(boolean focused, boolean animate) {
         image.animate().cancel();
         float scale = focused ? AppAppearance.FOCUS_SCALE : 1f;

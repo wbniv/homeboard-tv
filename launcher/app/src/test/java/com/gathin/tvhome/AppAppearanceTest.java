@@ -15,6 +15,13 @@ public class AppAppearanceTest {
         }
     }
 
+    @Test public void favoriteIconsSitCloseTogetherAndTheRingFitsTheCell() {
+        assertTrue("Pitch must not drift back to the old 104 dp spacing",
+                AppAppearance.FAVORITE_ICON_PITCH_DP <= AppAppearance.ICON_DIAMETER_DP * 1.5f);
+        assertTrue("Ring outer diameter must fit the cell",
+                AppAppearance.ringOuterRadius(AppAppearance.ICON_DIAMETER_DP) * 2 <= AppAppearance.FAVORITE_ICON_PITCH_DP);
+    }
+
     @Test public void denseGridAndLargeTextKeepTheFocusedArtworkAndLabelInsideTheCell() {
         for (int width : new int[]{70, 96, 160}) {
             for (int height : new int[]{64, 96, 180}) {

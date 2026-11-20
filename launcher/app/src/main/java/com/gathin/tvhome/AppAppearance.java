@@ -8,6 +8,8 @@ final class AppAppearance {
     static final int SELECTED_LABEL = 0xffe4f3ff;
     static final int RESTING_LABEL = 0xff94989d;
     static final float HALO_RADIUS = 0.95f;
+    /** Favorites column pitch: the reference spaces circular icons about 1.2 diameters apart; extra room is for the focus ring and label. */
+    static final int FAVORITE_ICON_PITCH_DP = 68;
     private AppAppearance() { }
 
     static float ringOuterRadius(float diameter) { return diameter * 95f / 152f; }

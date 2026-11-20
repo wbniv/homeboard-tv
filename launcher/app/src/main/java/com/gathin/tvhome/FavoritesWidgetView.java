@@ -32,7 +32,7 @@ final class FavoritesWidgetView extends FrameLayout {
     private final Wedges wedges;
     private final Adapter adapter = new Adapter();
     private GridLayoutManager manager;
-    private int columns=1;
+    private int columns=1, pitch, sidePad;
     private int pendingFocus=-1;
     private String selected;
     private boolean compact, headerSelected, interactive=true, enterPending, geometryReady;
@@ -126,35 +126,59 @@ final class FavoritesWidgetView extends FrameLayout {
         list.setVisibility(compact||ribbon&&headerSelected?GONE:VISIBLE);
         header.setVisibility(ribbon&&!compact&&!headerSelected?GONE:VISIBLE);
         FrameLayout.LayoutParams content=(FrameLayout.LayoutParams)list.getLayoutParams();content.topMargin=ribbon?0:dp(30);content.bottomMargin=ribbon?0:dp(18);
-        list.setPadding(dp(ribbon?18:10),dp(4),dp(ribbon?18:10),dp(4));
+        int side=ribbon?dp(18):sidePad>0?sidePad:dp(10);list.setPadding(side,dp(4),side,dp(4));
         super.onMeasure(widthSpec,heightSpec);
     }
     @Override protected void onSizeChanged(int w,int h,int oldw,int oldh){
         super.onSizeChanged(w,h,oldw,oldh);
         if(compact){wedges.invalidate();if(enterPending)post(this::enter);return;}
-        int pitch=Math.max(dp(banners?176:104),Math.round(16*getResources().getDisplayMetrics().scaledDensity*(banners?6:4)));
+        // Google TV spaces circular icons about 1.2 diameters apart; leave room for the focus ring and a short label.
+        pitch=Math.max(dp(banners?176:AppAppearance.FAVORITE_ICON_PITCH_DP),Math.round(16*getResources().getDisplayMetrics().scaledDensity*(banners?6:4)));
         columns=ribbon?1:Math.max(1,(w-dp(20))/pitch);
+        // Fixed-pitch cells centred in the panel, rather than columns stretched over the leftover width.
+        sidePad=ribbon?dp(18):Math.max(dp(10),(w-columns*pitch)/2);
         manager=new GridLayoutManager(getContext(),columns,ribbon?RecyclerView.HORIZONTAL:RecyclerView.VERTICAL,false);
         list.setLayoutManager(manager);adapter.notifyDataSetChanged();
         if(enterPending)post(this::enter);
     }
     private int dp(float value){return Math.round(value*getResources().getDisplayMetrics().density);}
     private final class Holder extends RecyclerView.ViewHolder {Holder(View view){super(view);}}
+    /** A cell that draws the Google TV focus ring and halo behind the artwork it holds. */
+    private final class Cell extends FrameLayout {
+        private View ring, tile, art;
+        Cell(Context c){super(c);setFocusable(true);setClipChildren(false);setClipToPadding(false);setPadding(dp(2),dp(4),dp(2),dp(4));}
+        void bind(View ring,View tile,View art){this.ring=ring;this.tile=tile;this.art=art;}
+        @Override protected void onLayout(boolean changed,int l,int t,int r,int b){
+            super.onLayout(changed,l,t,r,b);
+            if(ring==null||art==null||art.getWidth()<=0)return;
+            int w,h;
+            if(ring instanceof AppFocusView){((AppFocusView)ring).setIconDiameter(art.getWidth());w=h=AppAppearance.focusExtent(art.getWidth());}
+            else{w=(int)Math.ceil(art.getWidth()*AppAppearance.FOCUS_SCALE)+dp(20);h=(int)Math.ceil(art.getHeight()*AppAppearance.FOCUS_SCALE)+dp(20);}
+            int cx=tile.getLeft()+art.getLeft()+art.getWidth()/2,cy=tile.getTop()+art.getTop()+art.getHeight()/2;
+            ring.measure(MeasureSpec.makeMeasureSpec(w,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(h,MeasureSpec.EXACTLY));
+            ring.layout(cx-w/2,cy-h/2,cx-w/2+w,cy-h/2+h);
+        }
+    }
     private final class Adapter extends RecyclerView.Adapter<Holder>{
         @Override public int getItemCount(){return keys.size();}
         @Override public Holder onCreateViewHolder(ViewGroup parent,int type){
-            FrameLayout frame=new FrameLayout(getContext());frame.setFocusable(true);frame.setClipChildren(true);frame.setClipToPadding(true);frame.setPadding(dp(8),dp(6),dp(8),dp(6));
-            frame.setLayoutParams(new RecyclerView.LayoutParams(ribbon?dp(banners?176:104):-1,ribbon?-1:dp(banners?112:110)));
-            return new Holder(frame);
+            Cell cell=new Cell(getContext());
+            cell.setLayoutParams(new RecyclerView.LayoutParams(ribbon?pitch:-1,ribbon?-1:dp(banners?112:110)));
+            return new Holder(cell);
         }
         @Override public void onBindViewHolder(Holder holder,int position){
-            String key=keys.get(position);FrameLayout frame=(FrameLayout)holder.itemView;frame.removeAllViews();frame.setBackground(null);
-            View tile=artwork.apply(key);tile.setFocusable(false);tile.setClickable(false);frame.addView(tile,new FrameLayout.LayoutParams(-1,-1));
+            String key=keys.get(position);Cell frame=(Cell)holder.itemView;frame.removeAllViews();frame.setBackground(null);
+            View tile=artwork.apply(key);tile.setFocusable(false);tile.setClickable(false);
+            View art=tile instanceof CircularAppTile?((CircularAppTile)tile).artwork():tile instanceof BannerAppTile?((BannerAppTile)tile).artwork():null;
+            View ring=art==null?null:tile instanceof CircularAppTile?new AppFocusView(getContext()):new BannerFocusView(getContext());
+            if(ring!=null){ring.setFocusable(false);ring.setClickable(false);ring.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);ring.setVisibility(INVISIBLE);frame.addView(ring,new FrameLayout.LayoutParams(1,1));}
+            frame.addView(tile,new FrameLayout.LayoutParams(-1,-1));frame.bind(ring,tile,art);
             frame.setContentDescription(tile.getContentDescription());
             frame.setOnFocusChangeListener((v,has)->{
                 if(tile instanceof CircularAppTile)((CircularAppTile)tile).setAppFocused(has,!reducedMotion);
                 if(tile instanceof BannerAppTile)((BannerAppTile)tile).setAppFocused(has,!reducedMotion);
-                UiBackgroundDrawable bg=new UiBackgroundDrawable(palette.raised);bg.setCornerRadius(dp(12));bg.setFillOpacity(has?opacity:0);bg.setStroke(dp(has?2:0),palette.focus);frame.setBackground(bg);
+                if(ring!=null)ring.setVisibility(has?VISIBLE:INVISIBLE);
+                else{UiBackgroundDrawable bg=new UiBackgroundDrawable(palette.raised);bg.setCornerRadius(dp(12));bg.setFillOpacity(has?opacity:0);bg.setStroke(dp(has?2:0),palette.focus);frame.setBackground(bg);}
                 if(has){selected=key;headerSelected=false;focused.accept(key);describe();}
             });
             frame.setOnClickListener(v->activate.run());frame.setOnLongClickListener(v->{actions.run();return true;});

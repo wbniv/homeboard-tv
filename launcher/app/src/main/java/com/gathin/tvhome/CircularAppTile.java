@@ -84,6 +84,9 @@ final class CircularAppTile extends LinearLayout {
         super.onMeasure(widthSpec, heightSpec);
     }
 
+    /** The resting artwork, for callers that draw focus behind it. */
+    View artwork() { return icon; }
+
     void setAppFocused(boolean focused, boolean animate) {
         icon.animate().cancel();
         float scale = focused ? AppAppearance.FOCUS_SCALE : 1f;
