@@ -85,6 +85,13 @@ final class CircularAppTile extends LinearLayout {
         super.onMeasure(widthSpec, heightSpec);
     }
 
+    /** A different label size than the app default, such as the smaller Favorites label. */
+    void setLabelTextSizeSp(float sp) {
+        if (label.getTextSize() == sp * getResources().getDisplayMetrics().scaledDensity) return;
+        label.setTextSize(sp);
+        requestLayout();
+    }
+
     /** A different resting size than the app default, such as the larger Favorites icon. */
     void setPreferredDiameterDp(int dp) {
         int px = Math.round(dp * getResources().getDisplayMetrics().density);

@@ -214,7 +214,7 @@ final class FavoritesWidgetView extends FrameLayout {
             cell.setFocusable(true);cell.setClipChildren(false);cell.setClipToPadding(false);
             // The gaps All Apps leaves between cells, as padding.
             cell.setPadding(dp(AppGridSizing.COLUMN_GAP/2f),dp(AppGridSizing.ROW_GAP/2f),dp(AppGridSizing.COLUMN_GAP/2f),dp(AppGridSizing.ROW_GAP/2f));
-            cell.setLayoutParams(new RecyclerView.LayoutParams(ribbon?ribbonCellPx:-1,ribbon?-1:dp(AppGridSizing.rowPitch(labelHeightDp,banners,roundIcons()?AppAppearance.FAVORITE_ICON_DP:AppAppearance.ICON_DIAMETER_DP))));
+            cell.setLayoutParams(new RecyclerView.LayoutParams(ribbon?ribbonCellPx:-1,ribbon?-1:dp(AppGridSizing.rowPitch(roundIcons()?AppAppearance.favoriteLabelHeightDp(labelHeightDp):labelHeightDp,banners,roundIcons()?AppAppearance.FAVORITE_ICON_DP:AppAppearance.ICON_DIAMETER_DP))));
             return new Holder(cell);
         }
         @Override public void onBindViewHolder(Holder holder,int position){
@@ -222,7 +222,7 @@ final class FavoritesWidgetView extends FrameLayout {
             if(ribbon&&frame.getLayoutParams().width!=ribbonCellPx){ViewGroup.LayoutParams params=frame.getLayoutParams();params.width=ribbonCellPx;frame.setLayoutParams(params);}
             View tile=artwork.apply(key);tile.setFocusable(false);tile.setClickable(false);
             tile.setPadding(dp(2),dp(2),dp(2),dp(2));   // as All Apps tiles
-            if(tile instanceof CircularAppTile&&roundIcons())((CircularAppTile)tile).setPreferredDiameterDp(AppAppearance.FAVORITE_ICON_DP);
+            if(tile instanceof CircularAppTile&&roundIcons()){((CircularAppTile)tile).setPreferredDiameterDp(AppAppearance.FAVORITE_ICON_DP);((CircularAppTile)tile).setLabelTextSizeSp(AppAppearance.FAVORITE_LABEL_SP);}
             frame.addView(tile,new FrameLayout.LayoutParams(-1,-1));
             frame.setContentDescription(tile.getContentDescription());
             frame.setOnFocusChangeListener((v,has)->{

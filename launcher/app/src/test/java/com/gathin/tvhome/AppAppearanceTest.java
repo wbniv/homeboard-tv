@@ -70,7 +70,8 @@ public class AppAppearanceTest {
         for (int label : new int[]{19, 24, 32}) {
             int pitch = AppAppearance.favoritePitchDp(label);
             float ratio = pitch / (float) AppAppearance.FAVORITE_ICON_DP;
-            assertTrue("never narrower than a readable label", pitch >= Math.round(label * 3.4f));
+            assertTrue("never narrower than a readable label",
+                    pitch >= Math.round(AppAppearance.favoriteLabelHeightDp(label) * 3.4f));
             // As on Google TV, the ring may be wider than the pitch, but must not reach the neighbouring icon.
             assertTrue("the ring stays clear of the next icon",
                     AppAppearance.ringOuterRadius(AppAppearance.FAVORITE_ICON_DP) < pitch - AppAppearance.FAVORITE_ICON_DP / 2f);
