@@ -1,16 +1,18 @@
 {
   "workflow": "check",
   "app": "homeboard-tv",
-  "duration": 44,
+  "duration": 46,
   "panel": "require-hidden",
   "input_script": [
-    {"at": 9, "capture": "a1-screensaver-up"},
-    {"at": 16, "capture": "a2-after-ring"},
-    {"at": 20, "capture": "a3-timer-screen"},
-    {"at": 26, "capture": "a4-still-ringing-or-done"},
-    {"at": 36, "capture": "a5-after-probe-cleanup"},
+    {"at": 2, "capture": "a1-screensaver-up-early"},
+    {"at": 5, "capture": "a2-screensaver-up-later"},
+    {"at": 8, "capture": "a3-just-before-ring"},
+    {"at": 11, "capture": "a4-after-ring"},
+    {"at": 15, "capture": "a5-timer-screen"},
+    {"at": 22, "capture": "a6-timer-screen-later"},
+    {"at": 34, "capture": "a7-after-probe-cleanup"},
     {"at": 38, "key": "BACK", "action": "hold", "ms": 80},
     {"at": 40, "key": "BACK", "action": "hold", "ms": 80},
-    {"at": 42, "capture": "a6-final"}
+    {"at": 43, "capture": "a8-final"}
   ]
 }

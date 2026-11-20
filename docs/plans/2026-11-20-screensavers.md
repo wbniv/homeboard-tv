@@ -644,6 +644,23 @@ Will settled all four on 2026‑11‑20.
     than Android's own timeout, which was not waited out.
 7. Stage 1 on Cast1: a timer set to ring during the screensaver ends it; the ringing
    timer screen is captured.
+
+    Cast1, build 0.1.104, job `J‑ ffad14b3013c`, through `dev/screensaver-alarm-proof.py`
+    (the debug `ScreensaverAlarmProbeActivity` starts a 12 s test timer and puts the
+    screensaver up):
+
+    ```
+    20:28:26.614 I HomeboardScreensaver: screensaver started mode=now entry=clock
+    20:28:39.359 I HomeboardScreensaver: screensaver stopped mode=now entry=clock reason=alarm
+    proof: {"status": "pass", "detail": "timer done=true, alarm sound started=true"}
+    ```
+
+    **PASS** — the captures show the clock screensaver at 20:28:32 and 20:28:35, then the
+    Timers & alarms screen at 20:28:41 with "Homeboard screensaver test · Done — needs
+    attention" and its Stop button. The probe removed its timer, and the final capture is
+    Home. Reached by the alarm change that opens the timer screen. **Limit:** audibility is
+    not tested (the probe proves the alarm sound started, not the speaker), and the Android
+    `ScreensaverDream` path is not covered: only the activity.
 8. Stage 2 on Cast1: an installed provider previews and plays as the screensaver, muted,
    with and without the clock; uninstalling it falls back to Clock with the one‑time
    notice.

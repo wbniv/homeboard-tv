@@ -48,8 +48,23 @@ background", and Clock was "In use" again.
 "Android decides", no input for 145 s: Home in all three frames and no `HomeboardScreensaver`
 log line.
 
-Not yet run: the alarm ending a screensaver (Verification 7), which waits for the alarm change
-that opens the timer screen. Cast2 was in Personal use.
+### Alarm ends the screensaver and opens the timer screen, job `J‑ ffad14b3013c`
+
+Build 0.1.104, run by [`dev/screensaver-alarm-proof.py`](../../dev/screensaver-alarm-proof.py).
+A first run (`J‑ d6fe5a173fea`) passed too but its first capture came after the screensaver had
+gone, so the recipe's captures were moved earlier.
+
+![Eight frames: the screensaver at 20:28:32 and 20:28:35, the timer screen loading, then Timers and alarms showing the Done timer, the timer screen after cleanup, and Home](2026-11-20-screensavers/stage1-cast1-alarm-sheet.png)
+
+```
+20:28:26.614 I HomeboardScreensaver: screensaver started mode=now entry=clock
+20:28:39.359 I HomeboardScreensaver: screensaver stopped mode=now entry=clock reason=alarm
+```
+
+Limits: the probe proves the alarm sound started, not that it is audible; the
+`ScreensaverDream` path (Android starting the screensaver) was not exercised. Cast2 was in
+Personal use and refused the 0.1.104 install over its foreground (`J‑ 78a7e1a02a85`), so it still
+has 0.1.103.
 
 Findings: none against the design. Focus order on the screen is card, then Preview, then Change
 (Down), and Back returns to the Home settings pie, as the plan describes.
