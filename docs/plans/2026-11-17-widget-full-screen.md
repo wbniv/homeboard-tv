@@ -10,6 +10,39 @@ supersedes the earlier Calendar-only scope.
 
 ## Product requirement
 
+### Shared settings gear, November 20
+
+Will requested replacing the top-right Configure text with a gear across every
+expanded widget. Apply the shared
+[Alan Cooper design filter](/home/will/docs/howtos/alan-cooper-design-filter.md):
+the person browsing a TV widget needs one recognizable, consistently placed
+settings action without a long label taking space from the title. Reuse the
+existing `ic_settings` gear, a 48 dp focusable target, the current focus outline,
+and the localized Configure accessibility name and tooltip. Preserve the action,
+loading-time disablement, provider-configurability visibility and Back/Restore
+behavior. This is a presentation change; the existing workflow diagrams still apply.
+
+The [shared-header mockup](2026-11-17-widget-settings-gear.svg) applies to Calendar,
+Rain, Air quality, Favorites, World clock (including the fixed header clock),
+Timers & alarms, Groceries and Android app widgets. All eight factories in
+`MainActivity.expandWidget` use `WidgetExpansion`; none has a separate top-right
+Configure header. An Android provider without reconfiguration still hides the
+action. Acceptance: sweep those factories and content implementations, compile/lint,
+and visually check the rendered gear, focus and existing navigation on Cast1.
+
+The sweep also found a pre-existing Rain expansion crash at 23:34 in Cast1 logs:
+the next forecast hour is tomorrow at 00:00, but the default selected day still
+ends at that same midnight, producing an empty interval. The expanded-day model
+now chooses the first day containing a future forecast hour. Regression checks
+cover the reported Bangkok time, partial today, explicit future dates, expired
+data and a daylight-saving boundary. This keeps the existing seven-day browsing
+workflow and unavailable-data semantics intact.
+
+Shipped in **0.1.116** on both TVs: 648 JVM tests and lint passed; Cast1 verified
+the gear in World clock, Calendar, Rain and Timers, focus, settings/return and
+dashboard restoration. See the [settings gear validation record](../testing/2026-11-20-expanded-settings-gear.md)
+for the eight-type source sweep, screenshots and remaining physical coverage.
+
 **Click or short OK on a widget opens its full-screen view. Back restores the
 dashboard.** Show more records, finer time resolution, complete labels, charts with
 values, or selected-item detail appropriate to the widget. Enlarging the dashboard

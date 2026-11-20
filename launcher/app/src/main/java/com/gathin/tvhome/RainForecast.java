@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
@@ -95,6 +96,15 @@ final class RainForecast {
     Period interval(long start,long end){
         if(end<=start||end-start>400*HOUR)throw new IllegalArgumentException("Invalid rain interval");
         return new Period(start,end,samples);
+    }
+    /** The selected expanded day must contain a future forecast hour, including after 23:00. */
+    Period calendarDay(Instant now,LocalDate requested){
+        long nextHour=windowStart(now);
+        LocalDate first=Instant.ofEpochSecond(nextHour).atZone(zone).toLocalDate();
+        LocalDate day=requested;
+        if(day==null||day.isBefore(first)||day.atStartOfDay(zone).toEpochSecond()>=coverageEnd())day=first;
+        long start=Math.max(nextHour,day.atStartOfDay(zone).toEpochSecond());
+        return interval(start,day.plusDays(1).atStartOfDay(zone).toEpochSecond());
     }
     List<Period> calendarDays(Instant now,int count){
         if(count<1||count>16)throw new IllegalArgumentException("Invalid rain day count");

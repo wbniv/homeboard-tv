@@ -2,6 +2,7 @@ package com.gathin.tvhome;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -11,6 +12,8 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -35,7 +38,7 @@ final class WidgetExpansion extends Dialog {
     private final Factory factory;
     private final FrameLayout body;
     private final LinearLayout root;
-    private final Button configureButton;
+    private final ImageButton configureButton;
     private final TextView hint;
     private final Bundle initialState;
     private Content content;
@@ -53,8 +56,8 @@ final class WidgetExpansion extends Dialog {
         header.addView(button(R.string.hb_fs_restore,this::dismiss));
         TextView heading=text(title,20);heading.setTypeface(null,android.graphics.Typeface.BOLD);
         header.addView(heading,new LinearLayout.LayoutParams(0,-2,1));
-        configureButton=button(R.string.hb_fs_configure,()->configure(configure));
-        configureButton.setEnabled(false);header.addView(configureButton);
+        configureButton=settingsButton(()->configure(configure));
+        configureButton.setEnabled(false);header.addView(configureButton,new LinearLayout.LayoutParams(dp(48),dp(48)));
         root.addView(header,new LinearLayout.LayoutParams(-1,dp(48)));
         body=new FrameLayout(activity);root.addView(body,new LinearLayout.LayoutParams(-1,0,1));
         hint=text(activity.getString(R.string.hb_fs_hint),13);root.addView(hint);
@@ -142,6 +145,21 @@ final class WidgetExpansion extends Dialog {
     LinearLayout row(){LinearLayout v=new LinearLayout(activity);v.setGravity(Gravity.CENTER_VERTICAL);return v;}
     TextView text(String value,int size){TextView v=new TextView(activity);v.setText(value);v.setTextSize(size);v.setTextColor(palette.text);v.setPadding(dp(6),dp(3),dp(6),dp(3));return v;}
     Button button(int label,Runnable run){return button(activity.getString(label),run);}
+    private ImageButton settingsButton(Runnable run){
+        ImageButton button=new ImageButton(activity);
+        String label=activity.getString(R.string.hb_fs_configure);
+        button.setContentDescription(label);button.setTooltipText(label);
+        button.setImageResource(R.drawable.ic_settings);
+        button.setImageTintList(new ColorStateList(new int[][]{new int[]{-android.R.attr.state_enabled},new int[]{}},
+                new int[]{PaletteColors.mix(palette.surface,palette.text,.35f),palette.text}));
+        button.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        button.setPadding(dp(12),dp(12),dp(12),dp(12));
+        button.setFocusable(true);button.setClickable(true);
+        button.setBackground(background(false));
+        button.setOnFocusChangeListener((v,focused)->button.setBackground(background(focused)));
+        button.setOnClickListener(v->run.run());
+        return button;
+    }
     Button button(String label,Runnable run){Button b=new Button(activity);b.setText(label);b.setTextSize(14);b.setTextColor(palette.text);b.setAllCaps(false);b.setMinWidth(0);b.setMinimumWidth(0);b.setPadding(dp(10),0,dp(10),0);b.setBackground(background(false));b.setOnFocusChangeListener((v,f)->b.setBackground(background(f)));b.setOnClickListener(v->run.run());return b;}
     android.graphics.drawable.Drawable background(boolean focused){UiBackgroundDrawable bg=new UiBackgroundDrawable(palette.raised);bg.setFillOpacity(opacity);bg.setCornerRadius(dp(6));bg.setStroke(dp(focused?2:1),focused?palette.text:palette.edge);return bg;}
     TextView detailPane(LinearLayout row,float weight){ScrollView scroll=new ScrollView(activity);TextView detail=text("",16);detail.setTextIsSelectable(true);scroll.addView(detail);row.addView(scroll,new LinearLayout.LayoutParams(0,-1,weight));return detail;}

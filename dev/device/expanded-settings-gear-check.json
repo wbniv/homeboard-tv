@@ -1,0 +1,8 @@
+{
+  "workflow": "record",
+  "app": "homeboard-tv",
+  "duration": 600,
+  "interactive": true,
+  "record": false,
+  "panel": "require-hidden"
+}

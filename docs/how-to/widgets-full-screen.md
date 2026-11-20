@@ -4,7 +4,8 @@
 Back closes a nested detail first, then restores the original dashboard page,
 widget focus and saved size. The visible **Restore dashboard** button closes the
 expanded view directly. Expanding and browsing never resize the Home widget or
-add Undo entries. Configure is available in the expanded header.
+add Undo entries. The **gear icon** at the top right opens Configure; its accessible
+name and tooltip remain **Configure**.
 
 Opening gives immediate feedback with a quick zoom, followed by the richer content.
 The restore action stays available while loading. Reduced motion skips the zoom.
@@ -96,4 +97,4 @@ container and validate real TV input through the coordinator. See the
 
 ## Android app widgets
 
-The full-screen view hosts the actual provider view alongside its app/version and saved dashboard size. Choose **Interact with widget** to enter its controls; Back exits controls, then restores Home. Providers may need touch. Configure appears only for reconfigurable providers. See [Android app widgets](android-app-widgets.md).
+The full-screen view hosts the actual provider view alongside its app/version and saved dashboard size. Choose **Interact with widget** to enter its controls; Back exits controls, then restores Home. Providers may need touch. The settings gear appears only for reconfigurable providers. See [Android app widgets](android-app-widgets.md).

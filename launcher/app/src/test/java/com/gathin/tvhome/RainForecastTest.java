@@ -9,6 +9,44 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class RainForecastTest {
+    @Test public void expandedDayAfterLastLocalHourStartsTomorrowInsteadOfAnEmptyInterval() throws Exception {
+        Instant now=Instant.parse("2026-11-20T16:34:00Z"); // Bangkok 23:34, from the Cast1 crash.
+        RainForecast forecast=RainForecast.parse(feed("Asia/Bangkok",Instant.parse("2026-11-19T00:00:00Z"),240).toString());
+        for(LocalDate requested:new LocalDate[]{null,LocalDate.of(2026,11,20)}){
+            RainForecast.Period day=forecast.calendarDay(now,requested);
+            assertEquals(Instant.parse("2026-11-20T17:00:00Z").getEpochSecond(),day.start);
+            assertEquals(Instant.parse("2026-11-21T17:00:00Z").getEpochSecond(),day.end);
+            assertEquals(24,day.hours.size());
+            assertTrue(day.complete);
+        }
+    }
+    @Test public void expandedDayKeepsPartialTodayAndAnExplicitFutureDay() throws Exception {
+        Instant now=Instant.parse("2026-11-20T05:34:00Z");
+        RainForecast forecast=RainForecast.parse(feed("Asia/Bangkok",Instant.parse("2026-11-19T00:00:00Z"),240).toString());
+        RainForecast.Period today=forecast.calendarDay(now,null);
+        assertEquals(Instant.parse("2026-11-20T06:00:00Z").getEpochSecond(),today.start);
+        assertEquals(Instant.parse("2026-11-20T17:00:00Z").getEpochSecond(),today.end);
+        RainForecast.Period future=forecast.calendarDay(now,LocalDate.of(2026,11,22));
+        assertEquals(Instant.parse("2026-11-21T17:00:00Z").getEpochSecond(),future.start);
+        assertEquals(24*3600,future.end-future.start);
+        assertTrue(today.complete);assertTrue(future.complete);
+    }
+    @Test public void expandedDayWithExpiredDataStaysUnavailableWithoutCrashing() throws Exception {
+        Instant start=Instant.parse("2026-11-16T00:00:00Z");
+        RainForecast forecast=RainForecast.parse(feed("Asia/Bangkok",start,24).toString());
+        RainForecast.Period day=forecast.calendarDay(Instant.parse("2026-11-20T16:34:00Z"),LocalDate.of(2026,11,20));
+        assertEquals(24*3600,day.end-day.start);
+        assertFalse(day.complete);
+        assertTrue(Double.isNaN(day.mm));
+    }
+    @Test public void expandedDayCrossingMidnightRespectsDaylightSaving() throws Exception {
+        Instant now=Instant.parse("2026-03-28T22:34:00Z"); // Berlin 23:34, next day has 23 hours.
+        RainForecast forecast=RainForecast.parse(feed("Europe/Berlin",Instant.parse("2026-03-27T00:00:00Z"),240).toString());
+        RainForecast.Period day=forecast.calendarDay(now,LocalDate.of(2026,3,28));
+        assertEquals(23*3600,day.end-day.start);
+        assertEquals(LocalDate.of(2026,3,29),Instant.ofEpochSecond(day.start).atZone(forecast.zone).toLocalDate());
+        assertTrue(day.complete);
+    }
     private JSONObject feed(String zone, Instant start, int count) throws Exception {
         JSONArray times=new JSONArray(),rain=new JSONArray(),showers=new JSONArray(),chance=new JSONArray(),snow=new JSONArray();
         for(int i=0;i<count;i++){times.put(start.getEpochSecond()+3600L*(i+1));rain.put(1);showers.put(.5);chance.put(i%2==0?20:80);snow.put(0);}

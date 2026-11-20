@@ -45,7 +45,7 @@ final class RainExpanded implements WidgetExpansion.Content {
     private String t(int id){return h.activity.getString(id);}
     private void refresh(){
         RainForecast f=controller.forecast;renderedForecast=f;if(f==null){summary.setText(controller.status());detail.setText(controller.actionHint());return;}
-        Instant now=Instant.now();long start=f.windowStart(now),end;
+        Instant now=Instant.now();long start=f.windowStart(now);
         List<RainForecast.Period> periods=f.calendarDays(now,Math.min(10,Math.max(1,(int)((f.coverageEnd()-start)/86400)+1)));
         days.removeAllViews();int count=range==0?periods.size():Math.min(7,periods.size());
         for(int i=0;i<count;i++){
@@ -53,13 +53,14 @@ final class RainExpanded implements WidgetExpansion.Content {
             String label=controller.time(p.start,"EEE dd MMM")+"\n"+controller.amount(p.mm)+" · "+controller.chance(p.chance);
             days.addView(h.button(label,()->{date=day;if(range!=0)range=7;selected=p.start;refresh();chart.requestFocus();}));
         }
-        if(range==24||range==48){end=start+range*3600L;}
+        RainForecast.Period period;
+        if(range==24||range==48){period=f.interval(start,start+range*3600L);}
         else{
-            LocalDate day;try{day=LocalDate.parse(date);}catch(RuntimeException e){day=now.atZone(f.zone).toLocalDate();}
-            if(day.isBefore(now.atZone(f.zone).toLocalDate())||day.atStartOfDay(f.zone).toEpochSecond()>=f.coverageEnd())day=now.atZone(f.zone).toLocalDate();
-            date=day.toString();start=Math.max(start,day.atStartOfDay(f.zone).toEpochSecond());end=day.plusDays(1).atStartOfDay(f.zone).toEpochSecond();
+            LocalDate day;try{day=LocalDate.parse(date);}catch(RuntimeException e){day=null;}
+            period=f.calendarDay(now,day);
+            date=Instant.ofEpochSecond(period.start).atZone(f.zone).toLocalDate().toString();
         }
-        RainForecast.Period period=f.interval(start,end);hours=period.hours;
+        hours=period.hours;
         index=0;for(int i=0;i<hours.size();i++)if(hours.get(i).start==selected){index=i;break;}
         if(!hours.isEmpty())selected=hours.get(index).start;
         String update=controller.fetchedAt>0?DisplayTime.CLOCK+controller.time(controller.fetchedAt/1000,"dd MMM HH:mm"):t(R.string.hb_fs_missing);

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1120" viewBox="0 0 1200 1120" role="img" aria-labelledby="title desc">
   <title id="title">Calendar expansion and restore interaction</title>
-  <desc id="desc">Three screens: a one-row dashboard calendar; a full-screen four-week Monday-first calendar with highlighted-day details and Restore dashboard, Today and Configure controls; and date details with Back returning to the expanded grid.</desc>
+  <desc id="desc">Three screens: a one-row dashboard calendar; a full-screen four-week Monday-first calendar with highlighted-day details and Restore dashboard, Today and settings gear controls; and date details with Back returning to the expanded grid.</desc>
   <defs>
     <style>text{font-family:Arial,sans-serif;fill:#eef5f5}.muted{fill:#b7cbce}.label{font-size:18px}.small{font-size:15px}.title{font-size:24px;font-weight:bold}.number{font-size:55px;font-weight:bold}.button{fill:#254d55;stroke:#a7cbd0;stroke-width:1.5}</style>
     <g id="thai-card">
@@ -31,7 +31,7 @@
   <rect x="48" y="360" width="218" height="43" rx="8" class="button"/><text x="64" y="388" class="label">← Restore dashboard</text>
   <text x="290" y="388" class="title">Calendar · 16 Nov–13 Dec 2026</text>
   <rect x="862" y="360" width="120" height="43" rx="8" class="button"/><text x="883" y="388" class="label">Today</text>
-  <rect x="997" y="360" width="153" height="43" rx="8" class="button"/><text x="1021" y="388" class="label">Configure</text>
+  <g aria-label="Configure"><title>Configure Calendar</title><rect x="1107" y="360" width="43" height="43" rx="8" class="button"/><text x="1114" y="391" font-size="32">⚙</text></g>
   <text x="50" y="435" class="small muted">4 whole weeks · Monday first · Full-screen window is independent of compact ranges</text>
 <text x="58" y="462" font-size="15">Mon</text>
 <text x="120" y="462" font-size="15">Tue</text>
