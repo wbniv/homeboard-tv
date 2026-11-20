@@ -97,3 +97,5 @@ missing rows on commit.*
 - [Default YouTube favorite](2026-11-19-default-youtube-favorite.md): seed installed
   YouTube on new dashboards while preserving saved choices.
 | [Android app widgets](2026-11-19-android-app-widgets.md) | Hosts installed Android widgets with saved instances, expansion, Undo and explicit Chromecast permission setup; records device and provider acceptance gates. | This change | Feature |
+- [Screensavers: choose, configure and get more](2026-11-20-screensavers.md): one Screensaver
+  screen for built-in, provider and Android screensavers, with mockups; plan for review.

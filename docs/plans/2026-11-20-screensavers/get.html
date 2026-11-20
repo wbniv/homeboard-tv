@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>Get screensavers · Homeboard design</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0d1521;color:#eef2fa;font:21px/1.4 system-ui,sans-serif}
+main{width:1440px;height:900px;padding:34px 40px;overflow:hidden;position:relative}
+h1{font-size:33px;line-height:1.2;margin:0}
+h2{font-size:25px;line-height:1.25;margin:0 0 10px}
+h3{font-size:21px;line-height:1.3;margin:0}
+p{margin:8px 0}
+.muted,small{color:#b9c7dc}
+small{font-size:17px;line-height:1.35;display:block}
+.kicker{color:#9ad7ff;font-size:15px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.bar{display:flex;align-items:center;gap:20px;margin-bottom:18px}
+.bar h1{flex:1}
+.grid{display:grid;gap:22px}
+.pane,.card{background:#182332;border:1px solid #46566c;border-radius:14px}
+.pane{padding:20px 22px}
+.card{padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.card>div{flex:1;min-width:0}
+.selected{border:3px solid #9ad7ff;background:#22394f}
+.icon{width:52px;height:52px;border-radius:10px;background:#3b4f6b;display:grid;place-items:center;font-size:26px;flex:none}
+.chip{display:inline-block;font-size:15px;line-height:1.3;padding:3px 10px;border-radius:14px;background:#2a3a50;color:#cfe0f5;border:1px solid #46566c;white-space:nowrap;vertical-align:middle}
+.chip.ok{background:#1d4a38;border-color:#3f9c78;color:#c9f3df}
+.chip.warn{background:#4a3a1a;border-color:#b98d2f;color:#ffe3a6}
+.chip.bad{background:#4a2126;border-color:#b0535d;color:#ffd0d4}
+button{font:inherit;font-size:19px;color:#eef2fa;background:#2c4160;border:1px solid #6f86a6;border-radius:8px;padding:7px 16px;cursor:pointer;white-space:nowrap}
+button.primary{background:#9ad7ff;color:#0d1521;border-color:#9ad7ff;font-weight:600}
+button[disabled]{opacity:.4;cursor:default}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.notice{border-left:4px solid #9ad7ff;background:#22324a;border-radius:0 8px 8px 0;padding:10px 14px;font-size:18px;line-height:1.35}
+.notice.warn{border-color:#e0b24a}
+.notice.bad{border-color:#e07a84}
+code{font:17px/1.4 ui-monospace,Menlo,monospace;background:#0a111b;border:1px solid #33435a;border-radius:6px;padding:6px 10px;display:block;overflow-wrap:anywhere}
+footer{position:absolute;left:40px;right:40px;bottom:20px;font-size:17px;color:#b9c7dc}
+.scene{height:200px;border-radius:10px;position:relative;overflow:hidden;background:radial-gradient(circle at 28% 42%,#43307a 0,#141a33 45%,#070a12 80%)}
+.scene.video{background:linear-gradient(160deg,#1c4a6b 0,#2f7d8a 35%,#d99a5b 70%,#3a2a48 100%)}
+.scene.home{background:linear-gradient(135deg,#27425f,#3a2f58)}
+.scene.none{background:repeating-linear-gradient(45deg,#141d2b 0 14px,#182332 14px 28px)}
+.scene .time{position:absolute;left:34px;top:34px;font-size:62px;font-weight:200;line-height:1}
+.scene .date{position:absolute;left:38px;top:104px;font-size:19px;color:#d5def0}
+.scene .tag{position:absolute;right:12px;bottom:10px;font-size:14px;background:#0009;padding:2px 8px;border-radius:6px}
+</style>
+<style>
+.grid{grid-template-columns:1fr 1fr 1fr}
+.pane{display:flex;flex-direction:column;gap:8px;min-height:430px}
+.pane .row{margin-top:auto}
+.roles{font-size:18px;line-height:1.4;margin:0;padding-left:22px}
+.found{margin-top:18px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
+.nav{display:flex;gap:10px;margin-top:14px}
+.nav button{flex:1}
+</style>
+<main>
+<div class="kicker">Homeboard · proposed design · sample data</div>
+<div class="bar"><h1>Screensaver · Get screensavers</h1><button data-note="Back returns to the Screensaver list.">Back</button></div>
+<div class="grid">
+<section class="pane selected">
+<h2>Overflight</h2>
+<div><span class="chip ok">Installed · 1.4.2</span> <span class="chip">Tested with Homeboard</span></div>
+<ul class="roles"><li>Plays inside Homeboard</li><li>Aerial video, sound off</li></ul>
+<small>Already used as Home's background. It can be the screensaver too, with its own options.</small>
+<div class="row"><button class="primary" data-note="Saved. Undo banner: “Screensaver: Overflight”. Returns to the Screensaver list.">Use as screensaver</button><button data-note="Plays full screen now. OK uses it; Back cancels and nothing is saved.">Preview</button></div>
+</section>
+<section class="pane">
+<h2>Aerial Views</h2>
+<div><span class="chip">Not installed</span> <span class="chip">Google Play</span></div>
+<ul class="roles"><li>Plays inside Homeboard</li><li>Also an Android screensaver app</li></ul>
+<small>After installing, come back here: Homeboard finds it and offers Preview. Google Play owns the install and updates.</small>
+<div class="row"><button class="primary" data-note="Opens the Google Play listing on this TV. On return, this card refreshes.">Open Google Play on this TV</button><button data-note="Shows a QR code and the full address. In Play on the phone, choose this TV yourself.">Show QR code</button></div>
+</section>
+<section class="pane">
+<h2>Weather Wallpaper v2.11</h2>
+<div><span class="chip bad">Excluded</span></div>
+<ul class="roles"><li>Blocked by Play Protect on our test TV</li></ul>
+<small>No install action is offered. A different release would need its own review.</small>
+<div class="row"><button data-note="Opens the security review summary. No link to the app is shown.">Why it is excluded</button></div>
+</section>
+</div>
+<section class="pane found" style="min-height:0;display:grid">
+<div><h3>Found on this TV <span class="chip">Not reviewed by Homeboard</span></h3><small>World Foundry Aquarium Screensaver · Android screensaver app you installed. It appears in the Screensaver list like any other.</small></div>
+<button data-note="Opens the Screensaver list with World Foundry Aquarium focused.">Show in list</button>
+</section>
+<div class="nav"><button disabled>‹ Previous</button><button data-note="Rechecks installed apps now, including apps with no launcher icon.">Check installed apps</button><button data-note="Page 2 of 3: Movie Art, Daily Photos, Core Motion.">Next ›</button></div>
+<footer id="feedback">Installing never changes your screensaver. Homeboard does not download or install apps; it links to the store or the publisher.</footer>
+</main>
+<script>document.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>feedback.textContent=b.dataset.note);</script>
+</html>

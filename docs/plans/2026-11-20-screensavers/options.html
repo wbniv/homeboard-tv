@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>Screensaver options · Homeboard design</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0d1521;color:#eef2fa;font:21px/1.4 system-ui,sans-serif}
+main{width:1440px;height:900px;padding:34px 40px;overflow:hidden;position:relative}
+h1{font-size:33px;line-height:1.2;margin:0}
+h2{font-size:25px;line-height:1.25;margin:0 0 10px}
+h3{font-size:21px;line-height:1.3;margin:0}
+p{margin:8px 0}
+.muted,small{color:#b9c7dc}
+small{font-size:17px;line-height:1.35;display:block}
+.kicker{color:#9ad7ff;font-size:15px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.bar{display:flex;align-items:center;gap:20px;margin-bottom:18px}
+.bar h1{flex:1}
+.grid{display:grid;gap:22px}
+.pane,.card{background:#182332;border:1px solid #46566c;border-radius:14px}
+.pane{padding:20px 22px}
+.card{padding:12px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.card>div{flex:1;min-width:0}
+.selected{border:3px solid #9ad7ff;background:#22394f}
+.icon{width:52px;height:52px;border-radius:10px;background:#3b4f6b;display:grid;place-items:center;font-size:26px;flex:none}
+.chip{display:inline-block;font-size:15px;line-height:1.3;padding:3px 10px;border-radius:14px;background:#2a3a50;color:#cfe0f5;border:1px solid #46566c;white-space:nowrap;vertical-align:middle}
+.chip.ok{background:#1d4a38;border-color:#3f9c78;color:#c9f3df}
+.chip.warn{background:#4a3a1a;border-color:#b98d2f;color:#ffe3a6}
+.chip.bad{background:#4a2126;border-color:#b0535d;color:#ffd0d4}
+button{font:inherit;font-size:19px;color:#eef2fa;background:#2c4160;border:1px solid #6f86a6;border-radius:8px;padding:7px 16px;cursor:pointer;white-space:nowrap}
+button.primary{background:#9ad7ff;color:#0d1521;border-color:#9ad7ff;font-weight:600}
+button[disabled]{opacity:.4;cursor:default}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.notice{border-left:4px solid #9ad7ff;background:#22324a;border-radius:0 8px 8px 0;padding:10px 14px;font-size:18px;line-height:1.35}
+.notice.warn{border-color:#e0b24a}
+.notice.bad{border-color:#e07a84}
+code{font:17px/1.4 ui-monospace,Menlo,monospace;background:#0a111b;border:1px solid #33435a;border-radius:6px;padding:6px 10px;display:block;overflow-wrap:anywhere}
+footer{position:absolute;left:40px;right:40px;bottom:20px;font-size:17px;color:#b9c7dc}
+.scene{height:200px;border-radius:10px;position:relative;overflow:hidden;background:radial-gradient(circle at 28% 42%,#43307a 0,#141a33 45%,#070a12 80%)}
+.scene.video{background:linear-gradient(160deg,#1c4a6b 0,#2f7d8a 35%,#d99a5b 70%,#3a2a48 100%)}
+.scene.home{background:linear-gradient(135deg,#27425f,#3a2f58)}
+.scene.none{background:repeating-linear-gradient(45deg,#141d2b 0 14px,#182332 14px 28px)}
+.scene .time{position:absolute;left:34px;top:34px;font-size:62px;font-weight:200;line-height:1}
+.scene .date{position:absolute;left:38px;top:104px;font-size:19px;color:#d5def0}
+.scene .tag{position:absolute;right:12px;bottom:10px;font-size:14px;background:#0009;padding:2px 8px;border-radius:6px}
+</style>
+<style>
+.grid{grid-template-columns:1fr 1fr}
+.opt{display:grid;grid-template-columns:190px 1fr;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid #2c3b50;font-size:19px}
+.opt:last-of-type{border-bottom:0}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg span{padding:5px 12px;border:1px solid #56698a;border-radius:8px;background:#22324a;cursor:pointer;white-space:nowrap}
+.seg span.on{background:#9ad7ff;color:#0d1521;border-color:#9ad7ff;font-weight:600}
+.off{opacity:.45}
+.strip{margin-top:18px}
+</style>
+<main>
+<div class="kicker">Homeboard · proposed design · two option screens shown side by side</div>
+<div class="bar"><h1>Screensaver · Options</h1><button data-note="Back returns to the Screensaver list with the same entry focused.">Back</button></div>
+<div class="grid">
+<section class="pane">
+<h2>Clock <span class="chip">Built in</span></h2>
+<div class="opt"><b>Backdrop</b><div class="seg" data-g="bd"><span class="on">Glow</span><span>Home background</span><span>Black</span></div></div>
+<div class="opt off" id="dimrow"><b>Dim backdrop</b><div class="row"><button>−5%</button><span>35%</span><button>+5%</button><small>used with Home background</small></div></div>
+<div class="opt"><b>Time format</b><span class="muted">24-hour · follows Home</span></div>
+<div class="opt"><b>Screen care</b><span class="muted">Clock moves every minute · always on</span></div>
+<p><button data-note="Plays the Clock full screen with these options. Any key returns here.">Preview</button></p>
+</section>
+<section class="pane">
+<h2>Overflight <span class="chip">Plays inside Homeboard</span></h2>
+<div class="opt"><b>Show clock</b><div class="seg"><span class="on">On</span><span>Off</span></div></div>
+<div class="opt"><b>Change every</b><div class="seg"><span>5</span><span class="on">15</span><span>30</span><span>60</span><span style="border:0;background:none;cursor:default">min</span></div></div>
+<div class="opt"><b>Dim</b><div class="row"><button>−5%</button><span>20%</span><button>+5%</button></div></div>
+<div class="opt"><b>Sound</b><span class="muted">Always off in a screensaver</span></div>
+<div class="opt"><b>Feeds and quality</b><div class="row"><button data-note="Opens Overflight's own settings. Back returns here; Homeboard reloads the provider.">Open Overflight settings</button></div></div>
+<small>Separate from Home's background: changing these does not change Home.</small>
+</section>
+</div>
+<section class="pane strip">
+<h2>When it starts</h2>
+<div class="opt"><b>Start on Home after</b><div class="seg" data-g="idle"><span>Android decides</span><span>1</span><span>2</span><span class="on">5</span><span>10</span><span>15</span><span>30</span><span style="border:0;background:none;cursor:default">min without input</span></div></div>
+<div class="opt"><b>In other apps</b><span class="muted" id="other">Android starts its own screensaver (Ambient mode) after 10&nbsp;min. Homeboard has not changed it. With 5&nbsp;min on Home, Clock shows first and Ambient mode takes over at 10&nbsp;min.</span></div>
+</section>
+<footer id="feedback">Changes save as you make them · Hold Back for Undo · a ringing timer or alarm always ends the screensaver.</footer>
+</main>
+<script>
+document.querySelectorAll('.seg').forEach(g=>g.querySelectorAll('span').forEach(s=>{if(s.style.border)return;s.onclick=()=>{
+g.querySelectorAll('span').forEach(x=>x.classList.remove('on'));s.classList.add('on');
+if(g.dataset.g==='bd')dimrow.classList.toggle('off',s.textContent!=='Home background');
+if(g.dataset.g==='idle')other.textContent=s.textContent==='Android decides'?'Android starts its own screensaver (Ambient mode) after 10 min, on Home and in other apps. Homeboard runs no timer of its own.':'Android starts its own screensaver (Ambient mode) after 10 min. Homeboard has not changed it.'+(+s.textContent<10?' With '+s.textContent+' min on Home, Clock shows first and Ambient mode takes over at 10 min.':' Ambient mode starts first, so this setting has no effect until Homeboard is used everywhere.');
+feedback.textContent='Saved: '+s.textContent+' · Hold Back for Undo.'}}));
+document.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>feedback.textContent=b.dataset.note);
+</script>
+</html>
