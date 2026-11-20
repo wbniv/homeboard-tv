@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/18c5a3e) | Google Home investigation: two homes and a US-based account |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/85f880c) | Google Home investigation: Matter device leads direction 1; add its Stage 0 probe |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/a163f01) | Google Home investigation: screensaver and settings as custom modes and toggles |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b0f6606) | Google Home investigation: record the kitchen Nest display; add TODO items |
@@ -7,6 +8,11 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/0993cf1) | Investigation: options for integrating Homeboard TV with Google Home |
 
 <!--history-meta v1
+18c5a3e	author	Will Norris
+18c5a3e	added	21
+18c5a3e	deleted	4
+18c5a3e	files	1
+18c5a3e	body	Will has Google Home devices in Spain as well as Bangkok, on a US-based\nGoogle account. The Home APIs and Home MCP reach a second home; the home\npanel, a Homeboard device and Google Home routines do not. Home MCP's\nsubscription follows the US plan, so Thai availability no longer matters.\n\nCo-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqN1KiiVNT63goz7fyo
 85f880c	author	Will Norris
 85f880c	added	14
 85f880c	deleted	3

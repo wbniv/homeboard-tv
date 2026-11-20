@@ -17,6 +17,8 @@ env:
   WF_CC_WORKFLOW: '{{.WORKFLOW | default ""}}'
   WF_CC_VALIDATOR: '{{.VALIDATOR | default ""}}'
   WF_CC_DURATION: '{{.DURATION | default ""}}'
+  WF_CC_RESUME_AFTER: '{{.RESUME_AFTER | default ""}}'
+  WF_CC_POKE: '{{.POKE | default ""}}'
   WF_CC_DRY_RUN: '{{.DRY_RUN | default ""}}'
   WF_CC_KEY: '{{.KEY | default ""}}'
   WF_CC_KEYS: '{{.KEYS | default ""}}'

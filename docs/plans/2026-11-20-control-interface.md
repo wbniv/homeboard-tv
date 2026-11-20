@@ -561,9 +561,9 @@ flowchart TD
 | D, Stage 2 | B repeated with the helpers on, and with the Home role held, where the TV allows it | Whether either changes the result |
 | E, Stage 1 | `homeboard://v1/timers.show` sent through Home Assistant's Android TV Remote pairing, from the household's Home Assistant if Will runs it | Whether the link arrives |
 
-Run A needs two lines in `Taskfile.chromecast.yml` mapping `RESUME_AFTER` and `POKE`, if the
-installed coordinator reads them as `WF_CC_*` variables like its other parameters (to be
-checked with `task chromecast:version`). Runs B and D need coordinator support for holding
+Run A uses two lines in `Taskfile.chromecast.yml` mapping `RESUME_AFTER` and `POKE` to
+`WF_CC_RESUME_AFTER` and `WF_CC_POKE`, as the coordinator's own Taskfile does; they were added
+on 20 November 2026. Runs B and D need coordinator support for holding
 another app in front for 60 min (`RESUME_AFTER` stops at 300 s) and for recording each
 process's priority from `dumpsys activity`; that is a request to the coordinator's owner, not
 something to work around.
@@ -714,10 +714,9 @@ Applied the shared [Alan Cooper design filter](/home/will/docs/howtos/alan-coope
    phone, gives Google routines their targets sooner but fixes the scenes data model before its
    interface and schedules are designed.
 
-## Not in this plan
+## Out of scope
 
-These are deliberately not designed here; the orchestrator decides whether any becomes a TODO
-item.
+These are deliberately not designed here.
 
 - **The bridge, the Matter device and a Home Assistant integration.** Each consumes this
   interface and has its own plan; Stage 2's how-to gives Home Assistant `rest_command` and
@@ -738,8 +737,7 @@ item.
   behaviour described there is from memory.
 - Whether Homeboard holds the Home role on Cast1 or Cast2.
 - That `NsdManager` registration needs no permission at the current and the Play target.
-- Whether the installed coordinator reads `RESUME_AFTER` and `POKE` as `WF_CC_*` variables, and
-  whether it can hold another app in front for 60 min or record process priority.
+- Whether the installed coordinator can hold another app in front for 60 min or record process priority.
 - Whether the coordinator can send `am broadcast` to an arbitrary receiver or open a link; its
   documented broadcast is a single fixed one for the World Foundry engine. Stage 1's device step
   depends on it.

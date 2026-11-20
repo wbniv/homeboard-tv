@@ -21,7 +21,7 @@ Will asked on 20 November 2026: "what are our options for integrating homeboard-
 3. **Before either, add deep links and a local control interface to Homeboard.** Every route in direction 1 ends by telling the TV "show this scene" or "start this timer". Defining that once serves Google Home, Home Assistant and anything else.
 4. **Park** the Cast receiver, Nest Device Access and Home MCP. Reasons are in each section.
 
-**What the household has** (Will, 20 November 2026: the chromecast-coordinator "already knows there is" a hub). The coordinator's [Nest display notes](../../../chromecast-coordinator/docs/nest-displays.md) record a kitchen Nest Hub or Nest Hub Max, exact model not yet verified. That is a Google hub, so Matter, local fulfilment and hub-run automations are all open. Will also has Google Home devices in a second home, in Spain, and his Google account is US-based (Will, 20 November 2026). Still unknown: what those devices are, and what else is in the Bangkok home. See [Two homes](#two-homes-bangkok-and-spain).
+**What the household has** (Will, 20 November 2026: the chromecast-coordinator "already knows there is" a hub). The coordinator's [Nest display notes](../../../chromecast-coordinator/docs/nest-displays.md) describe a kitchen Nest display, and its live device list (20 November 2026, 20:11) shows it enrolled and ready as a Google Nest Hub Max. That is a Google hub, so Matter, local fulfilment and hub-run automations are all open. Will also has Google Home devices in a second home, in Spain, and his Google account is US-based (Will, 20 November 2026). Still unknown: what those devices are, and what else is in the Bangkok home. See [Two homes](#two-homes-bangkok-and-spain).
 
 ## How costs are weighed
 
@@ -69,9 +69,9 @@ Direction 1 and direction 2 are independent. Neither needs the other, and they c
 | Homeboard has no cloud service and no accounts. | [Bridge boundary](../../bridge/README.md), [product direction](../product-direction.md) | Any cloud-to-cloud route creates the first server, the first account and the first secret. |
 | The phone controller's HTTP listener (NanoHTTPD) runs only during an approved Configure-from-phone session. | `PhoneEditorServer.java`, [phone shortcuts how-to](../how-to/phone-tv-shortcuts.md) | There is no always-on local interface that Google, Home Assistant or a bridge could call. One has to be designed. |
 | Homeboard already holds things Google Home has traits for: timers and alarms, an air-quality reading, and (planned) scheduled scenes. | [README](../../README.md), [product direction](../product-direction.md) | These are the candidates to expose in direction 1. |
-| The household has a kitchen Nest display: a Nest Hub or Nest Hub Max, exact model not yet verified and not yet enrolled in the coordinator. | [Coordinator Nest display notes](../../../chromecast-coordinator/docs/nest-displays.md) | Every Nest Hub model is on Google's Matter hub list and its Home APIs hub list. It can commission a Matter device, run local fulfilment and show a Cast receiver. |
-| The two test TVs run Android 14 and Android 12; Cast2 is the Android 12 one. | [Coordinator device inventory](../../../chromecast-coordinator/docs/device-types-capabilities-and-controls.md), coordinator `docs/operations.md` | Both meet the Home APIs' Android 10 minimum. |
-| The coordinator already has a Cast backend that can run a registered custom Cast Web Receiver on a Nest display and send it messages. It is implemented in source; live acceptance on the kitchen display is outstanding. | [Coordinator Nest display notes](../../../chromecast-coordinator/docs/nest-displays.md) | Option 3A has a sender and a test path already, as a development tool. |
+| The household has a kitchen Google Nest Hub Max, enrolled in the coordinator and ready. | `task chromecast:devices`, 20 November 2026, 20:11; [coordinator Nest display notes](../../../chromecast-coordinator/docs/nest-displays.md) | The Nest Hub Max is on Google's Matter hub list and its Home APIs hub list. It can commission a Matter device, run local fulfilment and show a Cast receiver. |
+| Both test TVs report Android 14. Cast1 is a Chromecast HD and Cast2 a 4K Chromecast. Both report 32-bit ARM ABIs (`armeabi-v7a`). | `task chromecast:devices`, 20 November 2026, 20:11. The coordinator's October inventory had one TV on Android 12. | Both meet the Home APIs' Android 10 minimum. Any native library, such as the Matter stack, must be built for 32-bit ARM. |
+| The coordinator already has a Cast backend that can run a registered custom Cast Web Receiver on a Nest display and send it messages. The kitchen display is now enrolled; I did not check whether live acceptance has run. | [Coordinator Nest display notes](../../../chromecast-coordinator/docs/nest-displays.md) | Option 3A has a sender and a test path already, as a development tool. |
 | Both test TVs are already devices in Google Home, as Cast devices. | Standard Chromecast behaviour; not re-verified in this pass | Exposing Homeboard as a second "TV" would duplicate what Google already controls: power, volume and app launch. |
 | Google TV ships its own home panel for favourited smart-home devices, opened from the quick settings dashboard or by long-pressing Home. | [Google TV Help](https://support.google.com/googletv/answer/15158065?hl=en) | A basic version of direction 2 may already be one button away. Whether it survives Homeboard being the Home app is untested. |
 
@@ -165,12 +165,12 @@ What says it can work:
 
 What gates it:
 
-- The Matter stack is a large native library, built per CPU architecture. Building it into a Java launcher is work, which is cheap; the added APK size is permanent. I did not measure it.
+- The Matter stack is a large native library, built per CPU architecture; both test TVs are 32-bit ARM. Building it into a Java launcher is work, which is cheap; the added APK size is permanent. I did not measure it.
 - Homeboard must be running to answer. Whether its process stays alive while another app is in the foreground is untested.
 - Named settings may not carry over. On a brief check I found no Mode Select support in [Google's Matter cluster list](https://developers.home.google.com/matter/clusters?hl=en), so the screensaver choice would become one on/off switch per option. Cloud-to-cloud expresses it properly.
 - An uncertified device can only use a test vendor ID (`0xFFF1` to `0xFFF4`), which Google Home accepts when the account has a matching Matter integration in the Developer Console ([create a Matter integration](https://developers.home.google.com/matter/integration/create?hl=en)). That works for us and for nobody else.
 - Shipping to the public needs Connectivity Standards Alliance membership and certification. I did not check the fees.
-- The home must have a Matter hub. Google lists Nest speakers and displays, Nest Wifi Pro and the Google TV Streamer (4K) ([same page](https://developers.home.google.com/matter/supported-devices?hl=en)). The Chromecast with Google TV is not in that list. The household's kitchen Nest display is: Nest Hub, Nest Hub (2nd gen) and Nest Hub Max all appear on it.
+- The home must have a Matter hub. Google lists Nest speakers and displays, Nest Wifi Pro and the Google TV Streamer (4K) ([same page](https://developers.home.google.com/matter/supported-devices?hl=en)). The Chromecast with Google TV is not in that list. The household's kitchen Nest Hub Max is.
 
 **Verdict:** The lead route for direction 1 at household scale, pending the probe. Its limit there, our own accounts only, is the same as 1A's test mode, and it avoids the server, the secrets and the internet dependency altogether. It depends on the home having a Google hub, and this one does. Prototype it beside 1A and compare on the TV. Public release stays blocked by certification.
 
@@ -216,7 +216,7 @@ What Google's pages say:
 | Sensitive devices | Locks, cameras and doorbells need consent device by device | [permissions](https://developers.home.google.com/apis/android/permissions?hl=en) |
 | Activity | The SDK is actively developed; the latest release note is dated 19 November 2026 | [release notes](https://developers.home.google.com/apis/release-notes?hl=en) |
 
-**The unanswered question is the TV.** Google's Home API pages describe phones and never mention Android TV as a place the SDK runs. A search result quoting Google's Play services setup guide lists the older `play-services-home` artifact as supported on phone and tablet only; I did not open that page myself. Google TV appears in the Home APIs only as a device type to be controlled and, for the Google TV Streamer, as a hub. Both test TVs clear the Android 10 minimum (Android 14 and Android 12). Three things could still fail on Cast1: the Play services module may be missing or too old, the consent screen may not be usable with a remote, or sign-in may be refused on this form factor.
+**The unanswered question is the TV.** Google's Home API pages describe phones and never mention Android TV as a place the SDK runs. A search result quoting Google's Play services setup guide lists the older `play-services-home` artifact as supported on phone and tablet only; I did not open that page myself. Google TV appears in the Home APIs only as a device type to be controlled and, for the Google TV Streamer, as a hub. Both test TVs clear the Android 10 minimum (both report Android 14). Three things could still fail on Cast1: the Play services module may be missing or too old, the consent screen may not be usable with a remote, or sign-in may be refused on this form factor.
 
 Consequences for Homeboard if it does work:
 
@@ -278,9 +278,9 @@ A custom Cast receiver is a web page that Google's devices load, registered in t
 
 Homeboard's widgets are native Android views, so a Nest Hub dashboard would be a second, web implementation of each one. Community reports say idle custom receivers are closed after about ten minutes on Nest displays; I did not verify that.
 
-The household has a Nest display in the kitchen, and the chromecast-coordinator already has a Cast backend that can launch a registered custom receiver there and send it messages. That backend is a development tool and has not yet been accepted on the real display, but it gives a prototype a sender and a test path without new work.
+The household has a Nest display in the kitchen, and the chromecast-coordinator already has a Cast backend that can launch a registered custom receiver there and send it messages. That backend is a development tool, but the kitchen Nest Hub Max is now enrolled in it, which gives a prototype a sender and a test path without new work.
 
-**Verdict:** No longer parked: a prototype is worth making once the coordinator's kitchen display is enrolled. Writing the second implementation is cheap; the hosted page, the US$5 registration and keeping two renderings of every widget in step are the lasting costs. A shipped version still needs its own way to start the cast.
+**Verdict:** No longer parked: a prototype is worth making. Writing the second implementation is cheap; the hosted page, the US$5 registration and keeping two renderings of every widget in step are the lasting costs. A shipped version still needs its own way to start the cast.
 
 ### 3B. Cast Connect
 
@@ -310,7 +310,7 @@ Effort is left out on purpose; see [How costs are weighed](#how-costs-are-weighe
 | 2C Nest Device Access | 2 | Small | No | US$5 per developer | Small | Owning Nest devices | Only with Nest devices |
 | 2E Matter controller | 2 | No | No | Yes, for Matter devices | None | APK size; Matter devices only | Fallback if 2A fails |
 | 2F Built-in home panel | 2 | No | n/a | Yes | None | Whether it survives a third-party launcher | Check during the probe |
-| 3A Cast receiver | 3 | Web page | For TV-started casts | Yes, once published | Hosting | A Nest display (present); two renderings to keep in step; a way to start the cast | Prototype after the display is enrolled |
+| 3A Cast receiver | 3 | Web page | For TV-started casts | Yes, once published | Hosting | A Nest display (present); two renderings to keep in step; a way to start the cast | Worth a prototype |
 
 ## Recommended sequence
 
@@ -326,7 +326,7 @@ flowchart TD
     C --> M
 ```
 
-1. **Finish the inventory.** The hub question is answered: there is a kitchen Nest display. Confirm its exact model when the coordinator enrols it, and list which other devices are in the household's Google Home.
+1. **Finish the inventory.** The hub question is answered: there is a kitchen Nest Hub Max. List which other devices are in each of the household's two homes.
 2. **Stage 0 probe, on Cast1.** A fixture APK in the pattern of `launcher/widget-fixture` that initialises the Home APIs, runs the permission flow, lists devices and subscribes to one state stream. Record the Play services version, whether each screen can be driven with the remote, and what fails. In the same session, check the two home panel questions from 2F. This is a foreground device job, so it goes through the coordinator.
 3. **Stage 0 Matter probe, on Cast1.** The on/off fixture described under 1B. It is independent of the Home APIs probe and of the control interface, so it can run in the same device session as step 2.
 4. **Design the control interface.** Decide between intent deep links, an always-on authenticated local listener, or both, and what they can address: a scene, a page, a timer. This is useful with or without Google.
@@ -338,7 +338,7 @@ These are tracked in [`TODO.md`](../../TODO.md) as three items: the Stage 0 prob
 
 - Whether the Home APIs run on Cast1 or Cast2 at all: Play services module, consent screen with a remote, sign-in. This is the largest unknown in the report.
 - Which Play services version the two test TVs have.
-- The kitchen Nest display's exact model, and which other devices are in the Bangkok home.
+- Which other devices are in the Bangkok home.
 - Whether long-press Home still opens Google's dashboard with Homeboard as the Home app, and whether the home panel can be launched by intent.
 - Whether a test-mode cloud-to-cloud integration expires or needs periodic renewal.
 - What the Google Home app shows for `Modes` and `Toggles`, whether a routine can set them, whether Thai synonyms are supported, and whether Google accepts a `TV` device that declares only those traits.
