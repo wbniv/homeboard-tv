@@ -43,12 +43,14 @@ footer{position:absolute;left:40px;right:40px;bottom:20px;font-size:17px;color:#
 .scene .time{position:absolute;left:34px;top:34px;font-size:62px;font-weight:200;line-height:1}
 .scene .date{position:absolute;left:38px;top:104px;font-size:19px;color:#d5def0}
 .scene .tag{position:absolute;right:12px;bottom:10px;font-size:14px;background:#0009;padding:2px 8px;border-radius:6px}
+.role{display:flex;align-items:center;gap:6px;white-space:nowrap;margin-top:2px}.role i{font-style:normal;width:22px;height:22px;border-radius:6px;background:#3b4f6b;display:inline-grid;place-items:center;font-size:14px;flex:none}
+.appicon{width:40px;height:40px;border-radius:9px;background:#3b4f6b;display:inline-grid;place-items:center;font-size:20px;vertical-align:middle;margin-right:10px}
 </style>
 <style>
 .grid{grid-template-columns:1fr 1fr 1fr}
 .pane{display:flex;flex-direction:column;gap:8px;min-height:430px}
 .pane .row{margin-top:auto}
-.roles{font-size:18px;line-height:1.4;margin:0;padding-left:22px}
+.roles{font-size:18px;line-height:1.7;margin:0;padding-left:0;list-style:none}
 .found{margin-top:18px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}
 .nav{display:flex;gap:10px;margin-top:14px}
 .nav button{flex:1}
@@ -58,21 +60,21 @@ footer{position:absolute;left:40px;right:40px;bottom:20px;font-size:17px;color:#
 <div class="bar"><h1>Screensaver · Get screensavers</h1><button data-note="Back returns to the Screensaver list.">Back</button></div>
 <div class="grid">
 <section class="pane selected">
-<h2>World Foundry Aquarium</h2>
+<h2><span class="appicon">🐠</span>World Foundry Aquarium</h2>
 <div><span class="chip">Not installed</span> <span class="chip ok">From Homeboard's publisher</span></div>
-<ul class="roles"><li>Plays inside Homeboard</li><li>Also an app, and an Android screensaver</li></ul>
+<ul class="roles"><li><span class="role"><i>⌂</i>Plays inside Homeboard</span></li><li><span class="role"><i>☾</i>Also an Android screensaver app</span></li></ul>
 <small>Live 3D reef tanks. Homeboard can install it here; Android asks you to confirm.</small>
 <div class="row"><button class="primary" data-note="Homeboard fetches the signed app from its publisher, checks it, and Android asks you to confirm. On the Google Play edition of Homeboard this opens Play's install sheet instead. Nothing is selected yet.">Install</button><button data-note="Opens the Google Play listing on this TV. On return, this card refreshes.">Google Play</button><button data-note="Shows a QR code and the full address for the phone.">QR code</button></div>
 </section>
 <section class="pane">
-<h2>Overflight</h2>
+<h2><span class="appicon">✈</span>Overflight</h2>
 <div><span class="chip ok">Installed · 1.4.2</span> <span class="chip">Tested with Homeboard</span></div>
-<ul class="roles"><li>Plays inside Homeboard</li><li>Aerial video, sound off</li></ul>
+<ul class="roles"><li><span class="role"><i>⌂</i>Plays inside Homeboard</span></li><li>Aerial video, sound off</li></ul>
 <small>From another publisher, so Homeboard links to Google Play and never installs it. Already used as Home's background.</small>
 <div class="row"><button class="primary" data-note="Saved. Undo banner: “Screensaver: Overflight”. Returns to the Screensaver list.">Use as screensaver</button><button data-note="Plays full screen now. OK uses it; Back cancels and nothing is saved.">Preview</button></div>
 </section>
 <section class="pane">
-<h2>Weather Wallpaper v2.11</h2>
+<h2><span class="appicon">☁</span>Weather Wallpaper v2.11</h2>
 <div><span class="chip bad">Excluded</span></div>
 <ul class="roles"><li>Blocked by Play Protect on our test TV</li></ul>
 <small>No install action is offered. A different release would need its own review.</small>

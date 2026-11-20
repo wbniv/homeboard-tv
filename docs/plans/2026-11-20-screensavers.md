@@ -51,6 +51,11 @@ labelled by what it means for the person:
 | **Plays inside Homeboard** | Overflight, Aerial Views, Movie Art | Homeboard, through the wallpaper host it already has | Homeboard's, plus the provider's own settings | Get screensavers |
 | **Android screensaver app** | Aerial Views' own screensaver, World Foundry Aquarium, Android's Ambient mode | Android, outside Homeboard | The app's own settings | Get screensavers, or anything you installed yourself |
 
+**Roles and icons on each card.** A card names every role the app has: "Plays inside
+Homeboard" (⌂), "Also an Android screensaver app" (☾), or both, and Built in (◆). Each role
+carries its small icon, and each app also shows its own icon. Aerial Views is both and
+appears once, with both roles stacked on its card.
+
 The second kind is the leverage: every wallpaper provider Homeboard already hosts becomes
 a screensaver with no new integration, and the reviewed directory already exists.
 
