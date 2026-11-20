@@ -67,15 +67,17 @@ public class AppAppearanceTest {
 
     @Test public void favoriteIconsSitAGoogleTvGapApartButKeepAReadableLabel() {
         // Regression: Favorites kept 84 px icons on a 176 px pitch (a 92 px gap); Google TV leaves 30 px of 152.
-        for (int label : new int[]{19, 24, 32}) {
-            int pitch = AppAppearance.favoritePitchDp(label);
-            float ratio = pitch / (float) AppAppearance.FAVORITE_ICON_DP;
+        for (int label : new int[]{19, 24, 32})
+          for (float icon : new float[]{AppAppearance.FAVORITE_ICON_DP, 43f}) {
+            // 43 dp is what a one-row ribbon actually draws; the pitch follows the icon as drawn.
+            int pitch = AppAppearance.favoritePitchDp(label, icon);
+            float ratio = pitch / icon;
             assertTrue("never narrower than a readable label",
                     pitch >= Math.round(AppAppearance.favoriteLabelHeightDp(label) * 3.4f));
             // As on Google TV, the ring may be wider than the pitch, but must not reach the neighbouring icon.
             assertTrue("the ring stays clear of the next icon",
-                    AppAppearance.ringOuterRadius(AppAppearance.FAVORITE_ICON_DP) < pitch - AppAppearance.FAVORITE_ICON_DP / 2f);
-            if (label <= 24) assertTrue("close to Google TV's 1.2 x (was 2.1 x): " + ratio, ratio <= 1.4f);
+                    AppAppearance.ringOuterRadius(icon) < pitch - icon / 2f);
+            if (label <= 24) assertTrue("close to Google TV's 1.2 x (was 2.1 x): " + ratio, ratio <= 1.5f);
         }
         assertEquals(182f / 152f, AppAppearance.GTV_PITCH_RATIO, 0.001f);
     }

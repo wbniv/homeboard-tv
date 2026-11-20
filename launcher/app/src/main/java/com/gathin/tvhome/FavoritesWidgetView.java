@@ -153,13 +153,24 @@ final class FavoritesWidgetView extends FrameLayout {
         if(compact){wedges.invalidate();if(enterPending)post(this::enter);return;}
         // The All Apps cell geometry: the same column pitch, and the columns share the width evenly, as All Apps does.
         float density=getResources().getDisplayMetrics().density;
-        pitchDp=roundIcons()?AppAppearance.favoritePitchDp(labelHeightDp):AppGridSizing.columnPitch(labelHeightDp,banners);
+        pitchDp=roundIcons()?AppAppearance.favoritePitchDp(labelHeightDp,fittedIconDp(h,density)):AppGridSizing.columnPitch(labelHeightDp,banners);
         columns=ribbon?1:Math.max(1,(Math.round(w/density)-AppGridSizing.PANEL_SIDE_PADDING*2)/pitchDp);
         // Whole cells only: the ribbon's viewport is shared evenly, so no icon is sliced at either end.
         ribbonCellPx=AppGridSizing.ribbonCell(w-2*dp(18),dp(pitchDp));
         manager=new GridLayoutManager(getContext(),columns,ribbon?RecyclerView.HORIZONTAL:RecyclerView.VERTICAL,false);
         list.setLayoutManager(manager);adapter.notifyDataSetChanged();
         if(enterPending)post(this::enter);
+    }
+    /**
+     * The round icon's size once it has been fitted to the panel: a one-row ribbon is shorter than the icon's
+     * preferred size plus its label, so the icon shrinks and the pitch must follow the shrunken icon.
+     */
+    private float fittedIconDp(int panelHeightPx,float density){
+        if(!ribbon)return AppAppearance.FAVORITE_ICON_DP;
+        int tile=panelHeightPx-dp(8)-dp(AppGridSizing.ROW_GAP)-dp(4);   // list, cell and tile padding
+        int label=Math.round(AppAppearance.favoriteLabelHeightDp(labelHeightDp)*density);
+        int px=AppAppearance.fitIcon(dp(AppAppearance.FAVORITE_ICON_DP),Integer.MAX_VALUE,tile,label,dp(8));
+        return Math.max(1,Math.min(AppAppearance.FAVORITE_ICON_DP,px/density));
     }
     /** Round Favorites icons are larger than the app default, so their gaps match Google TV's. */
     private boolean roundIcons(){return circular&&!banners;}

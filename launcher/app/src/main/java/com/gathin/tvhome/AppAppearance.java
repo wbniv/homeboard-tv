@@ -22,12 +22,12 @@ final class AppAppearance {
     private AppAppearance() { }
 
     /**
-     * Favorites circular pitch in dp: the Google TV ratio to the icon, but never narrower than a readable label
-     * (3.4 label heights; All Apps uses 4). {@code labelHeightDp} is the app's 16 sp label height.
+     * Favorites circular pitch in dp: the Google TV ratio to the icon as drawn, but never narrower than a readable
+     * label (3.4 label heights; All Apps uses 4). {@code labelHeightDp} is the app's 16 sp label height and
+     * {@code iconDp} the icon's size after fitting the panel, which can be smaller than {@link #FAVORITE_ICON_DP}.
      */
-    static int favoritePitchDp(int labelHeightDp) {
-        return Math.max(Math.round(FAVORITE_ICON_DP * GTV_PITCH_RATIO),
-                Math.round(favoriteLabelHeightDp(labelHeightDp) * 3.4f));
+    static int favoritePitchDp(int labelHeightDp, float iconDp) {
+        return Math.max(Math.round(iconDp * GTV_PITCH_RATIO), Math.round(favoriteLabelHeightDp(labelHeightDp) * 3.4f));
     }
 
     /** The Favorites label's height in dp, given the app's 16 sp label height. */
