@@ -21,7 +21,7 @@ Will asked on 20 November 2026: "what are our options for integrating homeboard-
 3. **Before either, add deep links and a local control interface to Homeboard.** Every route in direction 1 ends by telling the TV "show this scene" or "start this timer". Defining that once serves Google Home, Home Assistant and anything else.
 4. **Park** the Cast receiver, Nest Device Access and Home MCP. Reasons are in each section.
 
-**What the household has** (Will, 20 November 2026: the chromecast-coordinator "already knows there is" a hub). The coordinator's [Nest display notes](../../../chromecast-coordinator/docs/nest-displays.md) record a kitchen Nest Hub or Nest Hub Max, exact model not yet verified. That is a Google hub, so Matter, local fulfilment and hub-run automations are all open. Still unknown: which other devices are in the Google Home app. Direction 2 is only worth building if there are devices there worth showing.
+**What the household has** (Will, 20 November 2026: the chromecast-coordinator "already knows there is" a hub). The coordinator's [Nest display notes](../../../chromecast-coordinator/docs/nest-displays.md) record a kitchen Nest Hub or Nest Hub Max, exact model not yet verified. That is a Google hub, so Matter, local fulfilment and hub-run automations are all open. Will also has Google Home devices in a second home, in Spain, and his Google account is US-based (Will, 20 November 2026). Still unknown: what those devices are, and what else is in the Bangkok home. See [Two homes](#two-homes-bangkok-and-spain).
 
 ## How costs are weighed
 
@@ -74,6 +74,22 @@ Direction 1 and direction 2 are independent. Neither needs the other, and they c
 | The coordinator already has a Cast backend that can run a registered custom Cast Web Receiver on a Nest display and send it messages. It is implemented in source; live acceptance on the kitchen display is outstanding. | [Coordinator Nest display notes](../../../chromecast-coordinator/docs/nest-displays.md) | Option 3A has a sender and a test path already, as a development tool. |
 | Both test TVs are already devices in Google Home, as Cast devices. | Standard Chromecast behaviour; not re-verified in this pass | Exposing Homeboard as a second "TV" would duplicate what Google already controls: power, volume and app launch. |
 | Google TV ships its own home panel for favourited smart-home devices, opened from the quick settings dashboard or by long-pressing Home. | [Google TV Help](https://support.google.com/googletv/answer/15158065?hl=en) | A basic version of direction 2 may already be one button away. Whether it survives Homeboard being the Home app is untested. |
+
+## Two homes: Bangkok and Spain
+
+Will has Google Home devices in Spain as well as the kitchen Nest display in Bangkok. Google Home calls each home a structure, and the two directions treat a second structure very differently.
+
+| Route | Reaches the Spain home from a Bangkok TV? | Why |
+|---|---|---|
+| 2A Home APIs | Yes | The SDK works through Google's cloud and handles several structures per account; its consent dialog lets the user pick or switch structure ([permissions](https://developers.home.google.com/apis/android/permissions?hl=en)). |
+| 2B Home MCP | Yes | `list_homes` returns every home the account can reach ([user guide](https://developers.home.google.com/mcp/home?hl=en)). |
+| 2F Built-in home panel | No | It shows the home that the TV's profile belongs to. |
+| 1A and 1B, Homeboard as a device | No | A device sits in one home. A Matter device joins the home whose hub commissioned it. |
+| Google Home routines | No | An automation is "keyed to the selected structure" ([Automation API](https://developers.home.google.com/apis/android/automation?hl=en)), so a Spain doorbell cannot start a routine that acts on the Bangkok TV. I read that for the Automation API and assume the app's own routines follow it. |
+
+This raises the value of direction 2. A widget on the Bangkok TV showing the Spain home (temperature, a door sensor, a camera, whatever is there) is something neither the built-in panel nor a routine can do, and the Home APIs are the only route that does it with no server. It also means a "Home devices" widget needs a home picker from the start, not as an afterthought.
+
+For "the Spain doorbell rang, show it in Bangkok", the path is Homeboard subscribing to that event through the Home APIs, not a Google Home routine.
 
 ## Direction 1: Homeboard appears in Google Home
 
@@ -221,7 +237,7 @@ It matters here because it is the first way to read Google Home state over plain
 
 The limits:
 
-- It requires an active **Google Home Premium Advanced** subscription, US$20 a month at US prices ([9to5Google](https://9to5google.com/2025/10/01/google-home-premium/)). I could not confirm the plan is sold in Thailand.
+- It requires an active **Google Home Premium Advanced** subscription, US$20 a month at US prices ([9to5Google](https://9to5google.com/2025/10/01/google-home-premium/)). Will's Google account is US-based, so the US plan and price are the ones that apply; availability in Thailand does not matter. It is still a recurring cost unless the account already has the plan, for example through Google AI Ultra.
 - It is early access, built and described for AI agents. I have not read whether its terms allow a non-agent client such as a dashboard. Rate limits are enforced but not published on the page I read.
 - It blocks sensitive actions such as unlocking doors.
 - It needs a web OAuth client with a redirect URL, so the TV cannot complete sign-in alone. A phone page or a hosted callback is required.
@@ -322,13 +338,14 @@ These are tracked in [`TODO.md`](../../TODO.md) as three items: the Stage 0 prob
 
 - Whether the Home APIs run on Cast1 or Cast2 at all: Play services module, consent screen with a remote, sign-in. This is the largest unknown in the report.
 - Which Play services version the two test TVs have.
-- The kitchen Nest display's exact model, and which other devices are in the household's Google Home.
+- The kitchen Nest display's exact model, and which other devices are in the Bangkok home.
 - Whether long-press Home still opens Google's dashboard with Homeboard as the Home app, and whether the home panel can be launched by intent.
 - Whether a test-mode cloud-to-cloud integration expires or needs periodic renewal.
 - What the Google Home app shows for `Modes` and `Toggles`, whether a routine can set them, whether Thai synonyms are supported, and whether Google accepts a `TV` device that declares only those traits.
 - Whether Google Home supports the Matter Mode Select cluster; my check of its cluster list was brief.
 - Whether Google's voice grammar sends timer requests to a non-cooking device with the `Timer` trait.
-- Whether Home MCP's terms allow a non-agent client, its rate limits, and whether Premium Advanced is sold in Thailand.
+- Whether Home MCP's terms allow a non-agent client, and its rate limits.
+- What devices are in the Spain home, whether it has a hub of its own, and whether the Google Home app's routines are confined to one home as the Automation API's are.
 - Connectivity Standards Alliance membership and certification fees.
 - How much the Matter native stack adds to the APK, and whether Homeboard's process stays alive to answer Matter commands while another app is in the foreground.
 - The Play services "phone and tablet only" table for `play-services-home`, which I saw quoted in a search result, not on the page.

@@ -1,11 +1,17 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/85f880c) | Google Home investigation: Matter device leads direction 1; add its Stage 0 probe |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/a163f01) | Google Home investigation: screensaver and settings as custom modes and toggles |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b0f6606) | Google Home investigation: record the kitchen Nest display; add TODO items |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/1327db1) | Google Home investigation: weigh lasting costs, not engineering effort |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/0993cf1) | Investigation: options for integrating Homeboard TV with Google Home |
 
 <!--history-meta v1
+85f880c	author	Will Norris
+85f880c	added	14
+85f880c	deleted	3
+85f880c	files	1
+85f880c	body	Will: "this is a GREAT idea!!! if it works". The Matter project ships an\nAndroid device-side example that shows its own QR code, which gives the\nprobe a starting point: one on/off device under a test vendor ID on Cast1,\ncommissioned through the Google Home app. Adds the probe as an open item.\n\nCo-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqN1KiiVNT63goz7fyo
 a163f01	author	Will Norris
 a163f01	added	14
 a163f01	deleted	1
