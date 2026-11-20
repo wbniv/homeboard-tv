@@ -7,13 +7,14 @@ import org.json.*;
 
 /** Glance only: OK consistently opens full screen, even at 1x1. */
 final class KitchenTimerWidgetView extends LinearLayout {
-    private final TextView content,title;private final Handler handler=new Handler(Looper.getMainLooper());
-    private final Runnable tick=new Runnable(){public void run(){refresh();handler.postDelayed(this,1000);}};
+    private final TextView content,title;
+    /** Ticks come from the shared TimerTicker, which parses the stored timers once per revision. */
+    private final TimerTicker.Listener listener=this::refresh;
     KitchenTimerWidgetView(Context c,PaletteColors palette,int opacity){super(c);setOrientation(VERTICAL);int pad=(int)(10*c.getResources().getDisplayMetrics().density);setPadding(pad,pad,pad,pad);UiBackgroundDrawable bg=new UiBackgroundDrawable(palette.surface);bg.setFillOpacity(opacity);bg.setCornerRadius(pad);setBackground(bg);setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         title=new TextView(c);title.setText(R.string.hb_timer_title);title.setTextSize(19);title.setTextColor(palette.text);title.setSingleLine();addView(title);content=new TextView(c);content.setTextSize(22);content.setTextColor(palette.text);addView(content,new LayoutParams(-1,0,1));}
-    private void refresh(){
+    private void refresh(TimerTickerSchedule.Snapshot tick){
         if(getHeight()==0)return;
-        JSONObject snapshot=KitchenTimerStore.snapshot(getContext());var items=KitchenTimerUi.ordered(snapshot.optJSONArray("items"));
+        JSONObject snapshot=tick.data;var items=KitchenTimerUi.ordered(snapshot.optJSONArray("items"));
         int available=getHeight()-getPaddingTop()-getPaddingBottom(),line=Math.max(1,content.getLineHeight());
         boolean headingFits=available>=title.getLineHeight()+2*line;
         title.setVisibility(headingFits?VISIBLE:GONE);
@@ -34,7 +35,7 @@ final class KitchenTimerWidgetView extends LinearLayout {
         if("event".equals(t.optString("kind"))&&"running".equals(state))return DisplayTime.timestamp(getContext(),java.time.Instant.ofEpochMilli(t.optLong("at")),java.time.ZoneId.systemDefault(),"HH:mm");
         return getContext().getString(KitchenTimerUi.state(state));
     }
-    @Override protected void onSizeChanged(int w,int h,int oldw,int oldh){super.onSizeChanged(w,h,oldw,oldh);post(this::refresh);}
-    @Override protected void onAttachedToWindow(){super.onAttachedToWindow();handler.post(tick);}
-    @Override protected void onDetachedFromWindow(){handler.removeCallbacks(tick);super.onDetachedFromWindow();}
+    @Override protected void onSizeChanged(int w,int h,int oldw,int oldh){super.onSizeChanged(w,h,oldw,oldh);post(()->refresh(TimerTicker.get(getContext()).current()));}
+    @Override protected void onAttachedToWindow(){super.onAttachedToWindow();TimerTicker.get(getContext()).listen(listener);}
+    @Override protected void onDetachedFromWindow(){TimerTicker.get(getContext()).unlisten(listener);super.onDetachedFromWindow();}
 }
