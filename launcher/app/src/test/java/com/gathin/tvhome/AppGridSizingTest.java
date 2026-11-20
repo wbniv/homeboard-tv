@@ -18,6 +18,22 @@ public class AppGridSizingTest {
         assertEquals(3, AppGridSizing.rows(appsHeight, 20, true));
     }
 
+    @Test public void theFavoritesPanelUsesTheAllAppsPitchOverItsInnerWidth() {
+        // Regression: the panel once had its own 68 dp and 104 dp spacings instead of the All Apps cell.
+        for (int label : new int[]{19, 24, 32, 40})
+            for (boolean banners : new boolean[]{false, true}) {
+                int pitch = AppGridSizing.columnPitch(label, banners);
+                for (int cells = 1; cells <= 8; cells++) {
+                    int inner = cells * pitch;
+                    int panel = inner + AppGridSizing.PANEL_SIDE_PADDING * 2;
+                    assertEquals(cells, AppGridSizing.panelColumns(panel, label, banners));
+                    assertEquals(cells, AppGridSizing.columns(inner, label, banners));
+                    assertEquals(Math.max(1, cells - 1), AppGridSizing.panelColumns(panel - 1, label, banners));
+                }
+                assertEquals(1, AppGridSizing.panelColumns(0, label, banners));
+            }
+    }
+
     @Test public void gridsUseEveryReadableRowAndColumnAcrossTvSizesAndTextHeights() {
         for (int width : new int[]{640, 960, 1280, 1920})
             for (int height : new int[]{360, 540, 720, 1080})

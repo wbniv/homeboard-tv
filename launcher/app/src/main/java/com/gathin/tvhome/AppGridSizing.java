@@ -4,6 +4,8 @@ package com.gathin.tvhome;
 final class AppGridSizing {
     static final int SIDE_MARGIN = 32, HOME_TOP = 88, APPS_TOP = 80, BOTTOM_MARGIN = 52;
     static final int COLUMN_GAP = 8, ROW_GAP = 6, TILE_PADDING = 4;
+    /** The Favorites panel's inner padding on each side, in dp. */
+    static final int PANEL_SIDE_PADDING = 10;
     private AppGridSizing() { }
 
     static int columnPitch(int labelHeight, boolean banners) {
@@ -19,6 +21,10 @@ final class AppGridSizing {
     }
     static int rows(int availableHeight, int labelHeight, boolean banners) {
         return Math.max(1, availableHeight / rowPitch(labelHeight, banners));
+    }
+    /** Columns of the Favorites panel: the All Apps pitch over the panel's width less its side padding. */
+    static int panelColumns(int panelWidthDp, int labelHeight, boolean banners) {
+        return columns(panelWidthDp - PANEL_SIDE_PADDING * 2, labelHeight, banners);
     }
     static int homeColumns(int availableWidth, int labelHeight, boolean banners) {
         int cards = columns(availableWidth, labelHeight, banners);

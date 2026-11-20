@@ -37,9 +37,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import androidx.dynamicanimation.animation.FloatPropertyCompat;
-import androidx.dynamicanimation.animation.SpringAnimation;
-import androidx.dynamicanimation.animation.SpringForce;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,7 +52,7 @@ import java.util.concurrent.Executors;
 
 /** Homeboard's widgets-first native Home shell, using CleanYourTV's launcher foundation. */
 public class MainActivity extends Activity {
-    private static final float APP_FOCUS_SCALE = 1.08f;
+    private static final float APP_FOCUS_SCALE = AppFocusHighlight.SCALE;
     static final String ACTION_LAUNCHER_SETTINGS = "com.gathin.tvhome.action.LAUNCHER_SETTINGS";
     static final String ACTION_APP_LIBRARY = "com.gathin.tvhome.action.APP_LIBRARY";
     static final String ACTION_VIEW_INPUTS = "com.android.tv.action.VIEW_INPUTS";
@@ -136,9 +133,7 @@ public class MainActivity extends Activity {
     private int adjustmentValue;
     private String adjustmentTitle;
     private java.util.function.IntConsumer adjustmentPreview, adjustmentCommit;
-    private View appFocusHighlight;
-    private SpringAnimation appFocusX, appFocusY;
-    private boolean appFocusHighlightShown;
+    private AppFocusHighlight appHighlight;
     private boolean restoringSurface = true;
     private final List<MenuSpec> menuStack = new ArrayList<>();
     private MenuSpec activeMenu;
@@ -876,9 +871,8 @@ public class MainActivity extends Activity {
         if(androidWidgets!=null)androidWidgets.beginRender();
         String requestedFocus = focused;
         FrameLayout old = surface;
-        if (appFocusX != null) appFocusX.cancel();
-        if (appFocusY != null) appFocusY.cancel();
-        appFocusHighlight = null; appFocusX = null; appFocusY = null; appFocusHighlightShown = false;
+        if (appHighlight != null) appHighlight.cancel();
+        appHighlight = null;
         if (old != null) { old.animate().cancel(); root.removeView(old); }
         for (AirQualityCard widget : airWidgets.values()) widget.unbind();
         for (RainWidgetController widget : rainWidgets.values()) widget.unbind();
@@ -1187,83 +1181,19 @@ public class MainActivity extends Activity {
     private void createAppFocusHighlight() {
         boolean banners = layout.appUsesBanner(!allApps);
         boolean circular = !banners && layout.circularIcons;
-        if (banners) {
-            appFocusHighlight = new BannerFocusView(this);
-        } else if (circular) {
-            appFocusHighlight = new AppFocusView(this);
-        } else {
-            GlassView glass = new GlassView(this, null);
-            glass.setPalette(background); glass.setRadius(dp(18)); glass.setInset(0);
-            appFocusHighlight = glass;
-        }
-        appFocusHighlight.setAlpha(0f);
-        appFocusHighlight.setFocusable(false);
-        appFocusHighlight.setClickable(false);
-        appFocusHighlight.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         // Circular fill/halo belongs behind artwork; existing glass stays above unmasked artwork.
-        surface.addView(appFocusHighlight, banners || circular ? 0 : surface.getChildCount(),
-                new FrameLayout.LayoutParams(dp(100), dp(100)));
-        FloatPropertyCompat<View> x = new FloatPropertyCompat<View>("appFocusX") {
-            @Override public float getValue(View view) { return view.getTranslationX(); }
-            @Override public void setValue(View view, float value) { view.setTranslationX(value); }
-        };
-        FloatPropertyCompat<View> y = new FloatPropertyCompat<View>("appFocusY") {
-            @Override public float getValue(View view) { return view.getTranslationY(); }
-            @Override public void setValue(View view, float value) { view.setTranslationY(value); }
-        };
-        appFocusX = new SpringAnimation(appFocusHighlight, x);
-        appFocusY = new SpringAnimation(appFocusHighlight, y);
-        float damping = banners || circular ? 1f : 0.58f;
-        SpringForce spring = new SpringForce().setStiffness(260f).setDampingRatio(damping);
-        appFocusX.setSpring(spring);
-        appFocusY.setSpring(new SpringForce().setStiffness(260f).setDampingRatio(damping));
-        if (reducedMotion()) { appFocusX.setSpring(new SpringForce().setStiffness(1000f).setDampingRatio(1f));
-            appFocusY.setSpring(new SpringForce().setStiffness(1000f).setDampingRatio(1f)); }
+        appHighlight = new AppFocusHighlight(this, surface, surface,
+                AppFocusHighlight.behindArtwork(banners, circular) ? 0 : -1, banners, circular, background, reducedMotion());
     }
     private void moveAppFocusHighlight(View card, boolean animate) {
-        if (!active || overlay != null || appFocusHighlight == null || card.getParent() == null
-                || card.getWidth() <= 0 || card.getHeight() <= 0) return;
-        Rect rect = new Rect(0, 0, card.getWidth(), card.getHeight());
-        surface.offsetDescendantRectToMyCoords(card, rect);
-        int width, height;
-        if (appFocusHighlight instanceof AppFocusView) {
-            ((AppFocusView) appFocusHighlight).setIconDiameter(card.getWidth());
-            width = height = AppAppearance.focusExtent(card.getWidth());
-        } else if (appFocusHighlight instanceof BannerFocusView) {
-            width = (int) Math.ceil(card.getWidth() * APP_FOCUS_SCALE) + dp(20);
-            height = (int) Math.ceil(card.getHeight() * APP_FOCUS_SCALE) + dp(20);
-        } else {
-            int padding = 1;
-            width = (int) Math.ceil(card.getWidth() * APP_FOCUS_SCALE) + padding * 2;
-            height = (int) Math.ceil(card.getHeight() * APP_FOCUS_SCALE) + padding * 2;
-            ((GlassView) appFocusHighlight).setRadius(dp(10));
-        }
-        ViewGroup.LayoutParams lp = appFocusHighlight.getLayoutParams();
-        lp.width = width; lp.height = height;
-        appFocusHighlight.setLayoutParams(lp);
-        float x = rect.exactCenterX() - width / 2f;
-        float y = rect.exactCenterY() - height / 2f;
-        if (!appFocusHighlightShown || !animate || reducedMotion()) {
-            appFocusX.cancel(); appFocusY.cancel();
-            appFocusHighlight.setTranslationX(x); appFocusHighlight.setTranslationY(y);
-        } else {
-            appFocusX.animateToFinalPosition(x);
-            appFocusY.animateToFinalPosition(y);
-        }
-        appFocusHighlightShown = true;
-        appFocusHighlight.setAlpha(1f);
+        if (!active || overlay != null || appHighlight == null) return;
+        appHighlight.move(card, animate);
     }
     private void hideAppFocusHighlight() {
-        if (appFocusX != null) { appFocusX.cancel(); }
-        if (appFocusY != null) { appFocusY.cancel(); }
-        if (appFocusHighlight != null) { appFocusHighlight.setAlpha(0f); }
-        appFocusHighlightShown = false;
+        if (appHighlight != null) appHighlight.hide();
     }
     private View appHighlightTarget(View tile) {
-        if (tile instanceof ViewGroup && ((ViewGroup) tile).getChildCount() > 0
-                && ((ViewGroup) tile).getChildAt(0) instanceof ImageView)
-            return ((ViewGroup) tile).getChildAt(0);
-        return tile;
+        return AppFocusHighlight.target(tile);
     }
     private void buildHome() {
         addTopSettingsButtons();
@@ -1317,7 +1247,7 @@ public class MainActivity extends Activity {
         return new FavoritesWidgetView(this,favoriteOrderPreview==null?layout.favorites:favoriteOrderPreview,
             key->appTile(key,true),key->{if(!key.isEmpty())favoriteFocus=key;focused=HomeLayout.FAVORITES;homeFocus=focused;},
             this::activateFavorite,this::favoriteContext,paletteColors,uiBackgroundOpacity,
-            layout.appUsesBanner(true),reducedMotion(),ribbon,favoriteFocus);
+            layout.appUsesBanner(true),!layout.appUsesBanner(true)&&layout.circularIcons,appLabelHeightDp(),reducedMotion(),ribbon,favoriteFocus);
     }
     private void activateFavorite() {
         FavoritesWidgetView panel=activeFavorites();String key=panel==null?"":panel.activeKey();
@@ -1659,7 +1589,7 @@ public class MainActivity extends Activity {
         if (target == null) return;
         target.post(() -> {
             if (!active || overlay != null
-                    || target != tiles.get(focused) || !target.hasFocus() || appFocusHighlight == null) return;
+                    || target != tiles.get(focused) || !target.hasFocus() || appHighlight == null) return;
             View icon = appHighlightTarget(target);
             if (icon.getWidth() <= 0 || icon.getHeight() <= 0) {
                 // A laid-out cell may have no artwork room at large text sizes; do not spin forever.

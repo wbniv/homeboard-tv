@@ -15,11 +15,10 @@ public class AppAppearanceTest {
         }
     }
 
-    @Test public void favoriteIconsSitCloseTogetherAndTheRingFitsTheCell() {
-        assertTrue("Pitch must not drift back to the old 104 dp spacing",
-                AppAppearance.FAVORITE_ICON_PITCH_DP <= AppAppearance.ICON_DIAMETER_DP * 1.5f);
-        assertTrue("Ring outer diameter must fit the cell",
-                AppAppearance.ringOuterRadius(AppAppearance.ICON_DIAMETER_DP) * 2 <= AppAppearance.FAVORITE_ICON_PITCH_DP);
+    @Test public void theRingFitsTheAllAppsCellThatTheFavoritesPanelShares() {
+        for (int label : new int[]{19, 24, 32, 40})
+            assertTrue("Ring outer diameter must fit the cell",
+                    AppAppearance.ringOuterRadius(AppAppearance.ICON_DIAMETER_DP) * 2 <= AppGridSizing.columnPitch(label, false));
     }
 
     @Test public void denseGridAndLargeTextKeepTheFocusedArtworkAndLabelInsideTheCell() {

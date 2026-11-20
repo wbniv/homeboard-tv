@@ -25,22 +25,26 @@ final class FavoritesWidgetView extends FrameLayout {
     private final Consumer<String> focused;
     private final Runnable activate, actions;
     private final PaletteColors palette;
-    private final boolean banners, reducedMotion, ribbon;
-    private final int opacity;
+    private final boolean banners, circular, reducedMotion, ribbon;
+    private final int opacity, labelHeightDp;
     private final TextView header;
     private final RecyclerView list;
+    /** Holds the shared focus highlight, clipped to the list's area. */
+    private final FrameLayout layer;
+    private final AppFocusHighlight highlight;
     private final Wedges wedges;
     private final Adapter adapter = new Adapter();
     private GridLayoutManager manager;
-    private int columns=1, pitch, sidePad;
+    private int columns=1, pitchDp;
     private int pendingFocus=-1;
     private String selected;
     private boolean compact, headerSelected, interactive=true, enterPending, geometryReady;
     FavoritesWidgetView(Context context,List<String> keys,Function<String,View> artwork,Consumer<String> focused,
                         Runnable activate,Runnable actions,PaletteColors palette,int opacity,boolean banners,
-                        boolean reducedMotion,boolean ribbon,String selected) {
+                        boolean circular,int labelHeightDp,boolean reducedMotion,boolean ribbon,String selected) {
         super(context);this.keys=new ArrayList<>(keys);this.artwork=artwork;this.focused=focused;
         this.activate=activate;this.actions=actions;this.palette=palette;this.banners=banners;
+        this.circular=circular;this.labelHeightDp=labelHeightDp;
         this.reducedMotion=reducedMotion;this.ribbon=ribbon;this.selected=selected;this.opacity=opacity;
         setClipChildren(true);setClipToPadding(true);setFocusable(true);
         UiBackgroundDrawable background=new UiBackgroundDrawable(palette.surface);background.setCornerRadius(dp(14));background.setStroke(dp(1),palette.edge);background.setFillOpacity(opacity);setBackground(background);
@@ -48,7 +52,7 @@ final class FavoritesWidgetView extends FrameLayout {
         header.setEllipsize(android.text.TextUtils.TruncateAt.END);header.setGravity(Gravity.CENTER_VERTICAL);
         header.setPadding(dp(12),0,dp(12),0);header.setFocusable(true);
         header.setText(context.getString(R.string.hb_fav_title)+" · "+keys.size());
-        header.setOnFocusChangeListener((v,has)->{if(has){headerSelected=true;focused.accept("");}header.setBackgroundColor(has?UiBackgroundDrawable.colorWithOpacity(palette.raised,opacity):0);invalidate();});
+        header.setOnFocusChangeListener((v,has)->{if(has){headerSelected=true;focused.accept("");hideHighlight();}header.setBackgroundColor(has?UiBackgroundDrawable.colorWithOpacity(palette.raised,opacity):0);invalidate();});
         header.setOnClickListener(v->activate.run());header.setOnLongClickListener(v->{actions.run();return true;});
         list=new RecyclerView(context);list.setHasFixedSize(true);list.setItemAnimator(null);
         list.setVerticalScrollBarEnabled(false);list.setHorizontalScrollBarEnabled(false);list.setOverScrollMode(OVER_SCROLL_NEVER);
@@ -59,9 +63,19 @@ final class FavoritesWidgetView extends FrameLayout {
                 view.post(()->{int index=list.getChildAdapterPosition(view);if(interactive&&pendingFocus>=0&&index==pendingFocus){pendingFocus=-1;view.requestFocus();}});
             }
         });
-        list.addOnScrollListener(new RecyclerView.OnScrollListener(){@Override public void onScrolled(RecyclerView rv,int dx,int dy){wedges.invalidate();describe();}});
+        list.addOnScrollListener(new RecyclerView.OnScrollListener(){@Override public void onScrolled(RecyclerView rv,int dx,int dy){wedges.invalidate();describe();if(dx!=0||dy!=0)syncHighlight();}});
+        list.addOnLayoutChangeListener((v,l,t,r,b,ol,ot,or,ob)->{if(r-l!=or-ol||b-t!=ob-ot)syncHighlight();});
         addView(header,new FrameLayout.LayoutParams(-1,dp(30),Gravity.TOP));
-        FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(-1,-1);lp.topMargin=dp(30);lp.bottomMargin=dp(18);addView(list,lp);
+        // The same highlight as All Apps. It sits behind round and banner artwork and over plain icons, so its layer
+        // goes under or over the list to match, and is clipped to the list's area.
+        layer=new FrameLayout(context);layer.setClipChildren(true);layer.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);layer.setFocusable(false);
+        highlight=new AppFocusHighlight(context,this,layer,-1,banners,circular,palette.background,reducedMotion);
+        boolean behind=AppFocusHighlight.behindArtwork(banners,circular);
+        FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(-1,-1);lp.topMargin=dp(30);lp.bottomMargin=dp(18);
+        FrameLayout.LayoutParams layerLp=new FrameLayout.LayoutParams(-1,-1);layerLp.topMargin=dp(30);layerLp.bottomMargin=dp(18);
+        if(behind)addView(layer,layerLp);
+        addView(list,lp);
+        if(!behind)addView(layer,layerLp);
         wedges=new Wedges(context);wedges.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);wedges.setFocusable(false);addView(wedges,new FrameLayout.LayoutParams(-1,-1));
         setOnFocusChangeListener((v,has)->{if(has)post(this::enter);});
     }
@@ -126,60 +140,70 @@ final class FavoritesWidgetView extends FrameLayout {
         list.setVisibility(compact||ribbon&&headerSelected?GONE:VISIBLE);
         header.setVisibility(ribbon&&!compact&&!headerSelected?GONE:VISIBLE);
         FrameLayout.LayoutParams content=(FrameLayout.LayoutParams)list.getLayoutParams();content.topMargin=ribbon?0:dp(30);content.bottomMargin=ribbon?0:dp(18);
-        int side=ribbon?dp(18):sidePad>0?sidePad:dp(10);list.setPadding(side,dp(4),side,dp(4));
+        int side=ribbon?dp(18):dp(AppGridSizing.PANEL_SIDE_PADDING);list.setPadding(side,dp(4),side,dp(4));
+        FrameLayout.LayoutParams layerLp=(FrameLayout.LayoutParams)layer.getLayoutParams();
+        layerLp.topMargin=content.topMargin;layerLp.bottomMargin=content.bottomMargin;layer.setVisibility(list.getVisibility());
         super.onMeasure(widthSpec,heightSpec);
     }
     @Override protected void onSizeChanged(int w,int h,int oldw,int oldh){
         super.onSizeChanged(w,h,oldw,oldh);
         if(compact){wedges.invalidate();if(enterPending)post(this::enter);return;}
-        // Google TV spaces circular icons about 1.2 diameters apart; leave room for the focus ring and a short label.
-        pitch=Math.max(dp(banners?176:AppAppearance.FAVORITE_ICON_PITCH_DP),Math.round(16*getResources().getDisplayMetrics().scaledDensity*(banners?6:4)));
-        columns=ribbon?1:Math.max(1,(w-dp(20))/pitch);
-        // Fixed-pitch cells centred in the panel, rather than columns stretched over the leftover width.
-        sidePad=ribbon?dp(18):Math.max(dp(10),(w-columns*pitch)/2);
+        // The All Apps cell geometry: the same column pitch, and the columns share the width evenly, as All Apps does.
+        float density=getResources().getDisplayMetrics().density;
+        pitchDp=AppGridSizing.columnPitch(labelHeightDp,banners);
+        columns=ribbon?1:AppGridSizing.panelColumns(Math.round(w/density),labelHeightDp,banners);
         manager=new GridLayoutManager(getContext(),columns,ribbon?RecyclerView.HORIZONTAL:RecyclerView.VERTICAL,false);
         list.setLayoutManager(manager);adapter.notifyDataSetChanged();
         if(enterPending)post(this::enter);
     }
     private int dp(float value){return Math.round(value*getResources().getDisplayMetrics().density);}
     private final class Holder extends RecyclerView.ViewHolder {Holder(View view){super(view);}}
-    /** A cell that draws the Google TV focus ring and halo behind the artwork it holds. */
-    private final class Cell extends FrameLayout {
-        private View ring, tile, art;
-        Cell(Context c){super(c);setFocusable(true);setClipChildren(false);setClipToPadding(false);setPadding(dp(2),dp(4),dp(2),dp(4));}
-        void bind(View ring,View tile,View art){this.ring=ring;this.tile=tile;this.art=art;}
-        @Override protected void onLayout(boolean changed,int l,int t,int r,int b){
-            super.onLayout(changed,l,t,r,b);
-            if(ring==null||art==null||art.getWidth()<=0)return;
-            int w,h;
-            if(ring instanceof AppFocusView){((AppFocusView)ring).setIconDiameter(art.getWidth());w=h=AppAppearance.focusExtent(art.getWidth());}
-            else{w=(int)Math.ceil(art.getWidth()*AppAppearance.FOCUS_SCALE)+dp(20);h=(int)Math.ceil(art.getHeight()*AppAppearance.FOCUS_SCALE)+dp(20);}
-            int cx=tile.getLeft()+art.getLeft()+art.getWidth()/2,cy=tile.getTop()+art.getTop()+art.getHeight()/2;
-            ring.measure(MeasureSpec.makeMeasureSpec(w,MeasureSpec.EXACTLY),MeasureSpec.makeMeasureSpec(h,MeasureSpec.EXACTLY));
-            ring.layout(cx-w/2,cy-h/2,cx-w/2+w,cy-h/2+h);
+    private void hideHighlight(){highlight.hide();}
+    /** Moves the shared highlight to whichever cell has focus, without sliding: after a scroll or a resize. */
+    private void syncHighlight(){
+        View cell=list.getFocusedChild();
+        if(cell instanceof FrameLayout&&cell.isFocused()&&((FrameLayout)cell).getChildCount()>0)
+            placeHighlight((FrameLayout)cell,false);
+    }
+    private void placeHighlight(FrameLayout cell,boolean animate){
+        View tile=cell.getChildAt(0);if(tile==null)return;
+        View target=AppFocusHighlight.target(tile);
+        if(AppFocusHighlight.ready(target))highlight.move(target,animate);
+        // Not laid out yet, as when focus is restored while the panel is still being built.
+        else target.post(()->{if(cell.isFocused())placeHighlight(cell,false);});
+    }
+    /** The same tile change All Apps makes: round and banner tiles lift their artwork; plain icons scale. */
+    private void focusTile(View tile,boolean has){
+        boolean animate=!reducedMotion;
+        if(tile instanceof CircularAppTile)((CircularAppTile)tile).setAppFocused(has,animate);
+        else if(tile instanceof BannerAppTile)((BannerAppTile)tile).setAppFocused(has,animate);
+        else{
+            tile.animate().cancel();
+            tile.animate().scaleX(has?AppFocusHighlight.SCALE:1f).scaleY(has?AppFocusHighlight.SCALE:1f)
+                .setDuration(animate?AppAppearance.TRANSITION_MS:0).setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
         }
     }
     private final class Adapter extends RecyclerView.Adapter<Holder>{
         @Override public int getItemCount(){return keys.size();}
         @Override public Holder onCreateViewHolder(ViewGroup parent,int type){
-            Cell cell=new Cell(getContext());
-            cell.setLayoutParams(new RecyclerView.LayoutParams(ribbon?pitch:-1,ribbon?-1:dp(banners?112:110)));
+            FrameLayout cell=new FrameLayout(getContext());
+            cell.setFocusable(true);cell.setClipChildren(false);cell.setClipToPadding(false);
+            // The gaps All Apps leaves between cells, as padding.
+            cell.setPadding(dp(AppGridSizing.COLUMN_GAP/2f),dp(AppGridSizing.ROW_GAP/2f),dp(AppGridSizing.COLUMN_GAP/2f),dp(AppGridSizing.ROW_GAP/2f));
+            cell.setLayoutParams(new RecyclerView.LayoutParams(ribbon?dp(pitchDp):-1,ribbon?-1:dp(AppGridSizing.rowPitch(labelHeightDp,banners))));
             return new Holder(cell);
         }
         @Override public void onBindViewHolder(Holder holder,int position){
-            String key=keys.get(position);Cell frame=(Cell)holder.itemView;frame.removeAllViews();frame.setBackground(null);
+            String key=keys.get(position);FrameLayout frame=(FrameLayout)holder.itemView;frame.removeAllViews();
             View tile=artwork.apply(key);tile.setFocusable(false);tile.setClickable(false);
-            View art=tile instanceof CircularAppTile?((CircularAppTile)tile).artwork():tile instanceof BannerAppTile?((BannerAppTile)tile).artwork():null;
-            View ring=art==null?null:tile instanceof CircularAppTile?new AppFocusView(getContext()):new BannerFocusView(getContext());
-            if(ring!=null){ring.setFocusable(false);ring.setClickable(false);ring.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);ring.setVisibility(INVISIBLE);frame.addView(ring,new FrameLayout.LayoutParams(1,1));}
-            frame.addView(tile,new FrameLayout.LayoutParams(-1,-1));frame.bind(ring,tile,art);
+            tile.setPadding(dp(2),dp(2),dp(2),dp(2));   // as All Apps tiles
+            frame.addView(tile,new FrameLayout.LayoutParams(-1,-1));
             frame.setContentDescription(tile.getContentDescription());
             frame.setOnFocusChangeListener((v,has)->{
-                if(tile instanceof CircularAppTile)((CircularAppTile)tile).setAppFocused(has,!reducedMotion);
-                if(tile instanceof BannerAppTile)((BannerAppTile)tile).setAppFocused(has,!reducedMotion);
-                if(ring!=null)ring.setVisibility(has?VISIBLE:INVISIBLE);
-                else{UiBackgroundDrawable bg=new UiBackgroundDrawable(palette.raised);bg.setCornerRadius(dp(12));bg.setFillOpacity(has?opacity:0);bg.setStroke(dp(has?2:0),palette.focus);frame.setBackground(bg);}
-                if(has){selected=key;headerSelected=false;focused.accept(key);describe();}
+                focusTile(tile,has);
+                if(has){selected=key;headerSelected=false;focused.accept(key);describe();placeHighlight(frame,true);}
+                // Hide only if focus has left the panel's apps, not merely moved to the next one.
+                else frame.post(()->{if(!list.hasFocus())highlight.hide();});
             });
             frame.setOnClickListener(v->activate.run());frame.setOnLongClickListener(v->{actions.run();return true;});
         }
