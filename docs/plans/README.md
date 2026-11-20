@@ -99,3 +99,6 @@ missing rows on commit.*
 | [Android app widgets](2026-11-19-android-app-widgets.md) | Hosts installed Android widgets with saved instances, expansion, Undo and explicit Chromecast permission setup; records device and provider acceptance gates. | This change | Feature |
 - [Screensavers: choose, configure and get more](2026-11-20-screensavers.md): one Screensaver
   screen for built-in, provider and Android screensavers, with mockups; plan for review.
+- [Screensavers Stage 0: the probe recipe](2026-11-20-screensavers-stage0-probe.md): how the
+  plan's eleven device questions are answered through the coordinator, and the two
+  coordinator additions the write tests need; draft for review.

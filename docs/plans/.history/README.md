@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/5bb93a2) | Plan screensaver choice, configuration and installation |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/e44944d) | Host Android app widgets with TV setup, full-screen controls and Undo |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/e43d0f7) | Record timer verification and update public documentation |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/467eae0) | Select API Gateway Lambda and DynamoDB for grocery sync |
@@ -42,6 +43,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+5bb93a2	author	Will Norris
+5bb93a2	added	2
+5bb93a2	deleted	0
+5bb93a2	files	1
+5bb93a2	body	One Screensaver screen for built-in, provider-hosted and Android\nscreensavers, with five mockups, five diagrams, a Stage 0 device probe\nand three decisions for review. Adds a generic plan mockup check and\nthe staged TODO items. Nothing is implemented.\n\nCo-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqRqz1gyQcJHUETGjcT
 e44944d	author	Will Norris
 e44944d	added	1
 e44944d	deleted	0
