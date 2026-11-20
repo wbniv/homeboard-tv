@@ -105,3 +105,6 @@ missing rows on commit.*
 - [Control interface: one command model, links and a local listener](2026-11-20-control-interface.md):
   one vocabulary and state for navigation-only links, a shell-only receiver, an opt-in LAN
   listener with devices approved on the TV, and in-process callers; plan for review.
+- [Home button: make the remote's Home open Homeboard on Google TV](2026-11-20-home-button.md):
+  Home settings → Home button, through the accessibility helper with a runtime target, honest
+  running state, repair and Undo; implemented, device steps pending.

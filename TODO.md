@@ -95,4 +95,7 @@ _Auto-added from plan "Out of scope"/"Deferred" sections at commit time. Triage 
 - [ ] **(triage)** **IPv6.** The listener binds to the site-local IPv4 address, as the phone editor does. — _from [2026-11-20-control-interface.md](docs/plans/2026-11-20-control-interface.md)_  <!-- fp:22a5c0ecef5211ce -->
 - [ ] **(triage)** **Waking the TV from standby.** Power belongs to the Chromecast's own Google Home device. — _from [2026-11-20-control-interface.md](docs/plans/2026-11-20-control-interface.md)_  <!-- fp:b020f0c536dd26d2 -->
 - [ ] **(triage)** **A timer link that pre-fills the timer screen for the person to confirm**, such as `homeboard://v1/timers.show?minutes=10`. Possible later as a navigation verb with arguments. — _from [2026-11-20-control-interface.md](docs/plans/2026-11-20-control-interface.md)_  <!-- fp:6a0b738877ab55d2 -->
+- [ ] **(triage)** A Play Console accessibility declaration and its in-app disclosure screen, for the Play edition item. — _from [2026-11-20-home-button.md](docs/plans/2026-11-20-home-button.md)_  <!-- fp:125ea1785ee3f7ca -->
+- [ ] **(triage)** Reviving `restore_key_services` for `InputKeyService`, which no Homeboard build turns on. — _from [2026-11-20-home-button.md](docs/plans/2026-11-20-home-button.md)_  <!-- fp:7527c98b2fee46a0 -->
+- [ ] **(triage)** A Home-key override that does not filter keys (window events only), if step 9 shows key repeat breaking on a Chromecast. — _from [2026-11-20-home-button.md](docs/plans/2026-11-20-home-button.md)_  <!-- fp:ebcdda6e29953bdd -->
 <!-- END auto-captured-deferrals -->

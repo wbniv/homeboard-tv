@@ -92,8 +92,8 @@ No account, API key, Home Assistant or dashboard server is needed for air qualit
 | Hold Back for one second on Home / All Apps | Undo the latest saved change, once per hold |
 | Menu button, if your remote has one | Open Home settings |
 
-If Homeboard is your default launcher, pressing Home returns to its widget dashboard.
-Otherwise the remote's Home button still opens your currently selected launcher.
+The remote's Home button opens your TV's own launcher until you change it in
+**Home settings → Home button**; see [The Home button](#the-home-button) below.
 
 ![All Apps — actual TV screenshot](quick-start/all-apps.png)
 
@@ -174,12 +174,30 @@ The two top-right buttons are separate: the sliders button opens **Homeboard
 settings**, which includes **About Homeboard TV**, and the gear opens **Android device Settings**. System Settings is not
 a tile in the app grid. Homeboard settings are also available by holding OK on a
 Home tile or on the empty Home screen.
-Choose **Default Home app** in Homeboard settings to request Android's Home role;
-select **Homeboard TV** in the system prompt. Homeboard reports whether Android
-accepted the choice. Standard Android Home intents should then open Homeboard, but
-some Google TV remotes or firmware route their physical Home button directly to
-Google TV. If the role is accepted and that button still opens Google TV, the device
-does not honor the default Home app for that key.
+
+### The Home button
+
+**Home settings → Home button** decides what a short press of Home opens, and says
+what it opens now.
+
+- **Google TV**, including the Chromecast with Google TV: choosing a different Home
+  app does not move the Home button, so Homeboard offers **Home button opens
+  Homeboard**. Turned on, a short press of Home opens Homeboard from any app, and if
+  Google TV's home screen appears Homeboard replaces it. Holding Home still opens
+  Google TV's quick settings and home panel, the remote's YouTube and Netflix
+  buttons keep working, and Google TV stays installed and enabled. It works through
+  Homeboard's **Home button** helper, an Android accessibility service. Homeboard
+  can turn the helper on itself after the same one-time setup command the
+  screensaver's **Use everywhere** uses; otherwise the screen opens Android's
+  accessibility settings for you to turn it on. The screen shows whether the helper
+  is actually running, and **Start it again** if Android stopped it.
+- **Other TVs**, where Android honours the choice: **Make Homeboard the Home app**
+  asks Android for the Home role, with no helper. If Homeboard already is the Home
+  app, the screen says so.
+
+Turning the setting on or off saves at once and can be undone by holding Back. To
+give Home back at any time, turn the setting off, hold Home and turn off **Home
+button** in Android's accessibility settings, or uninstall Homeboard.
 
 ![Homeboard settings and Android device Settings buttons — design mockup](../plans/2026-11-15-widget-home/compact-grid-settings.svg)
 
