@@ -1,9 +1,10 @@
 # Screensavers: choose, configure and get more
 
-**Status: plan for review, 2026‑11‑20. Nothing is implemented.** The mockups and diagrams
-below are the proposal. Four decisions are waiting for Will (see
-[Decisions for Will](#decisions-for-will)), and the device probe in Stage 0 has not run:
-at 17:40 on 2026‑11‑20 Cast1 was `recovery-required` and Cast2 was in personal use.
+**Status: decisions settled, 2026‑11‑20. Nothing is implemented.** Will answered the four
+[decisions](#decisions) the same day, and the
+[distribution research](../investigations/2026-11-20-screensaver-distribution.md) covers
+stores and installing from Homeboard. The device probe in Stage 0 has not run: at 17:40
+on 2026‑11‑20 Cast1 was `recovery-required` and Cast2 was in personal use.
 
 Will, 2026‑11‑20: "we need a way to configure the screensaver, and way to choose from
 multiple screensavers, and way to install screensavers".
@@ -71,7 +72,7 @@ flowchart TD
     G --> H{Homeboard may change<br/>Android's setting?}
     H -->|No| I[One-time setup screen<br/>command and Retry]
     I --> H
-    H -->|Yes| J[Review: now → after]
+    H -->|Yes| J[Asked once: now → after]
     J -->|Confirm| K[Android's screensaver changed,<br/>read back, original kept]
     J -->|Cancel| B
     K --> L[Plays in every app at<br/>Android's idle time]
@@ -159,11 +160,11 @@ timer or alarm from [Timers & alarms](2026-11-19-cooking-timers.md).
 [![Get screensavers directory](2026-11-20-screensavers/get.png)](2026-11-20-screensavers/get.html)
 
 **Get screensavers** is the existing reviewed directory, seen from the Screensaver screen.
-It follows the rules already settled in the
+For other publishers' apps it follows the rules already settled in the
 [provider plan](2026-11-18-provider-testing-spike-and-installation.md): reviewed links
 only, Google Play first, a QR code for the phone, publisher release pages under
-Advanced, excluded entries with an explanation and no link. Homeboard does not bundle,
-download or install apps, and **installing never changes the screensaver**.
+Advanced, excluded entries with an explanation and no link. **Installing never changes
+the screensaver.**
 [Open the interactive mockup](2026-11-20-screensavers/get.html).
 
 What is new:
@@ -175,12 +176,22 @@ What is new:
   Homeboard". That covers apps installed by any other route, such as World Foundry
   Aquarium Screensaver, which is already on a test TV.
 - **Installed cards** offer Preview and Use as screensaver directly.
+- **Install, for Homeboard's own publisher's apps.** Will, 2026‑11‑20: "i'm also
+  interested in supporting installation from homeboard-tv". A card for a World Foundry
+  app has an Install action. In the website edition of Homeboard it downloads the signed
+  app, checks its package, certificate and hash against the catalog, and hands it to
+  Android's installer, which asks the person to confirm. A Google Play edition of
+  Homeboard would open Play's install sheet instead, because Play forbids the direct
+  route there. Every other publisher's app stays a link. The reasoning and sources are in
+  the [distribution research](../investigations/2026-11-20-screensaver-distribution.md#installing-from-homeboard).
 
 ```mermaid
 flowchart LR
     A[Get screensavers] --> B[Pick a card]
     B --> C{Installed?}
-    C -->|No| D[Open Google Play on this TV<br/>or show QR code]
+    C -->|No, another publisher's| D[Open Google Play on this TV<br/>or show QR code]
+    C -->|No, Homeboard's publisher's| I2[Install: download, check,<br/>Android asks to confirm]
+    I2 --> F
     D --> E[Android or Play installs it]
     E --> F[Return to Homeboard:<br/>card refreshes]
     F --> C
@@ -190,17 +201,27 @@ flowchart LR
     C -->|Excluded| X[Explanation, no link]
 ```
 
-The first directory holds the seven reviewed provider entries Homeboard already lists.
-There is no verified list of Android‑only screensaver apps yet; an inventory with one
-controlled test each is a separate item (see Out of scope).
+The first directory holds the seven reviewed provider entries Homeboard already lists,
+plus the World Foundry app once it is published. There is no verified list of other
+Android‑only screensaver apps yet; an inventory with one controlled test each is a
+separate item (see Out of scope).
+
+**World Foundry apps play inside Homeboard without being bundled.** The app's exported
+preview activity runs the live scene in its own process, so Homeboard starts it for
+Preview and for the Home idle timer. Its settings document, defined by the coordinator's
+[settings contract](../../../chromecast-coordinator/docs/settings-provider-contract.md),
+supplies Homeboard's Options screen once the app admits Homeboard as a caller. Homeboard
+discovers both from metadata the app declares.
 
 ### Use everywhere
 
 [![Use everywhere: setup needed, review, in use, and two recovery notices](2026-11-20-screensavers/everywhere.png)](2026-11-20-screensavers/everywhere.html)
 
-This is the one place Homeboard changes an Android setting, so it gets a review step
-that shows now and after, and a permanent way back. The decision this mockup asks for:
-may Homeboard change this TV's screensaver at all? See Decision 1.
+This is the one place Homeboard changes an Android setting. Will settled that it may, and
+that everywhere is the goal (Decision 1), so the question is asked once: let Homeboard
+manage this TV's screensaver. It shows now and after and keeps a permanent way back.
+After that, each new choice applies in every app with the usual Undo and no further
+question.
 [Open the interactive mockup](2026-11-20-screensavers/everywhere.html).
 
 - **Setup needed.** On a TV with no Android screen for choosing a screensaver, Homeboard
@@ -209,7 +230,7 @@ may Homeboard change this TV's screensaver at all? See Decision 1.
   [widget permission setup](2026-11-19-android-app-widgets.md). The screen shows the
   installed package name and the exact command. Opening it changes nothing. On a TV whose
   Android settings do offer a screensaver chooser, Homeboard opens that instead.
-- **Review.** Now, after, when it starts, and what happens to the Home timer.
+- **Asked once.** Now, after, when it starts, and that later choices apply everywhere.
 - **In use.** Start now, the app's settings, and Restore the TV's original.
 - **The original is kept.** Before its first write Homeboard records the value it found
   and never overwrites that record. Restore puts it back. Undo after a change puts back
@@ -229,7 +250,7 @@ sequenceDiagram
         H-->>P: One-time setup screen (command, Retry)
     else Granted
         H->>A: Read current screensaver
-        H-->>P: Review: Ambient mode → Aerial Views
+        H-->>P: First time only: let Homeboard manage this TV's screensaver?
         P->>H: Confirm
         H->>H: Record the original if not yet recorded
         H->>A: Write the new screensaver
@@ -303,15 +324,17 @@ flowchart TD
 
 ### Stages
 
-Each stage ships on its own and is deployed to both TVs.
+Each stage ships on its own and is deployed to both TVs. The build order is 0, 1, 3, 2,
+5, 4: Use everywhere comes straight after Stage 1 because it is the goal.
 
 | Stage | Delivers | Needs |
 |---|---|---|
-| **0. Probe** | Answers to the eight questions below, as recorded evidence. Changes nothing on a TV except the two write tests, which restore the original. | Both TVs available; a typed coordinator recipe for the write tests, like `widget-binding`. |
-| **1. Choose and configure** | The Screensaver screen, Clock and Home background, their options, Preview, the Home idle timer, Show now, Undo. No permissions. | Decisions 2 and the list model. |
+| **0. Probe** | Answers to the eleven questions below, as recorded evidence. Changes nothing on a TV except the two write tests, which restore the original. | Both TVs available; a typed coordinator recipe for the write tests, like `widget-binding`. |
+| **1. Choose and configure** | The Screensaver screen, Clock and Home background, their options, Preview, the Home idle timer, Show now, Undo. No permissions. The default screensaver is a slot, so a later one replaces Clock without redesign. | Nothing; ready to build. |
 | **2. Providers and directory** | Providers as screensavers, Get screensavers with roles, Found on this TV. | Stage 1. |
-| **3. Use everywhere** | Android screensaver apps, the setup, review and restore screens. | Decision 1; Stage 0 answers 2, 4 and 5. |
+| **3. Use everywhere** | The one‑time setup and question, then every choice applied in every app; Android screensaver apps; Restore. | Stage 0 answers 2, 4 and 5. |
 | **4. Phone** | The phone panel and directory. | Stages 1 and 2. |
+| **5. Companion apps** | Discovery from an app's metadata, Preview and Home idle through its activity, Options from its settings document, and Install for Homeboard's own publisher's apps. | Stage 2; the World Foundry app admitting Homeboard and being published; Stage 0 answers 10 and 11. |
 
 **Stage 0 questions**, each answered per TV:
 
@@ -329,6 +352,11 @@ Each stage ships on its own and is deployed to both TVs.
    see, and where does the TV return on wake?
 8. Does a video provider play inside Homeboard's screensaver service within the TV's
    memory, and for how long?
+9. On the Pixel 8 Pro, do screensaver apps installed from outside the system appear in
+   the phone's own screen‑saver chooser?
+10. Does a Google Play listing link open in the TV's Play Store from Homeboard?
+11. Is there an "install unknown apps" setting for Homeboard on these TVs, and what do
+    Android's installer and Play Protect show when Homeboard starts an install?
 
 **Cost.** No infrastructure is created or changed, so there is no AWS cost.
 
@@ -359,41 +387,36 @@ Applied the shared [Alan Cooper design filter](/home/will/docs/howtos/alan-coope
     pane states why there is none.
 - **Proposed framework.** The five mockups and four diagrams above.
 - **Acceptance.** The verification steps below, as observed scenarios on the TVs.
-- **Disposition.** Conditional: the model depends on Decision 1 and on Stage 0. No
-  exception to the filter is claimed.
+- **Disposition.** Conditional on Stage 0. Decision 1 removed the repeated review: one
+  question, then direct choices with Undo. No exception to the filter is claimed.
 
-## Decisions for Will
+## Decisions
 
-1. **May Homeboard change this TV's Android screensaver?** Recommended: yes, only from an
-   explicit "Use … everywhere", only after the one‑time setup, with the original kept and
-   a Restore action. Installing, previewing and choosing a Homeboard‑run screensaver never
-   touch it. Without this, Android screensaver apps can be listed and configured but not
-   selected from Homeboard, and Stage 3 is dropped.
-2. **Default for the Home idle timer.** Recommended: "Android decides", so an update shows
-   nothing new until someone chooses. The alternative is 5 min of Clock on Home for
-   everyone.
-3. **First directory.** Recommended: the seven provider entries already reviewed, plus
-   automatic "Found on this TV". A reviewed inventory of Android‑only screensaver apps
-   follows as its own spike.
+Will settled all four on 2026‑11‑20.
 
-4. **World Foundry screensavers: bundle them, or play them from their own app?** (Will,
-   2026‑11‑20: "and/or can we bundle them with homeboard-tv?") Recommended: keep them as
-   separate apps and let Homeboard play them. Each already has an exported
-   `ScreensaverPreviewActivity` that runs the live tank in its own process, so Homeboard
-   can start it for Preview and for the Home idle timer with no Android setting changed.
-   That gives them the "Plays inside Homeboard" behaviour without bundling. Compiling them
-   into Homeboard's APK is possible but has three costs, measured on 2026‑11‑20:
-   - **Licence.** Homeboard is MIT. World Foundry's own documents describe it as GPL v2
-     (not checked file by file, and the tank assets' provenance is unchecked). An APK that
-     contains both would have to be distributed as a whole under the GPL.
-   - **Size.** Homeboard 0.1.97 is 5.4 MB. The engine library is 3.2 MB (32‑bit) plus
-     4.1 MB (64‑bit) before compression, and the three tank bundles are 23 MB, 3.9 MB and
-     3.0 MB. From the existing APK sizes, all three with one shared engine would bring
-     Homeboard to roughly 15–17 MB. That figure is an estimate.
-   - **Coupling.** Homeboard's container build would need the NDK and the World Foundry
-     tree, or a pinned prebuilt library; the engine must run in a separate process so a
-     native crash cannot take down the Home app; and every tank fix would need a
-     Homeboard release.
+1. **Homeboard may change this TV's Android screensaver, and everywhere is the goal.**
+   Will: "change everywhere is the desire". So "On Home only" is the state before the
+   one‑time setup, not a destination. The setup screen asks once to let Homeboard manage
+   this TV's screensaver, showing the original and keeping it. After that, every choice
+   applies in every app with the usual Undo, with no further review. Restore the TV's
+   original stays available. Use everywhere is built straight after Stage 1.
+2. **The default screensaver will be a better bundled one.** Will: "we'll probably bundle
+   an even better screensaver by default, actually. perhaps some sort of world foundry 3d
+   clock? i'll provide that later". Clock stays the default until it arrives, and the
+   default is a slot that the new one fills without a design change. Bundling World
+   Foundry code carries the licence, size and coupling costs measured in the
+   [distribution research](../investigations/2026-11-20-screensaver-distribution.md),
+   which also describes the alternative of shipping it as a companion app. The Home idle
+   timer's default was not discussed and stays "Android decides".
+3. **First directory: accepted.** The seven reviewed provider entries plus "Found on this
+   TV", with World Foundry's own screensavers added once they are published.
+4. **World Foundry screensavers stay their own apps, ideally one APK that is both the app
+   and the screensaver.** Will: "own apps, i think. but can we provide one apk that is
+   both the app and a screensaver interface? if so, that would be ideal". It can; see the
+   [distribution research](../investigations/2026-11-20-screensaver-distribution.md).
+   Will also wants them on the platform stores and installable from Homeboard, which
+   changes the Install section above: for Homeboard's own companion apps the directory
+   offers Install, not only a link.
 
 ## Out of scope
 
@@ -421,14 +444,14 @@ Applied the shared [Alan Cooper design filter](/home/will/docs/howtos/alan-coope
     PASS get: 1440x900, inline assets, no overflow/errors, PNG captured
     PASS everywhere: 1440x900, inline assets, no overflow/errors, PNG captured
     PASS phone: 1440x900, inline assets, no overflow/errors, PNG captured
-    PASS bundle size: 923745 bytes
+    PASS bundle size: 931384 bytes
     ```
 
     **PASS** — all five mockups meet the bundle rules (run 2026‑11‑20).
 
 2. `task md -- docs/plans/2026-11-20-screensavers.md` renders with no
    `Warning: mermaid.ink render failed` line, and all five diagrams draw.
-3. Stage 0: one coordinator job per TV answers the eight questions; its evidence is
+3. Stage 0: one coordinator job per TV answers the eleven questions; its evidence is
    exported under `docs/testing/2026-11-20-screensavers/`, and both write tests show the
    original value restored and read back.
 4. `task check` passes with new unit tests: `ScreensaverSettingsTest` (parse, defaults,
@@ -449,10 +472,15 @@ Applied the shared [Alan Cooper design filter](/home/will/docs/howtos/alan-coope
 9. Stage 2: Get screensavers shows roles, the excluded card has no link, and "Check
    installed apps" refreshes a card after a store round trip.
 10. Stage 3 on Cast1, then Cast2: without the permission, Use everywhere shows the setup
-    screen and Android's setting is unchanged; with it, Review → Confirm changes the
-    setting and reads it back; Restore returns the recorded original; each value is shown
-    before and after from coordinator evidence.
+    screen and Android's setting is unchanged; with it, the one‑time question changes the
+    setting and reads it back, and a second choice applies with no question; Restore
+    returns the recorded original; each value is shown before and after from coordinator
+    evidence.
 11. Stage 4: `task phone:check` covers the panel's loaded, not‑sent and finish‑on‑TV
     states; a phone choice appears on the TV with Undo on both.
 12. Both TVs end every stage with their original Android screensaver unless Will chose
     otherwise, shown by the final read of `screensaver_components`.
+13. Stage 5 on Cast1: a World Foundry app previews and plays on Home through its own
+    activity; Options lists the fields from its settings document and a change reads
+    back; Install shows Android's confirmation, and a download whose hash does not match
+    the catalog is refused with nothing installed.

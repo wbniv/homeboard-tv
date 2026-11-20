@@ -58,18 +58,18 @@ footer{position:absolute;left:40px;right:40px;bottom:20px;font-size:17px;color:#
 <div class="bar"><h1>Screensaver · Get screensavers</h1><button data-note="Back returns to the Screensaver list.">Back</button></div>
 <div class="grid">
 <section class="pane selected">
+<h2>World Foundry Aquarium</h2>
+<div><span class="chip">Not installed</span> <span class="chip ok">From Homeboard's publisher</span></div>
+<ul class="roles"><li>Plays inside Homeboard</li><li>Also an app, and an Android screensaver</li></ul>
+<small>Live 3D reef tanks. Homeboard can install it here; Android asks you to confirm.</small>
+<div class="row"><button class="primary" data-note="Homeboard fetches the signed app from its publisher, checks it, and Android asks you to confirm. On the Google Play edition of Homeboard this opens Play's install sheet instead. Nothing is selected yet.">Install</button><button data-note="Opens the Google Play listing on this TV. On return, this card refreshes.">Google Play</button><button data-note="Shows a QR code and the full address for the phone.">QR code</button></div>
+</section>
+<section class="pane">
 <h2>Overflight</h2>
 <div><span class="chip ok">Installed · 1.4.2</span> <span class="chip">Tested with Homeboard</span></div>
 <ul class="roles"><li>Plays inside Homeboard</li><li>Aerial video, sound off</li></ul>
-<small>Already used as Home's background. It can be the screensaver too, with its own options.</small>
+<small>From another publisher, so Homeboard links to Google Play and never installs it. Already used as Home's background.</small>
 <div class="row"><button class="primary" data-note="Saved. Undo banner: “Screensaver: Overflight”. Returns to the Screensaver list.">Use as screensaver</button><button data-note="Plays full screen now. OK uses it; Back cancels and nothing is saved.">Preview</button></div>
-</section>
-<section class="pane">
-<h2>Aerial Views</h2>
-<div><span class="chip">Not installed</span> <span class="chip">Google Play</span></div>
-<ul class="roles"><li>Plays inside Homeboard</li><li>Also an Android screensaver app</li></ul>
-<small>After installing, come back here: Homeboard finds it and offers Preview. Google Play owns the install and updates.</small>
-<div class="row"><button class="primary" data-note="Opens the Google Play listing on this TV. On return, this card refreshes.">Open Google Play on this TV</button><button data-note="Shows a QR code and the full address. In Play on the phone, choose this TV yourself.">Show QR code</button></div>
 </section>
 <section class="pane">
 <h2>Weather Wallpaper v2.11</h2>
@@ -80,11 +80,11 @@ footer{position:absolute;left:40px;right:40px;bottom:20px;font-size:17px;color:#
 </section>
 </div>
 <section class="pane found" style="min-height:0;display:grid">
-<div><h3>Found on this TV <span class="chip">Not reviewed by Homeboard</span></h3><small>World Foundry Aquarium Screensaver · Android screensaver app you installed. It appears in the Screensaver list like any other.</small></div>
-<button data-note="Opens the Screensaver list with World Foundry Aquarium focused.">Show in list</button>
+<div><h3>Found on this TV <span class="chip">Not reviewed by Homeboard</span></h3><small>Sample Fireplace · Android screensaver app you installed yourself. It appears in the Screensaver list like any other.</small></div>
+<button data-note="Opens the Screensaver list with Sample Fireplace focused.">Show in list</button>
 </section>
-<div class="nav"><button disabled>‹ Previous</button><button data-note="Rechecks installed apps now, including apps with no launcher icon.">Check installed apps</button><button data-note="Page 2 of 3: Movie Art, Daily Photos, Core Motion.">Next ›</button></div>
-<footer id="feedback">Installing never changes your screensaver. Homeboard does not download or install apps; it links to the store or the publisher.</footer>
+<div class="nav"><button disabled>‹ Previous</button><button data-note="Rechecks installed apps now, including apps with no launcher icon.">Check installed apps</button><button data-note="Page 2 of 4: Seahorse Grid, Planted Tank, Aerial Views.">Next ›</button></div>
+<footer id="feedback">Installing never changes your screensaver. Homeboard installs only its own publisher's apps, after Android asks you; every other app is a link.</footer>
 </main>
 <script>document.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>feedback.textContent=b.dataset.note);</script>
 </html>

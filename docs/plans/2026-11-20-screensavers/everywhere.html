@@ -66,11 +66,11 @@ footer{position:absolute;left:40px;right:40px;bottom:20px;font-size:17px;color:#
 <div class="row"><button class="primary" data-note="Checks the permission again. If granted, moves to the review step.">Retry</button><button data-note="Shows the same command and the how-to as a QR code for the phone.">Show QR code</button></div>
 </section>
 <section class="pane selected">
-<div class="step">State 2 · review</div>
-<h2>Change this TV's screensaver?</h2>
-<div class="ba"><b>Now</b><span>Ambient mode (Google)</span><b>After</b><span>Aerial Views</span><b>Starts</b><span>after 10&nbsp;min in any app · unchanged</span><b>On Home</b><span>Homeboard's 5&nbsp;min timer turns off: one timer is in charge</span></div>
-<small>Homeboard keeps the original so you can restore it at any time.</small>
-<div class="row"><button class="primary" data-note="Android's setting is written, read back and confirmed. Undo banner: “This TV's screensaver: Aerial Views”.">Use Aerial Views everywhere</button><button data-note="Nothing changes. Returns to the Screensaver list.">Cancel</button></div>
+<div class="step">State 2 · asked once</div>
+<h2>Let Homeboard manage this TV's screensaver?</h2>
+<div class="ba"><b>Now</b><span>Ambient mode (Google)</span><b>After</b><span>your choice, now Aerial Views</span><b>Starts</b><span>after 10&nbsp;min in any app · unchanged</span><b>Later</b><span>each new choice applies in every app, with Undo</span></div>
+<small>Asked once. Homeboard keeps the original so you can restore it at any time.</small>
+<div class="row"><button class="primary" data-note="Android's setting is written, read back and confirmed. Undo banner: “This TV's screensaver: Aerial Views”. Later choices apply without this step.">Let Homeboard manage it</button><button data-note="Nothing changes. Returns to the Screensaver list.">Cancel</button></div>
 </section>
 <section class="pane">
 <div class="step">State 3 · in use</div>
@@ -84,7 +84,7 @@ footer{position:absolute;left:40px;right:40px;bottom:20px;font-size:17px;color:#
 <div class="notice warn"><b>Aerial Views is no longer installed.</b> Homeboard restored this TV's original screensaver (Ambient mode) and plays Clock on Home. Shown once, on Home, with Undo unavailable because the app is gone.</div>
 <div class="notice bad"><b>Android did not accept the change.</b> This TV's screensaver is still Ambient mode. Nothing else changed. Retry, or check the one-time setup.</div>
 </div>
-<footer id="feedback">Only an explicit “Use … everywhere” changes Android's setting. Installing, previewing and opening this screen never do.</footer>
+<footer id="feedback">Homeboard changes Android's setting only after you allow it here, once. Installing, previewing and opening this screen never do.</footer>
 </main>
 <script>document.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>feedback.textContent=b.dataset.note);</script>
 </html>
