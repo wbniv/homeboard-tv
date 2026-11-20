@@ -1,9 +1,15 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b0f6606) | Google Home investigation: record the kitchen Nest display; add TODO items |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/1327db1) | Google Home investigation: weigh lasting costs, not engineering effort |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/0993cf1) | Investigation: options for integrating Homeboard TV with Google Home |
 
 <!--history-meta v1
+b0f6606	author	Will Norris
+b0f6606	added	21
+b0f6606	deleted	15
+b0f6606	files	1
+b0f6606	body	The chromecast-coordinator already records a kitchen Nest Hub or Hub Max\nand the TVs' Android versions (14 and 12). With a Google hub present, the\nMatter device is prototyped beside the bridge, and the Cast receiver is no\nlonger parked. Adds three open items: the Home APIs Stage 0 probe, the\ncontrol interface, and the paired direction 1 prototypes.\n\nCo-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqN1KiiVNT63goz7fyo
 1327db1	author	Will Norris
 1327db1	added	44
 1327db1	deleted	25
