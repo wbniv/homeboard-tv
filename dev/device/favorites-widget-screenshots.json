@@ -1,42 +1,40 @@
 {
   "workflow": "check",
   "app": "homeboard-tv",
-  "duration": 27,
+  "duration": 26,
   "panel": "require-hidden",
   "input_script": [
     {
+      "at": 2,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
       "at": 3,
-      "capture": "home-at-rest"
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
     },
     {
       "at": 5,
-      "key": "DPAD_DOWN",
+      "key": "BACK",
       "action": "hold",
       "ms": 80
     },
     {
       "at": 7,
-      "key": "DPAD_RIGHT",
-      "action": "hold",
-      "ms": 80
+      "capture": "home-2of2"
     },
     {
       "at": 8,
-      "key": "DPAD_RIGHT",
-      "action": "hold",
-      "ms": 80
-    },
-    {
-      "at": 9,
-      "key": "DPAD_RIGHT",
+      "key": "DPAD_DOWN",
       "action": "hold",
       "ms": 80
     },
     {
       "at": 10,
-      "key": "DPAD_RIGHT",
-      "action": "hold",
-      "ms": 80
+      "capture": "entered-list"
     },
     {
       "at": 11,
@@ -51,16 +49,8 @@
       "ms": 80
     },
     {
-      "at": 13,
-      "key": "DPAD_RIGHT",
-      "action": "hold",
-      "ms": 80
-    },
-    {
       "at": 14,
-      "key": "DPAD_RIGHT",
-      "action": "hold",
-      "ms": 80
+      "capture": "third-icon"
     },
     {
       "at": 15,
@@ -69,8 +59,16 @@
       "ms": 80
     },
     {
+      "at": 16,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
       "at": 17,
-      "capture": "focus-on-10th"
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
     },
     {
       "at": 18,
@@ -79,21 +77,23 @@
       "ms": 80
     },
     {
-      "at": 20,
-      "capture": "focus-on-11th"
-    },
-    {
-      "at": 21,
+      "at": 19,
       "key": "DPAD_RIGHT",
       "action": "hold",
       "ms": 80
     },
     {
-      "at": 23,
-      "capture": "focus-on-12th"
+      "at": 20,
+      "key": "DPAD_RIGHT",
+      "action": "hold",
+      "ms": 80
     },
     {
-      "at": 25,
+      "at": 22,
+      "capture": "ninth-icon"
+    },
+    {
+      "at": 24,
       "capture": "final"
     }
   ]
