@@ -138,6 +138,11 @@ final class AppFocusHighlight {
         if (view instanceof AppFocusView) ((AppFocusView) view).setRimColor(color);
     }
 
+    /** Tints the halo of a circular highlight, as Google TV does with the focused icon's colour. */
+    void setHalo(int rgb) {
+        if (view instanceof AppFocusView) ((AppFocusView) view).setHaloColor(rgb);
+    }
+
     /** Stops any slide in progress, for a highlight that is about to be dropped. */
     void cancel() {
         springX.cancel(); springY.cancel();

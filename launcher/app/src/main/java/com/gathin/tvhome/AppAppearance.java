@@ -10,7 +10,35 @@ final class AppAppearance {
     static final float HALO_RADIUS = 0.95f;
     /** The reference launcher's focus rim, measured on a near-black wallpaper. */
     static final int RIM = 0xff434546;
+    /** Measured on Cast2's Google TV home at 1080p: 152 px icons on a 182 px centre pitch (a 30 px gap). */
+    static final float GTV_PITCH_RATIO = 182f / 152f;
+    /** Favorites circular icon, in dp. Large enough that the Google TV pitch ratio leaves a Google TV-sized gap. */
+    static final int FAVORITE_ICON_DP = 64;
     private AppAppearance() { }
+
+    /**
+     * Favorites circular pitch in dp: the Google TV ratio to the icon, but never narrower than a readable label
+     * (3.4 label heights; All Apps uses 4).
+     */
+    static int favoritePitchDp(int labelHeightDp) {
+        return Math.max(Math.round(FAVORITE_ICON_DP * GTV_PITCH_RATIO), Math.round(Math.max(0, labelHeightDp) * 3.4f));
+    }
+
+    /**
+     * The colour a focused icon's halo takes: the average of its opaque pixels, weighted toward saturated ones so a
+     * white disc with a small red logo glows red, not gray. {@code fallback} when nothing is opaque.
+     */
+    static int dominantColor(int[] argb, int fallback) {
+        double r = 0, g = 0, b = 0, total = 0;
+        for (int px : argb) {
+            if ((px >>> 24) < 0xc0) continue;
+            int pr = px >> 16 & 0xff, pg = px >> 8 & 0xff, pb = px & 0xff;
+            double weight = 1 + (Math.max(pr, Math.max(pg, pb)) - Math.min(pr, Math.min(pg, pb))) / 16.0;
+            r += pr * weight; g += pg * weight; b += pb * weight; total += weight;
+        }
+        if (total == 0) return fallback;
+        return 0xff000000 | (int) Math.round(r / total) << 16 | (int) Math.round(g / total) << 8 | (int) Math.round(b / total);
+    }
 
     /** WCAG relative luminance of an opaque colour. */
     static float luminance(int argb) {

@@ -20,7 +20,8 @@ import android.widget.TextView;
 final class CircularAppTile extends LinearLayout {
     private final ImageView icon;
     private final TextView label;
-    private final int preferredDiameter, labelGap;
+    private int preferredDiameter;
+    private final int labelGap;
     private ObjectAnimator labelAnimation;
 
     CircularAppTile(Context context, Drawable artwork, String name) {
@@ -82,6 +83,14 @@ final class CircularAppTile extends LinearLayout {
         LayoutParams iconLp = (LayoutParams) icon.getLayoutParams();
         iconLp.width = diameter; iconLp.height = diameter;
         super.onMeasure(widthSpec, heightSpec);
+    }
+
+    /** A different resting size than the app default, such as the larger Favorites icon. */
+    void setPreferredDiameterDp(int dp) {
+        int px = Math.round(dp * getResources().getDisplayMetrics().density);
+        if (px == preferredDiameter) return;
+        preferredDiameter = px;
+        requestLayout();
     }
 
     /** The resting artwork, for callers that draw focus behind it. */

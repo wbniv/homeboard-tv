@@ -13,6 +13,7 @@ final class AppFocusView extends View {
     private final Paint gap = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint rim = new Paint(Paint.ANTI_ALIAS_FLAG);
     private float diameter;
+    private int haloRgb = 0xaeb9c0;
 
     AppFocusView(Context context) {
         super(context);
@@ -28,6 +29,15 @@ final class AppFocusView extends View {
         invalidate();
     }
 
+    /** The halo's colour, without alpha: Google TV tints it with the focused icon's colour. */
+    void setHaloColor(int rgb) {
+        rgb &= 0xffffff;
+        if (rgb == haloRgb) return;
+        haloRgb = rgb;
+        updateHalo();
+        invalidate();
+    }
+
     void setIconDiameter(float value) {
         if (diameter == value) return;
         diameter = value;
@@ -40,7 +50,7 @@ final class AppFocusView extends View {
         if (diameter <= 0 || getWidth() == 0 || getHeight() == 0) return;
         halo.setShader(new RadialGradient(getWidth() / 2f, getHeight() / 2f,
                 diameter * AppAppearance.HALO_RADIUS,
-                new int[]{0x18aeb9c0, 0x18aeb9c0, 0x0caeb9c0, 0x00aeb9c0},
+                new int[]{0x18000000 | haloRgb, 0x18000000 | haloRgb, 0x0c000000 | haloRgb, haloRgb},
                 new float[]{0f, 0.58f, 0.72f, 1f}, Shader.TileMode.CLAMP));
     }
 

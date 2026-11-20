@@ -36,6 +36,7 @@ final class FavoritesWidgetView extends FrameLayout {
     private final Adapter adapter = new Adapter();
     private GridLayoutManager manager;
     private int columns=1, pitchDp, ribbonCellPx;
+    private final java.util.Map<String,Integer> haloColors=new java.util.HashMap<>();
     private int pendingFocus=-1;
     private String selected;
     private boolean compact, headerSelected, interactive=true, enterPending, geometryReady;
@@ -152,13 +153,32 @@ final class FavoritesWidgetView extends FrameLayout {
         if(compact){wedges.invalidate();if(enterPending)post(this::enter);return;}
         // The All Apps cell geometry: the same column pitch, and the columns share the width evenly, as All Apps does.
         float density=getResources().getDisplayMetrics().density;
-        pitchDp=AppGridSizing.columnPitch(labelHeightDp,banners);
-        columns=ribbon?1:AppGridSizing.panelColumns(Math.round(w/density),labelHeightDp,banners);
+        pitchDp=roundIcons()?AppAppearance.favoritePitchDp(labelHeightDp):AppGridSizing.columnPitch(labelHeightDp,banners);
+        columns=ribbon?1:Math.max(1,(Math.round(w/density)-AppGridSizing.PANEL_SIDE_PADDING*2)/pitchDp);
         // Whole cells only: the ribbon's viewport is shared evenly, so no icon is sliced at either end.
         ribbonCellPx=AppGridSizing.ribbonCell(w-2*dp(18),dp(pitchDp));
         manager=new GridLayoutManager(getContext(),columns,ribbon?RecyclerView.HORIZONTAL:RecyclerView.VERTICAL,false);
         list.setLayoutManager(manager);adapter.notifyDataSetChanged();
         if(enterPending)post(this::enter);
+    }
+    /** Round Favorites icons are larger than the app default, so their gaps match Google TV's. */
+    private boolean roundIcons(){return circular&&!banners;}
+    /** The focused icon's colour, for its halo; found once per app. */
+    private int haloColor(String key,View tile){
+        Integer known=haloColors.get(key);if(known!=null)return known;
+        int color=0xffaeb9c0;
+        View art=tile instanceof CircularAppTile?((CircularAppTile)tile).artwork():null;
+        android.graphics.drawable.Drawable shown=art instanceof android.widget.ImageView?((android.widget.ImageView)art).getDrawable():null;
+        android.graphics.drawable.Drawable.ConstantState state=shown==null?null:shown.getConstantState();
+        if(state!=null){
+            // A copy, so measuring does not disturb the bounds of the drawable on screen.
+            android.graphics.drawable.Drawable copy=state.newDrawable().mutate();
+            int size=24;android.graphics.Bitmap bitmap=android.graphics.Bitmap.createBitmap(size,size,android.graphics.Bitmap.Config.ARGB_8888);
+            copy.setBounds(0,0,size,size);copy.draw(new Canvas(bitmap));
+            int[] pixels=new int[size*size];bitmap.getPixels(pixels,0,size,0,0,size,size);bitmap.recycle();
+            color=AppAppearance.dominantColor(pixels,color);
+        }
+        haloColors.put(key,color);return color;
     }
     private int dp(float value){return Math.round(value*getResources().getDisplayMetrics().density);}
     private final class Holder extends RecyclerView.ViewHolder {Holder(View view){super(view);}}
@@ -194,7 +214,7 @@ final class FavoritesWidgetView extends FrameLayout {
             cell.setFocusable(true);cell.setClipChildren(false);cell.setClipToPadding(false);
             // The gaps All Apps leaves between cells, as padding.
             cell.setPadding(dp(AppGridSizing.COLUMN_GAP/2f),dp(AppGridSizing.ROW_GAP/2f),dp(AppGridSizing.COLUMN_GAP/2f),dp(AppGridSizing.ROW_GAP/2f));
-            cell.setLayoutParams(new RecyclerView.LayoutParams(ribbon?ribbonCellPx:-1,ribbon?-1:dp(AppGridSizing.rowPitch(labelHeightDp,banners))));
+            cell.setLayoutParams(new RecyclerView.LayoutParams(ribbon?ribbonCellPx:-1,ribbon?-1:dp(AppGridSizing.rowPitch(labelHeightDp,banners,roundIcons()?AppAppearance.FAVORITE_ICON_DP:AppAppearance.ICON_DIAMETER_DP))));
             return new Holder(cell);
         }
         @Override public void onBindViewHolder(Holder holder,int position){
@@ -202,11 +222,12 @@ final class FavoritesWidgetView extends FrameLayout {
             if(ribbon&&frame.getLayoutParams().width!=ribbonCellPx){ViewGroup.LayoutParams params=frame.getLayoutParams();params.width=ribbonCellPx;frame.setLayoutParams(params);}
             View tile=artwork.apply(key);tile.setFocusable(false);tile.setClickable(false);
             tile.setPadding(dp(2),dp(2),dp(2),dp(2));   // as All Apps tiles
+            if(tile instanceof CircularAppTile&&roundIcons())((CircularAppTile)tile).setPreferredDiameterDp(AppAppearance.FAVORITE_ICON_DP);
             frame.addView(tile,new FrameLayout.LayoutParams(-1,-1));
             frame.setContentDescription(tile.getContentDescription());
             frame.setOnFocusChangeListener((v,has)->{
                 focusTile(tile,has);
-                if(has){selected=key;headerSelected=false;focused.accept(key);describe();placeHighlight(frame,true);}
+                if(has){selected=key;headerSelected=false;focused.accept(key);describe();highlight.setHalo(haloColor(key,tile));placeHighlight(frame,true);}
                 // Hide only if focus has left the panel's apps, not merely moved to the next one.
                 else frame.post(()->{if(!list.hasFocus())highlight.hide();});
             });

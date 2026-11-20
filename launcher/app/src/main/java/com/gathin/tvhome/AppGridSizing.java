@@ -12,7 +12,10 @@ final class AppGridSizing {
         return Math.max(banners ? 144 : 80, Math.max(0, labelHeight) * (banners ? 6 : 4));
     }
     static int rowPitch(int labelHeight, boolean banners) {
-        int artwork = banners ? 54 : AppAppearance.ICON_DIAMETER_DP;
+        return rowPitch(labelHeight, banners, AppAppearance.ICON_DIAMETER_DP);
+    }
+    static int rowPitch(int labelHeight, boolean banners, int iconDp) {
+        int artwork = banners ? 54 : iconDp;
         int focus = (int) Math.ceil(artwork * AppAppearance.FOCUS_SCALE);
         return focus + Math.max(0, labelHeight) + (banners ? 6 + 16 : 8) + TILE_PADDING + ROW_GAP;
     }
