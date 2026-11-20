@@ -134,8 +134,6 @@ final class Config {
     final boolean iconOnlyInputs;
     /** With vpn_pill, the VPN pill as a round lock button (config.xml / theme icon_only_vpn). */
     final boolean iconOnlyVpn;
-    /** Back on the Home screen opens the clock screensaver instead of doing nothing (config.xml / theme back_opens_clock). */
-    final boolean backOpensClock;
     /** The ambient glow takes a new app's colour in one frame instead of dipping and fading (config.xml / theme glow_snap). */
     final boolean glowSnap;
     /** The remote's Settings button clears the TV Settings task before opening it (config.xml / theme settings_key_clear_task). */
@@ -232,8 +230,6 @@ final class Config {
     final boolean appGlow;
     /** The rows fade out under the clock instead of being cut off (config.xml, fade_rows); TopFade. */
     final boolean fadeRows;
-    /** Minutes Home may sit untouched before the clock screensaver (config.xml, home_idle_clock_minutes); 0 is off. */
-    final int homeIdleClockMinutes;
     /** The dock band as light frosted glass like the pills (config.xml, dock_glass); false keeps the solid band. */
     final boolean dockGlass;
     /** The dock band's padding equals the gap between its tiles (config.xml, dock_even_padding); false keeps the fixed padding. */
@@ -273,12 +269,6 @@ final class Config {
     final boolean showGreeting;
     /** The date and the line between it and the clock in the clock's full white instead of dimmed (config.xml, header_white). */
     final boolean headerWhite;
-    /** The clock screensaver over Home's wallpaper instead of the black glow (config.xml, clock_wallpaper). */
-    final boolean clockWallpaper;
-    /** How dark the clock screensaver's wallpaper is, 0 to 90 % (config.xml, clock_wallpaper_dim). */
-    final int clockWallpaperDim;
-    /** The clock screensaver's coloured glow; false leaves the clock on plain black, e.g. for an OLED (config.xml, clock_glow). */
-    final boolean clockGlow;
     /** Every app in the dock's row, which scrolls sideways, and no grid below it (config.xml, single_row); needs dock_row. */
     final boolean singleRow;
     /** With single_row, the band runs behind every app in the row, not only the dock apps (config.xml, dock_band_all). */
@@ -294,11 +284,11 @@ final class Config {
                    int[] settingsKeycodes, boolean settingsKeyPanel, boolean restoreKeyServices, boolean wallpaperEnabled, File wallpaper, List<File> wallpapers,
                    int wallpaperRotationMinutes, int wallpaperDim, int dockOpacity, String wallpaperOrder, boolean overlayApplied,
                    Festival festival, int[] inputKeycodes, List<String> appKeys, String stockHomeRedirect,
-                   List<RaceWeekend.Race> raceCalendar, boolean cinematicHome, boolean ambientGlow, boolean appGlow, boolean fadeRows, int homeIdleClockMinutes,
+                   List<RaceWeekend.Race> raceCalendar, boolean cinematicHome, boolean ambientGlow, boolean appGlow, boolean fadeRows,
                    boolean keyFilter, boolean dockGlass, String glowStyle, boolean wallpaperCaptions,
                    boolean handleViewInputs, boolean tileMenu, boolean dockEvenPadding, boolean dockBand, boolean cinematicDots, boolean cinematicWhiteFocus, boolean wifiStatusColor, int cinematicScrim, int cinematicArt,
-                   Map<String, Set<String>> wallpaperMoods, boolean gamepadPassthrough, boolean consumeVolumeKeys, boolean volumePausesFilter, boolean homeIgnoreChannelKeys, boolean powerOnHome, boolean homeLongPressHome, boolean wifiStatusWarnings, List<String> topBarApps, boolean showGreeting, boolean headerWhite, boolean clockWallpaper, int clockWallpaperDim, boolean clockGlow, String glassStyle, boolean singleRow, boolean dockBandAll, boolean lunarDate, int lunarUtcOffset, boolean dateBelowClock, boolean vpnPill, String locale, boolean powerOnHomeAlways, boolean inputsConnectedOnly, boolean inputsCecStateOnly,
-                   int openOnStartNetworkWait, boolean openOnStartOnWake, boolean iconOnlyVpn, String clockFormat, boolean backOpensClock, boolean glowSnap,
+                   Map<String, Set<String>> wallpaperMoods, boolean gamepadPassthrough, boolean consumeVolumeKeys, boolean volumePausesFilter, boolean homeIgnoreChannelKeys, boolean powerOnHome, boolean homeLongPressHome, boolean wifiStatusWarnings, List<String> topBarApps, boolean showGreeting, boolean headerWhite, String glassStyle, boolean singleRow, boolean dockBandAll, boolean lunarDate, int lunarUtcOffset, boolean dateBelowClock, boolean vpnPill, String locale, boolean powerOnHomeAlways, boolean inputsConnectedOnly, boolean inputsCecStateOnly,
+                   int openOnStartNetworkWait, boolean openOnStartOnWake, boolean iconOnlyVpn, String clockFormat, boolean glowSnap,
                    boolean settingsKeyClearTask) {
         this.handleViewInputs = handleViewInputs;
         this.tileMenu = tileMenu;
@@ -349,7 +339,6 @@ final class Config {
         this.iconOnlyButtons = iconOnlyButtons;
         this.iconOnlyInputs = iconOnlyInputs;
         this.iconOnlyVpn = iconOnlyVpn;
-        this.backOpensClock = backOpensClock;
         this.glowSnap = glowSnap;
         this.settingsKeyClearTask = settingsKeyClearTask;
         this.libraryButton = libraryButton;
@@ -385,7 +374,6 @@ final class Config {
         this.ambientGlow = ambientGlow;
         this.appGlow = appGlow;
         this.fadeRows = fadeRows;
-        this.homeIdleClockMinutes = homeIdleClockMinutes;
         this.dockGlass = dockGlass;
         this.dockEvenPadding = dockEvenPadding;
         this.dockBand = dockBand;
@@ -411,9 +399,6 @@ final class Config {
         this.topBarApps = Collections.unmodifiableList(topBarApps);
         this.showGreeting = showGreeting;
         this.headerWhite = headerWhite;
-        this.clockWallpaper = clockWallpaper;
-        this.clockWallpaperDim = clockWallpaperDim;
-        this.clockGlow = clockGlow;
         this.singleRow = singleRow;
         this.dockBandAll = dockBandAll;
         this.glowStyle = glowStyle(glowStyle);
@@ -483,7 +468,6 @@ final class Config {
         boolean iconOnlyButtons = res.getBoolean(R.bool.icon_only_buttons);
         boolean iconOnlyInputs = res.getBoolean(R.bool.icon_only_inputs);
         boolean iconOnlyVpn = res.getBoolean(R.bool.icon_only_vpn);
-        boolean backOpensClock = res.getBoolean(R.bool.back_opens_clock);
         boolean glowSnap = res.getBoolean(R.bool.glow_snap);
         boolean settingsKeyClearTask = res.getBoolean(R.bool.settings_key_clear_task);
         boolean libraryButton = res.getBoolean(R.bool.library_button);
@@ -515,7 +499,6 @@ final class Config {
         boolean ambientGlow = res.getBoolean(R.bool.ambient_glow);
         boolean appGlow = res.getBoolean(R.bool.app_glow);
         boolean fadeRows = res.getBoolean(R.bool.fade_rows);
-        int idleClockMinutes = res.getInteger(R.integer.home_idle_clock_minutes);
         boolean keyFilter = res.getBoolean(R.bool.key_filter);
         boolean gamepadPassthrough = res.getBoolean(R.bool.gamepad_passthrough);
         boolean consumeVolumeKeys = res.getBoolean(R.bool.consume_volume_keys);
@@ -544,9 +527,6 @@ final class Config {
         List<String> topBarApps = new ArrayList<>(Arrays.asList(res.getStringArray(R.array.top_bar_apps)));
         boolean showGreeting = res.getBoolean(R.bool.show_greeting);
         boolean headerWhite = res.getBoolean(R.bool.header_white);
-        boolean clockWallpaper = res.getBoolean(R.bool.clock_wallpaper);
-        int clockWallpaperDim = res.getInteger(R.integer.clock_wallpaper_dim);
-        boolean clockGlow = res.getBoolean(R.bool.clock_glow);
         String glassStyle = res.getString(R.string.glass_style);
         boolean singleRow = res.getBoolean(R.bool.single_row);
         boolean dockBandAll = res.getBoolean(R.bool.dock_band_all);
@@ -600,7 +580,6 @@ final class Config {
             iconOnlyButtons = bool(json, "icon_only_buttons", iconOnlyButtons);
             iconOnlyInputs = bool(json, "icon_only_inputs", iconOnlyInputs);
             iconOnlyVpn = bool(json, "icon_only_vpn", iconOnlyVpn);
-            backOpensClock = bool(json, "back_opens_clock", backOpensClock);
             glowSnap = bool(json, "glow_snap", glowSnap);
             settingsKeyClearTask = bool(json, "settings_key_clear_task", settingsKeyClearTask);
             libraryButton = bool(json, "library_button", libraryButton);
@@ -632,7 +611,6 @@ final class Config {
             ambientGlow = bool(json, "ambient_glow", ambientGlow);
             appGlow = bool(json, "app_glow", appGlow);
             fadeRows = bool(json, "fade_rows", fadeRows);
-            idleClockMinutes = integer(json, "home_idle_clock_minutes", idleClockMinutes, 0, 1440);
             keyFilter = bool(json, "key_filter", keyFilter);
             gamepadPassthrough = bool(json, "gamepad_passthrough", gamepadPassthrough);
             consumeVolumeKeys = bool(json, "consume_volume_keys", consumeVolumeKeys);
@@ -661,9 +639,6 @@ final class Config {
             topBarApps = stringList(json, "top_bar_apps", topBarApps);
             showGreeting = bool(json, "show_greeting", showGreeting);
             headerWhite = bool(json, "header_white", headerWhite);
-            clockWallpaper = bool(json, "clock_wallpaper", clockWallpaper);
-            clockWallpaperDim = integer(json, "clock_wallpaper_dim", clockWallpaperDim, 0, 90);
-            clockGlow = bool(json, "clock_glow", clockGlow);
             singleRow = bool(json, "single_row", singleRow);
             dockBandAll = bool(json, "dock_band_all", dockBandAll);
             glowStyle = string(json, "glow_style", glowStyle);
@@ -726,12 +701,12 @@ final class Config {
                 Math.max(0, Math.min(100, skyIntensity)), settingsKeycodes, settingsKeyPanel, restoreKeyServices, wallpaperEnabled, wallpaper,
                 wallpapers, rotationMinutes, wallpaperDim, dockOpacity, wallpaperOrder, applied, festival, inputKeycodes, appKeys, stockHomeRedirect,
                 json == null ? Collections.emptyList() : raceCalendar(json), cinematic, ambientGlow, appGlow, fadeRows,
-                Math.max(0, idleClockMinutes), keyFilter, dockGlass, glowStyle, wallpaperCaptions, handleViewInputs, tileMenu, dockEvenPadding,
+                keyFilter, dockGlass, glowStyle, wallpaperCaptions, handleViewInputs, tileMenu, dockEvenPadding,
                 dockBand, cinematicDots, cinematicWhiteFocus, wifiStatusColor, cinematicScrim, cinematicArt, wallpaperMoods, gamepadPassthrough,
-                consumeVolumeKeys, volumePausesFilter, homeIgnoreChannelKeys, powerOnHome, homeLongPressHome, wifiStatusWarnings, topBarApps, showGreeting, headerWhite, clockWallpaper,
-                Math.max(0, Math.min(90, clockWallpaperDim)), clockGlow, glassStyle, singleRow && dockRow, dockBandAll, lunar, lunarOffset,
+                consumeVolumeKeys, volumePausesFilter, homeIgnoreChannelKeys, powerOnHome, homeLongPressHome, wifiStatusWarnings, topBarApps, showGreeting, headerWhite,
+                glassStyle, singleRow && dockRow, dockBandAll, lunar, lunarOffset,
                 dateBelowClock, vpnPill, locale, powerOnHomeAlways, inputsConnectedOnly, inputsCecStateOnly,
-                Math.max(0, Math.min(600, openOnStartNetworkWait)), openOnStartOnWake, iconOnlyVpn, clockFormat, backOpensClock, glowSnap,
+                Math.max(0, Math.min(600, openOnStartNetworkWait)), openOnStartOnWake, iconOnlyVpn, clockFormat, glowSnap,
                 settingsKeyClearTask);
     }
 

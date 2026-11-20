@@ -210,9 +210,9 @@
             </intent-filter>
         </activity>
 
-        <!-- The same clock, started by Home itself after home_idle_clock_minutes without input. -->
+        <!-- Homeboard's own screensaver: Home idle ("Start on Home after"), Preview and Show now. -->
         <activity
-            android:name=".ClockActivity"
+            android:name=".ScreensaverActivity"
             android:exported="false"
             android:excludeFromRecents="true"
             android:noHistory="true"
@@ -228,8 +228,9 @@
             android:taskAffinity=""
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- Screensaver: pick it in Settings, or `settings put secure screensaver_components
-             com.gathin.tvhome/.ClockDream` over adb. -->
+        <!-- Android screensaver: plays the screensaver chosen in Home settings. Pick it in Settings, or
+             `settings put secure screensaver_components com.gathin.tvhome/.ClockDream` over adb. Keep the
+             component name: TVs whose setting already names it keep working. -->
         <service
             android:name=".ClockDream"
             android:label="@string/dream_name"

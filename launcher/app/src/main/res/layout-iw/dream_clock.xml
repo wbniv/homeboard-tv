@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FF000000">
 
-    <!-- The glow is its background; clock_wallpaper puts the picture in it, cropped like Home's. -->
+    <!-- The glow is its background; empty for the Black backdrop and over the Home background (ClockScene). -->
     <ImageView
         android:id="@+id/dreamAmbient"
         android:layout_width="match_parent"

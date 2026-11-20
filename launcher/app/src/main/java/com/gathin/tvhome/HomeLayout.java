@@ -52,6 +52,8 @@ final class HomeLayout {
     boolean circularIcons = true;
     String customWallpaper = "";
     WallpaperSettings wallpaper = new WallpaperSettings();
+    /** The chosen screensaver and its options; separate from wallpaper so dimming one never dims the other. */
+    ScreensaverSettings screensaver = new ScreensaverSettings();
     int uiOpacityPercent = WallpaperSettings.DEFAULT_WIDGET_OPACITY;
     String palette = "midnight";
 
@@ -170,6 +172,7 @@ final class HomeLayout {
         s.circularIcons = j.optBoolean("circularIcons", true);
         s.uiOpacityPercent = WallpaperSettings.percent(j.optInt("uiOpacityPercent", WallpaperSettings.DEFAULT_WIDGET_OPACITY));
         s.wallpaper = WallpaperSettings.parse(j.optJSONObject("wallpaper"));
+        s.screensaver = ScreensaverSettings.parse(j.optJSONObject("screensaver"));
         s.customWallpaper = j.optString("customWallpaper", "");
         s.reducedMotion = j.optBoolean("reducedMotion", false);
         s.palette = j.optString("palette", "midnight");
@@ -227,7 +230,7 @@ final class HomeLayout {
                     .put("homeColumns", homeColumns).put("homeRows", homeRows)
                     .put("appBanners", appBanners).put("homeAppSize", homeAppSize).put("circularIcons", circularIcons)
                     .put("customWallpaper", customWallpaper)
-                    .put("wallpaper", wallpaper.json()).put("uiOpacityPercent", uiOpacityPercent)
+                    .put("wallpaper", wallpaper.json()).put("screensaver", screensaver.json()).put("uiOpacityPercent", uiOpacityPercent)
                     .put("reducedMotion", reducedMotion).put("palette", palette).toString();
         } catch (JSONException e) { throw new IllegalStateException(e); }
     }

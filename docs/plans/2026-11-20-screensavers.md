@@ -1,6 +1,7 @@
 # Screensavers: choose, configure and get more
 
-**Status: decisions settled, 2026‑11‑20. Nothing is implemented.** Will answered the four
+**Status: Stage 1 implemented, not yet deployed or verified on a TV (2026‑11‑20).** See
+[Stage 1 notes](#stage-1-notes) for its limits and differences from the mockups. Will answered the four
 [decisions](#decisions) the same day, and the
 [distribution research](../investigations/2026-11-20-screensaver-distribution.md) covers
 stores and installing from Homeboard. The device probe in Stage 0 has not run: at 17:40
@@ -364,6 +365,51 @@ Each stage ships on its own and is deployed to both TVs. The build order is 0, 1
     Android's installer and Play Protect show when Homeboard starts an install?
 
 **Cost.** No infrastructure is created or changed, so there is no AWS cost.
+
+### Stage 1 notes
+
+Implemented on `feature/screensaver-stage1`, 2026‑11‑20. Unit tested: `ScreensaverSettings`
+(defaults, round trip, unknown choice → Clock, idle snapping, dim clamp), the built‑in
+`ScreensaverRegistry` and the Home idle decision (`ScreensaverIdle`). Everything on screen,
+Preview, the timer firing, ClockDream and the alarm ending a screensaver are compiled only;
+none has run on a TV yet (Verification 5–7 are open).
+
+- **Code shape.** `ScreensaverIdle` is the pure idle decision the table above calls
+  `ScreensaverRules` for Stage 3; Stage 1 has only the "On Home only" row, so the
+  timer‑in‑charge rule waits for Stage 3. `HomeBackdrop` plays Homeboard's own background
+  (`layout.wallpaper` through its own `WallpaperSurface` and `ProjectivyWallpaperHost`,
+  muted, or the palette colour) for both the Home background entry and Clock's Home
+  background backdrop, which fixes the wrong‑background bug in [Context](#context).
+  Provider video inside `ClockDream` is untested against the TV's memory (Stage 0
+  question 8).
+- **Removed, no compatibility layer.** `home_idle_clock_minutes`, `back_opens_clock`,
+  `clock_glow`, `clock_wallpaper` and `clock_wallpaper_dim` (config.xml, theme keys and
+  `Config` fields), `ClockActivity` (now `ScreensaverActivity`), and ClockScene's
+  theme‑wallpaper backdrop. A theme that set those keys now has them ignored.
+  `back_opens_clock` has no replacement; it was dead code.
+- **"In other apps"** says Android's screensaver and idle time are unchanged by Homeboard,
+  without naming them: reading `screensaver_components` is Stage 0 question 4. **Use
+  everywhere…** and **Get screensavers ›** are not shown until Stages 3 and 2, rather than
+  offering buttons that cannot work yet.
+- **Change** (On Home) opens the entry's Options focused on **Start on Home after**, the
+  same segmented row as the Options mockup, instead of a separate chooser.
+- **The pane's preview** is a sample: the glow, black or Home's palette colour with a
+  live clock. It does not show a provider's current picture; **Preview** plays the real
+  thing.
+- **Dim** steps by 5 %, from 0 to 90 %, and each step is its own Undo entry.
+- **Preview** shows "OK uses this screensaver · Back cancels" at the bottom for five
+  seconds, then fades it. Other keys do nothing in Preview.
+- **The remote's `screensaver` action** still tries Android's "start now" shortcut first;
+  only its fallback became `ScreensaverActivity` (Show now). Starting Homeboard's choice
+  directly, as the Code table says, belongs with Stage 3, where the two choices coincide.
+- **A ringing timer or alarm** ends Homeboard's screensaver (activity and `ClockDream`)
+  through a package‑local broadcast from `KitchenTimerSound`; it does not open the timer
+  screen itself.
+- **The Home idle timer** counts All Apps as Home (the same activity). It holds off while
+  any menu, overlay, editor, expanded widget, move, resize or hold‑Back is up, and is one
+  `Handler` callback rebased on the last input.
+- **Strings** live in a new `homeboard_screensaver.xml` pair (English and Thai), the files
+  the parity check reads. `ClockDream`'s label stays "Clock" (`dream_name`).
 
 ## Design filter record
 
