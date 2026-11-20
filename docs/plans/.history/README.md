@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/a6c4649) | Plans index: add the screensavers Stage 0 probe recipe |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/5bb93a2) | Plan screensaver choice, configuration and installation |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/e44944d) | Host Android app widgets with TV setup, full-screen controls and Undo |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/e43d0f7) | Record timer verification and update public documentation |
@@ -43,6 +44,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+a6c4649	author	Will Norris
+a6c4649	added	3
+a6c4649	deleted	0
+a6c4649	files	1
+a6c4649	body	Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqN1KiiVNT63goz7fyo
 5bb93a2	author	Will Norris
 5bb93a2	added	2
 5bb93a2	deleted	0

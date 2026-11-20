@@ -102,3 +102,6 @@ missing rows on commit.*
 - [Screensavers Stage 0: the probe recipe](2026-11-20-screensavers-stage0-probe.md): how the
   plan's eleven device questions are answered through the coordinator, and the two
   coordinator additions the write tests need; draft for review.
+- [Control interface: one command model, links and a local listener](2026-11-20-control-interface.md):
+  one vocabulary and state for navigation-only links, a shell-only receiver, an opt-in LAN
+  listener with devices approved on the TV, and in-process callers; plan for review.
