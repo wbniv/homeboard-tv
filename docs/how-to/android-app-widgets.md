@@ -64,6 +64,8 @@ provider/device evidence. The disposable provider proved cross-app hosting on
 both Chromecasts; hosting was checked on both TVs from 0.1.95. See the testing
 record for current builds and required-configuration acceptance. The fixture rendered and expanded on
 Cast1; integrated host and phone-Undo assertions passed on Cast2, and Breezy's unconfigured Current widget was added, expanded and undone through normal
-TV menus. Configured weather data and provider controls remain unverified. Pixel's
-provider/consent census passed; local hosting and tablet acceptance remain
+TV menus. Configured weather data and provider controls remain unverified.
+Fossify Calendar 1.12.2 event-list setup, empty-state rendering, expansion and
+restoration also passed on Cast2 in 0.1.97 using only the remote. Populated event
+data remains unverified. Pixel's provider/consent census passed; local hosting and tablet acceptance remain
 pending. Compatibility is per provider and device, especially for remote input.

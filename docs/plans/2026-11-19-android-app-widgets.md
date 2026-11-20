@@ -682,7 +682,10 @@ review. A controlled required-configuration provider reproduced the same result.
 Diagnostic build 0.1.96 established successful binding followed by Android 14's
 `BAL_BLOCK` of the system-created configure IntentSender. Build 0.1.97 supplies the
 explicit sender ActivityOptions opt-in for setup/reconfiguration; on-device
-acceptance is pending. See the [testing record](../testing/2026-11-19-android-app-widgets.md#fossify-calendar-launcher-and-required-configuration).
+Save/Cancel and real Calendar setup passed on Cast2 in J‑5201a9261061. Both test
+additions were undone and the TV released. Interruption/retry, reconfiguration
+and independent binding-deletion checks remain open. See the
+[testing record](../testing/2026-11-19-android-app-widgets.md#cast2-required-configuration-acceptance--0197).
 
 Before treating required configuration as accepted:
 
@@ -705,7 +708,8 @@ across applications using the TV remote. A single screen shows the received ID,
 Save and Cancel, with Save initially focused. No data entry, network or account is
 needed. Back cancels; Save only configures the disposable provider instance and
 still requires Homeboard's separate Add review. Invalid/missing IDs cannot save.
-Disposition: conditional until observed launch, Save, Cancel and restoration pass.
+Disposition: launch, Save, Cancel and restoration passed on Cast2 in 0.1.97;
+interruption and independent binding-deletion checks remain conditional.
 
 ![Required configuration diagnostic screen](2026-11-19-android-app-widgets/required-config-fixture.svg)
 

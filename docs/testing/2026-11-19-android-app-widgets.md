@@ -2,14 +2,14 @@
 
 **Current:** development build **0.1.97** is installed and hash-verified on Cast2;
 Cast1 still has **0.1.95**, with 97 queued pending reconnection. Both have one-time
-widget binding enabled through the coordinator. Android 14's missing configuration
-launch opt-in was diagnosed and corrected in 97; live Save/Cancel acceptance is
-pending confirmation that Cast2 is available after unexpected YouTube navigation.
+widget binding enabled through the coordinator. Android 14's configuration-launch
+fix passed controlled Save/Cancel and real Calendar setup on Cast2 in
+J‑5201a9261061. Both additions were undone and Cast2 was released for another tester.
 Cast1 normal menus rendered/expanded the fixture; Cast2 passed isolated host assertions
 and ordinary-menu Breezy placeholder Add/expand/Undo. All 525 JVM tests, lint and
 Chromium/WebKit checks passed. The final setup/review explanations are visually
-verified. Pixel 94 ordinary entry passed; local mobile widgets, configured real
-provider data, resource budgets and 24-hour exposure remain open. Earlier census
+verified. Pixel 94 ordinary entry passed; local mobile widgets, populated provider
+data, resource budgets and 24-hour exposure remain open. Earlier census
 and experiment results below are historical stages, not the current feature status.
 
 
@@ -495,3 +495,49 @@ and continues following other submitted targets instead of raising
 `FileNotFoundError`. Its new pre-admission-cancellation regression and all four
 existing tests passed in the container. This tooling-only follow-up changes no
 APK bytes or deployment number.
+
+### Cast2 required-configuration acceptance · 0.1.97
+
+At Will's request, owned Remote J‑5201a9261061 repeated the complete setup path on
+the installed 97 build. All 508 frozen launcher source hashes match the current
+source. Coordinator version was 0.1.189. The session used only TV remote keys,
+with screenshots inspected between actions; no mouse or touch injection was used.
+
+- **Cancel:** the controlled provider received widget ID 15. Down/OK selected
+  Cancel and returned to the original one-page dashboard without adding a tile.
+- **Save:** the next instance received ID 16. OK saved it and returned to
+  Homeboard's 3×2 Add review. Add rendered **Configuration saved · id 16**.
+  Short OK expanded the same ID; Back restored Home page 2, widget focus and size.
+- **Cleanup:** Undo history was opened and its newest **Android app widgets**
+  entry inspected before selection. Undo removed only the owned addition and
+  restored the original one-page dashboard.
+- **Real Calendar:** Fossify Calendar 1.12.2's required event-list configuration
+  opened. Its period selector responded to D-pad/OK; Back dismissed that selector
+  without changing the period. Down navigation moved through the example preview,
+  then Right/Down/OK reached the provider's bottom OK action. Homeboard displayed
+  the 3×4 Add review. The added widget rendered the actual date and **No upcoming
+  events**. These are the fresh provider's empty-state data; the configuration
+  screen's sample events were not imported or treated as real calendar events.
+  Full-screen expansion and the visible **Restore dashboard** action passed,
+  restoring page 2, focus and 3×4 size. The inspected newest Undo entry then removed
+  this addition and restored the original dashboard again.
+
+The Remote protocol reports an owner-closed session as `cancelled`:
+`remote-stop` finished coordinator cleanup, with health ready and no unresolved
+effects. Watch confirmed that terminal state; evidence export verified 33
+artifacts under ignored `artifacts/android-widgets/v97-required-config-acceptance`.
+Cast2 was ready/unowned afterward; only the two existing offline Cast1 installs
+remained queued. Will was told Cast2 was available for the next tester.
+
+This verifies the Android 14 handoff fix and the observed Save/Cancel, rendering,
+expansion, restoration and Undo scenarios. Binding deletion was not independently
+queried; interruption/retry, reconfiguration, populated event data, weather setup,
+mobile hosting and resource/long-duration acceptance remain separate open checks.
+
+![Actual received configuration ID](2026-11-19-android-app-widgets/v97-configuration-id.png)
+
+![Configured ID preserved in full screen](2026-11-19-android-app-widgets/v97-configured-expanded.png)
+
+![Real configured Calendar empty state and saved size](2026-11-19-android-app-widgets/v97-calendar-expanded.png)
+
+![Original dashboard after both test additions were undone](2026-11-19-android-app-widgets/v97-dashboard-restored.png)
