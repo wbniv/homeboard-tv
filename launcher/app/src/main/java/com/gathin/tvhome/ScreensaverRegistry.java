@@ -3,16 +3,20 @@ package com.gathin.tvhome;
 import android.content.Context;
 import android.widget.FrameLayout;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
- * The screensavers Homeboard can play. Stage 1 holds the built-in entries only; the first row is the default
- * slot, so a better bundled screensaver later is one more row placed first, with no change to the Screensaver
- * screen, the settings or the scenes.
+ * The screensavers the Screensaver screen lists: the built-in entries, then the Android screensaver apps installed
+ * on this TV (Stage 3). The first built-in row is the default slot, so a better bundled screensaver later is one
+ * more row placed first, with no change to the Screensaver screen, the settings or the scenes. An Android app is
+ * listed by its own label under its flattened component; Android runs it, so it has no scene and no Preview.
  */
 final class ScreensaverRegistry {
     static final String CLOCK = "clock", HOME_BACKGROUND = "background";
@@ -25,17 +29,32 @@ final class ScreensaverRegistry {
         ScreensaverScene create(Context context, FrameLayout container, HomeLayout layout);
     }
 
+    enum Kind { BUILT_IN, ANDROID_APP }
+
     static final class Entry {
         final String id;
+        final Kind kind;
+        /** label is a string resource for a built-in entry and 0 for an app, which carries its own name instead. */
         final int label, summary, description;
+        final String name;
         /** A one-character glyph for the list card, like the menu icons. */
         final String glyph;
         final Set<Option> options;
+        /** null for an Android screensaver app: Android runs it, Homeboard cannot. */
         final SceneFactory scene;
+        /** An app's declared settings activity, flattened; null when it declares none. Always null when built in. */
+        final String settings;
         Entry(String id, int label, int summary, int description, String glyph, Set<Option> options, SceneFactory scene) {
-            this.id = id; this.label = label; this.summary = summary; this.description = description;
-            this.glyph = glyph; this.options = Collections.unmodifiableSet(options); this.scene = scene;
+            this(id, Kind.BUILT_IN, label, null, summary, description, glyph, options, scene, null);
         }
+        private Entry(String id, Kind kind, int label, String name, int summary, int description, String glyph,
+                      Set<Option> options, SceneFactory scene, String settings) {
+            this.id = id; this.kind = kind; this.label = label; this.name = name; this.summary = summary;
+            this.description = description; this.glyph = glyph; this.options = Collections.unmodifiableSet(options);
+            this.scene = scene; this.settings = settings;
+        }
+        boolean app() { return kind == Kind.ANDROID_APP; }
+        String title(Context context) { return app() ? name : context.getString(label); }
     }
 
     static final List<Entry> BUILT_IN = Collections.unmodifiableList(Arrays.asList(
@@ -55,8 +74,76 @@ final class ScreensaverRegistry {
         return null;
     }
 
-    /** id when an entry has it, otherwise the default slot's id. */
+    /** id when a built-in entry has it, otherwise the default slot's id: what Homeboard itself can play. */
     static String known(String id) { return find(id) == null ? fallback().id : id; }
+
+    /**
+     * What the saved choice keeps: a built-in id, or an Android app's flattened component, whose installation is
+     * checked on read (resolve) because an app can be uninstalled at any time. Anything else is the default slot.
+     */
+    static String stored(String id) { return ScreensaverRules.isApp(id) ? id : known(id); }
+
+    /** An Android screensaver app as a list entry. */
+    static Entry app(ScreensaverGateway.InstalledDream dream) {
+        return new Entry(dream.component, Kind.ANDROID_APP, 0, dream.label, R.string.hb_ss_app_summary,
+                R.string.hb_ss_app_detail, "☾", EnumSet.noneOf(Option.class), null, dream.settings);
+    }
+
+    /**
+     * The whole list: built-ins in order, then installed screensaver apps by label, without Homeboard's own
+     * ScreensaverDream (its choices are the built-ins) and without duplicates.
+     */
+    static List<Entry> entries(List<ScreensaverGateway.InstalledDream> dreams, String ownComponent) {
+        List<Entry> apps = new ArrayList<>();
+        Set<String> seen = new HashSet<>();
+        for (ScreensaverGateway.InstalledDream dream : dreams) {
+            if (dream == null || !ScreensaverRules.isApp(dream.component) || dream.component.equals(ownComponent)) continue;
+            if (seen.add(dream.component)) apps.add(app(dream));
+        }
+        apps.sort((a, b) -> {
+            int byName = a.name.toLowerCase(Locale.ROOT).compareTo(b.name.toLowerCase(Locale.ROOT));
+            return byName != 0 ? byName : a.id.compareTo(b.id);
+        });
+        List<Entry> all = new ArrayList<>(BUILT_IN);
+        all.addAll(apps);
+        return Collections.unmodifiableList(all);
+    }
+
+    /** The entry for id in entries; the default slot when it is unknown or its app is no longer installed. */
+    static Entry resolve(String id, List<Entry> entries) {
+        for (Entry entry : entries) if (entry.id.equals(id)) return entry;
+        return fallback();
+    }
+
+    static int indexOf(String id, List<Entry> entries) {
+        for (int i = 0; i < entries.size(); i++) if (entries.get(i).id.equals(id)) return i;
+        return 0;
+    }
+
+    /** The flattened components of the installed apps in entries. */
+    static Set<String> installed(List<Entry> entries) {
+        Set<String> found = new HashSet<>();
+        for (Entry entry : entries) if (entry.app()) found.add(entry.id);
+        return found;
+    }
+
+    /**
+     * The settings activity a screensaver declares in its android.service.dream metadata (settingsActivity), as a
+     * flattened component: a "package/class" value is taken whole, a bare class belongs to the service's own
+     * package, and a class starting with '.' is relative to it, as Android's own screensaver settings read it.
+     */
+    static String settingsComponent(String packageName, String declared) {
+        if (declared == null || declared.trim().isEmpty() || packageName == null) return null;
+        String value = declared.trim();
+        if (value.indexOf('/') > 0) return value.endsWith("/") ? null : value;
+        return packageName + "/" + (value.startsWith(".") ? packageName + value : value);
+    }
+
+    /** The label for a component in entries; null when it is not an installed app's. */
+    static String appLabel(String component, List<Entry> entries) {
+        for (Entry entry : entries) if (entry.app() && entry.id.equals(component)) return entry.name;
+        return null;
+    }
 
     static Entry entry(String id) { Entry found = find(id); return found == null ? fallback() : found; }
 

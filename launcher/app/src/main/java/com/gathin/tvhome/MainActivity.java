@@ -380,6 +380,7 @@ public class MainActivity extends Activity {
             wallpaperPreviewStarted = true; syncBackground(); wallpaperHost.refresh();
             handler.post(() -> providerDetails(wallpaperProvider, false));
         }
+        checkChosenScreensaverApp();
         lastHomeInput = SystemClock.uptimeMillis(); scheduleScreensaver();
         if (returningToScreensaver != null) { String entry = returningToScreensaver; returningToScreensaver = null; handler.post(() -> reopenScreensaver(entry)); }
         if(returningToProvider!=null) {
@@ -640,6 +641,10 @@ public class MainActivity extends Activity {
         int targetIndex = entries.size() - 1 - displayedIndex;
         String restoredLabel = entries.get(displayedIndex).label;
         HomeLayout beforeUndo=layout;
+        // A change to Android's screensaver is undone by writing back the previous values its entry carries: the
+        // oldest such entry in the range wins, written once, read back, before anything is committed.
+        ScreensaverValues systemTarget = null; boolean systemManaged = false;
+        EverywhereScreensaver.Outcome systemUndone = null; boolean managedBeforeUndo = everywhere().managed();
         try {
             JSONObject restoredAir=PhoneConfigurationStore.air(preferences);
             applyingUndo = true;
@@ -657,7 +662,19 @@ public class MainActivity extends Activity {
                     if (!allApps) focused = homeFocus;
                 }
                 else if ("air".equals(entry.kind)) restoredAir.put(entry.key,new JSONObject(entry.state));
+                else if (UNDO_SYSTEM_SCREENSAVER.equals(entry.kind)) {
+                    JSONObject state = new JSONObject(entry.state);
+                    layout = HomeLayout.restore(state.getString("layout"),layout.headerClock);
+                    systemTarget = ScreensaverValues.parse(state.optJSONObject("android"));
+                    systemManaged = state.optBoolean("managed", false);
+                    if (systemTarget == null) throw new IllegalStateException("Screensaver undo entry unreadable");
+                }
                 else if ("phone".equals(entry.kind)) {JSONObject aggregate=new JSONObject(entry.state);layout=HomeLayout.restore(aggregate.getJSONObject("layout").toString(),layout.headerClock);restoredAir=aggregate.getJSONObject("air");}
+            }
+            if (systemTarget != null) {
+                EverywhereScreensaver.Outcome undone = everywhere().undoTo(systemTarget, systemManaged, ScreensaverRegistry.installed(refreshScreensaverEntries()));
+                if (!undone.ok()) throw new IllegalStateException("Android did not accept the screensaver undo: " + undone.result);
+                systemUndone = undone;
             }
             JSONArray stored = storedUndoEntries();
             JSONArray remaining = new JSONArray();
@@ -671,6 +688,8 @@ public class MainActivity extends Activity {
             root.setBackgroundColor(background); setAirPalette();
         } catch (Exception failure) {
             layout=beforeUndo;
+            if (systemUndone != null && systemUndone.before != null)   // the layout did not save: Android goes back too
+                everywhere().undoTo(systemUndone.before, managedBeforeUndo, ScreensaverRegistry.installed(screensaverEntries));
             toast(getString(R.string.hb_could_not_undo_that_change));
             showUndoBanner(getString(R.string.hb_could_not_undo_that_change));
             return;
@@ -2319,8 +2338,9 @@ public class MainActivity extends Activity {
         });
     }
 
-    // Screensaver (docs/plans/2026-11-20-screensavers.md, Stage 1): Home settings → Screensaver, its Options,
-    // Preview through ScreensaverActivity, and the Home idle timer. Every change saves at once with Undo.
+    // Screensaver (docs/plans/2026-11-20-screensavers.md, Stages 1 and 3): Home settings → Screensaver, its Options,
+    // Preview through ScreensaverActivity, the Home idle timer, and Use everywhere (EverywhereScreensaver through
+    // SystemScreensaver). Every change saves at once with Undo; a change to Android's setting carries its previous value.
     private static final int REQUEST_SCREENSAVER_PREVIEW = 7404;
     private static final int SCREENSAVER_PAGE_SIZE = 4;
     private int screensaverFocus, screensaverPage;
@@ -2330,6 +2350,16 @@ public class MainActivity extends Activity {
     private String returningToScreensaver, screensaverAccepted;
     private boolean screensaverOptionsOpen;
     private View screensaverFirstAction;
+    private EverywhereScreensaver everywhere;
+    /** Built-ins plus the installed Android screensaver apps, read again each time the Screensaver screen opens. */
+    private List<ScreensaverRegistry.Entry> screensaverEntries = ScreensaverRegistry.BUILT_IN;
+    /** Read fresh by each screensaver screen draw: Android's current setting, timeout, permission and the kept original. */
+    private EverywhereScreensaver.Status screensaverStatus;
+    /** The recovery notice ("Android did not accept the change…") and what its Retry repeats; null when none. */
+    private String screensaverFailure;
+    private Runnable screensaverRetry;
+    private boolean screensaverSetupChecked, screensaverShowQr;
+    private static final String UNDO_SYSTEM_SCREENSAVER = "screensaver-system";
     private long lastHomeInput = SystemClock.uptimeMillis();
     private final Runnable screensaverDue = this::scheduleScreensaver;
 
@@ -2348,16 +2378,30 @@ public class MainActivity extends Activity {
     private void scheduleScreensaver() {
         handler.removeCallbacks(screensaverDue);
         if (layout == null || root == null) return;
+        // One timer in charge: while Android starts the screensaver in every app, Homeboard's own Home timer is off.
+        int idle = ScreensaverRules.homeIdleMinutes(everywhere().managed(), layout.screensaver.choice, layout.screensaver.idleMinutes);
         ScreensaverIdle.Decision next = ScreensaverIdle.decide(SystemClock.uptimeMillis(), lastHomeInput,
-                layout.screensaver.idleMinutes, active && !closed && hasWindowFocus(), homeBusy());
+                idle, active && !closed && hasWindowFocus(), homeBusy());
         if (next.kind == ScreensaverIdle.Kind.START) {
             try { startActivity(ScreensaverActivity.intent(this, ScreensaverActivity.MODE_IDLE, null)); }
             catch (RuntimeException unavailable) { lastHomeInput = SystemClock.uptimeMillis(); }
         } else if (next.kind == ScreensaverIdle.Kind.WAIT) handler.postDelayed(screensaverDue, next.delayMs);
     }
 
+    private EverywhereScreensaver everywhere() {
+        if (everywhere == null) everywhere = SystemScreensaver.everywhere(this);
+        return everywhere;
+    }
+    private List<ScreensaverRegistry.Entry> refreshScreensaverEntries() {
+        ScreensaverGateway gateway = everywhere().gateway();
+        screensaverEntries = ScreensaverRegistry.entries(gateway.installedDreams(), gateway.ownComponent());
+        return screensaverEntries;
+    }
+    /** The chosen entry as the list shows it: the default slot when the chosen app is no longer installed. */
+    private ScreensaverRegistry.Entry chosenScreensaver() { return ScreensaverRegistry.resolve(layout.screensaver.choice, screensaverEntries); }
     private void screensaverSettings() {
-        screensaverFocus = ScreensaverRegistry.indexOf(layout.screensaver.choice);
+        refreshScreensaverEntries(); screensaverFailure = null; screensaverRetry = null;
+        screensaverFocus = ScreensaverRegistry.indexOf(chosenScreensaver().id, screensaverEntries);
         screensaverPage = screensaverFocus / SCREENSAVER_PAGE_SIZE; screensaverFocusTag = null;
         openMenu(new MenuSpec(getString(R.string.hb_screensaver), this::drawScreensaver));
     }
@@ -2365,7 +2409,8 @@ public class MainActivity extends Activity {
     private void reopenScreensaver(String entry) {
         if (!active || layoutReadOnly) return;
         boolean options = screensaverOptionsOpen; String accepted = screensaverAccepted; screensaverAccepted = null;
-        int focus = ScreensaverRegistry.indexOf(entry);
+        refreshScreensaverEntries();
+        int focus = ScreensaverRegistry.indexOf(entry, screensaverEntries);
         homeSettings();
         invokingMenuAction = true;
         try {
@@ -2375,10 +2420,123 @@ public class MainActivity extends Activity {
         } finally { invokingMenuAction = false; }
         if (accepted != null) useScreensaver(ScreensaverRegistry.entry(accepted), options ? "opt:preview" : "act:preview");
     }
+    /** Use: on Home only before the one-time question; once Homeboard manages the TV, in every app with Undo. */
     private void useScreensaver(ScreensaverRegistry.Entry entry, String focusTag) {
-        layout.screensaver.choice = entry.id;
-        save(getString(R.string.hb_ss_undo_choice, getString(entry.label)));
+        switch (ScreensaverRules.use(everywhere().managed(), entry.id)) {
+            case APPLY_NOW: changeEverywhere(entry, false, focusTag); return;
+            case EVERYWHERE_SCREEN: openEverywhere(entry.id); return;
+            default:
+                layout.screensaver.choice = entry.id; layout.screensaver.choiceName = "";
+                save(getString(R.string.hb_ss_undo_choice, entry.title(this)));
+                redrawScreensaver(focusTag);
+        }
+    }
+    /**
+     * Makes entry this TV's screensaver in every app. first: the asked-once Confirm, which also keeps the original.
+     * Android's values change first and are read back; only then are the choice and the Home timer (off: one timer
+     * in charge) saved, with an Undo entry carrying the previous Android values. A failure changes nothing here.
+     */
+    private void changeEverywhere(ScreensaverRegistry.Entry entry, boolean first, String focusTag) {
+        if (layoutReadOnly) { toast(getString(R.string.hb_aw_newer_layout)); return; }
+        EverywhereScreensaver system = everywhere();
+        String layoutBefore = lastSavedLayout; boolean managedBefore = system.managed();
+        String component = ScreensaverRules.componentFor(entry.id, system.gateway().ownComponent());
+        EverywhereScreensaver.Outcome outcome = first ? system.manage(component) : system.apply(component);
+        if (!outcome.ok()) { screensaverFailed(outcome, () -> changeEverywhere(entry, first, focusTag)); return; }
+        screensaverFailure = null; screensaverRetry = null;
+        layout.screensaver.choice = entry.id; layout.screensaver.choiceName = entry.app() ? entry.name : "";
+        layout.screensaver.idleMinutes = ScreensaverSettings.ANDROID_DECIDES;
+        if (!saveSystemScreensaver(getString(R.string.hb_ss_undo_tv, entry.title(this)), layoutBefore, outcome.before, managedBefore))
+            system.undoTo(outcome.before, managedBefore, ScreensaverRegistry.installed(screensaverEntries));
         redrawScreensaver(focusTag);
+    }
+    /** Restore the TV's original, with Undo; Home keeps a Homeboard choice and falls back to the default slot from an app. */
+    private void restoreEverywhere() {
+        if (layoutReadOnly) { toast(getString(R.string.hb_aw_newer_layout)); return; }
+        EverywhereScreensaver system = everywhere();
+        ScreensaverValues original = system.original();
+        String layoutBefore = lastSavedLayout; boolean managedBefore = system.managed();
+        EverywhereScreensaver.Outcome outcome = system.restore();
+        if (!outcome.ok()) { screensaverFailed(outcome, this::restoreEverywhere); return; }
+        screensaverFailure = null; screensaverRetry = null;
+        if (ScreensaverRules.isApp(layout.screensaver.choice)) { layout.screensaver.choice = ScreensaverRegistry.fallback().id; layout.screensaver.choiceName = ""; }
+        String name = screensaverName(original == null ? null : original.component());
+        if (!saveSystemScreensaver(getString(R.string.hb_ss_undo_restore, name), layoutBefore, outcome.before, managedBefore))
+            system.undoTo(outcome.before, managedBefore, ScreensaverRegistry.installed(screensaverEntries));
+        backMenu();
+    }
+    /** Saves the layout with an Undo entry that also carries Android's previous values and managed flag. */
+    private boolean saveSystemScreensaver(String label, String layoutBefore, ScreensaverValues androidBefore, boolean managedBefore) {
+        try {
+            JSONObject state = new JSONObject().put("layout", layoutBefore).put("android", androidBefore.json()).put("managed", managedBefore);
+            JSONArray undo = appendedUndo(storedUndoEntries(), UNDO_SYSTEM_SCREENSAVER, "", state.toString(), label);
+            PhoneConfigurationStore.commit(preferences, layout, PhoneConfigurationStore.air(preferences), undo, null, null);
+            lastSavedLayout = layout.encode();
+            if (androidWidgets != null) androidWidgets.reconcile();
+            showUndoBanner(label);
+            return true;
+        } catch (Exception failed) {
+            try { layout = HomeLayout.parse(lastSavedLayout); } catch (Exception ignored) { }
+            toast(getString(R.string.hb_configuration_save_failed));
+            return false;
+        }
+    }
+    /** The recovery notice: what Android refused and what is still in use. Its Retry repeats the change. */
+    private void screensaverFailed(EverywhereScreensaver.Outcome outcome, Runnable retry) {
+        screensaverFailure = outcome.result == EverywhereScreensaver.Result.UNREADABLE ? getString(R.string.hb_ss_unreadable)
+                : getString(R.string.hb_ss_refused, screensaverName(outcome.now));
+        screensaverRetry = retry;
+        if (activeMenu != null && activeMenu.panelRenderer != null) redrawScreensaver("fail:retry");
+        else showUndoBanner(screensaverFailure, false);
+    }
+    /**
+     * On Home: the chosen Android screensaver app was uninstalled. Falls back to the default slot, restores the
+     * TV's original when Homeboard manages it, and says so once (no Undo: the app is gone).
+     */
+    private void checkChosenScreensaverApp() {
+        if (layout == null || layoutReadOnly || !ScreensaverRules.isApp(layout.screensaver.choice)) return;
+        boolean managed = everywhere().managed();
+        String gone = layout.screensaver.choice, goneName = layout.screensaver.choiceName.isEmpty() ? packageOf(gone) : layout.screensaver.choiceName;
+        ScreensaverValues original = everywhere().original();
+        EverywhereScreensaver.Outcome outcome = everywhere().fallBackIfGone(gone, ScreensaverRegistry.installed(refreshScreensaverEntries()));
+        if (outcome == null) return;
+        ScreensaverRegistry.Entry fallback = ScreensaverRegistry.fallback();
+        layout.screensaver.choice = fallback.id; layout.screensaver.choiceName = "";
+        saveWithoutUndo();
+        String home = fallback.title(this);
+        showUndoBanner(!managed ? getString(R.string.hb_ss_gone_home, goneName, home)
+                : outcome.ok() ? getString(R.string.hb_ss_gone, goneName, screensaverName(original == null ? null : original.component()), home)
+                : getString(R.string.hb_ss_gone_failed, goneName, screensaverName(outcome.now), home), false);
+    }
+    private static String packageOf(String component) { int slash = component.indexOf('/'); return slash > 0 ? component.substring(0, slash) : component; }
+    /** A screensaver_components value by name: an app's own label, Homeboard with its choice, or Android's default. */
+    private String screensaverName(String raw) {
+        String first = ScreensaverRules.first(raw);
+        if (first == null) return getString(R.string.hb_ss_android_default);
+        if (first.equals(everywhere().gateway().ownComponent())) return getString(R.string.hb_ss_homeboard_named, chosenHomeboardEntry().title(this));
+        String label = ScreensaverRegistry.appLabel(first, screensaverEntries);
+        if (label != null) return label;
+        if (first.equals(layout.screensaver.choice) && !layout.screensaver.choiceName.isEmpty()) return layout.screensaver.choiceName;
+        return packageOf(first);
+    }
+    private String screensaverName(ScreensaverGateway.Reading reading) {
+        return reading == null || !reading.readable ? getString(R.string.hb_ss_unknown) : screensaverName(reading.value);
+    }
+    /** What ScreensaverDream plays: the chosen built-in, or the default slot when an app is chosen. */
+    private ScreensaverRegistry.Entry chosenHomeboardEntry() { return ScreensaverRegistry.entry(layout.screensaver.choice); }
+    private String screensaverTimeout(ScreensaverGateway.Reading timeout) {
+        int minutes = ScreensaverRules.timeoutMinutes(timeout);
+        if (minutes == ScreensaverRules.UNKNOWN) return getString(R.string.hb_ss_timeout_unknown);
+        if (minutes == ScreensaverRules.NEVER) return getString(R.string.hb_ss_timeout_never);
+        return getString(R.string.hb_ss_timeout_after, minutes);
+    }
+    /** "In other apps": Android's real screensaver and timeout, read through the gateway; unknown when unreadable. */
+    private String screensaverOtherApps(EverywhereScreensaver.Status status) {
+        switch (ScreensaverRules.otherLine(status.managed, status.component.readable)) {
+            case UNKNOWN: return getString(R.string.hb_ss_other_unknown);
+            case THE_SAME: return getString(R.string.hb_ss_other_same, screensaverName(status.component), screensaverTimeout(status.timeout));
+            default: return getString(R.string.hb_ss_other_unchanged, screensaverName(status.component), screensaverTimeout(status.timeout));
+        }
     }
     private void previewScreensaver(ScreensaverRegistry.Entry entry, boolean fromOptions) {
         returningToScreensaver = entry.id; screensaverOptionsOpen = fromOptions; screensaverAccepted = null;
@@ -2407,6 +2565,22 @@ public class MainActivity extends Activity {
         back.setPadding(dp(20), 0, dp(20), 0);
         header.addView(back, new LinearLayout.LayoutParams(-2, dp(42)));
         panel.addView(header);
+        if (screensaverFailure != null) {
+            // The recovery notice: what Android refused, what is unchanged, and Retry.
+            LinearLayout notice = new LinearLayout(this); notice.setGravity(Gravity.CENTER_VERTICAL);
+            notice.setPadding(dp(16), dp(8), dp(10), dp(8));
+            notice.setBackground(shape(paletteColors.surface, 0xFFE07A7A, 2));
+            TextView message = text(screensaverFailure, 16); message.setMaxLines(3);
+            notice.addView(message, new LinearLayout.LayoutParams(0, -2, 1));
+            TextView retry = infoButton(getString(R.string.hb_ss_retry), () -> {
+                Runnable again = screensaverRetry; screensaverFailure = null; screensaverRetry = null;
+                if (again != null) again.run(); else redrawScreensaver(null);
+            });
+            retry.setTag("fail:retry"); retry.setPadding(dp(18), 0, dp(18), 0);
+            notice.addView(retry, new LinearLayout.LayoutParams(-2, dp(42)));
+            LinearLayout.LayoutParams noticeLp = new LinearLayout.LayoutParams(-1, -2); noticeLp.topMargin = dp(8);
+            panel.addView(notice, noticeLp);
+        }
         LinearLayout.LayoutParams bodyLp = new LinearLayout.LayoutParams(-1, -2); bodyLp.topMargin = dp(8);
         panel.addView(body, bodyLp);
         int width = Math.min(dp(1180), getResources().getDisplayMetrics().widthPixels - dp(40));
@@ -2452,9 +2626,13 @@ public class MainActivity extends Activity {
         screensaverFocusTag = null;
         if (target != null) target.requestFocus();
     }
-    private String screensaverStartsOnHome() {
+    private String screensaverStartsOnHome(EverywhereScreensaver.Status status) {
         int minutes = layout.screensaver.idleMinutes;
-        return minutes == ScreensaverSettings.ANDROID_DECIDES ? getString(R.string.hb_ss_no_timer) : getString(R.string.hb_ss_after, minutes);
+        switch (ScreensaverRules.homeLine(status.managed, layout.screensaver.choice, minutes)) {
+            case ANDROID_STARTS: return getString(R.string.hb_ss_android_starts, screensaverTimeout(status.timeout));
+            case NO_TIMER: return getString(R.string.hb_ss_no_timer);
+            default: return getString(R.string.hb_ss_after, minutes);
+        }
     }
 
     /** Home settings → Screensaver: the paged list on the left, the focused entry's preview and actions on the right. */
@@ -2467,9 +2645,11 @@ public class MainActivity extends Activity {
         body.addView(list, new LinearLayout.LayoutParams(0, -2, 0.42f));
         LinearLayout.LayoutParams paneLp = new LinearLayout.LayoutParams(0, -2, 0.58f); paneLp.leftMargin = dp(18);
         body.addView(pane, paneLp);
-        screensaverPanel(getString(R.string.hb_home_settings) + " · " + getString(R.string.hb_screensaver), body);
+        screensaverStatus = everywhere().status();
+        LinearLayout panel = screensaverPanel(getString(R.string.hb_home_settings) + " · " + getString(R.string.hb_screensaver), body);
         list.addView(bold(getString(R.string.hb_ss_list_heading), 19));
-        List<ScreensaverRegistry.Entry> entries = ScreensaverRegistry.BUILT_IN;
+        List<ScreensaverRegistry.Entry> entries = screensaverEntries;
+        String chosen = chosenScreensaver().id;
         int pages = Math.max(1, (entries.size() + SCREENSAVER_PAGE_SIZE - 1) / SCREENSAVER_PAGE_SIZE);
         screensaverPage = Math.max(0, Math.min(pages - 1, screensaverPage));
         int first = screensaverPage * SCREENSAVER_PAGE_SIZE;
@@ -2477,7 +2657,7 @@ public class MainActivity extends Activity {
         View focusCard = null;
         for (int i = first; i < Math.min(entries.size(), first + SCREENSAVER_PAGE_SIZE); i++) {
             ScreensaverRegistry.Entry entry = entries.get(i); int index = i;
-            boolean inUse = entry.id.equals(layout.screensaver.choice);
+            boolean inUse = entry.id.equals(chosen);
             LinearLayout card = new LinearLayout(this); card.setGravity(Gravity.CENTER_VERTICAL);
             card.setPadding(dp(14), dp(10), dp(14), dp(10)); card.setBackground(tileBackground());
             card.setFocusable(true); card.setClickable(true); card.setTag("card:" + entry.id);
@@ -2486,16 +2666,20 @@ public class MainActivity extends Activity {
             card.addView(glyph, new LinearLayout.LayoutParams(dp(50), dp(50)));
             LinearLayout copy = new LinearLayout(this); copy.setOrientation(LinearLayout.VERTICAL); copy.setPadding(dp(14), 0, 0, 0);
             LinearLayout nameRow = new LinearLayout(this); nameRow.setGravity(Gravity.CENTER_VERTICAL);
-            nameRow.addView(bold(getString(entry.label), 19));
-            if (inUse) {
-                TextView use = badge(getString(R.string.hb_ss_in_use), paletteColors.focus, contrastingText(paletteColors.focus));
+            TextView title = bold(entry.title(this), 19); title.setSingleLine(true); title.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            nameRow.addView(title, new LinearLayout.LayoutParams(0, -2, 1));
+            boolean needsEverywhere = entry.app() && !inUse && !screensaverStatus.managed;
+            if (inUse || needsEverywhere) {
+                TextView use = inUse ? badge(getString(R.string.hb_ss_in_use), paletteColors.focus, contrastingText(paletteColors.focus))
+                        : badge(getString(R.string.hb_ss_needs_everywhere), paletteColors.raised, paletteColors.text);
                 LinearLayout.LayoutParams useLp = new LinearLayout.LayoutParams(-2, -2); useLp.leftMargin = dp(8); nameRow.addView(use, useLp);
             }
             copy.addView(nameRow);
-            copy.addView(muted("◆ " + getString(R.string.hb_ss_built_in), 14));
+            String role = entry.app() ? "☾ " + getString(R.string.hb_ss_app_kind) : "◆ " + getString(R.string.hb_ss_built_in);
+            copy.addView(muted(role, 14));
             copy.addView(muted("· " + getString(entry.summary), 14));
             card.addView(copy, new LinearLayout.LayoutParams(0, -2, 1));
-            card.setContentDescription(getString(entry.label) + (inUse ? ", " + getString(R.string.hb_ss_in_use) : "") + ", " + getString(entry.summary));
+            card.setContentDescription(entry.title(this) + (inUse ? ", " + getString(R.string.hb_ss_in_use) : "") + ", " + role.substring(2) + ", " + getString(entry.summary));
             card.setOnFocusChangeListener((v, has) -> { if (has && screensaverFocus != index) { screensaverFocus = index; drawScreensaverPane(pane, entry); } });
             card.setOnClickListener(v -> { if (screensaverFirstAction != null) screensaverFirstAction.requestFocus(); });
             LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(-1, -2); cardLp.topMargin = dp(8);
@@ -2515,7 +2699,7 @@ public class MainActivity extends Activity {
         TextView hint = muted(getString(R.string.hb_ss_hint), 13);
         LinearLayout.LayoutParams hintLp = new LinearLayout.LayoutParams(-1, -2); hintLp.topMargin = dp(10); list.addView(hint, hintLp);
         drawScreensaverPane(pane, entries.get(screensaverFocus));
-        focusScreensaver(body, focusCard);
+        focusScreensaver(panel, focusCard);
     }
 
     private void drawScreensaverPane(LinearLayout pane, ScreensaverRegistry.Entry entry) {
@@ -2524,7 +2708,15 @@ public class MainActivity extends Activity {
         boolean clock = ScreensaverRegistry.CLOCK.equals(entry.id);
         FrameLayout sample = new FrameLayout(this);
         String backdrop = clock ? settings.clockBackdrop : ScreensaverSettings.BACKDROP_HOME;
-        if (ScreensaverSettings.BACKDROP_GLOW.equals(backdrop)) {
+        if (entry.app()) {
+            // Android gives apps no way to start a specific screensaver, so say so instead of offering a Preview.
+            sample.setBackground(shape(paletteColors.raised, paletteColors.edge, 1));
+            LinearLayout none = new LinearLayout(this); none.setGravity(Gravity.CENTER_VERTICAL); none.setPadding(dp(24), 0, dp(24), 0);
+            TextView glyph = text(entry.glyph, 40); none.addView(glyph);
+            TextView why = muted(getString(R.string.hb_ss_no_preview), 15); why.setPadding(dp(18), 0, 0, 0);
+            none.addView(why, new LinearLayout.LayoutParams(0, -2, 1));
+            sample.addView(none, new FrameLayout.LayoutParams(-1, -1));
+        } else if (ScreensaverSettings.BACKDROP_GLOW.equals(backdrop)) {
             GradientDrawable glow = new GradientDrawable(); glow.setGradientType(GradientDrawable.RADIAL_GRADIENT);
             glow.setColors(new int[]{0xFF4A2A8C, 0xFF1A1236, 0xFF050508}); glow.setGradientCenter(0.25f, 0.45f);
             glow.setGradientRadius(dp(320)); glow.setCornerRadius(dp(12)); sample.setBackground(glow);
@@ -2532,7 +2724,7 @@ public class MainActivity extends Activity {
             int fill = ScreensaverSettings.BACKDROP_BLACK.equals(backdrop) ? Color.BLACK : paletteColorForId(layout.palette);
             UiBackgroundDrawable d = new UiBackgroundDrawable(fill); d.setCornerRadius(dp(12)); sample.setBackground(d);
         }
-        if (clock || settings.backgroundShowsClock) {
+        if (!entry.app() && (clock || settings.backgroundShowsClock)) {
             LinearLayout time = new LinearLayout(this); time.setOrientation(LinearLayout.VERTICAL);
             android.widget.TextClock hours = new android.widget.TextClock(this);
             hours.setFormat12Hour("h:mm"); hours.setFormat24Hour("HH:mm"); hours.setTextSize(46); hours.setTextColor(0xE6FFFFFF);
@@ -2544,34 +2736,59 @@ public class MainActivity extends Activity {
             FrameLayout.LayoutParams timeLp = new FrameLayout.LayoutParams(-2, -2, Gravity.CENTER_VERTICAL | Gravity.START);
             timeLp.leftMargin = dp(30); sample.addView(time, timeLp);
         }
-        TextView tag = badge(getString(R.string.hb_ss_preview), 0xCC000000, Color.WHITE);
-        FrameLayout.LayoutParams tagLp = new FrameLayout.LayoutParams(-2, -2, Gravity.BOTTOM | Gravity.END);
-        tagLp.setMargins(0, 0, dp(10), dp(10)); sample.addView(tag, tagLp);
+        if (!entry.app()) {
+            TextView tag = badge(getString(R.string.hb_ss_preview), 0xCC000000, Color.WHITE);
+            FrameLayout.LayoutParams tagLp = new FrameLayout.LayoutParams(-2, -2, Gravity.BOTTOM | Gravity.END);
+            tagLp.setMargins(0, 0, dp(10), dp(10)); sample.addView(tag, tagLp);
+        }
         sample.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         pane.addView(sample, new LinearLayout.LayoutParams(-1, dp(130)));
-        TextView name = bold(getString(entry.label), 21); name.setPadding(0, dp(8), 0, 0); pane.addView(name);
+        TextView name = bold(entry.title(this), 21); name.setPadding(0, dp(8), 0, 0); pane.addView(name);
         TextView detail = muted(getString(entry.description), 16); detail.setMaxLines(3); pane.addView(detail);
         LinearLayout actions = new LinearLayout(this);
-        boolean inUse = entry.id.equals(settings.choice);
+        EverywhereScreensaver.Status status = screensaverStatus;
+        boolean inUse = entry.id.equals(chosenScreensaver().id);
         screensaverFirstAction = null;
-        if (!inUse) addScreensaverAction(actions, getString(R.string.hb_ss_use), "act:use", () -> useScreensaver(entry, "act:preview"));
-        addScreensaverAction(actions, getString(R.string.hb_ss_preview), "act:preview", () -> previewScreensaver(entry, false));
-        addScreensaverAction(actions, getString(R.string.hb_ss_options), "act:options", () -> openScreensaverOptions(entry.id, null));
+        if (!inUse) {
+            // Before the one-time question an app needs Use everywhere; once managed, Use applies in every app.
+            if (ScreensaverRules.use(status.managed, entry.id) == ScreensaverRules.Use.EVERYWHERE_SCREEN)
+                addScreensaverAction(actions, getString(R.string.hb_ss_everywhere), "act:use", () -> openEverywhere(entry.id));
+            else addScreensaverAction(actions, getString(R.string.hb_ss_use), "act:use", () -> useScreensaver(entry, entry.app() ? "act:use" : "act:preview"));
+        }
+        if (entry.app()) {
+            if (entry.settings != null)
+                addScreensaverAction(actions, getString(R.string.hb_ss_open_settings, entry.name), "act:settings", () -> openScreensaverAppSettings(entry));
+        } else {
+            addScreensaverAction(actions, getString(R.string.hb_ss_preview), "act:preview", () -> previewScreensaver(entry, false));
+            addScreensaverAction(actions, getString(R.string.hb_ss_options), "act:options", () -> openScreensaverOptions(entry.id, null));
+        }
         LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(-1, -2); actionsLp.topMargin = dp(8); pane.addView(actions, actionsLp);
         LinearLayout.LayoutParams lineLp = new LinearLayout.LayoutParams(-1, dp(1)); lineLp.setMargins(0, dp(12), 0, dp(8));
         pane.addView(divider(), lineLp);
         pane.addView(bold(getString(R.string.hb_ss_when), 18));
         LinearLayout onHome = new LinearLayout(this); onHome.setGravity(Gravity.CENTER_VERTICAL); onHome.setMinimumHeight(dp(46));
         onHome.addView(bold(getString(R.string.hb_ss_on_home), 16), new LinearLayout.LayoutParams(dp(140), -2));
-        onHome.addView(text(screensaverStartsOnHome(), 16), new LinearLayout.LayoutParams(0, -2, 1));
-        TextView change = infoButton(getString(R.string.hb_ss_change), () -> openScreensaverOptions(entry.id, "idle:" + settings.idleMinutes));
-        change.setTag("act:change"); change.setPadding(dp(18), 0, dp(18), 0);
-        onHome.addView(change, new LinearLayout.LayoutParams(-2, dp(40)));
+        onHome.addView(text(screensaverStartsOnHome(status), 16), new LinearLayout.LayoutParams(0, -2, 1));
+        if (!status.managed) {
+            // While Android is in charge Homeboard's own Home timer is off, so there is nothing to change here.
+            String optionsFor = entry.app() ? chosenHomeboardEntry().id : entry.id;
+            TextView change = infoButton(getString(R.string.hb_ss_change), () -> openScreensaverOptions(optionsFor, "idle:" + settings.idleMinutes));
+            change.setTag("act:change"); change.setPadding(dp(18), 0, dp(18), 0);
+            onHome.addView(change, new LinearLayout.LayoutParams(-2, dp(40)));
+        }
         pane.addView(onHome);
-        LinearLayout other = new LinearLayout(this); other.setGravity(Gravity.CENTER_VERTICAL); other.setMinimumHeight(dp(40));
+        LinearLayout other = new LinearLayout(this); other.setGravity(Gravity.CENTER_VERTICAL); other.setMinimumHeight(dp(46));
         other.addView(bold(getString(R.string.hb_ss_other_apps), 16), new LinearLayout.LayoutParams(dp(140), -2));
-        other.addView(muted(getString(R.string.hb_ss_other_apps_value), 15), new LinearLayout.LayoutParams(0, -2, 1));
+        other.addView(muted(screensaverOtherApps(status), 15), new LinearLayout.LayoutParams(0, -2, 1));
+        TextView manage = infoButton(getString(status.managed ? R.string.hb_ss_this_tv_open : R.string.hb_ss_everywhere), () -> openEverywhere(entry.id));
+        manage.setTag("act:everywhere"); manage.setPadding(dp(18), 0, dp(18), 0);
+        other.addView(manage, new LinearLayout.LayoutParams(-2, dp(40)));
         pane.addView(other);
+    }
+    private void openScreensaverAppSettings(ScreensaverRegistry.Entry entry) {
+        ComponentName settings = entry.settings == null ? null : ComponentName.unflattenFromString(entry.settings);
+        if (settings == null) { toast(getString(R.string.hb_android_could_not_open_that_action)); return; }
+        open(new Intent().setComponent(settings));
     }
     private void addScreensaverAction(LinearLayout actions, String label, String tag, Runnable action) {
         TextView button = infoButton(label, action); button.setTag(tag); button.setPadding(dp(18), 0, dp(18), 0);
@@ -2592,7 +2809,8 @@ public class MainActivity extends Activity {
         LinearLayout box = new LinearLayout(this); box.setOrientation(LinearLayout.VERTICAL);
         box.setPadding(dp(18), dp(10), dp(18), dp(10)); box.setBackground(shape(paletteColors.surface, paletteColors.edge, 1));
         body.addView(box, new LinearLayout.LayoutParams(-1, -2));
-        screensaverPanel(getString(R.string.hb_ss_options_title), body);
+        screensaverStatus = everywhere().status();
+        LinearLayout panel = screensaverPanel(getString(R.string.hb_ss_options_title), body);
         LinearLayout title = new LinearLayout(this); title.setGravity(Gravity.CENTER_VERTICAL);
         title.addView(bold(getString(entry.label), 21));
         TextView builtIn = badge(getString(R.string.hb_ss_built_in), paletteColors.raised, paletteColors.text);
@@ -2660,8 +2878,10 @@ public class MainActivity extends Activity {
         when.setPadding(dp(18), dp(8), dp(18), dp(8)); when.setBackground(shape(paletteColors.surface, paletteColors.edge, 1));
         LinearLayout.LayoutParams whenLp = new LinearLayout.LayoutParams(-1, -2); whenLp.topMargin = dp(10); body.addView(when, whenLp);
         when.addView(bold(getString(R.string.hb_ss_when), 19));
+        boolean homeTimer = !screensaverStatus.managed;
         LinearLayout idle = optionRow(when, getString(R.string.hb_ss_start_after), true);
-        for (int minutes : ScreensaverSettings.IDLE_MINUTES) {
+        if (!homeTimer) idle.addView(muted(getString(R.string.hb_ss_home_timer_off), 15), new LinearLayout.LayoutParams(0, -2, 1));
+        else for (int minutes : ScreensaverSettings.IDLE_MINUTES) {
             String label = minutes == ScreensaverSettings.ANDROID_DECIDES ? getString(R.string.hb_ss_android_decides) : String.valueOf(minutes);
             String undo = minutes == ScreensaverSettings.ANDROID_DECIDES ? label : getString(R.string.hb_ss_minutes, minutes);
             TextView segment = segment(label, settings.idleMinutes == minutes, "idle:" + minutes, () -> {
@@ -2669,12 +2889,122 @@ public class MainActivity extends Activity {
             });
             addSegment(idle, segment);
         }
-        TextView unit = text(getString(R.string.hb_ss_min_without_input), 16); unit.setPadding(dp(6), 0, 0, 0); idle.addView(unit);
+        if (homeTimer) { TextView unit = text(getString(R.string.hb_ss_min_without_input), 16); unit.setPadding(dp(6), 0, 0, 0); idle.addView(unit); }
         LinearLayout other = optionRow(when, getString(R.string.hb_ss_other_apps), true);
-        other.addView(muted(getString(R.string.hb_ss_other_apps_value), 15), new LinearLayout.LayoutParams(0, -2, 1));
+        other.addView(muted(screensaverOtherApps(screensaverStatus), 15), new LinearLayout.LayoutParams(0, -2, 1));
         TextView footer = muted(getString(R.string.hb_ss_footer), 13);
         LinearLayout.LayoutParams footerLp = new LinearLayout.LayoutParams(-1, -2); footerLp.topMargin = dp(8); body.addView(footer, footerLp);
-        focusScreensaver(body, first);
+        focusScreensaver(panel, first);
+    }
+
+    private void openEverywhere(String entryId) {
+        screensaverSetupChecked = false; screensaverShowQr = false; screensaverFocusTag = null;
+        openMenu(new MenuSpec(getString(R.string.hb_ss_everywhere_title), () -> drawEverywhere(entryId)));
+    }
+    /** One row of the Use everywhere card: a label on the left, its value beside it. */
+    private void everywhereRow(LinearLayout box, String label, String value) {
+        LinearLayout row = new LinearLayout(this); row.setMinimumHeight(dp(34)); row.setGravity(Gravity.CENTER_VERTICAL);
+        row.addView(muted(label, 17), new LinearLayout.LayoutParams(dp(150), -2));
+        row.addView(text(value, 17), new LinearLayout.LayoutParams(0, -2, 1));
+        box.addView(row, new LinearLayout.LayoutParams(-1, -2));
+    }
+    private TextView everywhereButton(LinearLayout actions, String label, String tag, Runnable action) {
+        TextView button = infoButton(label, action); button.setTag(tag); button.setPadding(dp(18), 0, dp(18), 0);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(44)); lp.rightMargin = dp(10);
+        actions.addView(button, lp);
+        return button;
+    }
+    /**
+     * Home settings → Screensaver → Use everywhere: the one-time setup (not permitted), the asked-once question
+     * (permitted, not yet managed) or this TV's screensaver in use (managed), per ScreensaverRules.everywhereScreen.
+     * Opening it, Retry and Show QR code change nothing; only Confirm, Restore and later choices write.
+     */
+    private void drawEverywhere(String entryId) {
+        EverywhereScreensaver.Status status = screensaverStatus = everywhere().status();
+        ScreensaverRegistry.Entry entry = ScreensaverRegistry.resolve(entryId, screensaverEntries);
+        LinearLayout body = new LinearLayout(this); body.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout box = new LinearLayout(this); box.setOrientation(LinearLayout.VERTICAL);
+        box.setPadding(dp(22), dp(14), dp(22), dp(14)); box.setBackground(shape(paletteColors.surface, paletteColors.edge, 1));
+        body.addView(box, new LinearLayout.LayoutParams(-1, -2));
+        LinearLayout panel = screensaverPanel(getString(R.string.hb_ss_everywhere_title), body);
+        LinearLayout actions = new LinearLayout(this);
+        View first;
+        switch (ScreensaverRules.everywhereScreen(status.managed, status.mayWrite)) {
+            case SETUP: {
+                box.addView(bold(getString(R.string.hb_ss_setup_title), 22));
+                TextView why = text(getString(R.string.hb_ss_setup_body), 17); why.setPadding(0, dp(8), 0, dp(8)); box.addView(why);
+                String command = "adb shell pm grant " + getPackageName() + " android.permission.WRITE_SECURE_SETTINGS";
+                TextView code = text(command, 17); code.setTypeface(Typeface.MONOSPACE); code.setPadding(dp(14), dp(10), dp(14), dp(10));
+                code.setBackground(shape(0xFF0B0F17, paletteColors.edge, 1)); code.setTextColor(0xFFE6EDF3);
+                box.addView(code, new LinearLayout.LayoutParams(-1, -2));
+                if (screensaverShowQr) {
+                    try {
+                        ImageView qr = new ImageView(this); qr.setImageBitmap(PhoneEditor.qr(command));
+                        qr.setContentDescription(getString(R.string.hb_ss_qr_note));
+                        LinearLayout qrRow = new LinearLayout(this); qrRow.setGravity(Gravity.CENTER_VERTICAL); qrRow.setPadding(0, dp(8), 0, 0);
+                        qrRow.addView(qr, new LinearLayout.LayoutParams(dp(150), dp(150)));
+                        TextView note = muted(getString(R.string.hb_ss_qr_note), 15); note.setPadding(dp(14), 0, 0, 0);
+                        qrRow.addView(note, new LinearLayout.LayoutParams(0, -2, 1));
+                        box.addView(qrRow);
+                    } catch (Exception unavailable) { screensaverShowQr = false; }
+                }
+                TextView nothing = muted(getString(R.string.hb_ss_setup_nothing), 16); nothing.setPadding(0, dp(8), 0, 0); box.addView(nothing);
+                if (screensaverSetupChecked) box.addView(muted(getString(R.string.hb_ss_setup_still), 16));
+                first = everywhereButton(actions, getString(R.string.hb_ss_retry), "ev:retry", () -> { screensaverSetupChecked = true; redrawScreensaver("ev:retry"); });
+                everywhereButton(actions, getString(screensaverShowQr ? R.string.hb_ss_hide_qr : R.string.hb_ss_show_qr), "ev:qr",
+                        () -> { screensaverShowQr = !screensaverShowQr; redrawScreensaver("ev:qr"); });
+                break;
+            }
+            case ASK_ONCE: {
+                box.addView(bold(getString(R.string.hb_ss_ask_title), 22));
+                LinearLayout rows = new LinearLayout(this); rows.setOrientation(LinearLayout.VERTICAL); rows.setPadding(0, dp(8), 0, dp(4));
+                everywhereRow(rows, getString(R.string.hb_ss_now), screensaverName(status.component));
+                everywhereRow(rows, getString(R.string.hb_ss_after_label), getString(R.string.hb_ss_after_value, entry.title(this)));
+                everywhereRow(rows, getString(R.string.hb_ss_starts), getString(R.string.hb_ss_starts_unchanged, screensaverTimeout(status.timeout)));
+                everywhereRow(rows, getString(R.string.hb_ss_later), getString(R.string.hb_ss_later_value));
+                box.addView(rows);
+                box.addView(muted(getString(R.string.hb_ss_ask_note), 16));
+                first = everywhereButton(actions, getString(R.string.hb_ss_confirm), "ev:confirm", () -> changeEverywhere(entry, true, "ev:start"));
+                everywhereButton(actions, getString(R.string.hb_cancel), "ev:cancel", this::backMenu);
+                break;
+            }
+            default: {
+                ScreensaverRegistry.Entry chosen = chosenScreensaver();
+                boolean set = ScreensaverRules.inUseEverywhere(true, status.component, chosen.id, everywhere().gateway().ownComponent());
+                LinearLayout title = new LinearLayout(this); title.setGravity(Gravity.CENTER_VERTICAL);
+                title.addView(bold(screensaverName(status.component), 22));
+                if (set) {
+                    TextView badge = badge(getString(R.string.hb_ss_this_tv), paletteColors.focus, contrastingText(paletteColors.focus));
+                    LinearLayout.LayoutParams badgeLp = new LinearLayout.LayoutParams(-2, -2); badgeLp.leftMargin = dp(12); title.addView(badge, badgeLp);
+                }
+                box.addView(title);
+                LinearLayout rows = new LinearLayout(this); rows.setOrientation(LinearLayout.VERTICAL); rows.setPadding(0, dp(8), 0, dp(4));
+                everywhereRow(rows, getString(R.string.hb_ss_starts), getString(R.string.hb_ss_starts_any_app, screensaverTimeout(status.timeout)));
+                if (status.original != null)
+                    everywhereRow(rows, getString(R.string.hb_ss_original), getString(R.string.hb_ss_original_value, screensaverName(status.original.component())));
+                box.addView(rows);
+                box.addView(muted(!set ? getString(R.string.hb_ss_not_set) : chosen.app() ? getString(R.string.hb_ss_in_use_app, chosen.name)
+                        : getString(R.string.hb_ss_in_use_homeboard), 16));
+                first = everywhereButton(actions, getString(R.string.hb_ss_start_now), "ev:start", () -> startScreensaverNow(chosen));
+                if (chosen.app() && chosen.settings != null)
+                    everywhereButton(actions, getString(R.string.hb_ss_open_settings, chosen.name), "ev:settings", () -> openScreensaverAppSettings(chosen));
+                if (status.original != null)
+                    everywhereButton(actions, getString(R.string.hb_ss_restore, screensaverName(status.original.component())), "ev:restore", this::restoreEverywhere);
+            }
+        }
+        LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(-1, -2); actionsLp.topMargin = dp(14); box.addView(actions, actionsLp);
+        TextView footer = muted(getString(R.string.hb_ss_everywhere_footer), 13);
+        LinearLayout.LayoutParams footerLp = new LinearLayout.LayoutParams(-1, -2); footerLp.topMargin = dp(8); body.addView(footer, footerLp);
+        focusScreensaver(panel, first);
+    }
+    /** Start now: Android's own shortcut, which plays this TV's screensaver; Homeboard's Show now for its own entries if the shortcut is missing. */
+    private void startScreensaverNow(ScreensaverRegistry.Entry chosen) {
+        if (everywhere().gateway().startNow()) return;
+        if (!chosen.app()) {
+            try { startActivity(ScreensaverActivity.intent(this, ScreensaverActivity.MODE_NOW, null)); return; }
+            catch (RuntimeException unavailable) { /* falls through to the notice */ }
+        }
+        toast(getString(R.string.hb_android_could_not_open_that_action));
     }
 
     private void cleanupInstructions() {

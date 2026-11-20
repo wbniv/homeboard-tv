@@ -45,10 +45,23 @@ public class ScreensaverSettingsTest {
 
     @Test public void unknownChoiceAndBackdropFallBackToClockAndGlow() throws Exception {
         ScreensaverSettings s = ScreensaverSettings.parse(new JSONObject()
-                .put("choice", "com.example/.UninstalledDream").put("clockBackdrop", "plasma"));
+                .put("choice", "plasma").put("clockBackdrop", "plasma"));
         assertEquals(ScreensaverRegistry.CLOCK, s.choice);
         assertEquals(ScreensaverSettings.BACKDROP_GLOW, s.clockBackdrop);
         assertEquals(ScreensaverRegistry.CLOCK, ScreensaverSettings.parse(new JSONObject().put("choice", "")).choice);
+    }
+
+    @Test public void anAndroidAppChoiceIsKeptAndCheckedForInstallationOnRead() throws Exception {
+        ScreensaverSettings s = ScreensaverSettings.parse(new JSONObject()
+                .put("choice", "com.example/com.example.UninstalledDream").put("choiceName", "Example"));
+        assertEquals("com.example/com.example.UninstalledDream", s.choice);
+        assertEquals("Example", s.choiceName);
+        assertEquals(s.json().toString(), s.copy().json().toString());
+        // Not installed: the list resolves it to the default slot, and Homeboard itself can only play built-ins.
+        assertEquals(ScreensaverRegistry.CLOCK, ScreensaverRegistry.resolve(s.choice, ScreensaverRegistry.BUILT_IN).id);
+        assertEquals(ScreensaverRegistry.CLOCK, ScreensaverRegistry.known(s.choice));
+        // A label is kept only beside an app choice.
+        assertEquals("", ScreensaverSettings.parse(new JSONObject().put("choice", "clock").put("choiceName", "x")).choiceName);
     }
 
     @Test public void idleMinutesSnapToTheAllowedSet() throws Exception {

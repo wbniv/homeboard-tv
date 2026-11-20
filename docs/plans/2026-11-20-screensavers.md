@@ -1,7 +1,9 @@
 # Screensavers: choose, configure and get more
 
-**Status: Stage 1 implemented, not yet deployed or verified on a TV (2026‑11‑20).** See
-[Stage 1 notes](#stage-1-notes) for its limits and differences from the mockups. Will answered the four
+**Status: Stage 3 implemented, not run on a TV; Stage 0 answers 4/5 still unverified
+(2026‑11‑20).** Stage 1 is implemented and also not yet verified on a TV. See
+[Stage 1 notes](#stage-1-notes) and [Stage 3 notes](#stage-3-notes) for their limits and
+differences from the mockups. Will answered the four
 [decisions](#decisions) the same day, and the
 [distribution research](../investigations/2026-11-20-screensaver-distribution.md) covers
 stores and installing from Homeboard. The device probe in Stage 0 has not run: at 17:40
@@ -410,6 +412,77 @@ none has run on a TV yet (Verification 5–7 are open).
   `Handler` callback rebased on the last input.
 - **Strings** live in a new `homeboard_screensaver.xml` pair (English and Thai), the files
   the parity check reads. The screensaver service, renamed `ScreensaverDream`, is labelled with the app's name.
+
+### Stage 3 notes
+
+Implemented on `feature/screensaver-stage3`, 2026‑11‑20, before Stage 0 has run, so the
+code is built to survive every Stage 0 answer: each read and write returns a typed result
+(ok, unreadable, not permitted, refused, read‑back differs), never throws to the screen,
+and every failure leaves Android's setting as it was and says so.
+
+- **Code shape.** `ScreensaverGateway` is the small interface; `SystemScreensaver` is its
+  only real implementation and holds every framework call (secure and system settings,
+  `checkSelfPermission`, the `Somnambulator` shortcut, `queryIntentServices` and the
+  `android.service.dream` metadata). `EverywhereScreensaver` is the change logic (keep the
+  original, write, read back, put back on failure, Restore, Undo, uninstalled app) and
+  `ScreensaverRules` the state table; both are pure and unit tested with a fake gateway.
+  `ScreensaverDeviceStore` keeps the managed flag and the original in their own
+  preferences file, `screensaver-device`, not in the Home layout that Undo replaces.
+- **What a change writes.** `screensaver_components` set to the chosen app, or to this
+  install's `ScreensaverDream` built at run time (the package differs between debug and
+  release). `screensaver_enabled` and `screensaver_activate_on_sleep` are set to 1 only
+  when they read as an explicit 0; unset or unreadable values are left alone. The original
+  keeps all three as found (an unreadable one is not kept and never written).
+- **Undo** entries of the new kind `screensaver-system` carry the previous layout, the
+  previous Android values and the previous managed flag. Undoing several entries writes
+  Android once, the oldest entry's values, and reads them back before the layout is
+  committed; if the layout then fails to save, Android is put back. Undo to an app that
+  has since been uninstalled is refused ("could not undo"), except to the kept original.
+- **The original is never overwritten**, including after Restore. A refused first write
+  may leave it recorded; it then equals what is still on the TV.
+- **Restore** ends management (On Home only) and keeps a Homeboard choice; an app choice
+  falls back to the default slot, as the uninstalled notice in the mockup does. The Home
+  timer stays off after Confirm and after Restore (no new timer by surprise); Undo of the
+  Confirm brings back the previous Home time.
+- **Remote `screensaver` action.** A Homeboard entry chosen: Show now
+  (`ScreensaverActivity` MODE_NOW), managed or not. An Android screensaver app chosen
+  (only possible through Use everywhere): Android's `Somnambulator` shortcut, since Homeboard
+  cannot run it; Show now if that shortcut is missing. The brief asked for Show now
+  whenever Homeboard manages the TV, but with an app chosen that would play Clock instead
+  of the app.
+- **Differences from the mockup.** The setup text does not claim Android has no
+  screensaver chooser (Stage 0 question 2 is open) and Homeboard does not yet open
+  Android's chooser where one exists. **Show QR code** encodes the command itself, through
+  the phone panel's existing QR helper. **Retry** on the setup screen says "Checked: setup
+  is not done yet" when nothing changed. The recovery notice sits under the heading of
+  whichever screensaver screen is open, with Retry focused. The row button beside **In
+  other apps** reads **Use everywhere…** before the question and **This TV's
+  screensaver…** after it. App cards carry a **Needs Use everywhere** chip until the TV is
+  managed. Android's idle time is a status line only (writing it waits on Stage 0).
+- **Android screensaver apps** are listed after the built‑ins by label, without Homeboard's
+  own service, with no Preview and no Options; **Open ‹app› settings** appears when the
+  service declares `settingsActivity`. Their ids are long‑form flattened components and
+  comparisons use that form. "Not reviewed by Homeboard" and the directory are Stage 2.
+- **Removed.** The Stage 1 placeholder string `hb_ss_other_apps_value`; "In other apps" now
+  reads Android's value through the gateway.
+- **Assumptions it depends on (Stage 0, unverified on Cast1 and Cast2).**
+  (a) Question 4: an ordinary app can read `screensaver_components`,
+  `screensaver_enabled`, `screensaver_activate_on_sleep` and `screen_off_timeout`. If not,
+  the lines read "Unknown" and every change stops at "could not read … changed nothing".
+  (b) Question 5: with `WRITE_SECURE_SETTINGS` from `pm grant`, the writes succeed, read
+  back and survive a restart. If a write is refused or reads back differently, the
+  recovery notice shows; persistence across a restart is not checked by the code.
+  (c) Question 3: Android's `Somnambulator` shortcut starts the screensaver. If not, Start
+  now falls back to Show now for a Homeboard entry and shows "Android could not open that
+  action" for an app.
+- **Tested.** Unit tests: `ScreensaverRulesTest` (every state, transition and status line,
+  the remote rule), `EverywhereScreensaverTest` (fake gateway: confirm, original kept once,
+  not permitted, refused, read‑back differs and put back, partial failure, Restore, Undo
+  to the previous value, uninstalled app, unreadable, store failures),
+  `ScreensaverDeviceStoreTest` and `ScreensaverRegistryTest` (installed‑screensaver
+  discovery, settings activity, fallback on read). The screens, `SystemScreensaver`, the
+  manifest `<queries>` entry and the remote action are compiled only; Verification 10 is
+  open.
 
 ## Design filter record
 

@@ -384,11 +384,13 @@ final class RemoteKeys {
                         AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                 break;
             case "screensaver":
-                // The screensaver chosen in the TV's settings, through the system's "start now" shortcut; the
-                // launcher's own chosen screensaver (Show now) where the firmware has no such shortcut.
-                Intent dream = new Intent(Intent.ACTION_MAIN)
-                        .setClassName("com.android.systemui", "com.android.systemui.Somnambulator");
-                if (ctx.getPackageManager().resolveActivity(dream, 0) == null)
+                // The screensaver chosen in Home settings (ScreensaverRules.remoteStartsHomeboard): a Homeboard
+                // entry plays at once through Show now; an Android screensaver app, which Homeboard cannot run,
+                // starts through Android's "start now" shortcut, since Use everywhere set Android to it. Show now
+                // again where the firmware has no such shortcut.
+                Intent dream = SystemScreensaver.startNowIntent();
+                if (ScreensaverRules.remoteStartsHomeboard(ScreensaverActivity.savedLayout(ctx).screensaver.choice)
+                        || ctx.getPackageManager().resolveActivity(dream, 0) == null)
                     dream = ScreensaverActivity.intent(ctx, ScreensaverActivity.MODE_NOW, null);
                 start(ctx, dream);
                 break;

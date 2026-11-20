@@ -24,7 +24,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- Puts the remote's accessibility helpers back after a force stop of this app took them off the enabled
-         list (ServiceRepair). Granted with pm grant by build-and-install when a helper is enabled. -->
+         list (ServiceRepair), and lets Use everywhere change this TV's screensaver (SystemScreensaver).
+         Granted once with pm grant. -->
     <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
     <!-- YaOS (Yandex TV OS): HDMI, AV and the tuner all play in com.yandex.tv.live, whose activities require
@@ -42,6 +43,8 @@
             <data android:scheme="https" />
         </intent>
         <intent><action android:name="tv.projectivy.plugin.WALLPAPER_PROVIDER" /></intent>
+        <!-- Android screensaver apps for the Screensaver list (ScreensaverRegistry, SystemScreensaver). -->
+        <intent><action android:name="android.service.dreams.DreamService" /></intent>
         <intent>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
@@ -228,8 +231,8 @@
             android:taskAffinity=""
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <!-- Android screensaver: plays the screensaver chosen in Home settings. Pick it in Settings, or
-             `settings put secure screensaver_components <applicationId>/com.gathin.tvhome.ScreensaverDream` over adb. -->
+        <!-- Android screensaver: plays the screensaver chosen in Home settings. Home settings → Screensaver →
+             Use everywhere sets it (SystemScreensaver, after the one-time WRITE_SECURE_SETTINGS grant). -->
         <service
             android:name=".ScreensaverDream"
             android:label="@string/app_name"

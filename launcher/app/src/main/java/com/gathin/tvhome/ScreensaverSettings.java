@@ -18,8 +18,10 @@ final class ScreensaverSettings {
     static final int DIM_STEP = 5, MAX_DIM = 90;
     static final int DEFAULT_CLOCK_DIM = 35, DEFAULT_BACKGROUND_DIM = 20;
 
-    /** A ScreensaverRegistry id; anything unknown is read as Clock. */
+    /** A ScreensaverRegistry id: a built-in id or an Android app's flattened component; anything else is read as Clock. */
     String choice = ScreensaverRegistry.CLOCK;
+    /** An Android screensaver app's own label, kept with the choice so the notice can name it once it is uninstalled. */
+    String choiceName = "";
     String clockBackdrop = BACKDROP_GLOW;
     /** Darkening of Home's background behind the clock, used only with the Home background backdrop. */
     int clockDimPercent = DEFAULT_CLOCK_DIM;
@@ -46,7 +48,8 @@ final class ScreensaverSettings {
     static ScreensaverSettings parse(JSONObject json) {
         ScreensaverSettings s = new ScreensaverSettings();
         if (json == null) return s;
-        s.choice = ScreensaverRegistry.known(json.optString("choice", ""));
+        s.choice = ScreensaverRegistry.stored(json.optString("choice", ""));
+        s.choiceName = ScreensaverRules.isApp(s.choice) ? json.optString("choiceName", "") : "";
         s.clockBackdrop = backdrop(json.optString("clockBackdrop", BACKDROP_GLOW));
         s.clockDimPercent = dim(json.optInt("clockDimPercent", DEFAULT_CLOCK_DIM));
         s.backgroundShowsClock = json.optBoolean("backgroundShowsClock", true);
@@ -57,7 +60,7 @@ final class ScreensaverSettings {
 
     JSONObject json() {
         try {
-            return new JSONObject().put("choice", choice).put("clockBackdrop", clockBackdrop)
+            return new JSONObject().put("choice", choice).put("choiceName", choiceName).put("clockBackdrop", clockBackdrop)
                     .put("clockDimPercent", clockDimPercent).put("backgroundShowsClock", backgroundShowsClock)
                     .put("backgroundDimPercent", backgroundDimPercent).put("idleMinutes", idleMinutes);
         } catch (JSONException e) { throw new IllegalStateException(e); }
