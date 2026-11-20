@@ -266,7 +266,9 @@ Matter devices can be shared from Google Home to another controller on the same 
 
 Google TV already shows favourited Google Home devices, including cameras, in a home panel reached from the quick settings dashboard or by long-pressing the Home button ([Google TV Help](https://support.google.com/googletv/answer/15158065?hl=en)). It needs standard mode, an opt-in and at least one other smart-home device in the home.
 
-Two cheap checks on Cast1 would settle its value: whether long-press Home still opens the dashboard when Homeboard is the Home app, and whether the panel has a launchable activity that a Homeboard tile could open. Neither is documented.
+Two cheap checks on Cast1 would settle its value: whether long-press Home still opens the dashboard when Homeboard is the Home app, and whether the panel has a launchable activity that a Homeboard tile could open.
+
+The repository already holds part of the answer; see [the Home key on Google TV](2026-11-20-home-key-on-google-tv.md). Upstream's notes say the panel lives in `com.google.android.apps.tv.dreamx` and loads its account through Google's launcher, so it breaks if that launcher is disabled. Homeboard's Home-key override keeps the launcher enabled and passes a held Home press through, so by design the panel survives that route. Neither has been seen on a Chromecast.
 
 **Verdict:** Check it during the 2A probe. If it works, Homeboard gets basic device control for the cost of one shortcut tile.
 

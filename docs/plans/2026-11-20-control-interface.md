@@ -736,7 +736,10 @@ These are deliberately not designed here.
   survival, freezing, background starts, the Android TV Remote link path and standby. The AOSP
   behaviour described there is from memory.
 - Which app formally holds the Home role on Cast1 or Cast2. Stage 0 showed the Home key
-  bringing Google TV's launcher forward on both.
+  bringing Google TV's launcher forward on both. Google TV keeps its launcher as Home whatever
+  is chosen; the route is the Home-key override, under which Homeboard is not Android's Home
+  process. See [the Home key on Google TV](../investigations/2026-11-20-home-key-on-google-tv.md).
+  Runs C and D should be read with that in mind.
 - That `NsdManager` registration needs no permission at the current and the Play target.
 - Whether the installed coordinator can hold another app in front for 60 min or record process priority.
 - Whether the coordinator can send `am broadcast` to an arbitrary receiver or open a link; its

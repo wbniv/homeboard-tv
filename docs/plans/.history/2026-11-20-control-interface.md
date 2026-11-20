@@ -1,9 +1,15 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/50135c3) | Control interface stage 0: process survives 5 min behind Google TV on both TVs |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/faf1bc3) | Control interface: plan reviewed, stages tracked, lifetime probe wired |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/d5e8a07) | Control interface: plan with mockups and diagrams |
 
 <!--history-meta v1
+50135c3	author	Will Norris
+50135c3	added	36
+50135c3	deleted	1
+50135c3	files	1
+50135c3	body	Coordinator poke-resume checks J-6c65b773e11e (Cast1) and J-526b63864f7e\n(Cast2): same pid before, at restart and after resume, with no keep-alive\nservice. The Home key brought Google TV's launcher forward on both.\n\nCo-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqN1KiiVNT63goz7fyo
 faf1bc3	author	Will Norris
 faf1bc3	added	6
 faf1bc3	deleted	8
