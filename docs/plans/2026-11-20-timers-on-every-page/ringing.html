@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>A timer ends on Home</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0d1521;color:#eef2fa;font:21px/1.4 system-ui,"Loma","Noto Sans Thai",sans-serif}
+main{width:1440px;height:900px;position:relative;overflow:hidden}
+.kicker{color:#9ad7ff;font-size:15px;letter-spacing:1px;text-transform:uppercase}
+h1{font-size:28px;line-height:1.2;margin:0;font-weight:600}
+.abs{position:absolute}
+.tv{position:relative;color:#e6edf7}
+.wg{background:rgba(38,44,56,.92);border:calc(2px*var(--s)) solid #3d4656;border-radius:calc(18px*var(--s))}
+.wfocus{border:calc(5px*var(--s)) solid #eef2f8;box-shadow:0 0 0 calc(4px*var(--s)) rgba(154,215,255,.35)}
+.wt{padding:calc(10px*var(--s)) calc(16px*var(--s)) calc(6px*var(--s));color:#c3ccd9;white-space:nowrap}
+.btn{background:#353b48;border:calc(1px*var(--s)) solid #59627a;border-radius:calc(8px*var(--s));display:grid;place-items:center;white-space:nowrap}
+.chip{position:absolute;display:flex;align-items:center;gap:calc(14px*var(--s));padding:0 calc(22px*var(--s));border-radius:999px;background:rgba(18,25,37,.9);border:calc(2px*var(--s)) solid #7f8ea6;color:#dfe6f0;white-space:nowrap;font:inherit;line-height:1.2;cursor:pointer}
+.chip .it{display:flex;align-items:center;gap:calc(10px*var(--s))}
+.chip .ic,.ic2{display:inline-grid;width:calc(30px*var(--s));height:calc(30px*var(--s));flex:none}
+.ic2{width:calc(34px*var(--s));height:calc(34px*var(--s))}
+.chip .ic svg,.ic2 svg{width:100%;height:100%}
+.chip .nm{font-size:calc(22px*var(--s));color:#b9c6d8}
+.chip .tm{font-size:calc(34px*var(--s));font-weight:700;font-variant-numeric:tabular-nums}
+.chip .nt{font-size:calc(18px*var(--s));color:#b9c6d8}
+.chip .sep{width:calc(2px*var(--s));height:calc(34px*var(--s));background:#56627a}
+.chip .more{font-size:calc(22px*var(--s));font-weight:700;border:calc(2px*var(--s)) solid #8796ad;border-radius:999px;padding:0 calc(10px*var(--s))}
+.st-last{border:calc(5px*var(--s)) solid #f4f7fb}
+.st-last .tm{font-weight:800}
+.st-last .nt{text-transform:uppercase;letter-spacing:.08em;color:#f4f7fb;font-weight:700}
+.st-ring{background:#f4f7fb;color:#0b1220;border:calc(3px*var(--s)) solid #0b1220}
+.st-ring .nm,.st-ring .nt{color:#26324a}.st-ring .sep{background:#9aa6ba}.st-ring .more{border-color:#26324a}
+.st-done{border:calc(3px*var(--s)) dashed #dfe6f0}
+.st-paused .tm{color:#9fb0c8;font-weight:500}
+.chip.focus{outline:calc(4px*var(--s)) solid #fff;outline-offset:calc(5px*var(--s));box-shadow:0 0 0 calc(14px*var(--s)) rgba(154,215,255,.3)}
+.bar{position:absolute;left:40px;right:40px;top:14px;height:66px}
+.bar .kicker{margin-bottom:4px}
+#feedback{position:absolute;right:40px;top:16px;width:500px;font-size:16px;line-height:1.35;color:#b9c7dc;text-align:right}
+.tools{position:absolute;left:40px;top:52px;display:flex;gap:8px}
+.tools button{font:inherit;font-size:15px;color:#eef2fa;background:#2c4160;border:1px solid #6f86a6;border-radius:7px;padding:3px 10px;cursor:pointer;white-space:nowrap}
+.tools button.on{background:#9ad7ff;color:#0d1521;border-color:#9ad7ff}
+.tools .gap{width:14px}
+.cap{position:absolute;font-size:16px;line-height:1.3;color:#c9d4e4}
+.cap b{color:#eef2fa}
+.frame{position:absolute;border-radius:6px;box-shadow:0 0 0 1px #33435a}
+</style>
+<main>
+<div class="bar"><div class="kicker">Homeboard · proposed design · sample data · a timer ends</div><h1>From last seconds to nothing at all</h1></div>
+<div id="feedback">Over Home and All Apps a ringing timer never opens anything: someone may be mid-navigation.</div>
+
+<div id="stage"></div>
+</main>
+<script>
+// Shared TV renderer for the timers-on-every-page mockups (inlined into each page).
+// Geometry is a 1440x810 TV in 1.5 px per dp (960x540 dp), scaled by o.s; fonts also scale by 1.3 for Large text.
+const L={
+en:{home:'Home 1/2 · Right → All Apps · Hold OK → menu',homeLarge:'Home 1/2 · Right → All…',apps:'All Apps · Left edge → Home · Hold OK → menu · Page 1/2',
+fs:'Back → Dashboard · Highlight → Preview · OK → Details',chipHint:'OK → Timers & alarms · Back → where you were',
+rain:'Next 24 h · 0–0.5 mm/h · Device location · Open-Meteo',cal:'Today · Fri 20 Nov 2026 · All holidays · Next 30 days',
+air1:'LUMPINI PARK · AirBKK',air2:'Good',groc:'Groceries · 6 items',groc2:'Eggs · Fish sauce · Limes · Jasmine rice',aqi:'Air quality · last 24 h',
+cities:[['BANGKOK','Thailand','19:42'],['SEATTLE','United States','04:42'],['DENVER','United States','05:42'],['MUNICH','Germany','13:42'],['BARCELONA','Spain','13:42']],
+restore:'Restore dashboard',configure:'Configure',timers:'Timers & alarms',calendar:'Calendar',air:'Air quality',allApps:'All Apps'},
+th:{home:'หน้าหลัก 1/2 · ขวา → แอปทั้งหมด · กด OK ค้าง → เมนู',homeLarge:'หน้าหลัก 1/2 · ขวา →…',apps:'แอปทั้งหมด · ขอบซ้าย → หน้าหลัก · กด OK ค้าง → เมนู',
+fs:'กลับ → แดชบอร์ด · เลือก → ดูตัวอย่าง · ตกลง → รายละเอียด',chipHint:'ตกลง → ตัวจับเวลาและนาฬิกาปลุก · กลับ → กลับที่เดิม',
+rain:'24 ชม. ข้างหน้า · 0–0.5 มม./ชม. · ตำแหน่งอุปกรณ์',cal:'วันนี้ · ศ. 20 พ.ย. 2569 · วันหยุดทั้งหมด · 30 วันข้างหน้า',
+air1:'สวนลุมพินี · AirBKK',air2:'ดี',groc:'รายการซื้อของ · 6 รายการ',groc2:'ไข่ · น้ำปลา · มะนาว · ข้าวหอมมะลิ',aqi:'คุณภาพอากาศ · 24 ชม.',
+cities:[['กรุงเทพฯ','ไทย','19:42'],['ซีแอตเทิล','สหรัฐฯ','04:42'],['เดนเวอร์','สหรัฐฯ','05:42'],['มิวนิก','เยอรมนี','13:42'],['บาร์เซโลนา','สเปน','13:42']],
+restore:'กลับแดชบอร์ด',configure:'ตั้งค่า',timers:'ตัวจับเวลาและนาฬิกาปลุก',calendar:'ปฏิทิน',air:'คุณภาพอากาศ',allApps:'แอปทั้งหมด'}};
+const APPS=[['YouTube','#7a2c2c'],['Netflix','#5e1f24'],['Prime Video','#1f4a66'],['Spotify','#1f5a3a'],['Disney+','#27346b'],['Plex','#5c4a1c'],['Settings','#3b4352'],
+['Photos','#4a3a6b'],['Kodi','#1f4f5e'],['Chrome','#3a4f2a'],['Files','#4f3d2a'],['Music','#5a2a4f'],['TrueID','#5e2a2a'],['VLC','#6b4a1c'],['Weather','#2a4a6b'],['Clock','#3a3f4f'],['News','#4f2a2a'],['Maps','#2a5a4a']];
+const ICON={
+timer:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="14" r="7.5"/><path d="M12 14V10M9.5 2.5h5M12 2.5v4M18.5 6.5l1.5-1.5"/></svg>',
+bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 21h4"/></svg>',
+waves:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 8.5a5 5 0 0 1 0 7M9 5.5a9.5 9.5 0 0 1 0 13M13 3a13 13 0 0 1 0 18"/></svg>',
+pause:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>',
+alarm:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M3.5 6.5 6.5 3.5M20.5 6.5l-3-3"/></svg>'};
+function chip(c,s,k){
+  if(!c)return '';
+  const body=c.items.map(it=>`<span class="it">${it.icon.split('+').map(i=>`<i class="ic">${ICON[i]}</i>`).join('')}${it.name?`<span class="nm">${it.name}</span>`:''}<b class="tm">${it.time}</b>${it.note?`<span class="nt">${it.note}</span>`:''}</span>`).join('<i class="sep"></i>')
+    +(c.more?`<span class="more">+${c.more}</span>`:'');
+  const pos=c.where==='fs'?`right:${24*s}px;bottom:${15*s}px`:c.where==='ss'?'':`right:${48*s}px;bottom:${9*s}px`;
+  return `<button class="chip st-${c.state}${c.focus?' focus':''}" style="--s:${s*k};${pos};height:${66*s*(k>1?1.09:1)}px" data-note="${c.note||'OK opens Timers & alarms. Back returns focus to where you were. It never takes focus by itself.'}">${body}</button>`;
+}
+function TV(o){
+  const s=o.s||1,k=o.large?1.3:1,t=L[o.lang||'en'];
+  const P=n=>Math.round(n*s*100)/100+'px';
+  const B=(x,y,w,h,st,inner,cls)=>`<div class="abs ${cls||''}" style="left:${P(x)};top:${P(y)};width:${P(w)};height:${P(h)};${st||''}">${inner||''}</div>`;
+  const F=n=>`font-size:${Math.round(n*s*k*10)/10}px`,F0=n=>`font-size:${Math.round(n*s*10)/10}px`;
+  const panel=(x,y,w,h,key,inner)=>B(x,y,w,h,'',inner,'wg'+(o.focus===key?' wfocus':''));
+  let out='';
+  if(o.page==='ss'){
+    const bg=o.ssBg==='home'?'linear-gradient(135deg,#27425f,#3a2f58)':'radial-gradient(circle at 26% 40%,#4a1730 0,#1a0a14 42%,#000 78%)';
+    out+=B(0,0,1440,810,`background:${bg}`);
+    const sx=o.ssX||210,sw=1400-sx;out+=B(sx,o.ssY||220,sw,150,`${F(150)};font-weight:200;line-height:1;color:#f3f3f6;letter-spacing:${P(2)}`,o.ssTime||'19:42');
+    out+=B(sx+8,(o.ssY||220)+168,sw-8,40,`${F(26)};letter-spacing:${P(4)};color:#c9c3cc`,o.lang==='th'?'วันศุกร์ที่ 20 พฤศจิกายน':'FRIDAY 20 NOVEMBER');
+    if(o.ssLine)out+=B(sx+6,(o.ssY||220)+228,sw-6,56,`${F(32)};color:rgba(255,255,255,.72);display:flex;align-items:center;gap:${P(14)};white-space:nowrap`,o.ssLine);
+    if(o.ssTag)out+=B(1440-560,810-70,520,40,`${F(19)};color:#c9c3cc;text-align:right`,o.ssTag);
+    return `<div class="tv" style="--s:${s};width:${P(1440)};height:${P(810)}">${out}</div>`;
+  }
+  if(o.page==='fs'){
+    out+=B(0,0,1440,810,'background:#2b303b');
+    out+=B(24,22,250,64,`${F(21)}`,t.restore,'btn');
+    out+=B(292,22,800,64,`${F(30)};font-weight:700;line-height:${P(64)}`,o.title||t.calendar);
+    out+=B(1246,22,170,64,`${F(21)}`,t.configure,'btn');
+    out+=fsBody(o,t,B,F,P);
+    out+=B(30,729,800,66,`${F(19)};line-height:${P(66)};color:#c3ccd9;white-space:nowrap`,o.chip&&o.chip.focus?t.chipHint:t.fs);
+    out+=chip(o.chip&&Object.assign({where:'fs'},o.chip),s,k);
+    return `<div class="tv" style="--s:${s};width:${P(1440)};height:${P(810)}">${out}</div>`;
+  }
+  out+=B(0,0,1440,810,'background:radial-gradient(circle at 78% 18%,#24324f 0,#141b2b 48%,#0f1422 100%)');
+  // world-clock header and the two round buttons
+  const cc=['#a05fae','#b36a66','#a6b06a','#6f84c9','#5fb38f'],cb=['#4b2f55','#4b3036','#3f4530','#2f3a5a','#2c4a40'];
+  t.cities.forEach((c,i)=>{out+=B(49+i*226,25,218,88,`border:${P(2)} solid ${cc[i]};background:${cb[i]};border-radius:${P(4)}`,
+    `<div style="${F0(17)};padding:${P(6)} ${P(10)} 0;line-height:1.1">${c[0]}</div><div style="${F0(11)};padding:0 ${P(10)};color:#d8dde6">${c[1]}</div><div style="${F0(32)};padding:0 ${P(10)};line-height:1.15;letter-spacing:${P(2)}">${c[2]}</div>`)});
+  out+=B(1198,30,78,78,`border-radius:50%;background:#2a303c;border:${P(2)} solid #3d4656;display:grid;place-items:center;${F(28)}`,'☰');
+  out+=B(1288,30,78,78,`border-radius:50%;background:#2a303c;border:${P(2)} solid #3d4656;display:grid;place-items:center;${F(30)}`,'⚙');
+  if(o.page==='apps'){
+    for(let i=0;i<18;i++){const r=Math.floor(i/6),c=i%6,key='app'+i;
+      out+=B(48+c*226,132+r*190,214,170,`background:${APPS[i][1]};border-radius:${P(12)};display:flex;align-items:flex-end;padding:${P(12)};${F(21)}`+(o.focus===key?`;outline:${P(5)} solid #f2f5fa;outline-offset:${P(3)}`:''),APPS[i][0]);}
+  }else if(o.dense){
+    for(let i=0;i<32;i++){const r=Math.floor(i/8),c=i%8,a=APPS[i%18],key='app'+i;
+      out+=B(48+c*169,132+r*153,160,140,`background:${a[1]};border-radius:${P(10)};display:flex;align-items:flex-end;padding:${P(8)};${F(16)}`+(o.focus===key?`;outline:${P(5)} solid #f2f5fa;outline-offset:${P(3)}`:''),a[0]);}
+  }else{
+    const hrs=['21','22','23','00','01','02','03','04','05','06','07','08','09','10','11','12'];
+    out+=panel(48,132,1344,96,'rain',`<div class="wt" style="${F(16)}">${t.rain}</div><div style="display:flex;justify-content:space-between;padding:0 ${P(16)};${F(17)}">${hrs.map(h=>`<span>${h}<br><span style="color:#9fb0c8">0</span></span>`).join('')}</div>`);
+    out+=panel(48,240,880,150,'cal',`<div class="wt" style="${F(16)}">${t.cal}</div><div style="display:flex;gap:${P(12)};padding:${P(8)} ${P(16)}">${[21,22,23,24,25,26,27,28,29,30].map((d,i)=>`<span style="width:${P(64)};height:${P(64)};border-radius:${P(8)};background:${i?'#3a4252':'#51607a'};display:grid;place-items:center;${F(24)};font-weight:600">${d}</span>`).join('')}</div>`);
+    out+=panel(940,240,452,150,'air',`<div class="wt" style="${F(15)}">${t.air1}</div><div style="padding:0 ${P(16)};${F(40)};font-weight:600;color:#bfe6ff">PM2.5 11.0</div><div style="padding:0 ${P(16)};${F(18)};color:#c3ccd9">µg/m³ · ${t.air2}</div>`);
+    out+=panel(48,402,1344,150,'fav','');
+    for(let i=0;i<7;i++)out+=B(66+i*188,418,176,118,`background:${APPS[i][1]};border-radius:${P(10)};display:flex;align-items:flex-end;padding:${P(10)};${F(19)}`+(o.focus==='fav'+i?`;outline:${P(5)} solid #f2f5fa;outline-offset:${P(3)}`:''),APPS[i][0]);
+    out+=panel(48,564,660,156,'groc',`<div class="wt" style="${F(16)}">${t.groc}</div><div style="padding:${P(6)} ${P(16)};${F(22)};line-height:1.45">${t.groc2}</div>`);
+    out+=panel(720,564,672,156,'aqi',`<div class="wt" style="${F(16)}">${t.aqi}</div><div style="display:flex;align-items:flex-end;gap:${P(6)};height:${P(84)};padding:0 ${P(16)}">${[30,34,28,40,52,46,38,33,30,26,22,25,31,36,42,48,44,39,35,31,27,24,22,20].map(v=>`<span style="flex:1;height:${P(v*1.5)};background:#5f8fb8;border-radius:${P(2)}"></span>`).join('')}</div>`);
+  }
+  if(o.undo)out+=B(105,810-42-98,o.chip?1392-105-(o.undoGap||560):1230,98,`background:#323846;border:${P(2)} solid #596273;border-radius:${P(18)};padding:${P(12)} ${P(28)}`,`<div style="${F(24)}">Undid Move Calendar</div><div style="${F(17)};color:#c3ccd9">Hold Back to undo: Move Calendar</div>`);
+  const hint=o.chip&&o.chip.focus?t.chipHint:o.page==='apps'?t.apps:o.large?t.homeLarge:t.home;
+  out+=B(75,735,o.chip?(o.large?560:740):1290,60,`${F(20)};line-height:${P(60)};color:#c3ccd9;white-space:nowrap`,hint);
+  if(o.overlay)out+=overlay(o,B,F,P);
+  out+=chip(o.chip,s,k);
+  return `<div class="tv" style="--s:${s};width:${P(1440)};height:${P(810)}">${out}</div>`;
+}
+function fsBody(o,t,B,F,P){
+  let out='';
+  if(o.kind==='calendar'){
+    out+=B(24,104,800,40,`${F(24)};font-weight:600`,'November 2026 · Bangkok holidays and family calendar');
+    ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].forEach((d,i)=>out+=B(24+i*198,150,190,30,`${F(17)};color:#c3ccd9`,d));
+    const ev={20:'Loy Krathong',24:'Dentist 10:30',27:'School trip',5:'Father\'s Day'};
+    for(let r=0;r<5;r++)for(let c=0;c<7;c++){const d=r*7+c+3,day=d>30?d-30:d,today=d===20;
+      out+=B(24+c*198,186+r*106,190,98,`background:${today?'#46546b':'#353b48'};border-radius:${P(8)};border:${P(today?3:1)} solid ${today?'#e6edf7':'#454d5c'};padding:${P(6)} ${P(10)}`,
+        `<div style="${F(20)};font-weight:600">${day}</div>${ev[day]&&d<=34?`<div style="${F(15)};color:#d7e7ff;margin-top:${P(6)}">${ev[day]}</div>`:''}`);}
+  }else if(o.kind==='air'){
+    out+=B(24,104,600,610,`background:#353b48;border-radius:${P(12)};padding:${P(24)}`,`<div style="${F(20)};color:#c3ccd9">Lumpini Park · AirBKK · updated 19:40</div><div style="${F(150)};font-weight:200;line-height:1.1;margin-top:${P(40)};color:#bfe6ff">11.0</div><div style="${F(26)}">PM2.5 µg/m³ · Good</div><div style="${F(19)};color:#c3ccd9;margin-top:${P(40)};line-height:1.5">PM10 22 · O₃ 18 ppb · NO₂ 9 ppb<br>Next update about 20:40</div>`);
+    out+=B(650,104,766,380,`background:#353b48;border-radius:${P(12)};padding:${P(20)}`,`<div style="${F(19)};color:#c3ccd9">Last 48 hours</div><div style="display:flex;align-items:flex-end;gap:${P(5)};height:${P(280)};margin-top:${P(20)}">${Array.from({length:48},(_,i)=>`<span style="flex:1;height:${P(60+Math.round(110*Math.abs(Math.sin(i/7))))};background:#5f8fb8;border-radius:${P(2)}"></span>`).join('')}</div>`);
+    out+=B(650,500,766,214,`background:#353b48;border-radius:${P(12)};padding:${P(20)};${F(20)};line-height:1.7`,'Nearby · Pathum Wan 14.2 · Bang Rak 18.9<br>Sathon 12.4 · Khlong Toei 16.0<br>Highlight → Preview · OK → Station details');
+  }else if(o.kind==='timers'){
+    ['Allow alarms on this TV','Control from phone','Stop alert sound'].forEach((l,i)=>out+=B(24+[0,300,580][i],100,[286,270,240][i],56,`${F(19)}`,l,'btn'));
+    out+=B(30,162,1300,34,`${F(17)};color:#c3ccd9`,'Sound plays even over other apps. TV must be on and audible. · TV timezone: Asia/Bangkok');
+    (o.cards||[]).forEach((cd,i)=>{const y=204+i*170;
+      out+=B(24,y,880,158,`background:#353b48;border-radius:${P(8)};border:${P(1)} solid #4a5262;padding:${P(8)} ${P(14)}`,
+        `<div style="${F(28)}">${cd.name}</div><div style="${F(26)};margin-top:${P(4)}">${cd.detail}</div><div style="display:flex;gap:${P(10)};margin-top:${P(10)}">${cd.buttons.map(b=>`<span class="btn" style="position:static;padding:${P(6)} ${P(16)};${F(18)}${b===cd.focus?`;border:${P(4)} solid #f2f5fa`:''}">${b}</span>`).join('')}</div>`);});
+    out+=B(934,204,482,64,`${F(20)}`,'Cooking timer ▾','btn');
+    [1,3,5,10,15,20,30].forEach((m,i)=>out+=B(934+(i%3)*163,280+Math.floor(i/3)*72,156,62,`${F(19)}`,m+' Minutes','btn'));
+    out+=B(934,500,482,40,`${F(17)};color:#c3ccd9`,'Name (optional) · Minutes · Seconds');
+    out+=B(934,550,482,64,`${F(20)}`,'Start timer','btn');
+  }
+  return out;
+}
+function overlay(o,B,F,P){
+  let out=B(0,0,1440,810,'background:rgba(4,7,12,.66)');
+  const m=o.overlay,cx=720,cy=405,d=750;
+  out+=B(cx-d/2,cy-d/2,d,d,`border-radius:50%;background:#1d2531;border:${P(3)} solid #4a5568`);
+  const arm=(x,y,label,sel,w)=>B(x-w/2,y-34,w,68,`border-radius:${P(34)};display:grid;place-items:center;text-align:center;${F(22)};background:${sel?'#e9eef6':'#2c3646'};color:${sel?'#0d1521':'#e6edf7'};border:${P(2)} solid ${sel?'#e9eef6':'#56627a'}`,label);
+  out+=arm(cx,cy-270,m.arms[0],m.sel===0,300)+arm(cx+252,cy,m.arms[1],m.sel===1,236)+arm(cx,cy+270,m.arms[2],m.sel===2,300)+arm(cx-252,cy,m.arms[3],m.sel===3,236);
+  out+=B(cx-130,cy-130,260,260,`border-radius:50%;background:#263142;border:${P(2)} solid #56627a;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:${P(6)}`,
+    `<div style="${F(24)};font-weight:700;line-height:1.2">${m.title}</div><div style="${F(15)};color:#c3ccd9;line-height:1.25;padding:0 ${P(26)}">${m.sub}</div><div style="${F(18)};border:${P(2)} solid #9fb0c8;border-radius:${P(18)};padding:${P(3)} ${P(16)}">${m.center}</div>`);
+  out+=B(cx-420,cy+d/2-6,840,30,`${F(17)};color:#c3ccd9;text-align:center`,m.hint);
+  return out;
+}
+function wire(){
+  const fb=document.getElementById('feedback');
+  document.querySelectorAll('button').forEach(b=>{if(!b.onclick)b.onclick=()=>{if(fb)fb.textContent=b.dataset.note||b.textContent;};});
+}
+const CHIPS={
+ one:{state:'running',items:[{icon:'timer',name:'Rice',time:'12:34'}]},
+ several:{state:'running',items:[{icon:'timer',name:'Sauce',time:'04:10'},{icon:'timer',name:'Rice',time:'12:34'}],more:2},
+ last:{state:'last',items:[{icon:'timer',name:'Sauce',time:'00:07',note:'ending'}],more:1},
+ ring:{state:'ring',items:[{icon:'bell+waves',name:'Sauce',time:'Done'}],more:1},
+ done:{state:'done',items:[{icon:'bell',name:'Sauce',time:'Done',note:'since 19:48'}],more:1},
+ paused:{state:'paused',items:[{icon:'pause',name:'Sauce',time:'04:10',note:'Paused'}]},
+ event:{state:'running',items:[{icon:'alarm',name:'Call Grab',time:'20:00',note:'in 18 min'}]},
+ large:{state:'running',items:[{icon:'timer',name:'',time:'04:10'}],more:2},
+ thai:{state:'running',items:[{icon:'timer',name:'ซอส',time:'04:10'},{icon:'timer',name:'ข้าว',time:'12:34'}],more:1},
+ thaiRing:{state:'ring',items:[{icon:'bell+waves',name:'ซอส',time:'ครบเวลา'}],more:1},
+ thaiDone:{state:'done',items:[{icon:'bell',name:'ซอส',time:'ครบเวลา',note:'ตั้งแต่ 19:48'}],more:1},
+ thaiEvent:{state:'running',items:[{icon:'alarm',name:'โทรเรียก Grab',time:'20:00',note:'อีก 18 นาที'}]}};
+function sheet(panels,s){ // 2x2 thumbnails with one-line captions
+  const w=1440*s,h=810*s,xs=[(1440-2*w-40)/2,(1440-2*w-40)/2+w+40],ys=[84,84+h+48];
+  return panels.map((p,i)=>`<div class="frame" style="left:${xs[i%2]}px;top:${ys[i>>1]}px;width:${w}px;height:${h}px">${TV(Object.assign({s},p.tv))}</div><div class="cap" style="left:${xs[i%2]}px;top:${ys[i>>1]+h+6}px;width:${w}px">${p.cap}</div>`).join('');
+}
+
+document.getElementById('stage').innerHTML=sheet([
+{tv:{page:'home',chip:CHIPS.last,focus:'groc'},cap:'<b>1 · Last 10 s</b> · thick outline and ENDING; no colour needed.'},
+{tv:{page:'apps',chip:CHIPS.ring,focus:'app13'},cap:'<b>2 · Ringing in All Apps</b> · inverted, bell, waves; focus stays put.'},
+{tv:{page:'fs',kind:'timers',title:'Timers & alarms',cards:[{name:'Sauce',detail:'Done — needs attention',buttons:['Restart','Stop'],focus:'Stop'},{name:'Rice',detail:'12:28 · Running',buttons:['Pause','+1 minute','Stop']}]},cap:'<b>3 · Down, OK</b> · Timers opens with Sauce’s Stop focused.'},
+{tv:{page:'home',focus:'groc'},cap:'<b>4 · All stopped, Back</b> · nothing active, nothing drawn.'}],.44);
+wire();
+</script>
+</html>

@@ -20,6 +20,10 @@ tasks:
     desc: Validate and capture the control interface plan's design mockups in the browser container
     cmds:
       - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/plan-mockup-check.cjs docs/plans/2026-11-20-control-interface settings settings-states add-device approve errors on-tv'
+  timers-everywhere:plan-check:
+    desc: Validate and capture the timers-on-every-page plan's design mockups in the browser container
+    cmds:
+      - 'docker run --rm -v "{{.ROOT_DIR}}:/workspace" -w /workspace mcr.microsoft.com/playwright:v1.59.1-noble node dev/plan-mockup-check.cjs docs/plans/2026-11-20-timers-on-every-page home states pages menus ringing focus screensaver thai'
   bump:
     desc: Advance the Android APK version code and displayed subversion
     cmds: ['dev/container.sh run ./gradlew --no-daemon :app:bumpVersion']
