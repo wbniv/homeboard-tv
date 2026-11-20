@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" width="480" height="270" font-family="Inter, 'Segoe UI', 'DejaVu Sans', sans-serif" role="img" aria-label="Hour tree">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c9d3e6"/></marker><radialGradient id="g0" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#bbdcc0"/><stop offset=".5" stop-color="#68b374"/><stop offset="1" stop-color="#2b4b30"/></radialGradient><radialGradient id="g1" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#c0e5c5"/><stop offset=".5" stop-color="#73c680"/><stop offset="1" stop-color="#305335"/></radialGradient><radialGradient id="g2" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#b7d6bc"/><stop offset=".5" stop-color="#61a66c"/><stop offset="1" stop-color="#28452d"/></radialGradient><radialGradient id="g3" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#c3ebc9"/><stop offset=".5" stop-color="#7bd389"/><stop offset="1" stop-color="#335839"/></radialGradient><radialGradient id="g4" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#e6f4d7"/><stop offset=".5" stop-color="#c9e8a8"/><stop offset="1" stop-color="#546146"/></radialGradient><radialGradient id="g5" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#b6d4bb"/><stop offset=".5" stop-color="#5da068"/><stop offset="1" stop-color="#27432b"/></radialGradient><radialGradient id="g6" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#bcdfc2"/><stop offset=".5" stop-color="#6cb978"/><stop offset="1" stop-color="#2d4d32"/></radialGradient><radialGradient id="g7" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#bee2c4"/><stop offset=".5" stop-color="#6fc07c"/><stop offset="1" stop-color="#2e5034"/></radialGradient><radialGradient id="g8" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#c1e8c7"/><stop offset=".5" stop-color="#77cc84"/><stop offset="1" stop-color="#315537"/></radialGradient><radialGradient id="g9" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#b4d1b9"/><stop offset=".5" stop-color="#599a64"/><stop offset="1" stop-color="#25402a"/></radialGradient><radialGradient id="g10" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#b9dabe"/><stop offset=".5" stop-color="#64ad70"/><stop offset="1" stop-color="#2a482f"/></radialGradient></defs>
+<rect width="480" height="270" rx="14" fill="#0f1420"/>
+<path d="M278.1,244.0 L272.8,246.7 L266.9,248.9 L260.6,250.7 L253.9,252.1 L247.0,252.8 L240.0,253.1 L233.0,252.8 L226.1,252.1 L219.4,250.7 L213.1,248.9 L207.2,246.7 L201.9,244.0 L197.2,240.9 L193.3,237.6 L190.2,233.9 L187.9,230.1 L186.6,226.1 L186.1,222.0 L186.6,217.9 L187.9,213.9 L190.2,210.1 L193.3,206.4 L197.2,203.1 L201.9,200.0 L207.2,197.3 L213.1,195.1 L219.4,193.3 L226.1,191.9 L233.0,191.2 L240.0,190.9 L247.0,191.2 L253.9,191.9 L260.6,193.3 L266.9,195.1 L272.8,197.3 L278.1,200.0 L282.8,203.1 L286.7,206.4 L289.8,210.1 L292.1,213.9 L293.4,217.9 L293.9,222.0 L293.4,226.1 L292.1,230.1 L289.8,233.9 L286.7,237.6 L282.8,240.9 L278.1,244.0Z" fill="#18251f" stroke="#2a3550" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+<polyline points="240.0,148.0 222.2,124.9 210.4,105.2" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="210.4" cy="103.2" r="9.8" fill="url(#g0)" opacity="1"/>
+<polyline points="240.0,118.0 249.3,96.2 255.6,77.3" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="255.6" cy="75.3" r="8.7" fill="url(#g1)" opacity="1"/>
+<polyline points="240.0,168.0 269.3,148.0 288.8,130.4" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="288.8" cy="128.4" r="10.4" fill="url(#g2)" opacity="1"/>
+<polyline points="240.0,98.0 218.7,85.3 204.5,72.4" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="204.5" cy="70.4" r="8.0" fill="url(#g3)" opacity="1"/>
+<polyline points="240.0,88.0 263.4,75.7" fill="none" stroke="#b07a4a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="263.4" cy="73.7" r="4.0" fill="url(#g3)" opacity="1"/>
+<circle cx="248.2" cy="80.7" r="2.0" fill="url(#g4)" opacity="1"/>
+<circle cx="252.8" cy="78.3" r="2.0" fill="url(#g4)" opacity="1"/>
+<circle cx="258.2" cy="75.4" r="2.0" fill="url(#g4)" opacity="1"/>
+<polyline points="240.0,178.0 201.3,169.0 175.6,158.7" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="175.6" cy="156.7" r="10.8" fill="url(#g5)" opacity="1"/>
+<polyline points="240.0,222.0 240.0,132.0" fill="none" stroke="#b07a4a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="240.0,132.0 240.0,72.0" fill="none" stroke="#b07a4a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="236.3" cy="78.7" r="2.0" fill="url(#g4)" opacity="1"/>
+<polyline points="240.0,138.0 270.1,135.7 290.2,129.8" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="290.2" cy="127.8" r="9.4" fill="url(#g6)" opacity="1"/>
+<polyline points="240.0,128.0 214.1,128.8 196.8,125.0" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="196.8" cy="123.0" r="9.1" fill="url(#g7)" opacity="1"/>
+<polyline points="240.0,108.0 249.7,114.6 256.2,114.6" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="256.2" cy="112.6" r="8.3" fill="url(#g8)" opacity="1"/>
+<polyline points="240.0,188.0 267.5,198.3 285.8,200.9" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="285.8" cy="198.9" r="11.2" fill="url(#g9)" opacity="1"/>
+<polyline points="240.0,158.0 233.9,170.9 229.9,175.1" fill="none" stroke="#b07a4a" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<circle cx="229.9" cy="173.1" r="10.1" fill="url(#g10)" opacity="1"/>
+<text x="318.0" y="60.0" fill="#7f8aa3" font-size="10.5" text-anchor="start" font-weight="400">newest branch: a leaf per</text>
+<line x1="314.0" y1="56.5" x2="263.4" y2="73.7" stroke="#7f8aa3" stroke-width="0.8" stroke-linecap="round" opacity="0.8"/>
+<circle cx="263.4" cy="73.7" r="1.8" fill="#7f8aa3" stroke="none" stroke-width="1" opacity="1"/>
+<text x="318.0" y="73.0" fill="#7f8aa3" font-size="10.5" text-anchor="start" font-weight="400">5 min, buds for the rest</text>
+<text x="118.0" y="110.0" fill="#7f8aa3" font-size="10.5" text-anchor="end" font-weight="400">one branch per hour</text>
+<line x1="122.0" y1="106.5" x2="256.2" y2="112.6" stroke="#7f8aa3" stroke-width="0.8" stroke-linecap="round" opacity="0.8"/>
+<circle cx="256.2" cy="112.6" r="1.8" fill="#7f8aa3" stroke="none" stroke-width="1" opacity="1"/>
+<text x="318.0" y="210.0" fill="#7f8aa3" font-size="10.5" text-anchor="start" font-weight="400">at 00:00 and 12:00 the</text>
+<text x="318.0" y="223.0" fill="#7f8aa3" font-size="10.5" text-anchor="start" font-weight="400">leaves fall and it regrows</text>
+<text x="16" y="24" fill="#e8eef7" font-size="12.5" font-weight="700">30  Hour tree</text>
+<text x="16" y="258" fill="#d9a441" font-size="10.5">Reads 10:08: 10 branches, then 1 leaf and 3 buds</text>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" width="480" height="270" font-family="Inter, 'Segoe UI', 'DejaVu Sans', sans-serif" role="img" aria-label="Sand table that writes the time">
+<defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#c9d3e6"/></marker><radialGradient id="g0" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#d3dce6"/><stop offset=".5" stop-color="#9fb3c8"/><stop offset="1" stop-color="#424b54"/></radialGradient></defs>
+<rect width="480" height="270" rx="14" fill="#0f1420"/>
+<polygon points="98.3,142.1 278.1,245.9 278.1,231.8 98.3,128.0" fill="#69492c" stroke="none" stroke-width="1" stroke-linejoin="round" opacity="1"/>
+<polygon points="381.7,186.1 278.1,245.9 278.1,231.8 381.7,172.0" fill="#8c613b" stroke="none" stroke-width="1" stroke-linejoin="round" opacity="1"/>
+<polygon points="201.9,68.2 381.7,172.0 278.1,231.8 98.3,128.0" fill="#b07a4a" stroke="none" stroke-width="1" stroke-linejoin="round" opacity="1"/>
+<polygon points="201.9,74.8 369.6,171.6 278.1,224.4 110.4,127.6" fill="#e8c98a" stroke="none" stroke-width="1" stroke-linejoin="round" opacity="1"/>
+<polyline points="199.6,77.8 364.2,172.8" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="191.2,82.6 355.8,177.6" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="182.8,87.4 347.5,182.5" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="174.5,92.3 339.1,187.3" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="166.1,97.1 330.7,192.2" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="157.7,102.0 322.3,197.0" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="149.3,106.8 313.9,201.8" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="140.9,111.6 305.5,206.7" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="132.5,116.5 297.2,211.5" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="124.2,121.3 288.8,216.4" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="115.8,126.2 280.4,221.2" fill="none" stroke="#d5b87e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="209.5,114.1 192.8,123.8" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="209.5,114.1 192.8,123.8" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="192.8,123.8 176.0,133.5" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="192.8,123.8 176.0,133.5" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="218.7,119.4 237.0,129.9" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="218.7,119.4 237.0,129.9" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="237.0,129.9 220.2,139.6" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="237.0,129.9 220.2,139.6" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="220.2,139.6 203.4,149.3" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="220.2,139.6 203.4,149.3" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="185.1,138.7 203.4,149.3" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="185.1,138.7 203.4,149.3" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="185.1,138.7 201.9,129.1" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="185.1,138.7 201.9,129.1" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="201.9,129.1 218.7,119.4" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="201.9,129.1 218.7,119.4" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="227.2,151.4 229.2,150.2" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="227.2,151.4 229.2,150.2" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="240.6,143.7 242.6,142.5" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="240.6,143.7 242.6,142.5" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="264.4,145.8 282.7,156.3" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="264.4,145.8 282.7,156.3" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="282.7,156.3 265.9,166.0" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="282.7,156.3 265.9,166.0" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="265.9,166.0 249.1,175.7" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="265.9,166.0 249.1,175.7" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="230.9,165.1 249.1,175.7" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="230.9,165.1 249.1,175.7" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="230.9,165.1 247.6,155.5" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="230.9,165.1 247.6,155.5" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="247.6,155.5 264.4,145.8" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="247.6,155.5 264.4,145.8" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="291.8,161.6 310.1,172.2" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="291.8,161.6 310.1,172.2" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="310.1,172.2 293.3,181.9" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="310.1,172.2 293.3,181.9" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="293.3,181.9 276.6,191.5" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="293.3,181.9 276.6,191.5" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="258.3,181.0 276.6,191.5" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="258.3,181.0 276.6,191.5" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="258.3,181.0 275.1,171.3" fill="none" stroke="#746445" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="258.3,181.0 275.1,171.3" fill="none" stroke="#a79063" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<polyline points="275.1,171.3 291.8,161.6" fill="none" stroke="#6b5a3a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="1" stroke-dasharray="2 3"/>
+<polyline points="275.1,171.3 293.3,181.9" fill="none" stroke="#6b5a3a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" opacity="1" stroke-dasharray="2 3"/>
+<circle cx="275.1" cy="166.7" r="4.8" fill="url(#g0)" opacity="1"/>
+<polyline points="204.9,76.1 116.5,127.1" fill="none" stroke="#9fb3c8" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" opacity="1"/>
+<text x="330.0" y="70.0" fill="#7f8aa3" font-size="10.5" text-anchor="start" font-weight="400">ball follows a magnet</text>
+<line x1="326.0" y1="66.5" x2="275.1" y2="165.0" stroke="#7f8aa3" stroke-width="0.8" stroke-linecap="round" opacity="0.8"/>
+<circle cx="275.1" cy="165.0" r="1.8" fill="#7f8aa3" stroke="none" stroke-width="1" opacity="1"/>
+<text x="330.0" y="83.0" fill="#7f8aa3" font-size="10.5" text-anchor="start" font-weight="400">under the table</text>
+<text x="22.0" y="70.0" fill="#7f8aa3" font-size="10.5" text-anchor="start" font-weight="400">wiper bar levels the</text>
+<line x1="136.0" y1="66.5" x2="176.0" y2="92.8" stroke="#7f8aa3" stroke-width="0.8" stroke-linecap="round" opacity="0.8"/>
+<circle cx="176.0" cy="92.8" r="1.8" fill="#7f8aa3" stroke="none" stroke-width="1" opacity="1"/>
+<text x="22.0" y="83.0" fill="#7f8aa3" font-size="10.5" text-anchor="start" font-weight="400">sand before a rewrite</text>
+<text x="16" y="24" fill="#e8eef7" font-size="12.5" font-weight="700">12  Sand table that writes the time</text>
+<text x="16" y="258" fill="#d9a441" font-size="10.5">Reads 10:08, with the 8 still being drawn</text>
+</svg>
