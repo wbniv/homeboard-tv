@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>Add a device · waiting, pending and closed · Homeboard design</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0d1521;color:#eef2fa;font:21px/1.4 system-ui,sans-serif}
+main{width:1440px;height:900px;padding:34px 40px;overflow:hidden;position:relative}
+h1{font-size:33px;line-height:1.2;margin:0}
+h2{font-size:25px;line-height:1.25;margin:0 0 10px}
+small{font-size:17px;line-height:1.35;display:block;color:#b9c7dc}
+.kicker{color:#9ad7ff;font-size:15px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.bar{display:flex;align-items:center;gap:20px;margin-bottom:18px}
+.bar h1{flex:1}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+.pane{background:#182332;border:1px solid #46566c;border-radius:14px;padding:20px 22px;height:640px;display:flex;flex-direction:column;gap:8px}
+.selected{border:3px solid #9ad7ff;background:#22394f}
+.step{color:#9ad7ff;font-size:15px;letter-spacing:1px;text-transform:uppercase}
+button{font:inherit;font-size:19px;color:#eef2fa;background:#2c4160;border:1px solid #6f86a6;border-radius:8px;padding:7px 16px;cursor:pointer;white-space:nowrap}
+button.primary{background:#9ad7ff;color:#0d1521;border-color:#9ad7ff;font-weight:600}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.end{margin-top:auto}
+.code{font:600 58px/1.1 ui-monospace,Menlo,monospace;letter-spacing:6px;text-align:center;background:#0a111b;border:1px solid #33435a;border-radius:12px;padding:16px 0;margin:6px 0}
+.ba{display:grid;grid-template-columns:100px 1fr;gap:4px 12px;font-size:19px}
+.ba b{color:#b9c7dc;font-weight:500}
+.meter{height:8px;border-radius:4px;background:#2a3a50;overflow:hidden}
+.meter i{display:block;height:100%;width:84%;background:#9ad7ff}
+.chip{display:inline-block;font-size:15px;line-height:1.3;padding:3px 10px;border-radius:14px;border:1px solid;white-space:nowrap;vertical-align:middle}
+.chip.warn{background:#4a3a1a;border-color:#b98d2f;color:#ffe3a6}
+.notice{border-left:4px solid #e0b24a;background:#22324a;border-radius:0 8px 8px 0;padding:10px 14px;font-size:18px;line-height:1.35}
+ol{margin:4px 0;padding-left:24px;font-size:19px}
+li{margin:3px 0}
+footer{position:absolute;left:40px;right:40px;bottom:16px;font-size:17px;color:#b9c7dc}
+</style>
+<main>
+<div class="kicker">Homeboard · proposed design · the add window, three states</div>
+<div class="bar"><h1>Control from other devices · Add a device</h1><button data-note="Back closes the add window. A code typed after this is refused. Nothing was added.">Back</button></div>
+<div class="grid">
+<section class="pane selected">
+<div class="step">State 1 · waiting for a device</div>
+<h2>Type this code into the device</h2>
+<div class="code">482 913</div>
+<div class="ba"><b>Address</b><span>192.168.1.42:8780</span><b>TV</b><span>Cast1 · 7f3a</span></div>
+<div class="meter"><i></i></div>
+<small>Open for 4:12 more. Only one device can be added at a time.</small>
+<ol><li>In the device, choose Homeboard and enter the address and code.</li><li>This TV then asks you to allow it, by name.</li></ol>
+<div class="row end"><button class="primary" data-note="Starts a new code and a fresh five minutes. The old code stops working.">New code</button><button data-note="Closes the add window. Nothing was added.">Cancel</button></div>
+</section>
+<section class="pane">
+<div class="step">State 2 · a device is waiting for you</div>
+<h2>“Home Assistant” typed the code</h2>
+<small>From 192.168.1.20. The question to allow it is open on this TV now (next mockup). It cannot do anything until you answer.</small>
+<div class="ba"><b>Name</b><span>Home Assistant</span><b>From</b><span>192.168.1.20</span><b>Code</b><span>482 913 · matched</span></div>
+<small>If you do not answer within 2 minutes, it is refused and the device must start again.</small>
+<div class="row end"><button class="primary" data-note="Shows the Allow question again if it was hidden by Back.">Answer now</button></div>
+</section>
+<section class="pane">
+<div class="step">State 3 · closed</div>
+<h2>Add window closed <span class="chip warn">Not added</span></h2>
+<div class="notice">Five wrong codes were typed from 192.168.1.77, so Homeboard closed the window. Nothing was added.</div>
+<small>The same screen, with “The code expired after 5 minutes”, appears when no device answered in time.</small>
+<small>Devices you already added are unaffected.</small>
+<div class="row end"><button class="primary" data-note="Opens a fresh add window with a new code.">Try again</button><button data-note="Returns to the device list.">Done</button></div>
+</section>
+</div>
+<footer id="feedback">The code proves the device's owner can see this TV. The Allow question then lets you check its name and address before it gets any access.</footer>
+</main>
+<script>document.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>feedback.textContent=b.dataset.note);</script>
+</html>

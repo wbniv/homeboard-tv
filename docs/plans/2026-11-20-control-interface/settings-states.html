@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>Control from other devices · off and empty · Homeboard design</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0d1521;color:#eef2fa;font:21px/1.4 system-ui,sans-serif}
+main{width:1440px;height:900px;padding:34px 40px;overflow:hidden;position:relative}
+h1{font-size:33px;line-height:1.2;margin:0}
+h2{font-size:25px;line-height:1.25;margin:0 0 10px}
+h3{font-size:19px;line-height:1.3;margin:14px 0 6px;color:#b9c7dc;font-weight:600}
+small{font-size:17px;line-height:1.35;display:block;color:#b9c7dc}
+.kicker{color:#9ad7ff;font-size:15px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.bar{display:flex;align-items:center;gap:20px;margin-bottom:18px}
+.bar h1{flex:1}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.pane,.card{background:#182332;border:1px solid #46566c;border-radius:14px}
+.pane{padding:20px 22px;height:690px;display:flex;flex-direction:column;gap:6px}
+.card{padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:14px;cursor:pointer}
+.selected{border:3px solid #9ad7ff;background:#22394f}
+.step{color:#9ad7ff;font-size:15px;letter-spacing:1px;text-transform:uppercase}
+button{font:inherit;font-size:19px;color:#eef2fa;background:#2c4160;border:1px solid #6f86a6;border-radius:8px;padding:7px 16px;cursor:pointer;white-space:nowrap}
+button.primary{background:#9ad7ff;color:#0d1521;border-color:#9ad7ff;font-weight:600}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.switch b{flex:1;font-weight:600}
+.toggle{width:86px;height:38px;border-radius:19px;position:relative;flex:none}
+.toggle.on{background:#3f9c78}.toggle.off{background:#46566c}
+.toggle::after{position:absolute;top:6px;font-size:17px;font-weight:700}
+.toggle.on::after{content:"On";left:14px;color:#0d1521}
+.toggle.off::after{content:"Off";right:12px;color:#eef2fa}
+.toggle i{position:absolute;top:4px;width:30px;height:30px;border-radius:50%;background:#eef2fa}
+.toggle.on i{right:4px}.toggle.off i{left:4px}
+ul{margin:4px 0;padding-left:22px;font-size:19px}
+li{margin:2px 0}
+.empty{border:2px dashed #46566c;border-radius:14px;padding:16px;color:#b9c7dc;font-size:19px}
+.notice{border-left:4px solid #9ad7ff;background:#22324a;border-radius:0 8px 8px 0;padding:10px 14px;font-size:18px;line-height:1.35}
+code{font:17px/1.4 ui-monospace,Menlo,monospace;background:#0a111b;border:1px solid #33435a;border-radius:6px;padding:6px 10px;display:block}
+.end{margin-top:auto}
+footer{position:absolute;left:40px;right:40px;bottom:16px;font-size:17px;color:#b9c7dc}
+</style>
+<main>
+<div class="kicker">Homeboard · proposed design · two states of one screen</div>
+<div class="bar"><h1>Home settings · Control from other devices</h1><button data-note="Back returns to Home settings. Nothing changes.">Back</button></div>
+<div class="grid">
+<section class="pane">
+<div class="step">State 1 · off (the default)</div>
+<div class="card switch selected" data-note="OK turns it on. Homeboard starts listening on this TV's home network address and offers Add a device. Saved with Undo (hold Back)."><b>Allow other devices to control this TV</b><span class="toggle off"><i></i></span></div>
+<small>Nothing outside this TV can control Homeboard. Homeboard is not listening on your network.</small>
+<h3>When you turn it on</h3>
+<ul><li>Homeboard listens on your home network, on this TV only</li><li>a device can connect only after you add it here and allow it on this TV</li><li>everything a device does is shown on the TV and listed here</li></ul>
+<h3>Always available, even when off</h3>
+<small>Apps on this TV can open a Home page, a full-screen widget, the timers or the screensaver through Homeboard links. They cannot change anything. Developer tools connected to this TV can do more.</small>
+<div class="notice end">2 devices are kept: Home Assistant and Kitchen script. They cannot connect while this is off, and work again when you turn it on.</div>
+</section>
+<section class="pane">
+<div class="step">State 2 · on, no devices yet</div>
+<div class="card switch" data-note="OK turns it off again. Nothing had connected."><b>Allow other devices to control this TV</b><span class="toggle on"><i></i></span></div>
+<small>Cast1 · 7f3a at <b>192.168.1.42:8780</b> · listening since 19:20</small>
+<div class="empty">No devices yet. Add one to let it show pages, run timers and read PM2.5.</div>
+<div class="row"><button class="primary" data-note="Opens the add window: a six-digit code for five minutes. Focus starts here when the screen opens with no devices.">Add a device…</button></div>
+<h3>Works with</h3>
+<small>Home Assistant (REST commands and sensors), scripts on your network, and later Google Home. The how-to on your phone has examples:</small>
+<code>Homeboard › docs › Control from other devices</code>
+<small class="end">Other devices on your network can see that this TV offers control (its name and address), but cannot use it without being added.</small>
+</section>
+</div>
+<footer id="feedback">Off by default. Turning it on is a saved change with the usual Undo banner and hold-Back Undo.</footer>
+</main>
+<script>document.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>feedback.textContent=b.dataset.note);</script>
+</html>

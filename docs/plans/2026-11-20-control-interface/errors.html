@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=1440">
+<title>Control from other devices · problems · Homeboard design</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#0d1521;color:#eef2fa;font:21px/1.4 system-ui,sans-serif}
+main{width:1440px;height:900px;padding:34px 40px;overflow:hidden;position:relative}
+h1{font-size:33px;line-height:1.2;margin:0}
+h2{font-size:25px;line-height:1.25;margin:0 0 10px}
+small{font-size:17px;line-height:1.35;display:block;color:#b9c7dc}
+.kicker{color:#9ad7ff;font-size:15px;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.bar{display:flex;align-items:center;gap:20px;margin-bottom:18px}
+.bar h1{flex:1}
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+.pane{background:#182332;border:1px solid #46566c;border-radius:14px;padding:20px 22px;height:650px;display:flex;flex-direction:column;gap:10px}
+.selected{border:3px solid #9ad7ff;background:#22394f}
+.step{color:#9ad7ff;font-size:15px;letter-spacing:1px;text-transform:uppercase}
+button{font:inherit;font-size:19px;color:#eef2fa;background:#2c4160;border:1px solid #6f86a6;border-radius:8px;padding:7px 16px;cursor:pointer;white-space:nowrap}
+button.primary{background:#9ad7ff;color:#0d1521;border-color:#9ad7ff;font-weight:600}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.end{margin-top:auto}
+.sw{display:flex;align-items:center;gap:12px;font-size:19px;font-weight:600;background:#182332;border:1px solid #46566c;border-radius:12px;padding:10px 14px}
+.sw span:first-child{flex:1}
+.chip{display:inline-block;font-size:15px;line-height:1.3;padding:3px 10px;border-radius:14px;border:1px solid;white-space:nowrap}
+.chip.bad{background:#4a2126;border-color:#b0535d;color:#ffd0d4}
+.chip.warn{background:#4a3a1a;border-color:#b98d2f;color:#ffe3a6}
+.chip.ok{background:#1d4a38;border-color:#3f9c78;color:#c9f3df}
+.notice{border-left:4px solid #e07a84;background:#22324a;border-radius:0 8px 8px 0;padding:10px 14px;font-size:18px;line-height:1.35}
+.notice.warn{border-color:#e0b24a}
+.ba{display:grid;grid-template-columns:120px 1fr;gap:4px 12px;font-size:19px}
+.ba b{color:#b9c7dc;font-weight:500}
+footer{position:absolute;left:40px;right:40px;bottom:16px;font-size:17px;color:#b9c7dc}
+</style>
+<main>
+<div class="kicker">Homeboard · proposed design · problem states of the same screen</div>
+<div class="bar"><h1>Home settings · Control from other devices</h1><button data-note="Back returns to Home settings. The switch stays on; Homeboard keeps trying on the next network or restart.">Back</button></div>
+<div class="grid">
+<section class="pane selected">
+<div class="step">Port in use</div>
+<div class="sw"><span>Allow other devices…</span><span class="chip bad">Not listening</span></div>
+<h2>Another app on this TV is using port 8780</h2>
+<small>Homeboard could not start listening, so your devices cannot reach it. Nothing else changed.</small>
+<div class="notice warn">If you switch to 8781, devices you added must use the new port. Home Assistant finds it again on its own if it discovered this TV; a script needs editing.</div>
+<div class="row end"><button class="primary" data-note="Tries 8780 again, for when the other app has finished.">Retry</button><button data-note="Listens on 8781 instead and remembers it. The address line and the network announcement change to the new port. Saved with Undo.">Use port 8781</button></div>
+</section>
+<section class="pane">
+<div class="step">No home network</div>
+<div class="sw"><span>Allow other devices…</span><span class="chip warn">Waiting for network</span></div>
+<h2>This TV has no home network address</h2>
+<small>Wi-Fi is off or not connected, or the network gives this TV no local address. Homeboard starts listening by itself as soon as it has one.</small>
+<small>A guest network that keeps devices apart can also stop other devices reaching this TV; Homeboard cannot detect that.</small>
+<div class="row end"><button class="primary" data-note="Opens Android's Wi-Fi settings. Returning here shows the new address if one was found.">Wi-Fi settings</button></div>
+</section>
+<section class="pane">
+<div class="step">Restarted after Android closed it</div>
+<div class="sw"><span>Allow other devices…</span><span class="chip ok">On</span></div>
+<div class="ba"><b>Address</b><span>192.168.1.42:8780</span><b>Listening</b><span>since 18:03</span></div>
+<div class="notice warn">Android closed Homeboard while another app was in front, and it restarted at 18:03. Commands sent while it was closed were not received. Devices that follow changes lost their connection and reconnect on their own.</div>
+<small>Shown once here and recorded in All activity. If this happens often, the plan's keep-alive stage applies.</small>
+<div class="row end"><button class="primary" data-note="Dismisses this notice. It stays in All activity.">OK</button><button data-note="Opens All activity at this event.">All activity</button></div>
+</section>
+</div>
+<footer id="feedback">Each problem says what stopped working, what did not change, and the one action that helps.</footer>
+</main>
+<script>document.querySelectorAll('[data-note]').forEach(b=>b.onclick=()=>feedback.textContent=b.dataset.note);</script>
+</html>
