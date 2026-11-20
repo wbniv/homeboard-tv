@@ -21,7 +21,7 @@ public final class KitchenTimerSound extends Service {
         Notification notification=new Notification.Builder(this,CHANNEL).setSmallIcon(android.R.drawable.ic_lock_idle_alarm).setContentTitle(getString(R.string.hb_timer_done)).setContentText(names.toString()).setCategory(Notification.CATEGORY_ALARM).setOngoing(true).setContentIntent(open).addAction(new Notification.Action.Builder(null,getString(R.string.hb_timer_silence),stop).build()).build();
         startForeground(NOTICE,notification);
         if(intent!=null&&"silence".equals(intent.getAction())){KitchenTimerStore.silence(this);stopSelf();return START_NOT_STICKY;}
-        // A ringing timer or alarm always ends a Homeboard screensaver (ScreensaverActivity, ClockDream) so it is seen.
+        // A ringing timer or alarm always ends a Homeboard screensaver (ScreensaverActivity, ScreensaverDream) so it is seen.
         sendBroadcast(new Intent(ScreensaverActivity.ACTION_END).setPackage(getPackageName()));
         if(player==null)try{
             audio=getSystemService(AudioManager.class);AudioAttributes attributes=new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_ALARM).setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION).build();

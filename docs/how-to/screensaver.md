@@ -35,8 +35,8 @@ no menu, editor or full-screen widget is open. It never starts over live TV or a
 
 Android's own screensaver and idle time are not changed by this screen. If Android's
 timeout is shorter than Homeboard's, Android's screensaver starts first. If Android's
-setting already names Homeboard's screensaver (`com.gathin.tvhome/.ClockDream`), Android
-plays the entry chosen here.
+setting names Homeboard's screensaver (`com.gathin.tvhome.ScreensaverDream`), Android plays
+the entry chosen here.
 
 Any remote key ends the screensaver and returns to Home where you left it; that key does
 not also act on Home. A ringing timer or alarm from

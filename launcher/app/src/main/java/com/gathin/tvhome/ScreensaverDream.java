@@ -10,10 +10,9 @@ import android.widget.FrameLayout;
 
 /**
  * Homeboard's Android screensaver: plays the screensaver chosen in Home settings → Screensaver through the
- * same ScreensaverScene contract as ScreensaverActivity. Its component name stays com.gathin.tvhome/.ClockDream
- * so a TV whose Android setting already names it keeps working. A ringing timer or alarm ends it.
+ * same ScreensaverScene contract as ScreensaverActivity. A ringing timer or alarm ends it.
  */
-public class ClockDream extends DreamService {
+public class ScreensaverDream extends DreamService {
 
     private ScreensaverScene scene;
     private String entry;

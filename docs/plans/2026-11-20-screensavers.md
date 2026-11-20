@@ -14,7 +14,7 @@ multiple screensavers, and way to install screensavers".
 
 Homeboard has one screensaver today and no screen for it.
 
-- **One screensaver.** `ClockDream` is the only `DreamService`. Its label is "Clock"
+- **One screensaver.** `ClockDream` (now `ScreensaverDream`) is the only `DreamService`. Its label is "Clock"
   (`dream_name`) and it draws `ClockScene`: clock and date on a slow glow.
 - **No way to choose it on our TVs.** Android starts whichever screensaver its own setting
   `screensaver_components` names. Cast1 and Cast2 are Chromecasts on Android 14. The
@@ -295,7 +295,7 @@ flowchart TD
     end
     subgraph Playing
         ACT[ScreensaverActivity<br/>Home idle, Preview, Show now]
-        DRM[ClockDream<br/>started by Android]
+        DRM[ScreensaverDream<br/>started by Android]
         SC[ScreensaverScene<br/>ClockScene, BackgroundScene]
     end
     SYS[SystemScreensaver<br/>read, use, restore, start now]
@@ -319,7 +319,7 @@ flowchart TD
 | `ScreensaverRules.java` (new) | The pure rule table above: given the state and the choice, which timer is in charge and what the status line says. Unit tested. |
 | `ScreensaverScene` (new interface), `ClockScene.java`, `BackgroundScene.java` (new) | One scene contract. `ClockScene` takes its options from `ScreensaverSettings`. `BackgroundScene` plays a provider through `WallpaperSurface` and `ProjectivyWallpaperHost`, muted, with an optional clock, and uses Homeboard's own background for "Home background". |
 | `ScreensaverActivity.java` (replaces `ClockActivity.java`) | Home idle, Preview and Show now. Logs a `started` and `stopped` line so device checks wait on an event, not a delay. |
-| `ClockDream.java` | Keeps its component name, so a TV whose setting already names it keeps working. Its label becomes "Homeboard". It plays the chosen Homeboard scene. |
+| `ScreensaverDream.java` (renamed from `ClockDream.java`) | Renamed with no compatibility: Will, 2026‑11‑20, "no backwards compatability needed (or desired) until v1.0.0 public release". Its label is the app's name. It plays the chosen Homeboard scene. |
 | `SystemScreensaver.java` (new) | Reads Android's current screensaver and idle time, reports whether Homeboard may write, writes with read‑back, keeps the original, restores it, and starts the screensaver now. |
 | `ProviderCatalog.java` | Entries gain roles. The link rules in its constructor stay. |
 | `MainActivity.java` | A Screensaver entry in `homeSettings()`, the menus above, and the Home idle timer in `onUserInteraction`, `onResume` and `onPause`. |
@@ -371,7 +371,7 @@ Each stage ships on its own and is deployed to both TVs. The build order is 0, 1
 Implemented on `feature/screensaver-stage1`, 2026‑11‑20. Unit tested: `ScreensaverSettings`
 (defaults, round trip, unknown choice → Clock, idle snapping, dim clamp), the built‑in
 `ScreensaverRegistry` and the Home idle decision (`ScreensaverIdle`). Everything on screen,
-Preview, the timer firing, ClockDream and the alarm ending a screensaver are compiled only;
+Preview, the timer firing, `ScreensaverDream` and the alarm ending a screensaver are compiled only;
 none has run on a TV yet (Verification 5–7 are open).
 
 - **Code shape.** `ScreensaverIdle` is the pure idle decision the table above calls
@@ -380,7 +380,7 @@ none has run on a TV yet (Verification 5–7 are open).
   (`layout.wallpaper` through its own `WallpaperSurface` and `ProjectivyWallpaperHost`,
   muted, or the palette colour) for both the Home background entry and Clock's Home
   background backdrop, which fixes the wrong‑background bug in [Context](#context).
-  Provider video inside `ClockDream` is untested against the TV's memory (Stage 0
+  Provider video inside `ScreensaverDream` is untested against the TV's memory (Stage 0
   question 8).
 - **Removed, no compatibility layer.** `home_idle_clock_minutes`, `back_opens_clock`,
   `clock_glow`, `clock_wallpaper` and `clock_wallpaper_dim` (config.xml, theme keys and
@@ -402,14 +402,14 @@ none has run on a TV yet (Verification 5–7 are open).
 - **The remote's `screensaver` action** still tries Android's "start now" shortcut first;
   only its fallback became `ScreensaverActivity` (Show now). Starting Homeboard's choice
   directly, as the Code table says, belongs with Stage 3, where the two choices coincide.
-- **A ringing timer or alarm** ends Homeboard's screensaver (activity and `ClockDream`)
+- **A ringing timer or alarm** ends Homeboard's screensaver (activity and `ScreensaverDream`)
   through a package‑local broadcast from `KitchenTimerSound`; it does not open the timer
   screen itself.
 - **The Home idle timer** counts All Apps as Home (the same activity). It holds off while
   any menu, overlay, editor, expanded widget, move, resize or hold‑Back is up, and is one
   `Handler` callback rebased on the last input.
 - **Strings** live in a new `homeboard_screensaver.xml` pair (English and Thai), the files
-  the parity check reads. `ClockDream`'s label stays "Clock" (`dream_name`).
+  the parity check reads. The screensaver service, renamed `ScreensaverDream`, is labelled with the app's name.
 
 ## Design filter record
 

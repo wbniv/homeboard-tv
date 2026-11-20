@@ -6,7 +6,7 @@ import org.json.JSONObject;
 /**
  * The screensaver the person chose and its options, stored in HomeLayout beside the wallpaper and kept apart
  * from Home's own background settings, so dimming the screensaver never dims Home. The single source for the
- * Home idle timer, ScreensaverActivity and ClockDream; it replaced the theme values clock_glow,
+ * Home idle timer, ScreensaverActivity and ScreensaverDream; it replaced the theme values clock_glow,
  * clock_wallpaper, clock_wallpaper_dim and home_idle_clock_minutes.
  */
 final class ScreensaverSettings {

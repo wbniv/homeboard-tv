@@ -17,7 +17,7 @@ import android.widget.TextView;
 /**
  * Homeboard's own screensaver screen: Home idle (MainActivity's timer), Preview (from the Screensaver screen)
  * and Show now (the remote's screensaver action where Android has no "start now" shortcut). It plays the chosen
- * ScreensaverRegistry entry, or the previewed one, through the same ScreensaverScene contract as ClockDream.
+ * ScreensaverRegistry entry, or the previewed one, through the same ScreensaverScene contract as ScreensaverDream.
  * It never starts over live TV or an app, which matters on TVs whose Live TV window does not keep the screen on.
  *
  * Idle and Show now: any key ends it, and that key does not also act on Home. Preview: OK uses the entry
