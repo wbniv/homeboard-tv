@@ -1,8 +1,9 @@
 # Timers on every page
 
-**Status: plan for review, nothing built (2026‑11‑20).** TODO entry: Open, `[T4]` "Show
-active timers on every page of Home, All Apps and the full-screen views". No device
-evidence exists for anything below; the mockups are designs, not captures.
+**Status: decisions settled, Stage 1 in progress (2026‑11‑20).** All four decisions are as
+recommended. TODO entry: "Show active timers on every page of Home, All Apps and the
+full-screen views". No device evidence exists for anything below; the mockups are designs,
+not captures.
 
 Will, 2026‑11‑20: "showing active timers on ALL pages". He asked straight after the change
 in which an alarm that ends a screensaver opens the timer screen.
@@ -444,10 +445,10 @@ Applied the shared [Alan Cooper design filter](/home/will/docs/howtos/alan-coope
 - **Disposition.** Conditional on Decisions 1–4; no exception to the filter is claimed. Next
   action: Will's decisions, then Stage 1.
 
-## Decisions for Will
+## Decisions
 
-Each has a recommended default that the plan assumes; a different answer changes only the
-named stage.
+Will, 2026‑11‑20: "go with your recommendations for timer". All four are settled as
+recommended below; the plan's stages assume them.
 
 1. **Countdown on Homeboard's screensaver?** Recommended: **yes**, as Stage 4. It is the
    moment the cook is most likely to look, and the line drifts with the clock. The
