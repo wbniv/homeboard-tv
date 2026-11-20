@@ -1,10 +1,16 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/a163f01) | Google Home investigation: screensaver and settings as custom modes and toggles |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b0f6606) | Google Home investigation: record the kitchen Nest display; add TODO items |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/1327db1) | Google Home investigation: weigh lasting costs, not engineering effort |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/0993cf1) | Investigation: options for integrating Homeboard TV with Google Home |
 
 <!--history-meta v1
+a163f01	author	Will Norris
+a163f01	added	14
+a163f01	deleted	1
+a163f01	files	1
+a163f01	body	Will asked about exposing the screensaver and settings with our own set of\ncontrols. Cloud-to-cloud's Modes and Toggles traits carry custom-named\nsettings by voice; Google Home offers no way to supply our own interface,\nand routines list neither trait. The Homeboard device carries only these,\nnot the stock TV traits. Matter appears unable to express named modes.\n\nCo-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqN1KiiVNT63goz7fyo
 b0f6606	author	Will Norris
 b0f6606	added	21
 b0f6606	deleted	15

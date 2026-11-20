@@ -137,6 +137,16 @@ One current change to be aware of: Google moved third-party account linking full
 
 Matter is local. A Google hub on the same network commissions the device and then controls it without any cloud of ours, so this route needs **no OAuth server and no bridge**. Google Home supports the relevant Matter types, including Air Quality Sensor with PM2.5 measurement, On/Off Plug-in Unit and bridges ([supported devices](https://developers.home.google.com/matter/supported-devices?hl=en)). The usual pattern for virtual actions is a bridge exposing one on/off switch per scene.
 
+Will, 20 November 2026: "this is a GREAT idea!!! if it works, that is". So it leads direction 1, and the first job is to find out whether it works.
+
+What says it can work:
+
+- The Matter project ships an Android app that acts as a device, not a controller: its [Android Virtual Device App](https://github.com/project-chip/connectedhomeip/tree/master/examples/virtual-device-app/android) is "a commissionee device on Android" that displays its own Matter QR code. That is the starting point for a probe.
+- A TV is a good place to show a pairing QR code: the Google Home app on a phone scans it from the screen. Commissioning over the home network needs no Bluetooth.
+- The hub is already in the kitchen.
+
+**The probe that settles it:** a fixture APK built from that example, declaring one on/off device under a test vendor ID, installed on Cast1 and commissioned through the Google Home app. It works if "Hey Google, turn on Homeboard test" changes the state on the TV, and if it still answers after another app has been in the foreground for an hour. It needs nothing else in this report built first.
+
 What gates it:
 
 - The Matter stack is a large native library, built per CPU architecture. Building it into a Java launcher is work, which is cheap; the added APK size is permanent. I did not measure it.
@@ -146,7 +156,7 @@ What gates it:
 - Shipping to the public needs Connectivity Standards Alliance membership and certification. I did not check the fees.
 - The home must have a Matter hub. Google lists Nest speakers and displays, Nest Wifi Pro and the Google TV Streamer (4K) ([same page](https://developers.home.google.com/matter/supported-devices?hl=en)). The Chromecast with Google TV is not in that list. The household's kitchen Nest display is: Nest Hub, Nest Hub (2nd gen) and Nest Hub Max all appear on it.
 
-**Verdict:** A real contender at household scale. Its limit there, our own accounts only, is the same as 1A's test mode, and it avoids the server, the secrets and the internet dependency altogether. It depends on the home having a Google hub, and this one does. Prototype it beside 1A and compare on the TV. Public release stays blocked by certification.
+**Verdict:** The lead route for direction 1 at household scale, pending the probe. Its limit there, our own accounts only, is the same as 1A's test mode, and it avoids the server, the secrets and the internet dependency altogether. It depends on the home having a Google hub, and this one does. Prototype it beside 1A and compare on the TV. Public release stays blocked by certification.
 
 ### 1C. Through Home Assistant
 
@@ -302,8 +312,9 @@ flowchart TD
 
 1. **Finish the inventory.** The hub question is answered: there is a kitchen Nest display. Confirm its exact model when the coordinator enrols it, and list which other devices are in the household's Google Home.
 2. **Stage 0 probe, on Cast1.** A fixture APK in the pattern of `launcher/widget-fixture` that initialises the Home APIs, runs the permission flow, lists devices and subscribes to one state stream. Record the Play services version, whether each screen can be driven with the remote, and what fails. In the same session, check the two home panel questions from 2F. This is a foreground device job, so it goes through the coordinator.
-3. **Design the control interface.** Decide between intent deep links, an always-on authenticated local listener, or both, and what they can address: a scene, a page, a timer. This is useful with or without Google.
-4. **Then plan whichever direction the probe and the inventory favour.** Each is a design-and-implementation job with visible surfaces, so each needs its own plan with mockups and diagrams. Where two routes survive, such as the bridge and the Matter device, build both prototypes and let the device decide.
+3. **Stage 0 Matter probe, on Cast1.** The on/off fixture described under 1B. It is independent of the Home APIs probe and of the control interface, so it can run in the same device session as step 2.
+4. **Design the control interface.** Decide between intent deep links, an always-on authenticated local listener, or both, and what they can address: a scene, a page, a timer. This is useful with or without Google.
+5. **Then plan whichever direction the probe and the inventory favour.** Each is a design-and-implementation job with visible surfaces, so each needs its own plan with mockups and diagrams. Where two routes survive, such as the bridge and the Matter device, build both prototypes and let the device decide.
 
 These are tracked in [`TODO.md`](../../TODO.md) as three items: the Stage 0 probe, the control interface, and the paired Matter device and bridge prototypes.
 
