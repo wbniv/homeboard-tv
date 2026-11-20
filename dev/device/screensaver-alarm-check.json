@@ -1,0 +1,16 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 44,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 9, "capture": "a1-screensaver-up"},
+    {"at": 16, "capture": "a2-after-ring"},
+    {"at": 20, "capture": "a3-timer-screen"},
+    {"at": 26, "capture": "a4-still-ringing-or-done"},
+    {"at": 36, "capture": "a5-after-probe-cleanup"},
+    {"at": 38, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 40, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 42, "capture": "a6-final"}
+  ]
+}
