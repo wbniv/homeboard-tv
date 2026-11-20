@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660">
+<style>text{font-family:sans-serif;fill:#edf0f5}.muted{fill:#bac2cd}.card{fill:#202733;stroke:#657080;stroke-width:2}.time{font-size:64px;font-weight:600;font-variant-numeric:tabular-nums}.name{font-size:23px}.caption{font-size:17px;fill:#bac2cd}</style>
+<rect width="1200" height="660" fill="#101720"/>
+<text x="28" y="38" font-size="25">Timers · revised dashboard cards · design mockup, not a TV capture</text>
+<text x="28" y="75" class="caption">Wide, shallow · both running timers visible</text>
+<rect x="28" y="89" width="730" height="130" rx="18" class="card"/>
+<text x="52" y="124" class="name">Rice</text><text x="52" y="198" class="time">01:09</text>
+<text x="420" y="124" class="name">Vegetables</text><text x="420" y="198" class="time">03:20</text>
+<text x="790" y="75" class="caption">Narrow · same information, stacked</text>
+<rect x="790" y="89" width="220" height="170" rx="18" class="card"/>
+<text x="810" y="128" class="name">Rice</text><text x="810" y="201" class="time">12:34</text>
+<text x="28" y="269" class="caption">Several timers · separate cells; explicit state and overflow</text>
+<rect x="28" y="284" width="730" height="160" rx="18" class="card"/>
+<text x="52" y="319" class="name">Rice</text><text x="52" y="389" class="time">12:34</text>
+<text x="408" y="319" class="name">Sauce · Paused</text><text x="408" y="389" class="time">05:00</text>
+<text x="52" y="428" class="caption">2 more ▾</text>
+<text x="790" y="303" class="caption">Finished · readable without color</text>
+<rect x="790" y="317" width="380" height="127" rx="18" class="card"/>
+<text x="810" y="353" class="name">Eggs</text><text x="810" y="420" class="time">Done</text>
+<text x="28" y="489" class="caption">Empty · use the existing OK → full-screen Timers route</text>
+<rect x="28" y="504" width="1142" height="110" rx="18" class="card"/>
+<text x="52" y="545" class="name">Timers &amp; alarms</text>
+<text x="52" y="581" class="muted" font-size="22">Start a cooking timer or set an event alarm</text>
+<text x="28" y="643" class="caption">Short OK opens all timers and controls. Back / Restore dashboard returns to the same page, focus and size.</text>
+</svg>

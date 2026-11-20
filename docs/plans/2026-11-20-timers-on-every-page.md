@@ -1,9 +1,9 @@
 # Timers on every page
 
-**Status: decisions settled, Stage 1 deployed as 0.1.112 to both TVs; Cast1 timer acceptance pending (2026‑11‑20).** All four decisions are as
+**Status: decisions settled, Stage 1 deployed; 0.1.113 Cast1 captures confirm ticking in the widget and full-screen view (2026‑11‑20).** All four decisions are as
 recommended. TODO entry: "Show active timers on every page of Home, All Apps and the
-full-screen views". No device evidence exists for anything below; the mockups are designs,
-not captures.
+full-screen views". Stage 1 has the device evidence linked under Verification;
+the later indicator stages remain undispatched. The mockups are designs, not captures.
 
 Will, 2026‑11‑20: "showing active timers on ALL pages". He asked straight after the change
 in which an alarm that ends a screensaver opens the timer screen.
@@ -499,6 +499,12 @@ backed up outside Docker caches, mounted read-only and explicitly required by bu
 Cast1's timer and ordinary launch checks both ended `target-left-foreground`, with
 Google TV Home in front, so timer acceptance remains open before Stage 2. See the
 [Stage 1 deployment record](../testing/2026-11-20-timers-stage1.md).
+
+Follow-up **0.1.113** fixes the widget hiding simultaneous timers. Both TVs received
+the identical APK, and Cast1 job `J‑cc6dfb453f2d` confirms the live countdown in the
+dashboard, then full-screen, then the restored dashboard (00:38 → 00:36 → 00:31).
+This supplies the missing basic native Stage 1 rendering/ticking check;
+Stage 2 remains undispatched. See the [display verification record](../testing/2026-11-20-timer-widget.md).
 
 1. `task timers-everywhere:plan-check` validates the eight mockups: self-contained,
    1440×900, no overflow, every button explains itself, PNG captured, bundle within budget.

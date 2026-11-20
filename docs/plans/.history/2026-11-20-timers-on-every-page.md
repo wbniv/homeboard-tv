@@ -1,9 +1,14 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/2fd314a) | Preserve debug signing identity and record 0.1.112 deployment |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/2e38b41) | Timers on every page: Will accepts the four recommended decisions |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/aa27069) | Plan active timers on every page, with mockups and diagrams |
 
 <!--history-meta v1
+2fd314a	author	Will Norris
+2fd314a	added	12
+2fd314a	deleted	1
+2fd314a	files	1
 2e38b41	author	Will Norris
 2e38b41	added	7
 2e38b41	deleted	6

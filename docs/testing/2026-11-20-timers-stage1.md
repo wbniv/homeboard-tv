@@ -91,3 +91,10 @@ under `artifacts/timer-proof/0.1.112/ui/J-467ef8a96612/evidence`.
 
 **Stage 1 is installed on both TVs. Cast1 timer acceptance remains pending, so
 Stage 2 remains undispatched.** This record does not establish Stage 2 chip behavior.
+
+Follow-up: **0.1.113** installed on both TVs and passed Cast1's basic native
+rendering/ticking and OK/Back checks in `J‑cc6dfb453f2d`. The running rice countdown
+advanced through dashboard → full-screen → restored dashboard. See the
+[follow-up captures](2026-11-20-timer-widget.md) for the evidence and remaining
+matrix limits. This supersedes the basic Cast1 acceptance gap above;
+Stage 2 remains undispatched.

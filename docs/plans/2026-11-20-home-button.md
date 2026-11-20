@@ -1,8 +1,59 @@
 # Home button: make the remote's Home open Homeboard on Google TV
 
-**Status: implemented on `feature/home-button`, 2026‑11‑20; not deployed, no device step run.** Will,
+**Status: implementation deployed in 0.1.114; Cast1 routing still unverified with the intended helper enabled (2026‑11‑20).** Will,
 2026‑11‑20: "ok, make home button work". Research:
 [The Home key on Google TV](../investigations/2026-11-20-home-key-on-google-tv.md).
+
+Current-state check, coordinator Remote `J‑3906ace77986`: a short Home tap from
+Homeboard opens Google TV's launcher. Home settings → Home button shows **Off**.
+The feature is installed but routing is not enabled after the authorized app reset.
+No grant, accessibility switch or Home-button setting was changed by this check.
+Captures are under `docs/diagnostics/home-button-current/` (`before.png`,
+`after-home.png`, `status.png`); evidence is exported alongside them. This proves
+the current Off behavior only. On/Working, cross-app return, held Home, physical
+remote key repeat and restart recovery remain unverified.
+
+Follow-up Remote `J‑c8fc1b7792cd`: Will selected On in Homeboard; the screen showed
+Setup needed. Android accessibility lists multiple identically named Home button
+entries, with Configuration disabled (the service declares no settingsActivity).
+Agent and physical remote inputs overlapped, and the selected accessibility service
+was turned off during inspection. The agent restored that same entry through Enable
+and Android's Use Home button confirmation; `restored-on.png` verifies its blue On
+switch. A subsequent Home tap still opened Google TV. This does not prove the
+restored entry belongs to the currently deployed debug package; the duplicate entries
+must be disambiguated before enabling anything else. Remote was then stopped and
+evidence exported under `docs/diagnostics/home-button-enabled/evidence`.
+
+### Distinguish the test helper in Android accessibility
+
+Read-only inspection `J‑7ffd7a5603a3` confirms both installed copies: public
+`net.biohack.homeboard` versionCode 92 and debug `net.biohack.homeboard.debug`
+versionCode 113. Both expose the inherited Home button label. Available evidence
+does not establish their upper/lower order, so do not infer identity by position
+or toggle either one to find out.
+
+Apply the shared [Alan Cooper filter](/home/will/docs/howtos/alan-cooper-design-filter.md)
+to this label correction: the person enabling Home needs to identify the installed
+copy, without understanding package names or trying switches. Duplicate labels
+create substantial friction and risk configuring the wrong app. The debug build's
+service label becomes **Home button · Homeboard TV (test)**, with a Thai equivalent;
+the public entry remains Home button. The same resource feeds Homeboard's setup
+instructions. This changes no workflow, permissions, helper components or saved
+choices; the existing diagrams and setup mockups still apply. Acceptance: verify
+the merged APK resource and the actual Android accessibility list after a fresh
+numbered, data-preserving deployment. Leave the switches as found.
+
+Implemented as **0.1.114**, installed on both TVs using identical APK SHA-256
+`902f9b0c26218496065f1013476b8f1b5d72c611d42ea7b8e4b7d84795b3e616`.
+Container `aapt2 dump resources` verifies the English and Thai labels in the frozen
+APK; the manifest assigns `home_key_name` to `com.gathin.tvhome.HomeKeyService`.
+Cast2 install/launcher verification `J‑8e54ae846147` passed. Cast1 background
+install `J‑73190089cc9d` refused `install-over-foreground`; independent foreground
+install/check `J‑e4e5494a6208` then passed and verified the same installed hash.
+The plain Home button entry belongs to the older public package; the test-labelled
+entry belongs to `net.biohack.homeboard.debug`. No accessibility switches were
+changed during this identification step. The actual refreshed Android list and
+enabled routing remain to be checked. See the [identification record](../testing/2026-11-20-home-button.md).
 
 ## Context
 

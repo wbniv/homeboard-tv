@@ -32,6 +32,41 @@ runtime, monotonic deadlines, and explicit immediate controls.
 
 ## Interaction and sizes
 
+### November 20 dashboard display adjustment
+
+Baseline: Cast1 current-screen capture `J‑0cfa1d1684f3`, build 0.1.112.
+Will reports **two running timers**, but the wide, one-row card shows only one:
+“Cooking timer” and “01:09”, with no indication of the other timer. The current
+line-count implementation budgets one item and only shows overflow when there are
+three text lines, so the second timer silently disappears. This blocks the goal
+of monitoring several dishes. Equal-sized names and values also create glance-reading friction for
+someone cooking away from the remote. The shared
+[Alan Cooper filter](/home/will/docs/howtos/alan-cooper-design-filter.md) calls for
+hierarchy matched to distant, brief attention: make remaining time the primary
+value, with the dish name and explicit Paused/Done state as supporting information.
+No new workflow or settings are needed.
+
+The [revised native card mockup](2026-11-19-cooking-timers/widget-display.svg)
+specifies separate, equally sized timer cells with a name above a larger countdown.
+Wide shallow cards must show both running timers side by side when space permits;
+narrow cards show the next timer with a visible count of hidden entries. Wider cards can show more timers side by
+side; taller cards add rows. Show an explicit overflow count when all entries do
+not fit. Keep names ellipsized within their own area, retain font-scale awareness,
+and never let seconds cause row or focus movement. Done, Paused, Missed and
+Interrupted remain readable words rather than color-only signals. Empty cards
+show an invitation to open Timers.
+
+Acceptance: compare the real Cast1 card before/after; inspect single, multiple,
+overflow, long-name, empty and non-running states at narrow, wide and tall sizes;
+confirm OK opens the existing richer full-screen presentation and Back restores
+page, size and focus. Preserve household timer runtime during fixture checks.
+The existing workflow diagram below remains current: no navigation changes.
+
+Implemented and deployed as **0.1.113** to both TVs. Cast1 shows all three current
+entries side by side (two Done plus a running rice timer), and OK/Back retains
+the original page, focus and size. The countdown advances across dashboard and
+full-screen views. See the [actual captures and validation limits](../testing/2026-11-20-timer-widget.md).
+
 - Recommend **2×1**. Show the next timer, large remaining time, and how many more
   are running. At **1×1**, show the soonest timer and its remaining time. Larger
   widgets show more named timers, using the actual available height. Finished
