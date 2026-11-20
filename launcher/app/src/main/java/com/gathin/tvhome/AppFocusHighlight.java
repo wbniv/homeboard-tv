@@ -133,6 +133,11 @@ final class AppFocusHighlight {
         shown = false;
     }
 
+    /** Recolours the rim of a circular highlight; other kinds are unaffected. */
+    void setRim(int color) {
+        if (view instanceof AppFocusView) ((AppFocusView) view).setRimColor(color);
+    }
+
     /** Stops any slide in progress, for a highlight that is about to be dropped. */
     void cancel() {
         springX.cancel(); springY.cancel();

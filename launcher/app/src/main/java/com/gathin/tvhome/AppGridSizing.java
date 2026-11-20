@@ -26,6 +26,13 @@ final class AppGridSizing {
     static int panelColumns(int panelWidthDp, int labelHeight, boolean banners) {
         return columns(panelWidthDp - PANEL_SIDE_PADDING * 2, labelHeight, banners);
     }
+    /**
+     * Width of one Favorites ribbon cell: the viewport divided evenly among as many whole cells as fit at
+     * {@code pitch}. A fixed pitch left a sliced icon, and its label, at one end of the panel.
+     */
+    static int ribbonCell(int viewport, int pitch) {
+        return Math.max(1, viewport / Math.max(1, viewport / Math.max(1, pitch)));
+    }
     static int homeColumns(int availableWidth, int labelHeight, boolean banners) {
         int cards = columns(availableWidth, labelHeight, banners);
         return Math.max(4, Math.min(12, banners ? cards * 2 : cards));

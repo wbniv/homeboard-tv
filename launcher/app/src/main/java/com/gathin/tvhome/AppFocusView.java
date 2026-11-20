@@ -17,9 +17,15 @@ final class AppFocusView extends View {
     AppFocusView(Context context) {
         super(context);
         gap.setColor(0xff27292a);
-        rim.setColor(0xff434546);
+        rim.setColor(AppAppearance.RIM);
         rim.setStyle(Paint.Style.STROKE);
         setLayerType(LAYER_TYPE_HARDWARE, null);
+    }
+
+    /** A rim that reads against the surface behind this icon (see {@link AppAppearance#rimOver}). */
+    void setRimColor(int color) {
+        rim.setColor(color);
+        invalidate();
     }
 
     void setIconDiameter(float value) {

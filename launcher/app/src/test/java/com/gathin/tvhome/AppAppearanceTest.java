@@ -51,4 +51,17 @@ public class AppAppearanceTest {
                 assertTrue(size[1] * AppAppearance.FOCUS_SCALE <= Math.max(0, height - labelHeight - 6 - 16));
             }
     }
+
+    @Test public void theFocusRimReadsOnALighterPanelButKeepsTheReferenceGrayOnADarkOne() {
+        // Regression: the reference gray (about 1.4:1 on the Favorites panel) was nearly invisible.
+        int panel = 0xff242a36;
+        assertTrue(AppAppearance.contrast(AppAppearance.RIM, panel) < 3f);
+        int rim = AppAppearance.rimOver(panel, 3f);
+        assertTrue(AppAppearance.contrast(rim, panel) >= 3f);
+        assertTrue(AppAppearance.luminance(rim) > AppAppearance.luminance(AppAppearance.RIM));
+        // Already readable: unchanged, so All Apps keeps the measured colour.
+        assertEquals(AppAppearance.RIM, AppAppearance.rimOver(0xff0e0f10, 1.5f));
+        // Never overshoots white, and always terminates, even where 3:1 is unreachable.
+        assertTrue(AppAppearance.rimOver(0xffffffff, 3f) != 0);
+    }
 }

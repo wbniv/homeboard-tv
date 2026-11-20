@@ -35,7 +35,7 @@ final class FavoritesWidgetView extends FrameLayout {
     private final Wedges wedges;
     private final Adapter adapter = new Adapter();
     private GridLayoutManager manager;
-    private int columns=1, pitchDp;
+    private int columns=1, pitchDp, ribbonCellPx;
     private int pendingFocus=-1;
     private String selected;
     private boolean compact, headerSelected, interactive=true, enterPending, geometryReady;
@@ -70,6 +70,8 @@ final class FavoritesWidgetView extends FrameLayout {
         // goes under or over the list to match, and is clipped to the list's area.
         layer=new FrameLayout(context);layer.setClipChildren(true);layer.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);layer.setFocusable(false);
         highlight=new AppFocusHighlight(context,this,layer,-1,banners,circular,palette.background,reducedMotion);
+        // The reference rim is too faint on this lighter panel.
+        highlight.setRim(AppAppearance.rimOver(palette.surface,3f));
         boolean behind=AppFocusHighlight.behindArtwork(banners,circular);
         FrameLayout.LayoutParams lp=new FrameLayout.LayoutParams(-1,-1);lp.topMargin=dp(30);lp.bottomMargin=dp(18);
         FrameLayout.LayoutParams layerLp=new FrameLayout.LayoutParams(-1,-1);layerLp.topMargin=dp(30);layerLp.bottomMargin=dp(18);
@@ -152,6 +154,8 @@ final class FavoritesWidgetView extends FrameLayout {
         float density=getResources().getDisplayMetrics().density;
         pitchDp=AppGridSizing.columnPitch(labelHeightDp,banners);
         columns=ribbon?1:AppGridSizing.panelColumns(Math.round(w/density),labelHeightDp,banners);
+        // Whole cells only: the ribbon's viewport is shared evenly, so no icon is sliced at either end.
+        ribbonCellPx=AppGridSizing.ribbonCell(w-2*dp(18),dp(pitchDp));
         manager=new GridLayoutManager(getContext(),columns,ribbon?RecyclerView.HORIZONTAL:RecyclerView.VERTICAL,false);
         list.setLayoutManager(manager);adapter.notifyDataSetChanged();
         if(enterPending)post(this::enter);
@@ -190,11 +194,12 @@ final class FavoritesWidgetView extends FrameLayout {
             cell.setFocusable(true);cell.setClipChildren(false);cell.setClipToPadding(false);
             // The gaps All Apps leaves between cells, as padding.
             cell.setPadding(dp(AppGridSizing.COLUMN_GAP/2f),dp(AppGridSizing.ROW_GAP/2f),dp(AppGridSizing.COLUMN_GAP/2f),dp(AppGridSizing.ROW_GAP/2f));
-            cell.setLayoutParams(new RecyclerView.LayoutParams(ribbon?dp(pitchDp):-1,ribbon?-1:dp(AppGridSizing.rowPitch(labelHeightDp,banners))));
+            cell.setLayoutParams(new RecyclerView.LayoutParams(ribbon?ribbonCellPx:-1,ribbon?-1:dp(AppGridSizing.rowPitch(labelHeightDp,banners))));
             return new Holder(cell);
         }
         @Override public void onBindViewHolder(Holder holder,int position){
             String key=keys.get(position);FrameLayout frame=(FrameLayout)holder.itemView;frame.removeAllViews();
+            if(ribbon&&frame.getLayoutParams().width!=ribbonCellPx){ViewGroup.LayoutParams params=frame.getLayoutParams();params.width=ribbonCellPx;frame.setLayoutParams(params);}
             View tile=artwork.apply(key);tile.setFocusable(false);tile.setClickable(false);
             tile.setPadding(dp(2),dp(2),dp(2),dp(2));   // as All Apps tiles
             frame.addView(tile,new FrameLayout.LayoutParams(-1,-1));

@@ -76,4 +76,17 @@ public class AppGridSizingTest {
         assertTrue(AppGridSizing.columns(896, 19, false) * AppGridSizing.rows(408, 19, false) >= 36);
         assertFalse(HomeLayout.firstRun().appBanners);
     }
+
+    @Test public void theFavoritesRibbonShowsOnlyWholeCells() {
+        // Regression: a fixed pitch left the last icon, and its label, sliced by the panel edge.
+        for (int viewport = 300; viewport <= 2000; viewport += 37)
+            for (int pitch : new int[]{80, 104, 144, 176, 250}) {
+                int cell = AppGridSizing.ribbonCell(viewport, pitch);
+                int count = Math.max(1, viewport / pitch);
+                assertTrue("cells are never narrower than the pitch", cell >= Math.min(pitch, viewport));
+                assertTrue("whole cells fit", cell * count <= viewport);
+                assertTrue("nothing is left for a sliced extra cell", viewport - cell * count < count);
+            }
+        assertEquals(1, AppGridSizing.ribbonCell(0, 100));
+    }
 }
