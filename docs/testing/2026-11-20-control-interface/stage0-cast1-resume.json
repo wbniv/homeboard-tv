@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "device": "chromecast-test-01",
+  "app": "homeboard-tv",
+  "poke": false,
+  "resume_after_s": 300,
+  "result": "same-process",
+  "pid_before": 5223,
+  "pid_before_start": 5223,
+  "pid_after": 5223,
+  "same_process": true,
+  "home_left_foreground": true,
+  "home_left_after_s": 0.9,
+  "background_s": 300.8,
+  "kept_awake": true,
+  "wake_pulses": 30,
+  "foreground_before_start": "com.google.android.apps.tv.launcherx/.home.HomeActivity",
+  "frame_before_home_at": "2026-11-20T13:14:37.084Z",
+  "home_sent_at": "2026-11-20T13:14:41.172Z",
+  "start_sent_at": "2026-11-20T13:19:41.993Z",
+  "frame_resumed_at": "2026-11-20T13:19:45.223Z",
+  "frames": [
+    "before-home-screenshot.png",
+    "resumed-screenshot.png"
+  ]
+}

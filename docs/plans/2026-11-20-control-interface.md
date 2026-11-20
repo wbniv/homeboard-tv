@@ -735,7 +735,8 @@ These are deliberately not designed here.
 - Everything under [Process lifetime, Needs a device test](#process-lifetime): process
   survival, freezing, background starts, the Android TV Remote link path and standby. The AOSP
   behaviour described there is from memory.
-- Whether Homeboard holds the Home role on Cast1 or Cast2.
+- Which app formally holds the Home role on Cast1 or Cast2. Stage 0 showed the Home key
+  bringing Google TV's launcher forward on both.
 - That `NsdManager` registration needs no permission at the current and the Play target.
 - Whether the installed coordinator can hold another app in front for 60 min or record process priority.
 - Whether the coordinator can send `am broadcast` to an arbitrary receiver or open a link; its
@@ -788,6 +789,40 @@ Each step is the spec. When it runs, paste the raw output beneath it, then PASS 
    Record `same_process`, the three pids and the activity in front before `am start` from
    `resume.json`, and which app holds the Home role. The result is a measurement; either answer
    is a PASS if it is recorded.
+
+    ```
+    $ task chromecast:check DEVICE=chromecast-test-01 APP=homeboard-tv VALIDATOR=poke-resume RESUME_AFTER=300 POKE=false
+    J-6c65b773e11e: completed {"error": null, "health": "ready"}
+    J-6c65b773e11e: completed; verified 21 artifacts -> /home/will/homeboard-tv/docs/diagnostics/chromecast-check-J-6c65b773e11e
+    chromecast-test-01: homeboard-tv; poke-resume, no poke, RESUME_AFTER 300 s
+      HOME       off the screen in 0.9 s; launcher in front before am start
+      background 300.8 s (HOME → am start); kept awake, 30 wake pulses
+      process    pid 5223 → 5223 at start → 5223 after resume (same process)
+      frames     before-home-screenshot.png → resumed-screenshot.png
+
+    $ task chromecast:check DEVICE=chromecast-test-02 APP=homeboard-tv VALIDATOR=poke-resume RESUME_AFTER=300 POKE=false
+    J-526b63864f7e: completed {"error": null, "health": "ready"}
+    J-526b63864f7e: completed; verified 21 artifacts -> /home/will/homeboard-tv/docs/diagnostics/chromecast-check-J-526b63864f7e
+    chromecast-test-02: homeboard-tv; poke-resume, no poke, RESUME_AFTER 300 s
+      HOME       off the screen in 0.7 s; launcher in front before am start
+      background 300.6 s (HOME → am start); kept awake, 30 wake pulses
+      process    pid 29049 → 29049 at start → 29049 after resume (same process)
+      frames     before-home-screenshot.png → resumed-screenshot.png
+
+    resume.json, both TVs: result same-process; same_process true;
+    foreground_before_start com.google.android.apps.tv.launcherx/.home.HomeActivity
+    ```
+
+    **PASS**: recorded on both TVs (run 2026‑11‑20). Homeboard's process survived 5 min behind
+    Google TV on Cast1 and Cast2 with no keep-alive service. On both, the Home key brought Google
+    TV's own launcher to the front, so Homeboard was not acting as the Home app in these runs;
+    which app formally holds the Home role was not read. The `resume.json` records are kept as
+    [Cast1](../testing/2026-11-20-control-interface/stage0-cast1-resume.json) and
+    [Cast2](../testing/2026-11-20-control-interface/stage0-cast2-resume.json); the full
+    evidence, including logs, stays in the untracked `docs/diagnostics/` folders named above
+    and was not exported to `docs/testing/` as the step says, to keep device logs out of the
+    public repository. This is run A only: 5 min behind the launcher says nothing yet about an
+    hour behind a video app (run B).
 4. Stage 1: `task check` passes with new tests. `ControlVocabularyTest`: every verb parses
    its arguments, unknown verbs and fields are refused, and the link-eligible set is exactly
    the navigation verbs. `ControlHubTest`: a replayed id returns the first result; the same id
