@@ -2,8 +2,6 @@
 <resources>
     <string name="hb_choose_preview_to_load_this_provider">"เลือกดูตัวอย่างเพื่อโหลดผู้ให้บริการนี้"</string>
     <string name="hb_saved_layout_could_not_be_read_starting_with_empty_home">"อ่านรูปแบบที่บันทึกไว้ไม่ได้ เริ่มด้วยหน้าหลักว่าง"</string>
-    <string name="hb_homeboard_tv_is_now_the_default_home_app">"Homeboard TV เป็นแอปหน้าหลักเริ่มต้นแล้ว"</string>
-    <string name="hb_default_home_app_was_not_changed">"ไม่ได้เปลี่ยนแอปหน้าหลักเริ่มต้น"</string>
     <string name="hb_undo">"เลิกทำ"</string>
     <string name="hb_undo_5">"เลิกทำ "</string>
     <string name="hb_homeboard_change">"การเปลี่ยนแปลง Homeboard"</string>
@@ -55,8 +53,6 @@
     <string name="hb_widgets_restore">"วิดเจ็ตและการกู้คืน"</string>
     <string name="hb_appearance">"รูปลักษณ์"</string>
     <string name="hb_home_behavior">"การทำงานหน้าหลัก"</string>
-    <string name="hb_default_home_app">"แอปหน้าหลักเริ่มต้น · "</string>
-    <string name="hb_choose">"เลือก"</string>
     <string name="hb_about_homeboard_tv">"เกี่ยวกับ Homeboard TV"</string>
     <string name="hb_add_a_widget_or_restore_an_app_shortcut">"เพิ่มวิดเจ็ตหรือกู้คืนทางลัดแอป"</string>
     <string name="hb_add_widget">"เพิ่มวิดเจ็ต"</string>

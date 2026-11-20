@@ -244,11 +244,9 @@
     <string-array name="app_keys" translatable="false">
     </string-array>
 
-    <!-- Package of the stock launcher, for TVs whose firmware turns it back on after it was disabled. XGIMI's
-         com.xgimi.xrmservice does, on every one of its remote keys, power included (docs/TROUBLESHOOTING.md).
-         Whenever that launcher's home screen comes up anyway, HomeKeyService (HOME_KEY_SERVICE=1) sends the TV
-         straight back here. A theme's config.json can set it too. Leave empty to omit. -->
-    <string name="stock_home_redirect" translatable="false"></string>
+    <!-- stock_home_redirect was removed: the launcher whose home screen HomeKeyService sends back here is now found at
+         runtime and turned on by the person in Home settings → Home button (HomeButton, HomeTarget;
+         docs/plans/2026-11-20-home-button.md). A theme's "stock_home_redirect" key is ignored. -->
 
     <!-- For TVs whose firmware opens the Live TV app (live_tv_package) by itself at every power-on, with no setting
          to change it (Changhong / Homwee boards start com.mediatek.wwtv.tvcenter from its own boot receiver, which

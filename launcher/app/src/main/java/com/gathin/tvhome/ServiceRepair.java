@@ -78,23 +78,43 @@ final class ServiceRepair {
             // thread, so Home does not wait for the pauses. Each write first checks the list still reads what the
             // previous step left, and the cycle stops otherwise: a service turned on or off during a pause stays
             // that way instead of being overwritten by a snapshot.
-            final String without = others.toString();
-            final String with = updated.toString();
-            new Thread(() -> {
-                try {
-                    if (!replaceList(cr, list, with)) return;
-                    Thread.sleep(1000);
-                    if (!replaceList(cr, with, without)) return;
-                    Thread.sleep(1000);
-                    if (!replaceList(cr, without, with)) return;
-                    Settings.Secure.putInt(cr, Settings.Secure.ACCESSIBILITY_ENABLED, 1);
-                } catch (RuntimeException | InterruptedException ignored) {
-                    // The setting is the system's; a refusal leaves the helper off, as before.
-                }
-            }, "ServiceRepair").start();
+            cycle(cr, list, updated.toString(), others.toString());
         } catch (RuntimeException ignored) {
             // The setting is the system's; a refusal leaves the helper off, as before.
         }
+    }
+
+    /**
+     * Puts one of this app's services back the way restore does: add, remove, add, so Android also drops a
+     * "crashed" mark that would otherwise keep it unbound. Used by the Home button setting (HomeButton.restart and
+     * repair). Needs WRITE_SECURE_SETTINGS; does nothing without it.
+     */
+    static void cycle(Context context, String component) {
+        if (context.checkSelfPermission(Manifest.permission.WRITE_SECURE_SETTINGS)
+                != PackageManager.PERMISSION_GRANTED) return;
+        try {
+            ContentResolver cr = context.getContentResolver();
+            String list = Settings.Secure.getString(cr, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
+            cycle(cr, list, AccessibilityList.with(list, component), AccessibilityList.without(list, component));
+        } catch (RuntimeException ignored) {
+            // The setting is the system's; a refusal leaves the helper off.
+        }
+    }
+
+    /** The add, remove, add cycle, off the main thread; each step first checks the list still reads what the last one left. */
+    private static void cycle(ContentResolver cr, String list, String with, String without) {
+        new Thread(() -> {
+            try {
+                if (!replaceList(cr, list, with)) return;
+                Thread.sleep(1000);
+                if (!replaceList(cr, with, without)) return;
+                Thread.sleep(1000);
+                if (!replaceList(cr, without, with)) return;
+                Settings.Secure.putInt(cr, Settings.Secure.ACCESSIBILITY_ENABLED, 1);
+            } catch (RuntimeException | InterruptedException ignored) {
+                // The setting is the system's; a refusal leaves the helper off, as before.
+            }
+        }, "ServiceRepair").start();
     }
 
     /** Writes the enabled list only while it still reads {@code expected}; an absent list counts as empty. */

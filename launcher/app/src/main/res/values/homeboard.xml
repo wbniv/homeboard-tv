@@ -2,8 +2,6 @@
 <resources>
     <string name="hb_choose_preview_to_load_this_provider">"Choose Preview to load this provider"</string>
     <string name="hb_saved_layout_could_not_be_read_starting_with_empty_home">"Saved layout could not be read. Starting with empty Home."</string>
-    <string name="hb_homeboard_tv_is_now_the_default_home_app">"Homeboard TV is now the default Home app"</string>
-    <string name="hb_default_home_app_was_not_changed">"Default Home app was not changed"</string>
     <string name="hb_undo">"UNDO"</string>
     <string name="hb_undo_5">"Undo "</string>
     <string name="hb_homeboard_change">"Homeboard change"</string>
@@ -55,8 +53,6 @@
     <string name="hb_widgets_restore">"Widgets &amp; restore"</string>
     <string name="hb_appearance">"Appearance"</string>
     <string name="hb_home_behavior">"Home behavior"</string>
-    <string name="hb_default_home_app">"Default Home app · "</string>
-    <string name="hb_choose">"Choose"</string>
     <string name="hb_about_homeboard_tv">"About Homeboard TV"</string>
     <string name="hb_add_a_widget_or_restore_an_app_shortcut">"Add a widget or restore an app shortcut"</string>
     <string name="hb_add_widget">"Add widget"</string>

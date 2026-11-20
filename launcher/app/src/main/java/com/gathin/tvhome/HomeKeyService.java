@@ -33,9 +33,10 @@ import java.util.Set;
  * (Xiaomi sticks and boxes). Android TV 9 routes that key only to the system-image launcher, so once
  * the stock launcher is disabled the button does nothing. Every other key passes through untouched.
  *
- * With stock_home_redirect set, it also sends the stock launcher's home screen back here, for firmware that turns
- * that launcher on again after it was disabled (XGIMI's xrmservice does, on its own remote keys), or that cannot be
- * disabled at all, and a short press of Home opens this launcher even when the stock home is already on screen.
+ * With Home settings → Home button on (HomeButton), it also sends the TV's own launcher's home screen back here, for
+ * launchers that keep Home whatever app holds Android's Home role (Google TV's launcherx) or that firmware turns on
+ * again after it was disabled, and a short press of Home opens this launcher even when that home screen is already on
+ * screen. The launcher is found at runtime (HomeTarget), never disabled or changed.
  *
  * With power_on_home set, a Live TV window (live_tv_package) that the firmware opens by itself at power-on is sent
  * back here too, until the first key press after boot or after the screen turns on (Changhong / Homwee boards).
@@ -45,8 +46,9 @@ import java.util.Set;
  * With home_long_press_home set, it takes every Home press, so one held past the long-press timeout opens this launcher
  * instead of Android's ALL_APPS action, which nothing answers once the stock launcher is disabled (Philips TPM191E).
  *
- * Enable over adb:
- *   settings put secure enabled_accessibility_services com.gathin.tvhome/.HomeKeyService
+ * Turned on from Home settings → Home button (with the one-time WRITE_SECURE_SETTINGS setup, or in Android's
+ * accessibility settings), or over adb:
+ *   settings put secure enabled_accessibility_services <package>/com.gathin.tvhome.HomeKeyService
  *   settings put secure accessibility_enabled 1
  */
 public class HomeKeyService extends AccessibilityService {
@@ -68,10 +70,14 @@ public class HomeKeyService extends AccessibilityService {
 
     /** Waits for the user to unlock when Android binds this service at boot; null once the config is read. */
     private BroadcastReceiver unlockReceiver;
-    /** The stock launcher's HOME activities (stock_home_redirect), disabled ones included. */
+    /** The TV's own launcher's HOME activities while the Home button setting is on, disabled ones included. */
     private final Set<String> stockHome = new HashSet<>();
-    /** stock_home_redirect, the stock launcher's package. */
+    /** The TV's own launcher's package while the Home button setting is on (HomeButton.redirectTarget), else empty. */
     private String stockHomePackage = "";
+    /** No lock-out: stops redirects that bounce without a key press in between. */
+    private final HomeButtonRules.RedirectGuard redirectGuard = new HomeButtonRules.RedirectGuard();
+    /** loadConfig has run at least once, so reload() may run it again. */
+    private boolean configLoaded;
     /** power_on_home: the Live TV package to send back to Home, empty when off; armed until this uptime or a key. */
     private String powerOnLiveTv = "";
     private long powerOnUntil;
@@ -92,11 +98,25 @@ public class HomeKeyService extends AccessibilityService {
     private boolean steppingOut;
     /** The bound helper, so the opt-in broadcast can arm it without waiting for a new connection. */
     static HomeKeyService running;
+    /** Home settings → Home button listens, so its screen shows when the helper connects or goes; main thread. */
+    static Runnable stateListener;
+
+    private static void notifyState() {
+        Runnable listener = stateListener;
+        if (listener != null) new Handler(Looper.getMainLooper()).post(listener);
+    }
+
+    /** Home settings → Home button changed: read the choice and the target again, without a new connection. */
+    static void reload() {
+        HomeKeyService service = running;
+        if (service != null) service.handler.post(() -> { if (service.configLoaded && running == service) service.loadConfig(); });
+    }
 
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
         running = this;
+        notifyState();
         settingsScancodes = getResources().getIntArray(R.array.settings_key_scancodes);
         // The service is directBootAware: Android 11 skips a service that is not while the user is still
         // locked at boot, writes accessibility_enabled=0 and, on TCL G03 firmware, never binds it after the
@@ -138,6 +158,7 @@ public class HomeKeyService extends AccessibilityService {
     @Override
     public void onDestroy() {
         if (running == this) running = null;
+        notifyState();
         RemoteKeys.frontPackage = "";
         RemoteKeys.release(this);
         stopWaitingForUnlock();
@@ -202,9 +223,9 @@ public class HomeKeyService extends AccessibilityService {
         frontAppScancodes = RemoteKeys.parseFrontAppScancodes(config.appKeys);
         boolean watchFront = !frontAppKeys.isEmpty() || !frontAppScancodes.isEmpty();
         stockHome.clear();
-        stockHomePackage = config.stockHomeRedirect;
-        if (!config.stockHomeRedirect.isEmpty()) {
-            Intent home = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).setPackage(config.stockHomeRedirect);
+        stockHomePackage = HomeButton.redirectTarget(this);
+        if (!stockHomePackage.isEmpty()) {
+            Intent home = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).setPackage(stockHomePackage);
             for (ResolveInfo ri : getPackageManager().queryIntentActivities(home, PackageManager.MATCH_DISABLED_COMPONENTS)) {
                 stockHome.add(ri.activityInfo.name);
             }
@@ -223,10 +244,14 @@ public class HomeKeyService extends AccessibilityService {
             screenOnReceiver = null;
             powerOnUntil = 0;
         }
-        // home_key_service.xml subscribes to no events, so the redirects ask for window changes only when one is on.
+        // home_key_service.xml subscribes to no events, so the redirects ask for window changes only when one is on,
+        // and give them up again when the Home button setting is turned off while the helper stays bound (reload).
         AccessibilityServiceInfo info = getServiceInfo();
-        if (info != null && (!stockHome.isEmpty() || !powerOnLiveTv.isEmpty() || watchFront)) {
-            info.eventTypes |= AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+        boolean watchWindows = !stockHome.isEmpty() || !powerOnLiveTv.isEmpty() || watchFront;
+        boolean watching = info != null && (info.eventTypes & AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) != 0;
+        if (info != null && watchWindows != watching) {
+            if (watchWindows) info.eventTypes |= AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+            else info.eventTypes &= ~AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
             // setServiceInfo() rewrites flags and drops the XML's flagRequestFilterKeyEvents, so a
             // key_filter build that also uses a window-watching redirect loses key filtering (gear/app
             // keys stop reaching the helper). Re-assert the filter flag here when key_filter is on.
@@ -239,6 +264,7 @@ public class HomeKeyService extends AccessibilityService {
         holdAppScancodes = RemoteKeys.parseHoldAppScancodes(config.appKeys);
         // gamepad_passthrough and volume_pauses_filter, off by default.
         if (gamepads == null) gamepads = GamepadPassthrough.start(this, config);
+        configLoaded = true;
     }
 
     /** A tap's target: the "front:" entry while the button's own app is already in front, else the usual one. */
@@ -261,6 +287,7 @@ public class HomeKeyService extends AccessibilityService {
     @Override
     protected boolean onKeyEvent(KeyEvent event) {
         // power_on_home: the first key after power-on hands the TV to the user (power and wake keys don't count).
+        if (event.getAction() == KeyEvent.ACTION_DOWN) redirectGuard.keyPressed();
         if (powerOnUntil != 0 && event.getAction() == KeyEvent.ACTION_DOWN
                 && event.getKeyCode() != KeyEvent.KEYCODE_POWER && event.getKeyCode() != KeyEvent.KEYCODE_WAKEUP) {
             powerOnUntil = 0;
@@ -315,6 +342,8 @@ public class HomeKeyService extends AccessibilityService {
     public boolean onUnbind(Intent intent) {
         RemoteKeys.release(this);
         if (repairRecord && !steppingOut) ServiceRepair.disconnected(this, getClass());
+        // The household turned the helper off in Android's settings: the Home button setting follows it.
+        if (!steppingOut) HomeButton.helperTurnedOff(this);
         return super.onUnbind(intent);
     }
 
@@ -337,9 +366,11 @@ public class HomeKeyService extends AccessibilityService {
             openHome();
             return;
         }
-        // stock_home_redirect: the firmware turned the stock launcher back on and its home screen came up.
+        // Home button on: the TV's own launcher's home screen came up (Home pressed in another app, or the firmware
+        // brought it back). The guard stops a bounce if Homeboard does not stay up.
         CharSequence cls = event.getClassName();
-        if (!stockHome.isEmpty() && cls != null && stockHome.contains(cls.toString())) openHome();
+        if (!stockHome.isEmpty() && cls != null && stockHome.contains(cls.toString())
+                && redirectGuard.allow(SystemClock.elapsedRealtime())) openHome();
     }
 
     /** How long power_on_home stays armed after the screen turns on without a reboot. */
@@ -392,7 +423,7 @@ public class HomeKeyService extends AccessibilityService {
     /** How long after boot the first bind still counts as "at boot" for probeAtBoot. */
     static final long BOOT_WINDOW_MS = 3 * 60 * 1000L;
 
-    /** stock_home_redirect at boot: the stock home is often on screen before Android binds this service, so no
+    /** Home button at boot: the stock home is often on screen before Android binds this service, so no
      *  window event for it arrives (#1116). Once per boot, open ProbeActivity: when it closes, whatever was in
      *  front comes back and sends a window event, and onAccessibilityEvent covers it only if it is the stock home.
      *  An HDMI input or an app that the TV resumed at boot is left alone. */
@@ -416,7 +447,7 @@ public class HomeKeyService extends AccessibilityService {
     private static final long HOME_KEY_DELAY_MS = 250;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
-    /** stock_home_redirect on the Home key: when the stock home is already on screen (it came up at boot, before
+    /** Home button setting on the Home key: when the stock home is already on screen (it came up at boot, before
      *  Android bound this service), Home brings it up again with no window change, so the redirect above never
      *  fires and the TV stays on the stock home until another app opens (#1116). A short press opens this
      *  launcher shortly after the system has handled the key; a long press (Google TV's quick settings) is left
@@ -439,7 +470,7 @@ public class HomeKeyService extends AccessibilityService {
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED));
     }
 
-    /** stock_home_redirect while Android's Home is still the stock launcher (launcherx on Google TV outranks this
+    /** Home button setting while Android's Home is still the stock launcher (launcherx on Google TV outranks this
      *  one). A Home intent would then put this launcher in the home task and make it the home process, and from
      *  Android 10 the stock launcher, no longer exempt from the limits on background activity starts, can't open
      *  apps for the remote's YouTube and Netflix buttons (#1274). openHome starts it like an app instead:

@@ -255,6 +255,7 @@ public class MainActivity extends Activity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         KitchenTimerStore.reconcile(this);
+        HomeKeyService.stateListener = this::homeButtonHelperChanged;
         backUndoIgnoreRelease=savedInstanceState!=null&&savedInstanceState.getBoolean("ignoreBackRelease",false);
         wallpaperStatus = getString(R.string.hb_choose_preview_to_load_this_provider);
         preferences = getSharedPreferences("widget-home", MODE_PRIVATE);
@@ -383,6 +384,7 @@ public class MainActivity extends Activity {
         checkChosenScreensaverApp();
         lastHomeInput = SystemClock.uptimeMillis(); scheduleScreensaver();
         if (returningToScreensaver != null) { String entry = returningToScreensaver; returningToScreensaver = null; handler.post(() -> reopenScreensaver(entry)); }
+        resumeHomeButton();
         if(returningToProvider!=null) {
             ProviderCatalog.Entry entry=returningToProvider;returningToProvider=null;
             handler.post(()->{providerDirectory();openMenu(new MenuSpec(entry.name,()->drawProviderEntry(entry)));});
@@ -429,6 +431,8 @@ public class MainActivity extends Activity {
         super.onPause();
     }
     @Override protected void onDestroy() {
+        if (HomeKeyService.stateListener != null) HomeKeyService.stateListener = null;
+        handler.removeCallbacks(homeButtonGiveUp);
         if(androidWidgets!=null)androidWidgets.close();
         if(groceryEditor!=null){groceryEditor.setOnDismissListener(null);groceryEditor.dismiss();groceryEditor=null;}
         if(clockEditor!=null){clockEditor.setOnDismissListener(null);clockEditor.dismiss();clockEditor=null;}
@@ -463,9 +467,8 @@ public class MainActivity extends Activity {
             return;
         }
         if (requestCode == REQUEST_HOME_ROLE) {
-            toast(isDefaultHomeApp() ? getString(R.string.hb_homeboard_tv_is_now_the_default_home_app)
-                    : getString(R.string.hb_default_home_app_was_not_changed));
-            render(0);
+            // The Home button screen comes back on resume (returningToHomeButton) and shows what Android now resolves.
+            toast(getString(isDefaultHomeApp() ? R.string.hb_hb_role_done : R.string.hb_hb_role_unchanged));
             return;
         }
     }
@@ -645,6 +648,8 @@ public class MainActivity extends Activity {
         // oldest such entry in the range wins, written once, read back, before anything is committed.
         ScreensaverValues systemTarget = null; boolean systemManaged = false;
         EverywhereScreensaver.Outcome systemUndone = null; boolean managedBeforeUndo = everywhere().managed();
+        // A Home button change is undone by setting the choice the oldest entry in the range carries.
+        Boolean homeButtonTarget = null;
         try {
             JSONObject restoredAir=PhoneConfigurationStore.air(preferences);
             applyingUndo = true;
@@ -670,6 +675,7 @@ public class MainActivity extends Activity {
                     if (systemTarget == null) throw new IllegalStateException("Screensaver undo entry unreadable");
                 }
                 else if ("phone".equals(entry.kind)) {JSONObject aggregate=new JSONObject(entry.state);layout=HomeLayout.restore(aggregate.getJSONObject("layout").toString(),layout.headerClock);restoredAir=aggregate.getJSONObject("air");}
+                else if (UNDO_HOME_BUTTON.equals(entry.kind)) homeButtonTarget = new JSONObject(entry.state).getBoolean("wanted");
             }
             if (systemTarget != null) {
                 EverywhereScreensaver.Outcome undone = everywhere().undoTo(systemTarget, systemManaged, ScreensaverRegistry.installed(refreshScreensaverEntries()));
@@ -680,6 +686,7 @@ public class MainActivity extends Activity {
             JSONArray remaining = new JSONArray();
             for (int i = 0; i < targetIndex; i++) remaining.put(stored.getJSONObject(i));
             PhoneConfigurationStore.commit(preferences,layout,restoredAir,remaining,null,null);
+            if (homeButtonTarget != null) HomeButton.set(this, homeButtonTarget);
             for(AirQualityCard a:airWidgets.values())a.close();airWidgets.clear();
             for(RainWidgetController r:rainWidgets.values())r.close();rainWidgets.clear();
             lastSavedLayout = layout.encode();
@@ -2321,7 +2328,7 @@ public class MainActivity extends Activity {
         if(layoutReadOnly){androidWidgets.notice(getString(R.string.hb_aw_newer_layout));return;}
         menu(getString(R.string.hb_home_settings), getString(R.string.hb_choose_an_area_to_customize), new String[]{
                 getString(R.string.hb_widgets_restore), getString(R.string.hb_appearance), getString(R.string.hb_screensaver), getString(R.string.hb_home_behavior), getString(R.string.hb_language), getString(R.string.hb_undo_history),
-                getString(R.string.hb_default_home_app) + (isDefaultHomeApp() ? "Homeboard" : getString(R.string.hb_choose)), getString(R.string.hb_about_homeboard_tv),getString(R.string.hb_phone_title),getString(R.string.hb_cleanup_title)}, choice -> {
+                homeButtonMenuLabel(), getString(R.string.hb_about_homeboard_tv),getString(R.string.hb_phone_title),getString(R.string.hb_cleanup_title)}, choice -> {
             switch (choice) {
                 case 0: widgetsAndRestore(); break;
                 case 1: appearanceSettings(); break;
@@ -2329,7 +2336,7 @@ public class MainActivity extends Activity {
                 case 3: homeBehaviorSettings(); break;
                 case 4: languageSettings(); break;
                 case 5: openUndoHistory(); break;
-                case 6: chooseDefaultHomeApp(); break;
+                case 6: homeButtonSettings(); break;
                 case 7: aboutHomeboard(); break;
                 case 8: if(phoneEditor==null)phoneEditor=new PhoneEditor(this);phoneEditor.open();break;
                 case 9: cleanupInstructions(); break;
@@ -2933,21 +2940,7 @@ public class MainActivity extends Activity {
             case SETUP: {
                 box.addView(bold(getString(R.string.hb_ss_setup_title), 22));
                 TextView why = text(getString(R.string.hb_ss_setup_body), 17); why.setPadding(0, dp(8), 0, dp(8)); box.addView(why);
-                String command = "adb shell pm grant " + getPackageName() + " android.permission.WRITE_SECURE_SETTINGS";
-                TextView code = text(command, 17); code.setTypeface(Typeface.MONOSPACE); code.setPadding(dp(14), dp(10), dp(14), dp(10));
-                code.setBackground(shape(0xFF0B0F17, paletteColors.edge, 1)); code.setTextColor(0xFFE6EDF3);
-                box.addView(code, new LinearLayout.LayoutParams(-1, -2));
-                if (screensaverShowQr) {
-                    try {
-                        ImageView qr = new ImageView(this); qr.setImageBitmap(PhoneEditor.qr(command));
-                        qr.setContentDescription(getString(R.string.hb_ss_qr_note));
-                        LinearLayout qrRow = new LinearLayout(this); qrRow.setGravity(Gravity.CENTER_VERTICAL); qrRow.setPadding(0, dp(8), 0, 0);
-                        qrRow.addView(qr, new LinearLayout.LayoutParams(dp(150), dp(150)));
-                        TextView note = muted(getString(R.string.hb_ss_qr_note), 15); note.setPadding(dp(14), 0, 0, 0);
-                        qrRow.addView(note, new LinearLayout.LayoutParams(0, -2, 1));
-                        box.addView(qrRow);
-                    } catch (Exception unavailable) { screensaverShowQr = false; }
-                }
+                setupCommand(box, screensaverShowQr);
                 TextView nothing = muted(getString(R.string.hb_ss_setup_nothing), 16); nothing.setPadding(0, dp(8), 0, 0); box.addView(nothing);
                 if (screensaverSetupChecked) box.addView(muted(getString(R.string.hb_ss_setup_still), 16));
                 first = everywhereButton(actions, getString(R.string.hb_ss_retry), "ev:retry", () -> { screensaverSetupChecked = true; redrawScreensaver("ev:retry"); });
@@ -3516,24 +3509,228 @@ public class MainActivity extends Activity {
         return home != null && home.activityInfo != null
                 && getPackageName().equals(home.activityInfo.packageName);
     }
+    /** Home settings → Home button → Make Homeboard the Home app, offered only where no launcher outranks the role. */
     private void chooseDefaultHomeApp() {
         if (android.os.Build.VERSION.SDK_INT >= 29) {
             RoleManager roles = getSystemService(RoleManager.class);
             if (roles != null && roles.isRoleAvailable(RoleManager.ROLE_HOME)) {
                 try {
+                    returningToHomeButton = true;
                     startActivityForResult(roles.createRequestRoleIntent(RoleManager.ROLE_HOME), REQUEST_HOME_ROLE);
                     return;
                 } catch (RuntimeException unavailable) {
                     // Some TV builds expose the role but only implement the system Home settings screen.
+                    returningToHomeButton = false;
                 }
             }
         }
         Intent chooser = new Intent(Settings.ACTION_HOME_SETTINGS);
         if (getPackageManager().resolveActivity(chooser, PackageManager.MATCH_DEFAULT_ONLY) != null) {
-            try { startActivityForResult(chooser, REQUEST_HOME_ROLE); }
-            catch (RuntimeException unavailable) { toast(getString(R.string.hb_android_could_not_open_home_app_selection)); }
+            try { returningToHomeButton = true; startActivityForResult(chooser, REQUEST_HOME_ROLE); }
+            catch (RuntimeException unavailable) { returningToHomeButton = false; toast(getString(R.string.hb_android_could_not_open_home_app_selection)); }
         }
         else toast(getString(R.string.hb_android_does_not_provide_home_app_selection_on_this_device));
+    }
+
+    // Home button (docs/plans/2026-11-20-home-button.md): Home settings → Home button. The choice and the Android side
+    // live in HomeButton; this screen shows what is true (HomeButtonRules.screen), records Undo and listens for the
+    // helper connecting (HomeKeyService.stateListener), so "Turning on…" ends on the helper's own signal.
+    private static final String UNDO_HOME_BUTTON = "home-button";
+    /** Failure guard only: how long "Turning on…" waits for the helper's connect signal before showing Not running. */
+    private static final long HOME_BUTTON_START_GUARD_MS = 8_000L;
+    private MenuSpec homeButtonMenu;
+    private boolean homeButtonWaiting, homeButtonShowQr, homeButtonChecked, returningToHomeButton, homeButtonDropNoticeShown;
+    private String homeButtonFailure;
+    private final Runnable homeButtonGiveUp = () -> { homeButtonWaiting = false; redrawHomeButton(null); };
+
+    /** Android's label for the launcher Home opens, such as "Google TV Home"; a plain phrase when unknown. */
+    private String homeButtonLauncherName(HomeTarget.Result home) {
+        if (home.target == null) return getString(R.string.hb_hb_launcher_fallback);
+        try {
+            PackageManager pm = getPackageManager();
+            return String.valueOf(pm.getApplicationLabel(pm.getApplicationInfo(home.target, 0)));
+        } catch (Exception unknown) { return getString(R.string.hb_hb_launcher_fallback); }
+    }
+    private String homeButtonMenuLabel() {
+        HomeTarget.Result home = HomeButton.home(this);
+        HomeButtonRules.Screen screen = HomeButton.screen(this, home, homeButtonWaiting);
+        if (screen == HomeButtonRules.Screen.CHOOSER) return getString(R.string.hb_hb_menu_choose);
+        switch (HomeButtonRules.summary(screen)) {
+            case HOMEBOARD: return getString(R.string.hb_hb_menu_homeboard);
+            case OTHER_LAUNCHER: return getString(R.string.hb_hb_menu_other, homeButtonLauncherName(home));
+            default: return getString(R.string.hb_hb_menu_attention);
+        }
+    }
+    private void homeButtonSettings() {
+        homeButtonShowQr = false; homeButtonChecked = false; homeButtonFailure = null; screensaverFocusTag = null;
+        homeButtonMenu = new MenuSpec(getString(R.string.hb_hb_title), this::drawHomeButton);
+        openMenu(homeButtonMenu);
+    }
+    private boolean homeButtonOpen() { return homeButtonMenu != null && activeMenu == homeButtonMenu && overlay != null; }
+    private void redrawHomeButton(String focusTag) {
+        if (!homeButtonOpen()) return;
+        screensaverFocusTag = focusTag; activeMenu.panelRenderer.run();
+    }
+    /** HomeKeyService connected or went away; posted to the main thread. */
+    private void homeButtonHelperChanged() {
+        if (HomeButton.running()) { homeButtonWaiting = false; handler.removeCallbacks(homeButtonGiveUp); }
+        redrawHomeButton(null);
+    }
+    /** onResume: put a dropped helper back where Homeboard may, reopen the screen after Android's own, or say once that it is off. */
+    private void resumeHomeButton() {
+        HomeButton.repair(this);
+        if (returningToHomeButton) {
+            returningToHomeButton = false;
+            handler.post(() -> {
+                if (!active || layoutReadOnly) return;
+                homeSettings();
+                invokingMenuAction = true;
+                try { homeButtonSettings(); } finally { invokingMenuAction = false; }
+            });
+            return;
+        }
+        HomeTarget.Result home = HomeButton.home(this);
+        boolean dropped = HomeButtonRules.droppedNotice(HomeButton.wanted(this), home, HomeButton.inList(this), HomeButton.mayWrite(this), HomeButton.running());
+        if (dropped && !homeButtonDropNoticeShown) toast(getString(R.string.hb_hb_dropped, homeButtonLauncherName(home)));
+        homeButtonDropNoticeShown = dropped;
+    }
+    /** On or Off: saved at once with Undo; Android's side follows when Homeboard may write it. */
+    private void changeHomeButton(boolean on) {
+        if (layoutReadOnly) { toast(getString(R.string.hb_aw_newer_layout)); return; }
+        boolean before = HomeButton.wanted(this);
+        if (before == on) { redrawHomeButton(on ? "hb:on" : "hb:off"); return; }
+        HomeTarget.Result home = HomeButton.home(this);
+        HomeButton.Outcome outcome = HomeButton.set(this, on);
+        if (outcome == HomeButton.Outcome.SAVE_FAILED) { toast(getString(R.string.hb_configuration_save_failed)); return; }
+        String label = on ? getString(R.string.hb_hb_undo_on) : getString(R.string.hb_hb_undo_off, homeButtonLauncherName(home));
+        try { pushUndo(UNDO_HOME_BUTTON, "", new JSONObject().put("wanted", before).toString(), label); }
+        catch (org.json.JSONException impossible) { throw new IllegalStateException(impossible); }
+        showUndoBanner(label);
+        homeButtonFailure = outcome == HomeButton.Outcome.REFUSED ? getString(R.string.hb_hb_refused) : null;
+        homeButtonWaiting = on && outcome == HomeButton.Outcome.WROTE && !HomeButton.running();
+        handler.removeCallbacks(homeButtonGiveUp);
+        if (homeButtonWaiting) handler.postDelayed(homeButtonGiveUp, HOME_BUTTON_START_GUARD_MS);
+        redrawHomeButton(on ? "hb:on" : "hb:off");
+    }
+    private void restartHomeButton() {
+        HomeButton.restart(this);
+        homeButtonWaiting = true; handler.removeCallbacks(homeButtonGiveUp);
+        handler.postDelayed(homeButtonGiveUp, HOME_BUTTON_START_GUARD_MS);
+        redrawHomeButton("hb:restart");
+    }
+    private void openAccessibilitySettings() {
+        returningToHomeButton = true;
+        try { startActivity(SystemSettings.intent(this, Settings.ACTION_ACCESSIBILITY_SETTINGS)); }
+        catch (RuntimeException unavailable) { returningToHomeButton = false; toast(getString(R.string.hb_android_could_not_open_that_action)); }
+    }
+    /** The one-time setup command, shared with the screensaver's Use everywhere, and its QR code when asked. */
+    private void setupCommand(LinearLayout box, boolean showQr) {
+        String command = "adb shell pm grant " + getPackageName() + " android.permission.WRITE_SECURE_SETTINGS";
+        TextView code = text(command, 17); code.setTypeface(Typeface.MONOSPACE); code.setPadding(dp(14), dp(10), dp(14), dp(10));
+        code.setBackground(shape(0xFF0B0F17, paletteColors.edge, 1)); code.setTextColor(0xFFE6EDF3);
+        box.addView(code, new LinearLayout.LayoutParams(-1, -2));
+        if (!showQr) return;
+        try {
+            ImageView qr = new ImageView(this); qr.setImageBitmap(PhoneEditor.qr(command));
+            qr.setContentDescription(getString(R.string.hb_ss_qr_note));
+            LinearLayout qrRow = new LinearLayout(this); qrRow.setGravity(Gravity.CENTER_VERTICAL); qrRow.setPadding(0, dp(8), 0, 0);
+            qrRow.addView(qr, new LinearLayout.LayoutParams(dp(150), dp(150)));
+            TextView note = muted(getString(R.string.hb_ss_qr_note), 15); note.setPadding(dp(14), 0, 0, 0);
+            qrRow.addView(note, new LinearLayout.LayoutParams(0, -2, 1));
+            box.addView(qrRow);
+        } catch (Exception unavailable) { /* No QR code; the command is still shown as text. */ }
+    }
+    private TextView homeButtonParagraph(LinearLayout box, String value, boolean quiet) {
+        TextView v = quiet ? muted(value, 16) : text(value, 17); v.setPadding(0, dp(6), 0, dp(2)); box.addView(v); return v;
+    }
+    /** Home settings → Home button, in whichever HomeButtonRules.Screen is true now. */
+    private void drawHomeButton() {
+        HomeTarget.Result home = HomeButton.home(this);
+        boolean wanted = HomeButton.wanted(this), mayWrite = HomeButton.mayWrite(this);
+        HomeButtonRules.Screen screen = HomeButton.screen(this, home, homeButtonWaiting);
+        String launcher = homeButtonLauncherName(home), helper = getString(R.string.home_key_name);
+        LinearLayout body = new LinearLayout(this); body.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout box = new LinearLayout(this); box.setOrientation(LinearLayout.VERTICAL);
+        box.setPadding(dp(22), dp(14), dp(22), dp(14)); box.setBackground(shape(paletteColors.surface, paletteColors.edge, 1));
+        body.addView(box, new LinearLayout.LayoutParams(-1, -2));
+        LinearLayout panel = screensaverPanel(getString(R.string.hb_hb_title), body);
+        LinearLayout actions = new LinearLayout(this); actions.setPadding(0, dp(10), 0, 0);
+        View first = null;
+        if (homeButtonFailure != null) { TextView fail = homeButtonParagraph(box, homeButtonFailure, false); fail.setTextColor(0xFFFFB4B4); }
+        boolean helperRoute = screen != HomeButtonRules.Screen.NOT_NEEDED && screen != HomeButtonRules.Screen.CHOOSER;
+        if (!helperRoute) {
+            box.addView(bold(getString(screen == HomeButtonRules.Screen.NOT_NEEDED ? R.string.hb_hb_not_needed : R.string.hb_hb_role), 22));
+            homeButtonParagraph(box, getString(screen == HomeButtonRules.Screen.NOT_NEEDED ? R.string.hb_hb_not_needed_body : R.string.hb_hb_chooser_body), false);
+            if (screen == HomeButtonRules.Screen.CHOOSER) first = everywhereButton(actions, getString(R.string.hb_hb_role), "hb:role", this::chooseDefaultHomeApp);
+        }
+        // The switch, shown wherever the helper route applies, and also where it no longer does but is still on.
+        if (helperRoute || wanted) {
+            LinearLayout row = optionRow(box, getString(R.string.hb_hb_switch), true);
+            TextView on = segment(getString(R.string.hb_hb_on), wanted, "hb:on", () -> changeHomeButton(true));
+            TextView off = segment(getString(R.string.hb_hb_off), !wanted, "hb:off", () -> changeHomeButton(false));
+            addSegment(row, on); addSegment(row, off);
+            String status = null; int fill = paletteColors.focus;
+            switch (screen) {
+                case WORKING: status = getString(R.string.hb_hb_working); break;
+                case STARTING: status = getString(R.string.hb_hb_starting); fill = 0xFF6F86A6; break;
+                case NOT_RUNNING: status = getString(R.string.hb_hb_not_running); fill = 0xFFE07A84; break;
+                case SETUP: status = getString(R.string.hb_hb_setup); fill = 0xFFE0B24A; break;
+                default: break;
+            }
+            if (status != null) {
+                TextView badge = badge(status, fill, contrastingText(fill));
+                LinearLayout.LayoutParams badgeLp = new LinearLayout.LayoutParams(-2, -2); badgeLp.leftMargin = dp(10); row.addView(badge, badgeLp);
+            }
+            if (first == null) first = wanted ? on : off;
+        }
+        switch (screen) {
+            case OFF:
+                homeButtonParagraph(box, getString(R.string.hb_hb_off_body, launcher), false);
+                if (home.roleHonoured) {
+                    homeButtonParagraph(box, getString(R.string.hb_hb_role_body, launcher), true);
+                    everywhereButton(actions, getString(R.string.hb_hb_role), "hb:role", this::chooseDefaultHomeApp);
+                } else homeButtonParagraph(box, getString(R.string.hb_hb_role_google, launcher), true);
+                break;
+            case WORKING: homeButtonParagraph(box, getString(R.string.hb_hb_working_body, launcher), false); break;
+            case STARTING: homeButtonParagraph(box, getString(R.string.hb_hb_starting_body), false); break;
+            case NOT_RUNNING:
+                homeButtonParagraph(box, getString(R.string.hb_hb_not_running_body, launcher), false);
+                if (HomeButton.inList(this)) homeButtonParagraph(box, getString(R.string.hb_hb_not_running_listed), true);
+                if (mayWrite) everywhereButton(actions, getString(R.string.hb_hb_start_again), "hb:restart", this::restartHomeButton);
+                everywhereButton(actions, getString(R.string.hb_hb_android_settings), "hb:android", this::openAccessibilitySettings);
+                if (!mayWrite) homeButtonParagraph(box, getString(R.string.hb_hb_android_hint, helper), true);
+                break;
+            case SETUP:
+                homeButtonParagraph(box, getString(R.string.hb_hb_setup_body), false);
+                setupCommand(box, homeButtonShowQr);
+                homeButtonParagraph(box, getString(R.string.hb_hb_android_hint, helper), true);
+                homeButtonParagraph(box, getString(R.string.hb_hb_setup_nothing, launcher), true);
+                if (homeButtonChecked) homeButtonParagraph(box, getString(R.string.hb_ss_setup_still), true);
+                everywhereButton(actions, getString(R.string.hb_hb_android_settings), "hb:android", this::openAccessibilitySettings);
+                everywhereButton(actions, getString(R.string.hb_ss_retry), "hb:retry", () -> { homeButtonChecked = true; retryHomeButton(); });
+                everywhereButton(actions, getString(homeButtonShowQr ? R.string.hb_ss_hide_qr : R.string.hb_ss_show_qr), "hb:qr",
+                        () -> { homeButtonShowQr = !homeButtonShowQr; redrawHomeButton("hb:qr"); });
+                break;
+            default: break;
+        }
+        if (actions.getChildCount() > 0) body.addView(actions, new LinearLayout.LayoutParams(-1, -2));
+        if (helperRoute || wanted) {
+            TextView how = muted(getString(R.string.hb_hb_how) + "\n" + getString(R.string.hb_hb_recovery, helper, launcher), 13);
+            LinearLayout.LayoutParams howLp = new LinearLayout.LayoutParams(-1, -2); howLp.topMargin = dp(8); body.addView(how, howLp);
+        }
+        if (first == null) first = panel.findViewWithTag("back");
+        focusScreensaver(panel, first);
+    }
+    /** Retry on the setup screen: if the one-time setup is now done, turn the helper on as the setting asks. */
+    private void retryHomeButton() {
+        if (HomeButton.mayWrite(this) && HomeButton.wanted(this)) {
+            HomeButton.Outcome outcome = HomeButton.set(this, true);
+            homeButtonFailure = outcome == HomeButton.Outcome.REFUSED ? getString(R.string.hb_hb_refused) : null;
+            homeButtonWaiting = outcome == HomeButton.Outcome.WROTE && !HomeButton.running();
+            handler.removeCallbacks(homeButtonGiveUp);
+            if (homeButtonWaiting) handler.postDelayed(homeButtonGiveUp, HOME_BUTTON_START_GUARD_MS);
+        }
+        redrawHomeButton("hb:retry");
     }
     private String appVersion() {
         try {
@@ -3909,7 +4106,7 @@ public class MainActivity extends Activity {
     private MenuIconView.Kind menuIconFor(String title, String label) {
         if(matchesMenuLabel(label,R.string.hb_wc_title,R.string.hb_wc_configure,R.string.hb_screensaver))return MenuIconView.Kind.CLOCK;
         if (paletteIdForLabel(label) != null) return MenuIconView.Kind.PALETTE;
-        if (matchesMenuLabel(label, R.string.hb_saved_layout_could_not_be_read_starting_with_empty_home, R.string.hb_homeboard_tv_is_now_the_default_home_app, R.string.hb_default_home_app_was_not_changed, R.string.hb_homeboard_change, R.string.hb_homeboard_settings, R.string.hb_added_app_to_home, R.string.hb_home_settings, R.string.hb_default_home_app, R.string.hb_a_customizable_home_screen_for_your_tv_built_on_cleanyourtv, R.string.hb_homeboard_tv_source, R.string.hb_android_could_not_open_home_app_selection, R.string.hb_android_does_not_provide_home_app_selection_on_this_device)) return MenuIconView.Kind.HOME;
+        if (matchesMenuLabel(label, R.string.hb_saved_layout_could_not_be_read_starting_with_empty_home, R.string.hb_homeboard_change, R.string.hb_homeboard_settings, R.string.hb_added_app_to_home, R.string.hb_home_settings, R.string.hb_hb_title, R.string.hb_a_customizable_home_screen_for_your_tv_built_on_cleanyourtv, R.string.hb_homeboard_tv_source, R.string.hb_android_could_not_open_home_app_selection, R.string.hb_android_does_not_provide_home_app_selection_on_this_device)) return MenuIconView.Kind.HOME;
         if (matchesMenuLabel(label, R.string.hb_undo, R.string.hb_undo_5, R.string.hb_undo_history, R.string.hb_no_recent_homeboard_changes_can_be_undone, R.string.hb_undo_9, R.string.hb_newest_first_undoing_an_older_change_also_reverses_newer_changes, R.string.hb_could_not_undo_that_change, R.string.hb_delete_removes_this_widget_panel_undo_restores_it)) return MenuIconView.Kind.UNDO;
         if (matchesMenuLabel(label, R.string.hb_could_not_refresh_installed_apps, R.string.hb_air_quality_widget, R.string.hb_refresh_reading, R.string.hb_air_quality_panel, R.string.hb_air_quality, R.string.hb_air_quality_location_each_widget_is_independent, R.string.hb_air_quality_location, R.string.hb_refresh_failed_saved_reading, R.string.hb_nok_refresh_or_configure)) return MenuIconView.Kind.AIR;
         if (matchesMenuLabel(label, R.string.hb_device_settings, R.string.hb_plugin_settings, R.string.hb_no_accessible_plugin_settings, R.string.hb_plugin_settings_are_unavailable, R.string.hb_host_display_options_provider_content_stays_in_plugin_settings, R.string.hb_language)) return MenuIconView.Kind.SETTINGS;

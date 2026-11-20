@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home settings → Home button (docs/plans/2026-11-20-home-button.md). %1$s is the TV's own launcher, such as
+     "Google TV Home", as Android labels it. -->
+<resources>
+    <string name="hb_hb_title">Home button</string>
+    <string name="hb_hb_menu_homeboard">Home button · opens Homeboard</string>
+    <string name="hb_hb_menu_other">Home button · opens %1$s</string>
+    <string name="hb_hb_menu_attention">Home button · needs attention</string>
+    <string name="hb_hb_menu_choose">Home button · choose Homeboard</string>
+    <string name="hb_hb_switch">Home button opens Homeboard</string>
+    <string name="hb_hb_on">On</string>
+    <string name="hb_hb_off">Off</string>
+    <string name="hb_hb_launcher_fallback">the TV\'s own launcher</string>
+    <string name="hb_hb_off_body">A short press of Home opens %1$s. Turn this on to open Homeboard instead. %1$s stays installed, and holding Home still opens its quick settings and home panel.</string>
+    <string name="hb_hb_working">Working</string>
+    <string name="hb_hb_working_body">A short press of Home opens Homeboard from any app. If the home screen of %1$s appears, Homeboard replaces it. Hold Home for its quick settings and home panel.</string>
+    <string name="hb_hb_starting">Turning on…</string>
+    <string name="hb_hb_starting_body">Waiting for Android to start Homeboard\'s Home button helper.</string>
+    <string name="hb_hb_not_running">Not running</string>
+    <string name="hb_hb_not_running_body">The setting is on, but Android is not running Homeboard\'s Home button helper, so Home opens %1$s. Android stops it when Homeboard is force-stopped, and sometimes after an update.</string>
+    <string name="hb_hb_not_running_listed">Android lists the helper as on but has not started it. Start it again, or turn it off and on in Android\'s accessibility settings.</string>
+    <string name="hb_hb_start_again">Start it again</string>
+    <string name="hb_hb_setup">Setup needed</string>
+    <string name="hb_hb_setup_body">Homeboard needs permission to turn its Home button helper on. Either turn it on yourself in Android\'s accessibility settings, or run the one-time setup command once from a computer connected to this TV. It is the same command the screensaver\'s Use everywhere asks for:</string>
+    <string name="hb_hb_setup_nothing">Until then, Home opens %1$s as before.</string>
+    <string name="hb_hb_android_settings">Android\'s accessibility settings</string>
+    <string name="hb_hb_android_hint">There, choose “%1$s” and turn it on. If it is greyed out or says “Restricted setting”, Android is blocking it for apps installed from outside Google Play: use the setup command instead.</string>
+    <string name="hb_hb_how">The helper is an Android accessibility service. It sees remote button presses and which app is in front so it can catch Home. It reads nothing on screen and sends nothing anywhere.</string>
+    <string name="hb_hb_recovery">To give Home back at any time: turn this off, or hold Home and turn off “%1$s” in Android\'s accessibility settings. Uninstalling Homeboard also gives Home back. %2$s itself is never disabled or changed.</string>
+    <string name="hb_hb_not_needed">Home already opens Homeboard</string>
+    <string name="hb_hb_not_needed_body">Android uses Homeboard as this TV\'s Home app, and no other launcher overrides it, so nothing more is needed.</string>
+    <string name="hb_hb_chooser_body">Android does not have one Home app on this TV yet. Choose Homeboard as the Home app; no helper is needed.</string>
+    <string name="hb_hb_role">Make Homeboard the Home app</string>
+    <string name="hb_hb_role_body">On this TV Android lets you choose the Home app, which needs no helper. If Home still opens %1$s afterwards, turn the setting above on.</string>
+    <string name="hb_hb_role_google">%1$s keeps the Home button even when another Home app is chosen, so Homeboard uses its helper instead.</string>
+    <string name="hb_hb_undo_on">Home button: Homeboard</string>
+    <string name="hb_hb_undo_off">Home button: %1$s</string>
+    <string name="hb_hb_refused">Android did not accept the change to its accessibility settings. Nothing else changed.</string>
+    <string name="hb_hb_dropped">Home button: Android turned Homeboard\'s helper off, so Home opens %1$s. Home settings → Home button turns it on again.</string>
+    <string name="hb_hb_role_done">Homeboard is now Android\'s Home app</string>
+    <string name="hb_hb_role_unchanged">Android\'s Home app was not changed</string>
+</resources>

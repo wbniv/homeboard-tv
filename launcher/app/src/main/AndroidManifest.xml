@@ -59,6 +59,10 @@
         <intent>
             <action android:name="android.settings.DISPLAY_SETTINGS" />
         </intent>
+        <!-- Home settings → Home button opens Android's accessibility settings, where the helper can be turned on. -->
+        <intent>
+            <action android:name="android.settings.ACCESSIBILITY_SETTINGS" />
+        </intent>
         <intent>
             <action android:name="android.settings.MANAGE_APPLICATIONS_SETTINGS" />
         </intent>
@@ -79,7 +83,8 @@
             <action android:name="android.intent.action.MAIN" />
             <category android:name="com.gathin.tvhome.category.DOCK_CARD" />
         </intent>
-        <!-- stock_home_redirect: HomeKeyService looks up the stock launcher's HOME activity. -->
+        <!-- Home settings → Home button: HomeTarget finds the TV's own launcher among the HOME activities, and
+             HomeKeyService looks up that launcher's HOME activities. -->
         <intent>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.HOME" />
@@ -104,6 +109,13 @@
         android:localeConfig="@xml/locales_config">
 
         <service android:name=".KitchenTimerSound" android:exported="false" android:foregroundServiceType="mediaPlayback" />
+        <!-- Puts the Home button helper back after a restart or an update when Android dropped it (HomeButton.repair). -->
+        <receiver android:name=".HomeButtonReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
         <receiver android:name=".KitchenTimerReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -181,8 +193,9 @@
             android:taskAffinity=""
             android:excludeFromRecents="true"
             android:theme="@style/Theme.TvHome" />
-        <!-- Home button for remotes that send KEYCODE_ALL_APPS (Xiaomi). Opt-in: HOME_KEY_SERVICE=1
-             build-and-install.sh; see HomeKeyService. -->
+        <!-- The Home button helper: Home settings → Home button turns it on (HomeButton), so a short press of Home opens
+             Homeboard on Google TV while Google's launcher stays enabled. Also the Home button for remotes that send
+             KEYCODE_ALL_APPS (Xiaomi). Can still be turned on over adb; see HomeKeyService. -->
         <service
             android:name=".HomeKeyService"
             android:label="@string/home_key_name"
@@ -221,7 +234,7 @@
             android:noHistory="true"
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
 
-        <!-- stock_home_redirect at boot: HomeKeyService opens this invisible activity once, so the screen behind
+        <!-- Home button at boot: HomeKeyService opens this invisible activity once, so the screen behind
              it sends a window event when it closes (HomeKeyService.probeAtBoot). -->
         <activity
             android:name=".ProbeActivity"

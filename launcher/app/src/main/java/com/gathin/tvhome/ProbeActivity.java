@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 /**
- * An invisible activity that closes right away. HomeKeyService opens it once at boot (stock_home_redirect):
+ * An invisible activity that closes right away. HomeKeyService opens it once at boot (Home settings → Home button on):
  * whatever was on screen comes back to the front when it closes and sends a window event, so the service can
  * tell the stock home from an HDMI input without reading the screen (#1116).
  */

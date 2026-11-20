@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- การตั้งค่าหน้าหลัก → ปุ่มหน้าหลัก (docs/plans/2026-11-20-home-button.md). %1$s คือตัวเรียกใช้งานของทีวีเอง -->
+<resources>
+    <string name="hb_hb_title">ปุ่มหน้าหลัก</string>
+    <string name="hb_hb_menu_homeboard">ปุ่มหน้าหลัก · เปิด Homeboard</string>
+    <string name="hb_hb_menu_other">ปุ่มหน้าหลัก · เปิด %1$s</string>
+    <string name="hb_hb_menu_attention">ปุ่มหน้าหลัก · ต้องตรวจสอบ</string>
+    <string name="hb_hb_menu_choose">ปุ่มหน้าหลัก · เลือก Homeboard</string>
+    <string name="hb_hb_switch">ปุ่มหน้าหลักเปิด Homeboard</string>
+    <string name="hb_hb_on">เปิด</string>
+    <string name="hb_hb_off">ปิด</string>
+    <string name="hb_hb_launcher_fallback">ตัวเรียกใช้งานของทีวีเอง</string>
+    <string name="hb_hb_off_body">กดปุ่มหน้าหลักสั้นๆ จะเปิด %1$s เปิดการตั้งค่านี้เพื่อให้เปิด Homeboard แทน %1$s ยังติดตั้งอยู่ และการกดปุ่มหน้าหลักค้างไว้ยังเปิดการตั้งค่าด่วนและแผงบ้านของมันเหมือนเดิม</string>
+    <string name="hb_hb_working">ทำงานอยู่</string>
+    <string name="hb_hb_working_body">กดปุ่มหน้าหลักสั้นๆ จะเปิด Homeboard จากทุกแอป หากหน้าหลักของ %1$s ปรากฏขึ้น Homeboard จะแสดงแทน กดปุ่มหน้าหลักค้างไว้เพื่อเปิดการตั้งค่าด่วนและแผงบ้าน</string>
+    <string name="hb_hb_starting">กำลังเปิด…</string>
+    <string name="hb_hb_starting_body">กำลังรอให้ Android เริ่มตัวช่วยปุ่มหน้าหลักของ Homeboard</string>
+    <string name="hb_hb_not_running">ไม่ได้ทำงาน</string>
+    <string name="hb_hb_not_running_body">การตั้งค่าเปิดอยู่ แต่ Android ไม่ได้เรียกใช้ตัวช่วยปุ่มหน้าหลักของ Homeboard ปุ่มหน้าหลักจึงเปิด %1$s Android จะหยุดตัวช่วยเมื่อมีการบังคับหยุด Homeboard และบางครั้งหลังการอัปเดต</string>
+    <string name="hb_hb_not_running_listed">Android แสดงว่าตัวช่วยเปิดอยู่แต่ยังไม่ได้เริ่มทำงาน ให้เริ่มใหม่อีกครั้ง หรือปิดแล้วเปิดใหม่ในการตั้งค่าการช่วยเหลือพิเศษของ Android</string>
+    <string name="hb_hb_start_again">เริ่มใหม่อีกครั้ง</string>
+    <string name="hb_hb_setup">ต้องตั้งค่า</string>
+    <string name="hb_hb_setup_body">Homeboard ต้องได้รับสิทธิ์เพื่อเปิดตัวช่วยปุ่มหน้าหลัก คุณสามารถเปิดเองในการตั้งค่าการช่วยเหลือพิเศษของ Android หรือเรียกใช้คำสั่งตั้งค่าครั้งเดียวจากคอมพิวเตอร์ที่เชื่อมต่อกับทีวีเครื่องนี้ ซึ่งเป็นคำสั่งเดียวกับที่ “ใช้ทุกที่” ของโปรแกรมรักษาหน้าจอขอ:</string>
+    <string name="hb_hb_setup_nothing">ก่อนตั้งค่า ปุ่มหน้าหลักยังเปิด %1$s เหมือนเดิม</string>
+    <string name="hb_hb_android_settings">การตั้งค่าการช่วยเหลือพิเศษของ Android</string>
+    <string name="hb_hb_android_hint">ในหน้านั้น เลือก “%1$s” แล้วเปิด หากเป็นสีเทาหรือขึ้นว่า “การตั้งค่าที่จำกัด” แสดงว่า Android บล็อกสำหรับแอปที่ไม่ได้ติดตั้งจาก Google Play ให้ใช้คำสั่งตั้งค่าแทน</string>
+    <string name="hb_hb_how">ตัวช่วยนี้เป็นบริการการช่วยเหลือพิเศษของ Android มันเห็นการกดปุ่มรีโมตและแอปที่อยู่ด้านหน้าเพื่อรับปุ่มหน้าหลัก มันไม่อ่านสิ่งใดบนหน้าจอและไม่ส่งข้อมูลไปที่ใด</string>
+    <string name="hb_hb_recovery">หากต้องการคืนปุ่มหน้าหลักเมื่อใดก็ได้: ปิดการตั้งค่านี้ หรือกดปุ่มหน้าหลักค้างไว้แล้วปิด “%1$s” ในการตั้งค่าการช่วยเหลือพิเศษของ Android การถอนการติดตั้ง Homeboard ก็คืนปุ่มหน้าหลักเช่นกัน %2$s จะไม่ถูกปิดหรือเปลี่ยนแปลง</string>
+    <string name="hb_hb_not_needed">ปุ่มหน้าหลักเปิด Homeboard อยู่แล้ว</string>
+    <string name="hb_hb_not_needed_body">Android ใช้ Homeboard เป็นแอปหน้าหลักของทีวีเครื่องนี้ และไม่มีตัวเรียกใช้งานอื่นแทนที่ จึงไม่ต้องทำอะไรเพิ่ม</string>
+    <string name="hb_hb_chooser_body">Android ยังไม่มีแอปหน้าหลักแอปเดียวบนทีวีเครื่องนี้ เลือก Homeboard เป็นแอปหน้าหลักได้เลย โดยไม่ต้องใช้ตัวช่วย</string>
+    <string name="hb_hb_role">ตั้ง Homeboard เป็นแอปหน้าหลัก</string>
+    <string name="hb_hb_role_body">บนทีวีเครื่องนี้ Android ให้เลือกแอปหน้าหลักได้ ซึ่งไม่ต้องใช้ตัวช่วย หากปุ่มหน้าหลักยังเปิด %1$s หลังจากนั้น ให้เปิดการตั้งค่าด้านบน</string>
+    <string name="hb_hb_role_google">%1$s เก็บปุ่มหน้าหลักไว้เองแม้จะเลือกแอปหน้าหลักอื่นแล้ว Homeboard จึงใช้ตัวช่วยแทน</string>
+    <string name="hb_hb_undo_on">ปุ่มหน้าหลัก: Homeboard</string>
+    <string name="hb_hb_undo_off">ปุ่มหน้าหลัก: %1$s</string>
+    <string name="hb_hb_refused">Android ไม่ยอมรับการเปลี่ยนแปลงการตั้งค่าการช่วยเหลือพิเศษ ไม่มีสิ่งอื่นเปลี่ยนแปลง</string>
+    <string name="hb_hb_dropped">ปุ่มหน้าหลัก: Android ปิดตัวช่วยของ Homeboard ปุ่มหน้าหลักจึงเปิด %1$s ไปที่การตั้งค่าหน้าหลัก → ปุ่มหน้าหลัก เพื่อเปิดอีกครั้ง</string>
+    <string name="hb_hb_role_done">Homeboard เป็นแอปหน้าหลักของ Android แล้ว</string>
+    <string name="hb_hb_role_unchanged">ไม่ได้เปลี่ยนแอปหน้าหลักของ Android</string>
+</resources>
