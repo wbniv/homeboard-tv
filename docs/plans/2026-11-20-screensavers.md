@@ -1,7 +1,7 @@
 # Screensavers: choose, configure and get more
 
 **Status: plan for review, 2026‑11‑20. Nothing is implemented.** The mockups and diagrams
-below are the proposal. Three decisions are waiting for Will (see
+below are the proposal. Four decisions are waiting for Will (see
 [Decisions for Will](#decisions-for-will)), and the device probe in Stage 0 has not run:
 at 17:40 on 2026‑11‑20 Cast1 was `recovery-required` and Cast2 was in personal use.
 
@@ -375,6 +375,25 @@ Applied the shared [Alan Cooper design filter](/home/will/docs/howtos/alan-coope
 3. **First directory.** Recommended: the seven provider entries already reviewed, plus
    automatic "Found on this TV". A reviewed inventory of Android‑only screensaver apps
    follows as its own spike.
+
+4. **World Foundry screensavers: bundle them, or play them from their own app?** (Will,
+   2026‑11‑20: "and/or can we bundle them with homeboard-tv?") Recommended: keep them as
+   separate apps and let Homeboard play them. Each already has an exported
+   `ScreensaverPreviewActivity` that runs the live tank in its own process, so Homeboard
+   can start it for Preview and for the Home idle timer with no Android setting changed.
+   That gives them the "Plays inside Homeboard" behaviour without bundling. Compiling them
+   into Homeboard's APK is possible but has three costs, measured on 2026‑11‑20:
+   - **Licence.** Homeboard is MIT. World Foundry's own documents describe it as GPL v2
+     (not checked file by file, and the tank assets' provenance is unchecked). An APK that
+     contains both would have to be distributed as a whole under the GPL.
+   - **Size.** Homeboard 0.1.97 is 5.4 MB. The engine library is 3.2 MB (32‑bit) plus
+     4.1 MB (64‑bit) before compression, and the three tank bundles are 23 MB, 3.9 MB and
+     3.0 MB. From the existing APK sizes, all three with one shared engine would bring
+     Homeboard to roughly 15–17 MB. That figure is an estimate.
+   - **Coupling.** Homeboard's container build would need the NDK and the World Foundry
+     tree, or a pinned prebuilt library; the engine must run in a separate process so a
+     native crash cannot take down the Home app; and every tank fix would need a
+     Homeboard release.
 
 ## Out of scope
 
