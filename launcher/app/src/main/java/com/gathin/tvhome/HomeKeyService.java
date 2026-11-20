@@ -342,8 +342,9 @@ public class HomeKeyService extends AccessibilityService {
     public boolean onUnbind(Intent intent) {
         RemoteKeys.release(this);
         if (repairRecord && !steppingOut) ServiceRepair.disconnected(this, getClass());
-        // The household turned the helper off in Android's settings: the Home button setting follows it.
-        if (!steppingOut) HomeButton.helperTurnedOff(this);
+        // The household turned the helper off in Android's settings: the Home button setting follows it. Not when
+        // Homeboard's own repair cycle unbound it (ServiceRepair.cycle removes and re-adds the helper).
+        if (!steppingOut && !ServiceRepair.cycling()) HomeButton.helperTurnedOff(this);
         return super.onUnbind(intent);
     }
 

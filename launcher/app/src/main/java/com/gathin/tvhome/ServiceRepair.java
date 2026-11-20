@@ -6,11 +6,14 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Android takes an app's accessibility services off the enabled list when the app is force-stopped (Settings, a
@@ -101,8 +104,20 @@ final class ServiceRepair {
         }
     }
 
+    /** Cycles in progress. The remove step unbinds a helper the add step bound; that unbind is Homeboard's doing. */
+    private static final AtomicInteger cycling = new AtomicInteger();
+
+    /**
+     * True while a cycle Homeboard started is running, so a helper unbound by its remove step does not read that as
+     * the household turning it off. Cleared on the main thread after the last write, behind any unbind already queued.
+     */
+    static boolean cycling() {
+        return cycling.get() > 0;
+    }
+
     /** The add, remove, add cycle, off the main thread; each step first checks the list still reads what the last one left. */
     private static void cycle(ContentResolver cr, String list, String with, String without) {
+        cycling.incrementAndGet();
         new Thread(() -> {
             try {
                 if (!replaceList(cr, list, with)) return;
@@ -113,6 +128,8 @@ final class ServiceRepair {
                 Settings.Secure.putInt(cr, Settings.Secure.ACCESSIBILITY_ENABLED, 1);
             } catch (RuntimeException | InterruptedException ignored) {
                 // The setting is the system's; a refusal leaves the helper off, as before.
+            } finally {
+                new Handler(Looper.getMainLooper()).post(cycling::decrementAndGet);
             }
         }, "ServiceRepair").start();
     }
