@@ -30,13 +30,15 @@ public class ScreensaverActivity extends Activity {
     static final String MODE_IDLE = "idle", MODE_PREVIEW = "preview", MODE_NOW = "now";
     /** Sent within the package by KitchenTimerSound when a timer or alarm starts ringing. */
     static final String ACTION_END = "com.gathin.tvhome.action.END_SCREENSAVER";
+    /** MainActivity's action for the timer screen, also the alarm notification's. */
+    static final String ACTION_OPEN_TIMERS = "homeboard.timers";
 
     private ScreensaverScene scene;
     private String mode, entry;
     private boolean started;
     private String stopReason = "left";
     private final BroadcastReceiver alarm = new BroadcastReceiver() {
-        @Override public void onReceive(Context context, Intent intent) { end("alarm"); }
+        @Override public void onReceive(Context context, Intent intent) { openTimerScreen(context); end("alarm"); }
     };
 
     /** The saved Home layout, or defaults when there is none or it cannot be read; the screensaver never writes it. */
@@ -44,6 +46,17 @@ public class ScreensaverActivity extends Activity {
         String encoded = context.getSharedPreferences("widget-home", MODE_PRIVATE).getString("layout", null);
         if (encoded != null) try { return HomeLayout.parse(encoded); } catch (Exception ignored) { }
         return new HomeLayout();
+    }
+
+    /** The screen the alarm notification opens: all timers, so a ringing timer or alarm is seen and can be stopped. */
+    static Intent timerScreenIntent(Context context) {
+        return new Intent(context, MainActivity.class).setAction(ACTION_OPEN_TIMERS);
+    }
+
+    /** Ends of a screensaver for an alarm lead to the timer screen; best effort, as a start may be refused. */
+    static void openTimerScreen(Context context) {
+        try { context.startActivity(timerScreenIntent(context).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)); }
+        catch (RuntimeException refused) { Log.w(TAG, "could not open the timer screen: " + refused); }
     }
 
     static Intent intent(Context context, String mode, String entry) {

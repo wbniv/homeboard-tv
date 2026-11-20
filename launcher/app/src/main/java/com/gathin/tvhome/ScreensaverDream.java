@@ -18,7 +18,7 @@ public class ScreensaverDream extends DreamService {
     private String entry;
     private boolean receiving, started;
     private final BroadcastReceiver alarm = new BroadcastReceiver() {
-        @Override public void onReceive(Context context, Intent intent) { finish(); }
+        @Override public void onReceive(Context context, Intent intent) { ScreensaverActivity.openTimerScreen(context); finish(); }
     };
 
     @Override

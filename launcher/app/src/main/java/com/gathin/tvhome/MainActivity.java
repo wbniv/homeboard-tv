@@ -485,7 +485,7 @@ public class MainActivity extends Activity {
     }
     private void handleIntent(Intent intent) {
         if (intent == null) return;
-        if ("homeboard.timers".equals(intent.getAction())) { expandWidget(HomeLayout.TIMER,null); return; }
+        if (ScreensaverActivity.ACTION_OPEN_TIMERS.equals(intent.getAction())) { expandWidget(HomeLayout.TIMER,null); return; }
         if (ACTION_APP_LIBRARY.equals(intent.getAction())) showApps();
         else if (ACTION_LAUNCHER_SETTINGS.equals(intent.getAction())) homeSettings();
         else if (ACTION_VIEW_INPUTS.equals(intent.getAction())) open(new Intent(ACTION_VIEW_INPUTS));

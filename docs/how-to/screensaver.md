@@ -41,7 +41,8 @@ cannot read Android's setting on your TV, the line says so ("Unknown").
 
 Any remote key ends the screensaver and returns to Home where you left it; that key does
 not also act on Home. A ringing timer or alarm from
-[Timers & alarms](timers-and-alarms.md) always ends it so you see it.
+[Timers & alarms](timers-and-alarms.md) always ends it and opens the timer screen, so you
+see it and can stop it.
 
 ## Android screensaver apps
 

@@ -33,7 +33,7 @@ final class KitchenTimerStore {
         AlarmManager alarms=c.getSystemService(AlarmManager.class);PendingIntent intent=pending(c);alarms.cancel(intent);long next=Long.MAX_VALUE,wall=System.currentTimeMillis(),elapsed=SystemClock.elapsedRealtime();
         for(int i=0;i<m.items().length();i++){JSONObject t=m.items().optJSONObject(i);if("running".equals(t.optString("state")))next=Math.min(next,wall+KitchenTimers.remaining(t,elapsed,wall));}
         if(next==Long.MAX_VALUE||!allowed(c))return;
-        PendingIntent show=PendingIntent.getActivity(c,9102,new Intent(c,MainActivity.class).setAction("homeboard.timers"),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent show=PendingIntent.getActivity(c,9102,ScreensaverActivity.timerScreenIntent(c),PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
         try{alarms.setAlarmClock(new AlarmManager.AlarmClockInfo(Math.max(wall+1,next),show),intent);}catch(SecurityException e){error(c,true);}
     }
 }

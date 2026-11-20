@@ -405,8 +405,10 @@ none has run on a TV yet (Verification 5–7 are open).
   only its fallback became `ScreensaverActivity` (Show now). Starting Homeboard's choice
   directly, as the Code table says, belongs with Stage 3, where the two choices coincide.
 - **A ringing timer or alarm** ends Homeboard's screensaver (activity and `ScreensaverDream`)
-  through a package‑local broadcast from `KitchenTimerSound`; it does not open the timer
-  screen itself.
+  through a package‑local broadcast from `KitchenTimerSound`, then opens the timer screen
+  (the one the alarm notification opens). Will, 2026‑11‑20: "seems like a good idea to open
+  the timer screen". Opening it from `ScreensaverDream` is best effort, because Android may
+  refuse an activity start from a service.
 - **The Home idle timer** counts All Apps as Home (the same activity). It holds off while
   any menu, overlay, editor, expanded widget, move, resize or hold‑Back is up, and is one
   `Handler` callback rebased on the last input.
