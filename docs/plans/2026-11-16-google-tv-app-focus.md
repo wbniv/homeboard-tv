@@ -351,3 +351,29 @@ is therefore **not complete**. Private failure evidence is under
 `artifacts/deployments/0.1.4/cast2-evidence/`. No direct-device fallback or
 coordinator guard bypass was used. Additional devices in one deployment receive
 the identical frozen APK/version; a new source revision requires a new number.
+
+
+## Favorites ribbon measured against Google TV · 20 November 2026
+
+Measured from Cast2's own Google TV home through a coordinator-owned Remote
+session, 1080p frames: [first app focused](2026-11-16-google-tv-app-focus/cast2-gtv-focus-first-app.png)
+and [after three Right presses](2026-11-16-google-tv-app-focus/cast2-gtv-focus-after-scroll.png).
+The coordinator cannot video-record the stock launcher (`record` needs a registered
+app, `record-live` takes no input), so **transition timing is still unmeasured**.
+
+| Property | Google TV | Homeboard Favorites 0.1.107 |
+|---|---|---|
+| Icon diameter | 152 px | about 87 px (a one-row ribbon is about 88 dp tall) |
+| Centre pitch | 182 px (1.2 × icon) | 121 px |
+| Gap | 30 px | about 34 px |
+| Focused icon | 168 px, centre fixed | same ratio, centre fixed |
+| Rim | gap to about r = 91, gray rim to r = 95 | same geometry; lighter on the panel (3:1) |
+| Halo | tinted with the focused icon's colour, about 8 % falling to 4 % | tinted the same way |
+| Scrolling | focus stays at x = 192; the row scrolls under it and slices the left icon | whole cells only |
+
+Google TV's label is about 24 px high on a 152 px icon. The app's 16 sp label is
+twice that relative to the icon and forced a 176 px pitch, so Favorites uses a 12 sp
+label and a 56 dp preferred icon. The pitch follows the icon as drawn
+(`AppAppearance.favoritePitchDp`). Result:
+[Cast1, 0.1.107](2026-11-16-google-tv-app-focus/cast1-favorites-0.1.107.png). Will accepted it.
+Only round icons in the Favorites ribbon changed; All Apps, Home and banners did not.
