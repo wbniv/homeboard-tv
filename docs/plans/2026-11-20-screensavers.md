@@ -508,13 +508,56 @@ Will settled all four on 2026‑11‑20.
 4. `task check` passes with new unit tests: `ScreensaverSettingsTest` (parse, defaults,
    round trip, an unknown kind falls back to Clock), `ScreensaverRulesTest` (every row of
    the state table and its status line) and the `ProviderCatalog` role rules.
+
+    ```
+    $ task check            # in .worktrees/screensaver-stage1, 2026‑11‑20
+    > Task :app:lintDebug
+    BUILD SUCCESSFUL in 2m 4s
+    unit tests: 545, failures 0, errors 0
+    $ task i18n:check
+    Validated 801 English/Thai Homeboard resources
+    ```
+
+    **PARTIAL PASS** — `ScreensaverSettingsTest`, `ScreensaverRegistryTest` and
+    `ScreensaverIdleTest` pass. `ScreensaverRulesTest` and the `ProviderCatalog` role tests
+    belong to Stages 3 and 2 and do not exist yet.
 5. Stage 1 on Cast1, through normal menus: Home settings → Screensaver lists Clock and
    Home background; Preview plays and Back saves nothing; Use shows the Undo banner; hold
    Back restores the previous choice.
+
+    Cast1, build 0.1.102, job `J‑19778f0ac74b`; frames in
+    [the testing record](../testing/2026-11-20-screensavers.md):
+
+    ```
+    19:48:59.719 I HomeboardScreensaver: screensaver started mode=preview entry=clock
+    19:49:05.669 I HomeboardScreensaver: screensaver stopped mode=preview entry=clock reason=cancel
+    ```
+
+    **PARTIAL PASS** — Home settings → Screensaver (Down on the pie menu) lists Clock and
+    Home background; Preview plays full screen with its hint; Back returns to the screen
+    with Clock still "In use". **Not yet exercised:** Use on Home background, its Undo
+    banner for a choice, and hold‑Back Undo (only the idle setting's Undo banner appeared,
+    in the final frame).
 6. Stage 1 on Cast1: with "Start on Home after 1 min", the check waits for the
    `started` log line, captures the screen, sends one key, waits for `stopped`, and Home
    returns with the same focus. With "Android decides", no `started` line appears within
    Android's own timeout.
+
+    Same job. "Start on Home after" set to 1 by the Options screen, then three Backs to Home
+    at 19:49:25 (offset 35 s):
+
+    ```
+    19:50:24.580 I HomeboardScreensaver: screensaver started mode=idle entry=clock
+    19:50:34.127 I HomeboardScreensaver: screensaver stopped mode=idle entry=clock reason=key
+    ```
+
+    **PASS** (with limits) — the screensaver started 59 s after the last input, not before
+    (the capture at 60 s offset shows Home), a key ended it, Home was back in the next
+    capture, and setting "Android decides" again restored the default with an Undo banner
+    ("Screensaver on Home: Android decides"). **Limits:** the recipe is timed, so "waits for
+    the started line" is checked from the log afterwards, not by the recipe; the "same
+    focus" claim was not checked beyond Home being shown; the 'Android decides starts
+    nothing' half was not run.
 7. Stage 1 on Cast1: a timer set to ring during the screensaver ends it; the ringing
    timer screen is captured.
 8. Stage 2 on Cast1: an installed provider previews and plays as the screensaver, muted,
