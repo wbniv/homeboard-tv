@@ -10,18 +10,30 @@ Will asked on 20 November 2026: "what are our options for integrating homeboard-
 
 | Direction | What the household gets | Best route | Needs a server? |
 |---|---|---|---|
-| **1. Homeboard appears in Google Home** | "Hey Google, activate Morning board"; Google Home routines that switch the TV's dashboard; Homeboard's PM2.5 reading usable as a routine trigger | Cloud-to-cloud integration, kept in test mode for our own household | Yes: a small bridge |
+| **1. Homeboard appears in Google Home** | "Hey Google, activate Morning board"; Google Home routines that switch the TV's dashboard; Homeboard's PM2.5 reading usable as a routine trigger | Cloud-to-cloud integration in test mode, or a Matter device if the home has a Google hub | Cloud-to-cloud: a small bridge. Matter: none |
 | **2. Google Home appears on Homeboard** | Widgets for lights, sensors, thermostats, doorbell and cameras that are already in the Google Home app | Home APIs for Android inside the TV app | No, if it runs on a TV at all |
 | **3. Homeboard appears on other Google screens** | The dashboard on a Nest Hub | Cast web receiver | A hosted web page |
 
 **Recommendation:**
 
 1. **Probe direction 2 first.** A throwaway fixture APK that calls the Home APIs on Cast1 answers, in about a day, the one question the documentation does not: whether the SDK and its consent screen work on a Google TV device. If it passes, direction 2 needs no server, no account system and no monthly cost, which matches how Homeboard is built today.
-2. **For direction 1, build the bridge only at household scale.** A cloud-to-cloud integration in test mode works for the accounts on our own developer project with no certification. Do not offer it publicly yet: a public launch means Homeboard accounts, an OAuth server, a hosted service and Google certification, all of which contradict "no account or extra server to set up".
+2. **For direction 1, stay at household scale, and choose the route by whether the home has a Google hub.** A cloud-to-cloud integration in test mode works for the accounts on our own developer project with no certification, but it creates a server. A Matter device inside Homeboard needs no server at all, but it needs a Google hub on the network. With a hub, prototype both and compare them on the TV. Without one, build the bridge. Do not offer either publicly yet: a public cloud-to-cloud launch means Homeboard accounts, a hosted service and Google certification, and public Matter means industry certification.
 3. **Before either, add deep links and a local control interface to Homeboard.** Every route in direction 1 ends by telling the TV "show this scene" or "start this timer". Defining that once serves Google Home, Home Assistant and anything else.
-4. **Park** in-app Matter, the Cast receiver, Nest Device Access and Home MCP. Reasons are in each section.
+4. **Park** the Cast receiver, Nest Device Access and Home MCP. Reasons are in each section.
 
-The decision this report cannot make: **which Google Home devices the household actually has.** A Nest speaker or hub changes what is possible (local fulfilment, Matter, hub-run automations). Direction 2 is only worth building if there are devices in the Google Home app worth showing.
+The decision this report cannot make: **which Google Home devices the household actually has.** A Nest speaker or hub changes what is possible (Matter, local fulfilment, hub-run automations). Direction 2 is only worth building if there are devices in the Google Home app worth showing.
+
+## How costs are weighed
+
+Will, 20 November 2026: "engineering is practically free these days". Writing the code is not the scarce resource, so this report does not rank options by how much there is to build. It ranks them by what stays expensive after the code exists:
+
+- **Standing obligations:** a service that must stay up, the secrets it holds, accounts to look after.
+- **Gates only Google controls:** certification, registration, brand verification, a subscription requirement.
+- **Gates only Will can pass:** console sign-ups, and device sessions on Cast1 and Cast2 through the coordinator.
+- **What the household must own or pay for:** a Google hub, a subscription.
+- **Permanent weight in the launcher:** APK size, a Play services dependency, new permissions.
+
+One consequence: where two routes differ mainly in effort, the answer is to prototype both and compare them on the device, not to argue it out on paper.
 
 ## The three directions
 
@@ -105,22 +117,23 @@ Two ways to run it:
 
 One current change to be aware of: Google moved third-party account linking fully into the Google Home app, with partner updates due by 30 October 2026 ([migration guide](https://developers.home.google.com/cloud-to-cloud/account-linking-migration?hl=en)). A new project simply follows the current instructions.
 
-**Cost:** Google charges nothing for the developer project. The bridge is a small always-on service; a Cloudflare Worker with a persistent connection per TV plausibly fits a free or lowest paid tier, but I have not priced it. Engineering is the real cost: OAuth server, webhook, TV-side client, a settings screen and a revocation path.
+**Cost:** Google charges nothing for the developer project. The bridge is a small always-on service; a Cloudflare Worker with a persistent connection per TV plausibly fits a free or lowest paid tier, but I have not priced it. The lasting cost is not the code (OAuth server, webhook, TV-side client, settings screen, revocation path) but the obligation it creates: a service that holds the tokens linking the household's Google account, and has to stay up and stay secure for as long as anyone uses it.
 
-**Verdict:** The right route for direction 1, at household scale only.
+**Verdict:** The route for direction 1 that works in any home, at household scale only. Where the home has a Google hub, compare it with 1B before committing.
 
 ### 1B. Homeboard as a Matter device
 
 Matter is local. A Google hub on the same network commissions the device and then controls it without any cloud of ours, so this route needs **no OAuth server and no bridge**. Google Home supports the relevant Matter types, including Air Quality Sensor with PM2.5 measurement, On/Off Plug-in Unit and bridges ([supported devices](https://developers.home.google.com/matter/supported-devices?hl=en)). The usual pattern for virtual actions is a bridge exposing one on/off switch per scene.
 
-The obstacles are heavy:
+What gates it:
 
-- The Matter stack is a large native library that would have to be built into a Java launcher, per CPU architecture.
+- The Matter stack is a large native library, built per CPU architecture. Building it into a Java launcher is work, which is cheap; the added APK size is permanent. I did not measure it.
+- Homeboard must be running to answer. Whether its process stays alive while another app is in the foreground is untested.
 - An uncertified device can only use a test vendor ID (`0xFFF1` to `0xFFF4`), which Google Home accepts when the account has a matching Matter integration in the Developer Console ([create a Matter integration](https://developers.home.google.com/matter/integration/create?hl=en)). That works for us and for nobody else.
 - Shipping to the public needs Connectivity Standards Alliance membership and certification. I did not check the fees.
 - The home must have a Matter hub. Google lists Nest speakers and displays, Nest Wifi Pro and the Google TV Streamer (4K) ([same page](https://developers.home.google.com/matter/supported-devices?hl=en)). The Chromecast with Google TV is not in that list.
 
-**Verdict:** Park. Attractive because it is serverless, but the native dependency and certification wall are out of proportion to the benefit.
+**Verdict:** A real contender at household scale. Its limit there, our own accounts only, is the same as 1A's test mode, and it avoids the server, the secrets and the internet dependency altogether. It depends entirely on the home having a Google hub. If it does, prototype it beside 1A and compare on the TV. Public release stays blocked by certification.
 
 ### 1C. Through Home Assistant
 
@@ -208,7 +221,7 @@ Homeboard's product direction already lists "Home Assistant sensors when availab
 
 Matter devices can be shared from Google Home to another controller on the same network. Homeboard could then read them locally with no Google account. It needs the same large native Matter stack as 1B, a commissioning flow on a TV, and covers Matter devices only.
 
-**Verdict:** Park.
+**Verdict:** The fallback for direction 2 if the Home APIs do not run on a TV. It shares its native stack with 1B, so the two cost less together than apart.
 
 ### 2F. The built-in Google TV home panel
 
@@ -226,7 +239,7 @@ A custom Cast receiver is a web page that Google's devices load, registered in t
 
 Homeboard's widgets are native Android views, so a Nest Hub dashboard would be a second, web implementation of each one. Community reports say idle custom receivers are closed after about ten minutes on Nest displays; I did not verify that.
 
-**Verdict:** Park. High cost for a different product.
+**Verdict:** Park until the inventory shows a Nest display to put it on. Writing the second implementation is cheap; the hosted page and keeping two renderings of every widget in step are the lasting costs.
 
 ### 3B. Cast Connect
 
@@ -242,18 +255,21 @@ The reverse arrangement: Homeboard as a Cast receiver that phones cast into ([An
 
 ## Comparison
 
-| Option | Direction | Our server | Play services | Works for the public without Google review | Recurring cost | Effort | Verdict |
+Effort is left out on purpose; see [How costs are weighed](#how-costs-are-weighed).
+
+| Option | Direction | Our server | Play services | Works for the public without Google review | Recurring cost | What gates it | Verdict |
 |---|---|---|---|---|---|---|---|
-| 1A Cloud-to-cloud, test mode | 1 | Yes | No | No: our accounts only | Hosting, small | Medium | **Build at household scale** |
-| 1A Cloud-to-cloud, public | 1 | Yes | No | No: certification | Hosting plus support | High | Not now |
-| 1B Matter device | 1 | No | No | No: test vendor ID only | None | High | Park |
-| 1C Via Home Assistant | 1 | Theirs | No | Yes | Theirs | Low | Free by-product of a control interface |
-| 1D Local Home SDK | 1 | Yes (1A) | No | As 1A | As 1A | Medium | Later, if needed |
-| 2A Home APIs on the TV | 2 | No | Yes | 100 test users until registered | None | Medium | **Probe first** |
-| 2B Home MCP | 2 | Small | No | Unknown | US$20 a month to the user | Low | Watch |
-| 2C Nest Device Access | 2 | Small | No | US$5 per developer | Small | Medium | Only with Nest devices |
-| 2F Built-in home panel | 2 | No | n/a | Yes | None | Trivial | Check during the probe |
-| 3A Cast receiver | 3 | Web page | For TV-started casts | Yes, once published | Hosting | High | Park |
+| 1A Cloud-to-cloud, test mode | 1 | Yes | No | No: our accounts only | Hosting, small | A standing service holding tokens; console setup | **Build at household scale** |
+| 1A Cloud-to-cloud, public | 1 | Yes | No | No: certification | Hosting plus support | Certification; accounts for strangers | Not now |
+| 1B Matter device | 1 | No | No | No: test vendor ID only | None | A Google hub in the home; APK size | **Prototype beside 1A if there is a hub** |
+| 1C Via Home Assistant | 1 | Theirs | No | Yes | Theirs | The household running Home Assistant | By-product of a control interface |
+| 1D Local Home SDK | 1 | Yes (1A) | No | As 1A | As 1A | Needs 1A and a Google speaker or display | Later, if latency matters |
+| 2A Home APIs on the TV | 2 | No | Yes | 100 test users until registered | None | Whether it runs on a TV; registration to go public | **Probe first** |
+| 2B Home MCP | 2 | Small | No | Unknown | US$20 a month to the user | Early access; subscription; terms | Watch |
+| 2C Nest Device Access | 2 | Small | No | US$5 per developer | Small | Owning Nest devices | Only with Nest devices |
+| 2E Matter controller | 2 | No | No | Yes, for Matter devices | None | APK size; Matter devices only | Fallback if 2A fails |
+| 2F Built-in home panel | 2 | No | n/a | Yes | None | Whether it survives a third-party launcher | Check during the probe |
+| 3A Cast receiver | 3 | Web page | For TV-started casts | Yes, once published | Hosting | A Nest display to show it on; two renderings to keep in step | Park |
 
 ## Recommended sequence
 
@@ -262,15 +278,17 @@ flowchart TD
     Q["Which Google Home devices<br/>does the household have?"] --> P
     P["Stage 0 probe on Cast1:<br/>Home APIs fixture APK,<br/>home panel checks"]
     P -- "SDK and consent work" --> W["Plan direction 2:<br/>optional Home devices module,<br/>first widget, test-user mode"]
-    P -- "SDK fails on TV" --> F["Direction 2 falls back to<br/>the home panel shortcut;<br/>revisit Home MCP at general release"]
-    C["Deep links and a local<br/>control interface for scenes,<br/>timers and pages"] --> B["Plan direction 1:<br/>household bridge in test mode,<br/>scenes first, PM2.5 second"]
+    P -- "SDK fails on TV" --> F["Direction 2 falls back to<br/>the home panel shortcut and<br/>a Matter controller;<br/>revisit Home MCP at general release"]
+    C["Deep links and a local<br/>control interface for scenes,<br/>timers and pages"] --> B["Direction 1, any home:<br/>household bridge in test mode,<br/>scenes first, PM2.5 second"]
     C --> HA["Home Assistant control<br/>comes with it"]
+    Q -- "there is a Google hub" --> M["Direction 1, with a hub:<br/>prototype a Matter device<br/>beside the bridge, compare on TV"]
+    C --> M
 ```
 
 1. **Answer the inventory question.** Which devices are in the household's Google Home, and is there a Nest speaker or display?
 2. **Stage 0 probe, on Cast1.** A fixture APK in the pattern of `launcher/widget-fixture` that initialises the Home APIs, runs the permission flow, lists devices and subscribes to one state stream. Record the Play services version, whether each screen can be driven with the remote, and what fails. In the same session, check the two home panel questions from 2F. This is a foreground device job, so it goes through the coordinator.
 3. **Design the control interface.** Decide between intent deep links, an always-on authenticated local listener, or both, and what they can address: a scene, a page, a timer. This is useful with or without Google.
-4. **Then plan whichever direction the probe and the inventory favour.** Each is a design-and-implementation job with visible surfaces, so each needs its own plan with mockups and diagrams.
+4. **Then plan whichever direction the probe and the inventory favour.** Each is a design-and-implementation job with visible surfaces, so each needs its own plan with mockups and diagrams. Where two routes survive, such as the bridge and the Matter device, build both prototypes and let the device decide.
 
 I have not added these to `TODO.md`; ranking and admitting them is your call.
 
@@ -283,6 +301,7 @@ I have not added these to `TODO.md`; ranking and admitting them is your call.
 - Whether Google's voice grammar sends timer requests to a non-cooking device with the `Timer` trait.
 - Whether Home MCP's terms allow a non-agent client, its rate limits, and whether Premium Advanced is sold in Thailand.
 - Connectivity Standards Alliance membership and certification fees.
+- How much the Matter native stack adds to the APK, and whether Homeboard's process stays alive to answer Matter commands while another app is in the foreground.
 - The Play services "phone and tablet only" table for `play-services-home`, which I saw quoted in a search result, not on the page.
 - Idle timeouts for custom Cast receivers on Nest displays.
 - That Google Keep has no consumer API.
