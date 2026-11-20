@@ -533,11 +533,14 @@ Will settled all four on 2026‑11‑20.
     19:49:05.669 I HomeboardScreensaver: screensaver stopped mode=preview entry=clock reason=cancel
     ```
 
-    **PARTIAL PASS** — Home settings → Screensaver (Down on the pie menu) lists Clock and
-    Home background; Preview plays full screen with its hint; Back returns to the screen
-    with Clock still "In use". **Not yet exercised:** Use on Home background, its Undo
-    banner for a choice, and hold‑Back Undo (only the idle setting's Undo banner appeared,
-    in the final frame).
+    Second job `J‑ a6d0c88b42ca` (Use, Undo): Use on Home background moved "In use" to it,
+    Home showed the banner "Screensaver: Home background", holding Back showed "Undid
+    Screensaver: Home background", and the list had Clock "In use" again. No
+    `HomeboardScreensaver` line appears, as expected: neither job started a screensaver.
+
+    **PASS** — Home settings → Screensaver (Down on the pie menu) lists Clock and Home
+    background; Preview plays full screen with its hint; Back saves nothing; Use shows the
+    Undo banner; hold‑Back restores the previous choice.
 6. Stage 1 on Cast1: with "Start on Home after 1 min", the check waits for the
    `started` log line, captures the screen, sends one key, waits for `stopped`, and Home
    returns with the same focus. With "Android decides", no `started` line appears within
@@ -556,8 +559,14 @@ Will settled all four on 2026‑11‑20.
     capture, and setting "Android decides" again restored the default with an Undo banner
     ("Screensaver on Home: Android decides"). **Limits:** the recipe is timed, so "waits for
     the started line" is checked from the log afterwards, not by the recipe; the "same
-    focus" claim was not checked beyond Home being shown; the 'Android decides starts
-    nothing' half was not run.
+    focus" claim was not checked beyond Home being shown.
+
+    Job `J‑ 8916b8775bf6`, "Android decides", no input for 145 s: Home in all three
+    captures (10 s, 80 s, 145 s) and no `HomeboardScreensaver` log line.
+
+    **PASS** (with a limit) — the shortest Homeboard timer is 1 min, which fired at 59 s
+    above, so 145 s with nothing is a fair test of "Homeboard runs no timer". It is shorter
+    than Android's own timeout, which was not waited out.
 7. Stage 1 on Cast1: a timer set to ring during the screensaver ends it; the ringing
    timer screen is captured.
 8. Stage 2 on Cast1: an installed provider previews and plays as the screensaver, muted,

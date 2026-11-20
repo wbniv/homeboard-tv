@@ -33,8 +33,23 @@ Log lines (`logcat`, tag `HomeboardScreensaver`):
 19:50:34.127 I HomeboardScreensaver: screensaver stopped mode=idle entry=clock reason=key
 ```
 
-Not yet run: choosing Home background with Use, a choice's Undo, the alarm ending a screensaver
-(Verification 7), and "Android decides" starting nothing. Cast2 was in Personal use.
+### Use and Undo, job `J‑ a6d0c88b42ca`
+
+![Eight frames: the list, Home background focused, Use focused, after Use, Home with the Undo banner, after hold-Back, the list after Undo, final Home](2026-11-20-screensavers/stage1-cast1-use-undo-sheet.png)
+
+Captions are in the bottom strip of each frame. Home background became "In use", Home showed
+"Screensaver: Home background" with an Undo button, holding Back showed "Undid Screensaver: Home
+background", and Clock was "In use" again.
+
+### No timer, job `J‑ 8916b8775bf6`
+
+![Home at 10 s, 80 s and 145 s with no input](2026-11-20-screensavers/stage1-cast1-no-timer-sheet.png)
+
+"Android decides", no input for 145 s: Home in all three frames and no `HomeboardScreensaver`
+log line.
+
+Not yet run: the alarm ending a screensaver (Verification 7), which waits for the alarm change
+that opens the timer screen. Cast2 was in Personal use.
 
 Findings: none against the design. Focus order on the screen is card, then Preview, then Change
 (Down), and Back returns to the Home settings pie, as the plan describes.

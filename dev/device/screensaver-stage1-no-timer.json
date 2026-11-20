@@ -1,0 +1,12 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 150,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 3, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 10, "capture": "b1-home-at-start"},
+    {"at": 80, "capture": "b2-home-after-80-s"},
+    {"at": 145, "capture": "b3-home-after-142-s"}
+  ]
+}

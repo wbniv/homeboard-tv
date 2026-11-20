@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/9faedc8) | Screensavers stage 1: record the Cast1 Preview and idle-start results |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/19e13d0) | Rename ClockDream to ScreensaverDream and drop compatibility claims |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/e82a088) | Screensavers stage 1: choose and configure from Home settings |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/5070588) | Screensavers plan: role icons on every card, Aerial Views shown once as both |
@@ -9,6 +10,11 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/5bb93a2) | Plan screensaver choice, configuration and installation |
 
 <!--history-meta v1
+9faedc8	author	Will Norris
+9faedc8	added	43
+9faedc8	deleted	0
+9faedc8	files	1
+9faedc8	body	Job J-19778f0ac74b on build 0.1.102: Preview plays and Back cancels, the\nOptions screen sets 1 min, the screensaver starts 59 s after the last input\nand a key ends it, and the setting is restored. Adds the recipe, the testing\nrecord and the results under the plan's Verification steps 4 to 6.\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqRqz1gyQcJHUETGjcT
 19e13d0	author	Will Norris
 19e13d0	added	7
 19e13d0	deleted	7
