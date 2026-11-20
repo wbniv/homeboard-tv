@@ -12,6 +12,12 @@ services:
     volumes:
       - .:/workspace
       - gradle-cache:/cache/gradle
+      - type: bind
+        source: ${HOMEBOARD_DEBUG_SIGNING_DIR:-${HOME}/.local/share/homeboard-tv/debug-signing}
+        target: /run/homeboard-debug-signing
+        read_only: true
+        bind:
+          create_host_path: false
     working_dir: /workspace/launcher
 volumes:
   gradle-cache:

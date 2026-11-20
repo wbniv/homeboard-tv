@@ -74,13 +74,27 @@ Google Play distribution remains future work. Public APK signing is described be
 
 ## Shared worktree debug signing
 
-The Compose Gradle cache has the explicit name `homeboard-tv_gradle-cache` so
-parallel worktrees use the same development keystore under `/cache/gradle/.android`.
-A separate automatically named cache generates a different debug certificate;
-Android then rejects updates with `INSTALL_FAILED_UPDATE_INCOMPATIBLE`.
-Preserve the existing cache/key to preserve installed app data. Do not uninstall
-Homeboard to work around this failure. This is development signing, not release
-signing or an embedded household credential.
+The deployed debug key lives outside Docker and Gradle caches at
+`~/.local/share/homeboard-tv/debug-signing/debug.keystore`, with a separate copy at
+`~/.local/share/homeboard-tv/debug-signing-backup/debug.keystore`. Preserve an
+additional protected off-machine backup. `HOMEBOARD_DEBUG_SIGNING_DIR` can select
+another existing directory. Compose mounts it read-only, and the app's debug
+signing configuration explicitly requires that file. A missing key fails the build;
+it must never silently generate a replacement. All deployment worktrees must use
+this identity. Cache recreation and Docker daemon changes must not rotate it.
+
+The key created on November 20 has SHA-256 certificate fingerprint
+`dbb3446edcf5f2a66e810c266ee9195dce842e95d618d75529fc26c0d6caf3ff`.
+It replaces a lost development identity with Will's explicit authorization to reset
+both TV installations. Ordinary deployments must preserve app data: if a later
+update reports `INSTALL_FAILED_UPDATE_INCOMPATIBLE`, compare certificates and recover
+the saved key instead of uninstalling. Do not regenerate it during setup or repair.
+The standard Android debug password/alias are used; this is development signing,
+separate from the private public-release identity.
+
+CI explicitly generates an ephemeral key in its own directory. CI APKs are not
+deployment candidates. The named `homeboard-tv_gradle-cache` remains shared for
+dependencies, but it no longer determines the app's deployed debug signing key.
 
 ## Public signed APK and publication
 

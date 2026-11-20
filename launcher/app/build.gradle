@@ -39,6 +39,16 @@ android {
     }
 
     def releaseSecrets = file('/run/homeboard-signing/release.json')
+    signingConfigs {
+        debug {
+            // Keep the deployed identity outside disposable Gradle/Docker caches.
+            // An explicit missing store fails signing; AGP must not generate a new key.
+            storeFile file('/run/homeboard-debug-signing/debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
     if (releaseSecrets.isFile()) {
         def secrets = new groovy.json.JsonSlurper().parse(releaseSecrets)
         signingConfigs {

@@ -1,5 +1,24 @@
 # Screensavers: device test record
 
+## Stage 3 partial check on Cast1, 2026‑11‑20
+
+Will's session handoff reports that Android's screensaver and timeout values read
+without extra permission, installed screensaver apps are discovered, and the setup
+screen shows the exact grant command without changing settings. These observations
+are recorded from the handoff; no job ID or exported evidence was supplied here.
+They do not establish permission-granted writes, read-back, Restore, Undo or restart
+persistence. Cast2 Stage 3 acceptance remains pending.
+
+The grant workflow is reported committed on the coordinator's
+`secure-settings-grant` branch, version 0.1.210. The installed coordinator observed
+during this deployment session is 0.1.209. Merge/release and the permission-granted
+device checks remain pending; the release requires `task coordinator:release` in
+a sudo terminal after the other session's checkout edits are resolved.
+
+Open UI finding from that session: Google's **Clock** screensaver and Homeboard's
+built-in **Clock** both appear in the list. Their names need clearer attribution;
+no UI change or acceptance is claimed by this record.
+
 ## Stage 1 on Cast1, 2026‑11‑20
 
 Build 0.1.102 (includes Stage 1, `e82a088`), `chromecast-test-01`. Recipe

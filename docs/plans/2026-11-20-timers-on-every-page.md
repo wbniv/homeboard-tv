@@ -1,6 +1,6 @@
 # Timers on every page
 
-**Status: decisions settled, Stage 1 in progress (2026‑11‑20).** All four decisions are as
+**Status: decisions settled, Stage 1 deployed as 0.1.112 to both TVs; Cast1 timer acceptance pending (2026‑11‑20).** All four decisions are as
 recommended. TODO entry: "Show active timers on every page of Home, All Apps and the
 full-screen views". No device evidence exists for anything below; the mockups are designs,
 not captures.
@@ -488,6 +488,17 @@ recommended below; the plan's stages assume them.
 **Cost.** No infrastructure is created or changed, so there is no AWS cost.
 
 ## Verification
+
+Stage 1 deployment **0.1.111** passed container checks but neither TV accepted
+installation. Cast1's foreground follow-up and Cast2's background install both
+reported `INSTALL_FAILED_UPDATE_INCOMPATIBLE`; existing 0.1.108 and app data were
+preserved by that attempt. Will then authorized resetting both installations with
+a new key. **0.1.112 installed successfully on both TVs** through coordinator
+`replace-apk` jobs, with identical hash verification. The new key is stored and
+backed up outside Docker caches, mounted read-only and explicitly required by builds.
+Cast1's timer and ordinary launch checks both ended `target-left-foreground`, with
+Google TV Home in front, so timer acceptance remains open before Stage 2. See the
+[Stage 1 deployment record](../testing/2026-11-20-timers-stage1.md).
 
 1. `task timers-everywhere:plan-check` validates the eight mockups: self-contained,
    1440×900, no overflow, every button explains itself, PNG captured, bundle within budget.

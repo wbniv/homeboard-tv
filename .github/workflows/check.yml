@@ -5,10 +5,19 @@ permissions:
 jobs:
   android:
     runs-on: ubuntu-latest
+    env:
+      HOMEBOARD_DEBUG_SIGNING_DIR: ${{ github.workspace }}/artifacts/ci-debug-signing
     steps:
       - uses: actions/checkout@v4
       - name: Build shared toolchain image
         run: dev/container.sh image
+      - name: Create an ephemeral CI-only debug key (never deploy this identity)
+        run: |
+          mkdir -p "$HOMEBOARD_DEBUG_SIGNING_DIR"
+          docker run --rm --user "$(id -u):$(id -g)" -v "$HOMEBOARD_DEBUG_SIGNING_DIR:/keys" homeboard-tv-build:local \
+            keytool -genkeypair -keystore /keys/debug.keystore -storepass android \
+            -keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 \
+            -validity 10000 -dname 'CN=Android Debug CI,O=Homeboard TV,C=US'
       - name: Verify calendar JSON pipeline and packaged snapshot
         run: dev/container.sh run python3 /workspace/dev/calendar/test_pipeline.py
       - name: Test, lint and package in container

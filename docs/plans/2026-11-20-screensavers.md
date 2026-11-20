@@ -1,7 +1,8 @@
 # Screensavers: choose, configure and get more
 
-**Status: Stage 3 implemented, not run on a TV; Stage 0 answers 4/5 still unverified
-(2026‑11‑20).** Stage 1 is implemented and also not yet verified on a TV. See
+**Status: Stage 3 implemented, partial Cast1 reads/setup check reported; permission-granted writes remain unverified
+(2026‑11‑20).** Stage 1 has Cast1 device evidence in the
+[testing record](../testing/2026-11-20-screensavers.md). See
 [Stage 1 notes](#stage-1-notes) and [Stage 3 notes](#stage-3-notes) for their limits and
 differences from the mockups. Will answered the four
 [decisions](#decisions) the same day, and the
@@ -416,6 +417,18 @@ none has run on a TV yet (Verification 5–7 are open).
   the parity check reads. The screensaver service, renamed `ScreensaverDream`, is labelled with the app's name.
 
 ### Stage 3 notes
+
+**2026‑11‑20 handoff:** Cast1 reads Android's screensaver and timeout without extra
+permission, discovers installed screensaver apps, and shows the exact grant command
+without changing settings. These are reported observations, pending linked receipts;
+see the [partial testing record](../testing/2026-11-20-screensavers.md).
+Question 4 therefore has preliminary Cast1 evidence; Question 5, Cast2, Restore,
+Undo and restart persistence remain open. The coordinator grant workflow is reported
+committed as 0.1.210 on `secure-settings-grant`, awaiting merge/release through
+`task coordinator:release` at a sudo terminal after the other session's edits are
+resolved. The running coordinator was 0.1.209 at this session's preflight.
+Google's **Clock** and Homeboard's built-in **Clock** appearing together is an open
+labeling finding; revise the mockups and apply the shared design filter before a UI fix.
 
 Implemented on `feature/screensaver-stage3`, 2026‑11‑20, before Stage 0 has run, so the
 code is built to survive every Stage 0 answer: each read and write returns a typed result

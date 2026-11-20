@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/046aa0a) | Screensavers stage 1 complete: the alarm check passes on Cast1 |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/e25250d) | An alarm that ends a screensaver opens the timer screen |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/7b10d99) | Screensavers stage 3: use everywhere, with Restore and Undo |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/00b8ad1) | Screensavers stage 1: Use with Undo and no-timer checks pass on Cast1 |
@@ -13,6 +14,11 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/5bb93a2) | Plan screensaver choice, configuration and installation |
 
 <!--history-meta v1
+046aa0a	author	Will Norris
+046aa0a	added	17
+046aa0a	deleted	0
+046aa0a	files	1
+046aa0a	body	Job J-ffad14b3013c on build 0.1.104: a ringing test timer ends the screensaver\n(reason=alarm) and the timer screen shows the Done timer; the probe cleans up\nand Home returns. Moves Stage 1 and the alarm change to Done. Cast2 refused\nthe 0.1.104 install over its foreground and still has 0.1.103.\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqRqz1gyQcJHUETGjcT
 e25250d	author	Will Norris
 e25250d	added	4
 e25250d	deleted	2
