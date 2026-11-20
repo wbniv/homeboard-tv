@@ -114,8 +114,9 @@ What it takes:
 | TV form factor | Opt in from the Play Console; needs a TV screenshot, a 320×180 banner containing the app's name, D‑pad operation, a TV launcher entry, landscape. Reviewed against the TV quality list. | [TV app quality](https://developer.android.com/docs/quality-guidelines/tv-app-quality) |
 | One package for phone and TV | Supported and recommended, with a dedicated TV track. | TV distribution, as above |
 | Privacy | A privacy policy and the Data safety form are required even when nothing is collected. | [Data safety](https://support.google.com/googleplay/android-developer/answer/10787469) |
-| Testing rule | 12 testers for 14 days, per app, for personal accounts created after 2023‑11‑13. **It applies to Will's account**, so to the World Foundry app and to Homeboard. | [Testing requirement](https://support.google.com/googleplay/android-developer/answer/14151465) |
-| Fee | US$25 once, already paid on an existing account. Existing accounts have an identity‑verification deadline of their own. | [Registration](https://support.google.com/googleplay/android-developer/answer/6112435) |
+| Testing rule | At least **12 testers opted in continuously for 14 days**, per app, for personal developer accounts created after 2023‑11‑13. **It applies to Will's account**, so to the World Foundry app and to Homeboard. | [Testing requirement](https://support.google.com/googleplay/android-developer/answer/14151465) |
+| Developer fee and verification | US$25 once for the publishing developer account, already paid on Will's existing account. Existing developer accounts have an identity‑verification deadline of their own. **Testers do not pay this registration fee or complete developer identity verification.** | [Registration](https://support.google.com/googleplay/android-developer/answer/6112435) |
+| Tester accounts | Testers need a regular Google or Google Workspace account and must join the test using that account; they do not need a Play Console developer account. | [Test prerequisites](https://support.google.com/googleplay/android-developer/answer/9845334) |
 
 **Three policies shape the product, not only the paperwork:**
 
@@ -335,10 +336,13 @@ written down in both repositories when it is made.
 Asked and answered on 2026‑11‑20.
 
 1. **The Play account is personal and was not created before 2023‑11‑13.** So every new
-   app needs a closed test with 12 testers for 14 days before it can go to production.
+   app needs a closed test with at least 12 testers opted in continuously for 14 days
+   before it can go to production.
    That applies once to the World Foundry app and once to Homeboard, and is one more
    reason to publish one World Foundry app, not three. The two tests can run at the same
-   time with the same testers.
+   time with the same testers. Testers use ordinary Google or Google Workspace
+   accounts; they do not pay the developer registration fee or undergo developer
+   identity verification (clarified 2026‑11‑21; see the Google Play table above).
 2. **The one app's name and package name: still open.** It cannot change after
    publishing.
 3. **Homeboard will go on Google Play.** ("yes!") So there are two editions. The Play
