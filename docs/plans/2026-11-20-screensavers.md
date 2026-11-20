@@ -180,9 +180,9 @@ What is new:
   interested in supporting installation from homeboard-tv". A card for a World Foundry
   app has an Install action. In the website edition of Homeboard it downloads the signed
   app, checks its package, certificate and hash against the catalog, and hands it to
-  Android's installer, which asks the person to confirm. A Google Play edition of
-  Homeboard would open Play's install sheet instead, because Play forbids the direct
-  route there. Every other publisher's app stays a link. The reasoning and sources are in
+  Android's installer, which asks the person to confirm. The Google Play edition of
+  Homeboard, which Will confirmed there will be, opens Play's install sheet or listing
+  instead, because Play forbids the direct route there. Every other publisher's app stays a link. The reasoning and sources are in
   the [distribution research](../investigations/2026-11-20-screensaver-distribution.md#installing-from-homeboard).
 
 ```mermaid
@@ -403,11 +403,11 @@ Will settled all four on 2026‑11‑20.
 2. **The default screensaver will be a better bundled one.** Will: "we'll probably bundle
    an even better screensaver by default, actually. perhaps some sort of world foundry 3d
    clock? i'll provide that later". Clock stays the default until it arrives, and the
-   default is a slot that the new one fills without a design change. Bundling World
-   Foundry code carries the licence, size and coupling costs measured in the
-   [distribution research](../investigations/2026-11-20-screensaver-distribution.md),
-   which also describes the alternative of shipping it as a companion app. The Home idle
-   timer's default was not discussed and stays "Android decides".
+   default is a slot that the new one fills without a design change. Will owns the World
+   Foundry copyright, so the licence is his to grant; what remains is about 3.5 MB, a
+   pinned prebuilt engine library and a separate process, as measured in the
+   [distribution research](../investigations/2026-11-20-screensaver-distribution.md#the-bundled-default).
+   The Home idle timer's default was not discussed and stays "Android decides".
 3. **First directory: accepted.** The seven reviewed provider entries plus "Found on this
    TV", with World Foundry's own screensavers added once they are published.
 4. **World Foundry screensavers stay their own apps, ideally one APK that is both the app

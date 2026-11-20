@@ -34,8 +34,8 @@ under [Not verified](#not-verified).
    screensaver. On TVs the obstacle is selecting a screensaver, not installing one.
 4. **Install from Homeboard through two back ends.** The website edition of Homeboard
    installs its own publisher's apps through Android's installer, with the person's
-   confirmation. A Google Play edition of Homeboard must hand off to Play, because Play
-   policy forbids the first route there.
+   confirmation. The Google Play edition, which Will confirmed there will be, must hand
+   off to Play, because Play policy forbids the first route there.
 5. **Reuse the coordinator's settings contract, one level up.** The contract is the right
    shape. Today it is reachable only from the device shell, so the World Foundry app must
    admit Homeboard as a caller.
@@ -75,7 +75,7 @@ Gaps between these and a store release:
 | 64‑bit and 32‑bit libraries | APK contents | Meets Play's rule; 32‑bit stays allowed and our TVs need it |
 | No permissions requested | manifests | A simple Data safety form |
 | Settings provider accepts only the device shell | `TankSettingsProvider.java:27` | Homeboard cannot read or change tank settings |
-| Licence described as GPL v2; asset provenance unchecked | `docs/LICENSE`; not traced | Must be settled before any store listing |
+| Licence described as GPL v2; Will owns the copyright | `docs/LICENSE`; Will, 2026‑11‑20 | Will can license the engine as he chooses. Third‑party libraries and any art from outside sources still need a notices list before a store listing. |
 
 ## One APK that is the app and the screensaver
 
@@ -114,7 +114,7 @@ What it takes:
 | TV form factor | Opt in from the Play Console; needs a TV screenshot, a 320×180 banner containing the app's name, D‑pad operation, a TV launcher entry, landscape. Reviewed against the TV quality list. | [TV app quality](https://developer.android.com/docs/quality-guidelines/tv-app-quality) |
 | One package for phone and TV | Supported and recommended, with a dedicated TV track. | TV distribution, as above |
 | Privacy | A privacy policy and the Data safety form are required even when nothing is collected. | [Data safety](https://support.google.com/googleplay/android-developer/answer/10787469) |
-| Testing rule | 12 testers for 14 days, per app, but only for personal accounts created after 2023‑11‑13. | [Testing requirement](https://support.google.com/googleplay/android-developer/answer/14151465) |
+| Testing rule | 12 testers for 14 days, per app, for personal accounts created after 2023‑11‑13. **It applies to Will's account**, so to the World Foundry app and to Homeboard. | [Testing requirement](https://support.google.com/googleplay/android-developer/answer/14151465) |
 | Fee | US$25 once, already paid on an existing account. Existing accounts have an identity‑verification deadline of their own. | [Registration](https://support.google.com/googleplay/android-developer/answer/6112435) |
 
 **Three policies shape the product, not only the paperwork:**
@@ -298,16 +298,19 @@ Will expects to bundle "an even better screensaver by default", perhaps a World 
 | | Compiled into Homeboard | In the World Foundry app, installed at first run |
 |---|---|---|
 | First experience | There at once | One Install step, then the default |
-| Licence | Homeboard is MIT and World Foundry describes itself as GPL v2, so the combined APK is distributed under the GPL | Stays separate |
+| Licence | Will owns the World Foundry copyright, so he can license the engine to Homeboard on terms that fit its MIT licence. Without that grant the combined APK would fall under the GPL. | Stays separate |
 | Size | Homeboard grows from 5.4 MB by the engine (about 3.5 MB compressed) and the scene | Homeboard unchanged |
 | Build | Homeboard's container needs the NDK and the engine, or a pinned prebuilt library | Unchanged |
 | Safety | The engine must run in its own process so a crash cannot take down the Home app | Already its own process |
 | Updates | Every scene fix needs a Homeboard release | Independent |
 
-**Recommended:** build the 3D clock as a scene in the one World Foundry app, have
-Homeboard's first run offer to install it, and keep today's Clock as the default that
-needs nothing. If compiling it in is still preferred, the licence consequence is Will's
-decision to make knowingly.
+**Recommended, revised after Will's answer:** compiling the 3D clock in is now a
+reasonable choice, because the licence obstacle is his to remove. It costs about 3.5 MB,
+a pinned prebuilt engine library in Homeboard's build, and a separate process. It gives
+a default that is there at once, in both editions, with no install step, which matters
+more now that the Play edition cannot install anything itself. Keep today's Clock as the
+fallback on a device whose processor the engine does not support. The grant should be
+written down in both repositories when it is made.
 
 ## Not verified
 
@@ -322,19 +325,30 @@ decision to make knowingly.
   the FAQ by a research agent; my own re‑fetch confirmed the sideload exemption but did
   not find that sentence.
 - How long a TV quality review takes, and the next target‑API deadline.
-- The World Foundry licence file by file, and where the tank art came from.
+- The third‑party libraries inside the World Foundry engine and any tank art that came
+  from outside sources. Will owns the copyright in his own work; those parts keep their
+  own terms and need a notices list.
 - The merged app's size.
 
-## Questions for Will
+## Will's answers
 
-1. **Is the Play account personal or an organization, and was it created before
-   2023‑11‑13?** That decides whether each app needs 12 testers for 14 days first.
-2. **What is the one app called, and which package name does it keep?**
-3. **Will Homeboard itself go on Google Play?** If so, that edition cannot install apps
-   directly and uses Play's hand‑off.
-4. **Who holds the World Foundry copyright and where did the tank art come from?** Both
-   decide what can be listed, and whether the 3D clock could ever be compiled into an
-   MIT app without the GPL following it.
+Asked and answered on 2026‑11‑20.
+
+1. **The Play account is personal and was not created before 2023‑11‑13.** So every new
+   app needs a closed test with 12 testers for 14 days before it can go to production.
+   That applies once to the World Foundry app and once to Homeboard, and is one more
+   reason to publish one World Foundry app, not three. The two tests can run at the same
+   time with the same testers.
+2. **The one app's name and package name: still open.** It cannot change after
+   publishing.
+3. **Homeboard will go on Google Play.** ("yes!") So there are two editions. The Play
+   edition does not carry the install permission and hands installs to Play; the website
+   edition keeps direct install. Homeboard needs its own Play preparation: it targets API
+   34 today, which is enough only while it is a TV‑only listing, and its accessibility
+   helpers, location use and alarm permission each have a Play declaration to complete.
+   Those requirements were not researched here and need their own plan.
+4. **Will owns the World Foundry copyright.** That removes the licence obstacle to
+   compiling World Foundry code into Homeboard, and it settles who may list the app.
 
 ## What this changes in the screensaver plan
 
