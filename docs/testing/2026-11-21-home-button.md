@@ -170,3 +170,26 @@ Restart, force-stop and update-recovery checks could not start. The next step is
 to resolve the coordinator's foreground-cleanup fence, then resume those checks.
 Physical held-key repeat and the branded app buttons remain open; held Home now
 has Will's physical-remote observation above.
+
+### Correction from Will: the standalone tank is retired
+
+After reviewing the queue, Will clarified that the individual Planted Tank app
+is gone and that the tank should run from the multi-tank app/screensaver. Treat
+the pending standalone restoration as obsolete; do not reinstall or resurrect
+`org.worldfoundry.plantedtank` merely to satisfy its cleanup checkpoint.
+
+The World Foundry source confirms the multi-tank screensaver package is
+`org.worldfoundry.screensaver`, with launcher `AquariumActivity` and preview
+`ScreensaverPreviewActivity`. Its roster contains `aquarium_plants`; the
+`org.worldfoundry.screensaver.LEVEL` extra selects that level for one run without
+changing the saved idle choice. This identifies the intended route from source,
+not a fresh device launch or proof of the installed version. See the
+[multi-tank launch plan](../../../WorldFoundry-wbniv/docs/plans/2026-11-21-aquarium-menu-and-screensaver-launch.md).
+
+The installed coordinator's TV restoration path still attempts the old exact
+component. Its missing-activity fallback is currently limited to phone/tablet
+profiles. The recovery fence remains; this session did not rewrite its journal,
+clear it manually or substitute an unverified launch. Correct handling of the
+obsolete checkpoint is needed before the intended multi-tank launch and
+Homeboard recovery checks can resume. A restart alone does not update that
+checkpoint.
