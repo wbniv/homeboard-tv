@@ -1,6 +1,21 @@
 # Home button: make the remote's Home open Homeboard on Google TV
 
-**Status: implementation deployed in 0.1.114; Cast1 routing still unverified with the intended helper enabled (2026‑11‑20).** Will,
+**Status (2026‑11‑21): Cast1 0.1.117 routes short Home from Homeboard,
+Android settings and YouTube with the labelled test helper enabled. Physical key
+repeat and lifecycle acceptance remain open.** Cast2 is on 0.1.116 and was in
+Personal use; only passive inspection was performed. Both builds already contain
+the key-repeat fix `d7b2ad4`, confirmed by their frozen source manifests. The old
+0.1.108–110 handoff is superseded by the [fresh validation record](../testing/2026-11-21-home-button.md).
+
+On Cast1 the old public helper was On and the test helper Off. The session turned
+the obsolete public helper Off and enabled **Home button · Homeboard TV (test)**
+through Android's normal consent. Coordinator-injected holds moved one row both
+with the test helper On and with both helpers Off, so they do not establish
+physical key-repeat acceptance. Held Home and the branded remote buttons still
+need the physical remote. Restart, force stop and app-update recovery remain
+unverified. Historical November 20 observations follow.
+
+Will,
 2026‑11‑20: "ok, make home button work". Research:
 [The Home key on Google TV](../investigations/2026-11-20-home-key-on-google-tv.md).
 

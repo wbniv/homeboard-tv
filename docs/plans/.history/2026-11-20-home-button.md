@@ -1,8 +1,13 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/2b05cbd) | Show simultaneous timers and distinguish the test Home helper |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 
 <!--history-meta v1
+2b05cbd	author	Will Norris
+2b05cbd	added	52
+2b05cbd	deleted	1
+2b05cbd	files	1
 b74103f	author	Will Norris
 b74103f	added	267
 b74103f	deleted	0
