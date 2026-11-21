@@ -155,6 +155,8 @@ workflow sent no scripted navigation. Visually checking the 30-app layout, icon
 mask choices and wallpaper selection/persistence remains Will's interactive
 acceptance on cast1. Cast2 is unchanged.
 
+<img src="../how-to/quick-start/device-settings-gear.png" width="700" alt="quick start">
+
 ## Homeboard settings and All Apps page-up iteration
 
 The next APK adds a persistent sliders button for Homeboard settings beside the
@@ -186,6 +188,8 @@ APK: `artifacts/validation/homeboard-cast1-palette-2026-11-15-r2.apk`, SHA-256
 Coordinator job `J‑72a2cfeba591` installed that exact hash and completed the brief
 launch check on Cast1 with health ready. Its screenshot updates the [quick-start
 All Apps image](../how-to/quick-start/all-apps.png).
+
+<img src="../how-to/quick-start/all-apps.png" width="700" alt="quick-start All Apps image">
 
 Earlier, scripted menu job `J‑5d5bf193f038` installed an intermediate APK but
 stopped before the first scripted input with an Android coordinator-plugin error.

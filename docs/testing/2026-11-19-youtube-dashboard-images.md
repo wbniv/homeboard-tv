@@ -9,6 +9,8 @@ Favorites and no saved favorite list was changed.
 
 [Reviewed dashboard](../how-to/quick-start/dashboard-youtube.png).
 
+<img src="../how-to/quick-start/dashboard-youtube.png" width="700" alt="Reviewed dashboard">
+
 PNG SHA-256: `52f3afdbf82c46f549204de1f1e980a9b34207bb4f814832c42c1016e78995a8`.
 Frozen APK SHA-256:
 `80fb505dc9952649363024b88f26b0a346a49c439f28468f89af1f7f9918a4a3`.

@@ -80,6 +80,8 @@ holiday overlays and automatic meeting scheduling can follow separately.
 The [original layout sketch](2026-11-17-world-clock-widget.svg) records the initial
 structure; the reference-inspired sketch above supersedes its neutral card styling.
 
+<img src="2026-11-17-world-clock-widget.svg" width="700" alt="original layout sketch">
+
 The mockup uses illustrative times for a November instant. Daylight-saving changes
 must come from zone rules at the displayed instant; sample offsets are not constants.
 

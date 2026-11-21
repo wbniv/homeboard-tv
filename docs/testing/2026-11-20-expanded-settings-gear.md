@@ -35,6 +35,15 @@ device ready after cleanup. Observed checks:
   [restored dashboard](2026-11-20-expanded-settings-gear/restored.png) retains timer
   focus, widget positions and sizes. No timer or saved configuration was changed.
 
+<img src="2026-11-20-expanded-settings-gear/world-clock.png" width="700" alt="World clock">
+<img src="2026-11-20-expanded-settings-gear/gear-focus.png" width="700" alt="Gear focus">
+<img src="2026-11-20-expanded-settings-gear/clock-settings.png" width="700" alt="clock settings">
+<img src="2026-11-20-expanded-settings-gear/settings-return.png" width="700" alt="returns to expanded content">
+<img src="2026-11-20-expanded-settings-gear/rain.png" width="700" alt="Rain">
+<img src="2026-11-20-expanded-settings-gear/calendar.png" width="700" alt="Calendar">
+<img src="2026-11-20-expanded-settings-gear/timers.png" width="700" alt="Timers">
+<img src="2026-11-20-expanded-settings-gear/restored.png" width="700" alt="restored dashboard">
+
 Air, Favorites, Groceries and Android-provider expansions were source-swept;
 this run does not claim separate on-device visual checks for them. Screen-reader
 speech and loading-time disabled tint were not physically exercised.

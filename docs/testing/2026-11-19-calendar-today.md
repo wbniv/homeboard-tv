@@ -31,3 +31,5 @@ reviewed: today's Thai weekday/date/BE year is visible, and the footer shows
 and the saved app language. This is header/presentation acceptance, not proof of
 a client-side lunar calculation; that remains a
 [separate proposed plan](../plans/2026-11-19-client-side-wan-phra.md).
+
+<img src="2026-11-19-calendar-today/cast1-thai-dashboard.png" width="700" alt="real TV screenshot">

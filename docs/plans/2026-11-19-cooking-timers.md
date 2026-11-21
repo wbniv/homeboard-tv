@@ -56,6 +56,8 @@ and never let seconds cause row or focus movement. Done, Paused, Missed and
 Interrupted remain readable words rather than color-only signals. Empty cards
 show an invitation to open Timers.
 
+<img src="2026-11-19-cooking-timers/widget-display.svg" width="700" alt="revised native card mockup">
+
 Acceptance: compare the real Cast1 card before/after; inspect single, multiple,
 overflow, long-name, empty and non-running states at narrow, wide and tall sizes;
 confirm OK opens the existing richer full-screen presentation and Back restores

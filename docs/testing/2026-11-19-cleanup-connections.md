@@ -27,8 +27,8 @@ identities and addresses, not household devices or real pairing credentials.
 
 | Browser | English connected controls | Thai mobile inspection |
 |---|---|---|
-| Chromium | [Screenshot](2026-11-19-cleanup-connections/chromium-en.png) | [Screenshot](2026-11-19-cleanup-connections/chromium-th.png) |
-| WebKit | [Screenshot](2026-11-19-cleanup-connections/webkit-en.png) | [Screenshot](2026-11-19-cleanup-connections/webkit-th.png) |
+| Chromium | <img src="2026-11-19-cleanup-connections/chromium-en.png" width="320" alt="Screenshot"> | <img src="2026-11-19-cleanup-connections/chromium-th.png" width="320" alt="Screenshot"> |
+| WebKit | <img src="2026-11-19-cleanup-connections/webkit-en.png" width="320" alt="Screenshot"> | <img src="2026-11-19-cleanup-connections/webkit-th.png" width="320" alt="Screenshot"> |
 
 Physical new-TV discovery/pairing, the TV's authorization prompts, host-network
 Docker connectivity and reconnect across computer restarts remain unverified.

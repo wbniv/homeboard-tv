@@ -28,8 +28,8 @@ These are fixture screenshots, not native-TV execution proof.
 
 | Browser | Confirmation | Saved session | Thai restore result |
 |---|---|---|---|
-| Chromium | [Image](2026-11-19-cleanup-execution/chromium-confirm.png) | [Image](2026-11-19-cleanup-execution/chromium-sessions.png) | [Image](2026-11-19-cleanup-execution/chromium-restore-th.png) |
-| WebKit | [Image](2026-11-19-cleanup-execution/webkit-confirm.png) | [Image](2026-11-19-cleanup-execution/webkit-sessions.png) | [Image](2026-11-19-cleanup-execution/webkit-restore-th.png) |
+| Chromium | <img src="2026-11-19-cleanup-execution/chromium-confirm.png" width="320" alt="Image"> | <img src="2026-11-19-cleanup-execution/chromium-sessions.png" width="320" alt="Image"> | <img src="2026-11-19-cleanup-execution/chromium-restore-th.png" width="320" alt="Image"> |
+| WebKit | <img src="2026-11-19-cleanup-execution/webkit-confirm.png" width="320" alt="Image"> | <img src="2026-11-19-cleanup-execution/webkit-sessions.png" width="320" alt="Image"> | <img src="2026-11-19-cleanup-execution/webkit-restore-th.png" width="320" alt="Image"> |
 
 [Capture hashes](2026-11-19-cleanup-execution/verification.json).
 

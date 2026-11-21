@@ -40,8 +40,8 @@ regenerated after scrolling to the top and waiting for painting.
 
 | Browser fixture | Thai BE | English CE |
 |---|---|---|
-| Chromium | [Screenshot](2026-11-18-thai-years/phone-chromium-be.png) | [Screenshot](2026-11-18-thai-years/phone-chromium-ce.png) |
-| WebKit | [Screenshot](2026-11-18-thai-years/phone-webkit-be.png) | [Screenshot](2026-11-18-thai-years/phone-webkit-ce.png) |
+| Chromium | <img src="2026-11-18-thai-years/phone-chromium-be.png" width="320" alt="Screenshot"> | <img src="2026-11-18-thai-years/phone-chromium-ce.png" width="320" alt="Screenshot"> |
+| WebKit | <img src="2026-11-18-thai-years/phone-webkit-be.png" width="320" alt="Screenshot"> | <img src="2026-11-18-thai-years/phone-webkit-ce.png" width="320" alt="Screenshot"> |
 
 These are real browser renders of the shipped component with controlled fixture
 state, not a physical paired-phone session. The literal `<b>Family</b>` label is

@@ -11,6 +11,8 @@ The [plan](../plans/2026-11-18-provider-testing-spike-and-installation.md)
 requires screenshots as proof. The [mockup](../plans/2026-11-18-provider-installation-mockup.svg)
 is an expected design, not evidence of implementation.
 
+<img src="../plans/2026-11-18-provider-installation-mockup.svg" width="700" alt="mockup">
+
 Container validation passed: **472 JVM tests**, zero failures/errors, Android lint
 with zero errors, debug assembly, and parity for **632 English/Thai resources**.
 `task phone:check` passed Chromium and WebKit UI/model checks plus the existing
@@ -29,8 +31,8 @@ They do not prove remote Play installation or TV-side detection after an actual 
 
 | Browser | English | Thai |
 |---|---|---|
-| Chromium / Pixel 7 profile | [Screenshot](2026-11-18-provider-directory/phone-chromium-en.png) | [Screenshot](2026-11-18-provider-directory/phone-chromium-th.png) |
-| WebKit / iPhone 13 profile | [Screenshot](2026-11-18-provider-directory/phone-webkit-en.png) | [Screenshot](2026-11-18-provider-directory/phone-webkit-th.png) |
+| Chromium / Pixel 7 profile | <img src="2026-11-18-provider-directory/phone-chromium-en.png" width="320" alt="Screenshot"> | <img src="2026-11-18-provider-directory/phone-chromium-th.png" width="320" alt="Screenshot"> |
+| WebKit / iPhone 13 profile | <img src="2026-11-18-provider-directory/phone-webkit-en.png" width="320" alt="Screenshot"> | <img src="2026-11-18-provider-directory/phone-webkit-th.png" width="320" alt="Screenshot"> |
 
 Phone renders were inspected for readable cards, clear routes, unclipped text and
 absence of the empty fixed footer. The directory uses normal phone page scrolling;
@@ -79,6 +81,8 @@ the returned animated loop and native result. This was visually reviewed; it doe
 not prove every feed/format, cache expiry, faults, settings or extended playback.
 The prior foreground failure remains in the compatibility record.
 
+<img src="2026-11-18-provider-directory/baseline-core-motion.png" width="700" alt="actual capture">
+
 ## Remaining checks
 
 Actual Google Play launch/install/cancel/return and restricted-account/region
@@ -108,12 +112,12 @@ fix. This failure is retained, rather than replaced by a mockup.
 
 | Screen | Cast1 job | Actual capture | Result |
 |---|---|---|---|
-| Page0 | `J‑1af746d716eb` | [Screenshot](2026-11-18-provider-directory/tv-page0.png) | Native assertions passed; visual review passed |
-| Page1 | `J‑f827d1b82482` | [Screenshot](2026-11-18-provider-directory/tv-page1.png) | Native assertions passed; visual review passed |
-| Page2 | `J‑0f14425fac00` | [Screenshot](2026-11-18-provider-directory/tv-page2.png) | Native assertions passed; visual review passed |
-| Weather | `J‑24b965103275` | [Screenshot](2026-11-18-provider-directory/tv-weather.png) | Native assertions passed; visual review passed |
-| Movie | `J‑f17871f803c2` | [Screenshot](2026-11-18-provider-directory/tv-movie.png) | Native assertions passed; visual review passed |
-| Daily | `J‑4d2deef3cfdb` | [Screenshot](2026-11-18-provider-directory/tv-daily.png) | Native assertions passed; visual review passed |
-| Dashboard | `J‑c669be87900c` | [Screenshot](2026-11-18-provider-directory/tv-dashboard.png) | Native assertions passed; visual review passed |
+| Page0 | `J‑1af746d716eb` | <img src="2026-11-18-provider-directory/tv-page0.png" width="320" alt="Screenshot"> | Native assertions passed; visual review passed |
+| Page1 | `J‑f827d1b82482` | <img src="2026-11-18-provider-directory/tv-page1.png" width="320" alt="Screenshot"> | Native assertions passed; visual review passed |
+| Page2 | `J‑0f14425fac00` | <img src="2026-11-18-provider-directory/tv-page2.png" width="320" alt="Screenshot"> | Native assertions passed; visual review passed |
+| Weather | `J‑24b965103275` | <img src="2026-11-18-provider-directory/tv-weather.png" width="320" alt="Screenshot"> | Native assertions passed; visual review passed |
+| Movie | `J‑f17871f803c2` | <img src="2026-11-18-provider-directory/tv-movie.png" width="320" alt="Screenshot"> | Native assertions passed; visual review passed |
+| Daily | `J‑4d2deef3cfdb` | <img src="2026-11-18-provider-directory/tv-daily.png" width="320" alt="Screenshot"> | Native assertions passed; visual review passed |
+| Dashboard | `J‑c669be87900c` | <img src="2026-11-18-provider-directory/tv-dashboard.png" width="320" alt="Screenshot"> | Native assertions passed; visual review passed |
 
 [Capture metadata and hashes](2026-11-18-provider-directory/manifest.json).

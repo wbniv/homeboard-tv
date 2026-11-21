@@ -191,6 +191,8 @@ automatic recovery returned Cast1 to ready. The final simple check succeeded, bu
 did not traverse the palette menu or verify the resume highlight after launching
 another app. Those two interactions still need Will's hands-on review.
 
+<img src="../how-to/quick-start/all-apps.png" width="700" alt="quick start">
+
 The follow-up Home-favorite build was installed and captured by coordinator job
 `J‑720f2cddffb0` (APK SHA-256
 `20cf4078d80eae625ec8905cbf5fa7f36cd5878adde1f905a7ab5aa4eeebeeda`). The
@@ -198,3 +200,5 @@ The follow-up Home-favorite build was installed and captured by coordinator job
 small app icons, labels and a highlight centered on the selected icon. Scripted
 cross-app return verification is unavailable under the coordinator's foreground
 guard; Will can confirm that interaction manually on Cast1.
+
+<img src="../how-to/quick-start/favorite-home.png" width="700" alt="quick-start favorite screenshot">

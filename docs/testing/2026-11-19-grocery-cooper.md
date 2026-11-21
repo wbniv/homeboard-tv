@@ -46,6 +46,10 @@ These captures establish rendering and scripted behavior, not field-study succes
 The [wireframe](../plans/2026-11-19-grocery-goal-directed-design.svg) and plan's
 Mermaid flow remain design references; these PNGs show the implemented screens.
 
+<img src="2026-11-19-grocery-cooper/phone-thai.png" width="700" alt="Thai rendering">
+<img src="2026-11-19-grocery-cooper/phone-large-text.png" width="700" alt="200% text rendering">
+<img src="../plans/2026-11-19-grocery-goal-directed-design.svg" width="700" alt="wireframe">
+
 ## Frozen build and device acceptance
 
 Final build: **0.1.81**, debug package `net.biohack.homeboard.debug`.

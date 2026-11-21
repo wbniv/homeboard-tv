@@ -106,13 +106,13 @@ Full receipts/logs remain in private `artifacts/calendar-data/<version>/` folder
 
 | Capture | Version / coordinator job | Reviewed result |
 |---|---|---|
-| [sources-en](2026-11-19-calendar-data/sources-en.png) | 0.1.68 · J‑3e7570aeccd9 | Two complete US years, calculator interval/revision, successful-check time and clear overflow wedge. |
-| [sources-th](2026-11-19-calendar-data/sources-th.png) | 0.1.68 · J‑990563b83d70 | Buddhist Era coverage/check dates and readable Thai source controls. |
-| [failed-refresh](2026-11-19-calendar-data/failed-refresh.png) | 0.1.68 · J‑c579c8613c18 | Previous successful-check time retained; failure warning visible after paging with the wedge. |
-| [offline-boundary-en](2026-11-19-calendar-data/offline-boundary-en.png) | 0.1.69 · J‑dc2f4d4c8840 | Reopened cache with retrieval disabled; 29 December preparation and 1 January Wan Phra with lunar details. |
-| [offline-boundary-th](2026-11-19-calendar-data/offline-boundary-th.png) | 0.1.69 · J‑c9ac0ccefb79 | The same December/January boundary in BE 2569/2570, localized lunar labels and Wan Phra marker. |
-| [restore](2026-11-19-calendar-data/restore.png) | 0.1.69 · J‑182634641ade | Visible Restore and short Back each restore Calendar focus, page and size; household preferences unchanged. |
-| [compact](2026-11-19-calendar-data/compact.png) | 0.1.69 · J‑654ffa0f6541 | 5×1 Calendar retains readable date cards and calculated religious/flower markers. |
+| sources-en<br><img src="2026-11-19-calendar-data/sources-en.png" width="320" alt="sources-en"> | 0.1.68 · J‑3e7570aeccd9 | Two complete US years, calculator interval/revision, successful-check time and clear overflow wedge. |
+| sources-th<br><img src="2026-11-19-calendar-data/sources-th.png" width="320" alt="sources-th"> | 0.1.68 · J‑990563b83d70 | Buddhist Era coverage/check dates and readable Thai source controls. |
+| failed-refresh<br><img src="2026-11-19-calendar-data/failed-refresh.png" width="320" alt="failed-refresh"> | 0.1.68 · J‑c579c8613c18 | Previous successful-check time retained; failure warning visible after paging with the wedge. |
+| offline-boundary-en<br><img src="2026-11-19-calendar-data/offline-boundary-en.png" width="320" alt="offline-boundary-en"> | 0.1.69 · J‑dc2f4d4c8840 | Reopened cache with retrieval disabled; 29 December preparation and 1 January Wan Phra with lunar details. |
+| offline-boundary-th<br><img src="2026-11-19-calendar-data/offline-boundary-th.png" width="320" alt="offline-boundary-th"> | 0.1.69 · J‑c9ac0ccefb79 | The same December/January boundary in BE 2569/2570, localized lunar labels and Wan Phra marker. |
+| restore<br><img src="2026-11-19-calendar-data/restore.png" width="320" alt="restore"> | 0.1.69 · J‑182634641ade | Visible Restore and short Back each restore Calendar focus, page and size; household preferences unchanged. |
+| compact<br><img src="2026-11-19-calendar-data/compact.png" width="320" alt="compact"> | 0.1.69 · J‑654ffa0f6541 | 5×1 Calendar retains readable date cards and calculated religious/flower markers. |
 
 ![Thai offline year boundary with calculated Wan Phra](2026-11-19-calendar-data/offline-boundary-th.png)
 

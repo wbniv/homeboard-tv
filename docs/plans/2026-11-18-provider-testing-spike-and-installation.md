@@ -10,6 +10,9 @@ Implementation includes the TV/phone directory and the timeboxed testing spike.
 **[Open the workflow diagram](2026-11-18-provider-installation-flow.svg)** ·
 **[Open the TV and phone mockups](2026-11-18-provider-installation-mockup.svg)**
 
+<img src="2026-11-18-provider-installation-flow.svg" width="700" alt="Open the workflow diagram">
+<img src="2026-11-18-provider-installation-mockup.svg" width="700" alt="Open the TV and phone mockups">
+
 ![Provider installation workflow](2026-11-18-provider-installation-flow.svg)
 
 ![TV and phone installation mockups](2026-11-18-provider-installation-mockup.svg)
@@ -111,6 +114,8 @@ with visible focus and paged remote navigation, without a scrollbar.
 
 See the [TV and phone installation mockups](2026-11-18-provider-installation-mockup.svg)
 at the top of this plan.
+
+<img src="2026-11-18-provider-installation-mockup.svg" width="700" alt="TV and phone installation mockups">
 
 **From the TV:** select a provider → **Open Google Play** → install through the
 store → return to Homeboard → detect the installed package → **Configure** if

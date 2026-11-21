@@ -39,8 +39,8 @@ horizontal overflow. Browser fixture captures below are not physical-device proo
 
 | Browser | English fixture | Thai fixture |
 |---|---|---|
-| Chromium | [Screenshot](2026-11-18-tv-cleanup/chromium-en.png) | [Screenshot](2026-11-18-tv-cleanup/chromium-th.png) |
-| WebKit | [Screenshot](2026-11-18-tv-cleanup/webkit-en.png) | [Screenshot](2026-11-18-tv-cleanup/webkit-th.png) |
+| Chromium | <img src="2026-11-18-tv-cleanup/chromium-en.png" width="320" alt="Screenshot"> | <img src="2026-11-18-tv-cleanup/chromium-th.png" width="320" alt="Screenshot"> |
+| WebKit | <img src="2026-11-18-tv-cleanup/webkit-en.png" width="320" alt="Screenshot"> | <img src="2026-11-18-tv-cleanup/webkit-th.png" width="320" alt="Screenshot"> |
 
 The `<b>Family TV</b>` label is intentional escaping input and must render as text.
 
@@ -58,6 +58,8 @@ Chromecast HD, Android 14, boreal, with 150 reported packages. The native report
 states the foreground was unchanged.
 [Actual companion result](2026-11-18-tv-cleanup/companion-cast1-live.png).
 The live result remained scan-only with zero candidates and Apply unavailable.
+
+<img src="2026-11-18-tv-cleanup/companion-cast1-live.png" width="700" alt="Actual companion result">
 
 The host-browser render used the actual completed companion state. The first
 container live-browser attempt could not reach host loopback under rootless
@@ -90,8 +92,8 @@ source manifest retained privately alongside the APK.
 |---|---|
 | Cast1 install/launch | **J‑d3dea4df4c0d**, succeeded; matching frozen APK installed and launcher verified. |
 | Cast2 independent install | **J‑d6f5259332fa**, admitted/granted, then failed `personal-install-in-use`. Installation remains unconfirmed; no foreground acceptance claimed. |
-| Cast1 English instructions | **J‑5520e2fe4010**, coordinator succeeded and native assertions passed on 0.1.64. [Real TV screenshot](2026-11-18-tv-cleanup/cast1-instructions-en.png). |
-| Cast1 Thai instructions | **J‑f900a455e565**, coordinator succeeded and native assertions passed on 0.1.64. [Real TV screenshot](2026-11-18-tv-cleanup/cast1-instructions-th.png). |
+| Cast1 English instructions | **J‑5520e2fe4010**, coordinator succeeded and native assertions passed on 0.1.64. <img src="2026-11-18-tv-cleanup/cast1-instructions-en.png" width="320" alt="Real TV screenshot">. |
+| Cast1 Thai instructions | **J‑f900a455e565**, coordinator succeeded and native assertions passed on 0.1.64. <img src="2026-11-18-tv-cleanup/cast1-instructions-th.png" width="320" alt="Real TV screenshot">. |
 
 The probes select the actual Settings action through the normal menu handler,
 verify both instruction paragraphs, dispatch short Back and assert a return to

@@ -9,6 +9,8 @@ labels, while retaining widget-background opacity and flag/icon treatments.
 The [one-row mockup](../plans/2026-11-17-calendar-one-row.svg) and
 [Calendar guide](../how-to/calendar.md) reflect the change.
 
+<img src="../plans/2026-11-17-calendar-one-row.svg" width="700" alt="one-row mockup">
+
 ## Local checks
 
 `task check` passed after the combined weekday/contrast edits: 478 JVM tests with
@@ -30,10 +32,14 @@ The [English dashboard screenshot](2026-11-18-calendar-weekdays-and-contrast/das
 shows Sat/Sun/Mon/Tue/Thu above the date numbers and stronger card fills over the
 user's saved wallpaper, with existing favorites and settings retained.
 
+<img src="2026-11-18-calendar-weekdays-and-contrast/dashboard-en.png" width="700" alt="English dashboard screenshot">
+
 Thai dashboard job **J‑5c83f846feb6** succeeded with a native pass report for
 0.1.62, an effective Thai locale, 65% isolated fresh defaults, BE date formatting,
 localized durations and unchanged household preferences/saved language.
 [Thai dashboard screenshot](2026-11-18-calendar-weekdays-and-contrast/dashboard-th.png).
+
+<img src="2026-11-18-calendar-weekdays-and-contrast/dashboard-th.png" width="700" alt="Thai dashboard screenshot">
 
 Thai expanded Calendar job **J‑61fd9b4b3b83** also succeeded with the version-matched
 native pass report. The [full-screen screenshot](2026-11-18-calendar-weekdays-and-contrast/calendar-th.png)
@@ -42,6 +48,8 @@ BE year **2569** in the range and selected-day details. Both Thai probes used
 isolated preferences; the native reports confirm the saved household preferences
 and language were unchanged. The normal MainActivity catalog registration was
 restored after these checks.
+
+<img src="2026-11-18-calendar-weekdays-and-contrast/calendar-th.png" width="700" alt="full-screen screenshot">
 
 The initial background attempts were declined: Cast1 **J‑55051730838d** with
 `install-over-foreground`, Cast2 **J‑45aaa3f9baa5** with `personal-install-in-use`.

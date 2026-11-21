@@ -30,6 +30,8 @@ Configure header. An Android provider without reconfiguration still hides the
 action. Acceptance: sweep those factories and content implementations, compile/lint,
 and visually check the rendered gear, focus and existing navigation on Cast1.
 
+<img src="2026-11-17-widget-settings-gear.svg" width="700" alt="shared-header mockup">
+
 The sweep also found a pre-existing Rain expansion crash at 23:34 in Cast1 logs:
 the next forecast hour is tomorrow at 00:00, but the default selected day still
 ends at that same midnight, producing an empty interval. The expanded-day model

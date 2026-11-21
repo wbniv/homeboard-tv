@@ -20,6 +20,8 @@ captures the 1920 × 1080 display with YouTube selected. The coordinator capture
 completed successfully and exported verified evidence. Preserve this PNG as the
 visual baseline; use its pixels rather than a compressed chat preview.
 
+<img src="2026-11-16-google-tv-app-focus/reference.png" width="700" alt="Full resolution reference PNG">
+
 ![Reference launcher with YouTube focused](2026-11-16-google-tv-app-focus/reference.png)
 
 The mockups below show the proposed Homeboard treatment and its layers. They
@@ -361,6 +363,9 @@ and [after three Right presses](2026-11-16-google-tv-app-focus/cast2-gtv-focus-a
 The coordinator cannot video-record the stock launcher (`record` needs a registered
 app, `record-live` takes no input), so **transition timing is still unmeasured**.
 
+<img src="2026-11-16-google-tv-app-focus/cast2-gtv-focus-first-app.png" width="700" alt="first app focused">
+<img src="2026-11-16-google-tv-app-focus/cast2-gtv-focus-after-scroll.png" width="700" alt="after three Right presses">
+
 | Property | Google TV | Homeboard Favorites 0.1.107 |
 |---|---|---|
 | Icon diameter | 152 px | about 87 px (a one-row ribbon is about 88 dp tall) |
@@ -377,3 +382,5 @@ label and a 56 dp preferred icon. The pitch follows the icon as drawn
 (`AppAppearance.favoritePitchDp`). Result:
 [Cast1, 0.1.107](2026-11-16-google-tv-app-focus/cast1-favorites-0.1.107.png). Will accepted it.
 Only round icons in the Favorites ribbon changed; All Apps, Home and banners did not.
+
+<img src="2026-11-16-google-tv-app-focus/cast1-favorites-0.1.107.png" width="700" alt="Cast1, 0.1.107">

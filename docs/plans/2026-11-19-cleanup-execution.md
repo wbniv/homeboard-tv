@@ -96,6 +96,8 @@ for the larger screen sequence. English/Thai labels, accessible named controls,
 keyboard/touch navigation and mobile-width screenshots are required. Device and
 package data must be inserted as text, never executable markup.
 
+<img src="2026-11-18-tv-cleanup-and-restore.svg" width="700" alt="TV/companion mockups">
+
 ## Execution and recovery
 
 Wire the existing Session engine through explicit transport interfaces. No general

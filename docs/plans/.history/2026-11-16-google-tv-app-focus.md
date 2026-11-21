@@ -1,9 +1,15 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/6d8bbf2) | Record the Google TV measurements behind the Favorites ribbon |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/be49bd7) | Add independent Small icons and Banners for Home favorites |
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/531779b) | Match Google TV app focus and version each deployment |
 
 <!--history-meta v1
+6d8bbf2	author	Will Norris
+6d8bbf2	added	26
+6d8bbf2	deleted	0
+6d8bbf2	files	1
+6d8bbf2	body	Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqNmqPnTDDnLftRVKDf
 be49bd7	author	Will Norris
 be49bd7	added	5
 be49bd7	deleted	0

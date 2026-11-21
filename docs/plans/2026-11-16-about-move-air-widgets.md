@@ -25,6 +25,9 @@ for the selected color. The palette selector has twenty choices in five compact
 rows; see the [menu mockup](2026-11-16-palette-trend-resize/background.svg) and
 [palette mockup](2026-11-16-palette-trend-resize/palette.svg).
 
+<img src="2026-11-16-palette-trend-resize/background.svg" width="700" alt="menu mockup">
+<img src="2026-11-16-palette-trend-resize/palette.svg" width="700" alt="palette mockup">
+
 ## About dialog
 
 - Show the Homeboard icon, product name, installed version and concise purpose.
