@@ -1,9 +1,14 @@
 | Date | Change |
 |------|--------|
+| [2026-11-21](https://github.com/wbniv/homeboard-tv/commit/ddac88a) | Docs: record current Home-button routing and validation limits |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/2b05cbd) | Show simultaneous timers and distinguish the test Home helper |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 
 <!--history-meta v1
+ddac88a	author	Will Norris
+ddac88a	added	16
+ddac88a	deleted	1
+ddac88a	files	1
 2b05cbd	author	Will Norris
 2b05cbd	added	52
 2b05cbd	deleted	1

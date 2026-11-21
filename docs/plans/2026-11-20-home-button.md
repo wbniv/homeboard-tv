@@ -11,9 +11,12 @@ On Cast1 the old public helper was On and the test helper Off. The session turne
 the obsolete public helper Off and enabled **Home button · Homeboard TV (test)**
 through Android's normal consent. Coordinator-injected holds moved one row both
 with the test helper On and with both helpers Off, so they do not establish
-physical key-repeat acceptance. Held Home and the branded remote buttons still
-need the physical remote. Restart, force stop and app-update recovery remain
-unverified. Historical November 20 observations follow.
+physical key-repeat acceptance. Will subsequently confirmed with the physical
+remote that held Home opens Google's settings panel. Screenshot corroboration
+and recovery tests were blocked by an unrelated coordinator foreground-cleanup
+fence at 15:30; see the fresh validation record. Physical repeat and the branded
+remote buttons remain open, as do restart, force-stop and app-update recovery.
+Historical November 20 observations follow.
 
 Will,
 2026‑11‑20: "ok, make home button work". Research:

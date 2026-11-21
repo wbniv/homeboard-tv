@@ -136,3 +136,37 @@ Still open:
 No compilation/test rerun was needed for these documentation and device-setting
 changes. `git diff --check` passed. Existing build/test claims remain attributed
 to the earlier deployment records, rather than represented as new test runs.
+
+## Physical held Home and blocked recovery follow-up, 15:30–15:34
+
+Will made Cast1 available for the recovery checks, then reported from the
+physical remote: **“held home brings up settings panel”**, and requested a
+current-screen capture. Record held Home as a **user-observed pass** for opening
+Google's settings panel. No screenshot was obtained, and the agent did not
+independently inspect that panel.
+
+Coordinator 0.1.213 (`d322b2b8`) reported Cast1 unowned but **recovery-required**.
+The fence originated in another session's Clocks install/launcher check
+`J‑a3bc3f65f6aa`: its cleanup failed to verify restoration of
+`org.worldfoundry.plantedtank/org.worldfoundry.screensaver.PlantedTankActivity`.
+The subsequent automatic recovery `J‑f8f7fefb9363` connected successfully but
+again failed cleanup verification (`RestoreUnverified`, `cleanup-unverified`).
+This is not evidence of a Homeboard lifecycle failure. Its cause has not been
+established by this follow-up.
+
+Both receipts were exported beneath
+`docs/diagnostics/home-button-recovery-2026-11-21/` (`coordinator-origin/` and
+`coordinator-readd/`). Support reported capture, Remote, profile, install and
+launch unavailable because of the recovery fence.
+
+The ordinary capture request `J‑0c0da8679e1a` waited behind that fence and was
+cancelled before admission; its export confirms zero artifacts. The coordinator's
+current-screen screenshot path separately refused **Screenshot unavailable:
+Device is recovery-required**. No screenshot is claimed, and no capture was left
+queued to run after the panel disappears. The failed automatic recovery was not
+blindly repeated, and no direct transport or manual fence clearing was used.
+
+Restart, force-stop and update-recovery checks could not start. The next step is
+to resolve the coordinator's foreground-cleanup fence, then resume those checks.
+Physical held-key repeat and the branded app buttons remain open; held Home now
+has Will's physical-remote observation above.
