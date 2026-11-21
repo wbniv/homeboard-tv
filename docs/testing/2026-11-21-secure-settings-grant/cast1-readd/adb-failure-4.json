@@ -1,0 +1,9 @@
+{
+  "args": [
+    "shell",
+    "getprop ro.serialno"
+  ],
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "adb: device '192.168.4.61:39359' not found\n"
+}

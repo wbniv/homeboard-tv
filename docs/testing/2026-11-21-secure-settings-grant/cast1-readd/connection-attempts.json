@@ -1,0 +1,19 @@
+[
+  {
+    "attempt": 1,
+    "reason": "device-not-found-on-network",
+    "endpoint": null,
+    "started_at": 1795232933.396,
+    "attempt_seconds": 0.232
+  },
+  {
+    "attempt": 2,
+    "endpoint": "192.168.4.61:39359",
+    "connected": true,
+    "started_at": 1795232934.66,
+    "attempt_seconds": 1.172,
+    "advertised_at": 1795232934.742,
+    "adb_connect_seconds": 0.742,
+    "adb_response": "connected to <endpoint>"
+  }
+]
