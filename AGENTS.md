@@ -39,6 +39,12 @@ docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
 
 ## Will's iterative TV testing
 
+**Test fleet direction (Will, 2026‑11‑21):** the general testing list is one of each
+device type, so it gains the tablet (`tablet-lenovo-tab-p11-pro-19a57145`) and the
+kitchen Nest Hub Max (`nest-14cbd06f-a0d2-a5e5-b826-0acf6c04a1e4`). Cast2 leaves the
+general list unless a check specifically needs a second Chromecast. The deploy default
+below still names Cast1 and Cast2 until `task deploy` and the plans are updated.
+
 Cast1 remains the default for routine foreground testing. Will's November 17
 Cast2 availability is temporary and permits checks that specifically need Cast2;
 it does not change that testing default. Installation targets and foreground
