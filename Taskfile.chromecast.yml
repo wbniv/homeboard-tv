@@ -51,6 +51,9 @@ tasks:
   submit:
     desc: 'Coordinator submit'
     cmds: ['"{{.CC_CLIENT}}" submit']
+  battery-run-anyway:
+    desc: 'Allow a queued JOB despite its low-battery hold (other gates remain)'
+    cmds: ['"{{.CC_CLIENT}}" battery-run-anyway']
   check:
     desc: 'Coordinator check'
     cmds: ['"{{.CC_CLIENT}}" check']

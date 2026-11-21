@@ -49,6 +49,11 @@ status, media and app only), so it cannot take an APK, and it is fenced after a
 certificate change. The tablet's `install` is ready again. `task deploy` therefore
 defaults to Cast1, the Pixel and the tablet (Will, 2026‑11‑21).
 
+**Low battery never blocks a test (Will, 2026‑11‑21: "don't wait on battery").** When a job
+for the tablet or the Pixel is held for a low battery, do not wait for charging: submit
+`task chromecast:battery-run-anyway JOB=<id>`. It is an audited override for that job
+only; personal-use, ownership and recovery gates still apply.
+
 Cast1 remains the default for routine foreground testing. Will's November 17
 Cast2 availability is temporary and permits checks that specifically need Cast2;
 it does not change that testing default. Installation targets and foreground
