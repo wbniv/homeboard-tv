@@ -1,0 +1,89 @@
+{
+  "score_sha256": "8fa3d1bf65aff2ca3c6285e6d4c8b448297d79b1f6e925b39955d8dce6d558d6",
+  "host_start_wall": 1795234296.242678,
+  "host_start_monotonic": 82581.622364021,
+  "captures": [
+    {
+      "label": "u0-use-this-focused",
+      "planned_ms": 11000,
+      "started": 1795234308.2618456,
+      "ended": 1795234309.7127857,
+      "file": "input-frame-001.png",
+      "bytes": 217759,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u1-after-use-this",
+      "planned_ms": 16000,
+      "started": 1795234313.2617693,
+      "ended": 1795234314.8510911,
+      "file": "input-frame-002.png",
+      "bytes": 210093,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u2-after-use-this-later",
+      "planned_ms": 19000,
+      "started": 1795234316.2617667,
+      "ended": 1795234317.6531272,
+      "file": "input-frame-003.png",
+      "bytes": 210093,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u3-home-undo-banner",
+      "planned_ms": 26000,
+      "started": 1795234323.2617483,
+      "ended": 1795234324.7100341,
+      "file": "input-frame-004.png",
+      "bytes": 356863,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u4-list-in-use-focused",
+      "planned_ms": 34000,
+      "started": 1795234331.2617574,
+      "ended": 1795234332.9039843,
+      "file": "input-frame-005.png",
+      "bytes": 210093,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u5-right",
+      "planned_ms": 37000,
+      "started": 1795234334.2617557,
+      "ended": 1795234335.6427703,
+      "file": "input-frame-006.png",
+      "bytes": 210561,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u6-right2",
+      "planned_ms": 40000,
+      "started": 1795234337.2617683,
+      "ended": 1795234338.8836603,
+      "file": "input-frame-007.png",
+      "bytes": 210318,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u7-right2-down",
+      "planned_ms": 43000,
+      "started": 1795234340.2617593,
+      "ended": 1795234341.8278275,
+      "file": "input-frame-008.png",
+      "bytes": 257385,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u8-final-home",
+      "planned_ms": 56000,
+      "started": 1795234353.261759,
+      "ended": 1795234354.9245815,
+      "file": "input-frame-009.png",
+      "bytes": 215577,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

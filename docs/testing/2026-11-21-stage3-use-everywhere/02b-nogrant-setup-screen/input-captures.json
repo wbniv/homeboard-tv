@@ -1,0 +1,62 @@
+{
+  "score_sha256": "6497cb49cec1fcb78a00daa6fcc59f24e5f88fca2f5b0a95f78eb1000e8cb6e3",
+  "host_start_wall": 1795233790.2117317,
+  "host_start_monotonic": 82075.591417762,
+  "captures": [
+    {
+      "label": "n1-row-use-everywhere-focused",
+      "planned_ms": 15000,
+      "started": 1795233806.7003682,
+      "ended": 1795233808.226645,
+      "file": "input-frame-001.png",
+      "bytes": 234178,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "n2-setup-screen",
+      "planned_ms": 20000,
+      "started": 1795233811.7003367,
+      "ended": 1795233813.1873927,
+      "file": "input-frame-002.png",
+      "bytes": 157323,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "n3-setup-down1",
+      "planned_ms": 24000,
+      "started": 1795233815.7003012,
+      "ended": 1795233817.1567485,
+      "file": "input-frame-003.png",
+      "bytes": 157323,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "n4-setup-down2",
+      "planned_ms": 28000,
+      "started": 1795233819.700338,
+      "ended": 1795233821.0739348,
+      "file": "input-frame-004.png",
+      "bytes": 157323,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "n5-after-first-button",
+      "planned_ms": 35000,
+      "started": 1795233826.7003107,
+      "ended": 1795233828.1749504,
+      "file": "input-frame-005.png",
+      "bytes": 233798,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "n6-final-home",
+      "planned_ms": 47000,
+      "started": 1795233838.700406,
+      "ended": 1795233840.4221368,
+      "file": "input-frame-006.png",
+      "bytes": 221159,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

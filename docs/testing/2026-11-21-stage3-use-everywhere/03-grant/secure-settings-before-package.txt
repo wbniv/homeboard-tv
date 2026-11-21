@@ -1,0 +1,293 @@
+Activity Resolver Table:
+  Schemes:
+      market:
+        4b9bcb4 net.biohack.homeboard.debug/com.gathin.tvhome.AppLaunchActivity filter 1cc60dd
+          Action: "android.intent.action.VIEW"
+          Category: "android.intent.category.DEFAULT"
+          Category: "android.intent.category.BROWSABLE"
+          Scheme: "market"
+          Authority: "launch": -1
+
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        f62ffa net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity filter ccc9ab
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.HOME"
+          Category: "android.intent.category.COMMON_HOME"
+          Category: "android.intent.category.DEFAULT"
+          Category: "com.heytap.tv.launcher.category.MODERN_HOME"
+        f62ffa net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity filter 1e62808
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+        f62ffa net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity filter d61aba1
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LEANBACK_LAUNCHER"
+      com.android.tv.action.VIEW_INPUTS:
+        46751c6 net.biohack.homeboard.debug/com.gathin.tvhome.InputsRequestActivity filter c5587
+          Action: "com.android.tv.action.VIEW_INPUTS"
+          Category: "android.intent.category.DEFAULT"
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED:
+        f8ff020 net.biohack.homeboard.debug/com.gathin.tvhome.KitchenTimerReceiver filter 4332dd9
+          Action: "android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+      android.intent.action.TIMEZONE_CHANGED:
+        f8ff020 net.biohack.homeboard.debug/com.gathin.tvhome.KitchenTimerReceiver filter 4332dd9
+          Action: "android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+      android.intent.action.TIME_SET:
+        f8ff020 net.biohack.homeboard.debug/com.gathin.tvhome.KitchenTimerReceiver filter 4332dd9
+          Action: "android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+      android.intent.action.BOOT_COMPLETED:
+        176c452 net.biohack.homeboard.debug/com.gathin.tvhome.HomeButtonReceiver filter 8cec323
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+        f8ff020 net.biohack.homeboard.debug/com.gathin.tvhome.KitchenTimerReceiver filter 4332dd9
+          Action: "android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+      com.gathin.tvhome.GUARD:
+        98d39e net.biohack.homeboard.debug/com.gathin.tvhome.GuardConfig filter bc06e7f
+          Action: "com.gathin.tvhome.GUARD"
+      android.intent.action.MY_PACKAGE_REPLACED:
+        176c452 net.biohack.homeboard.debug/com.gathin.tvhome.HomeButtonReceiver filter 8cec323
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+        f8ff020 net.biohack.homeboard.debug/com.gathin.tvhome.KitchenTimerReceiver filter 4332dd9
+          Action: "android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.MY_PACKAGE_REPLACED"
+
+Service Resolver Table:
+  Non-Data Actions:
+      tv.projectivy.plugin.WALLPAPER_PROVIDER:
+        79fbae4 net.biohack.homeboard.debug/net.biohack.homeboard.wallpaperfixture.ProviderService filter a4c3b4d
+          Action: "tv.projectivy.plugin.WALLPAPER_PROVIDER"
+      android.service.dreams.DreamService:
+        b3a8baa net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverDream filter df7739b permission android.permission.BIND_DREAM_SERVICE
+          Action: "android.service.dreams.DreamService"
+          Category: "android.intent.category.DEFAULT"
+      android.service.notification.NotificationListenerService:
+        c77a338 net.biohack.homeboard.debug/com.gathin.tvhome.GuardRevival filter 7fbbf11 permission android.permission.BIND_NOTIFICATION_LISTENER_SERVICE
+          Action: "android.service.notification.NotificationListenerService"
+      android.accessibilityservice.AccessibilityService:
+        7d3ee4c net.biohack.homeboard.debug/com.gathin.tvhome.HomeKeyService filter 29fce95 permission android.permission.BIND_ACCESSIBILITY_SERVICE
+          Action: "android.accessibilityservice.AccessibilityService"
+        28db876 net.biohack.homeboard.debug/com.gathin.tvhome.InputKeyService filter 5cfae77 permission android.permission.BIND_ACCESSIBILITY_SERVICE
+          Action: "android.accessibilityservice.AccessibilityService"
+
+Domain verification status:
+
+Permissions:
+  Permission [net.biohack.homeboard.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION] (dd8fd00):
+    sourcePackage=net.biohack.homeboard.debug
+    uid=10128 gids=[] type=0 prot=signature
+    perm=PermissionInfo{3cad1c net.biohack.homeboard.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION}
+    flags=0x0
+
+Registered ContentProviders:
+  net.biohack.homeboard.debug/androidx.startup.InitializationProvider:
+    Provider{63c6d25 net.biohack.homeboard.debug/androidx.startup.InitializationProvider}
+  net.biohack.homeboard.debug/com.gathin.tvhome.ThemeProvider:
+    Provider{99eefa net.biohack.homeboard.debug/com.gathin.tvhome.ThemeProvider}
+
+ContentProvider Authorities:
+  [net.biohack.homeboard.debug.androidx-startup]:
+    Provider{63c6d25 net.biohack.homeboard.debug/androidx.startup.InitializationProvider}
+      applicationInfo=ApplicationInfo{79e939 net.biohack.homeboard.debug}
+  [net.biohack.homeboard.debug.theme]:
+    Provider{99eefa net.biohack.homeboard.debug/com.gathin.tvhome.ThemeProvider}
+      applicationInfo=ApplicationInfo{40ddb7e net.biohack.homeboard.debug}
+
+Key Set Manager:
+  [net.biohack.homeboard.debug]
+      Signing KeySets: 89
+
+Packages:
+  Package [net.biohack.homeboard.debug] (bcbd729):
+    appId=10128
+    pkg=Package{40800c6 net.biohack.homeboard.debug}
+    codePath=/data/app/~~xy45qxIdVv0_2UntRTvVXw==/net.biohack.homeboard.debug-VKo3ZQk8KO7H53tOD10xlg==
+    resourcePath=/data/app/~~xy45qxIdVv0_2UntRTvVXw==/net.biohack.homeboard.debug-VKo3ZQk8KO7H53tOD10xlg==
+    legacyNativeLibraryDir=/data/app/~~xy45qxIdVv0_2UntRTvVXw==/net.biohack.homeboard.debug-VKo3ZQk8KO7H53tOD10xlg==/lib
+    extractNativeLibs=false
+    primaryCpuAbi=null
+    secondaryCpuAbi=null
+    cpuAbiOverride=null
+    versionCode=116 minSdk=26 targetSdk=34
+    minExtensionVersions=[]
+    versionName=0.1.116
+    usesNonSdkApi=false
+    splits=[base]
+    apkSigningVersion=2
+    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]
+    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PARTIALLY_DIRECT_BOOT_AWARE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    forceQueryable=false
+    queriesPackages=[com.xiaomi.mitv.settings, com.tcl.settings, com.amazon.tv.launcher]
+    queriesIntents=[Intent { act=android.appwidget.action.APPWIDGET_BIND }, Intent { act=android.appwidget.action.APPWIDGET_UPDATE }, Intent { act=android.intent.action.VIEW cat=[android.intent.category.BROWSABLE] dat=https:/... }, Intent { act=tv.projectivy.plugin.WALLPAPER_PROVIDER }, Intent { act=android.service.dreams.DreamService }, Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] }, Intent { act=android.settings.SETTINGS }, Intent { act=android.settings.WIFI_SETTINGS }, Intent { act=android.settings.DISPLAY_SETTINGS }, Intent { act=android.settings.ACCESSIBILITY_SETTINGS }, Intent { act=android.settings.MANAGE_APPLICATIONS_SETTINGS }, Intent { act=android.settings.APPLICATION_DETAILS_SETTINGS dat=package:/... }, Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] }, Intent { act=android.intent.action.MAIN cat=[android.intent.category.LEANBACK_LAUNCHER] }, Intent { act=android.intent.action.MAIN cat=[com.gathin.tvhome.category.DOCK_CARD] }, Intent { act=android.intent.action.MAIN cat=[android.intent.category.HOME] }]
+    dataDir=/data/user/0/net.biohack.homeboard.debug
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    timeStamp=2026-11-20 23:48:39
+    lastUpdateTime=2026-11-20 23:48:43
+    installerPackageName=null
+    installerPackageUid=-1
+    initiatingPackageName=com.android.shell
+    originatingPackageName=null
+    packageSource=1
+    appMetadataFilePath=null
+    signatures=PackageSignatures{6c8d887 version:2, signatures:[9caf227f], past signatures:[]}
+    installPermissionsFixed=true
+    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ]
+    privatePkgFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PARTIALLY_DIRECT_BOOT_AWARE PRIVATE_FLAG_ALLOW_NATIVE_HEAP_POINTER_TAGGING ]
+    apexModuleName=null
+    declared permissions:
+      net.biohack.homeboard.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: prot=signature
+    requested permissions:
+      android.permission.BIND_APPWIDGET
+      android.permission.INTERNET
+      android.permission.SCHEDULE_EXACT_ALARM
+      android.permission.POST_NOTIFICATIONS
+      android.permission.WAKE_LOCK
+      android.permission.FOREGROUND_SERVICE
+      android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK
+      android.permission.RECEIVE_BOOT_COMPLETED
+      android.permission.REQUEST_DELETE_PACKAGES
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.ACCESS_WIFI_STATE
+      android.permission.ACCESS_FINE_LOCATION
+      android.permission.ACCESS_COARSE_LOCATION
+      android.permission.WRITE_SECURE_SETTINGS
+      yandex.tv.permission.ACCESS_TV_SOURCE
+      net.biohack.homeboard.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+    install permissions:
+      android.permission.FOREGROUND_SERVICE: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      android.permission.INTERNET: granted=true
+      net.biohack.homeboard.debug.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: granted=true
+      android.permission.BIND_APPWIDGET: granted=false
+      android.permission.WRITE_SECURE_SETTINGS: granted=false
+      android.permission.WRITE_SECURE_SETTINGS: granted=false, userId=10
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      android.permission.SCHEDULE_EXACT_ALARM: granted=false
+      android.permission.REQUEST_DELETE_PACKAGES: granted=true
+      android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK: granted=true
+      android.permission.ACCESS_WIFI_STATE: granted=true
+      android.permission.WAKE_LOCK: granted=true
+    User 0: ceDataInode=50248 installed=true hidden=false suspended=false distractionFlags=0 stopped=true notLaunched=false enabled=0 instant=false virtual=false
+      installReason=0
+      firstInstallTime=2026-11-20 22:18:56
+      uninstallReason=0
+      overlay paths:
+        /data/resource-cache/com.android.systemui-neutral-Eh0W.frro
+        /data/resource-cache/com.android.systemui-accent-FvPI.frro
+        /data/resource-cache/com.android.systemui-dynamic-0Azd.frro
+      gids=[3003]
+      runtime permissions:
+        android.permission.POST_NOTIFICATIONS: granted=true, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACCESS_FINE_LOCATION: granted=true, flags=[ USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACCESS_COARSE_LOCATION: granted=true, flags=[ USER_SET|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+    User 10: ceDataInode=0 installed=true hidden=false suspended=false distractionFlags=0 stopped=true notLaunched=true enabled=0 instant=false virtual=false
+      installReason=0
+      firstInstallTime=2026-11-20 22:18:56
+      uninstallReason=0
+      gids=[3003]
+      runtime permissions:
+        android.permission.POST_NOTIFICATIONS: granted=true
+        android.permission.ACCESS_FINE_LOCATION: granted=false
+        android.permission.ACCESS_COARSE_LOCATION: granted=false
+
+Queries:
+  system apps queryable: false
+  queries via forceQueryable:
+  queries via package name:
+  queries via component:
+    com.google.android.play.games:
+      net.biohack.homeboard.debug
+    tv.corebuilds.motion:
+      net.biohack.homeboard.debug
+    net.biohack.homeboard:
+      net.biohack.homeboard.debug
+    com.android.settings.intelligence:
+      net.biohack.homeboard.debug
+    org.xbmc.kodi:
+      net.biohack.homeboard.debug
+    net.biohack.homeboard.debug:
+      org.worldfoundry.screensaver
+      org.worldfoundry.seahorsegrid
+      org.worldfoundry.tvmediaphase0
+      com.android.dreams.basic
+      org.worldfoundry.plantedtank
+      org.bsnesjg.tv.native.phase2.responsive
+      com.google.android.apps.tv.dreamx
+      com.google.android.apps.tv.launcherx
+      org.bsnesjg.tv.native
+      com.google.android.play.games
+      com.google.android.videos
+      org.bsnesjg.tv
+      org.bsnesjg.tv.phase2
+      org.bsnesjg.tv.library
+      org.bsnesjg.tv.native.phase2
+      com.google.android.apps.education.cast2class
+      net.biohack.homeboard.fixture
+      com.daysofwonder.tt.android
+      com.google.android.youtube.tv
+      tv.projectivy.plugin.wallpaperprovider.overflight
+      tv.projectivy.plugin.wallpaperprovider.photooftheday
+      com.neilturner.aerialviews
+      tv.corebuilds.motion
+      tv.projectivy.plugin.wallpaperprovider.immich
+      com.danielkorgel.projectivy.plugin.cinemaglow
+      net.biohack.homeboard
+      net.biohack.homeboard.widgetfixture
+      net.biohack.homeboard.widgetprovider
+      org.videolan.vlc
+      app.symfonik.music.player
+      org.xbmc.kodi
+      org.worldfoundry.coordinator.fixture
+      org.worldfoundry.minutemachine
+      org.worldfoundry.wf_game
+      org.worldfoundry.wf_game.aquarium
+      org.worldfoundry.wf_game.condo
+      org.worldfoundry.wf_game.smb
+      org.worldfoundry.wf_game.qbert
+      org.worldfoundry.wf_game.patchwork
+      org.worldfoundry.wf_game.bomberman
+      org.worldfoundry.wf_game.primes
+      org.worldfoundry.wf_game.baseline
+      org.worldfoundry.wf_game.parmenides
+  queryable via interaction:
+    User 0:
+      [com.android.location.fused,com.android.localtransport,com.android.wallpaperbackup,com.android.tv.feedbackconsent,com.android.inputdevices,com.android.tv.settings,com.droidlogic,com.android.providers.settings,android,com.android.dynsystem,com.netflix.tokenmanager,com.google.android.chromecast.chromecastservice,com.android.keychain]:
+        net.biohack.homeboard.debug
+      [com.google.android.gsf,com.google.android.gms]:
+        net.biohack.homeboard.debug
+      net.biohack.homeboard.debug:
+        [com.android.location.fused,com.android.localtransport,com.android.wallpaperbackup,com.android.tv.feedbackconsent,com.android.inputdevices,com.android.tv.settings,com.droidlogic,com.android.providers.settings,android,com.android.dynsystem,com.netflix.tokenmanager,com.google.android.chromecast.chromecastservice,com.android.keychain]
+    User 10:
+  queryable via uses-library:
+
+Dexopt state:
+  [net.biohack.homeboard.debug]
+    path: /data/app/~~xy45qxIdVv0_2UntRTvVXw==/net.biohack.homeboard.debug-VKo3ZQk8KO7H53tOD10xlg==/base.apk
+      arm: [status=verify] [reason=bg-dexopt] [primary-abi]
+        [location is /data/app/~~xy45qxIdVv0_2UntRTvVXw==/net.biohack.homeboard.debug-VKo3ZQk8KO7H53tOD10xlg==/oat/arm/base.odex]
+
+Compiler stats:
+  [net.biohack.homeboard.debug]
+     base.apk - 8863

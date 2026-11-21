@@ -1,0 +1,62 @@
+{
+  "score_sha256": "933801333c1878cf59c3a3572166a901d5243a31a2191d506c6848cf74f328a9",
+  "host_start_wall": 1795233929.7888892,
+  "host_start_monotonic": 82215.168575179,
+  "captures": [
+    {
+      "label": "q0-row-use-everywhere-focused",
+      "planned_ms": 15000,
+      "started": 1795233945.6831691,
+      "ended": 1795233947.1299715,
+      "file": "input-frame-001.png",
+      "bytes": 234178,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "q1-question",
+      "planned_ms": 20000,
+      "started": 1795233950.6831968,
+      "ended": 1795233952.203229,
+      "file": "input-frame-002.png",
+      "bytes": 157073,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "q2-right",
+      "planned_ms": 24000,
+      "started": 1795233954.6831841,
+      "ended": 1795233956.1000032,
+      "file": "input-frame-003.png",
+      "bytes": 157115,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "q3-down",
+      "planned_ms": 28000,
+      "started": 1795233958.6831937,
+      "ended": 1795233960.0997002,
+      "file": "input-frame-004.png",
+      "bytes": 157115,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "q4-after-back",
+      "planned_ms": 32000,
+      "started": 1795233962.6831784,
+      "ended": 1795233964.146198,
+      "file": "input-frame-005.png",
+      "bytes": 233798,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "q5-final-home",
+      "planned_ms": 43000,
+      "started": 1795233973.6831882,
+      "ended": 1795233975.643884,
+      "file": "input-frame-006.png",
+      "bytes": 221242,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

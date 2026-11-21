@@ -1,0 +1,62 @@
+{
+  "score_sha256": "608d703f1deae4d6cddca1b5592d748c476a7cdbb795b65edf258006e04b32ad",
+  "host_start_wall": 1795234530.320877,
+  "host_start_monotonic": 82815.700563128,
+  "captures": [
+    {
+      "label": "x0-restore-focused",
+      "planned_ms": 14000,
+      "started": 1795234545.4356675,
+      "ended": 1795234546.9440172,
+      "file": "input-frame-001.png",
+      "bytes": 155053,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "x1-after-restore",
+      "planned_ms": 19000,
+      "started": 1795234550.4356709,
+      "ended": 1795234552.3171878,
+      "file": "input-frame-002.png",
+      "bytes": 233562,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "x2-after-restore-later",
+      "planned_ms": 22000,
+      "started": 1795234553.435674,
+      "ended": 1795234554.9004397,
+      "file": "input-frame-003.png",
+      "bytes": 233562,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "x3-home-undo-banner",
+      "planned_ms": 29000,
+      "started": 1795234560.4356608,
+      "ended": 1795234561.9557028,
+      "file": "input-frame-004.png",
+      "bytes": 360380,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "x4-list-after-restore",
+      "planned_ms": 38000,
+      "started": 1795234569.435663,
+      "ended": 1795234571.0465653,
+      "file": "input-frame-005.png",
+      "bytes": 271859,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "x5-final-home",
+      "planned_ms": 51000,
+      "started": 1795234582.4356718,
+      "ended": 1795234584.0526183,
+      "file": "input-frame-006.png",
+      "bytes": 217919,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

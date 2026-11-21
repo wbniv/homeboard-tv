@@ -1,0 +1,98 @@
+{
+  "score_sha256": "64bba31896a8d9954522a30b9839bcd23064bbd9a6514ee847f4dc8cb2db774d",
+  "host_start_wall": 1795234055.704197,
+  "host_start_monotonic": 82341.083883029,
+  "captures": [
+    {
+      "label": "c0-row-use-everywhere-focused",
+      "planned_ms": 15000,
+      "started": 1795234071.571101,
+      "ended": 1795234073.0940533,
+      "file": "input-frame-001.png",
+      "bytes": 234178,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c1-question",
+      "planned_ms": 20000,
+      "started": 1795234076.5711122,
+      "ended": 1795234078.0801516,
+      "file": "input-frame-002.png",
+      "bytes": 157548,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c2-after-let-homeboard-manage",
+      "planned_ms": 25000,
+      "started": 1795234081.5711138,
+      "ended": 1795234082.9606416,
+      "file": "input-frame-003.png",
+      "bytes": 168628,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c3-after-let-homeboard-manage-later",
+      "planned_ms": 28000,
+      "started": 1795234084.5710971,
+      "ended": 1795234086.0139272,
+      "file": "input-frame-004.png",
+      "bytes": 168628,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c4-after-back1",
+      "planned_ms": 32000,
+      "started": 1795234088.573718,
+      "ended": 1795234090.3537846,
+      "file": "input-frame-005.png",
+      "bytes": 210475,
+      "schedule_lateness_ms": 3
+    },
+    {
+      "label": "c5-home",
+      "planned_ms": 41000,
+      "started": 1795234097.5711718,
+      "ended": 1795234099.782076,
+      "file": "input-frame-006.png",
+      "bytes": 361634,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c6-list-managed",
+      "planned_ms": 48000,
+      "started": 1795234104.571112,
+      "ended": 1795234105.9426942,
+      "file": "input-frame-007.png",
+      "bytes": 210475,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c7-aerial-focused",
+      "planned_ms": 53000,
+      "started": 1795234109.571121,
+      "ended": 1795234111.0465522,
+      "file": "input-frame-008.png",
+      "bytes": 210918,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c8-aerial-right",
+      "planned_ms": 56000,
+      "started": 1795234112.5711012,
+      "ended": 1795234113.9290013,
+      "file": "input-frame-009.png",
+      "bytes": 210432,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c9-final-home",
+      "planned_ms": 63000,
+      "started": 1795234119.5712075,
+      "ended": 1795234121.4940567,
+      "file": "input-frame-010.png",
+      "bytes": 240610,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

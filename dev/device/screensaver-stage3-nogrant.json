@@ -1,0 +1,30 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 50,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 2, "key": "MENU", "action": "hold", "ms": 80},
+    {"at": 5, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 7, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 9, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 11, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 13, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 15, "capture": "n1-row-use-everywhere-focused"},
+    {"at": 17, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 20, "capture": "n2-setup-screen"},
+    {"at": 22, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 24, "capture": "n3-setup-down1"},
+    {"at": 26, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 28, "capture": "n4-setup-down2"},
+    {"at": 30, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 31, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 32, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 35, "capture": "n5-after-first-button"},
+    {"at": 37, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 39, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 41, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 43, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 47, "capture": "n6-final-home"}
+  ]
+}

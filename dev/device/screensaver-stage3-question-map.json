@@ -1,0 +1,27 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 46,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 2, "key": "MENU", "action": "hold", "ms": 80},
+    {"at": 5, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 7, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 9, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 11, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 13, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 15, "capture": "q0-row-use-everywhere-focused"},
+    {"at": 17, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 20, "capture": "q1-question"},
+    {"at": 22, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 24, "capture": "q2-right"},
+    {"at": 26, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 28, "capture": "q3-down"},
+    {"at": 30, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 32, "capture": "q4-after-back"},
+    {"at": 34, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 36, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 38, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 43, "capture": "q5-final-home"}
+  ]
+}

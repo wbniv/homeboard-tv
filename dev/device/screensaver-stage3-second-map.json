@@ -1,0 +1,24 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 36,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 2, "key": "MENU", "action": "hold", "ms": 80},
+    {"at": 5, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 7, "capture": "s0-list-managed"},
+    {"at": 8, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 10, "capture": "s1-aerial-focused"},
+    {"at": 11, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 13, "capture": "s2-aerial-right"},
+    {"at": 14, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 16, "capture": "s3-aerial-right2"},
+    {"at": 17, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 19, "capture": "s4-aerial-right2-down"},
+    {"at": 21, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 23, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 25, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 27, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 31, "capture": "s5-final-home"}
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "score_sha256": "65827dbed6a6916b76b9dc44d6edb94f8c2d7aeb4de304ae96c60bb943baf050",
+  "host_start_wall": 1795233651.5281684,
+  "host_start_monotonic": 81936.907854526,
+  "captures": [
+    {
+      "label": "m0-home",
+      "planned_ms": 3000,
+      "started": 1795233655.5189312,
+      "ended": 1795233657.2055767,
+      "file": "input-frame-001.png",
+      "bytes": 336174,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "m1-pie-menu",
+      "planned_ms": 6000,
+      "started": 1795233658.518942,
+      "ended": 1795233660.1673625,
+      "file": "input-frame-002.png",
+      "bytes": 325567,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "m2-screensaver-list",
+      "planned_ms": 10000,
+      "started": 1795233662.5189447,
+      "ended": 1795233664.7122188,
+      "file": "input-frame-003.png",
+      "bytes": 271520,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "m3-down1",
+      "planned_ms": 13000,
+      "started": 1795233665.5189435,
+      "ended": 1795233667.3850942,
+      "file": "input-frame-004.png",
+      "bytes": 239192,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "m4-down2",
+      "planned_ms": 16000,
+      "started": 1795233668.5193467,
+      "ended": 1795233670.044418,
+      "file": "input-frame-005.png",
+      "bytes": 233562,
+      "schedule_lateness_ms": 1
+    },
+    {
+      "label": "m5-down3",
+      "planned_ms": 19000,
+      "started": 1795233671.5189576,
+      "ended": 1795233673.0970228,
+      "file": "input-frame-006.png",
+      "bytes": 233798,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "m6-right",
+      "planned_ms": 22000,
+      "started": 1795233674.518947,
+      "ended": 1795233676.0960681,
+      "file": "input-frame-007.png",
+      "bytes": 234178,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "m7-right-down1",
+      "planned_ms": 25000,
+      "started": 1795233677.518971,
+      "ended": 1795233679.0197911,
+      "file": "input-frame-008.png",
+      "bytes": 234678,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "m8-right-down2",
+      "planned_ms": 28000,
+      "started": 1795233680.518947,
+      "ended": 1795233682.0699582,
+      "file": "input-frame-009.png",
+      "bytes": 234678,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "m9-right-down3",
+      "planned_ms": 31000,
+      "started": 1795233683.518933,
+      "ended": 1795233685.0951612,
+      "file": "input-frame-010.png",
+      "bytes": 234678,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "m10-final-home",
+      "planned_ms": 42000,
+      "started": 1795233694.5189483,
+      "ended": 1795233696.2200835,
+      "file": "input-frame-011.png",
+      "bytes": 217570,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

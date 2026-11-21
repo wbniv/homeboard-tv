@@ -1,0 +1,62 @@
+{
+  "score_sha256": "22a1d8ad8125bff8b0bb74fea9cf8d9e05d045279665bf16d95689743fdebb91",
+  "host_start_wall": 1795234201.4222128,
+  "host_start_monotonic": 82486.801898926,
+  "captures": [
+    {
+      "label": "s0-list-managed",
+      "planned_ms": 7000,
+      "started": 1795234209.3329327,
+      "ended": 1795234210.8314025,
+      "file": "input-frame-001.png",
+      "bytes": 210475,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "s1-aerial-focused",
+      "planned_ms": 10000,
+      "started": 1795234212.3330717,
+      "ended": 1795234213.8206837,
+      "file": "input-frame-002.png",
+      "bytes": 217449,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "s2-aerial-right",
+      "planned_ms": 13000,
+      "started": 1795234215.3329444,
+      "ended": 1795234216.9110372,
+      "file": "input-frame-003.png",
+      "bytes": 217759,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "s3-aerial-right2",
+      "planned_ms": 16000,
+      "started": 1795234218.3329432,
+      "ended": 1795234219.891714,
+      "file": "input-frame-004.png",
+      "bytes": 217755,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "s4-aerial-right2-down",
+      "planned_ms": 19000,
+      "started": 1795234221.33295,
+      "ended": 1795234222.8847792,
+      "file": "input-frame-005.png",
+      "bytes": 218468,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "s5-final-home",
+      "planned_ms": 31000,
+      "started": 1795234233.3329613,
+      "ended": 1795234234.9324577,
+      "file": "input-frame-006.png",
+      "bytes": 216688,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

@@ -1,0 +1,3 @@
+▭ chromecast-test-01: ready; Chromecast HD; serial 2628105GN0GT7C; Android 14; ABI armeabi-v7a,armeabi; endpoint 192.168.4.61:39359; pools chromecast-test
+  Display: not identified (EDID unreadable) · 1080p59.94 now · confirmed 11:17
+  4K: no — device max 1080p

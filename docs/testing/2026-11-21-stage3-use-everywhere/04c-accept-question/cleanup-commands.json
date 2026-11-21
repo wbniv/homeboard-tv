@@ -1,0 +1,121 @@
+[
+  {
+    "args": [
+      "shell",
+      "ps -A -o PID,ARGS"
+    ],
+    "start": 1795234125.399625,
+    "end": 1795234125.7376144,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/capture-helper.jar",
+      "/data/local/tmp/wf-J-9933fa44e1ec-keyscore.jar"
+    ],
+    "start": 1795234125.7397892,
+    "end": 1795234126.0280051,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "CLASSPATH=/data/local/tmp/wf-J-9933fa44e1ec-keyscore.jar timeout 10 app_process /system/bin WfKeyScore --release /data/local/tmp/wf-J-9933fa44e1ec-input-log.csv"
+    ],
+    "start": 1795234126.030365,
+    "end": 1795234127.5525799,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "cat",
+      "/data/local/tmp/wf-J-9933fa44e1ec-input-log.csv"
+    ],
+    "start": 1795234127.554913,
+    "end": 1795234127.695979,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-9933fa44e1ec-keyscore.jar"
+    ],
+    "start": 1795234127.7204633,
+    "end": 1795234127.8837326,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-9933fa44e1ec-keyscore.jar; echo wf-status=$?"
+    ],
+    "start": 1795234127.8859804,
+    "end": 1795234128.0187566,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-9933fa44e1ec-input.csv"
+    ],
+    "start": 1795234128.0508826,
+    "end": 1795234128.3162692,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-9933fa44e1ec-input.csv; echo wf-status=$?"
+    ],
+    "start": 1795234128.3182762,
+    "end": 1795234128.4879925,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-9933fa44e1ec-input-log.csv"
+    ],
+    "start": 1795234128.5187824,
+    "end": 1795234128.7031806,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-9933fa44e1ec-input-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795234128.7055109,
+    "end": 1795234128.817116,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am force-stop net.biohack.homeboard.debug"
+    ],
+    "start": 1795234128.84331,
+    "end": 1795234129.1953835,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am start -W -n com.google.android.apps.tv.launcherx/.home.HomeActivity"
+    ],
+    "start": 1795234129.1985557,
+    "end": 1795234129.5155451,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795234129.5172548,
+    "end": 1795234129.682488,
+    "returncode": 0
+  }
+]

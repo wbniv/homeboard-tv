@@ -1,0 +1,33 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 62,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 2, "key": "MENU", "action": "hold", "ms": 80},
+    {"at": 5, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 7, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 9, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 11, "capture": "u0-use-this-focused"},
+    {"at": 13, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 16, "capture": "u1-after-use-this"},
+    {"at": 19, "capture": "u2-after-use-this-later"},
+    {"at": 21, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 23, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 26, "capture": "u3-home-undo-banner"},
+    {"at": 29, "key": "MENU", "action": "hold", "ms": 80},
+    {"at": 32, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 34, "capture": "u4-list-in-use-focused"},
+    {"at": 35, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 37, "capture": "u5-right"},
+    {"at": 38, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 40, "capture": "u6-right2"},
+    {"at": 41, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 43, "capture": "u7-right2-down"},
+    {"at": 45, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 47, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 49, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 51, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 56, "capture": "u8-final-home"}
+  ]
+}

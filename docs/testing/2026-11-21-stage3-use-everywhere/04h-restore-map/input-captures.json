@@ -1,0 +1,53 @@
+{
+  "score_sha256": "f981c22b249b79262221c6945d51af334a9baa5ad16a9f3edbe8c599407bdc0a",
+  "host_start_wall": 1795234435.4070423,
+  "host_start_monotonic": 82720.786728672,
+  "captures": [
+    {
+      "label": "r0-this-tv-focused",
+      "planned_ms": 9000,
+      "started": 1795234445.5267615,
+      "ended": 1795234447.0598876,
+      "file": "input-frame-001.png",
+      "bytes": 210561,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "r1-this-tv-screen",
+      "planned_ms": 13000,
+      "started": 1795234449.5267584,
+      "ended": 1795234451.0632665,
+      "file": "input-frame-002.png",
+      "bytes": 154951,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "r2-right1",
+      "planned_ms": 16000,
+      "started": 1795234452.526746,
+      "ended": 1795234453.9717367,
+      "file": "input-frame-003.png",
+      "bytes": 155137,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "r3-right2",
+      "planned_ms": 19000,
+      "started": 1795234455.529821,
+      "ended": 1795234457.0040035,
+      "file": "input-frame-004.png",
+      "bytes": 151327,
+      "schedule_lateness_ms": 3
+    },
+    {
+      "label": "r4-final-home",
+      "planned_ms": 32000,
+      "started": 1795234468.5267682,
+      "ended": 1795234470.2552338,
+      "file": "input-frame-005.png",
+      "bytes": 217060,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}
