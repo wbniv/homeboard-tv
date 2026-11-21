@@ -1,0 +1,101 @@
+[
+  {
+    "args": [
+      "shell",
+      "cmd package query-services --brief --components -a android.service.dreams.DreamService"
+    ],
+    "start": 1795225326.5915456,
+    "end": 1795225326.9318428,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure screensaver_components"
+    ],
+    "start": 1795225326.9359562,
+    "end": 1795225327.2255237,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure screensaver_enabled"
+    ],
+    "start": 1795225327.2297933,
+    "end": 1795225327.6084719,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure screensaver_activate_on_sleep"
+    ],
+    "start": 1795225327.614793,
+    "end": 1795225328.074718,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get system screen_off_timeout"
+    ],
+    "start": 1795225328.0811448,
+    "end": 1795225328.4364448,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure sleep_timeout"
+    ],
+    "start": 1795225328.4428618,
+    "end": 1795225328.8695047,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get global stay_on_while_plugged_in"
+    ],
+    "start": 1795225328.8751695,
+    "end": 1795225329.2596424,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys dreams"
+    ],
+    "start": 1795225329.264912,
+    "end": 1795225329.6668823,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795225329.6752982,
+    "end": 1795225330.220073,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "content call --uri content://org.worldfoundry.seahorsegrid.settings --method getCapabilities"
+    ],
+    "start": 1795225330.229882,
+    "end": 1795225334.1087952,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "tail -n 300 /sdcard/Android/data/org.worldfoundry.seahorsegrid/files/wf.log"
+    ],
+    "start": 1795225334.1187978,
+    "end": 1795225334.423101,
+    "returncode": 0
+  }
+]

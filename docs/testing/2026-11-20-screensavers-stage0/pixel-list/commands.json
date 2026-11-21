@@ -1,0 +1,101 @@
+[
+  {
+    "args": [
+      "shell",
+      "cmd package query-services --brief --components -a android.service.dreams.DreamService"
+    ],
+    "start": 1795225330.8114727,
+    "end": 1795225331.0809472,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure screensaver_components"
+    ],
+    "start": 1795225331.085232,
+    "end": 1795225331.3402588,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure screensaver_enabled"
+    ],
+    "start": 1795225331.3437455,
+    "end": 1795225331.614335,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure screensaver_activate_on_sleep"
+    ],
+    "start": 1795225331.6188443,
+    "end": 1795225331.9421194,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get system screen_off_timeout"
+    ],
+    "start": 1795225331.950449,
+    "end": 1795225332.3465106,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure sleep_timeout"
+    ],
+    "start": 1795225332.349997,
+    "end": 1795225332.6604967,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get global stay_on_while_plugged_in"
+    ],
+    "start": 1795225332.6638925,
+    "end": 1795225332.9522045,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys dreams"
+    ],
+    "start": 1795225332.955682,
+    "end": 1795225333.2312822,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795225333.2430205,
+    "end": 1795225333.6536825,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "content call --uri content://org.worldfoundry.plantedtank.settings --method getCapabilities"
+    ],
+    "start": 1795225333.6602368,
+    "end": 1795225336.6801586,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "tail -n 300 /sdcard/Android/data/org.worldfoundry.plantedtank/files/wf.log"
+    ],
+    "start": 1795225336.689079,
+    "end": 1795225337.00419,
+    "returncode": 0
+  }
+]
