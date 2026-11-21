@@ -193,3 +193,29 @@ clear it manually or substitute an unverified launch. Correct handling of the
 obsolete checkpoint is needed before the intended multi-tank launch and
 Homeboard recovery checks can resume. A restart alone does not update that
 checkpoint.
+
+### Retry after coordinator 0.1.215
+
+A later retry found coordinator **0.1.215 (`40d19b69`)** running. Cast1 was now
+reported **ready**, and the old standalone-tank cleanup was absent from Pending
+cleanup. This supersedes the earlier statement that the Cast1 device fence
+remained. Shared Android transport recovery initially held new work, then cleared.
+
+Capture `J‑71a44727d135` was submitted through the coordinator. It subsequently
+waited behind another session's Tide Spike profile and Clocks launcher
+verification (`J‑3d0ec3a7faa4`). The immediate current-screen screenshot route
+still refused while other work was active. Submission and readiness alone are
+not evidence that a screenshot was taken or that a Homeboard lifecycle check ran.
+
+**Capture completed at 16:06 Bangkok time.** `J‑71a44727d135` succeeded with
+health ready, safe cleanup, no journal entries and no survivors. Export verified
+six artifacts under
+`docs/diagnostics/home-button-recovery-2026-11-21/capture-success/`.
+
+[Cast1 screenshot: Google TV quick settings](../diagnostics/home-button-recovery-2026-11-21/capture-success/screenshot.png)
+shows Google's right-side quick-settings panel over the Google TV app row,
+including All settings, Screensaver, Wi-Fi, Google Home, Bluetooth, Sleep timer,
+Audio output and Accessibility. This visually corroborates Will's physical
+held-Home report; this capture-only job did not inject or hold Home itself.
+The later successful capture supersedes the earlier lack of screenshot evidence.
+Homeboard restart, force-stop and app-update recovery have not yet run.

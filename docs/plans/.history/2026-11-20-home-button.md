@@ -1,10 +1,15 @@
 | Date | Change |
 |------|--------|
+| [2026-11-21](https://github.com/wbniv/homeboard-tv/commit/997dfdb) | Docs: record physical held-Home pass and coordinator recovery block |
 | [2026-11-21](https://github.com/wbniv/homeboard-tv/commit/ddac88a) | Docs: record current Home-button routing and validation limits |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/2b05cbd) | Show simultaneous timers and distinguish the test Home helper |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 
 <!--history-meta v1
+997dfdb	author	Will Norris
+997dfdb	added	6
+997dfdb	deleted	3
+997dfdb	files	1
 ddac88a	author	Will Norris
 ddac88a	added	16
 ddac88a	deleted	1
