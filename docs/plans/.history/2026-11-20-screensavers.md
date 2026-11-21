@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/2fd314a) | Preserve debug signing identity and record 0.1.112 deployment |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/046aa0a) | Screensavers stage 1 complete: the alarm check passes on Cast1 |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/e25250d) | An alarm that ends a screensaver opens the timer screen |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/7b10d99) | Screensavers stage 3: use everywhere, with Restore and Undo |
@@ -14,6 +15,10 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/5bb93a2) | Plan screensaver choice, configuration and installation |
 
 <!--history-meta v1
+2fd314a	author	Will Norris
+2fd314a	added	15
+2fd314a	deleted	2
+2fd314a	files	1
 046aa0a	author	Will Norris
 046aa0a	added	17
 046aa0a	deleted	0

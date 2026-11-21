@@ -684,6 +684,21 @@ Will settled all four on 2026‑11‑20.
     setting and reads it back, and a second choice applies with no question; Restore
     returns the recorded original; each value is shown before and after from coordinator
     evidence.
+    **Result, Cast1, 2026‑11‑21 (record: [2026-11-21-stage3-use-everywhere.md](../testing/2026-11-21-stage3-use-everywhere.md)): PASS.**
+    Coordinator 0.1.211; 17 jobs, all completed with health `ready` and cleanup `restored`.
+
+    | Clause | Evidence | Result |
+    |---|---|---|
+    | Without the permission, Use everywhere shows the setup screen | J‑78a17640668c | PASS |
+    | Android's setting unchanged | reads J‑6204cd04067d and J‑02b430c2eb3a equal | PASS |
+    | One-time question changes the setting, read back | J‑9933fa44e1ec, read J‑9e8302cbb620: Ambient Mode | PASS |
+    | A second choice applies with no question | J‑8c601ddb21e7, read J‑f416bee9d3e2: Aerial Views | PASS |
+    | Restore returns the recorded original | J‑82db9411ff21, read J‑ecfc115180aa equals the original in all six fields | PASS |
+    | Cast1 ends on its original, grant revoked | J‑40fcf8b9e358; final read J‑811040e47cc6 | PASS |
+
+    Not covered: Retry and Show QR code, Undo of the second choice and of Restore, Start now, survival across a
+    restart. **Cast2 is not run:** Will took it off the general test list on 2026‑11‑21 (one of each device type),
+    so this clause is dropped unless a check needs a second Chromecast.
 11. Stage 4: `task phone:check` covers the panel's loaded, not‑sent and finish‑on‑TV
     states; a phone choice appears on the TV with Undo on both.
 12. Both TVs end every stage with their original Android screensaver unless Will chose
