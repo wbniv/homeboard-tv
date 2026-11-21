@@ -1,0 +1,106 @@
+[
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795244297.5611017,
+    "end": 1795244297.7504258,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pm path net.biohack.homeboard.debug"
+    ],
+    "start": 1795244297.8760664,
+    "end": 1795244298.9861455,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "sha256sum '/data/app/~~KZoFtR0xyZjELnMjlzHAnw==/net.biohack.homeboard.debug-hBeF4f3XXdtwuLTmHXe48Q==/base.apk'"
+    ],
+    "start": 1795244298.9889057,
+    "end": 1795244299.422436,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am force-stop net.biohack.homeboard.debug"
+    ],
+    "start": 1795244299.4636264,
+    "end": 1795244299.8301833,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795244299.8320522,
+    "end": 1795244300.0044258,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "date +%s"
+    ],
+    "start": 1795244300.157765,
+    "end": 1795244300.3937316,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am start -W -n net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverProbeActivity --ez write_test false --es start dream_settings"
+    ],
+    "start": 1795244300.39675,
+    "end": 1795244301.695525,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "tail -c 262144 /sdcard/Android/data/net.biohack.homeboard.debug/files/wf.log"
+    ],
+    "start": 1795244301.7247002,
+    "end": 1795244302.0855699,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795244302.0903,
+    "end": 1795244303.6316466,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795244303.6336474,
+    "end": 1795244303.8978806,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "logcat",
+      "-d",
+      "-v",
+      "threadtime",
+      "-s",
+      "HB_SCREENSAVER_PROBE"
+    ],
+    "start": 1795244303.9010608,
+    "end": 1795244304.3033693,
+    "returncode": 0
+  }
+]

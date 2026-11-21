@@ -1,0 +1,3 @@
+    topResumedActivity=ActivityRecord{5ae5b7a u0 net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverProbeActivity t5022}
+    Resumed: ActivityRecord{5ae5b7a u0 net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverProbeActivity t5022}
+  ResumedActivity: ActivityRecord{5ae5b7a u0 net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverProbeActivity t5022}

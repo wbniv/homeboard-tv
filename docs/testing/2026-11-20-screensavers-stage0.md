@@ -1,9 +1,9 @@
 # Screensavers Stage 0: evidence so far
 
 **Status:** read-only `screensaver-list` pass done on Cast1, Cast2 and the Pixel 8 Pro
-(2026‑11‑21, 01:42 UTC). Nothing was changed on any device. The app-side probe
-(`screensaver_probe`) and the `secure-settings-grant` workflow are not deployed, so
-questions 2 to 5, 7, 8, 10 and 11 are still open. Recipe:
+(2026‑11‑21, 01:42 UTC). Nothing was changed on any device. The coordinator's
+`screensaver_probe` option and the Homeboard probe screen (0.1.117) now run on Cast1; see
+the Cast1 probe results below. Q5 and Q7 are still open. Recipe:
 [2026-11-20-screensavers-stage0-probe.md](../plans/2026-11-20-screensavers-stage0-probe.md).
 
 | Device | Job | Evidence |
@@ -39,7 +39,22 @@ Cast1 had a screensaver **running** when it was read (`running_state: running`).
 **Yes.** The Pixel lists all three World Foundry savers beside the system ones, so sideloaded or Play-installed
 screensavers show up in `screensaver-list` on Android 17.
 
+## Cast1 probe results (0.1.117, 2026‑11‑21)
+
+Jobs J‑b5722b5b02ce (read-only), J‑6bceca4edf0c (`dream_settings`) and J‑527ebec5f1fa (`screensaver_now`);
+evidence under [2026-11-21-screensaver-probe](2026-11-21-screensaver-probe/).
+
+| Q | Result on Cast1 |
+|---|---|
+| Q2 | **No.** `android.settings.DREAM_SETTINGS` has no handler (`ActivityNotFoundException`), so Homeboard cannot open a system screensaver picker. |
+| Q3 | **No.** `com.android.systemui/.Somnambulator` is not present, so there is no explicit "start screensaver now" component on this Google TV. |
+| Q4 | **Yes.** All screensaver keys are readable without any extra permission. |
+| Q10 | Pass. |
+| Q11 | Partial (`can-request`, `manage-sources` pass; `offer` not run, no frozen test APK). |
+
+Q7 (lifecycle when Android's screensaver covers the app) is not seen: starting the screensaver needs a path that
+Q3 shows is absent, so it needs the idle timer to fire while the probe screen is in front.
+
 ## Still open
 
-Q2, Q3, Q4, Q5, Q7, Q8, Q10, Q11. They need the coordinator's `screensaver_probe` check option, and Q5 also needs
-`secure-settings-grant` (commit `4b986f92`, not yet merged or deployed; the deploy needs Will at a sudo terminal).
+Q5 (write test; needs `secure-settings-grant` first, which is released as 0.1.211), Q7 (idle timer while the probe is in front), Q8 (not built in the probe) and Q11 `offer`.

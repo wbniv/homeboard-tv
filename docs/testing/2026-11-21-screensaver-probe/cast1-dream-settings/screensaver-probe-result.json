@@ -1,0 +1,137 @@
+{
+  "schema": 1,
+  "probe": "screensaver_probe",
+  "status": "done",
+  "timestamp": "2026-11-21T06:58:20.838510Z",
+  "device": {
+    "manufacturer": "Google",
+    "model": "Chromecast HD",
+    "device": "boreal",
+    "sdk": 34,
+    "release": "14",
+    "fingerprint": "google/boreal/boreal:14/UTTC.250917.004/14193937:user/release-keys"
+  },
+  "build": {
+    "package": "net.biohack.homeboard.debug",
+    "versionName": "0.1.117",
+    "versionCode": 117,
+    "writeTest": false,
+    "start": "dream_settings"
+  },
+  "results": [
+    {
+      "id": "q5",
+      "pass": false,
+      "observed": null,
+      "expected": "explicit write_test extra",
+      "error": "not run: write_test extra not set (default off)"
+    },
+    {
+      "id": "q2",
+      "pass": false,
+      "observed": {
+        "intent": "#Intent;action=android.settings.DREAM_SETTINGS;end",
+        "resolvesTo": null,
+        "started": "start failed: android.content.ActivityNotFoundException: No Activity found to handle Intent { act=android.settings.DREAM_SETTINGS }"
+      },
+      "expected": "intent resolves to an activity and starts",
+      "error": "resolveActivity returned null (absent, or hidden by package visibility); start failed: android.content.ActivityNotFoundException: No Activity found to handle Intent { act=android.settings.DREAM_SETTINGS }"
+    },
+    {
+      "id": "q3",
+      "pass": false,
+      "observed": {
+        "intent": "#Intent;action=android.intent.action.MAIN;component=com.android.systemui/.Somnambulator;end",
+        "resolvesTo": null,
+        "started": "not requested"
+      },
+      "expected": "intent resolves to an activity",
+      "error": "resolveActivity returned null (absent, or hidden by package visibility)"
+    },
+    {
+      "id": "q4",
+      "pass": true,
+      "observed": {
+        "secure": {
+          "screensaver_components": "org.worldfoundry.seahorsegrid/org.worldfoundry.screensaver.SeahorseGridDreamService",
+          "screensaver_enabled": "1",
+          "screensaver_activate_on_sleep": "1",
+          "screensaver_activate_on_dock": "1",
+          "screensaver_default_component": "com.google.android.apps.tv.dreamx/.service.Backdrop",
+          "sleep_timeout": "-1"
+        },
+        "system": {
+          "screen_off_timeout": "600000"
+        },
+        "writeSecureSettingsGranted": false
+      },
+      "expected": "every key readable with no extra permission (null means not set)"
+    },
+    {
+      "id": "q7",
+      "pass": false,
+      "observed": {
+        "events": [
+          {
+            "event": "onCreate",
+            "ms": 102
+          },
+          {
+            "event": "onStart",
+            "ms": 106
+          },
+          {
+            "event": "onResume",
+            "ms": 114
+          }
+        ],
+        "foregroundAfterWake": null
+      },
+      "expected": "covered (onPause/onStop or focus lost) when Android's screensaver starts, then onResume/focus on wake",
+      "error": "screensaver start and wake not yet seen in this run"
+    },
+    {
+      "id": "q8",
+      "pass": false,
+      "observed": null,
+      "expected": "a video provider plays in a throwaway dream service",
+      "error": "not run: not implemented in this probe (throwaway dream service not built)"
+    },
+    {
+      "id": "q10",
+      "pass": true,
+      "observed": {
+        "intent": "market://details?id=com.google.android.youtube.tv",
+        "resolvesTo": "com.android.vending/com.google.android.finsky.inlinedetails.activities.tv.TvMarketDeepLinkHandlerActivity",
+        "started": "not requested"
+      },
+      "expected": "resolves to com.android.vending"
+    },
+    {
+      "id": "q11-can-request",
+      "pass": true,
+      "observed": {
+        "canRequestPackageInstalls": false,
+        "permissionDeclared": true
+      },
+      "expected": "canRequestPackageInstalls reads without error"
+    },
+    {
+      "id": "q11-manage-sources",
+      "pass": true,
+      "observed": {
+        "intent": "package:net.biohack.homeboard.debug#Intent;action=android.settings.MANAGE_UNKNOWN_APP_SOURCES;end",
+        "resolvesTo": "com.android.tv.settings/com.android.tv.settings.device.apps.specialaccess.ExternalSourcesActivity",
+        "started": "not requested"
+      },
+      "expected": "intent resolves to an activity"
+    },
+    {
+      "id": "q11-offer",
+      "pass": false,
+      "observed": null,
+      "expected": "a frozen harmless test APK is offered to the installer and cancelled",
+      "error": "not run: no frozen test APK exists in the repo"
+    }
+  ]
+}

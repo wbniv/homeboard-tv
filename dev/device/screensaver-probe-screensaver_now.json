@@ -1,0 +1,7 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "apk": "/home/will/homeboard-tv/artifacts/deployments/0.1.117/homeboard.apk",
+ "screensaver_probe": true,
+ "probe_start": "screensaver_now"
+}
