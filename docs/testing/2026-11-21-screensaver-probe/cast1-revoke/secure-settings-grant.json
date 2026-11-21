@@ -1,0 +1,18 @@
+{
+  "kind": "homeboard-secure-settings-grant",
+  "package": "net.biohack.homeboard.debug",
+  "user": 0,
+  "permission": "android.permission.WRITE_SECURE_SETTINGS",
+  "apk": "785a9c54667e8da0989b80f5262a5205c7d4dcbaf50d5c17f7a095d026ae648f",
+  "before": true,
+  "target": false,
+  "verified": true,
+  "granted": false,
+  "changed": true,
+  "reverse_recipe": {
+    "workflow": "secure-settings-grant",
+    "app": "homeboard-tv",
+    "apk": "785a9c54667e8da0989b80f5262a5205c7d4dcbaf50d5c17f7a095d026ae648f.apk",
+    "enabled": true
+  }
+}

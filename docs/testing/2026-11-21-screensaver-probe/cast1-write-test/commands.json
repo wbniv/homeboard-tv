@@ -1,0 +1,169 @@
+[
+  {
+    "args": [
+      "shell",
+      "pm path net.biohack.homeboard.debug"
+    ],
+    "start": 1795245469.5911312,
+    "end": 1795245469.9526563,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "sha256sum '/data/app/~~KZoFtR0xyZjELnMjlzHAnw==/net.biohack.homeboard.debug-hBeF4f3XXdtwuLTmHXe48Q==/base.apk'"
+    ],
+    "start": 1795245469.958073,
+    "end": 1795245470.368417,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys package net.biohack.homeboard.debug"
+    ],
+    "start": 1795245470.3737752,
+    "end": 1795245470.6650746,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795245470.6726837,
+    "end": 1795245470.9727294,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pm path net.biohack.homeboard.debug"
+    ],
+    "start": 1795245471.117437,
+    "end": 1795245471.5858662,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "sha256sum '/data/app/~~KZoFtR0xyZjELnMjlzHAnw==/net.biohack.homeboard.debug-hBeF4f3XXdtwuLTmHXe48Q==/base.apk'"
+    ],
+    "start": 1795245471.5890298,
+    "end": 1795245471.9791067,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure screensaver_components"
+    ],
+    "start": 1795245472.0264533,
+    "end": 1795245472.4295363,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get system screen_off_timeout"
+    ],
+    "start": 1795245472.4733334,
+    "end": 1795245472.8060021,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am force-stop net.biohack.homeboard.debug"
+    ],
+    "start": 1795245472.8566775,
+    "end": 1795245473.2519624,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795245473.2555888,
+    "end": 1795245473.598308,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "date +%s"
+    ],
+    "start": 1795245473.754376,
+    "end": 1795245474.0287476,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am start -W -n net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverProbeActivity --ez write_test true"
+    ],
+    "start": 1795245474.0323863,
+    "end": 1795245476.3391402,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "tail -c 262144 /sdcard/Android/data/net.biohack.homeboard.debug/files/wf.log"
+    ],
+    "start": 1795245476.38834,
+    "end": 1795245476.6504529,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795245476.6591535,
+    "end": 1795245478.492013,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795245478.4961965,
+    "end": 1795245478.828776,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "logcat",
+      "-d",
+      "-v",
+      "threadtime",
+      "-s",
+      "HB_SCREENSAVER_PROBE"
+    ],
+    "start": 1795245478.8350544,
+    "end": 1795245479.2980204,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get secure screensaver_components"
+    ],
+    "start": 1795245479.3019333,
+    "end": 1795245479.5649226,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings get system screen_off_timeout"
+    ],
+    "start": 1795245479.6036494,
+    "end": 1795245479.9739742,
+    "returncode": 0
+  }
+]

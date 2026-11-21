@@ -1,0 +1,29 @@
+[
+  {
+    "args": [
+      "shell",
+      "am force-stop net.biohack.homeboard.debug"
+    ],
+    "start": 1795245480.2403998,
+    "end": 1795245480.6346495,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am start -W -n com.google.android.apps.tv.launcherx/.home.HomeActivity"
+    ],
+    "start": 1795245480.6382575,
+    "end": 1795245480.9739556,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795245480.9774036,
+    "end": 1795245481.3045337,
+    "returncode": 0
+  }
+]

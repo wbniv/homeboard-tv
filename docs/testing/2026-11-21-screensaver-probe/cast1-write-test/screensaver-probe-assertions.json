@@ -1,0 +1,142 @@
+{
+  "probe": "screensaver_probe",
+  "write_test": true,
+  "start": null,
+  "foreground_after_start": "net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverProbeActivity",
+  "status": "done",
+  "device": {
+    "model": "Chromecast HD",
+    "sdk": 34,
+    "release": "14"
+  },
+  "build": {
+    "versionName": "0.1.117",
+    "versionCode": 117
+  },
+  "assertions": [
+    {
+      "id": "q5-component",
+      "question": "Q5",
+      "pass": true,
+      "not_run": false,
+      "error": null
+    },
+    {
+      "id": "q5-idle",
+      "question": "Q5",
+      "pass": true,
+      "not_run": false,
+      "error": null
+    },
+    {
+      "id": "q5-restore-component",
+      "question": "Q5",
+      "pass": true,
+      "not_run": false,
+      "error": null
+    },
+    {
+      "id": "q5-restore-idle",
+      "question": "Q5",
+      "pass": true,
+      "not_run": false,
+      "error": null
+    },
+    {
+      "id": "q2",
+      "question": "Q2",
+      "pass": false,
+      "not_run": false,
+      "error": "resolveActivity returned null (absent, or hidden by package visibility)"
+    },
+    {
+      "id": "q3",
+      "question": "Q3",
+      "pass": false,
+      "not_run": false,
+      "error": "resolveActivity returned null (absent, or hidden by package visibility)"
+    },
+    {
+      "id": "q4",
+      "question": "Q4",
+      "pass": true,
+      "not_run": false,
+      "error": null
+    },
+    {
+      "id": "q7",
+      "question": "Q7",
+      "pass": false,
+      "not_run": false,
+      "error": "screensaver start and wake not yet seen in this run"
+    },
+    {
+      "id": "q8",
+      "question": "Q8",
+      "pass": false,
+      "not_run": true,
+      "error": "not run: not implemented in this probe (throwaway dream service not built)"
+    },
+    {
+      "id": "q10",
+      "question": "Q10",
+      "pass": true,
+      "not_run": false,
+      "error": null
+    },
+    {
+      "id": "q11-can-request",
+      "question": "Q11",
+      "pass": true,
+      "not_run": false,
+      "error": null
+    },
+    {
+      "id": "q11-manage-sources",
+      "question": "Q11",
+      "pass": true,
+      "not_run": false,
+      "error": null
+    },
+    {
+      "id": "q11-offer",
+      "question": "Q11",
+      "pass": false,
+      "not_run": true,
+      "error": "not run: no frozen test APK exists in the repo"
+    }
+  ],
+  "questions": {
+    "Q2": "fail",
+    "Q3": "fail",
+    "Q4": "pass",
+    "Q5": "pass",
+    "Q7": "fail",
+    "Q8": "not-run",
+    "Q10": "pass",
+    "Q11": "partial"
+  },
+  "evidence": [
+    "screensaver-probe-result.json",
+    "screensaver-probe-screenshot.png",
+    "screensaver-probe-screenshot-foreground.txt",
+    "screensaver-probe-logcat.txt",
+    "screensaver-probe-grant-package.txt"
+  ],
+  "settings_readback": [
+    {
+      "namespace": "secure",
+      "key": "screensaver_components",
+      "original": "org.worldfoundry.seahorsegrid/org.worldfoundry.screensaver.SeahorseGridDreamService",
+      "observed": "org.worldfoundry.seahorsegrid/org.worldfoundry.screensaver.SeahorseGridDreamService",
+      "unchanged": true
+    },
+    {
+      "namespace": "system",
+      "key": "screen_off_timeout",
+      "original": "600000",
+      "observed": "600000",
+      "unchanged": true
+    }
+  ]
+}
