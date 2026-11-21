@@ -134,6 +134,12 @@ class S:
         s.poly([(X, y, z), (X, Y, z), (X, Y, Z), (X, y, Z)], shade(col, 0.8), op=op)
         s.poly([(x, y, Z), (X, y, Z), (X, Y, Z), (x, Y, Z)], col, op=op)
 
+    def wbox(s, a0, a1, z0, z1, n0, n1, col, op=1, stroke=None):
+        """Box aligned to the three-quarter wall; n1 is the face toward the viewer."""
+        s.poly([q(a1, z0, n0), q(a1, z0, n1), q(a1, z1, n1), q(a1, z1, n0)], shade(col, 0.6), op=op)
+        s.poly([q(a0, z1, n0), q(a1, z1, n0), q(a1, z1, n1), q(a0, z1, n1)], shade(col, 1.15), op=op)
+        s.poly([q(a0, z0, n1), q(a1, z0, n1), q(a1, z1, n1), q(a0, z1, n1)], col, stroke, op=op)
+
     def ring(s, c, r, plane="xy", fill="none", stroke=None, sw=1.5, teeth=0, depth=0.14,
              a0=0, a1=360, op=1, dash=None):
         u, v = PL[plane]
@@ -1158,6 +1164,673 @@ def tree(s):
     s.note(318, 223, "leaves fall and it regrows")
 
 
+# --------------------------------------------------------------- the other 20
+
+def walk(pts, d):
+    """Split a polyline at distance d along it: (the part travelled, the rest)."""
+    done = [pts[0]]
+    for i in range(len(pts) - 1):
+        a, b = pts[i], pts[i + 1]
+        seg = math.dist(a, b)
+        if d <= seg:
+            m = tuple(a[j] + (b[j] - a[j]) * d / seg for j in range(len(a)))
+            return done + [m], [m] + pts[i + 1:]
+        done.append(b)
+        d -= seg
+    return done, [pts[-1]]
+
+
+def house(s, x, y, z, dx, dy, dz, col, roof):
+    s.box(x, y, z, dx, dy, dz, col)
+    h, Z = dy * 0.45, z + dz
+    s.poly([(x, y, Z), (x + dx, y, Z), (x + dx, y + dy / 2, Z + h), (x, y + dy / 2, Z + h)], shade(roof, 0.7))
+    s.poly([(x + dx, y, Z), (x + dx, y + dy, Z), (x + dx, y + dy / 2, Z + h)], shade(col, 0.8))
+    s.poly([(x, y + dy, Z), (x + dx, y + dy, Z), (x + dx, y + dy / 2, Z + h), (x, y + dy / 2, Z + h)], roof)
+    s.poly([(x + dx * 0.3, y + dy, z + dz * 0.3), (x + dx * 0.6, y + dy, z + dz * 0.3),
+            (x + dx * 0.6, y + dy, z + dz * 0.7), (x + dx * 0.3, y + dy, z + dz * 0.7)], SUN, op=0.85)
+
+
+def cradle(s):
+    s.view(oy=140)
+    Zb, L = 72, 58
+    s.wbox(-100, 100, -62, -30, -24, 24, "#232c44")
+    for a0, txt in ((-74, "10"), (14, "08")):
+        s.poly([q(a0, -57, 24), q(a0 + 60, -57, 24), q(a0 + 60, -35, 24), q(a0, -35, 24)],
+               "#0a0d14", stroke="#3a4660")
+        s.tp(q(a0 + 30, -53, 24), UW, UP, txt, 19)
+
+    def side(n):
+        for a in (-78, 78):
+            s.line([q(a, -30, n), q(a, Zb, n)], STEEL, 3)
+        s.line([q(-78, Zb, n), q(78, Zb, n)], STEEL, 3)
+
+    side(-16)
+    ph = math.radians(32)
+    for i in range(3):
+        x, y = s.p(*q(-27.5 + i * 11 - L * math.sin(ph), Zb - L * math.cos(ph)))
+        s.c2(x, y, 6.2, "none", stroke=MUTE, sw=0.9, op=0.7, dash="2 3")
+    for i in range(6):
+        a0 = -27.5 + i * 11
+        a, z = (a0 + L * math.sin(ph), Zb - L * math.cos(ph)) if i >= 3 else (a0, Zb - L)
+        s.line([q(a0, Zb, -16), q(a, z)], MUTE, 0.8)
+        s.ball(*q(a, z), 6.2, STEEL if i < 3 else BRASS)
+        s.line([q(a0, Zb, 16), q(a, z)], MUTE, 0.8)
+    side(16)
+    s.arrow(300, 143, 258, 139, bend=-0.25)
+    s.note(330, 64, "3 balls swing: 20 to 29 s", to=q(58.2, 22.8))
+    s.note(24, 84, "one click a second", to=q(-27.5, 14))
+    s.note(24, 110, "then 3 leave this side", to=q(-64, 23))
+    s.note(374, 186, "hour and minute", to=q(74, -46, 24))
+    s.t(374, 199, "drums in the base")
+
+
+def metronomes(s):
+    s.view(oy=150)
+    s.box(-112, -50, -4, 224, 100, 4, "#1b2233")
+    cells = [(c, r) for c in range(12) for r in range(5)]
+    for c, r in sorted(cells, key=lambda t: t[0] + t[1]):
+        x, y, k = (c - 5.5) * 18, (r - 2) * 18, c * 5 + (4 - r)
+        col = BRASS if c < 10 else "#55627d"
+        b, e, h = 5.5, 1.5, 20
+        s.poly([(x - b, y + b, 0), (x + b, y + b, 0), (x + e, y + e, h), (x - e, y + e, h)], shade(col, 0.5))
+        s.poly([(x + b, y - b, 0), (x + b, y + b, 0), (x + e, y + e, h), (x + e, y - e, h)], shade(col, 0.75))
+        ph = math.radians(32) * math.sin(k * 0.37 + 0.4)
+        px, py, pz = x + 3, y + 3, 5
+        dx, dz = 0.707 * math.sin(ph), math.cos(ph)
+        s.line([(px, py, pz), (px + 24 * dx, py - 24 * dx, pz + 24 * dz)], INK, 1)
+        s.ball(px + 15 * dx, py - 15 * dx, pz + 15 * dz, 2.4, GREEN if k < 8 else "#8a94a8")
+    s.note(318, 58, "10 brass columns: the hour", to=(63, -36, 20))
+    s.note(24, 60, "8 green weights: minutes", to=(-96, 3, 21))
+    s.note(24, 222, "every arm is back in step at :00")
+
+
+def galton(s):
+    s.view(oy=142)
+    s.wbox(-74, 74, -74, 84, -6, 0, "#161d2e", stroke="#2a3550")
+    for a0, txt in ((-70, "10"), (44, "08")):
+        s.poly([q(a0, 62, 0.4), q(a0 + 26, 62, 0.4), q(a0 + 26, 79, 0.4), q(a0, 79, 0.4)],
+               "#0a0d14", stroke="#3a4660")
+        s.tp(q(a0 + 13, 65.5, 0.4), UW, UP, txt, 13)
+    s.line([q(-30, 80), q(-4, 62), q(-4, 57)], STEEL, 1.5)
+    s.line([q(30, 80), q(4, 62), q(4, 57)], STEEL, 1.5)
+    for a, z in ((-12, 76), (-4, 77), (5, 76), (13, 77), (-7, 70), (1, 70), (8, 71), (0, 64)):
+        s.ball(*q(a, z, 1), 2.8, BRASS)
+    for r in range(7):
+        for i in range(r + 1):
+            x, y = s.p(*q((i - r / 2) * 14, 50 - r * 11, 1))
+            s.c2(x, y, 1.7, STEEL)
+    s.line([q(0, 57), q(0, 53), q(-7, 42), q(0, 31), q(-7, 20)], MUTE, 0.9, dash="2 3")
+    s.ball(*q(-7, 18, 1), 2.8, RED)
+    for j in range(9):
+        s.line([q((j - 4) * 14, -70), q((j - 4) * 14, -26)], "#3a4660", 1.2)
+    s.line([q(-56, -70), q(56, -70)], "#3a4660", 1.5)
+    for j, n in enumerate((0, 1, 3, 5, 6, 4, 2, 1)):
+        for m in range(n):
+            s.ball(*q((j - 3.5) * 14, -66.5 + m * 6.2, 1), 2.8, BRASS)
+    s.arrow(340, 92, 340, 186, bend=-0.3)
+    s.note(378, 128, "the board turns")
+    s.note(378, 141, "over on the")
+    s.note(378, 154, "minute")
+    s.note(20, 66, "hour and minute wheels", to=q(-70, 70))
+    s.note(20, 120, "one ball a second", to=q(-7, 18, 1))
+    s.note(20, 200, "22 balls down: 22 s", to=q(-21, -62, 1))
+
+
+def spirals(s):
+    s.view(oy=205)
+    H, R = 126, 20
+    for c, turns, f, col, name, end in ((-95, 6, (10 + 8.37 / 60) / 12, BRASS, "hours", "12"),
+                                         (0, 5, 8.37 / 60, GREEN, "minutes", "60"),
+                                         (95, 3, 22 / 60, RED, "seconds", "60")):
+        cx, cy = c * 0.707, -c * 0.707
+        x0, y0 = s.p(cx, cy, 0)
+        s.cyl(cx, cy, 0, 25, 4, "#232c44")
+
+        def hp(g):
+            th = math.radians(g * turns * 360 + 40)
+            return ((cx + R * math.cos(th), cy + R * math.sin(th), 4 + H * (1 - g)),
+                    math.cos(th) + math.sin(th) > 0)
+
+        runs, n = [], turns * 40
+        for i in range(n + 1):
+            pt, front = hp(i / n)
+            if runs and runs[-1][0] == front:
+                runs[-1][1].append(pt)
+            else:
+                runs.append((front, ([runs[-1][1][-1]] if runs else []) + [pt]))
+        for front, pts in runs:
+            if not front:
+                s.line(pts, "#55627d", 1.6, op=0.7)
+        s.line([(cx, cy, 4), (cx, cy, H + 12)], STEEL, 3)
+        for front, pts in runs:
+            if front:
+                s.line(pts, INK, 2)
+        pt, _ = hp(f)
+        s.ball(pt[0], pt[1], pt[2] + 4, 5, col)
+        rx, top = x0 + 36, y0 - 4 - H
+        s.l2(rx, y0 - 4, rx, top, MUTE, 1)
+        for j in range(7):
+            s.l2(rx, top + j * H / 6, rx + 4, top + j * H / 6, MUTE, 1)
+        s.t(rx + 7, top + 3, "0", size=9)
+        s.t(rx + 7, y0 - 1, end, size=9)
+        yl = y0 - 4 - H * (1 - f)
+        s.l2(x0, yl, rx, yl, col, 0.9, dash="2 3")
+        s.c2(rx, yl, 2.2, col)
+        s.arrow(x0 - 34, y0 - 8, x0 - 34, top + 6, col=MUTE, sw=1)
+        s.t(x0, y0 + 31, name, anchor="middle")
+    s.note(24, 46, "a marble takes its whole period to roll down; a lift returns it")
+
+
+def incense(s):
+    s.view(oy=160)
+    s.box(-78, -62, 0, 156, 124, 8, shade(WOOD, 0.5))
+    s.poly([(-72, -56, 8.2), (72, -56, 8.2), (72, 56, 8.2), (-72, 56, 8.2)], "#645f56")
+    pts = []
+    for r in range(6):
+        xs = (-62, 62) if r % 2 == 0 else (62, -62)
+        pts += [(xs[0], -45 + r * 18, 8.4), (xs[1], -45 + r * 18, 8.4)]
+    total = 6 * 124 + 5 * 18
+    burnt, rest = walk(pts, total * (10 + 8.37 / 60) / 12)
+    s.line(rest, "#2b1e15", 4)
+    s.line(burnt, "#e9e5db", 2.2)
+    for h in range(13):
+        x, y, z = walk(pts, total * h / 12)[0][-1]
+        s.line([(x, y, z), (x, y, z + (11 if h % 3 == 0 else 7))], BRASS, 1.8)
+        if h % 3 == 0:
+            s.t3((x, y, z + 14), str(h), size=9, anchor="middle", col=INK)
+    ex, ey, ez = burnt[-1]
+    cx, cy = s.p(ex, ey, ez)
+    s.c2(cx, cy, 8, SUN, op=0.3)
+    s.ball(ex, ey, ez + 1, 3, RED)
+    s.line([(ex + 3 * math.sin(i * 1.3), ey, ez + 4 + i * 9) for i in range(8)], INK, 1, op=0.45)
+    s.note(318, 60, "pale ash: the day so far", to=(20, -45, 8.4))
+    s.note(24, 204, "unburnt incense", to=(-30, 45, 8.4))
+    s.note(318, 226, "ember, just past peg 10", to=(ex, ey, ez + 1))
+
+
+def ice(s):
+    s.view(oy=186)
+    s.box(-46, -46, 0, 92, 92, 6, "#232c44")
+    for x, y in ((-40, -40), (40, -40), (-40, 40)):
+        s.line([(x, y, 6), (x, y, 72)], STEEL, 2.5)
+    toks = [(-30, -22), (-12, -30), (8, -26), (26, -14), (-24, -4), (-6, -10), (14, 2), (-16, 16), (4, 20), (24, 22)]
+    for x, y in sorted(toks, key=sum):
+        s.ball(x, y, 10, 4.5, BRASS)
+    for x, y in ((-8, 10), (12, -4), (2, 16)):
+        s.line([(x, y, 70), (x, y, 14)], WATER, 1.2, dash="1 6")
+    s.poly([(-40, -40, 72), (40, -40, 72), (40, 40, 72), (-40, 40, 72)], "#1b2233", stroke=STEEL, op=0.6)
+    for x in range(-30, 31, 12):
+        s.line([(x, -40, 72), (x, 40, 72)], STEEL, 0.8, op=0.6)
+    s.line([(-26, -26, 122), (26, -26, 122), (26, 26, 122), (-26, 26, 122), (-26, -26, 122)], MUTE, 0.9, dash="3 3")
+    for x, y in ((26, -26), (26, 26), (-26, 26)):
+        s.line([(x, y, 72), (x, y, 122)], MUTE, 0.9, dash="3 3")
+    s.ball(-5, 4, 84, 4.5, BRASS)
+    s.ball(8, -6, 91, 4.5, BRASS)
+    s.box(-19, -19, 72, 38, 38, 26, "#bfe6f7", op=0.5)
+    s.line([(40, 0, 70), (70, -10, 52)], STEEL, 2)
+    s.line([(70, -10, 52), (70, -10, 8)], WATER, 1.2, dash="1 6")
+    s.cyl(70, -10, 0, 9, 6.5, WATER)
+    s.cyl(70, -10, 0, 9, 46, INK, op=0.13)
+    s.ring((70, -10, 46), 9, stroke=INK, sw=0.8, op=0.5)
+    gx, gy = s.p(70, -10, 0)
+    for j in range(7):
+        s.l2(gx + 12, gy - j * 46 / 6, gx + 16, gy - j * 46 / 6, MUTE, 0.8)
+    s.t(gx + 19, gy - 43, "60", size=9)
+    s.t(gx + 19, gy + 3, "0", size=9)
+    s.note(336, 62, "the block at 00:00", to=(26, -26, 122))
+    s.note(336, 100, "2 tokens still frozen", to=(8, -6, 91))
+    s.note(350, 150, "meltwater glass:", to=(70, -10, 40))
+    s.t(350, 163, "8 of 60 min")
+    s.note(24, 196, "10 tokens in the tray:", to=(-24, -4, 10))
+    s.t(24, 209, "the hour")
+
+
+def lava(s):
+    s.view(oy=138)
+    rnd = random.Random(37)
+    hot = "#ff7a3c"
+    s.wbox(-110, 110, -60, -48, -13, 13, "#232c44")
+    s.wbox(-104, 104, -48, 60, -10, 10, "#231735", stroke="#3a4660")
+    s.line([q(-102, -46.5, 10), q(102, -46.5, 10)], SUN, 2.5, op=0.7)
+    for _ in range(16):
+        s.ball(*q(rnd.uniform(-92, 92), rnd.uniform(-38, -8), 10), rnd.uniform(3, 8.5), hot, op=0.9)
+    for c, r in dots("10:08"):
+        s.ball(*q((c - 9) * 9.6 + rnd.uniform(-1, 1), 46 - r * 9 + rnd.uniform(-1, 1), 10),
+               rnd.uniform(5.8, 6.8), hot)
+    s.wbox(-110, 110, 60, 65, -13, 13, "#232c44")
+    for i, line in enumerate(("blobs rise,", "merge into", "the digits,", "then sink")):
+        s.note(384, 110 + i * 13, line)
+    s.note(20, 216, "a lamp in the base heats the wax", to=q(-60, -47, 10))
+
+
+def ferro(s):
+    s.view(oy=138)
+    inky = "#05070b"
+    s.wbox(-110, 110, -60, -48, -13, 13, "#232c44")
+    s.wbox(-104, 104, -48, 60, -10, 10, "#b8c2d4")
+
+    def spikes(p3, q3, n, size):
+        (x1, y1), (x2, y2) = s.p(*p3), s.p(*q3)
+        ln = math.hypot(x2 - x1, y2 - y1) or 1
+        ux, uy = (x2 - x1) / ln, (y2 - y1) / ln
+        for i in range(n):
+            bx, by = x1 + (x2 - x1) * (i + 0.5) / n, y1 + (y2 - y1) * (i + 0.5) / n
+            for sg in (1, -1):
+                s.raw(f'<polygon points="{bx - ux * 2.4:.1f},{by - uy * 2.4:.1f} {bx + ux * 2.4:.1f},{by + uy * 2.4:.1f} '
+                      f'{bx - uy * size * sg:.1f},{by + ux * size * sg:.1f}" fill="{inky}"/>')
+
+    for _, name, a, b in segs("10:08", q(-78, -14, 10), UW, UP, 24, 28, 12):
+        if name == ":":
+            x, y = s.p(*a)
+            s.c2(x, y, 4, inky)
+        else:
+            s.line([a, b], inky, 7)
+            spikes(a, b, 4, 6)
+    s.poly([q(-104, -48, 10), q(104, -48, 10), q(104, -41, 10), q(-104, -41, 10)], inky)
+    spikes(q(-100, -41, 10), q(100, -41, 10), 30, 5)
+    s.wbox(-110, 110, 60, 65, -13, 13, "#232c44")
+    cx, cy = 424, 112
+    on = {(0, 1), (1, 1), (2, 1), (3, 1), (3, 2), (3, 3), (0, 3), (1, 3), (2, 3)}
+    for c in range(4):
+        for r in range(5):
+            s.c2(cx - 16.5 + c * 11, cy - 22 + r * 11, 4, BRASS if (c, r) in on else "#232c44", stroke=STEEL, sw=0.8)
+    ex, ey = s.p(*q(104, 10, 0))
+    s.l2(cx - 24, cy, ex, ey, MUTE, 0.8, dash="2 3")
+    s.t(cx, cy + 48, "coils behind", anchor="middle")
+    s.t(cx, cy + 61, "the glass", anchor="middle")
+    s.note(20, 216, "spare fluid waits in the sump", to=q(-60, -44, 10))
+
+
+def bamboo(s):
+    s.view(ox=205, oy=160, k=0.95)
+    cane = "#7fae5b"
+    s.ring((0, 0, 0), 84, fill="#12324a", stroke="#2a3550", sw=1)
+    for r in (40, 64):
+        s.ring((0, 0, 0.2), r, stroke="#2f5f80", sw=0.8, dash="2 5")
+    for _, i in sorted((sum(hd(i * 30, 96)), i) for i in range(12)):
+        s.ball(*Hh(i * 30, 96, 3), 6.5 if i % 3 == 0 else 5, STONE if i % 3 == 0 else "#6f7788")
+    for i, lab in ((0, "12"), (3, "3"), (6, "6"), (9, "9")):
+        x, y = s.p(*Hh(i * 30, 114))
+        s.t(x, y + 4, lab, col=INK, size=10, anchor="middle", weight=700)
+    kx, ky = hd(MA, 64)
+    tx, ty = hd(MA - 14, 64)
+    s.ring((kx, ky, 0.3), 10, stroke=INK, sw=0.6, op=0.4)
+    s.line([(tx, ty, 0.5), (kx, ky, 0.5)], "#ff8a3d", 4)
+    s.ball(kx, ky, 1, 3.5, "#ff8a3d")
+    lx, ly = hd(HA, 40)
+    px, py = s.p(lx, ly, 6)
+    s.c2(px, py, 13, SUN, op=0.18)
+    s.box(lx - 4, ly - 4, 1, 8, 8, 9, SUN)
+    D = (0.707, -0.707, 0)
+    T = mul(D, 168)
+    tau = math.radians(24)
+    ax = (D[0] * math.cos(tau), D[1] * math.cos(tau), math.sin(tau))
+    piv = (T[0], T[1], 30)
+    mouth, tail = add(piv, mul(ax, 26)), add(piv, mul(ax, -34))
+    s.box(T[0] - 33 * D[0] - 6, T[1] - 33 * D[1] - 6, 0, 12, 12, 4, "#6f7788")
+    s.line([T, piv], WOOD, 3.5)
+    s.line([tail, mouth], cane, 7)
+    sp0, sp1 = add(T, (D[0] * 46, D[1] * 46, 60)), add(T, (D[0] * 30, D[1] * 30, 51))
+    s.line([add(T, mul(D, 46)), sp0], WOOD, 3)
+    s.line([sp0, sp1], cane, 4)
+    s.line([sp1, mouth], WATER, 1.3, dash="1 4")
+    s.note(24, 70, "lantern: once round in 12 h", to=(lx, ly, 10))
+    s.note(214, 44, "koi: one lap an hour", to=(kx, ky, 1))
+    s.note(350, 70, "fills for 60 s,", to=mouth)
+    s.t(350, 83, "tips and knocks")
+    s.note(24, 232, "12 hour stones", to=Hh(210, 96, 3))
+
+
+def harbour(s):
+    s.view(oy=165)
+    s.box(-100, -56, 0, 200, 40, 36, "#6b7385")
+    house(s, -88, -50, 36, 30, 24, 16, WOOD, shade(RED, 0.8))
+    house(s, -30, -48, 36, 26, 22, 14, "#8a93a6", "#55627d")
+    s.box(52, -50, 36, 20, 20, 44, "#8a93a6")
+    apex = (62, -40, 96)
+    s.poly([(72, -50, 80), (72, -30, 80), apex], shade(RED, 0.55))
+    s.poly([(52, -30, 80), (72, -30, 80), apex], shade(RED, 0.8))
+    s.ring((62, -29.8, 64), 8, "xz", fill=INK)
+    s.line([(62, -29.7, 64), (62 + 4.5 * sd(HA), -29.7, 64 + 4.5 * cd(HA))], "#141b2b", 1.8)
+    s.line([(62, -29.7, 64), (62 + 7 * sd(MA), -29.7, 64 + 7 * cd(MA))], "#141b2b", 1.1)
+    s.line([(-100, -16, 31), (100, -16, 31)], INK, 0.9, dash="4 4", op=0.6)
+    s.line([(-60, -16, 0), (-60, -16, 36)], INK, 2.5)
+    for j in range(7):
+        s.line([(-60, -16, j * 6), (-53, -16, j * 6)], INK, 1)
+    s.box(-100, -16, 0, 200, 60, 22, WATER, op=0.55)
+
+    def boat(x, y, col):
+        s.line([(x + 2, y, 26), (x - 2, -16, 37)], MUTE, 0.8)
+        s.box(x, y, 21, 24, 9, 5, col)
+        s.line([(x + 12, y + 4.5, 26), (x + 12, y + 4.5, 50)], INK, 1.2)
+        s.poly([(x + 12, y + 4.5, 29), (x + 12, y + 4.5, 49), (x + 23, y + 4.5, 29)], INK, op=0.85)
+
+    boat(-44, 2, WOOD)
+    boat(26, 22, RED)
+    s.note(352, 84, "harbour clock: 10:08", to=(62, -29.8, 64))
+    s.note(24, 70, "dashed: high water", to=(-90, -16, 31))
+    s.note(24, 206, "tide staff: the real tide", to=(-60, -16, 28))
+    s.t(24, 219, "for a chosen port")
+    s.note(356, 232, "boats ride the tide", to=(38, 26.5, 32))
+
+
+def armillary(s):
+    s.view(oy=128)
+    R = 68
+    b, e = math.radians(50), math.radians(26.6)
+    PL["eq"] = ((1, 0, 0), (0, math.cos(b), -math.sin(b)))
+    PL["ecl"] = ((1, 0, 0), (0, math.cos(e), -math.sin(e)))
+    rings = (("xy", R, STEEL, 2.5), ("yz", R, BRASS, 3), ("eq", R * 0.9, BRASS, 3.5),
+             ("ecl", R * 0.78, shade(BRASS, 0.75), 2))
+
+    def span(pl):
+        (ux, uy, _), (vx, vy, _) = PL[pl]
+        return math.degrees(math.atan2(vx + vy, ux + uy)) - 90
+
+    def on(pl, r, t):
+        u, v = PL[pl]
+        return at((0, 0, 0), u, v, r * cd(t), r * sd(t))
+
+    s.cyl(0, 0, -R - 22, 20, 5, "#232c44")
+    s.line([(0, 0, -R - 17), (0, 0, -R)], BRASS, 4)
+    for pl, r, col, sw in rings:
+        s.ring((0, 0, 0), r, pl, stroke=shade(col, 0.5), sw=sw, a0=span(pl) + 180, a1=span(pl) + 360)
+    axis = (0, math.sin(b), math.cos(b))
+    s.line([mul(axis, -R), mul(axis, R)], STEEL, 1.5)
+    s.ball(0, 0, 0, 9, WATER)
+    for pl, r, col, sw in rings:
+        s.ring((0, 0, 0), r, pl, stroke=col, sw=sw, a0=span(pl), a1=span(pl) + 180)
+    for h in range(24):
+        t = -90 + (h - 12) * 15
+        s.line([on("eq", R * 0.9, t), on("eq", R * 0.99, t)], INK if h % 6 == 0 else MUTE, 1.6 if h % 6 == 0 else 0.9)
+    for h, lab in ((12, "12"), (6, "6"), (18, "18"), (0, "24")):
+        x, y = s.p(*on("eq", R * 1.14, -90 + (h - 12) * 15))
+        s.t(x, y + 3, lab, col=INK, size=9, anchor="middle")
+    sun = on("eq", R * 0.9, -90 + (10 + 8.37 / 60 - 12) * 15)
+    s.ball(*sun, 7, SUN)
+    bead = on("ecl", R * 0.78, -90 + 8.37 * 6)
+    s.ball(*bead, 4, GREEN)
+    s.note(318, 62, "sun bead: one lap in 24 h", to=sun)
+    s.note(356, 124, "small bead: minutes", to=bead)
+    for i, line in enumerate(("four rings: horizon,", "meridian, equator,", "ecliptic")):
+        s.note(24, 150 + i * 13, line)
+
+
+def moondial(s):
+    s.view(oy=176, k=0.9)
+    G = 46
+    s.ring((0, 0, 0), 92, fill="#161d2e", stroke="#2a3550", sw=1)
+    for i in range(12):
+        s.line([Hh(i * 30, 76), Hh(i * 30, 88)], INK if i % 3 == 0 else MUTE, 2 if i % 3 == 0 else 1)
+    moon, lamp = Hh(HA + 180, 50, 115), Hh(MA + 180, 70, 92)
+    tip_h, tip_m = Hh(HA, 50 * G / (115 - G), 0.3), Hh(MA, 70 * G / (92 - G), 0.3)
+    s.ring((0, 0, 92), 70, stroke="#33405c", sw=1, dash="2 5")
+    s.ring((0, 0, 115), 50, stroke="#33405c", sw=1, dash="2 5")
+    s.line([(0, 0, 0.3), tip_m], "#05070b", 3, op=0.8)
+    s.line([(0, 0, 0.3), tip_h], "#05070b", 5.5, op=0.85)
+    s.line([lamp, tip_m], "#b8f29a", 0.8, dash="3 4", op=0.45)
+    s.line([moon, tip_h], SUN, 0.8, dash="3 4", op=0.5)
+    s.line([(0, 0, 0), (0, 0, G)], STONE, 3.5)
+    s.ball(0, 0, G, 2.6, STONE)
+    lx, ly = s.p(*lamp)
+    s.c2(lx, ly, 10, "#b8f29a", op=0.18)
+    s.ball(*lamp, 4.5, "#b8f29a")
+    mx, my = s.p(*moon)
+    s.c2(mx, my, 24, SUN, op=0.1)
+    s.c2(mx, my, 13, "#2a3347")
+    s.raw(f'<path d="M{mx:.1f},{my - 13:.1f} A13,13 0 0 1 {mx:.1f},{my + 13:.1f} A5.5,13 0 0 0 {mx:.1f},{my - 13:.1f} Z" '
+          f'fill="#f4efd8"/>')
+    s.note(346, 66, "moon: true phase,", to=(mx + 13, my))
+    s.t(346, 79, "one lap in 12 h")
+    s.note(24, 104, "firefly lantern:", to=(lx - 5, ly))
+    s.t(24, 117, "one lap an hour")
+    s.note(356, 226, "long shadow: minutes", to=Hh(MA, 52, 0.3))
+    s.note(24, 226, "short shadow: the hour", to=Hh(HA, 24, 0.3))
+
+
+def lighthouse(s):
+    s.view(oy=172, k=0.9)
+    s.ring((0, 0, 0), 104, fill="#0f2740", stroke="#2a3550", sw=1)
+
+    def rock(i):
+        s.ball(*Hh(i * 30, 90, 3), 7 if i % 3 == 0 else 5.5, STONE if i % 3 == 0 else "#55627d")
+
+    order = sorted((sum(hd(i * 30, 90)), i) for i in range(12))
+    for d, i in order:
+        if d < 0:
+            rock(i)
+    for i, lab in ((0, "12"), (3, "3"), (9, "9")):
+        x, y = s.p(*Hh(i * 30, 118))
+        s.t(x, y + 4, lab, col=INK, size=10, anchor="middle", weight=700)
+    bx, by = hd(MA, 60)
+    s.box(bx - 6, by - 3, 1, 12, 6, 4, WOOD)
+    s.line([(bx, by, 5), (bx, by, 19)], INK, 1)
+    s.poly([(bx, by, 7), (bx, by, 18), (bx + 7, by, 7)], INK, op=0.85)
+    s.ring((0, 0, 0.3), 26, fill="#3a4660")
+    s.cyl(0, 0, 0, 13, 30, "#d8dee9")
+    s.cyl(0, 0, 30, 11, 28, RED)
+    s.cyl(0, 0, 58, 9, 26, "#d8dee9")
+    s.cyl(0, 0, 84, 12.5, 3, "#232c44")
+    x0, y0 = s.p(0, 0, 0)
+    for i in range(12):
+        z = 7 + i * 6.3
+        r = 13 if z < 30 else (11 if z < 58 else 9)
+        s.c2(x0 + (3.5 if i % 2 else -3.5), y0 - z * s.k + r * 0.707 * s.k - 1, 1.8, SUN if i < 10 else "#55627d")
+    s.poly([(0, 0, 94), Hh(SA - 9, 104, 2), Hh(SA + 9, 104, 2)], SUN, op=0.2)
+    s.line([(0, 0, 94), Hh(SA, 104, 2)], SUN, 1.2, op=0.8)
+    s.ball(0, 0, 94, 7.5, SUN)
+    s.line([(0, 0, 101), (0, 0, 109)], STEEL, 1.5)
+    for d, i in order:
+        if d >= 0:
+            rock(i)
+    s.note(24, 70, "10 lit windows: the hour", to=(x0 - 4, y0 - 30))
+    s.note(330, 62, "boat: one lap an hour", to=(bx, by, 8))
+    s.note(372, 200, "beam: one", to=Hh(SA, 86, 16))
+    s.t(372, 213, "sweep a minute")
+
+
+def beams(s):
+    s.view(oy=172, k=0.9)
+    rnd = random.Random(44)
+    s.ring((0, 0, 0), 100, fill="#161d2e", stroke="#2a3550", sw=1)
+    for _ in range(9):
+        s.c2(rnd.uniform(150, 330), rnd.uniform(70, 190), round(rnd.uniform(18, 40)), INK, op=0.035)
+    s.ring((0, 0, 78), 100, stroke="#33405c", sw=1)
+    for i in range(12):
+        s.line([Hh(i * 30, 100), Hh(i * 30, 100, 78)], INK if i % 3 == 0 else "#33405c",
+               1.2 if i % 3 == 0 else 0.8, op=0.6)
+    x, y = s.p(*Hh(0, 100, 78))
+    s.t(x, y - 5, "12", col=INK, size=10, anchor="middle", weight=700)
+    s.cyl(0, 0, 0, 5, 76, "#232c44")
+    for th, z, col, w, sw in ((HA, 26, SUN, 6, 3), (MA, 46, GREEN, 3.5, 2), (SA, 66, RED, 1.5, 1)):
+        s.poly([(0, 0, z), Hh(th - w, 100, z), Hh(th + w, 100, z)], col, op=0.22)
+        s.line([(0, 0, z), Hh(th, 100, z)], col, sw, op=0.9)
+        s.ball(0, 0, z, 3.5, STEEL)
+        s.ball(*Hh(th, 100, z), 4, col)
+    s.note(24, 84, "amber, wide: the hour", to=Hh(HA, 100, 26))
+    s.note(346, 62, "green: minutes", to=Hh(MA, 100, 46))
+    s.note(362, 200, "red, thin: seconds", to=Hh(SA, 100, 66))
+    s.note(24, 226, "mirrors turn on the column")
+
+
+def flipdot(s):
+    s.view(oy=142)
+    PL["wflip"] = (mul(UW, 0.3), UP)
+    s.wbox(-112, 112, -46, 46, -8, 0, "#0a0d14", stroke="#2a3550")
+    lit, was = set(dots("10:08")), set(dots("10:07"))
+    for c in range(-1, 20):
+        for r in range(-1, 6):
+            o = q((c - 9) * 10.4, (2 - r) * 12, 0.5)
+            if ((c, r) in lit) != ((c, r) in was):
+                s.ring(o, 4.6, "wflip", fill="#a8903f")
+            else:
+                s.ring(o, 4.6, "w", fill=SUN if (c, r) in lit else "#1b2233")
+    cx, cy = 420, 112
+    s.raw(f'<path d="M{cx},{cy - 14} A14,14 0 0 0 {cx},{cy + 14} Z" fill="{SUN}"/>')
+    s.raw(f'<path d="M{cx},{cy - 14} A14,14 0 0 1 {cx},{cy + 14} Z" fill="#1b2233" stroke="{MUTE}"/>')
+    s.l2(cx, cy - 22, cx, cy + 22, STEEL, 1.2)
+    s.arrow(cx - 20, cy - 26, cx + 20, cy - 26, bend=-0.4)
+    for i, line in enumerate(("one disc: black", "one side, yellow", "the other")):
+        s.t(cx, cy + 40 + i * 13, line, anchor="middle")
+    s.note(24, 208, "6 discs mid-flip: 10:07 becomes 10:08", to=q(72.8, 0, 0.5))
+
+
+def twist(s):
+    s.view(oy=196)
+    R = 38
+    f, t = (0.707, 0.707, 0), (0.707, -0.707, 0)
+
+    def P(phi, z, r=R):
+        return (r * (cd(phi) * f[0] + sd(phi) * t[0]), r * (cd(phi) * f[1] + sd(phi) * t[1]), z)
+
+    def num(phi, z, txt, size, col):
+        u = tuple(0.82 * (-sd(phi) * f[i] + cd(phi) * t[i]) for i in range(3))
+        s.tp(P(phi, z), u, UP, txt, size, col=col)
+
+    s.cyl(0, 0, -5, 45, 5, "#1b2233")
+    for z0, h, col in ((0, 18, "#3a4660"), (21, 30, "#46536f"), (54, 30, "#3a4660"), (87, 30, "#46536f")):
+        s.cyl(0, 0, z0, R, h, col)
+    s.cyl(0, 0, 117, 6, 5, BRASS)
+    for z, mid, left, right in ((95, "10", "9", "11"), (62, "0", "5", "1"), (29, "8", "7", "9")):
+        num(-42, z, left, 22, MUTE)
+        num(0, z, mid, 22, INK)
+        num(42, z, right, 22, MUTE)
+    for sec in range(11, 34):
+        phi = (sec - 22) * 6
+        s.line([P(phi, 9 if sec % 5 == 0 else 12), P(phi, 16)], INK if sec % 5 == 0 else MUTE, 0.9)
+    for sec in (15, 20, 25, 30):
+        num((sec - 22) * 6, 1.5, str(sec), 8.5, INK)
+    for phi in (-20, 20):
+        s.line([P(phi, 20, R + 1), P(phi, 118, R + 1)], BRASS, 1.3)
+    s.line([P(0, 12, R + 1), P(0, 20, R + 1)], RED, 2)
+    for y, txt in ((98, "hours, 1 to 12"), (131, "tens of minutes"), (164, "minutes"), (191, "seconds: never stops")):
+        s.t(302, y, txt)
+    s.note(24, 60, "a ring turns only when")
+    s.note(24, 73, "its digit changes")
+    s.note(24, 122, "read down the brass index", to=P(-20, 70, R + 1))
+
+
+def abacus(s):
+    s.view(oy=140)
+    A, Z0, Z1, ZB = 110, -58, 62, 26
+    off = "#6b4a2e"
+    s.poly([q(-A, Z0), q(A, Z0), q(A, Z1), q(-A, Z1)], "#141a28")
+    for i, ch in enumerate("100822"):
+        a, d = -85 + 34 * i, int(ch)
+        s.line([q(a, Z0), q(a, Z1)], STEEL, 1.5)
+        s.ball(*q(a, ZB + 9 if d >= 5 else Z1 - 9, 1), 7.5, BRASS if d >= 5 else off)
+        for j in range(4):
+            up = j < d % 5
+            s.ball(*q(a, ZB - 9 - 11 * j if up else Z0 + 9 + 11 * (3 - j), 1), 7.5, BRASS if up else off)
+        s.t3(q(a, Z1 + 9), ch, size=10, anchor="middle", col=INK)
+    s.line([q(-A, ZB), q(A, ZB)], WOOD, 4)
+    for a in (-34, 34):
+        x, y = s.p(*q(a, ZB))
+        s.c2(x, y, 1.8, INK)
+    s.line([q(-A, Z0), q(A, Z0), q(A, Z1), q(-A, Z1), q(-A, Z0)], WOOD, 6)
+    for a, name in ((-68, "hours"), (0, "minutes"), (68, "seconds")):
+        s.t3(q(a, Z0 - 16), name, anchor="middle")
+    for i, line in enumerate(("a bead slides", "each second;", "carries ripple", "leftwards")):
+        s.note(386, 100 + i * 13, line)
+    s.note(14, 120, "brass beads")
+    s.note(14, 133, "are counted")
+
+
+def village(s):
+    s.view(oy=165)
+    s.box(-96, -40, -4, 192, 80, 4, "#1b2a22")
+    tile, slate, plaster = shade(RED, 0.8), "#55627d", shade(SAND, 0.8)
+
+    def tower():
+        s.box(-12, -34, 0, 24, 24, 70, "#8a93a6")
+        apex = (0, -22, 90)
+        s.poly([(12, -34, 70), (12, -10, 70), apex], shade(RED, 0.55))
+        s.poly([(-12, -10, 70), (12, -10, 70), apex], tile)
+        s.poly([(-3, -9.8, 63), (3, -9.8, 63), (3, -9.8, 69), (-3, -9.8, 69)], "#0a0d14")
+        s.ring((0, -9.8, 52), 9, "xz", fill=INK)
+        s.line([(0, -9.7, 52), (5.5 * sd(HA), -9.7, 52 + 5.5 * cd(HA))], "#141b2b", 1.8)
+        s.line([(0, -9.7, 52), (8 * sd(MA), -9.7, 52 + 8 * cd(MA))], "#141b2b", 1.1)
+        s.poly([(-5, -9.8, 27), (5, -9.8, 27), (5, -9.8, 39), (-5, -9.8, 39)], "#0a0d14")
+        s.box(-16, -10, 24, 32, 7, 3, WOOD)
+        for x, col in ((-11, RED), (-4, GREEN), (4, VIOLET), (11, SUN)):
+            s.ball(x, -6.5, 30, 2.6, col)
+
+    def tree():
+        s.line([(-20, 18, 0), (-20, 18, 9)], WOOD, 2)
+        s.ball(-20, 18, 13, 6.5, "#4f9d69")
+
+    def fountain():
+        s.cyl(8, 14, 0, 8, 3, STONE)
+        s.ball(8, 14, 6, 2.5, WATER)
+
+    things = [(-22, tower), (-2, tree), (22, fountain)]
+    for x, y, dx, dy, dz, col, roof in ((-90, -34, 28, 22, 20, WOOD, tile), (-54, -36, 26, 22, 28, "#8a93a6", slate),
+                                        (22, -36, 28, 22, 24, plaster, tile), (58, -34, 30, 22, 18, WOOD, slate),
+                                        (-74, 6, 24, 20, 15, "#8a93a6", tile), (44, 10, 26, 20, 15, plaster, slate)):
+        things.append((x + dx / 2 + y + dy / 2,
+                       lambda x=x, y=y, dx=dx, dy=dy, dz=dz, col=col, roof=roof: house(s, x, y, 0, dx, dy, dz, col, roof)))
+    for _, fn in sorted(things, key=lambda t: t[0]):
+        fn()
+    s.note(336, 60, "a bird calls the hour", to=(0, -9.8, 66))
+    s.note(350, 104, "tower dial: 10:08", to=(0, -9.8, 52))
+    s.note(24, 84, "figures parade on the hour;", to=(-11, -6.5, 30))
+    s.t(24, 97, "one steps out each quarter")
+
+
+def knitting(s):
+    s.view(oy=215)
+    ZT, BH, RT = 140, 9, 15
+    s.line([(-50, 50, 0), (-50, 50, 160), (10, -10, 160)], STEEL, 3)
+    s.line([(-50, 50, 144), (-15, 15, 144)], STEEL, 2)
+    s.cyl(0, 0, 0, 24, 12, WOOD)
+    s.ring((0, 0, 12), 20, fill="#1b2233")
+    s.ring((0, 0, 12.5), 13, stroke=VIOLET, sw=4)
+    s.ring((0, 0, 13), 6, stroke=SAND, sw=4)
+    z = ZT - 10 * BH - BH * 8.37 / 60
+    for h in range(11):
+        hh = BH if h < 10 else BH * 8.37 / 60
+        s.cyl(0, 0, z, RT, hh, VIOLET if h % 2 == 0 else SAND)
+        z += hh
+    s.ring((0, 0, 144), 21, stroke=STEEL, sw=3)
+    for i in range(24):
+        s.line([Hh(i * 15, 21, 144), Hh(i * 15, 21, 151)], INK, 0.9)
+    car = Hh(SA, 21, 152)
+    s.ball(40, -80, 11, 11, VIOLET)
+    s.line([(40, -80, 22), (10, -10, 160), car], VIOLET, 0.9)
+    s.ball(*car, 4, RED)
+    s.note(318, 62, "carriage: one row a minute", to=car)
+    s.note(318, 120, "10 full stripes: the hour", to=(259, 125))
+    s.note(24, 96, "new stripe, just begun:", to=(223, 77))
+    s.t(24, 109, "8 min")
+    s.note(318, 220, "cut at 00:00; drops into", to=(268, 208))
+    s.t(318, 233, "the basket")
+
+
+def city(s):
+    s.view(oy=150)
+    for x, y, r in ((40, 52, 1), (96, 78, 0.8), (150, 46, 1), (300, 44, 0.8), (352, 84, 1), (452, 104, 0.8), (70, 120, 0.8)):
+        s.c2(x, y, r, INK, op=0.7)
+    s.c2(412, 62, 13, "#f4efd8", op=0.9)
+    s.poly([q(-110, -60, 0), q(106, -60, 0), q(106, -60, 14), q(-110, -60, 14)], "#161d2e")
+
+    def win(a, top, on):
+        s.poly([q(a, top - 9, 0.3), q(a + 8, top - 9, 0.3), q(a + 8, top, 0.3), q(a, top, 0.3)],
+               SUN if on else "#262f47")
+
+    for a0, w, top, ch in ((-97, 38, 52, "1"), (-53, 38, 70, "0"), (-9, 14, 30, ":"), (11, 38, 60, "0"), (55, 38, 78, "8")):
+        s.wbox(a0, a0 + w, -60, top, -22, 0, "#1b2233", stroke="#2a3550")
+        if ch == ":":
+            win(a0 + 3, 10, True)
+            win(a0 + 3, -8, True)
+            continue
+        for r in range(int((top + 55) // 12)):
+            for c in range(3):
+                win(a0 + 3.5 + c * 11.5, top - 5 - r * 12, r < 5 and F3[ch][r * 3 + c] == "1")
+    for i, line in enumerate(("one building", "per digit; a", "window or two", "changes each", "minute")):
+        s.note(374, 126 + i * 13, line)
+    s.note(24, 222, "lower floors stay dark", to=q(-80, -40, 0.3))
+
+
 SCENES = [
     ("exploded-movement", "Exploded skeleton movement", "Reads 10:08:22 on the top dial; every layer below is turning", exploded),
     ("gimbal-tourbillon", "Triple-axis tourbillon", "Reads 10:08 on the sub-dial, 22 s on the green bead", gimbal),
@@ -1189,6 +1862,26 @@ SCENES = [
     ("construction-crew", "Construction crew", "Reads 10:08 once the crane sets the last planks", crew),
     ("train-loops", "Train loops", "Reads 10:08:22: one train per hand", trains),
     ("hour-tree", "Hour tree", "Reads 10:08: 10 branches, then 1 leaf and 3 buds", tree),
+    ("newtons-cradle", "Newton's cradle", "Reads 10:08 on the drums; 3 balls swinging means 20 to 29 s", cradle),
+    ("metronome-forest", "Metronome forest", "Reads 10:08: 10 brass columns, 8 green weights; the ripple is the seconds", metronomes),
+    ("galton-board", "Galton board", "Reads 10:08 on the wheels; 22 balls down is 22 s", galton),
+    ("marble-spirals", "Marble spiral towers", "Reads 10:08:22 from the height of the three marbles", spirals),
+    ("incense-seal", "Incense seal clock", "Reads a little after 10: the ember is just past the 10th peg", incense),
+    ("melting-ice", "Melting ice block", "Reads 10:08: 10 tokens in the tray, glass at 8 min", ice),
+    ("lava-lamp", "Lava-lamp digits", "Reads 10:08 while the blobs hold together", lava),
+    ("ferrofluid", "Ferrofluid digits", "Reads 10:08 in black fluid on a lit panel", ferro),
+    ("bamboo-tipper", "Bamboo tipper and pond", "Reads 10:08: lantern at 10, koi at 8 min; the tube is a third full", bamboo),
+    ("tide-harbour", "Tide harbour", "Reads 10:08 on the harbour clock; the water shows the tide", harbour),
+    ("armillary", "Armillary sphere", "Reads 10:08: sun bead on the 24 h ring, small bead at 8 min", armillary),
+    ("moon-lantern", "Moon lantern", "Reads 10:08: the moon's shadow at 10, the lantern's at 8 min", moondial),
+    ("lighthouse", "Lighthouse", "Reads 10:08:22: 10 lit windows, boat at 8 min, beam at 22 s", lighthouse),
+    ("mirror-haze", "Mirror and haze", "Reads 10:08:22: three beams as hands", beams),
+    ("flip-dot", "Flip-dot wall", "Reads 10:08; six discs are mid-flip", flipdot),
+    ("twist-tower", "Twist tower", "Reads 10:08:22 down the brass index", twist),
+    ("abacus", "Abacus", "Reads 10:08:22 as six columns of beads", abacus),
+    ("cuckoo-village", "Cuckoo village", "Reads 10:08 on the tower dial; the parade waits for 11:00", village),
+    ("knitting", "Knitting clock", "Reads 10:08: 10 full stripes and the start of an 11th", knitting),
+    ("window-city", "Window city", "Reads 10:08 in lit windows", city),
 ]
 
 

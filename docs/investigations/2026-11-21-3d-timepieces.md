@@ -1,17 +1,19 @@
-# 3D timepieces: 30 ideas for a clock worth watching
+# 3D timepieces: 50 ideas for a clock worth watching
 
 **Brainstorm, 2026‑11‑21.** Nothing here is built or prototyped. Will asked for "50 ideas
 for 3d timepieces (sure, some watches/clock mechanisms, but can use other things like
 water, pendulums, dominoes (lol) )", then "is 50 too many? how about 30?" and "include
-diagram/visalization for each idea". So this is 30 ideas, each with a sketch, plus a
-one‑line [bench of 20 more](#bench-20-more-not-sketched) that would take it to 50.
+diagram/visalization for each idea". The first version was 30 ideas with sketches and a
+one‑line bench of 20 more. Will then said "go ahead and add mockups for the extra 20",
+so this is now all 50, each with a sketch: the 30 I picked first, written up by group,
+and then [the other 20](#the-other-20).
 
 I have read these as candidates for 3D screensaver scenes beside the Clock scene in the
 [screensaver plan](../plans/2026-11-20-screensavers.md). That is my assumption, and
 nothing below depends on it.
 
 **About the sketches.** They are schematics, not renders: one small isometric drawing
-kit in [`build.py`](2026-11-21-3d-timepieces/build.py) draws all 30, so they can be
+kit in [`build.py`](2026-11-21-3d-timepieces/build.py) draws all 50, so they can be
 regenerated or extended with `python3 build.py`. Each one shows 10:08:22 unless its
 caption says otherwise, so the readings can be compared.
 
@@ -20,7 +22,7 @@ caption says otherwise, so the readings can be compared.
 1. **The scene must be a function of the clock.** A screensaver starts at an arbitrary
    moment, so every pose has to be computable from the current time alone. A domino's
    angle depends only on how long ago its second passed; a bucket is full if its bit is
-   set. All 30 are meant as choreography that looks like physics, not as a simulation
+   set. All 50 are meant as choreography that looks like physics, not as a simulation
    that would have to be replayed from midnight.
 2. **It has to say how it is read.** Some of these read at a glance from the sofa, some
    are counted and some are decoded. The table below says which. A decoded one probably
@@ -67,6 +69,26 @@ caption says otherwise, so the readings can be compared.
 | 28 | [Construction crew](#28-construction-crew) | Tiny workers | At a glance | Continuously |
 | 29 | [Train loops](#29-train-loops) | Model trains | At a glance | Continuously |
 | 30 | [Hour tree](#30-hour-tree) | Growth | Count | Slowly |
+| 31 | [Newton's cradle](#31-newtons-cradle) | Colliding balls | Seconds only; drums for the rest | Each second |
+| 32 | [Metronome forest](#32-metronome-forest) | 60 metronomes | Count | Continuously |
+| 33 | [Galton board](#33-galton-board) | Falling balls | Seconds only; wheels for the rest | Each second |
+| 34 | [Marble spiral towers](#34-marble-spiral-towers) | Rolling marbles | With practice | Continuously |
+| 35 | [Incense seal clock](#35-incense-seal-clock) | Smouldering incense | Roughly | Slowly |
+| 36 | [Melting ice block](#36-melting-ice-block) | Melting ice | Count | Slowly |
+| 37 | [Lava-lamp digits](#37-lava-lamp-digits) | Heat and wax | At a glance, mostly | Continuously |
+| 38 | [Ferrofluid digits](#38-ferrofluid-digits) | Electromagnets | At a glance | Each minute |
+| 39 | [Bamboo tipper and pond](#39-bamboo-tipper-and-pond) | Water | At a glance | Each minute |
+| 40 | [Tide harbour](#40-tide-harbour) | The tide | Tower dial only | Slowly |
+| 41 | [Armillary sphere](#41-armillary-sphere) | The sun's path | With practice | Slowly |
+| 42 | [Moon lantern](#42-moon-lantern) | Lamps and shadows | At a glance | Slowly |
+| 43 | [Lighthouse](#43-lighthouse) | A sweeping beam | At a glance | Continuously |
+| 44 | [Mirror and haze](#44-mirror-and-haze) | Light beams | At a glance | Continuously |
+| 45 | [Flip-dot wall](#45-flip-dot-wall) | Flipping discs | At a glance | Each minute |
+| 46 | [Twist tower](#46-twist-tower) | Rotating drums | At a glance | Each minute |
+| 47 | [Abacus](#47-abacus) | Sliding beads | Decode | Each second |
+| 48 | [Cuckoo village](#48-cuckoo-village) | Clockwork figures | Tower dial only | Each quarter |
+| 49 | [Knitting clock](#49-knitting-clock) | A knitting machine | Count | Continuously |
+| 50 | [Window city](#50-window-city) | Lit windows | At a glance | Each minute |
 
 ## Where I would start
 
@@ -74,13 +96,16 @@ These are opinions, not findings.
 
 - **Domino ring (16).** It reads like a dial, something happens every second, and each
   domino's pose is a one‑line function of the time. It is also the one you laughed at.
-- **Rolling-ball rail clock (15).** The best hourly event of the 30: at 12:59 every rail
+- **Rolling-ball rail clock (15).** The best hourly event of the first 30: at 12:59 every rail
   dumps at once.
 - **Anamorphic shards (21).** The only idea here that cannot exist as a flat clock, so
   it earns the 3D most.
 - **Pendulum wave (5).** The most beautiful continuous motion, and the maths is exact.
 - **Split-flap wall (26).** The safe one: legible from anywhere, cheap to build, and a
   good first scene for testing the plumbing.
+
+None of the other 20 displaces these for me. The Lighthouse (43) and the Twist tower
+(46) come closest: both read from across a room and both have a good event on the hour.
 
 ## Gears and escapements
 
@@ -164,7 +189,7 @@ all. French makers sold clocks like this in the 19th century. Its shadow on the 
 below is the seconds hand, and two beads on rings carry the minutes and hours.
 
 **Reads:** like a dial. **Look for:** nothing in particular; this is the calmest of the
-30 and suits a room where people are talking.
+first 30 and suits a room where people are talking.
 
 ## Water and sand
 
@@ -393,7 +418,7 @@ A bed of square pins that rise to form the digits in relief, like a pin‑art to
 inFORM table. A low raking light gives all the contrast, so nothing on screen is bright.
 Changes sweep across the bed as a wave.
 
-**Reads:** directly. **Look for:** the wave. This is the kindest of the 30 to an OLED
+**Reads:** directly. **Look for:** the wave. This is the kindest of the first 30 to an OLED
 panel.
 
 ### 28. Construction crew
@@ -428,32 +453,242 @@ and a bud for each minute between. At 00:00 and 12:00 the leaves fall and it sta
 again. The season could follow the date.
 
 **Reads:** count branches, then leaves and buds, so it is slow to read. **Look for:**
-the leaf fall. This is the most ambient of the 30.
+the leaf fall. This is the most ambient of the first 30.
 
-## Bench: 20 more, not sketched
+## The other 20
 
-These would take the list to the original 50. They have no diagrams yet; `build.py`
-makes adding them cheap.
+These complete the original 50. They began as a one-line bench under the first 30, and
+were sketched after Will said "go ahead and add mockups for the extra 20" (2026‑11‑21).
+They are in no particular order, and several of them carry only part of the time
+themselves; where that is so, the entry says what carries the rest. The attributions
+(the incense seal clocks, Ferrolic, the 365 Knitting Clock) are from memory and I have
+not looked them up.
 
-| # | Idea | In one line |
-|---|---|---|
-| 31 | Newton's cradle | Clicks the seconds; the number of balls lifted counts tens of seconds. |
-| 32 | Metronome forest | Sixty metronomes drift out of step and lock back together each minute. |
-| 33 | Galton board | One ball a second builds a bell curve, and the board flips on the minute. |
-| 34 | Marble spiral tower | Three spiral tracks of different lengths; a marble's height on each is a hand. |
-| 35 | Incense seal clock | A smouldering line follows a maze of ash past an hour marker. |
-| 36 | Melting ice block | Hour tokens frozen into the block drop out one at a time. |
-| 37 | Lava-lamp digits | Rising blobs merge into the digits and then sink apart. |
-| 38 | Ferrofluid digits | Magnets behind a glass tank pull black fluid into numerals. |
-| 39 | Bamboo tipper | A shishi-odoshi fills, tips and knocks once a minute over a pond of hour stones. |
-| 40 | Tide harbour | A model harbour whose water level and moored boats follow the real tide and time. |
-| 41 | Armillary sphere | Brass rings with a sun bead that travels the hour ring. |
-| 42 | Moon lantern | A lit moon at the true phase, hung over a moondial. |
-| 43 | Lighthouse | The beam sweeps a ring of 12 rocks once a minute; lit windows count the hour. |
-| 44 | Mirror and haze | Rotating mirrors sweep three light beams through haze as hands. |
-| 45 | Flip-dot wall | Thousands of two-coloured discs flip to redraw the digits. |
-| 46 | Twist tower | Four stacked rings of numerals that rotate into line. |
-| 47 | Abacus | Beads slide by themselves, one a minute, with carries at ten. |
-| 48 | Cuckoo village | A glockenspiel town whose figures parade on the hour. |
-| 49 | Knitting clock | A machine knits one stitch a minute; the scarf's length is the day so far. |
-| 50 | Window city | A night city block whose lit windows spell the time across the buildings. |
+### 31. Newton's cradle
+
+![A six-ball Newton's cradle on a plinth with three balls swung out and numeral drums reading 10 and 08](2026-11-21-3d-timepieces/31-newtons-cradle.svg)
+
+A six-ball cradle that clicks once a second. One ball swings for the first ten seconds
+of the minute, two for the next ten, and so on, so the size of the swinging group
+counts the tens of seconds. The hour and minute sit on numeral drums in the plinth.
+
+**Reads:** hour and minute directly from the drums; the cradle itself carries only the
+seconds. **Look for:** :50, when all six swing together and the clicking stops until
+the minute.
+
+### 32. Metronome forest
+
+![Sixty metronomes in twelve columns of five, ten columns brass and two grey, arms at different angles](2026-11-21-3d-timepieces/32-metronome-forest.svg)
+
+Sixty metronomes in 12 columns of five, each set a shade faster than the last, so they
+drift apart and all come back into step on the minute. The brass columns count the
+hour and the green weights count the minutes. It is the pendulum wave (5) again,
+denser and with more to count.
+
+**Reads:** count the brass columns, then the green weights. **Look for:** the last few
+seconds of each minute, when the ripple closes up into one beat. A real one is mostly
+about the sound, and the plan keeps sound off.
+
+### 33. Galton board
+
+![An upright board with a triangle of pegs, a ball falling through it and 22 balls stacked in bins as a bell curve](2026-11-21-3d-timepieces/33-galton-board.svg)
+
+One ball a second drops through a triangle of pegs into a row of bins, so a bell curve
+builds over the minute. On the minute the board turns over and the balls run back to
+the hopper. The hour and minute are on two numeral wheels in the top corners. Each
+ball's path would be picked from a hash of the time, which keeps the scene a function
+of the clock.
+
+**Reads:** seconds from how full the bins are; hour and minute from the wheels.
+**Look for:** the board turning over, and the curve coming out the same shape by a
+different route every minute.
+
+### 34. Marble spiral towers
+
+![Three spiral ramps side by side labelled hours, minutes and seconds, each with a marble at a different height beside a scale](2026-11-21-3d-timepieces/34-marble-spirals.svg)
+
+Three spiral ramps, for hours, minutes and seconds. A marble takes its whole period
+to roll from top to bottom (12 h, 60 min, 60 s) and a lift returns it, so each marble's
+height against the scale beside it is a hand.
+
+**Reads:** three heights against three scales, so slower than a dial. **Look for:**
+the seconds marble riding the lift once a minute, and all three at the top at 12:00.
+
+### 35. Incense seal clock
+
+![A tray of ash with a serpentine line of incense, most of it burnt pale, an ember near the tenth of twelve brass pegs](2026-11-21-3d-timepieces/35-incense-seal.svg)
+
+After the Chinese incense seal clocks: a line of incense powder laid in a maze on a
+bed of ash, burning from one end for 12 h, with a peg at every hour. The pale burnt
+trail is the day so far.
+
+**Reads:** the hour from the nearest peg and the minutes by how far the ember is past
+it, so to within about ten minutes. **Look for:** the glow and the smoke, and the seal
+being relaid at 00:00 and 12:00.
+
+### 36. Melting ice block
+
+![A half-melted block of ice on a grille with two brass tokens frozen in it, ten tokens in the tray below and a meltwater glass](2026-11-21-3d-timepieces/36-melting-ice.svg)
+
+A block of ice on a grille with 12 tokens frozen into it at different depths. It melts
+over 12 h and drops a token into the tray each hour. The meltwater runs to a glass that
+fills over the hour and is emptied when the token drops.
+
+**Reads:** count the tokens in the tray, then read the glass for the minutes.
+**Look for:** the token dropping on the hour, and a fresh block at 00:00 and 12:00.
+
+### 37. Lava-lamp digits
+
+![A wide lava-lamp tank with orange blobs merged into the digits 10:08 and loose blobs rising from the base](2026-11-21-3d-timepieces/37-lava-lamp.svg)
+
+A wide lava-lamp tank. Wax blobs rise from the heated base and merge into the four
+digits near the top. Just before the minute they sag and sink apart, and the next
+minute's digits form out of the next rise.
+
+**Reads:** directly while the digits hold, and not at all during the change.
+**Look for:** the digits melting.
+
+### 38. Ferrofluid digits
+
+![A glass tank with a lit panel and spiky black fluid forming the digits 10:08, with a small grid of coils shown beside it](2026-11-21-3d-timepieces/38-ferrofluid.svg)
+
+A thin glass tank of black ferrofluid in front of a lit panel, with a grid of
+electromagnets behind. The magnets that are switched on pull fluid up out of the sump
+into spiky numerals. Zelf Koelman's Ferrolic display did this for real.
+
+**Reads:** directly. **Look for:** the fluid dropping back and climbing again at each
+change. The lit panel is the largest bright area in any of the 50, so it would need to
+be dim or kept moving.
+
+### 39. Bamboo tipper and pond
+
+![A round pond ringed by twelve stones with a floating lantern and a koi, and a bamboo tipper filling from a spout beside it](2026-11-21-3d-timepieces/39-bamboo-tipper.svg)
+
+A shishi-odoshi: a bamboo tube fills from a spout for a minute, tips, empties and
+knocks back on a stone. It stands by a pond ringed with 12 stones. A floating lantern
+drifts once round the pond in 12 h and a koi laps it once an hour.
+
+**Reads:** like a dial, with the lantern as the hour hand, the koi as the minute hand
+and the tube's fill as the seconds. **Look for:** the tip on the minute. The knock is
+the point of a real one, and the plan keeps sound off.
+
+### 40. Tide harbour
+
+![A model harbour with a quay, a clock tower reading 10:08, a tide staff and two boats on translucent water](2026-11-21-3d-timepieces/40-tide-harbour.svg)
+
+A model harbour whose water level follows the real tide for a chosen port. Boats rise
+and fall on their moorings and a tide staff on the quay shows the level. The time
+itself is only on the harbour clock.
+
+**Reads:** from the tower dial, which is small in the scene; the tide is a second,
+slower thing to read. **Look for:** boats settling on the mud at low water. It needs
+tide predictions for the port, and I have not looked for a source.
+
+### 41. Armillary sphere
+
+![Brass rings for horizon, meridian, equator and ecliptic around a small Earth, with a sun bead near 10 on a 24-hour ring](2026-11-21-3d-timepieces/41-armillary.svg)
+
+Brass rings for the horizon, meridian, equator and ecliptic around a small Earth. A
+sun bead travels the equator ring once in 24 h against hour marks, and a smaller bead
+laps the ecliptic ring once an hour for the minutes. It is close kin to the globe (24).
+
+**Reads:** with practice, since the hour ring is a 24 h dial seen at an angle.
+**Look for:** the sun bead crossing the meridian ring at 12:00.
+
+### 42. Moon lantern
+
+![A moondial with a crescent moon lamp and a small lantern circling overhead, each throwing a shadow from a central post](2026-11-21-3d-timepieces/42-moon-lantern.svg)
+
+A moondial. A lit model moon, showing the true phase for the date, circles overhead
+once in 12 h, and the shadow it throws from the central post is the hour hand. A small
+lantern on a lower, wider circle laps once an hour and throws the longer minute shadow.
+
+**Reads:** like a dial with shadows for hands, both pointing away from their lamps.
+**Look for:** the phase changing through the month, and the two shadows crossing.
+
+### 43. Lighthouse
+
+![A striped lighthouse on a rock in a ring of twelve rocks, its beam sweeping the sea and a small boat circling](2026-11-21-3d-timepieces/43-lighthouse.svg)
+
+A lighthouse on a rock inside a ring of 12 rocks. The beam sweeps the ring once a
+minute, a boat circles once an hour, and the lit windows up the tower count the hour.
+
+**Reads:** the beam and the boat like hands; the windows are counted.
+**Look for:** the beam passing over the boat, and all the windows going dark at 12:00.
+
+### 44. Mirror and haze
+
+![Three coloured light beams at different heights running from a central column to a ring of gauze through haze](2026-11-21-3d-timepieces/44-mirror-haze.svg)
+
+Three mirrors turn on a central column and throw three beams through haze onto a drum
+of gauze. A beam cannot stop halfway, so the hands are all the same length and are
+told apart by colour, width and height: wide amber for the hour, green for the minute,
+thin red for the second.
+
+**Reads:** like a dial once the colours are learned. **Look for:** the beams crossing
+in the haze. The scene is mostly dark, which is kind to an OLED panel.
+
+### 45. Flip-dot wall
+
+![A wall of round discs showing 10:08 in yellow, six of them edge-on in mid-flip, with one disc shown in detail](2026-11-21-3d-timepieces/45-flip-dot.svg)
+
+A wall of discs, black on one side and yellow on the other, each flipped by a coil,
+as on old bus and station signs. The digits are redrawn every minute, and in 3D the
+discs can be seen turning edge-on as they go.
+
+**Reads:** directly. **Look for:** the hour, when most of the wall flips at once.
+
+### 46. Twist tower
+
+![A stack of drums with numerals on their sides reading 10, 0 and 8 down a brass index, above a seconds ring](2026-11-21-3d-timepieces/46-twist-tower.svg)
+
+Stacked drums with numerals round their sides: hours, tens of minutes and minutes,
+over a seconds ring that never stops. Each drum turns only when its digit changes, and
+the time is read down a brass index on the front.
+
+**Reads:** directly, but top to bottom rather than left to right. **Look for:** the
+hour, when three drums turn together.
+
+### 47. Abacus
+
+![A six-rod abacus whose brass beads show the digits 1, 0, 0, 8, 2 and 2 for hours, minutes and seconds](2026-11-21-3d-timepieces/47-abacus.svg)
+
+A soroban with six rods, two each for hours, minutes and seconds. The bead above the
+beam counts five and the four below count one each. The beads slide by themselves
+every second and carry to the left.
+
+**Reads:** decoded, unless you already read an abacus. **Look for:** the carries at
+:59, which ripple across several rods.
+
+### 48. Cuckoo village
+
+![A model village around a clock tower reading 10:08, with four small figures on the tower's balcony](2026-11-21-3d-timepieces/48-cuckoo-village.svg)
+
+A glockenspiel town: houses round a clock tower. A figure steps onto the balcony at
+each quarter, they all parade on the hour, and a bird calls the count.
+
+**Reads:** from the tower dial, which is small in the scene. **Look for:** the parade
+on the hour, and the windows lighting at dusk.
+
+### 49. Knitting clock
+
+![A circular knitting machine with a striped tube of knitting hanging from it, ten stripes long, above a basket](2026-11-21-3d-timepieces/49-knitting.svg)
+
+After Siren Elise Wilhelmsen's 365 Knitting Clock, speeded up. A circular knitting
+machine knits one row a minute and changes yarn on the hour, so the hanging tube gains
+a stripe an hour. The carriage laps the needles once a minute. At 00:00 the day's
+knitting is cut and drops into the basket.
+
+**Reads:** count the stripes for the hour; the depth of the newest stripe gives the
+minutes only roughly. **Look for:** the colour change on the hour and the cut at 00:00.
+
+### 50. Window city
+
+![Four tower blocks at night whose lit windows form the digits 1, 0, 0 and 8, with a narrow tower between as the colon](2026-11-21-3d-timepieces/50-window-city.svg)
+
+A city block at night with one building for each digit. The lit windows on the top
+five floors form the digit, and a narrow tower between the pairs has two lit windows
+for the colon.
+
+**Reads:** directly. **Look for:** a window or two changing on the minute. The sky
+could follow the real time of day.
