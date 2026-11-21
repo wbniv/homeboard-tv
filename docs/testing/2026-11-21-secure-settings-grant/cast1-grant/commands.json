@@ -1,0 +1,47 @@
+[
+  {
+    "args": [
+      "shell",
+      "pm path net.biohack.homeboard.debug"
+    ],
+    "start": 1795229573.802422,
+    "end": 1795229574.1895187,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "sha256sum '/data/app/~~xy45qxIdVv0_2UntRTvVXw==/net.biohack.homeboard.debug-VKo3ZQk8KO7H53tOD10xlg==/base.apk'"
+    ],
+    "start": 1795229574.1938226,
+    "end": 1795229574.4757001,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys package net.biohack.homeboard.debug"
+    ],
+    "start": 1795229574.4792151,
+    "end": 1795229575.2835732,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pm grant --user 0 net.biohack.homeboard.debug android.permission.WRITE_SECURE_SETTINGS"
+    ],
+    "start": 1795229575.3330731,
+    "end": 1795229575.6058123,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys package net.biohack.homeboard.debug"
+    ],
+    "start": 1795229575.6084929,
+    "end": 1795229575.8264184,
+    "returncode": 0
+  }
+]
