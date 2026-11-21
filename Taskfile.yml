@@ -40,7 +40,7 @@ tasks:
       - task: bump
       - task: check
       - task: '{{if eq (.VARIANT | default "debug") "release"}}release{{else}}build{{end}}'
-      - 'python3 dev/deploy.py --variant "{{.VARIANT | default "debug"}}" --device "{{.DEVICE | default "chromecast-test-01"}}" --recipe "{{.RECIPE | default "dev/device/install-only.json"}}"'
+      - 'python3 dev/deploy.py --variant "{{.VARIANT | default "debug"}}" --device "{{.DEVICE | default "chromecast-test-01,phone-pixel-8-pro"}}" --recipe "{{.RECIPE | default "dev/device/install-only.json"}}"'
   signing:init:
     desc: Create the private release signing key and a separate local backup once
     cmds: ['bash dev/init-signing.sh']

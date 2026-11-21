@@ -47,7 +47,7 @@ general list; use it only for a check that specifically needs a second Chromecas
 Coordinator support on 2026‑11‑21: the tablet's `install` is unavailable until its
 wireless debugging is back (`needs-local-setup`), and the Nest Hub Max's `install` is
 unsupported (Cast status, media and app only), so it cannot take an APK. `task deploy`
-therefore defaults to Cast1 alone. Add the tablet to its default once
+therefore defaults to Cast1 and the Pixel (Will, 2026‑11‑21: "yes"). Add the tablet to its default once
 `task chromecast:support DEVICE=<tablet>` reports `install ready`.
 
 Cast1 remains the default for routine foreground testing. Will's November 17
@@ -55,7 +55,7 @@ Cast2 availability is temporary and permits checks that specifically need Cast2;
 it does not change that testing default. Installation targets and foreground
 testing targets are separate choices.
 
-Deploy every working build to Cast1 (`chromecast-test-01`) with `task deploy`; pass
+Deploy every working build to Cast1 (`chromecast-test-01`) and the Pixel (`phone-pixel-8-pro`) with `task deploy`; pass
 `DEVICE=<id>,<id>` to add another target (for example Cast2 when a check needs it), and
 every target then gets the identical frozen APK/version.
 Use Cast1 for routine foreground acceptance; let the coordinator defer foreground
