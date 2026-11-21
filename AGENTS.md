@@ -39,20 +39,25 @@ docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
 
 ## Will's iterative TV testing
 
-**Test fleet direction (Will, 2026‑11‑21):** the general testing list is one of each
-device type, so it gains the tablet (`tablet-lenovo-tab-p11-pro-19a57145`) and the
-kitchen Nest Hub Max (`nest-14cbd06f-a0d2-a5e5-b826-0acf6c04a1e4`). Cast2 leaves the
-general list unless a check specifically needs a second Chromecast. The deploy default
-below still names Cast1 and Cast2 until `task deploy` and the plans are updated.
+**Test fleet (Will, 2026‑11‑21):** one of each device type. The general list is Cast1
+(`chromecast-test-01`), the Pixel 8 Pro, the Lenovo tablet
+(`tablet-lenovo-tab-p11-pro-19a57145`) and the kitchen Nest Hub Max
+(`nest-14cbd06f-a0d2-a5e5-b826-0acf6c04a1e4`). Cast2 (`chromecast-test-02`) is off the
+general list; use it only for a check that specifically needs a second Chromecast.
+Coordinator support on 2026‑11‑21: the tablet's `install` is unavailable until its
+wireless debugging is back (`needs-local-setup`), and the Nest Hub Max's `install` is
+unsupported (Cast status, media and app only), so it cannot take an APK. `task deploy`
+therefore defaults to Cast1 alone. Add the tablet to its default once
+`task chromecast:support DEVICE=<tablet>` reports `install ready`.
 
 Cast1 remains the default for routine foreground testing. Will's November 17
 Cast2 availability is temporary and permits checks that specifically need Cast2;
 it does not change that testing default. Installation targets and foreground
 testing targets are separate choices.
 
-Deploy every working build to both Cast1 (`chromecast-test-01`) and Cast2
-(`chromecast-test-02`), as Will requested on November 17. Use `task deploy`
-(both devices by default) with the identical frozen APK/version for both.
+Deploy every working build to Cast1 (`chromecast-test-01`) with `task deploy`; pass
+`DEVICE=<id>,<id>` to add another target (for example Cast2 when a check needs it), and
+every target then gets the identical frozen APK/version.
 Use Cast1 for routine foreground acceptance; let the coordinator defer foreground
 work on either TV during Personal use. Install each working APK through the shared
 coordinator and preserve app data and settings. Submit requested installs after

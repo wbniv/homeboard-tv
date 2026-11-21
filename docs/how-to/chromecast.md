@@ -116,10 +116,11 @@ Cast2 availability is temporary and permits checks that specifically need Cast2;
 it does not change that testing default. Installation targets and foreground
 testing targets are separate choices.
 
-Use `task deploy` for a new Homeboard deployment to both Cast1 and Cast2.
-`task deploy` defaults to both TVs with a complete background-install job per target;
-set `DEVICE=<id>` or a comma-separated list only for an explicit target override.
-Both targets receive one identical frozen APK and version. All jobs are submitted
+Use `task deploy` for a new Homeboard deployment. It defaults to Cast1 alone
+(Will, 2026‑11‑21: one of each device type; the tablet joins once the coordinator reports
+`install ready` for it, and the Nest Hub Max cannot take an APK). Set `DEVICE=<id>` or a
+comma-separated list for an explicit target override, such as Cast2.
+Every target receives one identical frozen APK and version. All jobs are submitted
 before watching either, and each target has its own evidence directory.
 It runs `task bump`, container checks and packaging, verifies matching version
 metadata, freezes `artifacts/deployments/<major.minor.version_code>/homeboard.apk`,
@@ -130,7 +131,7 @@ Never reuse a deployment number. Low-level coordinator tasks remain available
 for reference capture, job control and evidence; manually assembled new installs
 must follow the same bump/build/freeze rule.
 
-Deploy each working build to **both Cast1 and Cast2**. Use Cast1 for routine
+Deploy each working build to **Cast1** (add other targets with `DEVICE=`; see the 2026‑11‑21 fleet note in AGENTS.md). Use Cast1 for routine
 foreground acceptance, and let the coordinator defer foreground jobs on either TV
 while Personal use is active.
 After each working APK iteration, check devices and
@@ -211,9 +212,10 @@ an app-level assertion failure, so report job cleanup and OCR outcome separately
 
 ### November 17 deployment preference
 
-Will requested every working build on both Cast1 and Cast2. This supersedes the
-earlier single-TV iteration default. `task deploy` performs bump/check/build/freeze
-once and submits `dev/device/install-only.json` to each TV. It does not release
+Will requested every working build on both Cast1 and Cast2 on November 17. On
+2026‑11‑21 he superseded that with one of each device type, so `task deploy` now defaults
+to Cast1 alone. `task deploy` performs bump/check/build/freeze
+once and submits `dev/device/install-only.json` to each target. It does not release
 Personal use. Installation and later foreground/visual verification are separate
 coordinator jobs. The default of `task build` remains compilation only; use
 `task deploy` for working app iterations.
