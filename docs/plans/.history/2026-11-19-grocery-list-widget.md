@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-21](https://github.com/wbniv/homeboard-tv/commit/78b445b) | Docs: show linked screenshots and mockups inline |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/467eae0) | Select API Gateway Lambda and DynamoDB for grocery sync |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/c368e40) | Require away-from-home and offline grocery shopping in Phase 3 |
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/5b00fbf) | Update grocery plans with delivery checkpoint and remaining acceptance |
@@ -9,6 +10,11 @@
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/15f1061) | Add phone-first grocery lists and optional pantry stock |
 
 <!--history-meta v1
+78b445b	author	Will Norris
+78b445b	added	7
+78b445b	deleted	0
+78b445b	files	1
+78b445b	body	Convert plain image links in plans and testing docs into inline embeds:\ntable cells get a 320 px img, prose gets 700 px imgs after the paragraph.\nLink text is unchanged; no image files touched.\n\nCo-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqPQdhoTFbeEWpQH2Wb
 467eae0	author	Will Norris
 467eae0	added	13
 467eae0	deleted	9

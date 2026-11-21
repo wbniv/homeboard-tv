@@ -21,9 +21,6 @@ purchase; its current shopping need is a separate record.
 [Phase 1 and Phase 2 mockups](2026-11-19-grocery-list-widget/mockups.svg) ·
 [Interaction workflow](2026-11-19-grocery-list-widget/workflow.svg)
 
-<img src="2026-11-19-grocery-list-widget/mockups.svg" width="700" alt="Phase 1 and Phase 2 mockups">
-<img src="2026-11-19-grocery-list-widget/workflow.svg" width="700" alt="Interaction workflow">
-
 ![Phase 1 phone entry and TV list; Phase 2 product quantities and stock-aware staples](2026-11-19-grocery-list-widget/mockups.svg)
 
 ## Delivery checkpoint — November 19, 2026

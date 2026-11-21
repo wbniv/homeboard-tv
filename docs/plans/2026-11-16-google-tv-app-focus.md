@@ -20,8 +20,6 @@ captures the 1920 × 1080 display with YouTube selected. The coordinator capture
 completed successfully and exported verified evidence. Preserve this PNG as the
 visual baseline; use its pixels rather than a compressed chat preview.
 
-<img src="2026-11-16-google-tv-app-focus/reference.png" width="700" alt="Full resolution reference PNG">
-
 ![Reference launcher with YouTube focused](2026-11-16-google-tv-app-focus/reference.png)
 
 The mockups below show the proposed Homeboard treatment and its layers. They
@@ -353,7 +351,6 @@ is therefore **not complete**. Private failure evidence is under
 `artifacts/deployments/0.1.4/cast2-evidence/`. No direct-device fallback or
 coordinator guard bypass was used. Additional devices in one deployment receive
 the identical frozen APK/version; a new source revision requires a new number.
-
 
 ## Favorites ribbon measured against Google TV · 20 November 2026
 
