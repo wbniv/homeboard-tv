@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/9daf7eb) | Docs: reconcile Home button status and draft timestamped capture request |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/02c6ab8) | Docs: confirm Cast2 install and exact timing capability limit |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/c865879) | Docs: record physical held-key repeat and release pass |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/f0b2cf9) | Docs: record physical app-button responses on Cast1 |
@@ -16,6 +17,10 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 
 <!--history-meta v1
+9daf7eb	author	Will Norris
+9daf7eb	added	51
+9daf7eb	deleted	46
+9daf7eb	files	1
 02c6ab8	author	Will Norris
 02c6ab8	added	5
 02c6ab8	deleted	2

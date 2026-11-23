@@ -22,8 +22,11 @@ are separate untested cases.
 Home returned from YouTube after restart, with Google TV visible first. Three
 later returns were visible within a conservative 4.2-second request-to-screenshot
 bound. Exact timing needs the coordinator capability in this
-[draft feature request](../requests/2026-11-23-coordinator-timestamped-remote-capture.md),
-which has not been filed externally.
+[coordinator request](../requests/2026-11-23-coordinator-timestamped-remote-capture.md).
+Will reports a frame-index prototype and two passing container tests, but it is
+not integrated with Remote or deployed. Home-release correlation, clock validation,
+interface parity, cleanup tests and real-device acceptance remain; the prototype
+does not yet provide the measurement.
 
 **Remaining:** controlled app-update recovery, Cast2 helper setup/acceptance,
 simultaneous direction + app-button comparison, exact timing, and deeper

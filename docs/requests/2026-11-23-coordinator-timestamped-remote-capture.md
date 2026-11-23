@@ -1,8 +1,29 @@
 # Coordinator request: timestamped capture during an owned Remote session
 
-**Status: draft request, not filed in the coordinator repository or an external
-issue tracker, and not sent to maintainers.** Written 23 November 2026 after
-reviewing installed coordinator 0.1.224 (`cf5700f9`).
+**Status: prototype progress reported; implementation incomplete and not
+deployed.** Written 23 November 2026 after reviewing installed coordinator
+0.1.224 (`cf5700f9`). This Homeboard session has not filed an external issue;
+no coordinator issue or implementation-commit identifier is recorded here.
+
+## Reported implementation progress
+
+Will supplied this coordinator implementation update on 23 November:
+
+- A frame-index prototype preserves original variable-rate scrcpy timestamps
+  and flags incomplete packet tails.
+- Its two container tests passed.
+- It is not connected to an owned Remote session. Remote's Home tap uses a
+  different input path from the timestamped directional-key helper, so video
+  cannot yet be correlated with **Home release**.
+
+These are reported prototype results, not tests independently rerun by this
+Homeboard session. They do not satisfy the requested measurement or establish
+that the deployed coordinator has the capability.
+
+**Remaining implementation:** Remote-session integration including the actual
+Home input path, clock validation, interface parity, cleanup tests and
+real-device acceptance. Deploying the current prototype would not provide the
+requested timing measurement. Exact flash/redirect timing remains blocked.
 
 ## Problem and required result
 
@@ -18,7 +39,7 @@ transfer. Three samples were below 4.2 seconds; they do not measure actual
 redirect duration or a brief flash. This test should require no physical input
 from Will.
 
-## Current capability gap
+## Deployed capability gap (reviewed on 0.1.224)
 
 - An owned Remote session can send Home and cross app boundaries. Its attached
   observer in `plugins/android/operations.py::_service_video_observer` writes
@@ -66,5 +87,6 @@ ends and export a complete cleanup receipt.
    capture/input resources, preserve the user's current foreground, retain
    available evidence and accurately report incomplete timing or cleanup.
 
-The Homeboard side can then perform and analyze this test autonomously. This
-draft does not claim coordinator implementation or timing acceptance.
+The Homeboard side can perform and analyze this test autonomously once the
+integration and acceptance above are complete and deployed. The frame-index
+prototype alone does not establish timing acceptance.

@@ -410,3 +410,19 @@ input-to-Homeboard latency separately from visible Google TV duration. No
 physical button presses from Will are inherently needed. Until that capability
 exists, retain the three conservative screenshot bounds rather than claiming
 exact transition timing. No coordinator source was changed in this work.
+
+### Reported coordinator prototype update
+
+Will later reported a frame-index prototype preserving variable-rate scrcpy
+timestamps and flagging incomplete packet tails, with two container tests
+passing. Implementation is **not complete or deployed**. The prototype is not
+attached to Remote; Home taps use a different input path from the timestamped
+directional-key helper, so video cannot yet be correlated with Home release.
+
+Session integration, clock validation, interface parity, cleanup testing and
+real-device acceptance remain. These prototype results were supplied by Will,
+not independently verified in this Homeboard session. They do not change the
+measured screenshot bounds or unblock exact timing. The
+[request status](../requests/2026-11-23-coordinator-timestamped-remote-capture.md#reported-implementation-progress)
+records the remaining integration work; deploying the prototype now would not
+provide the requested measurement.
