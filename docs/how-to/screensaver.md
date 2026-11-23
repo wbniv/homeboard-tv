@@ -1,6 +1,6 @@
 # Choose and configure the screensaver
 
-On the TV, open **Home settings → Screensaver**. The list on the left shows what can
+On Home or All Apps, select the **Screensaver** moon icon in the top row, or open **Home settings → Screensaver**. The list on the left shows what can
 play when the TV is idle: **Clock** (clock and date on a slow glow) and **Home
 background** (the background Home is showing, full screen). Both are built in. Four
 entries fit a page; there is no scrollbar. The entry in use carries an **In use** label.

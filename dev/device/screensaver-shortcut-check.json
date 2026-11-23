@@ -1,0 +1,15 @@
+{
+  "workflow": "check", "app": "homeboard-tv", "duration": 30, "panel": "require-hidden",
+  "input_script": [
+    {"at": 3, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 5, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 7, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 9, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 11, "key": "DPAD_LEFT", "action": "hold", "ms": 80},
+    {"at": 13, "capture": "shortcut-focused"},
+    {"at": 15, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 19, "capture": "screensaver-chooser"},
+    {"at": 21, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 24, "capture": "shortcut-return"}
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "workflow": "check", "app": "homeboard-tv", "duration": 20, "panel": "require-hidden",
+  "input_script": [
+    {"at": 6, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+    {"at": 9, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 13, "capture": "4k-views-after-select"}
+  ]
+}

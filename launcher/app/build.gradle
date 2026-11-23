@@ -72,6 +72,8 @@ android {
         }
     }
 
+    sourceSets { debug.java.srcDir "../tester/shared" }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17

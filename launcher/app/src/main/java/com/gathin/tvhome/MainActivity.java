@@ -60,6 +60,7 @@ public class MainActivity extends Activity {
     static int COLUMNS = 4;
     private static final String SETTINGS = "control:settings";
     private static final String HOME_SETTINGS = "control:homeboard-settings";
+    private static final String SCREENSAVER_SETTINGS = "control:screensaver-settings";
     private static final String DEVICE_SETTINGS = "control:device-settings";
     private static final int REQUEST_HOME_ROLE = 7402;
     private static final int MENU_PAGE_SIZE = 4;
@@ -1153,7 +1154,9 @@ public class MainActivity extends Activity {
         clock.setOnFocusChangeListener((v,has)->{if(has){focused=HomeLayout.HEADER_CLOCK;if(allApps)appsFocus=focused;else homeFocus=focused;}});
         clock.setOnLongClickListener(v->{configureClock(HomeLayout.HEADER_CLOCK);return true;});
         FrameLayout.LayoutParams cp=new FrameLayout.LayoutParams(-1,dp(60),Gravity.TOP);
-        cp.setMargins(dp(32),dp(16),dp(174),0);surface.addView(clock,cp);tiles.put(HomeLayout.HEADER_CLOCK,clock);clockWidgets.put(HomeLayout.HEADER_CLOCK,clock);
+        cp.setMargins(dp(32),dp(16),dp(234),0);surface.addView(clock,cp);tiles.put(HomeLayout.HEADER_CLOCK,clock);clockWidgets.put(HomeLayout.HEADER_CLOCK,clock);
+        addTopSettingsButton(SCREENSAVER_SETTINGS, R.drawable.ic_screensaver, getString(R.string.hb_screensaver),
+                this::screensaverShortcut, dp(170));
         addTopSettingsButton(HOME_SETTINGS, R.drawable.ic_app_settings, getString(R.string.hb_homeboard_settings),
                 this::homeSettings, dp(110));
         addTopSettingsButton(DEVICE_SETTINGS, R.drawable.ic_settings, getString(R.string.hb_device_settings),
@@ -1899,13 +1902,19 @@ public class MainActivity extends Activity {
         }
         if(allApps&&appItems().isEmpty()&&key==KeyEvent.KEYCODE_DPAD_LEFT){showHome();return;}
         if(HomeLayout.HEADER_CLOCK.equals(focused)){
-            if(key==KeyEvent.KEYCODE_DPAD_RIGHT){focused=HOME_SETTINGS;restoreFocus();}
+            if(key==KeyEvent.KEYCODE_DPAD_RIGHT){focused=SCREENSAVER_SETTINGS;restoreFocus();}
             else if(key==KeyEvent.KEYCODE_DPAD_DOWN)focusFirstSurfaceItem();
             else if(key==KeyEvent.KEYCODE_DPAD_LEFT&&allApps)showHome();
             return;
         }
+        if (SCREENSAVER_SETTINGS.equals(focused)) {
+            if (key == KeyEvent.KEYCODE_DPAD_LEFT) { focused = HomeLayout.HEADER_CLOCK; restoreFocus(); }
+            else if (key == KeyEvent.KEYCODE_DPAD_RIGHT) { focused = HOME_SETTINGS; restoreFocus(); }
+            else if (key == KeyEvent.KEYCODE_DPAD_DOWN) focusFirstSurfaceItem();
+            return;
+        }
         if (HOME_SETTINGS.equals(focused)) {
-            if(key==KeyEvent.KEYCODE_DPAD_LEFT){focused=HomeLayout.HEADER_CLOCK;restoreFocus();}
+            if(key==KeyEvent.KEYCODE_DPAD_LEFT){focused=SCREENSAVER_SETTINGS;restoreFocus();}
             if (key == KeyEvent.KEYCODE_DPAD_RIGHT) { focused = DEVICE_SETTINGS; restoreFocus(); }
             else if (key == KeyEvent.KEYCODE_DPAD_DOWN) focusFirstSurfaceItem();
             return;
@@ -2033,6 +2042,7 @@ public class MainActivity extends Activity {
     private void activate(String key) {
         if(HomeLayout.HEADER_CLOCK.equals(key)){expandWidget(key,null);return;}
         if (SETTINGS.equals(key)) { homeSettings(); return; }
+        if (SCREENSAVER_SETTINGS.equals(key)) { screensaverShortcut(); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
         if(AndroidWidgetSpec.key(key)){expandWidget(key,null);return;}
@@ -2080,6 +2090,7 @@ public class MainActivity extends Activity {
     private void contextMenu(String key) {
         if(HomeLayout.HEADER_CLOCK.equals(key)){configureClock(key);return;}
         if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
+        if (SCREENSAVER_SETTINGS.equals(key)) { screensaverShortcut(); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (key.isEmpty() || SETTINGS.equals(key)) { homeSettings(); return; }
         if(HomeLayout.FAVORITES.equals(key)){favoriteContext();return;}
@@ -2355,7 +2366,7 @@ public class MainActivity extends Activity {
     private String screensaverFocusTag;
     /** Set while a Preview is up: the entry, and whether its Options screen was open. */
     private String returningToScreensaver, screensaverAccepted;
-    private boolean screensaverOptionsOpen;
+    private boolean screensaverOptionsOpen, screensaverFromShortcut;
     private View screensaverFirstAction;
     private EverywhereScreensaver everywhere;
     /** Built-ins plus the installed Android screensaver apps, read again each time the Screensaver screen opens. */
@@ -2406,7 +2417,9 @@ public class MainActivity extends Activity {
     }
     /** The chosen entry as the list shows it: the default slot when the chosen app is no longer installed. */
     private ScreensaverRegistry.Entry chosenScreensaver() { return ScreensaverRegistry.resolve(layout.screensaver.choice, screensaverEntries); }
-    private void screensaverSettings() {
+    private void screensaverShortcut() { screensaverFromShortcut = true; showScreensaverSettings(); }
+    private void screensaverSettings() { screensaverFromShortcut = false; showScreensaverSettings(); }
+    private void showScreensaverSettings() {
         refreshScreensaverEntries(); screensaverFailure = null; screensaverRetry = null;
         screensaverFocus = ScreensaverRegistry.indexOf(chosenScreensaver().id, screensaverEntries);
         screensaverPage = screensaverFocus / SCREENSAVER_PAGE_SIZE; screensaverFocusTag = null;
@@ -2418,7 +2431,8 @@ public class MainActivity extends Activity {
         boolean options = screensaverOptionsOpen; String accepted = screensaverAccepted; screensaverAccepted = null;
         refreshScreensaverEntries();
         int focus = ScreensaverRegistry.indexOf(entry, screensaverEntries);
-        homeSettings();
+        if (screensaverFromShortcut) { dismissMenu(); activeMenu = null; menuStack.clear(); }
+        else homeSettings();
         invokingMenuAction = true;
         try {
             screensaverFocus = focus; screensaverPage = focus / SCREENSAVER_PAGE_SIZE; screensaverFocusTag = "act:preview";

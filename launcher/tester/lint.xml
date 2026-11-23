@@ -1,0 +1,6 @@
+<lint>
+    <!-- These Homeboard-only classes are not declared by the tester and R8 removes them. -->
+    <issue id="MissingPermission">
+        <ignore regexp=".*/(CalendarData|MainActivity|OpenOnStart|PhoneEditor)\.java" />
+    </issue>
+</lint>
