@@ -1,9 +1,10 @@
 # Coordinator request: timestamped capture during an owned Remote session
 
-**Status: prototype progress reported; implementation incomplete and not
-deployed.** Written 23 November 2026 after reviewing installed coordinator
+**Status: Remote integration draft implemented and under verification; not
+deployed. Video/input clock correlation and real-device acceptance remain
+unverified.** Written 23 November 2026 after reviewing installed coordinator
 0.1.224 (`cf5700f9`). This Homeboard session has not filed an external issue;
-no coordinator issue or implementation-commit identifier is recorded here.
+the draft implementation is saved on coordinator branch `remote-timestamped-capture-20261123` (initial implementation `dc2e46d6`).
 
 ## Reported implementation progress
 
@@ -20,10 +21,45 @@ These are reported prototype results, not tests independently rerun by this
 Homeboard session. They do not satisfy the requested measurement or establish
 that the deployed coordinator has the capability.
 
-**Remaining implementation:** Remote-session integration including the actual
-Home input path, clock validation, interface parity, cleanup tests and
-real-device acceptance. Deploying the current prototype would not provide the
-requested timing measurement. Exact flash/redirect timing remains blocked.
+**Current implementation work (23 November):** an isolated coordinator branch,
+`remote-timestamped-capture-20261123`, adds bounded opt-in Remote recording,
+original frame PTS and MP4 mappings, device-side tap injection brackets including
+Home, CLI/MCP/GUI entry points, owned status, Finish and partial/recovery exports.
+The input helper compiles in a container. Focused media, Java, interface and
+cleanup tests pass; a full run exposed contract-record drift and an overbroad
+Finish rule that were subsequently corrected, plus one service-startup timeout.
+This is a source draft, not deployed capability or validated timing.
+
+A visual-clock fixture draws independent device timestamps into captured pixels.
+Its original APK is installed on Cast1. After Will returned to the home network
+and confirmed debugging enabled, the fixture was launched through an owned Remote
+and recorded successfully (`J‑44a900f4838e`). All 104 video frames decoded valid
+clock values. Original video timestamps followed the drawn clock by 24–190 ms
+(median 28 ms). This supports a shared clock origin on that run; it does not prove
+physical-panel timing or a maximum capture delay, and the recording contained no
+Home input. Owned capture cleanup was verified and its reservation released.
+
+The full draft rerun passed 6,046 tests, with five skips and one simulated recovery
+wait timeout. After adjusting two test-only bounded waits, all 91 coordinator/MCP
+tests passed. The recording/analyzer tests passed 18 checks, including an irregular
+frame-time regression found while decoding the real capture.
+
+**Connectivity:** Cast1 and Pixel are reachable again. Cast2 still has no verified
+current debugging advertisement. The earlier school-hotspot blocker has ended.
+The proposed private Tailscale gateway on the charging Lenovo tablet (or a
+Chromecast) remains unconfigured; no always-on home server currently exists.
+
+**Deployment ownership:** Will reports a separate coordinator session is also
+implementing this capability. This Homeboard session stopped its candidate build
+before release/deployment. Draft `10582ef3` and the Cast1 evidence are retained for
+that session to reconcile; candidate version 0.1.226 is not reserved. No service
+upgrade or administrator prompt was started here.
+
+**Remaining:** reconcile and deploy the coordinator-owned implementation and finish live acceptance;
+validate the actual Home tap and video/input clock relationship, interface and
+cleanup behavior on hardware; deploy through the reviewed coordinator workflow;
+then analyze three Homeboard returns. Exports deliberately keep timing marked
+unavailable. Exact flash/redirect timing remains blocked.
 
 ## Problem and required result
 
