@@ -14,7 +14,9 @@ acceptance. Pressing YouTube or Netflix while a direction is held did not launch
 an app; the cause is unestablished. Netflix alone remains unconfirmed. Held Home
 was physically verified on November 21. After restart, On / Working persisted and Home eventually returned from YouTube,
 with Google TV visible in the first capture. Will had to re-enable wireless
-debugging for coordinator access. Timed redirect latency, app-update recovery,
+debugging for coordinator access. Three later YouTube → Home trials each showed Homeboard within a conservative
+4.2-second request-to-screenshot bound; exact transition timing remains open.
+App-update recovery,
 exact accessibility-list preservation and Cast2 acceptance remain open. Cast2 was
 recovery-required and in Personal use during this run. No new APK was installed.
 The [November 21 record](../testing/2026-11-21-home-button.md) retains earlier

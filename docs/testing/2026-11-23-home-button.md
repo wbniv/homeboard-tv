@@ -142,3 +142,34 @@ unresolved effects or recovery fences. Evidence is in `post-boot-remote/`.
 Still pending: app-update recovery, physical repeat and separate branded
 buttons with On / Working, exact accessibility-list preservation, and Cast2
 acceptance. The redirect's visible transition/latency also needs a timed check.
+
+## Timed screenshot check
+
+Remote **J‑a3a43503990b** repeated YouTube → short Home three times on the same
+0.1.117 installation, without changing settings or permissions. Each trial began
+with YouTube's app UI captured and visually reviewed; every first screenshot
+after Home showed Homeboard. Later screenshots remained on Homeboard.
+
+| Trial | Conservative upper bound to Homeboard being visible |
+|---|---|
+| 1 | 4.15 seconds |
+| 2 | 3.69 seconds |
+| 3 | 4.02 seconds |
+
+These bounds subtract the coordinator's Home-request creation timestamp from the
+completion timestamp of the first screenshot command. They deliberately include
+queue, key transport, client turnaround and screenshot transfer time. They are
+**upper bounds, not measured redirect durations**. The screenshot commands alone
+took about 1.5–1.7 seconds. All three returns were visible within 4.2 seconds of
+the request; this sample does not establish a 1-second response or rule out a
+Google TV flash between screenshots. The earlier visible Google TV transition
+remains a real observation. No continuous video or exact flash-duration result
+is claimed: the Remote workflow exports screenshots and a command timeline.
+
+Evidence is under `timing-remote-final/`, with calculations in
+`timing-summary.json`, beneath the diagnostics root. Home sequences were 5, 12
+and 17; their first-frame sequences were 6, 13 and 18. Local copies are
+`timing-run1-1.png`, `timing-run2-1.png` and `timing-run3-1.png`.
+Remote cleanup finished with no unresolved effects or recovery fences; no app
+code or APK changed. Exact transition timing remains a separate finer-resolution
+check; the next available functional check is app-update recovery.
