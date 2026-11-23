@@ -574,15 +574,15 @@ the point of a real one, and the plan keeps sound off.
 
 ### 40. Tide harbour
 
-![A model harbour with a quay, a clock tower reading 10:08, a tide staff and two boats on translucent water](2026-11-21-3d-timepieces/40-tide-harbour.svg)
+![Old Bangkok on the Chao Phraya, with traditional riverside houses, boats and a Thai-style clock tower](2026-11-21-3d-timepieces/40-old-bangkok-clock-tower.png)
 
-A model harbour whose water level follows the real tide for a chosen port. Boats rise
-and fall on their moorings and a tide staff on the quay shows the level. The time
-itself is only on the harbour clock.
+An old Bangkok riverside scene on the Chao Phraya, with wooden stilt houses,
+piers, traditional boats and a Thai-style clock tower. Its dial shows the time;
+boats and floating platforms rise and fall with the river's tide.
 
-**Reads:** from the tower dial, which is small in the scene; the tide is a second,
-slower thing to read. **Look for:** boats settling on the mud at low water. It needs
-tide predictions for the port, and I have not looked for a source.
+**Reads:** from the tower dial. **Look for:** the changing water level and boats
+moving on their moorings. The mockup is concept art; a working clock needs hands
+that move with the time. Tide predictions for the river remain to be investigated.
 
 ### 41. Armillary sphere
 
