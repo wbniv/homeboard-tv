@@ -1,5 +1,10 @@
 # Identify the Home button helper
 
+**Historical record (20 November 2026).** Version numbers and pending checks below
+refer to that session. The [November 23 summary](2026-11-23-home-button.md#current-summary-23-november-2026)
+supersedes them for current status, including physical repeat, recovery and
+Cast2's verified 0.1.119 installation.
+
 Read-only Cast1 inspection `J‑7ffd7a5603a3` confirmed installed packages:
 
 | Package | Installed version code at inspection | Identity |

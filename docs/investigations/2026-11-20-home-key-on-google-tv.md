@@ -1,5 +1,11 @@
 # The Home key on Google TV: what can and cannot be changed
 
+**Historical research, 20 November 2026.** The prototype/configuration and
+untested-status statements below describe the pre-implementation investigation.
+Homeboard now uses the runtime Home-button setting, not the proposed fixed
+`stock_home_redirect` probe. See the [implementation plan](../plans/2026-11-20-home-button.md)
+and [current validation summary](../testing/2026-11-23-home-button.md#current-summary-23-november-2026).
+
 **Purpose:** Settle whether Homeboard can become what the remote's Home button opens on a Chromecast with Google TV, and by which route.
 
 Will, 20 November 2026, on the Home key opening Google TV during the control interface's Stage 0 check: "that's a real bummer. it seems as though we can't change it on google tv (research more?) but i'm hoping/expecting to be able to override the home key on the tv."

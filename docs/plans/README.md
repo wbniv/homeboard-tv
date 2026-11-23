@@ -107,4 +107,6 @@ missing rows on commit.*
   listener with devices approved on the TV, and in-process callers; plan for review.
 - [Home button: make the remote's Home open Homeboard on Google TV](2026-11-20-home-button.md):
   Home settings → Home button, through the accessibility helper with a runtime target, honest
-  running state, repair and Undo; implemented, device steps pending.
+  running state, repair and Undo; Cast1 physical repeat/routing and recovery checks
+  passed, Cast2 0.1.119 install verified. Update/helper acceptance and precise timing
+  remain open; see the [current evidence](../testing/2026-11-23-home-button.md#remaining-checks).

@@ -1,5 +1,10 @@
 # Home button: fresh device validation
 
+**Historical record (21 November 2026).** Version numbers and pending checks below
+refer to that session. The [November 23 summary](2026-11-23-home-button.md#current-summary-23-november-2026)
+supersedes them for current status, including physical repeat, recovery and
+Cast2's verified 0.1.119 installation.
+
 Revalidated the older 0.1.108–110 handoff on 21 November 2026 using coordinator
 0.1.212 (`ad4cc2da`). No build or installation is needed merely to deliver
 `d7b2ad4`: it is an ancestor of current main, and both TVs already run later builds.

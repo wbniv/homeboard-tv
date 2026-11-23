@@ -1,41 +1,40 @@
 # Home button: make the remote's Home open Homeboard on Google TV
 
-**Status (2026‑11‑23): Cast1 remains on 0.1.117. Undo through history and
-permission-assisted force-stop recovery pass.** Without the one-time grant,
-force-stop and relaunch leave On selected but show Setup needed; manually
-re-enabling the helper restores **On · Working**. With the grant, recovery was
-automatic and Home returned from YouTube. The temporary grant was then revoked
-with verified readback. See the
-[November 23 validation record](../testing/2026-11-23-home-button.md).
+**Status (23 November 2026): implemented; Cast1 functional checks passed on
+0.1.117, and Cast2 0.1.119 installation is verified.** Later deployment records
+also verify 0.1.119 on Cast1; Home-button acceptance was not rerun as a controlled
+app-update check. The [current validation summary](../testing/2026-11-23-home-button.md#current-summary-23-november-2026)
+is the source for completed and remaining checks.
 
-Will's earlier physical scrolling and standalone YouTube observations occurred
-with the Home-button preference Off and remain baseline evidence. In the later
-enabled-helper checks he confirmed that focus keeps moving while a direction
-is held and stops on release: physical repeat acceptance passes by his report. Pressing YouTube or Netflix while a direction is held did not launch
-an app; the cause is unestablished. A later physical YouTube press opened YouTube; Netflix alone opened its Play
-Install page, confirming a response but not installed-app launch. Held Home
-was physically verified on November 21. After restart, On / Working persisted and Home eventually returned from YouTube,
-with Google TV visible in the first capture. Will had to re-enable wireless
-debugging for coordinator access. Three later YouTube → Home trials each showed Homeboard within a conservative
-4.2-second request-to-screenshot bound; exact transition timing remains open.
-A permission-assisted Off/On cycle preserved all five unrelated service states
-in Android’s UI; final service screenshots matched baseline exactly. All five
-were Off. Raw component-list/global-switch comparison, app-update recovery and
-Cast2 acceptance remain open. Cast2 later received frozen 0.1.119 through a
-verified, data-preserving coordinator install; helper setup/acceptance there
-is still separate. Earlier checks in this record used 0.1.117. Exact transition
-timing needs timestamp-preserving coordinator capture attached to Remote;
-current screenshots provide only upper bounds.
-The [November 21 record](../testing/2026-11-21-home-button.md) retains earlier
-short-Home, source-manifest and quick-settings evidence.
+Cast1 passes short Home across apps, physical held Home, standalone YouTube,
+physical held-direction repeat/stop on release, Undo through history and
+permission-assisted force-stop recovery. Without the one-time permission,
+force-stop requires manual accessibility re-enabling. The temporary permission
+was restored to absent. The helper survived a TV restart; coordinator access
+required Will to re-enable wireless debugging.
 
-For the physical checks and remaining simultaneous-button investigation, use the
-[remote checklist and simultaneous-button comparison](../testing/2026-11-23-home-button.md#physical-remote-what-will-needs-to-check).
-Ordinary acceptance checks held directions alone and each branded app button
-alone with On / Working confirmed. A direction held while pressing an app button
-is a separate investigation; its expected behavior and cause are not established.
+Netflix's physical button opened its Play Install page, confirming a response;
+installed-Netflix launch is untested. A permission-assisted Off/On cycle preserved
+all five unrelated service states shown by Android (all Off), with identical
+baseline/final screenshots. Raw settings and an already-On unrelated service
+are separate untested cases.
 
-Historical November 20 observations follow.
+Home returned from YouTube after restart, with Google TV visible first. Three
+later returns were visible within a conservative 4.2-second request-to-screenshot
+bound. Exact timing needs the coordinator capability in this
+[draft feature request](../requests/2026-11-23-coordinator-timestamped-remote-capture.md),
+which has not been filed externally.
+
+**Remaining:** controlled app-update recovery, Cast2 helper setup/acceptance,
+simultaneous direction + app-button comparison, exact timing, and deeper
+accessibility preservation. The [physical checklist](../testing/2026-11-23-home-button.md#physical-remote-what-will-needs-to-check)
+records how to rerun the completed ordinary-use checks and investigate the
+separate simultaneous-button observation. The [November 21 record](../testing/2026-11-21-home-button.md)
+retains the earlier source-manifest and routing evidence.
+
+## Historical November 20 observations
+
+The pending statements in this section describe that session, not current status.
 
 Will,
 2026‑11‑20: "ok, make home button work". Research:
@@ -145,7 +144,7 @@ flowchart TD
     W --> R{"RedirectGuard:<br/>3 in 10 s without a key?"}
     R -- "no" --> O["openHome: Homeboard started<br/>like an app (stockHomeStays)"]
     R -- "yes" --> G2["Left on Google TV Home<br/>until the next key"]
-    S --> D["Also 250 ms after the key:<br/>openHome, for a home screen<br/>already in front"]
+    S --> D["Only when key filtering is active:<br/>250 ms after a short key release,<br/>openHome for an unchanged home screen"]
     D --> O
     O --> Y["YouTube and Netflix buttons<br/>still work: Google TV stays<br/>Android's Home process"]
 ```
@@ -160,7 +159,8 @@ stateDiagram-v2
     Setup --> Starting: Retry after the grant
     Starting --> Working: helper connected
     Starting --> NotRunning: no connect within 8 s
-    Working --> NotRunning: force stop or update dropped it
+    Working --> NotRunning: helper still listed, or permission held
+    Working --> Setup: helper removed, no permission
     NotRunning --> Starting: Start it again, or automatic repair
     NotRunning --> Working: turned on in Android's settings
     Working --> Off: Off, Undo, or turned off in Android's settings
@@ -198,15 +198,18 @@ the On/Off segmented row the screensaver Options use, and the status is a badge 
 - If Homeboard crashes, the helper dies with its process (it runs in Homeboard's process), so
   Google TV Home stays. If Homeboard keeps failing to stay up, `RedirectGuard` stops the bounce.
 - Uninstalling Homeboard removes its service, and Android drops it from the enabled list.
-- Over ADB, from a computer: `adb shell settings put secure enabled_accessibility_services ''` removes
-  every service, or edit the list to drop only `net.biohack.homeboard/com.gathin.tvhome.HomeKeyService`.
+- For recovery, disable only the explicitly identified Homeboard helper in Android
+  accessibility settings. Do not clear the complete service list: that would also
+  disable unrelated services. Shared-device operations remain coordinator-owned.
 
 ## Effects elsewhere
 
-- **Key filtering.** The helper declares `flagRequestFilterKeyEvents` and `key_filter` is on by
-  default, so while it runs it sees every remote key. Upstream notes TCL Google TV sets on Android
-  12 where any key-filtering service stops held keys from repeating. Not known for a Chromecast;
-  verification step 9 checks it.
+- **Key filtering.** The original helper's filtering broke held-key repeat on
+  Cast1. Fix `d7b2ad4` makes the normal Google TV redirect use window events without
+  filtering keys; explicitly configured remote-button features can still require
+  filtering. Will's later physical repeat/release check passed. An Off preference
+  does not necessarily unbind a manually enabled helper, so it is not equivalent
+  to disabling that helper in Android for a controlled comparison.
 - **Control interface.** With the override, Homeboard is not Android's Home process, so the
   control interface's run C (can Homeboard bring itself to the front) should be run with the
   helper on. A bound accessibility service is one of Android's exemptions for background
@@ -270,7 +273,8 @@ Applied the shared [Alan Cooper design filter](/home/will/docs/howtos/alan-coope
 
 - A Play Console accessibility declaration and its in-app disclosure screen, for the Play edition item.
 - Reviving `restore_key_services` for `InputKeyService`, which no Homeboard build turns on.
-- A Home-key override that does not filter keys (window events only), if step 9 shows key repeat breaking on a Chromecast.
+The normal redirect already avoids key filtering through `d7b2ad4`; it is no
+longer deferred work.
 
 ## Verification
 
@@ -331,7 +335,8 @@ Record raw output beneath each step, then PASS or FAIL.
    label), open it, capture the Off state; it must say Google TV keeps the button and offer no
    role button.
 6. Without the grant: select On; capture Setup needed. Select Android's accessibility settings,
-   turn on "Home button", come back; capture Working, or capture what Android showed (a
+   turn on the identified helper (debug: "Home button · Homeboard TV (test)"),
+   come back; capture Working, or capture what Android showed (a
    Restricted-setting block is a recorded result, not a pass).
 7. With the grant (`pm grant <package> android.permission.WRITE_SECURE_SETTINGS`, only if the
    coordinator's policy admits it): Off, then On; capture Turning on… then Working, and read the

@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/02c6ab8) | Docs: confirm Cast2 install and exact timing capability limit |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/c865879) | Docs: record physical held-key repeat and release pass |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/f0b2cf9) | Docs: record physical app-button responses on Cast1 |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/f16d583) | Docs: clarify physical remote acceptance and simultaneous-button checks |
@@ -15,6 +16,10 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 
 <!--history-meta v1
+02c6ab8	author	Will Norris
+02c6ab8	added	5
+02c6ab8	deleted	2
+02c6ab8	files	1
 c865879	author	Will Norris
 c865879	added	5
 c865879	deleted	4

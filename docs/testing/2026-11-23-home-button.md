@@ -1,11 +1,33 @@
 # Home button: Cast1 recovery checks, 23 November 2026
 
-Cast1 still runs debug **0.1.117**, confirmed in About. No app code changed and
-no APK was installed. Coordinator **0.1.224 (`cf5700f9`)** owned all device input,
-force-stop, relaunch and cleanup. This continues the
+## Current summary (23 November 2026)
+
+The functional Home-button checks below were performed on Cast1 debug
+**0.1.117**, confirmed in About at the start. Later, another deployment installed
+0.1.119 on Cast1, and this work verified **0.1.119 installed on Cast2**. Do not
+attribute the earlier acceptance results to 0.1.119 without retesting. Coordinator
+**0.1.224 (`cf5700f9`)** owned all device operations; no raw-device fallback was used.
+
+| Check | Latest supported result |
+|---|---|
+| Cast1 short Home across apps / held Home | Passed; held Home opens Google's quick-settings panel. |
+| Physical YouTube button alone | Passed: YouTube opened. |
+| Physical Netflix button alone | Responded with Netflix's Play Install page; installed-app launch untested. |
+| Physical held Up/Down and release | Will reported continued movement while held and stopping on release: passed. |
+| Undo through history | Passed; long-Back shortcut not separately retested here. |
+| Force-stop without the one-time permission | On remained selected, but Setup needed; manual accessibility enable restored Working. |
+| Force-stop with the permission | Recovered automatically to On / Working; temporary permission restored to absent. |
+| TV restart | Helper retained On / Working; Home returned from YouTube with Google TV visible first. Will re-enabled wireless debugging for coordinator access. |
+| Other accessibility services | All five observed unrelated services stayed Off across permission-assisted Off/On; final UI screenshots matched baseline. |
+| Cast2 deployment | 0.1.119 APK/hash and Google TV launcher entry verified; helper setup/acceptance still pending. |
+| Redirect timing | Three later returns visible within conservative request-to-screenshot bounds of 4.15, 3.69 and 4.02 seconds; not actual redirect durations. |
+
+See [remaining checks](#remaining-checks) for the current open work. The sections
+below retain the sequence of observations; statements about what was pending at
+an earlier stage are historical, not the current task list. This continues the
 [November 21 record](2026-11-21-home-button.md).
 
-## Results
+## Initial manual-setup results
 
 | Check | Result |
 |---|---|
@@ -14,22 +36,23 @@ force-stop, relaunch and cleanup. This continues the
 | Undo the latest Home-button choice through Undo history | **Pass:** restored Off; selecting On again restored Working. Long-Back Undo was not tested. |
 | Force-stop and relaunch without reinstall | **Automatic recovery failed:** choice remained On, but status became **Setup needed** and the test helper was Off in Android accessibility. |
 | Manual recovery | **Pass:** enabled **Home button · Homeboard TV (test)** through Android's normal consent. Home from Android settings returned to Homeboard; status showed **On · Working**. |
-| Restart / app update | Helper retained On / Working and Home eventually returned from YouTube after restart; Google TV was visible first. App update not run. |
+| Restart / app update | Restart follow-up passed below. Later APK installs did not include a controlled Home-helper update-recovery check. |
 | Permission-assisted setup and repair | Follow-up passed; see below. The earlier manual-setup run had no grant. |
 
 Will reported that holding Up or Down continued scrolling, while pressing YouTube
 or Netflix during that hold did nothing. He separately confirmed that YouTube
 opens when no direction is held. The captured Home-button preference was Off
 during these earlier physical checks: these observations establish an Off-state
-baseline, not a physical-repeat pass with the feature On. Netflix pressed alone
-is unconfirmed. No cause is established for the simultaneous-button behavior.
+baseline, not a physical-repeat pass with the feature On. Netflix alone had not
+yet been checked at this stage; its later Play Install response is recorded
+below. No cause is established for the simultaneous-button behavior.
 
 The force-stop result must not be reported as a permission-assisted repair
 failure: this run used manual accessibility setup without the one-time grant.
 It does establish that reopening the app alone did not restore that setup.
 
-Cast2 was recovery-required and in Personal use; no foreground acceptance ran.
-No restart, update or Cast2 pass is inferred from the Cast1 results.
+At this initial stage Cast2 was recovery-required and in Personal use. Later
+installation succeeded; Cast2 Home-helper acceptance remains separate.
 
 ## Evidence and session cleanup
 
@@ -58,15 +81,23 @@ requests no reinstall. The executed job omitted `warmup`, so it used the default
 15 seconds; the saved recipe now explicitly requests zero warmup. Its launch
 force-stops the app, so it must not be used as a passive inspection recipe.
 
-## Next checks
+## Remaining checks
 
-1. Permission-assisted force-stop recovery passed below. Exact accessibility-list
-   and global-switch preservation still need a supported readback check.
-2. Check restart and a newly numbered app update, preserving data and settings.
-3. With On / Working confirmed, verify physical held-key repeat and the branded
-   buttons separately. Investigate simultaneous-button behavior only against a
-   controlled baseline; do not assume it is caused by Homeboard.
-4. Complete Cast2 setup and acceptance when coordinator admission permits it.
+1. **App-update recovery:** the newer APKs were installed, but Home-helper state
+   and routing were not checked immediately before/after an update. Installation
+   alone is not a recovery pass.
+2. **Cast2 helper setup and acceptance:** installation is complete; verify its
+   own Home-button preference, helper binding, Home routing and repeat behavior.
+3. **Simultaneous direction + app button:** the failure observation exists, but
+   a controlled helper-enabled versus Android-helper-disabled comparison has not
+   run. This is separate from the passed standalone-button and repeat checks.
+4. **Exact flash/redirect timing:** requires coordinator support; see the
+   [draft feature request](../requests/2026-11-23-coordinator-timestamped-remote-capture.md).
+5. **Deeper accessibility preservation:** raw component-list/global-switch
+   readback and preservation of an already-On unrelated service are untested.
+   The observed all-Off UI preservation check passed.
+6. **Optional installed-Netflix launch:** only if Netflix is installed for a
+   separate reason; its physical button already produced a visible response.
 
 ## Follow-up: permission-assisted recovery
 
@@ -104,14 +135,15 @@ unverified and `post-reboot-access-required` after only 13.8 seconds, with no
 post-boot transport attempts recorded. Will reported that the TV was still
 restarting at that point. Do not interpret that early diagnostic as proof that
 wireless debugging switched Off. Automatic readd **J‑7342188fd961** is waiting
-for the device to advertise again. Boot behavior and Home-button acceptance
-remain pending. The reboot receipt is exported under `restart/`.
+for the device to advertise again. Boot behavior and Home-button acceptance were pending until the reconnect
+follow-up below. The reboot receipt is exported under `restart/`.
 
 Will subsequently confirmed that Cast1 had finished restarting. Coordinator
 connection-check still refused because recovery needs administrator attention;
 the automatic readd remained waiting for the device. Access had not returned at
 that check. Wireless debugging needs to be checked on the TV; the setting itself
-was not remotely readable. No Home-button result after boot is claimed.
+was not remotely readable. No Home-button result after boot was available at this stage; the follow-up
+below records the later result.
 
 
 ## Restart follow-up after Will enabled wireless debugging
@@ -139,9 +171,9 @@ Relevant frames: `post-boot-baseline.png`, `post-boot-helper-status.png`,
 `post-boot-home-settled.png` (Homeboard). Remote was stopped; its receipt has no
 unresolved effects or recovery fences. Evidence is in `post-boot-remote/`.
 
-Still pending: app-update recovery, physical repeat and separate branded
-buttons with On / Working, exact accessibility-list preservation, and Cast2
-acceptance. The redirect's visible transition/latency also needs a timed check.
+The later physical-repeat, branded-button and accessibility checks below
+supersede this stage's open items. Use [remaining checks](#remaining-checks)
+for the current task list.
 
 ## Timed screenshot check
 
@@ -228,7 +260,8 @@ switch's value are **not verified** by this check. No raw-device fallback was us
 
 ## Physical remote: what Will needs to check
 
-The remaining ordinary-use check takes about a minute on Cast1. First open
+The following procedure was used for the physical checks, which now have
+reported results below. For a future rerun, first open
 **Home settings → Home button** and confirm **On · Working**. Earlier physical
 scrolling and standalone YouTube observations were made with this preference
 Off, so they cannot establish behavior with Home redirection active. There is
@@ -334,8 +367,8 @@ Install-only **J‑14f1158e7cc6** was admitted but failed
 or reset. Evidence is exported under `docs/diagnostics/cast2-install-118-refused/`.
 Attempts to acquire an owned Remote session were refused **Device is busy**
 while another session's preview was active; that session was not cancelled.
-Installation remains pending moving Homeboard out of the foreground and retrying
-the identical frozen APK. No successful Cast2 install or acceptance is claimed.
+At this stage installation was pending moving Homeboard out of the foreground.
+The successful 0.1.119 retry below supersedes that installation block.
 
 ### Superseding result: Cast2 0.1.119 installed
 
@@ -369,7 +402,8 @@ cross-app Home input needed for this automated test. App-scoped interactive
 recording enforces its foreground guard, so it cannot substitute for Remote in
 the YouTube → Google TV → Homeboard transition. No guard was bypassed.
 
-The required coordinator improvement is a timestamp-preserving capture attached
+The [draft feature request](../requests/2026-11-23-coordinator-timestamped-remote-capture.md)
+records the required coordinator improvement: a timestamp-preserving capture attached
 to an owned Remote session, with input-event times correlated to the same clock.
 Then classify the first Google TV and first stable Homeboard frames and report
 input-to-Homeboard latency separately from visible Google TV duration. No

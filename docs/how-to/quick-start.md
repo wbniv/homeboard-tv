@@ -187,17 +187,23 @@ what it opens now.
   Google TV's quick settings and home panel, the remote's YouTube and Netflix
   buttons keep working, and Google TV stays installed and enabled. It works through
   Homeboard's **Home button** helper, an Android accessibility service. Homeboard
-  can turn the helper on itself after the same one-time setup command the
+  shows **Home button · Homeboard TV (test)** for the debug build, so choose that
+  entry when public and test copies are both installed. Homeboard can turn the
+  helper on itself after the same one-time setup command the
   screensaver's **Use everywhere** uses; otherwise the screen opens Android's
   accessibility settings for you to turn it on. The screen shows whether the helper
-  is actually running, and **Start it again** if Android stopped it.
+  is actually running. If Android stops it, the recovery action depends on its
+  state and whether the one-time permission was granted: **Start it again** may
+  be offered; without that permission you may need to enable the helper again in
+  Android accessibility settings.
 - **Other TVs**, where Android honours the choice: **Make Homeboard the Home app**
   asks Android for the Home role, with no helper. If Homeboard already is the Home
   app, the screen says so.
 
 Turning the setting on or off saves at once and can be undone by holding Back. To
 give Home back at any time, turn the setting off, hold Home and turn off **Home
-button** in Android's accessibility settings, or uninstall Homeboard.
+button** (or the labelled test helper) in Android's accessibility settings, or
+uninstall Homeboard.
 
 ![Homeboard settings and Android device Settings buttons — design mockup](../plans/2026-11-15-widget-home/compact-grid-settings.svg)
 
