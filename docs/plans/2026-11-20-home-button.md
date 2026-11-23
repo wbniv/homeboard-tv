@@ -11,7 +11,8 @@ with verified readback. See the
 Will's physical scrolling and standalone YouTube observations occurred with the
 Home-button preference Off. They establish a baseline, not On-state repeat
 acceptance. Pressing YouTube or Netflix while a direction is held did not launch
-an app; the cause is unestablished. Netflix alone remains unconfirmed. Held Home
+an app; the cause is unestablished. A later physical YouTube press opened YouTube; Netflix alone opened its Play
+Install page, confirming a response but not installed-app launch. Held Home
 was physically verified on November 21. After restart, On / Working persisted and Home eventually returned from YouTube,
 with Google TV visible in the first capture. Will had to re-enable wireless
 debugging for coordinator access. Three later YouTube → Home trials each showed Homeboard within a conservative

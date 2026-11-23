@@ -280,3 +280,26 @@ or only on a fresh app-button press. If the combination fails in both helper
 states, Homeboard is not shown to have introduced it; if it works only with the
 helper disabled, investigate the helper's input handling. Neither result alone
 proves a remote-hardware cause. This comparison has **not yet run**.
+
+## Physical Home and standalone branded-button results
+
+Will performed the physical presses; coordinator capture jobs sent no input.
+The starting Android accessibility capture **J‑a498ea241686** shows the public
+Home button helper Off and **Home button · Homeboard TV (test)** On.
+
+- Will pressed Home from Android accessibility. Capture **J‑c9eef653c788** shows
+  Homeboard's dashboard: physical Home redirection passed in this state.
+- Will pressed YouTube alone. Capture **J‑b869725b8f4d** shows YouTube's browsing
+  UI: the physical standalone YouTube shortcut passed.
+- Will pressed Netflix alone. Capture **J‑64228abe0ec7** shows Netflix's Google
+  Play details page with **Install**, not the Netflix app. The shortcut visibly
+  responded; Netflix was not available to launch in this state. This does not
+  pass installed-Netflix launch acceptance, and it is not evidence that the
+  Home helper swallowed the button. Netflix was not installed for this test.
+
+Each capture completed with health ready and six verified artifacts under
+`docs/diagnostics/chromecast-capture-<ASCII-job-id>/`. Their `screenshot.png`
+files are the visual evidence. Homeboard's preference was not reopened between
+these physical presses; the enabled helper and successful Home redirection
+provide the contemporaneous setup evidence. Physical held-Up/Down repeat and
+the separate simultaneous-button comparison remain pending.
