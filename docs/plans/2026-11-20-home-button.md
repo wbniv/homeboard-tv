@@ -21,8 +21,11 @@ debugging for coordinator access. Three later YouTube → Home trials each showe
 A permission-assisted Off/On cycle preserved all five unrelated service states
 in Android’s UI; final service screenshots matched baseline exactly. All five
 were Off. Raw component-list/global-switch comparison, app-update recovery and
-Cast2 acceptance remain open. Cast2 was
-recovery-required and in Personal use during this run. No new APK was installed.
+Cast2 acceptance remain open. Cast2 later received frozen 0.1.119 through a
+verified, data-preserving coordinator install; helper setup/acceptance there
+is still separate. Earlier checks in this record used 0.1.117. Exact transition
+timing needs timestamp-preserving coordinator capture attached to Remote;
+current screenshots provide only upper bounds.
 The [November 21 record](../testing/2026-11-21-home-button.md) retains earlier
 short-Home, source-manifest and quick-settings evidence.
 

@@ -336,3 +336,43 @@ Attempts to acquire an owned Remote session were refused **Device is busy**
 while another session's preview was active; that session was not cancelled.
 Installation remains pending moving Homeboard out of the foreground and retrying
 the identical frozen APK. No successful Cast2 install or acceptance is claimed.
+
+### Superseding result: Cast2 0.1.119 installed
+
+Another session subsequently froze 0.1.119 and registered its APK, superseding
+0.1.118 for the retry. Its first Cast2 attempt **J‑3ff5183c40d7** also failed
+install-over-foreground. Our retry **J‑850887bc9666** waited behind the tray's
+preview, then installed successfully and completed the coordinator's launcher
+verification continuation. This supersedes the pending-install statement above.
+
+The installed debug-package hash was verified as
+`ec6ebee6874811ec8c96b1520e0475087524b79b7799a2265d514062a905d3bc`,
+matching frozen `artifacts/deployments/0.1.119/homeboard.apk`. The install used the
+data-preserving coordinator workflow, with no app-data reset. Launcher verification
+found Homeboard's entry in Google TV; this is not a fresh Home-helper setup or
+physical Home-button acceptance on Cast2. The job completed with health ready and
+no unresolved effects or recovery fences. Nineteen artifacts were exported to
+`docs/diagnostics/cast2-install-119-success/`.
+
+The earlier request for Will to close the Cast2 preview or open another app is
+no longer needed. No physical action is pending for installation.
+
+## Exact transition timing: coordinator capability limit
+
+Source review of installed coordinator 0.1.224 confirms that Remote's video
+observer records raw H.264 without per-frame timestamps. Its preview path also
+writes packet data without retaining presentation timestamps. Assuming a fixed
+frame rate for that output would not establish exact flash duration.
+
+The timestamp-preserving `record-live` workflow accepts only Finish, not the
+cross-app Home input needed for this automated test. App-scoped interactive
+recording enforces its foreground guard, so it cannot substitute for Remote in
+the YouTube → Google TV → Homeboard transition. No guard was bypassed.
+
+The required coordinator improvement is a timestamp-preserving capture attached
+to an owned Remote session, with input-event times correlated to the same clock.
+Then classify the first Google TV and first stable Homeboard frames and report
+input-to-Homeboard latency separately from visible Google TV duration. No
+physical button presses from Will are inherently needed. Until that capability
+exists, retain the three conservative screenshot bounds rather than claiming
+exact transition timing. No coordinator source was changed in this work.
