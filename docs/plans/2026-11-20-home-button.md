@@ -24,6 +24,12 @@ recovery-required and in Personal use during this run. No new APK was installed.
 The [November 21 record](../testing/2026-11-21-home-button.md) retains earlier
 short-Home, source-manifest and quick-settings evidence.
 
+For the remaining physical checks, use the
+[remote checklist and simultaneous-button comparison](../testing/2026-11-23-home-button.md#physical-remote-what-will-needs-to-check).
+Ordinary acceptance checks held directions alone and each branded app button
+alone with On / Working confirmed. A direction held while pressing an app button
+is a separate investigation; its expected behavior and cause are not established.
+
 Historical November 20 observations follow.
 
 Will,

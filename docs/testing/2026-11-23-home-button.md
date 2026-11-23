@@ -225,3 +225,58 @@ This closes the UI service-state comparison. The coordinator still has no
 supported raw readback for `enabled_accessibility_services` or
 `accessibility_enabled`, so exact component spelling/order and the global
 switch's value are **not verified** by this check. No raw-device fallback was used.
+
+## Physical remote: what Will needs to check
+
+The remaining ordinary-use check takes about a minute on Cast1. First open
+**Home settings → Home button** and confirm **On · Working**. Earlier physical
+scrolling and standalone YouTube observations were made with this preference
+Off, so they cannot establish behavior with Home redirection active. There is
+no need to repeat held Home: its Google settings-panel behavior is already recorded.
+
+1. Return to Homeboard and release every remote button. Press the physical
+   **YouTube** button once, with no direction held. YouTube should open. Press
+   Home to return to Homeboard and release it. Press **Netflix** once, with no
+   direction held. Netflix should open; its sign-in screen counts as opening.
+   A missing/unavailable app or a system error is a separate result to record.
+2. Open YouTube and choose a browsing screen with enough rows to scroll. From
+   near the top, hold **Down alone for about two seconds**, then release it.
+   Focus should move repeatedly through several items/rows, rather than moving
+   once and stopping. Hold **Up alone for about two seconds** from lower in the
+   list, then release it. Report whether scrolling repeats and stops on release.
+   Do not press an app button during either hold. Do not judge repeat at the end
+   of a list, where there may be nowhere else to move.
+3. Report: `On / Working confirmed; YouTube button: …; Netflix button: …;
+   held Down: …; held Up: …; stops on release: …`. Approximate movement is enough;
+   no stopwatch or exact tile count is required.
+
+The expected standalone YouTube behavior is ordinary app launch. We are checking
+that enabling Home redirection preserves it, not asking for a new shortcut
+behavior. The coordinator's injected keys are not an adequate substitute for
+these physical-remote checks, and it cannot inject the branded app buttons.
+
+### Separate investigation: direction held while pressing an app button
+
+Will reported that holding Up/Down and then pressing YouTube/Netflix continued
+scrolling without opening the app. That is a two-button combination. It is
+separate from the normal-use checks above, and concurrent buttons are not an
+established Homeboard requirement. The observation alone does not identify the
+cause: the remote might not transmit the second press while holding a direction,
+or Android, a helper or an app might handle it differently. No event trace has
+established which happened.
+
+If investigating this behavior, compare the same physical remote, app, browsing
+position and button sequence with the test helper **enabled and On / Working**,
+then with that helper **disabled in Android accessibility**. The agent should
+coordinate those setting changes, verify each state and restore On / Working;
+Will only needs to perform the physical presses. Turning the preference Off
+inside Homeboard alone does not isolate the accessibility service, which may
+remain enabled and use a different key-filtering configuration.
+
+For each state: verify each app button alone, then separately hold Down and tap
+YouTube, release both, and repeat with Up. Netflix can be checked the same way.
+Record whether the app opens while the direction is held, after it is released,
+or only on a fresh app-button press. If the combination fails in both helper
+states, Homeboard is not shown to have introduced it; if it works only with the
+helper disabled, investigate the helper's input handling. Neither result alone
+proves a remote-hardware cause. This comparison has **not yet run**.
