@@ -2083,7 +2083,7 @@ public class MainActivity extends Activity {
         if(kind==WidgetKind.ANDROID&&layout.androidWidget(key)!=null)expandedTitle=layout.androidWidget(key).label;
         if(kind==WidgetKind.WORLD_CLOCK&&!layout.clock(key).title.isEmpty())expandedTitle=layout.clock(key).title;
         expandedWidget=new WidgetExpansion(this,key,expandedTitle,paletteColors,uiBackgroundOpacity,origin,saved,factory,
-            ()->{switch(kind){case ANDROID:androidWidgets.configure(key);break;case TIMER:KitchenTimerUi.access(this);expandedWidget.resumeAfterConfiguration();break;case GROCERY:configureGroceries(key);break;case CALENDAR:configureCalendar(key);break;case RAIN:rainFor(key).configure();break;case AIR:airFor(key).configureWidget();break;case FAVORITES:favoritesActions();break;case WORLD_CLOCK:configureClock(key);break;}},
+            ()->{switch(kind){case ANDROID:androidWidgets.configure(key);break;case TIMER:KitchenTimerUi.access(this);expandedWidget.resumeAfterConfiguration();break;case GROCERY:configureGroceries(key);break;case CALENDAR:configureCalendar(key);break;case RAIN:rainFor(key).configure();break;case AIR:AirQualityCard air=airFor(key);air.configureWidget();if(!air.ready())expandedWidget.resumeAfterConfiguration();break;case FAVORITES:favoritesActions();break;case WORLD_CLOCK:configureClock(key);break;}},
             ()->{expandedWidget=null;allApps=originApps;homePage=origin;focused=HomeLayout.HEADER_CLOCK.equals(key)||layout.widgets.contains(key)?key:"";if(allApps)appsFocus=focused;else homeFocus=focused;render(0);});
         expandedWidget.open(saved==null||saved.getBoolean("fresh",false)?tiles.get(key):null,(saved==null||saved.getBoolean("fresh",false))&&!reducedMotion());
     }
@@ -2221,7 +2221,7 @@ public class MainActivity extends Activity {
     private final Runnable phonePreviewTimeout=()->phoneCancelPreview();
     boolean phoneForeground(){return active&&!closed;}
     boolean phoneCanPair(){return phonePanelOpen||!phoneBusy();}
-    private boolean phoneBusy(){return layoutReadOnly||(androidWidgets!=null&&androidWidgets.busy())||backUndo.down()||!active||closed||overlay!=null||clockEditor!=null||groceryEditor!=null||moving||resizing||firstPageBefore!=null||favoriteOrderPreview!=null||expandedWidget!=null||undoGroupStart!=null;}
+    private boolean phoneBusy(){for(AirQualityCard card:airWidgets.values())if(!card.ready())return true;return layoutReadOnly||(androidWidgets!=null&&androidWidgets.busy())||backUndo.down()||!active||closed||overlay!=null||clockEditor!=null||groceryEditor!=null||moving||resizing||firstPageBefore!=null||favoriteOrderPreview!=null||expandedWidget!=null||undoGroupStart!=null;}
     String phoneName(){String name=android.provider.Settings.Global.getString(getContentResolver(),"device_name");if(name==null||name.isBlank())name=android.os.Build.MODEL;String id=android.provider.Settings.Secure.getString(getContentResolver(),android.provider.Settings.Secure.ANDROID_ID);return name+" · "+(id==null?"TV":id.substring(Math.max(0,id.length()-4)));}
     void phoneMessage(int id){toast(getString(id));}
     void phoneDismiss(){dismissMenu();activeMenu=null;menuStack.clear();}
@@ -2255,7 +2255,7 @@ public class MainActivity extends Activity {
     }
     JSONObject phoneState()throws Exception {
         HomeLayout saved=HomeLayout.parse(preferences.getString("layout",layout.encode()));
-        for(String key:saved.widgets)if(isAirWidgetKey(key))airFor(key).configurationSnapshot();
+        for(String key:saved.widgets)if(isAirWidgetKey(key)){ AirQualityCard card=airFor(key); if(card.ready())card.configurationSnapshot(); }
         JSONObject air=PhoneConfigurationStore.air(preferences);
         int cols=saved.homeColumns==0?homeGridFitColumns():saved.homeColumns,rows=saved.homeRows==0?homeGridFitRows():saved.homeRows;
         JSONArray catalog=new JSONArray();for(App app:apps.values())catalog.put(new JSONObject().put("key",app.key).put("name",app.label));

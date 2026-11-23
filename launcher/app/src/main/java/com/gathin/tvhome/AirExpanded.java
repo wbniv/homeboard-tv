@@ -32,7 +32,8 @@ final class AirExpanded implements WidgetExpansion.Content {
     private StationCatalog.Station historyStation;
     private Location actual;
     private int radius,range;
-    private boolean history,model,closed,running,locating,loading,catalogFailed;
+    private boolean history,model,closed,running,locating,loading,catalogFailed,catalogLoaded;
+    private View modelTab;
     private int historyGeneration;
     private long selectedTime;
     private List<AirQualityReading> samples=new ArrayList<>();
@@ -45,14 +46,27 @@ final class AirExpanded implements WidgetExpansion.Content {
         range=state.getInt("range",7);selectedId=state.getString("station","");selectedTime=state.getLong("sample",0);model=state.getBoolean("model",false);
         cache=h.activity.getSharedPreferences("air-expanded-cache",0);root=h.column();LinearLayout tabs=h.row();
         tabs.addView(h.button(R.string.hb_fs_nearby,()->showMap()));tabs.addView(h.button(R.string.hb_fs_history,()->showHistory(false)));
-        if(card.expandedIsModel())tabs.addView(h.button(R.string.hb_fs_model,()->showHistory(true)));
+        modelTab=h.button(R.string.hb_fs_model,()->showHistory(true));
+        modelTab.setVisibility(card.ready()&&card.expandedIsModel()?View.VISIBLE:View.GONE);tabs.addView(modelTab);
         tabs.addView(h.button(R.string.hb_fs_locate,this::requestLocation));
         for(int km:new int[]{10,25,50,100})tabs.addView(h.button(km+" km",()->{if(history)showMap();radius=km;updateStations();if(actual!=null)map.locate(actual,radius);}));root.addView(tabs);
         status=h.text("",13);root.addView(status);body=h.column();root.addView(body,new LinearLayout.LayoutParams(-1,0,1));
         map=new StationMapView(h,this::select,()->{if(selected!=null)h.details(selected.name,describe(selected));});
         stationList=h.column();detail=h.text("",15);
-        try{String saved=cache.getString("feed",card.expandedCachedFeed());all=StationCatalog.parse(saved,System.currentTimeMillis());}catch(Exception ignored){}
+        loadCachedCatalog();
         showMap();if(state.getBoolean("history",false))showHistory(model);
+    }
+    private void loadCachedCatalog(){
+        if(closed)return;
+        if(!card.ready()){handler.postDelayed(this::loadCachedCatalog,100);return;}
+        modelTab.setVisibility(card.expandedIsModel()?View.VISIBLE:View.GONE);
+        String fallback=card.expandedCachedFeed();
+        AirQualityCard.loadSavedData(()->{
+            List<StationCatalog.Station> saved=new ArrayList<>();
+            try{saved=StationCatalog.parse(cache.getString("feed",fallback),System.currentTimeMillis());}catch(Exception ignored){}
+            List<StationCatalog.Station> result=saved;
+            handler.post(()->{if(closed)return;if(!catalogLoaded)all=result;updateStations();if(history&&model){samples=card.expandedHistory();renderHistory();}});
+        });
     }
     private String t(int id){return h.activity.getString(id);}
     public View view(){return root;}
@@ -64,7 +78,7 @@ final class AirExpanded implements WidgetExpansion.Content {
     private void refreshCatalog(){
         if(loading||closed)return;loading=true;updateStatus();AirStationClient.fetch().whenComplete((response,error)->handler.post(()->{
             if(closed)return;loading=false;
-            try{if(error!=null)throw new IllegalStateException("Unavailable");all=StationCatalog.parse(response,System.currentTimeMillis());cache.edit().putString("feed",response).apply();catalogFailed=false;}catch(Exception e){catalogFailed=true;}
+            try{if(error!=null)throw new IllegalStateException("Unavailable");all=StationCatalog.parse(response,System.currentTimeMillis());AirQualityCard.loadSavedData(()->cache.edit().putString("feed",response).apply());catalogFailed=false;catalogLoaded=true;}catch(Exception e){catalogFailed=true;}
             updateStations();
         }));
     }

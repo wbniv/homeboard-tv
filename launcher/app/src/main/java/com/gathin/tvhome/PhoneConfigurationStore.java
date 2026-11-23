@@ -9,6 +9,7 @@ final class PhoneConfigurationStore {
     static final String AIR="widget-air-configurations",REVISION="configuration-revision",OPERATIONS="phone-operation-results";
     static SharedPreferences preferences(Context c){return c.getSharedPreferences("widget-home",Context.MODE_PRIVATE);}
     static JSONObject air(SharedPreferences prefs){try{return new JSONObject(prefs.getString(AIR,"{}"));}catch(JSONException e){throw new IllegalStateException("Air settings unreadable",e);}}
+    static JSONObject savedAir(Context c,String key) { return air(preferences(c)).optJSONObject(key); }
     static JSONObject readAir(Context c,String key,JSONObject initial) {
         SharedPreferences prefs=preferences(c);JSONObject all=air(prefs);JSONObject saved=all.optJSONObject(key);
         if(saved!=null)return saved;

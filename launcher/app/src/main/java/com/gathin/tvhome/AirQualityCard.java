@@ -34,12 +34,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import com.gathin.tvhome.AirQualitySavedData.ModelData;
 
 /** Small direct-feed integration; no dashboard server or household credentials. */
 final class AirQualityCard {
     static final String ENDPOINT = "https://official.airbkk.com/airbkk/Api";
     static final String MODEL_ENDPOINT = "https://air-quality-api.open-meteo.com/v1/air-quality";
-    private static final String[] IDS = {"114", "119", "122", "70", "65"};
+    private static final String[] IDS = AirQualitySavedData.STATIONS;
     private final String[] NAMES;
     private static final DateTimeFormatter REPORT_TIME = DateTimeFormatter.ofPattern("dd/MM/uuuu HH:mm", Locale.US);
     private static final DateTimeFormatter MOVING_AVERAGE_TIME = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm", Locale.US);
@@ -58,8 +59,13 @@ final class AirQualityCard {
     private AirQualityTrendView trend;
     private View tile;
     private boolean tileFocused;
-    private final SharedPreferences prefs;
+    private SharedPreferences prefs;
+    private String stationFeed = "";
+    private JSONObject savedConfiguration;
+    private static final ExecutorService STARTUP_WORKER = Executors.newSingleThreadExecutor();
+    static void loadSavedData(Runnable read) { STARTUP_WORKER.execute(read); }
     private final Handler handler = new Handler(Looper.getMainLooper());
+    private final AirQualityStartup<InitialState> startup = new AirQualityStartup<>(STARTUP_WORKER, command -> handler.post(command));
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private volatile HttpURLConnection connection;
     private boolean active, closed, loading, failed;
@@ -89,17 +95,43 @@ final class AirQualityCard {
         NAMES = activity.getResources().getStringArray(R.array.hb_station_names);
         this.menus = menus;
         this.widgetKey = widgetKey; this.locations = locations; this.undoRecorder = undoRecorder;
-        String preferenceName = "air-quality-widget-" + widgetKey.replaceAll("[^A-Za-z0-9_-]", "_");
-        prefs = activity.getSharedPreferences(preferenceName, Activity.MODE_PRIVATE);
-        JSONObject initial=legacyConfiguration();
-        JSONObject config=PhoneConfigurationStore.readAir(activity,widgetKey,initial);
-        source=config.optString("source","model");locationMode=config.optString("location-mode","auto");
-        locationName=config.optString("location-name",getString(R.string.hb_near_me));
-        latitude=config.optDouble("latitude",Double.NaN);longitude=config.optDouble("longitude",Double.NaN);
-        String saved=config.optString("station",IDS[0]);
-        for(int i=0;i<IDS.length;i++)if(IDS[i].equals(saved))selected=i;
-        readHistory();
-        readCache();
+        source = "model"; locationMode = "auto"; locationName = getString(R.string.hb_near_me);
+        loadInitialState();
+    }
+
+    private static final class InitialState {
+        final SharedPreferences preferences;
+        final AirQualitySavedData data;
+        InitialState(SharedPreferences preferences, AirQualitySavedData data) {
+            this.preferences = preferences; this.data = data;
+        }
+    }
+    boolean ready() { return startup.ready(); }
+    private void loadInitialState() {
+        startup.start(() -> {
+            String name = "air-quality-widget-" + widgetKey.replaceAll("[^A-Za-z0-9_-]", "_");
+            SharedPreferences loaded = activity.getSharedPreferences(name, Activity.MODE_PRIVATE);
+            JSONObject config = PhoneConfigurationStore.savedAir(activity, widgetKey);
+            if (config == null) config = legacyConfiguration(loaded);
+            return new InitialState(loaded, AirQualitySavedData.read(config, loaded::getString, System.currentTimeMillis()));
+        }, loaded -> {
+            prefs = loaded.preferences;
+            JSONObject config = loaded.data.configuration;
+            savedConfiguration = config;
+            source = config.optString("source", "model"); locationMode = config.optString("location-mode", "auto");
+            locationName = config.optString("location-name", getString(R.string.hb_near_me));
+            latitude = config.optDouble("latitude", Double.NaN); longitude = config.optDouble("longitude", Double.NaN);
+            selected = loaded.data.selected; reading = loaded.data.reading; history = loaded.data.history;
+            expandedZone = loaded.data.zone; stationFeed = loaded.data.stationFeed;
+            render(); if (active) refresh(false);
+        }, this::render);
+        render();
+    }
+    private boolean waitingForSavedState() {
+        if (ready()) return false;
+        if (startup.failed()) loadInitialState();
+        android.widget.Toast.makeText(activity, getString(R.string.hb_loading), android.widget.Toast.LENGTH_SHORT).show();
+        return true;
     }
 
     void bind(View card) {
@@ -127,7 +159,7 @@ final class AirQualityCard {
 
     }
     void close() {
-        stop(); closed = true;
+        stop(); closed = true; startup.close();
         HttpURLConnection c = connection;
         if (c != null) c.disconnect();
         worker.shutdownNow();
@@ -140,7 +172,8 @@ final class AirQualityCard {
             try {
                 String cached = prefs.getString("feed-model-" + modelSuffix(), "");
                 if (!cached.isEmpty()) {
-                    ModelData model = parseModel(cached);
+                    ModelData model = AirQualitySavedData.parseModel(cached, latitude, longitude, System.currentTimeMillis());
+                    expandedZone = model.zone;
                     reading = model.current;
                     history.addAll(model.samples);
                 }
@@ -148,7 +181,8 @@ final class AirQualityCard {
             return;
         }
         try {
-            reading = AirQualityReading.parse(prefs.getString("feed", ""), IDS[selected], System.currentTimeMillis());
+            stationFeed = prefs.getString("feed", "");
+            reading = AirQualityReading.parse(stationFeed, IDS[selected], System.currentTimeMillis());
             history.add(reading);
             prefs.edit().putString("history-" + IDS[selected], history.encode()).apply();
         }
@@ -156,6 +190,7 @@ final class AirQualityCard {
     }
 
     void showActions() {
+        if (waitingForSavedState()) return;
         menus.show(getString(R.string.hb_air_quality) + locationLabel(), new String[]{getString(R.string.hb_refresh_reading), getString(R.string.hb_configure_location_and_source)}, which -> {
             if (which == 0) refresh(true);
             else configureWidget();
@@ -163,6 +198,7 @@ final class AirQualityCard {
     }
     void refreshNow() { refresh(true); }
     void configureWidget() {
+        if (waitingForSavedState()) return;
         menus.show(getString(R.string.hb_air_quality_location_each_widget_is_independent),
                 new String[]{getString(R.string.hb_nearest_model_grid_use_this_device), getString(R.string.hb_enter_coordinates_for_a_model_grid), getString(R.string.hb_bangkok_monitoring_station)}, choice -> {
                     if (choice == 0) useCurrentLocation();
@@ -244,11 +280,14 @@ final class AirQualityCard {
     private void persistConfiguration() {
         PhoneConfigurationStore.writeAir(activity,widgetKey,configurationFromFields());
     }
-    JSONObject configurationSnapshot(){return configurationFromPreferences();}
-    private JSONObject configurationFromPreferences() {
-        return PhoneConfigurationStore.readAir(activity,widgetKey,legacyConfiguration());
+    JSONObject configurationSnapshot(){
+        if (!ready()) throw new IllegalStateException("Air-quality settings are loading");
+        return configurationFromPreferences();
     }
-    private JSONObject legacyConfiguration() {
+    private JSONObject configurationFromPreferences() {
+        return PhoneConfigurationStore.readAir(activity,widgetKey,savedConfiguration);
+    }
+    private JSONObject legacyConfiguration(SharedPreferences prefs) {
         JSONObject config = new JSONObject();
         try {
             config.put("source", prefs.getString("source", "model"));
@@ -259,7 +298,7 @@ final class AirQualityCard {
                 config.put("latitude", Double.longBitsToDouble(prefs.getLong("latitude", 0)));
                 config.put("longitude", Double.longBitsToDouble(prefs.getLong("longitude", 0)));
             }
-        } catch (Exception ignored) { }
+        } catch (org.json.JSONException invalid) { throw new IllegalStateException("Air settings unreadable", invalid); }
         return config;
     }
     private JSONObject configurationFromFields() {
@@ -273,6 +312,7 @@ final class AirQualityCard {
         return config;
     }
     void restoreConfigurationSnapshot(String encoded) {
+        if (waitingForSavedState()) return;
         try {
             JSONObject config = new JSONObject(encoded);
             source = config.optString("source", "model");
@@ -324,6 +364,7 @@ final class AirQualityCard {
     }
 
     private void refresh(boolean manual) {
+        if (!ready()) { if (manual && startup.failed()) loadInitialState(); return; }
         if (!active || closed || loading) return;
         long now = SystemClock.elapsedRealtime();
         if (lastAttempt != 0 && now - lastAttempt < (manual ? 30_000L : 15 * 60_000L)) {
@@ -369,6 +410,7 @@ final class AirQualityCard {
                     if (nextReading == null) throw new IllegalStateException("Feed unavailable");
                     if (reading != null && nextReading.timeMillis < reading.timeMillis)
                         throw new IllegalStateException("Feed moved backwards");
+                    stationFeed = response;
                     reading = nextReading; failed = false;
                     history.addAll(backfilled);
                     history.add(nextReading);
@@ -387,7 +429,7 @@ final class AirQualityCard {
         worker.execute(() -> {
             String body = null;
             ModelData data = null;
-            try { body = fetchModel(requestLatitude, requestLongitude); data = parseModel(body); }
+            try { body = fetchModel(requestLatitude, requestLongitude); data = AirQualitySavedData.parseModel(body, requestLatitude, requestLongitude, System.currentTimeMillis()); }
             catch (Exception ignored) { /* Keep saved model data and mark its age/status. */ }
             final String response = body;
             final ModelData result = data;
@@ -399,6 +441,7 @@ final class AirQualityCard {
                 else {
                     if (result.current != null && (reading == null || result.current.timeMillis >= reading.timeMillis))
                         reading = result.current;
+                    expandedZone = result.zone;
                     history.addAll(result.samples);
                     if (result.current != null) history.add(result.current);
                     failed = false;
@@ -415,13 +458,6 @@ final class AirQualityCard {
                 if (active) render();
             });
         });
-    }
-
-    private static final class ModelData {
-        AirQualityReading current;
-        final List<AirQualityReading> samples = new ArrayList<>();
-        double gridLatitude, gridLongitude;
-        ZoneId zone;
     }
 
     private String fetchModel(double latitude, double longitude) throws Exception {
@@ -446,42 +482,6 @@ final class AirQualityCard {
         } finally { c.disconnect(); connection = null; }
     }
 
-    private ModelData parseModel(String json) throws Exception {
-        JSONObject root = new JSONObject(json);
-        if (root.optBoolean("error", false)) throw new IllegalStateException(root.optString("reason", "Model unavailable"));
-        ModelData result = new ModelData();
-        result.zone=ZoneId.of(root.optString("timezone","UTC"));
-        expandedZone=result.zone;
-        result.gridLatitude = root.optDouble("latitude", latitude);
-        result.gridLongitude = root.optDouble("longitude", longitude);
-        JSONObject hourly = root.optJSONObject("hourly");
-        if (hourly != null) {
-            JSONArray times = hourly.optJSONArray("time"), values = hourly.optJSONArray("pm2_5");
-            long cutoff = System.currentTimeMillis() + 60 * 60_000L;
-            if (times != null && values != null) for (int i = 0; i < Math.min(times.length(), values.length()); i++) {
-                double pm25 = values.optDouble(i, Double.NaN);
-                if (!Double.isFinite(pm25) || pm25 < 0) continue;
-                long time = modelTime(times.optString(i), root.optString("timezone", "UTC"));
-                if (time <= cutoff) result.samples.add(AirQualityReading.modeled(pm25, time));
-            }
-        }
-        JSONObject current = root.optJSONObject("current");
-        if (current != null) {
-            double pm25 = current.optDouble("pm2_5", Double.NaN);
-            if (Double.isFinite(pm25) && pm25 >= 0)
-                result.current = AirQualityReading.modeled(pm25, modelTime(current.optString("time"), root.optString("timezone", "UTC")));
-        }
-        if (result.current == null && !result.samples.isEmpty()) result.current = result.samples.get(result.samples.size() - 1);
-        if (result.current == null) throw new IllegalStateException("No model PM2.5 value");
-        return result;
-    }
-
-    private long modelTime(String value, String timezone) {
-        try { return OffsetDateTime.parse(value).toInstant().toEpochMilli(); }
-        catch (java.time.DateTimeException ignored) {
-            return LocalDateTime.parse(value).atZone(ZoneId.of(timezone)).toInstant().toEpochMilli();
-        }
-    }
     private String modelSuffix() {
         return Double.isFinite(latitude) && Double.isFinite(longitude)
                 ? String.format(Locale.US, "%.2f_%.2f", latitude, longitude) : "unlocated";
@@ -563,13 +563,13 @@ final class AirQualityCard {
     }
 
     private String fetch() throws Exception { return AirStationClient.fetch().get(30, java.util.concurrent.TimeUnit.SECONDS); }
-    String expandedCachedFeed(){return prefs.getString("feed", "");}
+    String expandedCachedFeed(){return stationFeed;}
     boolean expandedIsModel(){return "model".equals(source);}
     String expandedLabel(){return locationLabel();}
     ZoneId expandedZone(){return expandedIsModel()?expandedZone:AirQualityReading.BANGKOK;}
     List<AirQualityReading> expandedHistory(){return history.readings();}
     void expandedHistory(StationCatalog.Station station, java.util.function.Consumer<List<AirQualityReading>> callback){
-        if(closed)return;
+        if(closed||!ready()){callback.accept(java.util.Collections.emptyList());return;}
         worker.execute(()->{
             List<AirQualityReading> values=new ArrayList<>();
             try{values.addAll(AirQualityHistory.parse(prefs.getString("history-"+station.id,"[]")).readings());}catch(Exception ignored){}
@@ -582,6 +582,14 @@ final class AirQualityCard {
 
     private void render() {
         if (value == null) return;
+        if (!ready()) {
+            stationLabel.setText(getString(R.string.hb_air_quality));
+            value.setText(getString(R.string.air_no_value)); value.setTextColor(palette.muted);
+            conditionLabel.setVisibility(View.GONE); trend.setPalette(palette);
+            trend.setReadings(java.util.Collections.emptyList(), java.util.Collections.emptyList());
+            detail.setText(getString(startup.failed() ? R.string.hb_reading_unavailable : R.string.hb_loading));
+            applyTileBackground(); return;
+        }
         stationLabel.setText(locationLabel().toUpperCase(Locale.US));
         value.setText(reading == null ? activity.getString(R.string.air_no_value)
                 : String.format(Locale.US, "PM2.5  %.1f µg/m³", reading.pm25));
