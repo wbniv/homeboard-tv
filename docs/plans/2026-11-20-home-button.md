@@ -1,23 +1,22 @@
 # Home button: make the remote's Home open Homeboard on Google TV
 
-**Status (2026‑11‑21): Cast1 0.1.117 routes short Home from Homeboard,
-Android settings and YouTube with the labelled test helper enabled. Physical key
-repeat and lifecycle acceptance remain open.** Cast2 is on 0.1.116 and was in
-Personal use; only passive inspection was performed. Both builds already contain
-the key-repeat fix `d7b2ad4`, confirmed by their frozen source manifests. The old
-0.1.108–110 handoff is superseded by the [fresh validation record](../testing/2026-11-21-home-button.md).
+**Status (2026‑11‑23): Cast1 remains on 0.1.117. Undo through history passes;
+force-stop and relaunch leave On selected but show Setup needed.** Manual
+accessibility re-enabling restores **On · Working** and Home from Android settings
+returns to Homeboard. This run had no one-time secure-settings grant, so
+permission-assisted repair remains untested. See the
+[November 23 validation record](../testing/2026-11-23-home-button.md).
 
-On Cast1 the old public helper was On and the test helper Off. The session turned
-the obsolete public helper Off and enabled **Home button · Homeboard TV (test)**
-through Android's normal consent. Coordinator-injected holds moved one row both
-with the test helper On and with both helpers Off, so they do not establish
-physical key-repeat acceptance. Will subsequently confirmed with the physical
-remote that held Home opens Google's settings panel. The 16:06 Cast1 screenshot
-corroborates the Google TV quick-settings panel. An unrelated coordinator cleanup
-fence initially blocked capture and recovery tests; coordinator 0.1.215 cleared
-the old fence and the capture succeeded. See the fresh validation record.
-Physical repeat and the branded remote buttons remain open, as do restart,
-force-stop and app-update recovery.
+Will's physical scrolling and standalone YouTube observations occurred with the
+Home-button preference Off. They establish a baseline, not On-state repeat
+acceptance. Pressing YouTube or Netflix while a direction is held did not launch
+an app; the cause is unestablished. Netflix alone remains unconfirmed. Held Home
+was physically verified on November 21. Restart, app-update recovery,
+permission-assisted setup/repair and Cast2 acceptance remain open. Cast2 was
+recovery-required and in Personal use during this run. No new APK was installed.
+The [November 21 record](../testing/2026-11-21-home-button.md) retains earlier
+short-Home, source-manifest and quick-settings evidence.
+
 Historical November 20 observations follow.
 
 Will,
@@ -326,9 +325,10 @@ Record raw output beneath each step, then PASS or FAIL.
    Hold Down on a long Home page and hold Volume Up for 2 s; record whether each repeats.
 10. With Working: press the remote's YouTube and Netflix buttons; each app must open.
 11. Restart the TV through the coordinator; after boot, short press Home from Google TV Home and
-    from YouTube; Homeboard must open. Then force-stop Homeboard through the coordinator's
-    background-kill stress, open Homeboard from the app row, and capture the screen: Working
-    again with the grant, or the dropped toast and Not running without it.
+    from YouTube; Homeboard must open. Then use a coordinator-owned launch session whose exported commands prove an actual
+    force-stop and relaunch (background-kill stress is not equivalent). Capture the
+    resulting state: verify Working with the grant, and record the actual recovery
+    instructions without it. November 23 observed Setup needed without the grant.
 12. Select Off; capture the Undo banner and that Home opens Google TV Home again; hold Back on
     Home and capture Working again; select Off once more. Finally restore the starting state
     from step 4 (enabled list, switch, grant revoked if it was not held before) and read all
