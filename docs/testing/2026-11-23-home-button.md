@@ -173,3 +173,55 @@ and 17; their first-frame sequences were 6, 13 and 18. Local copies are
 Remote cleanup finished with no unresolved effects or recovery fences; no app
 code or APK changed. Exact transition timing remains a separate finer-resolution
 check; the next available functional check is app-update recovery.
+
+## Unrelated accessibility services: UI preservation check
+
+**Pass for the observed Cast1 service states.** Android's accessibility UI was
+captured before and after a permission-assisted Home-button cycle on 0.1.117.
+
+| Android service label | Before | Home button Off | Restored On |
+|---|---|---|---|
+| TalkBack (Screen reader) | Off | Off | Off |
+| Switch Access | Off | Off | Off |
+| Home button (public helper) | Off | Off | Off |
+| Homeboard TV (first entry) | Off | Off | Off |
+| Homeboard TV (second entry) | Off | Off | Off |
+| Home button · Homeboard TV (test) | On | Off | On |
+
+Baseline Remote **J‑822376351d9d** captured TalkBack, Switch Access and all four
+entries in the Services section. It then disabled only the labelled test Home
+helper through Android's confirmation, allowing Homeboard itself to enable that
+service during the test. The Home-button preference followed the manual disable
+to Off, as intended.
+
+Grant **J‑ec1adc178c17** verified that WRITE_SECURE_SETTINGS was originally absent
+and temporarily granted it. Remote **J‑b915653368aa** selected On and captured
+Working, selected Off, then inspected Android accessibility. The test helper was
+Off and the other five services remained Off. Selecting On again restored
+Working; Android's final service list showed only the test helper On.
+
+The complete final screenshots for TalkBack, Switch Access and Services are
+byte-identical to their corresponding baseline PNGs. Off-state TalkBack and
+Switch Access screenshots are also byte-identical to baseline; Services was
+visually reviewed to confirm only the test helper changed. Duplicate Homeboard
+TV labels are identified by their list positions, not guessed package identity.
+All unrelated services happened to be Off: preserving an already-On unrelated
+service was not tested.
+
+The inverse grant **J‑799cb1df3121** completed and verified **not granted**, matching
+the original permission. Homeboard was left On with its test helper enabled.
+Because this cycle explicitly let Homeboard add the helper, it now records that
+helper as added by the Home-button setting. No unrelated switch was changed.
+Both Remote sessions completed cleanup without unresolved effects or fences.
+
+Local evidence under the same diagnostics root: `a11y-baseline-remote/`,
+`a11y-cycle-remote/`, `a11y-grant/`, `a11y-grant-restored/` and
+`a11y-comparison.json`. The comparable frames are `a11y-before-*.png`,
+`a11y-off-*.png` and `a11y-final-*.png` for `talkback`, `switch-access` and
+`services`; `a11y-auto-on.png`, `a11y-auto-off.png` and
+`a11y-restored-working.png` capture Homeboard's choices/status.
+
+This closes the UI service-state comparison. The coordinator still has no
+supported raw readback for `enabled_accessibility_services` or
+`accessibility_enabled`, so exact component spelling/order and the global
+switch's value are **not verified** by this check. No raw-device fallback was used.

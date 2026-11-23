@@ -1,5 +1,7 @@
 | Date | Change |
 |------|--------|
+| [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/76a7691) | Docs: verify unrelated accessibility service states survive Home toggle |
+| [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/673285a) | Docs: bound three YouTube to Homeboard returns |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/6475f3d) | Docs: record Home button behavior after Cast1 restart |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/3db5ee4) | Docs: verify permission-assisted Home button recovery |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/00c24ef) | Docs: record Home button force-stop recovery and Undo checks |
@@ -10,6 +12,14 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 
 <!--history-meta v1
+76a7691	author	Will Norris
+76a7691	added	4
+76a7691	deleted	2
+76a7691	files	1
+673285a	author	Will Norris
+673285a	added	3
+673285a	deleted	1
+673285a	files	1
 6475f3d	author	Will Norris
 6475f3d	added	3
 6475f3d	deleted	1

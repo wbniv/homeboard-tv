@@ -1,11 +1,11 @@
 # Home button: make the remote's Home open Homeboard on Google TV
 
-**Status (2026‑11‑23): Cast1 remains on 0.1.117. Undo through history passes;
-force-stop and relaunch leave On selected but show Setup needed.** Manual
-accessibility re-enabling restores **On · Working** and Home from Android settings
-returns to Homeboard. This run had no one-time secure-settings grant, so
-a follow-up with the grant recovered automatically after force-stop. The temporary
-grant was then revoked with verified readback. See the
+**Status (2026‑11‑23): Cast1 remains on 0.1.117. Undo through history and
+permission-assisted force-stop recovery pass.** Without the one-time grant,
+force-stop and relaunch leave On selected but show Setup needed; manually
+re-enabling the helper restores **On · Working**. With the grant, recovery was
+automatic and Home returned from YouTube. The temporary grant was then revoked
+with verified readback. See the
 [November 23 validation record](../testing/2026-11-23-home-button.md).
 
 Will's physical scrolling and standalone YouTube observations occurred with the
@@ -16,8 +16,10 @@ was physically verified on November 21. After restart, On / Working persisted an
 with Google TV visible in the first capture. Will had to re-enable wireless
 debugging for coordinator access. Three later YouTube → Home trials each showed Homeboard within a conservative
 4.2-second request-to-screenshot bound; exact transition timing remains open.
-App-update recovery,
-exact accessibility-list preservation and Cast2 acceptance remain open. Cast2 was
+A permission-assisted Off/On cycle preserved all five unrelated service states
+in Android’s UI; final service screenshots matched baseline exactly. All five
+were Off. Raw component-list/global-switch comparison, app-update recovery and
+Cast2 acceptance remain open. Cast2 was
 recovery-required and in Personal use during this run. No new APK was installed.
 The [November 21 record](../testing/2026-11-21-home-button.md) retains earlier
 short-Home, source-manifest and quick-settings evidence.
