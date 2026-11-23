@@ -29,6 +29,8 @@ stateDiagram-v2
 
 ## Source and verification
 
+**PASS — container checks, packaging and Cast1 acceptance completed.** Other fleet installs remain queued as listed below.
+
 Source commit on main: `2c370f4`. The controlled blocking-loader test proves the UI executor still handles input before preference I/O is released. Saved station/model settings, cached readings, history and timezone are retained without startup writes. Failure/retry and closed-widget publication are covered. Final `task check` passed: 668 Java tests (including seven startup regressions), calendar 7, cleanup 71, deployment 5, translation validation and Android lint. Lint completed with warnings; no lint error blocked the build. `task build` packaged the debug APK.
 
 The isolated lint process outlived its interrupted caller and held the shared Gradle journal; the first integrated attempt failed before bump/build. Only that owned duplicate container was stopped. Subsequent serialized checks and packaging succeeded. Version 129 was passed over; the deployment is **0.1.130** and must not be reused for a future build.

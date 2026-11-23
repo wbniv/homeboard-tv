@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/9daf7eb) | Docs: reconcile Home button status and draft timestamped capture request |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/d7ec934) | Plans index: add the control interface plan |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/a6c4649) | Plans index: add the screensavers Stage 0 probe recipe |
@@ -46,6 +47,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+9daf7eb	author	Will Norris
+9daf7eb	added	3
+9daf7eb	deleted	1
+9daf7eb	files	1
 b74103f	author	Will Norris
 b74103f	added	3
 b74103f	deleted	0

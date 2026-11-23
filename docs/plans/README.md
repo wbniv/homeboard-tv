@@ -97,6 +97,7 @@ missing rows on commit.*
 - [Default YouTube favorite](2026-11-19-default-youtube-favorite.md): seed installed
   YouTube on new dashboards while preserving saved choices.
 | [Android app widgets](2026-11-19-android-app-widgets.md) | Hosts installed Android widgets with saved instances, expansion, Undo and explicit Chromecast permission setup; records device and provider acceptance gates. | This change | Feature |
+| [Air-quality startup without a preference wait](2026-11-23-air-quality-startup.md) | Loads saved air settings and cache on a worker; preserves selections/history and records Cast1 0.1.130 acceptance with other installs queued. | `2c370f4`, `de27e5b` | Fix |
 - [Screensavers: choose, configure and get more](2026-11-20-screensavers.md): one Screensaver
   screen for built-in, provider and Android screensavers, with mockups; plan for review.
 - [Screensavers Stage 0: the probe recipe](2026-11-20-screensavers-stage0-probe.md): how the
