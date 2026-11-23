@@ -20,43 +20,13 @@ Apply the shared [Alan Cooper design filter](/home/will/docs/howtos/alan-cooper-
 
 Illustrative content only; these are layout proposals, not captures or claims about a real board. Use existing theme, focus ring, TV-safe margins and shared expanded header.
 
-```text
-HOME · recommended 3×2                    FULL SCREEN · Trello / Product
-┌────────────────────────────┐           ┌──────────────────────────────────────────────────────┐
-│ Product board    Updated 2m │           │ Product board              ↻ Refresh  ⚙  Restore dashboard │
-│ Now 3  Next 4  Review 1    │           │ Updated 2 min ago · Back returns to dashboard        │
-│ NOW                        │           ├──────────────┬──────────────────┬─────────────────────┤
-│ • Improve onboarding       │           │ NOW · 3      │ NEXT · 4         │ Improve onboarding  │
-│ • Fix search               │           │ ▸ Improve…   │ Add reporting    │ Full description…   │
-│ +1 more       OK for board │           │   Fix search │ Polish settings  │ Due · checklist     │
-└────────────────────────────┘           │   Add tests  │ …                │ Labels · members    │
-                                         └──────────────┴──────────────────┴─────────────────────┘
-PHONE SETUP                               ERROR / STALE
-┌────────────────────────────┐           ┌────────────────────────────────────┐
-│ Connect Trello             │           │ Product board · Updated 2 hours ago│
-│ [Connect securely]         │           │ Couldn't refresh · Retry           │
-│ Board: [Product        ▾]  │           │ Last saved board remains visible   │
-│ [Review and save]          │           └────────────────────────────────────┘
-└────────────────────────────┘
-```
+![Proposed Home, full-screen board, phone setup and stale-data screens](2026-11-23-trello-board-widget/screens.svg)
 
 At 1×1, show board name and a legible summary or setup/status; do not squeeze cards into unreadable text. Wider/taller sizes progressively show list names, counts and card titles. Show list names alongside counts so a count is never ambiguous. Overflow indicators signal more content. In full screen, horizontally navigate lists and vertically navigate cards, with a persistent selected-card pane; adapt columns to available space and keep offscreen lists reachable. Full screen adds all available lists and cards, complete names and description, due state, named labels/members and checklist progress when actually provided; distinguish unavailable details from zero. A selected card's richer detail can load on demand. Back from a nested card or settings returns one level; Back from board and visible **Restore dashboard** restore original page, widget focus, position and saved size, without layout Undo entries. Short OK on Home expands; hold OK uses existing widget actions. Full-screen refresh is explicit, alongside bounded automatic refresh.
 
-```mermaid
-flowchart LR
- A[Add Trello widget] --> B[Pair phone and connect securely]
- B --> C[Choose one board and review]
- C -->|Save| D[Home summary]
- C -->|Cancel| A
- D -->|Short OK| E[Full board: select list and card]
- E --> F[Card detail]
- F -->|Back| E
- E -->|Back or Restore| D
- D -->|Refresh failure| G[Last good snapshot + age + Retry]
- G -->|Retry succeeds| D
- G -->|Authorization lost| H[Reconnect on phone]
- H --> C
-```
+![Setup, board browsing and recovery workflow](2026-11-23-trello-board-widget/workflow.svg)
+
+The diagram shows the primary path; a successful retry returns to current board data. Authorization loss leads to phone reconnection, and cancellation leaves the TV unchanged.
 
 ## Data, security and behavior
 

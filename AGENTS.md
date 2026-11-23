@@ -3,6 +3,11 @@
 Homeboard TV is an independent dashboard project based on CleanYourTV. Read README.md,
 docs/plans/2026-11-15-project-foundation.md and docs/upstream/README.md first.
 
+- Keep serial work on a clean `main`. Extra worktrees belong to specific unfinished
+  tasks; preserve useful loose files/evidence, then remove each checkout and merged
+  branch after integration. Keep remaining acceptance in the plan/TODO and clear stale
+  session ownership. See [worktree recovery](docs/how-to/worktrees.md).
+
 - Preserve the Java launcher and prefer small native integrations with minimal setup.
   AirBKK is fetched directly; dashboard systems and a custom bridge are optional future choices.
   Kotlin is a language, not a dashboard product. Do not embed household credentials.

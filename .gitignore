@@ -12,3 +12,13 @@ artifacts/
 evidence/
 docs/diagnostics/
 __pycache__/
+
+# Local checkouts, deployment-tool cache and private session exports.
+/.worktrees/
+/.claude/worktrees/
+/.wrangler/
+/docs/transcripts/
+
+# Raw coordinator exports stay local; selected already-tracked acceptance images remain tracked.
+/docs/testing/2026-11-23-native-4k/
+/docs/testing/2026-11-23-screensaver-shortcut/

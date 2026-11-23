@@ -426,3 +426,8 @@ measured screenshot bounds or unblock exact timing. The
 [request status](../requests/2026-11-23-coordinator-timestamped-remote-capture.md#reported-implementation-progress)
 records the remaining integration work; deploying the prototype now would not
 provide the requested measurement.
+
+
+### Superseding customer result: coordinator 0.1.226
+
+The prototype-only status above is historical. Coordinator 0.1.226 (`6030fd88`) is now deployed. On Cast1, Homeboard 0.1.128 initially showed On / Setup needed. The debug Home-button helper was restored through Android's UI, and On / Working was captured. Three independent recorded Remote jobs then returned from YouTube's existing account chooser to stable Homeboard, with successful exports and verified cleanup. Google TV was visibly captured in the second run; it was not identifiable in the other two. Exact timing remains unavailable because input/video clock correlation is unvalidated. See the [customer test record](2026-11-23-home-button-remote-customer.md) for jobs, private evidence paths, the initial ANR finding and scenario limits.

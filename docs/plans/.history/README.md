@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/d446c74) | Mark startup verification passed and index its plan |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/9daf7eb) | Docs: reconcile Home button status and draft timestamped capture request |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/d7ec934) | Plans index: add the control interface plan |
@@ -47,6 +48,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+d446c74	author	Will Norris
+d446c74	added	1
+d446c74	deleted	0
+d446c74	files	1
 9daf7eb	author	Will Norris
 9daf7eb	added	3
 9daf7eb	deleted	1

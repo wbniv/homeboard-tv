@@ -1,65 +1,16 @@
 # Coordinator request: timestamped capture during an owned Remote session
 
-**Status: Remote integration draft implemented and under verification; not
-deployed. Video/input clock correlation and real-device acceptance remain
-unverified.** Written 23 November 2026 after reviewing installed coordinator
-0.1.224 (`cf5700f9`). This Homeboard session has not filed an external issue;
-the draft implementation is saved on coordinator branch `remote-timestamped-capture-20261123` (initial implementation `dc2e46d6`).
+**Status: three Cast1 customer captures passed on coordinator 0.1.226 (`6030fd88`) for YouTube's account chooser. Coordinator was subsequently upgraded to 0.1.229; exact timing remains unavailable.**
 
-## Reported implementation progress
+## Current customer result, 23 November 2026
 
-Will supplied this coordinator implementation update on 23 November:
+The coordinator-owned implementation supersedes this session's isolated draft and candidate deployment work. Its [customer handoff](/home/will/chromecast-coordinator/docs/handoffs/2026-11-23-homeboard-remote-capture-customer-test.md) explicitly retains the clock-correlation limitation.
 
-- A frame-index prototype preserves original variable-rate scrcpy timestamps
-  and flags incomplete packet tails.
-- Its two container tests passed.
-- It is not connected to an owned Remote session. Remote's Home tap uses a
-  different input path from the timestamped directional-key helper, so video
-  cannot yet be correlated with **Home release**.
+Using the installed shared Taskfile, this Homeboard session ran three independent recorded Remote sessions on Cast1 / Android 14 / Homeboard 0.1.128, after restoring the authorized debug Home-button helper through Android's accessibility UI and confirming On / Working. Each started at YouTube's existing account chooser, sent one Home tap, returned to stable Homeboard, exported playable video and original frame indices/input receipts, and completed with verified cleanup. Google TV is visibly captured in run 2; no identifiable Google TV frame appears in runs 1 and 3. No account selection or change was needed. See the [customer test record](../testing/2026-11-23-home-button-remote-customer.md) for all three jobs, verification, private evidence paths and preflight findings.
 
-These are reported prototype results, not tests independently rerun by this
-Homeboard session. They do not satisfy the requested measurement or establish
-that the deployed coordinator has the capability.
+**Remaining:** independently validate the input/video clock mapping and uncertainty before claiming exact Home-release latency or flash duration. The manifests correctly report timing unavailable. Capture absence cannot prove zero flash or physical-panel timing. Playback/protected-content coverage and cancellation/interruption are separate acceptance scenarios.
 
-**Current implementation work (23 November):** an isolated coordinator branch,
-`remote-timestamped-capture-20261123`, adds bounded opt-in Remote recording,
-original frame PTS and MP4 mappings, device-side tap injection brackets including
-Home, CLI/MCP/GUI entry points, owned status, Finish and partial/recovery exports.
-The input helper compiles in a container. Focused media, Java, interface and
-cleanup tests pass; a full run exposed contract-record drift and an overbroad
-Finish rule that were subsequently corrected, plus one service-startup timeout.
-This is a source draft, not deployed capability or validated timing.
-
-A visual-clock fixture draws independent device timestamps into captured pixels.
-Its original APK is installed on Cast1. After Will returned to the home network
-and confirmed debugging enabled, the fixture was launched through an owned Remote
-and recorded successfully (`J‑44a900f4838e`). All 104 video frames decoded valid
-clock values. Original video timestamps followed the drawn clock by 24–190 ms
-(median 28 ms). This supports a shared clock origin on that run; it does not prove
-physical-panel timing or a maximum capture delay, and the recording contained no
-Home input. Owned capture cleanup was verified and its reservation released.
-
-The full draft rerun passed 6,046 tests, with five skips and one simulated recovery
-wait timeout. After adjusting two test-only bounded waits, all 91 coordinator/MCP
-tests passed. The recording/analyzer tests passed 18 checks, including an irregular
-frame-time regression found while decoding the real capture.
-
-**Connectivity:** Cast1 and Pixel are reachable again. Cast2 still has no verified
-current debugging advertisement. The earlier school-hotspot blocker has ended.
-The proposed private Tailscale gateway on the charging Lenovo tablet (or a
-Chromecast) remains unconfigured; no always-on home server currently exists.
-
-**Deployment ownership:** Will reports a separate coordinator session is also
-implementing this capability. This Homeboard session stopped its candidate build
-before release/deployment. Draft `10582ef3` and the Cast1 evidence are retained for
-that session to reconcile; candidate version 0.1.226 is not reserved. No service
-upgrade or administrator prompt was started here.
-
-**Remaining:** reconcile and deploy the coordinator-owned implementation and finish live acceptance;
-validate the actual Home tap and video/input clock relationship, interface and
-cleanup behavior on hardware; deploy through the reviewed coordinator workflow;
-then analyze three Homeboard returns. Exports deliberately keep timing marked
-unavailable. Exact flash/redirect timing remains blocked.
+Earlier isolated draft `remote-timestamped-capture-20261123` (`712a706a`, implementation `dc2e46d6`) and its 104-frame visual-clock calibration remain comparison evidence, not the deployed implementation. The measured 24–190 ms draw-clock/video difference from that earlier run is not a calibrated bound for these new jobs. The off-site Tailscale gateway proposal remains unconfigured; it was unnecessary for this same-network test. No external issue was filed.
 
 ## Problem and required result
 
@@ -126,3 +77,17 @@ ends and export a complete cleanup receipt.
 The Homeboard side can perform and analyze this test autonomously once the
 integration and acceptance above are complete and deployed. The frame-index
 prototype alone does not establish timing acceptance.
+
+
+## Clock-validation follow-up after customer acceptance
+
+The installed 0.1.226 exporter always emits `timing.status=unavailable` in `remote_capture_session.py`. HOME receipts provide `clock=android-uptime-millis` and down/up injection start/end intervals. The manifest and frames retain video PTS and capture boot identity, but these jobs do not export an independently validated uptime-to-video conversion or its uncertainty. The three successful returns establish the recording/input/export path, not that missing relationship.
+
+The coordinator owner can use the three private customer exports and the earlier isolated visual-clock fixture as starting evidence. Required next checks remain:
+
+- [ ] Trace the pinned video PTS clock and the deployed helper's actual Home injection clock from source. Verify the relationship independently on the same enrolled device and boot, with before/after anchors, quantization and discontinuity checks. Do not substitute the earlier draft's different helper or calibration run.
+- [ ] Use the visual fixture to validate the proposed mapping on the deployed capture path. Retain the per-frame observations and distinguish observed rendering/capture lag from a guaranteed latency bound. Define whether the accepted metric describes captured output or physical-panel presentation.
+- [ ] Export an explicit mapping/provenance/uncertainty result or an unavailable reason. Clock changes, reboot, missing anchors and insufficient coverage must fail closed. Original PTS and unknown unseen-frame coverage remain intact.
+- [ ] Deploy the reviewed result through the coordinator's owner, then rerun the Homeboard measurements with its accepted clock contract. This Homeboard session is not preparing a competing coordinator release.
+
+The separate preflight ANR needs the [retained-trace request](2026-11-23-coordinator-anr-traces.md). Neither follow-up requires physical button input from Will at this stage.
