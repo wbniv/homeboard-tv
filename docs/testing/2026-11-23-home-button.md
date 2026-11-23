@@ -319,3 +319,20 @@ The earlier physical observation with the preference Off remains baseline
 evidence; this later result completes the requested enabled-state repeat check.
 It does not establish what the remote transmits when a branded app button is
 pressed simultaneously with a direction. That separate comparison remains open.
+
+## Cast2 installation request
+
+Will requested installation on Cast2. By this point coordinator inventory showed
+Cast2 **ready**, superseding its earlier recovery/personal-use block. The latest
+frozen APK was 0.1.118 (SHA-256
+`9b53a395caa8c0d5347f7e852335ddd5a1ea175972095783fea22b7a4566df84`),
+which includes another session's screensaver-shortcut changes. No new build or
+version bump was made for this additional target.
+
+Install-only **J‑14f1158e7cc6** was admitted but failed
+**install-over-foreground**: Homeboard was showing on Cast2. Nothing was installed
+or reset. Evidence is exported under `docs/diagnostics/cast2-install-118-refused/`.
+Attempts to acquire an owned Remote session were refused **Device is busy**
+while another session's preview was active; that session was not cancelled.
+Installation remains pending moving Homeboard out of the foreground and retrying
+the identical frozen APK. No successful Cast2 install or acceptance is claimed.
