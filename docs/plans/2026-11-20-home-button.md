@@ -4,7 +4,8 @@
 force-stop and relaunch leave On selected but show Setup needed.** Manual
 accessibility re-enabling restores **On · Working** and Home from Android settings
 returns to Homeboard. This run had no one-time secure-settings grant, so
-permission-assisted repair remains untested. See the
+a follow-up with the grant recovered automatically after force-stop. The temporary
+grant was then revoked with verified readback. See the
 [November 23 validation record](../testing/2026-11-23-home-button.md).
 
 Will's physical scrolling and standalone YouTube observations occurred with the
@@ -12,7 +13,7 @@ Home-button preference Off. They establish a baseline, not On-state repeat
 acceptance. Pressing YouTube or Netflix while a direction is held did not launch
 an app; the cause is unestablished. Netflix alone remains unconfirmed. Held Home
 was physically verified on November 21. Restart, app-update recovery,
-permission-assisted setup/repair and Cast2 acceptance remain open. Cast2 was
+exact accessibility-list preservation and Cast2 acceptance remain open. Cast2 was
 recovery-required and in Personal use during this run. No new APK was installed.
 The [November 21 record](../testing/2026-11-21-home-button.md) retains earlier
 short-Home, source-manifest and quick-settings evidence.
