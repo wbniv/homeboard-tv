@@ -14,7 +14,7 @@ force-stop, relaunch and cleanup. This continues the
 | Undo the latest Home-button choice through Undo history | **Pass:** restored Off; selecting On again restored Working. Long-Back Undo was not tested. |
 | Force-stop and relaunch without reinstall | **Automatic recovery failed:** choice remained On, but status became **Setup needed** and the test helper was Off in Android accessibility. |
 | Manual recovery | **Pass:** enabled **Home button · Homeboard TV (test)** through Android's normal consent. Home from Android settings returned to Homeboard; status showed **On · Working**. |
-| Restart / app update | Restart requested; boot acceptance pending coordinator reconnect. App update not run. |
+| Restart / app update | Helper retained On / Working and Home eventually returned from YouTube after restart; Google TV was visible first. App update not run. |
 | Permission-assisted setup and repair | Follow-up passed; see below. The earlier manual-setup run had no grant. |
 
 Will reported that holding Up or Down continued scrolling, while pressing YouTube
@@ -112,3 +112,33 @@ connection-check still refused because recovery needs administrator attention;
 the automatic readd remained waiting for the device. Access had not returned at
 that check. Wireless debugging needs to be checked on the TV; the setting itself
 was not remotely readable. No Home-button result after boot is claimed.
+
+
+## Restart follow-up after Will enabled wireless debugging
+
+Will enabled wireless debugging manually. Automatic readd **J‑7342188fd961**
+then completed, cleared its recovery obligation and reported Cast1 ready on
+`192.168.4.61:40383`. No new pairing was needed. Its cleanup commands verified
+`sys.boot_completed`; evidence is in `restart-reconnected/`. This was recovery
+with physical assistance, not unattended debugging persistence across reboot.
+
+Remote **J‑01d602c432bf** found Homeboard already in front. A Home tap left it
+in front, and Home settings showed **On · Working**, without changing the Home
+choice, the helper's accessibility switch or its permission after boot. The
+one-time permission had been restored to absent before reboot.
+
+YouTube was opened through Favorites and reached its app UI. A short Home
+produced a Google TV Home capture at 09:33:31, followed by Homeboard in a second
+capture at 09:33:50 with no intervening input. This confirms eventual cross-app
+redirection after restart. It does not pass a seamless-transition or 1-second
+latency assertion; these captures do not measure the exact redirect delay.
+The separate route from Google TV already in front was not exercised.
+
+Relevant frames: `post-boot-baseline.png`, `post-boot-helper-status.png`,
+`post-boot-youtube-ready.png`, `post-boot-home-from-youtube.png` (Google TV), and
+`post-boot-home-settled.png` (Homeboard). Remote was stopped; its receipt has no
+unresolved effects or recovery fences. Evidence is in `post-boot-remote/`.
+
+Still pending: app-update recovery, physical repeat and separate branded
+buttons with On / Working, exact accessibility-list preservation, and Cast2
+acceptance. The redirect's visible transition/latency also needs a timed check.

@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/3db5ee4) | Docs: verify permission-assisted Home button recovery |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/00c24ef) | Docs: record Home button force-stop recovery and Undo checks |
 | [2026-11-21](https://github.com/wbniv/homeboard-tv/commit/cc3fb36) | Docs: corroborate held Home with successful Cast1 capture |
 | [2026-11-21](https://github.com/wbniv/homeboard-tv/commit/997dfdb) | Docs: record physical held-Home pass and coordinator recovery block |
@@ -8,6 +9,10 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 
 <!--history-meta v1
+3db5ee4	author	Will Norris
+3db5ee4	added	3
+3db5ee4	deleted	2
+3db5ee4	files	1
 00c24ef	author	Will Norris
 00c24ef	added	21
 00c24ef	deleted	21
