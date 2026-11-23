@@ -8,9 +8,10 @@ automatic and Home returned from YouTube. The temporary grant was then revoked
 with verified readback. See the
 [November 23 validation record](../testing/2026-11-23-home-button.md).
 
-Will's physical scrolling and standalone YouTube observations occurred with the
-Home-button preference Off. They establish a baseline, not On-state repeat
-acceptance. Pressing YouTube or Netflix while a direction is held did not launch
+Will's earlier physical scrolling and standalone YouTube observations occurred
+with the Home-button preference Off and remain baseline evidence. In the later
+enabled-helper checks he confirmed that focus keeps moving while a direction
+is held and stops on release: physical repeat acceptance passes by his report. Pressing YouTube or Netflix while a direction is held did not launch
 an app; the cause is unestablished. A later physical YouTube press opened YouTube; Netflix alone opened its Play
 Install page, confirming a response but not installed-app launch. Held Home
 was physically verified on November 21. After restart, On / Working persisted and Home eventually returned from YouTube,
@@ -25,7 +26,7 @@ recovery-required and in Personal use during this run. No new APK was installed.
 The [November 21 record](../testing/2026-11-21-home-button.md) retains earlier
 short-Home, source-manifest and quick-settings evidence.
 
-For the remaining physical checks, use the
+For the physical checks and remaining simultaneous-button investigation, use the
 [remote checklist and simultaneous-button comparison](../testing/2026-11-23-home-button.md#physical-remote-what-will-needs-to-check).
 Ordinary acceptance checks held directions alone and each branded app button
 alone with On / Working confirmed. A direction held while pressing an app button

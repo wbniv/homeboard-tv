@@ -301,5 +301,21 @@ Each capture completed with health ready and six verified artifacts under
 `docs/diagnostics/chromecast-capture-<ASCII-job-id>/`. Their `screenshot.png`
 files are the visual evidence. Homeboard's preference was not reopened between
 these physical presses; the enabled helper and successful Home redirection
-provide the contemporaneous setup evidence. Physical held-Up/Down repeat and
-the separate simultaneous-button comparison remain pending.
+provide the contemporaneous setup evidence. The separate simultaneous-button
+comparison remains pending.
+
+
+## Physical held-direction repeat: reported pass
+
+After the physical Home, YouTube and Netflix checks above, Will was asked to
+open YouTube, hold Down alone for about two seconds and release, then repeat
+with Up alone. He reported: “focus keeps moving while held and stops on release.”
+This passes the requested physical held-direction repeat and release check in
+the ongoing enabled-Home-helper test. It is Will’s direct observation, not a
+result inferred from coordinator-injected holds or a static screenshot. The
+installed APK version and preference screen were not re-read for this report.
+
+The earlier physical observation with the preference Off remains baseline
+evidence; this later result completes the requested enabled-state repeat check.
+It does not establish what the remote transmits when a branded app button is
+pressed simultaneously with a direction. That separate comparison remains open.

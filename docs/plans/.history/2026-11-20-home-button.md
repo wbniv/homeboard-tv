@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/f0b2cf9) | Docs: record physical app-button responses on Cast1 |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/f16d583) | Docs: clarify physical remote acceptance and simultaneous-button checks |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/bf6a407) | Docs: verify unrelated accessibility service states survive Home toggle |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/673285a) | Docs: bound three YouTube to Homeboard returns |
@@ -13,6 +14,10 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
 
 <!--history-meta v1
+f0b2cf9	author	Will Norris
+f0b2cf9	added	2
+f0b2cf9	deleted	1
+f0b2cf9	files	1
 f16d583	author	Will Norris
 f16d583	added	6
 f16d583	deleted	0
