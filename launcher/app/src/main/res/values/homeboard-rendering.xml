@@ -1,0 +1,9 @@
+<resources>
+    <string name="hb_render_dashboard">Dashboard rendering: %1$s</string>
+    <string name="hb_render_surface">Rendering surface: %1$s</string>
+    <string name="hb_render_output">TV output: %1$s</string>
+    <string name="hb_render_unavailable">Unavailable</string>
+    <string name="hb_render_size">%1$d × %2$d</string>
+    <string name="hb_render_4k">%1$s (4K)</string>
+    <string name="hb_render_refresh">%1$s · %2$s Hz</string>
+</resources>

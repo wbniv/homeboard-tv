@@ -11,6 +11,12 @@ behavior and the [implementation plan](../plans/2026-11-23-native-4k-dashboard.m
 for remaining work. Examples here match the repository's compile SDK 34; the
 direct embedding module requires Android 11 / API 30 or newer.
 
+In **Home settings → About**, read **Dashboard rendering** separately from
+**TV output**. The proof also shows the observed **Rendering surface** size.
+For native 4K, its measured dashboard and surface should both read
+**3840 × 2160 (4K)**. Ordinary Homeboard can show a 1920 × 1080 dashboard while
+the TV output reads 3840 × 2160; the output alone does not establish 4K rendering.
+
 ## 1 Measure the four resolutions
 
 | Measurement | What it answers | Where to obtain it |

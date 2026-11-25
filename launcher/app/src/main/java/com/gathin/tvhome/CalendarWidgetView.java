@@ -145,7 +145,17 @@ final class CalendarWidgetView extends View {
         switch (country) {
             case "TH": colors = new int[]{0xffa51931, Color.WHITE, 0xff2d2a4a, Color.WHITE, 0xffa51931}; weights = new int[]{1,1,2,1,1}; break;
             case "ES": colors = new int[]{0xffaa151b, 0xfff1bf00, 0xffaa151b}; weights = new int[]{1,2,1}; break;
-            case "US": colors = new int[]{0xffb22234, Color.WHITE, 0xff3c3b6e}; weights = new int[]{1,1,1}; break;
+            case "US":
+                float stripesRight = x + width * 2 / 3f;
+                float stripeWidth = (stripesRight - x) / 13;
+                for (int stripe = 0; stripe < 13; stripe++) {
+                    paint.setColor(stripe % 2 == 0 ? 0xffb22234 : Color.WHITE);
+                    canvas.drawRect(x + stripe * stripeWidth, y,
+                            x + (stripe + 1) * stripeWidth, y + 7, paint);
+                }
+                paint.setColor(0xff3c3b6e);
+                canvas.drawRect(stripesRight, y, x + width, y + 7, paint);
+                return;
             default: colors = new int[]{0xffde2910, 0xffffde00, 0xffde2910}; weights = new int[]{1,2,1}; break;
         }
         int total = 0; for (int w : weights) total += w;

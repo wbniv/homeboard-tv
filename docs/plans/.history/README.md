@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/289e060) | feat: add native 4K dashboard proof and fix All Apps grid |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/654a552) | Consolidate repository records and retire merged worktrees |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/d446c74) | Mark startup verification passed and index its plan |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/9daf7eb) | Docs: reconcile Home button status and draft timestamped capture request |
@@ -49,6 +50,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+289e060	author	Will Norris
+289e060	added	1
+289e060	deleted	1
+289e060	files	1
 654a552	author	Will Norris
 654a552	added	4
 654a552	deleted	0

@@ -29,3 +29,14 @@ flowchart LR
 
 Build 0.1.27 is installed on both TVs. Container checks and actual TV acceptance
 are tracked in the [validation record](../testing/2026-11-17-calendar-one-row.md).
+
+## US country band correction · 25 November
+
+Will requests equal-width red/white stripes across the left two-thirds and a blue
+right third. [Enlarged reference](2026-11-25-calendar-us-band.svg). Draw thirteen
+alternating red/white stripes in the existing 7-unit band; retain its size and all
+calendar content/navigation. Apply the [shared Cooper filter](/home/will/docs/howtos/alan-cooper-design-filter.md):
+make the small country marker recognizable from the sofa while preserving the
+written country label. No settings, new workflow or migration is needed. Verify
+the Thanksgiving US marker in a real dashboard capture after container checks,
+then deploy with the About resolution update.

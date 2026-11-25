@@ -4,6 +4,15 @@
 
 **Goal:** render Homeboard's actual dashboard, text, charts and widgets at 3840 × 2160 when the connected device and display can support it, by default, while preserving the existing layout, D-pad focus, accessibility, widget interactions, wallpaper behavior and recovery. A 4K HDMI signal carrying an upscaled 1080p dashboard does not meet this goal. On a device whose UI is already 4K, the existing View hierarchy should use that UI without changing display settings.
 
+**Workspace goal clarified by Will, 25 November:** the 4K dashboard should offer
+roughly four times the space for widgets. The current proof doubles both rendering
+pixels and density, preserving apparent size and logical workspace; it does not
+meet this capacity goal. A candidate Dashboard scale setting at 50% would double
+the logical width and height (for example, 8×4 cells to 16×8), with smaller text
+and controls. Plan a live preview, intermediate scales, preserved placements and
+Undo, and verify widget readability/layout at the chosen scale before implementing.
+This is a proposed approach, not a completed scale feature or an agreed final UI.
+
 **Evidence:** coordinator passive inspection on Cast2, 2026-11-23, reported physical/output 3840 × 2160 at 60 Hz, Android logical display override 1920 × 1080. The detailed coordinator display evidence is retained locally in `docs/diagnostics/cast2-display-2026-11-23/`. The current dashboard is a normal Android View hierarchy. [Android's surface documentation](https://developer.android.com/media/media3/ui/surface) says a SurfaceView can use the full display resolution even when the UI layer is lower resolution. [SurfaceHolder](https://developer.android.com/reference/android/view/SurfaceHolder#setFixedSize(int,%20int)) supports a fixed buffer size. Neither establishes that the existing View hierarchy can be transparently rendered into that surface with correct input, app widgets, animations, video, overlays and accessibility. [View.draw documentation](https://developer.android.com/reference/android/view/View) warns that software snapshots have compatibility issues with hardware-only features. Android's [TV memory guidance](https://developer.android.com/training/tv/playback/memory) identifies 1080p UI on many 4K devices and limited memory.
 
 Do not change the system-wide display size, density or preferred HDMI mode as a shortcut. Do not claim a 4K dashboard based on HDMI mode, an enlarged bitmap, screenshot size or a 4K wallpaper alone.

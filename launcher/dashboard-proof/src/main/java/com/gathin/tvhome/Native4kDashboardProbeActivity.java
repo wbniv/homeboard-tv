@@ -24,6 +24,8 @@ public final class Native4kDashboardProbeActivity extends MainActivity implement
     private View dashboard;
     private SurfaceView surface;
     private int width, height;
+    private int observedWidth, observedHeight;
+    @Override protected int[] dashboardRenderingSurface() { return new int[]{observedWidth, observedHeight}; }
     private boolean failed, destroyed;
     private final java.util.List<java.lang.ref.WeakReference<android.app.Dialog>> dialogs = new java.util.ArrayList<>();
 
@@ -63,6 +65,7 @@ public final class Native4kDashboardProbeActivity extends MainActivity implement
     }
     @Override public void surfaceCreated(SurfaceHolder holder) { }
     @Override public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+        observedWidth = w; observedHeight = h;
         if (display == null || destroyed || failed) return;
         try {
             if (w != width || h != height) throw new IllegalStateException("Unexpected surface size " + w + "x" + h);
@@ -143,6 +146,7 @@ public final class Native4kDashboardProbeActivity extends MainActivity implement
         try { android.app.Dialog dialog = activeDialog(); return dialog != null ? dialog.dispatchTouchEvent(mapped) : presentation.getWindow().superDispatchTouchEvent(mapped); } finally { mapped.recycle(); }
     }
     @Override public void surfaceDestroyed(SurfaceHolder holder) {
+        observedWidth = observedHeight = 0;
         if (presentation != null) { presentation.dismiss(); presentation = null; }
         if (display != null) display.setSurface(null);
     }

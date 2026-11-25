@@ -3399,6 +3399,27 @@ public class MainActivity extends Activity {
     private void aboutHomeboard() {
         openMenu(new MenuSpec(getString(R.string.hb_about_homeboard_tv), this::showAboutDialog));
     }
+    /** Null for an ordinary Activity; proof implementations return observed surface callbacks. */
+    protected int[] dashboardRenderingSurface() { return null; }
+    private RenderingStatus renderingStatus() {
+        int outputWidth = 0, outputHeight = 0; float refresh = 0;
+        try {
+            android.view.Display display = getWindowManager().getDefaultDisplay();
+            if (display != null) {
+                android.view.Display.Mode mode = display.getMode();
+                outputWidth = mode.getPhysicalWidth(); outputHeight = mode.getPhysicalHeight();
+                refresh = mode.getRefreshRate();
+            }
+        } catch (RuntimeException unavailable) { /* Keep missing observations unknown. */ }
+        boolean attached = root != null && root.isAttachedToWindow();
+        return new RenderingStatus(attached ? root.getWidth() : 0, attached ? root.getHeight() : 0,
+                dashboardRenderingSurface(), outputWidth, outputHeight, refresh);
+    }
+    private String renderingSize(RenderingStatus.Size size) {
+        if (!size.known()) return getString(R.string.hb_render_unavailable);
+        String pixels = getString(R.string.hb_render_size, size.width, size.height);
+        return size.is4k() ? getString(R.string.hb_render_4k, pixels) : pixels;
+    }
     private void showAboutDialog() {
         if (overlay != null) root.removeView(overlay);
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
@@ -3427,6 +3448,16 @@ public class MainActivity extends Activity {
         version.setTextColor(paletteColors.muted);
         titleBlock.addView(title); titleBlock.addView(version);
         panel.addView(heading, new LinearLayout.LayoutParams(-1, dp(72)));
+
+        RenderingStatus rendering = renderingStatus();
+        panel.addView(text(getString(R.string.hb_render_dashboard, renderingSize(rendering.dashboard)), 16));
+        if (rendering.surface != null)
+            panel.addView(text(getString(R.string.hb_render_surface, renderingSize(rendering.surface)), 16));
+        String output = renderingSize(rendering.output);
+        if (rendering.output.known() && Float.isFinite(rendering.refreshRate) && rendering.refreshRate > 0)
+            output = getString(R.string.hb_render_refresh, output,
+                    new java.text.DecimalFormat("0.##").format(rendering.refreshRate));
+        panel.addView(text(getString(R.string.hb_render_output, output), 16));
 
         TextView purpose = text(getString(R.string.hb_a_customizable_home_screen_for_your_tv_built_on_cleanyourtv), 16);
         purpose.setPadding(0, dp(8), 0, dp(8));
@@ -3465,8 +3496,12 @@ public class MainActivity extends Activity {
         LinearLayout.LayoutParams backLp = new LinearLayout.LayoutParams(-2, dp(42));
         backLp.topMargin = dp(8); panel.addView(closeText, backLp);
 
-        int width = Math.min(dp(900), getResources().getDisplayMetrics().widthPixels - dp(96));
-        overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
+        int width = Math.max(1, Math.min(dp(900), dashboardWidthPixels() - dp(48)));
+        android.widget.ScrollView scroll = new android.widget.ScrollView(this);
+        scroll.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
+        scroll.addView(panel, new android.widget.ScrollView.LayoutParams(-1, -2));
+        overlay.addView(scroll, new FrameLayout.LayoutParams(width,
+                Math.max(1, Math.min(dp(500), dashboardHeightPixels() - dp(32))), Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));updateUndoHint();
         closeText.requestFocus();
     }
@@ -3523,7 +3558,7 @@ public class MainActivity extends Activity {
         aboutBackButton = infoButton("Back to About", this::backMenu);
         LinearLayout.LayoutParams backLp = new LinearLayout.LayoutParams(-2, dp(48)); backLp.topMargin = dp(12);
         panel.addView(aboutBackButton, backLp);
-        int width = Math.min(dp(880), getResources().getDisplayMetrics().widthPixels - dp(64));
+        int width = Math.max(1, Math.min(dp(880), dashboardWidthPixels() - dp(64)));
         overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));updateUndoHint(); aboutBackButton.requestFocus();
     }

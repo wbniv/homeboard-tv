@@ -21,6 +21,8 @@ public final class Native4kEmbeddedDashboardActivity extends MainActivity implem
     private View dashboard;
     private InputRoot embeddedRoot;
     private int width, height;
+    private int observedWidth, observedHeight;
+    @Override protected int[] dashboardRenderingSurface() { return new int[]{observedWidth, observedHeight}; }
     private final java.util.List<java.lang.ref.WeakReference<android.app.Dialog>> dialogs = new java.util.ArrayList<>();
     @Override public Resources getResources() { return nativeResources != null ? nativeResources : super.getResources(); }
     @Override protected void onCreate(Bundle state) {
@@ -48,6 +50,7 @@ public final class Native4kEmbeddedDashboardActivity extends MainActivity implem
     }
     @Override public void surfaceCreated(SurfaceHolder holder) { }
     @Override public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+        observedWidth = w; observedHeight = h;
         if (viewHost != null) return;
         try {
             if (surface.getHostToken() == null) throw new IllegalStateException("No host input token");
@@ -89,9 +92,26 @@ public final class Native4kEmbeddedDashboardActivity extends MainActivity implem
     private final class InputRoot extends FrameLayout {
         InputRoot() { super(Native4kEmbeddedDashboardActivity.this); }
         @Override public boolean dispatchKeyEvent(KeyEvent event) { return dispatchHosted(event); }
-        boolean dispatchLocal(KeyEvent event) { return super.dispatchKeyEvent(event); }
+        boolean dispatchLocal(KeyEvent event) {
+            if (super.dispatchKeyEvent(event)) return true;
+            if (event.getAction() != KeyEvent.ACTION_DOWN) return false;
+            int direction;
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_DPAD_UP: direction = View.FOCUS_UP; break;
+                case KeyEvent.KEYCODE_DPAD_DOWN: direction = View.FOCUS_DOWN; break;
+                case KeyEvent.KEYCODE_DPAD_LEFT: direction = View.FOCUS_LEFT; break;
+                case KeyEvent.KEYCODE_DPAD_RIGHT: direction = View.FOCUS_RIGHT; break;
+                default: return false;
+            }
+            // Forwarding bypasses the physical window's default focus search.
+            // Keep unconsumed navigation inside the embedded hierarchy.
+            View next = android.view.FocusFinder.getInstance().findNextFocus(this, findFocus(), direction);
+            return next != null && next.requestFocus(direction);
+        }
     }
-    @Override public void surfaceDestroyed(SurfaceHolder holder) { /* SurfaceView reparents the package on return. */ }
+    @Override public void surfaceDestroyed(SurfaceHolder holder) {
+        observedWidth = observedHeight = 0; // SurfaceView reparents the package on return.
+    }
     @Override protected void onDestroy() {
         super.onDestroy();
         if (viewHost != null) { viewHost.release(); viewHost = null; }

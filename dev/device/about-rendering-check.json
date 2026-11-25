@@ -1,0 +1,62 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 32,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 4,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 6,
+      "key": "MENU",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 10,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 12,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 16,
+      "capture": "about-rendering"
+    },
+    {
+      "at": 18,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 21,
+      "capture": "restored-settings"
+    },
+    {
+      "at": 23,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 26,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 29,
+      "capture": "restored-dashboard"
+    }
+  ]
+}
