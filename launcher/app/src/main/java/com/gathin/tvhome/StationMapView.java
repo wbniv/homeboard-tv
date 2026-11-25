@@ -4,20 +4,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.location.Location;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.util.LruCache;
 import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -28,10 +26,10 @@ final class StationMapView extends View {
     private final Consumer<StationCatalog.Station> selected;
     private final Runnable details;
     private final Paint p=new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final RectF tileBounds=new RectF();
     private final ExecutorService worker=Executors.newFixedThreadPool(2);
     private final Handler handler=new Handler();
-    private final LruCache<String,Bitmap> memory=new LruCache<>(40);
-    private final Set<String> pending=new HashSet<>();
+    private final MapTileCache<Bitmap> memory=new MapTileCache<>();
     private final java.util.Map<String,Long> retryAfter=new java.util.HashMap<>();
     private final File cache;
     private List<StationCatalog.Station> stations=new ArrayList<>();
@@ -54,16 +52,22 @@ final class StationMapView extends View {
     void pan(){pan=!pan;requestFocus();invalidate();}
     boolean exitPan(){if(!pan)return false;pan=false;invalidate();return true;}
     void active(boolean value){active=value;if(value)invalidate();}
-    void close(){closed=true;worker.shutdownNow();handler.removeCallbacksAndMessages(null);memory.evictAll();}
+    void close(){closed=true;worker.shutdownNow();handler.removeCallbacksAndMessages(null);memory.clear();}
     private double world(){return 256*Math.pow(2,zoom);}
     private float sx(double lon){return (float)(getWidth()/2+MapGeometry.wrapped(MapGeometry.x(lon)-centerX)*world());}
     private float sy(double lat){return (float)(getHeight()/2+(MapGeometry.y(lat)-centerY)*world());}
     protected void onDraw(Canvas c){
         c.drawColor(h.palette.raised);double world=world();int n=1<<zoom;
         double left=centerX*world-getWidth()/2d,top=centerY*world-getHeight()/2d;
+        memory.visible(MapGeometry.tileKeys(zoom,left,top,getWidth(),getHeight()));
         for(int y=(int)Math.floor(top/256);y<=Math.floor((top+getHeight())/256);y++)for(int x=(int)Math.floor(left/256);x<=Math.floor((left+getWidth())/256);x++){
             if(y<0||y>=n)continue;int tx=Math.floorMod(x,n);String key=zoom+"_"+tx+"_"+y;
-            Bitmap tile=memory.get(key);if(tile!=null)c.drawBitmap(tile,(float)(x*256-left),(float)(y*256-top),p);else if(active&&!closed)load(key,zoom,tx,y);
+            Bitmap tile=memory.get(key);
+            if(tile!=null){
+                float dx=(float)(x*256-left),dy=(float)(y*256-top);
+                tileBounds.set(dx,dy,dx+256,dy+256);
+                c.drawBitmap(tile,null,tileBounds,p);
+            }else if(active&&!closed)load(key,zoom,tx,y);
         }
         // Overlapping stations group by screen cell. The count is never an averaged reading.
         java.util.Map<String,List<StationCatalog.Station>> groups=new java.util.LinkedHashMap<>();
@@ -82,17 +86,21 @@ final class StationMapView extends View {
         }
         p.setColor(0xdc102a35);c.drawRect(0,getHeight()-h.dp(37),getWidth(),getHeight(),p);p.setColor(0xffffffff);p.setTextSize(h.dp(10));
         c.drawText("© OpenStreetMap contributors · AirBKK · PM2.5 µg/m³",h.dp(5),getHeight()-h.dp(6),p);
-        if(pan||failed||!pending.isEmpty())c.drawText(h.activity.getString(pan?R.string.hb_fs_pan_hint:failed?R.string.hb_fs_map_failed:R.string.hb_fs_map_loading),h.dp(5),getHeight()-h.dp(22),p);
+        if(pan||failed||memory.loading())c.drawText(h.activity.getString(pan?R.string.hb_fs_pan_hint:failed?R.string.hb_fs_map_failed:R.string.hb_fs_map_loading),h.dp(5),getHeight()-h.dp(22),p);
     }
     private void load(String key,int z,int x,int y){
         if(System.currentTimeMillis()<retryAfter.getOrDefault(key,0L))return;
-        if(!pending.add(key)||pending.size()>32){pending.remove(key);return;}
+        if(!memory.beginLoad(key))return;
         worker.execute(()->{
+            if(!memory.isVisible(key)){
+                handler.post(()->{if(!closed){memory.completeLoad(key,null);invalidate();}});
+                return;
+            }
             Bitmap bitmap=null;HttpURLConnection c=null;
             try{
                 File file=new File(cache,key+".png");android.content.SharedPreferences meta=h.activity.getSharedPreferences("station-map-cache",0);
                 long expires=meta.getLong(key+"-expires",0);
-                if(file.isFile()){bitmap=BitmapFactory.decodeFile(file.toString());if(bitmap!=null){Bitmap cached=bitmap;handler.post(()->{if(!closed){memory.put(key,cached);invalidate();}});}}
+                if(file.isFile()){bitmap=BitmapFactory.decodeFile(file.toString());if(bitmap!=null){Bitmap cached=bitmap;handler.post(()->{if(!closed){memory.publish(key,cached);invalidate();}});}}
                 if(bitmap==null||expires<System.currentTimeMillis()){
                     c=(HttpURLConnection)new URL("https://tile.openstreetmap.org/"+z+"/"+x+"/"+y+".png").openConnection();
                     c.setConnectTimeout(8000);c.setReadTimeout(10000);c.setInstanceFollowRedirects(false);c.setRequestProperty("User-Agent","HomeboardTV (+https://github.com/wbniv/homeboard-tv)");
@@ -107,7 +115,7 @@ final class StationMapView extends View {
                     synchronized(StationMapView.class){File[] files=cache.listFiles();if(files!=null&&files.length>80){java.util.Arrays.sort(files,java.util.Comparator.comparingLong(File::lastModified));for(int i=0;i<files.length-80;i++){String old=files[i].getName().replace(".png","");if(files[i].delete())meta.edit().remove(old+"-expires").remove(old+"-etag").apply();}}}
                 }
             }catch(Exception ignored){handler.post(()->{if(!closed){failed=true;retryAfter.put(key,System.currentTimeMillis()+60_000);}});}finally{if(c!=null)c.disconnect();}
-            Bitmap ready=bitmap;handler.post(()->{pending.remove(key);if(!closed){if(ready!=null)memory.put(key,ready);invalidate();}});
+            Bitmap ready=bitmap;handler.post(()->{if(!closed){memory.completeLoad(key,ready);invalidate();}});
         });
     }
     public boolean onKeyDown(int key,KeyEvent event){

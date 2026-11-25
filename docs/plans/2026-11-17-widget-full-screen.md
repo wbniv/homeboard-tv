@@ -568,3 +568,37 @@ range settings. Mockups must include its expanded presentation.
 Implementation and deployment are now authorized. Per-type code and core TV
 acceptance are recorded above; unchecked items retain their specific acceptance
 requirements rather than implying every edge case has been exercised on a TV.
+
+## PM2.5 map tile stability · 25 November
+
+Will reports that pieces appear and disappear on Cast2's native 4K map. Passive
+capture J‑2ad5b85aa1e6 and recording J‑ec597d3d1c7a show rectangular gaps with
+station markers still present. The fixed 40-tile LRU can evict tiles that remain
+visible in a 4K viewport. The request guard also removes an already-pending key,
+allowing duplicate work. Keep the complete visible tile set in memory, trim only
+offscreen history, ignore obsolete completions, and retain bounded two-worker /
+32-outstanding admission. Regression tests must fill a >40-tile viewport, redraw
+repeatedly, complete requests out of order and change viewport during loads.
+
+Applying the [shared Cooper filter](/home/will/docs/howtos/alan-cooper-design-filter.md):
+Will needs a stable geographic reference for nearby air readings. Restore the
+existing map and its controls without a setting, repeated refresh or reset of
+location/pan/zoom. The existing map mockup and Home → expanded map → Back/Restore
+workflow still apply. Verify stable completed tiles over several captures on
+Cast2, plus pan/zoom and restoration. Observe current use passively before any
+coordinator-admitted foreground acceptance; preserve data and deployment identity.
+
+Draw each bitmap into an explicit 256-pixel destination rectangle, matching the
+projection's tile pitch. Android's [Canvas rectangle overload](https://developer.android.com/reference/android/graphics/Canvas#drawBitmap(android.graphics.Bitmap,%20android.graphics.Rect,%20android.graphics.RectF,%20android.graphics.Paint))
+ignores bitmap density; this prevents a higher-density host from changing a tile's
+screen size independently of its station markers. The current 4K viewport needs
+roughly 70–77 tiles (about 18–20 MiB for 256-pixel RGBA images), instead of the
+old 40-entry limit. Residency is bounded by the visible set or 40 recent tiles,
+whichever is larger, and workers drop obsolete results.
+
+**Verified:** six new regression tests and the full 691-test container check pass.
+Cast1's ordinary map remains complete across captures and Back restores Home;
+Cast2's native map remains complete across redraws and after zoom/pan loading.
+See [the verification and deployment record](../testing/2026-11-25-pm25-map-stability.md)
+for accepted checks, the native session's time-limit/reset caveat, APK hashes and
+queued tablet installs.

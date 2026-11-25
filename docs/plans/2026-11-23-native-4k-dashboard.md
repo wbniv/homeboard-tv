@@ -310,3 +310,24 @@ Reviewed captures show the dense app rows, row-2/column-2 focus after Down/Right
 and Back restoring Home/Rain. Container tests/lint passed. See the
 [correction evidence](../testing/2026-11-25-native-4k-dashboard.md#all-apps-formatting-correction--01151).
 The broader production, banner, font-scale and accessibility gates remain open.
+
+### PM2.5 map stability and deployment handoff — 25 November
+
+The native-sized map now retains every visible tile and deduplicates pending
+loads. The 0.1.159 native check reviewed a complete map across redraws, zoom and
+pan; ordinary 0.1.158 provided the control. See the
+[map stability record](../testing/2026-11-25-pm25-map-stability.md) for evidence and
+the native session's remaining Back/reset limitation.
+
+Follow-up ordinary 0.1.160 has verified installed hashes on Cast1, Cast2 and Pixel;
+only Cast2's whole job succeeded. Cast1/Pixel cleanup or verification remains
+unconfirmed, and the tablet install is queued. Native 0.1.160 is built, linted and
+frozen locally but not submitted; native 0.1.159 remains the last verified install.
+The workstation has moved to a different network from the Chromecasts. Device
+verification and native deployment remain pending until coordinator connectivity
+returns. The testing record holds exact hashes/jobs; do not infer completion from
+the shared version number across the two separate packages.
+
+The [user guide](../how-to/quick-start.md#check-whether-the-dashboard-is-rendering-at-4k)
+now explains About's dashboard/output/surface readings and distinguishes native
+detail from the still-pending larger widget workspace.

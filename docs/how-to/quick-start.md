@@ -162,9 +162,24 @@ grid. Changing All Apps artwork alone does not change the dashboard.
 
 To check the installed version, open **Home settings**, press **OK** to show the
 second menu page, then choose **About Homeboard TV**. About reads the installed
-APK version. The current implementation and screenshots use **0.1.59**. See the
-[verification record](../testing/2026-11-18-provider-directory.md) for the exact
-build, device, screenshots and outstanding checks.
+APK version. Screenshots in this guide come from several versions; use About
+to identify the build actually installed on your device.
+
+### Check whether the dashboard is rendering at 4K
+
+In **About Homeboard TV**, read **Dashboard rendering** and **TV output** separately.
+**Dashboard rendering: 3840 × 2160 (4K)** means the dashboard itself is drawn at
+4K. **TV output** reports the signal sent to the television; a 4K output can still
+carry a dashboard drawn at 1920 × 1080.
+
+The separate **Homeboard 4K Dashboard Test** app also shows **Rendering surface**;
+both its dashboard and surface should read **3840 × 2160 (4K)**. Native 4K remains
+an engineering test in that separate app; the normal launcher does not yet
+automatically enable it. See the [Android 4K HOWTO](android-4k.md) for details.
+
+The current 4K test keeps widgets at their familiar apparent size. It adds detail,
+but does not automatically give you four times the space for widgets. A dashboard
+scale control for a larger workspace is planned and is not available yet.
 
 ![Home favorites: size choice, Small icons, Banners and Undo — design mockup](../plans/2026-11-16-home-favorite-app-sizes/mockups.svg)
 
@@ -268,6 +283,11 @@ Neither is an indoor sensor reading.
 
 Press OK on the widget for the full-screen **Nearby map**, station details and history.
 See [full-screen widget controls](widgets-full-screen.md).
+Map tiles can briefly load when you first open the map, zoom or pan. Once loaded,
+the visible map should remain complete as you change station selection. The fix
+for repeatedly disappearing map pieces is included in Homeboard **0.1.158 and
+newer** and 4K Dashboard Test **0.1.159 and newer**. Back or **Restore dashboard**
+returns to the widget on Home.
 Hold OK for **Configure location and source**, **Move**, **Resize**, **Delete widget** or
 **Home settings**. In Resize, Left and Up reduce width and height by one grid
 cell; Right makes the panel wider, and Down makes it taller. The dashboard

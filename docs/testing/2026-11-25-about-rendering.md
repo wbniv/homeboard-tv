@@ -119,4 +119,5 @@ map tiles while station markers remain. Passive recording J‑ec597d3d1c7a retai
 the live behavior without navigation. StationMapView's fixed 40-tile LRU cannot
 retain a full native 4K viewport, and its duplicate-request guard removes an
 already-pending key. These are likely causes of repeated loading/eviction. They
-are recorded as a separate pending map correction, not part of the About/flag fix.
+are addressed by the separate [map stability fix](2026-11-25-pm25-map-stability.md),
+not by the About/flag change.
