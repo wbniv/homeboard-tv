@@ -20,7 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayDeque;
 
 /** One native window, with a shared restore action and a nested detail stack. */
-final class WidgetExpansion extends Dialog {
+final class WidgetExpansion extends DashboardDialog {
     interface Content {
         View view();
         Bundle state();
@@ -76,7 +76,7 @@ final class WidgetExpansion extends Dialog {
     }
     void open(View source, boolean animate) {
         if(released)return;show();
-        if(getWindow()!=null){getWindow().setWindowAnimations(0);getWindow().setBackgroundDrawableResource(android.R.color.transparent);getWindow().setLayout(-1,-1);}
+        if(getWindow()!=null){getWindow().setWindowAnimations(0);getWindow().setBackgroundDrawableResource(android.R.color.transparent);setDashboardLayout(-1,-1);}
         setRunning(true);
         if(content!=null||firstDraw!=null||openingFinished)return;
         android.graphics.Rect origin=new android.graphics.Rect();

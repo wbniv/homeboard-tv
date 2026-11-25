@@ -857,7 +857,7 @@ public class MainActivity extends Activity {
         return homeGridFitColumnsFor(layout.favoritesContainer ? HomeLayout.APP_SMALL : layout.homeAppSize);
     }
     private int homeGridFitColumnsFor(String size) {
-        int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
+        int screenWidthDp = Math.round(dashboardWidthPixels()
                 / getResources().getDisplayMetrics().density);
         int fit = AppGridSizing.homeColumns(screenWidthDp - AppGridSizing.SIDE_MARGIN * 2,
                 appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size));
@@ -868,7 +868,7 @@ public class MainActivity extends Activity {
     }
     private int homeGridFitRowsFor(String size) {
         if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
-        int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
+        int screenHeightDp = Math.round(dashboardHeightPixels()
                 / getResources().getDisplayMetrics().density);
         return Math.max(layout.favoritesContainer ? 4 : 2, AppGridSizing.rows(screenHeightDp - AppGridSizing.HOME_TOP
                 - AppGridSizing.BOTTOM_MARGIN, appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size)));
@@ -1518,6 +1518,10 @@ public class MainActivity extends Activity {
         addTopSettingsButtons();
         List<String> items = appItems();
         int columns = appColumns(), rows = appRows(), pageSize = appPageSize();
+        if ((getApplicationInfo().flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0)
+            android.util.Log.i("HomeboardAppGrid", "metrics=" + getResources().getDisplayMetrics()
+                + " root=" + root.getWidth() + "x" + root.getHeight()
+                + " labelDp=" + appLabelHeightDp() + " grid=" + columns + "x" + rows);
         appsPage = Math.max(0, Math.min(appsPage, Math.max(0, (items.size() - 1) / pageSize)));
         TileGrid grid = new TileGrid(this, columns, rows);
         FrameLayout.LayoutParams gp = new FrameLayout.LayoutParams(-1, -1);
@@ -1535,15 +1539,22 @@ public class MainActivity extends Activity {
         FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(-1, dp(36), Gravity.BOTTOM);
         fp.setMargins(dp(50), 0, dp(50), dp(10)); surface.addView(footer, fp);
     }
-    /** Measures each cell once before layout; never requests another layout while laying out. */
+    // Embedded hierarchies can outsize the Activity's resource/window metrics.
+    // Once attached, fit the grid to the hierarchy that actually contains it.
+    private int dashboardWidthPixels() {
+        return root != null && root.getWidth() > 0 ? root.getWidth() : getResources().getDisplayMetrics().widthPixels;
+    }
+    private int dashboardHeightPixels() {
+        return root != null && root.getHeight() > 0 ? root.getHeight() : getResources().getDisplayMetrics().heightPixels;
+    }
     private int appColumns() {
-        int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels
+        int screenWidthDp = Math.round(dashboardWidthPixels()
                 / getResources().getDisplayMetrics().density);
         return AppGridSizing.columns(screenWidthDp - AppGridSizing.SIDE_MARGIN * 2,
                 appLabelHeightDp(), layout.appBanners);
     }
     private int appRows() {
-        int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels
+        int screenHeightDp = Math.round(dashboardHeightPixels()
                 / getResources().getDisplayMetrics().density);
         return AppGridSizing.rows(screenHeightDp - AppGridSizing.APPS_TOP - AppGridSizing.BOTTOM_MARGIN,
                 appLabelHeightDp(), layout.appBanners);
@@ -1706,6 +1717,11 @@ public class MainActivity extends Activity {
         if(backUndoProgressShown){backUndoProgressShown=false;if(restore&&active&&!closed)showUndoBanner(backUndoTarget);else hideUndoBanner.run();}
     }
 
+    protected FrameLayout dashboardOverlayRoot() { return null; }
+    protected Context dashboardDialogContext() { return this; }
+    protected void configureDashboardDialog(android.app.Dialog dialog) { }
+    /** Window dispatch can be supplied by the native-resolution rendering proof. */
+    protected boolean dispatchDashboardWindowKey(KeyEvent event) { return super.dispatchKeyEvent(event); }
     @Override public boolean dispatchKeyEvent(KeyEvent event) {
         noteHomeInput();   // also for keys that return before Activity.dispatchKeyEvent calls onUserInteraction
         if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){
@@ -1715,7 +1731,7 @@ public class MainActivity extends Activity {
         if(event.getAction()==KeyEvent.ACTION_DOWN&&event.getKeyCode()!=KeyEvent.KEYCODE_BACK&&backUndo.down())cancelBackUndo(true);
         if(event.getKeyCode()==KeyEvent.KEYCODE_BACK&&(backUndo.down()||backUndoAllowed()))return backUndoKey(event);
         if(phonePreviewBefore!=null){if(event.getKeyCode()==KeyEvent.KEYCODE_BACK&&event.getAction()==KeyEvent.ACTION_UP)phoneCancelPreview();return true;}
-        if(phonePanelOpen){if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)phoneDismiss();return true;}return super.dispatchKeyEvent(event);}
+        if(phonePanelOpen){if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){if(event.getAction()==KeyEvent.ACTION_UP)phoneDismiss();return true;}return dispatchDashboardWindowKey(event);}
         int key = event.getKeyCode();
         if (wallpaperHost != null && event.getAction() == KeyEvent.ACTION_DOWN) wallpaperHost.userActivity();
         if (adjustmentArm != null) {
@@ -1748,7 +1764,7 @@ public class MainActivity extends Activity {
                 if (event.getAction() == KeyEvent.ACTION_UP) backMenu();
                 return true;
             }
-            return super.dispatchKeyEvent(event);
+            return dispatchDashboardWindowKey(event);
         }
         if (undoButton != null && undoButton.hasFocus() && backUndoAllowed()) {
             if(ok){if(event.getAction()==KeyEvent.ACTION_UP&&!event.isCanceled())undoButton.performClick();return true;}
@@ -1756,9 +1772,9 @@ public class MainActivity extends Activity {
             if(key==KeyEvent.KEYCODE_DPAD_RIGHT){if(event.getAction()==KeyEvent.ACTION_DOWN){if(!allApps)advanceHomePage(1);else restoreFocus();}return true;}
             if(key==KeyEvent.KEYCODE_DPAD_DOWN)return true;
             if(key==KeyEvent.KEYCODE_MENU){if(event.getAction()==KeyEvent.ACTION_UP)homeSettings();return true;}
-            return super.dispatchKeyEvent(event);
+            return dispatchDashboardWindowKey(event);
         }
-        if (aboutBackButton != null && aboutBackButton.hasFocus()) return super.dispatchKeyEvent(event);
+        if (aboutBackButton != null && aboutBackButton.hasFocus()) return dispatchDashboardWindowKey(event);
         if (resizing) {
             if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
                 if (event.getAction() == KeyEvent.ACTION_UP) finishResize(false);
@@ -1806,13 +1822,13 @@ public class MainActivity extends Activity {
         if (overlay != null) {
             if (calendarDayEditor) {
                 if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) { if (event.getAction() == KeyEvent.ACTION_UP) backMenu(); return true; }
-                return super.dispatchKeyEvent(event);
+                return dispatchDashboardWindowKey(event);
             }
             if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
                 if (event.getAction() == KeyEvent.ACTION_UP) backMenu();
                 return true;
             }
-            if (activeMenu != null && activeMenu.paletteGrid) return super.dispatchKeyEvent(event);
+            if (activeMenu != null && activeMenu.paletteGrid) return dispatchDashboardWindowKey(event);
             if (ok) {
                 if (event.getAction() == KeyEvent.ACTION_UP) {
                     if (activeMenu == null) {
@@ -1838,7 +1854,7 @@ public class MainActivity extends Activity {
                 }
                 return true;
             }
-            return super.dispatchKeyEvent(event);
+            return dispatchDashboardWindowKey(event);
         }
         if (ok) {
             if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
@@ -1867,7 +1883,7 @@ public class MainActivity extends Activity {
             }
             return true;
         }
-        return super.dispatchKeyEvent(event);
+        return dispatchDashboardWindowKey(event);
     }
     private void cancelOk() { handler.removeCallbacks(heldOk); okHeld = false; }
     @Override public void onWindowFocusChanged(boolean hasFocus) {

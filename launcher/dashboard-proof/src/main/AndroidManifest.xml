@@ -1,0 +1,133 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+  <uses-feature android:name="android.software.leanback" android:required="false" />
+  <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+  <uses-feature android:name="android.hardware.wifi" android:required="false" />
+  <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+  <uses-permission android:name="android.permission.BIND_APPWIDGET" tools:ignore="ProtectedPermissions" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" tools:ignore="ProtectedPermissions" />
+  <uses-permission android:name="yandex.tv.permission.ACCESS_TV_SOURCE" />
+  <queries>
+    <intent>
+      <action android:name="android.appwidget.action.APPWIDGET_BIND" />
+    </intent>
+    <intent>
+      <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.VIEW" />
+      <category android:name="android.intent.category.BROWSABLE" />
+      <data android:scheme="https" />
+    </intent>
+    <intent>
+      <action android:name="tv.projectivy.plugin.WALLPAPER_PROVIDER" />
+    </intent>
+    <intent>
+      <action android:name="android.service.dreams.DreamService" />
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.MAIN" />
+      <category android:name="android.intent.category.LAUNCHER" />
+    </intent>
+    <intent>
+      <action android:name="android.settings.SETTINGS" />
+    </intent>
+    <intent>
+      <action android:name="android.settings.WIFI_SETTINGS" />
+    </intent>
+    <intent>
+      <action android:name="android.settings.DISPLAY_SETTINGS" />
+    </intent>
+    <intent>
+      <action android:name="android.settings.ACCESSIBILITY_SETTINGS" />
+    </intent>
+    <intent>
+      <action android:name="android.settings.MANAGE_APPLICATIONS_SETTINGS" />
+    </intent>
+    <intent>
+      <action android:name="android.settings.APPLICATION_DETAILS_SETTINGS" />
+      <data android:scheme="package" />
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.MAIN" />
+      <category android:name="android.intent.category.LAUNCHER" />
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.MAIN" />
+      <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.MAIN" />
+      <category android:name="com.gathin.tvhome.category.DOCK_CARD" />
+    </intent>
+    <intent>
+      <action android:name="android.intent.action.MAIN" />
+      <category android:name="android.intent.category.HOME" />
+    </intent>
+    <package android:name="com.xiaomi.mitv.settings" />
+    <package android:name="com.tcl.settings" />
+    <package android:name="com.amazon.tv.launcher" />
+    <provider android:authorities="com.skyworth.tv.provider" />
+    <provider android:authorities="com.skyworth.tv.sdk.provider" />
+  </queries>
+  <application android:networkSecurityConfig="@xml/wallpaper_network_security" android:label="Homeboard 4K Dashboard Test" android:icon="@drawable/ic_dashboard_4k" android:banner="@drawable/banner_dashboard_4k" android:theme="@style/Theme.TvHome" android:allowBackup="false" android:localeConfig="@xml/locales_config">
+    <service android:name=".KitchenTimerSound" android:exported="false" android:foregroundServiceType="mediaPlayback" />
+    <receiver android:name=".HomeButtonReceiver" android:exported="false">
+            </receiver>
+    <receiver android:name=".KitchenTimerReceiver" android:exported="false">
+            </receiver>
+    <service android:name=".HomeKeyService" android:label="@string/home_key_name" android:directBootAware="true" android:exported="true" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+      <intent-filter>
+        <action android:name="android.accessibilityservice.AccessibilityService" />
+      </intent-filter>
+      <meta-data android:name="android.accessibilityservice" android:resource="@xml/home_key_service" />
+    </service>
+    <service android:name=".ScreensaverDream" android:label="@string/app_name" android:exported="true" android:permission="android.permission.BIND_DREAM_SERVICE">
+      <intent-filter>
+        <action android:name="android.service.dreams.DreamService" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </service>
+    <provider android:name=".ThemeProvider" android:authorities="${applicationId}.theme" android:exported="true" android:permission="android.permission.WRITE_SECURE_SETTINGS" />
+    <service android:name=".GuardRevival" android:directBootAware="true" android:exported="true" android:label="@string/home_key_name" android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+      <intent-filter>
+        <action android:name="android.service.notification.NotificationListenerService" />
+      </intent-filter>
+    </service>
+    <receiver android:name=".GuardConfig" android:exported="true" android:permission="android.permission.WRITE_SECURE_SETTINGS">
+            </receiver>
+    <service android:name=".InputKeyService" android:exported="false" android:label="@string/app_name" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+      <intent-filter>
+        <action android:name="android.accessibilityservice.AccessibilityService" />
+      </intent-filter>
+      <meta-data android:name="android.accessibilityservice" android:resource="@xml/input_key_service" />
+    </service>
+    <service android:name=".CalendarUpdateJob" android:permission="android.permission.BIND_JOB_SERVICE" android:exported="true" />
+    <activity android:name=".Native4kDashboardProbeActivity" android:exported="true" android:screenOrientation="landscape">
+      </activity>
+    <activity android:name=".Native4kEmbeddedDashboardActivity" android:exported="true" android:screenOrientation="landscape">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+        <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+      </intent-filter>
+    </activity>
+    <activity-alias android:name=".Native4kPresentationAcceptance" android:targetActivity=".Native4kDashboardProbeActivity" android:exported="true">
+      <meta-data android:name="dashboard-start-home" android:value="true" />
+    </activity-alias>
+    <activity-alias android:name=".Native4kEmbeddedAcceptance" android:targetActivity=".Native4kEmbeddedDashboardActivity" android:exported="true">
+      <meta-data android:name="dashboard-start-home" android:value="true" />
+    </activity-alias>
+  </application>
+</manifest>

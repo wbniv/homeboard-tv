@@ -1,0 +1,68 @@
+{
+  "workflow": "check",
+  "app": "homeboard-native-4k-proof",
+  "duration": 32,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 6,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 1000
+    },
+    {
+      "at": 9,
+      "capture": "widget-menu"
+    },
+    {
+      "at": 11,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 13,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 14,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 15,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 16,
+      "key": "DPAD_LEFT",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 18,
+      "key": "DPAD_CENTER",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 22,
+      "capture": "clock-expanded"
+    },
+    {
+      "at": 24,
+      "key": "BACK",
+      "action": "hold",
+      "ms": 80
+    },
+    {
+      "at": 28,
+      "capture": "clock-restored"
+    }
+  ]
+}

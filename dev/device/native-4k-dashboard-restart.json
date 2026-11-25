@@ -1,0 +1,7 @@
+{
+  "workflow": "check",
+  "app": "homeboard-native-4k-proof",
+  "duration": 5,
+  "panel": "require-hidden",
+  "stress": "background-kill"
+}

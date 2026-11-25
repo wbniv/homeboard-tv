@@ -9,7 +9,7 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 
 /** Remote fallback. Draft mutations are committed together, or discarded. */
-final class GroceryEditor extends Dialog {
+final class GroceryEditor extends DashboardDialog {
     private final Activity a;private final PaletteColors palette;private final JSONObject draft;private final String original;private String listId;
     private final BiConsumer<JSONObject,String> save;private final LinearLayout root;private boolean editing;
     GroceryEditor(Activity a,JSONObject book,String listId,PaletteColors palette,BiConsumer<JSONObject,String> save){
@@ -39,5 +39,5 @@ final class GroceryEditor extends Dialog {
         button(p,t(R.string.hb_cancel),this::main);name.requestFocus();
     }
     private void leave(){if(original.equals(draft.toString())){dismiss();return;}LinearLayout p=screen();p.addView(text(t(R.string.hb_grocery_unsaved)));button(p,t(R.string.hb_wc_save),()->{try{GroceryData.validate(draft);save.accept(GroceryData.copy(draft),listId);dismiss();}catch(Exception e){Toast.makeText(a,e.getMessage(),Toast.LENGTH_LONG).show();}});button(p,t(R.string.hb_grocery_discard),this::dismiss);button(p,t(R.string.hb_grocery_keep_editing),this::main);}
-    void open(){show();if(getWindow()!=null)getWindow().setLayout(Math.min((int)(820*a.getResources().getDisplayMetrics().density),a.getResources().getDisplayMetrics().widthPixels-40),a.getResources().getDisplayMetrics().heightPixels-40);}
+    void open(){show();if(getWindow()!=null)setDashboardLayout(Math.min((int)(820*a.getResources().getDisplayMetrics().density),a.getResources().getDisplayMetrics().widthPixels-40),a.getResources().getDisplayMetrics().heightPixels-40);}
 }

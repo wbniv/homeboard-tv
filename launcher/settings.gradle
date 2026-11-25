@@ -25,3 +25,5 @@ include ":widget-fixture"
 include ":widget-provider"
 
 include ':tester'
+
+include ':dashboard-proof'

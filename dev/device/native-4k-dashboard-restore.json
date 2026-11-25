@@ -1,0 +1,12 @@
+{
+  "workflow": "check", "app": "homeboard-native-4k-proof", "duration": 22, "panel": "require-hidden",
+  "input_script": [
+    {"at": 6, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 9, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 10, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 11, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 12, "capture": "restore-action-focus"},
+    {"at": 14, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 18, "capture": "restore-action-result"}
+  ]
+}

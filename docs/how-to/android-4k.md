@@ -143,6 +143,12 @@ Keep the physical SurfaceView's context separate. If you override `setContentVie
 to capture the real dashboard root, provide a non-recursive route to install the
 physical SurfaceView. Log the root size after layout, not at construction time.
 
+Size grids from their actual containing hierarchy once measured. In the Cast2
+embedded proof, Android later reported resource dimensions of 1920 × 1080 while
+retaining density 4 and a 3840 × 2160 root. Dividing those resource dimensions by
+density incorrectly collapsed All Apps to four columns and one row. Resource
+dimensions are only a pre-layout fallback for the grid, not its attached bounds.
+
 Use `setChildSurfacePackage` rather than manually reparenting the root surface:
 the API links the embedded accessibility hierarchy. SurfaceView manages the
 package's reparenting as its surface comes and goes; your code still owns and must

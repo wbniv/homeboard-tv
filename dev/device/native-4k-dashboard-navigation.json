@@ -1,0 +1,16 @@
+{
+  "workflow": "check",
+  "app": "homeboard-native-4k-proof",
+  "duration": 28,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 6, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 9, "capture": "expanded-rain"},
+    {"at": 11, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 14, "capture": "restored-home"},
+    {"at": 16, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 19, "capture": "all-apps"},
+    {"at": 21, "key": "BACK", "action": "hold", "ms": 80},
+    {"at": 24, "capture": "home-from-apps"}
+  ]
+}

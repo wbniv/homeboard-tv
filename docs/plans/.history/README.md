@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/654a552) | Consolidate repository records and retire merged worktrees |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/d446c74) | Mark startup verification passed and index its plan |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/9daf7eb) | Docs: reconcile Home button status and draft timestamped capture request |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/b74103f) | Home button: plan, mockups, quick start and plan index |
@@ -48,6 +49,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+654a552	author	Will Norris
+654a552	added	4
+654a552	deleted	0
+654a552	files	1
 d446c74	author	Will Norris
 d446c74	added	1
 d446c74	deleted	0

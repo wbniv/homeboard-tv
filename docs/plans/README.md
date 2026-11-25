@@ -98,7 +98,7 @@ missing rows on commit.*
   YouTube on new dashboards while preserving saved choices.
 | [Android app widgets](2026-11-19-android-app-widgets.md) | Hosts installed Android widgets with saved instances, expansion, Undo and explicit Chromecast permission setup; records device and provider acceptance gates. | This change | Feature |
 | [Timers on every page](2026-11-20-timers-on-every-page.md) | Plans the shared timer tick and visible indicators across Home, All Apps and expanded widgets, with staged acceptance. | `aa27069`, `2e38b41`, `2fd314a`, `2b05cbd` | Feature |
-| [Native 4K dashboard](2026-11-23-native-4k-dashboard.md) | Records native-surface and standalone tester proofs while keeping the actual 4K dashboard and physical-detail acceptance open. | `c3234b6` | Investigation |
+| [Native 4K dashboard](2026-11-23-native-4k-dashboard.md) | Records the actual 4K dashboard proof, native overlays and device acceptance while keeping automatic launcher integration and remaining gates open. | `c3234b6` | Investigation |
 | [Screensaver shortcut](2026-11-23-screensaver-shortcut.md) | Adds the top-row shortcut and records Cast1 chooser/Back acceptance with other device and presentation checks pending. | `c3234b6` | Feature |
 | [Trello board widget](2026-11-23-trello-board-widget.md) | Proposes a read-only board widget and richer expanded view; source, authentication and implementation remain undecided. | `ff92b1a` | Feature |
 | [Air-quality startup without a preference wait](2026-11-23-air-quality-startup.md) | Loads saved air settings and cache on a worker; preserves selections/history and records Cast1 0.1.130 acceptance with other installs queued. | `2c370f4`, `de27e5b` | Fix |
