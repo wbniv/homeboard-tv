@@ -11,7 +11,48 @@ meet this capacity goal. A candidate Dashboard scale setting at 50% would double
 the logical width and height (for example, 8×4 cells to 16×8), with smaller text
 and controls. Plan a live preview, intermediate scales, preserved placements and
 Undo, and verify widget readability/layout at the chosen scale before implementing.
-This is a proposed approach, not a completed scale feature or an agreed final UI.
+Implementation authorized by Will on 25 November. See the scale workflow below.
+
+### Dashboard scale implementation
+
+Apply the [shared Cooper filter](/home/will/docs/howtos/alan-cooper-design-filter.md).
+Scope: Home settings → Appearance → Dashboard scale, on both normal and native
+dashboard builds. Will's explicit goal is four times the widget capacity. The
+current fixed apparent size blocks that goal. Keep settings, header, All Apps
+and expanded presentations readable at their existing size; scale only Home tiles.
+
+[Screen and workflow mockup](2026-11-25-dashboard-scale.svg) defines 100%, 75% and
+50% choices, the actual Home preview, grid dimensions and Save/Cancel. At 50%,
+8×4 becomes 16×8. Existing cell spans/positions and widget configurations remain
+intact; smaller widgets occupy the same cell coordinates. Explicit grid counts
+adjust with scale; Auto calculates the scaled fit. Do not stretch existing spans
+to fill the new space. A compact control panel overlays the bottom of the preview;
+controls retain normal size and the dashboard is blocked from editing during it.
+
+Flow: Appearance → scale preview → select size → Save → Appearance. Cancel or
+Back restores the previous scale, page and focus without saving. Leaving the app
+also cancels the draft; recreation loads the saved scale. Save commits scale/grid
+counts together using the existing layout Undo. No new credentials, network call,
+display mode or Android density setting. Full-screen widgets retain richer content
+and their existing Back/Restore behavior. Secondary needs: TV text scaling,
+touch/phone editing, translated labels and Android provider sizing.
+
+Acceptance: deterministic 8×4→16×8 capacity and inverse change; persistence and
+Undo restore exact layout/widget data; Auto fit, existing positions, invalid saved
+scale and grid counts; container tests/lint/build for both packages. Live preview,
+focus/touch transforms, provider widgets, small-text readability, Save/Cancel/Back,
+interruption and expanded Restore require device acceptance after connectivity
+returns. Design disposition: conditional on those device checks; do not report
+them passed from a build alone.
+
+**Implemented locally in 0.1.161:** the Home tile area scales independently of
+settings and expanded widgets, with a separate draft, fixed automatic spans,
+24-cell limits and larger-grid phone editing. Six new regression tests and all
+697 JVM tests pass; both package lint checks and phone browser suites pass.
+Both packages are installed as 0.1.162 on Cast1, Cast2 and Pixel; the tablet is
+queued while unreachable. Device scale acceptance remains open after an
+incomplete Cast2 session ended with target-left-foreground. See the
+[scale implementation and acceptance record](../testing/2026-11-25-dashboard-scale.md).
 
 **Evidence:** coordinator passive inspection on Cast2, 2026-11-23, reported physical/output 3840 × 2160 at 60 Hz, Android logical display override 1920 × 1080. The detailed coordinator display evidence is retained locally in `docs/diagnostics/cast2-display-2026-11-23/`. The current dashboard is a normal Android View hierarchy. [Android's surface documentation](https://developer.android.com/media/media3/ui/surface) says a SurfaceView can use the full display resolution even when the UI layer is lower resolution. [SurfaceHolder](https://developer.android.com/reference/android/view/SurfaceHolder#setFixedSize(int,%20int)) supports a fixed buffer size. Neither establishes that the existing View hierarchy can be transparently rendered into that surface with correct input, app widgets, animations, video, overlays and accessibility. [View.draw documentation](https://developer.android.com/reference/android/view/View) warns that software snapshots have compatibility issues with hardware-only features. Android's [TV memory guidance](https://developer.android.com/training/tv/playback/memory) identifies 1080p UI on many 4K devices and limited memory.
 

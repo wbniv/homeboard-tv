@@ -96,18 +96,29 @@ final class AppFocusHighlight {
     void move(View card, boolean animate) {
         if (!ready(card)) return;
         Rect rect = new Rect(0, 0, card.getWidth(), card.getHeight());
-        root.offsetDescendantRectToMyCoords(card, rect);
+        // Include ancestor transforms: Home's workspace can scale independently
+        // of this highlight's host. Offset-only bounds lose that scale.
+        android.graphics.RectF bounds = new android.graphics.RectF(rect);
+        View current = card;
+        while (current != root) {
+            if (!(current.getParent() instanceof View)) return;
+            View parent = (View) current.getParent();
+            current.getMatrix().mapRect(bounds);
+            bounds.offset(current.getLeft() - parent.getScrollX(), current.getTop() - parent.getScrollY());
+            current = parent;
+        }
+        bounds.roundOut(rect);
         int width, height;
         if (view instanceof AppFocusView) {
-            ((AppFocusView) view).setIconDiameter(card.getWidth());
-            width = height = AppAppearance.focusExtent(card.getWidth());
+            ((AppFocusView) view).setIconDiameter(rect.width());
+            width = height = AppAppearance.focusExtent(rect.width());
         } else if (view instanceof BannerFocusView) {
-            width = (int) Math.ceil(card.getWidth() * SCALE) + dp(20);
-            height = (int) Math.ceil(card.getHeight() * SCALE) + dp(20);
+            width = (int) Math.ceil(rect.width() * SCALE) + dp(20);
+            height = (int) Math.ceil(rect.height() * SCALE) + dp(20);
         } else {
             int padding = 1;
-            width = (int) Math.ceil(card.getWidth() * SCALE) + padding * 2;
-            height = (int) Math.ceil(card.getHeight() * SCALE) + padding * 2;
+            width = (int) Math.ceil(rect.width() * SCALE) + padding * 2;
+            height = (int) Math.ceil(rect.height() * SCALE) + padding * 2;
             ((GlassView) view).setRadius(dp(10));
         }
         ViewGroup.LayoutParams lp = view.getLayoutParams();

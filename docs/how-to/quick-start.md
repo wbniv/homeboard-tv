@@ -177,9 +177,27 @@ both its dashboard and surface should read **3840 × 2160 (4K)**. Native 4K rema
 an engineering test in that separate app; the normal launcher does not yet
 automatically enable it. See the [Android 4K HOWTO](android-4k.md) for details.
 
-The current 4K test keeps widgets at their familiar apparent size. It adds detail,
-but does not automatically give you four times the space for widgets. A dashboard
-scale control for a larger workspace is planned and is not available yet.
+### Fit more widgets on Home
+
+In builds **0.1.161 and newer**, open **Home settings → Appearance → Dashboard
+scale**. Choose **100%**, **75%** or **50%** to preview the actual dashboard.
+At 50%, an 8×4 grid becomes **16×8**, giving roughly four times the widget space.
+Widgets and their text become smaller. Settings, the top controls, All Apps and
+full-screen widget views keep their normal size. Grid dimensions are capped at 24
+cells per direction.
+
+Choose **Save scale** to keep the preview, or **Cancel / Back** to restore your
+previous layout. Leaving the app also discards an unsaved preview. Save adds one
+layout Undo entry. Existing widgets retain their configuration, cell sizes and
+saved positions; use Move/Resize or the paired phone editor to fill the extra room.
+Grid settings on Auto fit more cells at the smaller scale; explicit grid counts
+adjust with the scale. Press OK on any widget for its full-screen detail.
+
+Scale changes Home's capacity independently of its rendering resolution. Check
+About separately to confirm native 4K. The first fleet deployment with this
+control is **0.1.162**. Install verification is complete on both TVs; scale
+interaction and readability checks remain open in the
+[acceptance record](../testing/2026-11-25-dashboard-scale.md).
 
 ![Home favorites: size choice, Small icons, Banners and Undo — design mockup](../plans/2026-11-16-home-favorite-app-sizes/mockups.svg)
 

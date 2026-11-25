@@ -258,7 +258,7 @@
     const preview=button(t('preview'),async()=>{if(invalid()){showValidation();return;}await api('preview',{revision:state.revision,draft:payload()});previewing=true;message(t('previewHelp'));render();},'secondary wide-action');preview.disabled=!connected||!!invalid()||working||!!pending;parent.append(preview);
     if(previewing)parent.append(button(t('cancelPreview'),async()=>{await api('cancel-preview');previewing=false;message('');render();},'wide-action'));
     parent.append(button(t('recommended'),()=>navigate({name:'recommended'}),'wide-action secondary'));
-    const advanced=details(parent,t('advanced')),row=el('div',undefined,'two-fields');field(row,t('columns'),draft.columns,value=>draft.columns=value,'number',{min:4,max:12,step:1,required:true});field(row,t('rows'),draft.rows,value=>draft.rows=value,'number',{min:2,max:12,step:1,required:true});advanced.append(row);
+    const advanced=details(parent,t('advanced')),row=el('div',undefined,'two-fields');field(row,t('columns'),draft.columns,value=>draft.columns=value,'number',{min:4,max:24,step:1,required:true});field(row,t('rows'),draft.rows,value=>draft.rows=value,'number',{min:2,max:24,step:1,required:true});advanced.append(row);
   }
   function addWidgets(parent){const box=section(parent);note(box,t('androidSetup'));for(const type of ['rain','calendar','air','favorites','grocery','timer'])box.append(button('+ '+t(type),()=>{const w=M.add(draft,type,state.instances);changed();navigate({name:type==='favorites'?'favorites':'widget',key:w.key});},'wide-action'));}
   function recommended(parent){const box=section(parent);note(box,t('recommendHelp'));note(box,t('extraCards'));const selected={};

@@ -17,6 +17,14 @@ For native 4K, its measured dashboard and surface should both read
 **3840 × 2160 (4K)**. Ordinary Homeboard can show a 1920 × 1080 dashboard while
 the TV output reads 3840 × 2160; the output alone does not establish 4K rendering.
 
+For more widget capacity, build 0.1.161 adds **Home settings → Appearance →
+Dashboard scale**. At 50%, an 8×4 workspace becomes 16×8 with smaller Home tiles;
+settings and expanded widgets retain their normal size. This is independent of
+native rendering and does not change Android's display density. See the
+[user guide](quick-start.md#fit-more-widgets-on-home) and
+[scale acceptance record](../testing/2026-11-25-dashboard-scale.md). Build 0.1.162
+is installed on both TVs; interaction/readability validation remains pending.
+
 ## 1 Measure the four resolutions
 
 | Measurement | What it answers | Where to obtain it |

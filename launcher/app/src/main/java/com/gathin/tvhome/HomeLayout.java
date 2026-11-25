@@ -45,6 +45,23 @@ final class HomeLayout {
     final Map<String, WorldClockSettings> clockSettings = new LinkedHashMap<>();
     int homeColumns;
     int homeRows;
+    int dashboardScale = 100;
+    void setDashboardScale(int percent, int columns, int rows) {
+        if (DashboardScale.valid(percent) != dashboardScale) {
+            for (Cell cell : cells(widgets, columns, rows))
+                if (cell.key.startsWith("widget:") && !panelSpans.containsKey(cell.key))
+                    setPanelSpan(cell.key, cell.width, cell.height);
+        }
+        setDashboardScale(percent);
+    }
+    void setDashboardScale(int percent) {
+        percent = DashboardScale.valid(percent);
+        homeColumns = DashboardScale.cells(homeColumns, dashboardScale, percent);
+        homeRows = DashboardScale.cells(homeRows, dashboardScale, percent);
+        if (homeColumns != 0) homeColumns = Math.max(4, homeColumns);
+        if (homeRows != 0) homeRows = Math.max(2, homeRows);
+        dashboardScale = percent;
+    }
     boolean reducedMotion;
     boolean appBanners;
     static final String APP_SMALL = "small", APP_BANNER = "banner";
@@ -164,9 +181,10 @@ final class HomeLayout {
                         Math.max(0, p.optInt("row", 0)), Math.max(0, p.optInt("column", 0))));
         }
         int homeColumns = j.optInt("homeColumns", 0);
-        s.homeColumns = homeColumns >= 4 && homeColumns <= 12 ? homeColumns : 0;
+        s.homeColumns = homeColumns >= 4 && homeColumns <= 24 ? homeColumns : 0;
         int homeRows = j.optInt("homeRows", 0);
         s.homeRows = homeRows == 0 ? 0 : Math.max(2, homeRows);
+        s.dashboardScale = DashboardScale.valid(j.optInt("dashboardScale", 100));
         s.appBanners = j.optBoolean("appBanners", false);
         s.homeAppSize = APP_BANNER.equals(j.optString("homeAppSize", APP_SMALL)) ? APP_BANNER : APP_SMALL;
         s.circularIcons = j.optBoolean("circularIcons", true);
@@ -227,7 +245,7 @@ final class HomeLayout {
                     .put("calendarSettings", encodedCalendarSettings()).put("rainSettings", encodedRainSettings())
                     .put("groceries",groceries).put("groceryLists",new JSONObject(groceryLists))
                     .put("clockSettings",encodedClockSettings()).put("headerClock",headerClock.json())
-                    .put("homeColumns", homeColumns).put("homeRows", homeRows)
+                    .put("homeColumns", homeColumns).put("homeRows", homeRows).put("dashboardScale", dashboardScale)
                     .put("appBanners", appBanners).put("homeAppSize", homeAppSize).put("circularIcons", circularIcons)
                     .put("customWallpaper", customWallpaper)
                     .put("wallpaper", wallpaper.json()).put("screensaver", screensaver.json()).put("uiOpacityPercent", uiOpacityPercent)
@@ -338,7 +356,7 @@ final class HomeLayout {
     static PanelSpan minimumPanelSpan(String key) { return new PanelSpan(isCalendarWidget(key) ? 2 : 1, 1); }
     void setPanelSpan(String key, int width, int height) {
         PanelSpan minimum = minimumPanelSpan(key);
-        panelSpans.put(key, new PanelSpan(Math.max(minimum.width, Math.min(12, width)), Math.max(minimum.height, Math.min(12, height))));
+        panelSpans.put(key, new PanelSpan(Math.max(minimum.width, Math.min(24, width)), Math.max(minimum.height, Math.min(24, height))));
     }
     private JSONObject encodedSpans() throws JSONException {
         JSONObject result = new JSONObject();

@@ -45,7 +45,7 @@ window.PhoneModel = (() => {
   function validate(draft) {
     if(draft.groceries&&!window.PhoneGrocery.valid(draft.groceries))return {kind:"grocery"};
     if(!window.PhoneClock.valid(draft.headerClock))return {kind:"range",key:HEADER};
-    if (!Number.isInteger(draft.columns) || draft.columns < 4 || draft.columns > 12 || !Number.isInteger(draft.rows) || draft.rows < 2 || draft.rows > 12) return {kind:'grid'};
+    if (!Number.isInteger(draft.columns) || draft.columns < 4 || draft.columns > 24 || !Number.isInteger(draft.rows) || draft.rows < 2 || draft.rows > 24) return {kind:'grid'};
     for (const w of draft.widgets) {
       if (!validPosition(draft,w)) return {kind:'placement', key:w.key};
       const s=w.settings;

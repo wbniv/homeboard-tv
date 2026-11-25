@@ -27,7 +27,7 @@ final class PhoneConfiguration {
     static final class Result {final HomeLayout layout;final JSONObject air;Result(HomeLayout l,JSONObject a){layout=l;air=a;}}
     static Result validate(JSONObject draft,HomeLayout before,JSONObject beforeAir,Set<String> available)throws JSONException {
         keys(draft,"draft","widgets","favorites","columns","rows","artwork","headerClock","groceries");
-        int columns=integer(draft,"columns",4,12),rows=integer(draft,"rows",2,12);
+        int columns=integer(draft,"columns",4,24),rows=integer(draft,"rows",2,24);
         String artwork=choice(draft,"artwork","small","banner");
         HomeLayout result=HomeLayout.parse(before.encode());
         GroceryData.validate(draft.getJSONObject("groceries"));

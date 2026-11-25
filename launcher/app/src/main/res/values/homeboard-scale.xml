@@ -1,0 +1,7 @@
+<resources>
+    <string name="hb_dashboard_scale">Dashboard scale</string>
+    <string name="hb_dashboard_scale_current">Dashboard scale: %1$d%%</string>
+    <string name="hb_dashboard_scale_preview">Preview · %1$d%% · %2$d columns × %3$d rows</string>
+    <string name="hb_dashboard_scale_help">Smaller widgets give you more room. Expanded widgets keep their normal size.</string>
+    <string name="hb_dashboard_scale_save">Save scale</string>
+</resources>

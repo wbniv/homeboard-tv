@@ -512,8 +512,8 @@ public class MainActivity extends Activity {
         JSONArray next=new JSONArray();for(int i=Math.max(0,old.length()-MAX_UNDO_ENTRIES+1);i<old.length();i++)next.put(old.getJSONObject(i));
         return next.put(new JSONObject().put("kind",kind).put("key",key).put("state",state).put("label",label));
     }
-    private int androidGridWidth(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getWidth()>0?surface.getWidth():getResources().getDisplayMetrics().widthPixels)/density)-AppGridSizing.SIDE_MARGIN*2);}
-    private int androidGridHeight(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getHeight()>0?surface.getHeight():getResources().getDisplayMetrics().heightPixels)/density)-AppGridSizing.HOME_TOP-AppGridSizing.BOTTOM_MARGIN);}
+    private int androidGridWidth(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getWidth()>0?surface.getWidth():getResources().getDisplayMetrics().widthPixels)/density)-AppGridSizing.SIDE_MARGIN*2)*100/dashboardScale();}
+    private int androidGridHeight(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getHeight()>0?surface.getHeight():getResources().getDisplayMetrics().heightPixels)/density)-AppGridSizing.HOME_TOP-AppGridSizing.BOTTOM_MARGIN)*100/dashboardScale();}
     private void addAndroidWidget(String key,AndroidWidgetSpec spec,int width,int height){
         if(layoutReadOnly)return;
         try{
@@ -838,13 +838,21 @@ public class MainActivity extends Activity {
                 || value.contains("log_viewer") || value.contains("logviewer");
     }
     private List<String> dashboardItems() { return moving && !moveInApps ? preview : layout.widgets; }
+    private int scalePreview;
+    private boolean scaleOriginalApps;
+    private int scaleOriginalPage;
+    private int scaleOriginalColumns, scaleOriginalRows;
+    private HomeLayout scaleDraft;
+    private String scaleOriginalFocus;
+    private int dashboardScale() { return scalePreview == 0 ? layout.dashboardScale : scalePreview; }
+    private int scaledGridCount(int count, int minimum) { return Math.max(minimum, DashboardScale.cells(count, layout.dashboardScale, dashboardScale())); }
     private int homeGridColumns() {
         return homeGridColumnsFor(layout.homeAppSize);
     }
     private int homeGridColumnsFor(String size) {
         if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
         int fit = homeGridFitColumnsFor(size);
-        return layout.homeColumns == 0 ? fit : layout.favoritesContainer ? layout.homeColumns : Math.min(layout.homeColumns, fit);
+        return layout.homeColumns == 0 ? fit : layout.favoritesContainer ? scaledGridCount(layout.homeColumns,4) : Math.min(scaledGridCount(layout.homeColumns,4), fit);
     }
     private int appLabelHeightDp() {
         android.graphics.Paint paint = new android.graphics.Paint();
@@ -856,22 +864,24 @@ public class MainActivity extends Activity {
     private int homeGridFitColumns() {
         return homeGridFitColumnsFor(layout.favoritesContainer ? HomeLayout.APP_SMALL : layout.homeAppSize);
     }
-    private int homeGridFitColumnsFor(String size) {
+    private int homeGridFitColumnsFor(String size) { return homeGridFitColumnsFor(size, dashboardScale()); }
+    private int homeGridFitColumnsFor(String size, int scale) {
         int screenWidthDp = Math.round(dashboardWidthPixels()
                 / getResources().getDisplayMetrics().density);
         int fit = AppGridSizing.homeColumns(screenWidthDp - AppGridSizing.SIDE_MARGIN * 2,
                 appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size));
-        return layout.favoritesContainer ? Math.max(8,fit) : fit;
+        return DashboardScale.cells(layout.favoritesContainer ? Math.max(8,fit) : fit, 100, scale);
     }
     private int homeGridFitRows() {
         return homeGridFitRowsFor(layout.homeAppSize);
     }
-    private int homeGridFitRowsFor(String size) {
+    private int homeGridFitRowsFor(String size) { return homeGridFitRowsFor(size, dashboardScale()); }
+    private int homeGridFitRowsFor(String size, int scale) {
         if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
         int screenHeightDp = Math.round(dashboardHeightPixels()
                 / getResources().getDisplayMetrics().density);
-        return Math.max(layout.favoritesContainer ? 4 : 2, AppGridSizing.rows(screenHeightDp - AppGridSizing.HOME_TOP
-                - AppGridSizing.BOTTOM_MARGIN, appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size)));
+        return DashboardScale.cells(Math.max(layout.favoritesContainer ? 4 : 2, AppGridSizing.rows(screenHeightDp - AppGridSizing.HOME_TOP
+                - AppGridSizing.BOTTOM_MARGIN, appLabelHeightDp(), HomeLayout.APP_BANNER.equals(size))), 100, scale);
     }
     private int homeGridRows() {
         return homeGridRowsFor(layout.homeAppSize);
@@ -879,12 +889,12 @@ public class MainActivity extends Activity {
     private int homeGridRowsFor(String size) {
         if(layout.favoritesContainer)size=HomeLayout.APP_SMALL;
         int fit = homeGridFitRowsFor(size);
-        return layout.homeRows == 0 ? fit : layout.favoritesContainer ? layout.homeRows : Math.min(layout.homeRows, fit);
+        return layout.homeRows == 0 ? fit : layout.favoritesContainer ? scaledGridCount(layout.homeRows,2) : Math.min(scaledGridCount(layout.homeRows,2), fit);
     }
     private List<HomeLayout.Cell> homeCells(List<String> items) {
         Map<String, HomeLayout.HomePosition> positions = moving && !moveInApps
                 ? previewHomePositions : layout.homePositions;
-        return layout.cells(items, homeGridColumns(), homeGridRows(), positions);
+        return (scalePreview != 0 && scaleDraft != null ? scaleDraft : layout).cells(items, homeGridColumns(), homeGridRows(), positions);
     }
     private int homePageOf(String key, List<String> items) {
         for (HomeLayout.Cell cell : homeCells(items)) if (cell.key.equals(key)) return cell.page;
@@ -1240,7 +1250,7 @@ public class MainActivity extends Activity {
         homePage = Math.max(0, Math.min(homePage, homePageCount(items) - 1));
         surface.setContentDescription(null);
         if (items.isEmpty()) { surface.setContentDescription(getString(R.string.hb_dashboard_empty)); if(!tiles.containsKey(focused))focused = ""; return; }
-        TileGrid grid = new TileGrid(this, columns, rows);
+        TileGrid grid = new TileGrid(this, columns, rows, dashboardScale());
         FrameLayout.LayoutParams gp = new FrameLayout.LayoutParams(-1, -1);
         gp.setMargins(dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.HOME_TOP),
                 dp(AppGridSizing.SIDE_MARGIN), dp(AppGridSizing.BOTTOM_MARGIN));
@@ -1561,10 +1571,11 @@ public class MainActivity extends Activity {
     }
     private int appPageSize() { return appColumns() * appRows(); }
     private final class TileGrid extends ViewGroup {
-        private final int columns, rows;
+        private final int columns, rows, scale;
         private final List<int[]> positions = new ArrayList<>();
-        TileGrid(Context context, int columns, int rows) {
-            super(context); this.columns = columns; this.rows = rows;
+        TileGrid(Context context, int columns, int rows) { this(context, columns, rows, 100); }
+        TileGrid(Context context, int columns, int rows, int scale) {
+            super(context); this.columns = columns; this.rows = rows; this.scale = scale;
             setClipChildren(false); setClipToPadding(false);
         }
         void addTile(View tile, int column, int row, int span) {
@@ -1572,12 +1583,21 @@ public class MainActivity extends Activity {
         }
         void addTile(View tile, int column, int row, int spanWidth, int spanHeight) {
             positions.add(new int[]{column, row, spanWidth, spanHeight});
-            addView(tile, new ViewGroup.LayoutParams(0, 0));
+            if (scale == 100) { addView(tile, new ViewGroup.LayoutParams(0, 0)); return; }
+            // Transform a parent so widget/app focus animations retain their own scale.
+            FrameLayout cell = new FrameLayout(getContext());
+            cell.setClipChildren(false); cell.setClipToPadding(false);
+            cell.setPivotX(0); cell.setPivotY(0);
+            cell.setScaleX(DashboardScale.factor(scale)); cell.setScaleY(DashboardScale.factor(scale));
+            cell.addView(tile, new FrameLayout.LayoutParams(-1, -1));
+            addView(cell, new ViewGroup.LayoutParams(0, 0));
         }
         @Override protected void onMeasure(int widthSpec, int heightSpec) {
             int width = View.MeasureSpec.getSize(widthSpec);
             int height = View.MeasureSpec.getSize(heightSpec);
             setMeasuredDimension(width, height);
+            width = DashboardScale.logicalPixels(width, scale);
+            height = DashboardScale.logicalPixels(height, scale);
             for (int i = 0; i < getChildCount(); i++) {
                 int[] cell = positions.get(i);
                 int childWidth = Math.max(0, width * cell[2] / columns - dp(AppGridSizing.COLUMN_GAP));
@@ -1587,12 +1607,15 @@ public class MainActivity extends Activity {
             }
         }
         @Override protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-            int width = right - left, height = bottom - top;
+            int width = DashboardScale.logicalPixels(right - left, scale);
+            int height = DashboardScale.logicalPixels(bottom - top, scale);
             for (int i = 0; i < getChildCount(); i++) {
                 int[] cell = positions.get(i);
                 View child = getChildAt(i);
                 int x = width * cell[0] / columns + dp(AppGridSizing.COLUMN_GAP / 2f);
                 int y = height * cell[1] / rows + dp(AppGridSizing.ROW_GAP / 2f);
+                x = Math.round(x * DashboardScale.factor(scale));
+                y = Math.round(y * DashboardScale.factor(scale));
                 child.layout(x, y, x + child.getMeasuredWidth(), y + child.getMeasuredHeight());
             }
         }
@@ -2273,7 +2296,7 @@ public class MainActivity extends Activity {
         HomeLayout saved=HomeLayout.parse(preferences.getString("layout",layout.encode()));
         for(String key:saved.widgets)if(isAirWidgetKey(key)){ AirQualityCard card=airFor(key); if(card.ready())card.configurationSnapshot(); }
         JSONObject air=PhoneConfigurationStore.air(preferences);
-        int cols=saved.homeColumns==0?homeGridFitColumns():saved.homeColumns,rows=saved.homeRows==0?homeGridFitRows():saved.homeRows;
+        int cols=saved.homeColumns==0?homeGridFitColumnsFor(saved.homeAppSize,saved.dashboardScale):saved.homeColumns,rows=saved.homeRows==0?homeGridFitRowsFor(saved.homeAppSize,saved.dashboardScale):saved.homeRows;
         JSONArray catalog=new JSONArray();for(App app:apps.values())catalog.put(new JSONObject().put("key",app.key).put("name",app.label));
         List<UndoEntry> undo=readUndoHistory();
         JSONObject state=new JSONObject().put("timers",KitchenTimerStore.snapshot(this)).put("tv",phoneName()).put("tvId",PhoneConfigurationStore.tvId(preferences)).put("instances",PhoneConfigurationStore.initializeInstances(preferences,saved)).put("revision",preferences.getLong(PhoneConfigurationStore.REVISION,0))
@@ -3081,15 +3104,75 @@ public class MainActivity extends Activity {
 
     private void appearanceSettings() {
         menu(getString(R.string.hb_appearance), getString(R.string.hb_customize_backgrounds_and_dashboard_elements),
-                new String[]{getString(R.string.hb_icons), getString(R.string.hb_palette), getString(R.string.hb_background), getString(R.string.hb_ui_opacity) + layout.uiOpacityPercent + "%"}, choice -> {
+                new String[]{getString(R.string.hb_icons), getString(R.string.hb_palette), getString(R.string.hb_background), getString(R.string.hb_ui_opacity) + layout.uiOpacityPercent + "%", getString(R.string.hb_dashboard_scale)}, choice -> {
                     if (choice == 0) appArtworkSettings();
                     else if (choice == 1) colorPaletteSettings();
                     else if (choice == 2) backgroundSettings();
+                    else if (choice == 4) dashboardScaleSettings();
                     else startAdjustment(getString(R.string.hb_ui_opacity_70), layout.uiOpacityPercent,
                             this::applyUiBackgroundOpacity, value -> {
                                 layout.uiOpacityPercent = value; save(getString(R.string.hb_hint_ui_opacity) + value + "%"); render(0);
                             });
                 });
+    }
+
+    private void dashboardScaleSettings() {
+        if (layoutReadOnly) { toast(getString(R.string.hb_aw_newer_layout)); return; }
+        openMenu(new MenuSpec(getString(R.string.hb_dashboard_scale), this::showDashboardScale));
+    }
+    private void restoreScaleNavigation() {
+        allApps = scaleOriginalApps; homePage = scaleOriginalPage; focused = scaleOriginalFocus;
+    }
+    private void showDashboardScale() {
+        if (scalePreview == 0) {
+            scaleOriginalApps = allApps; scaleOriginalPage = homePage; scaleOriginalFocus = focused;
+            scaleOriginalColumns = homeGridColumns(); scaleOriginalRows = homeGridRows();
+            scalePreview = layout.dashboardScale;
+            allApps = false; focused = homeFocus;
+        }
+        try {
+            scaleDraft = HomeLayout.parse(layout.encode());
+            scaleDraft.setDashboardScale(scalePreview, scaleOriginalColumns, scaleOriginalRows);
+        } catch (org.json.JSONException invalid) {
+            toast(getString(R.string.hb_configuration_save_failed)); backMenu(); return;
+        }
+        render(0);
+        surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        if (overlay != null) root.removeView(overlay);
+        overlay = new FrameLayout(this);
+        overlay.setClickable(true); overlay.setFocusable(true);
+        root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));
+        LinearLayout panel = new LinearLayout(this);
+        panel.setOrientation(LinearLayout.VERTICAL); panel.setPadding(dp(20),dp(12),dp(20),dp(12));
+        panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
+        TextView title = text(getString(R.string.hb_dashboard_scale_preview, scalePreview, homeGridColumns(), homeGridRows()), 20);
+        title.setTypeface(null, Typeface.BOLD); panel.addView(title);
+        TextView explanation = text(getString(R.string.hb_dashboard_scale_help), 15);
+        explanation.setTextColor(paletteColors.muted); panel.addView(explanation);
+        LinearLayout buttons = new LinearLayout(this); buttons.setOrientation(LinearLayout.HORIZONTAL);
+        TextView selected = null;
+        for (int value : new int[]{100,75,50}) {
+            TextView button = infoButton((value == scalePreview ? "✓ " : "") + value + "%", () -> {
+                scalePreview = value; showDashboardScale();
+            });
+            buttons.addView(button, new LinearLayout.LayoutParams(0,dp(48),1));
+            if (value == scalePreview) selected = button;
+        }
+        buttons.addView(infoButton(getString(R.string.hb_dashboard_scale_save), () -> {
+            int value = scalePreview;
+            scalePreview = 0;
+            layout.setDashboardScale(value, scaleOriginalColumns, scaleOriginalRows);
+            scaleDraft = null;
+            save(getString(R.string.hb_dashboard_scale));
+            restoreScaleNavigation(); render(0); backMenu();
+        }), new LinearLayout.LayoutParams(0,dp(48),1.4f));
+        buttons.addView(infoButton(getString(R.string.hb_cancel), this::backMenu), new LinearLayout.LayoutParams(0,dp(48),1));
+        panel.addView(buttons);
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(-1,-2,Gravity.BOTTOM);
+        lp.setMargins(dp(32),dp(16),dp(32),dp(12)); overlay.addView(panel,lp);
+        if (selected != null) selected.requestFocus();
+        hideAppFocusHighlight(); updateUndoHint();
     }
 
     private void colorPaletteSettings() {
@@ -3281,7 +3364,7 @@ public class MainActivity extends Activity {
         List<Integer> supported = new ArrayList<>();
         supported.add(0); // Auto always remains available.
         if (columns) {
-            for (int n : new int[]{4, 6, 8, 10, 12}) if (n <= fit) supported.add(n);
+            for (int n = 4; n <= fit; n++) supported.add(n);
         } else {
             for (int n = 2; n <= fit; n++) supported.add(n);
         }
@@ -4264,6 +4347,12 @@ public class MainActivity extends Activity {
         if (overlay == null) return;
         if (activeMenu != null && activeMenu.paletteGrid) finishUndoGroup();
         root.removeView(overlay); overlay = null;
+        if (scalePreview != 0) {
+            scalePreview = 0;
+            scaleDraft = null;
+            restoreScaleNavigation();
+            render(0);
+        }
         aboutBackButton = null;
         surface.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
         surface.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
