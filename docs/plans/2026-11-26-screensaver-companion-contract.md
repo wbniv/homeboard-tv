@@ -1,7 +1,7 @@
 # What a screensaver app must offer Homeboard (Stage 5)
 
-**Status (2026‑11‑26):** contract proposed; neither side is built. Homeboard's half waits for the
-two app changes below.
+**Status (2026‑11‑26):** contract accepted (Will: "certificate"); neither side is built. Homeboard's
+half waits for the two app changes below.
 
 ## Why Stage 5 cannot be built yet
 
@@ -35,13 +35,22 @@ so one test in WorldFoundry can hold the manifest and the registry together.
 
 ## 2. The provider admits Homeboard
 
-**Proposed:** keep the provider exported and, besides the shell and itself, admit a caller only
+**Accepted:** keep the provider exported and, besides the shell and itself, admit a caller only
 when both its package name and its signing certificate's SHA‑256 are on a list built into the app.
 
-- Packages: `net.biohack.homeboard`; debug builds of the app also admit `net.biohack.homeboard.debug`.
+| Package | Signing certificate SHA‑256 |
+|---|---|
+| `net.biohack.homeboard` | `4ae3fa8a0c926c8b82edff09e20653bcaaa1ea55e5ae3a274291314853bd3d59` |
+| `net.biohack.homeboard.debug` | `dbb3446edcf5f2a66e810c266ee9195dce842e95d618d75529fc26c0d6caf3ff` |
+
+- Both rows apply in every build of the app. The app is usable only as a release build (its debug
+  build is far too slow), and the test devices run Homeboard's debug build. The debug key is
+  Homeboard's own, kept on the build machine, not the stock Android debug key. **Remove the debug row
+  before the app is published.**
+- Android 9 (API 28) and later; older versions refuse Homeboard.
 - Methods: `getCapabilities` and `setSetting`, with the validation the provider already does.
-- A signature‑level permission is the simpler alternative, but works only if both apps are signed
-  with one key. A package name alone is not enough: anyone can ship that name on a TV without Homeboard.
+- Rejected: a signature‑level permission, which needs both apps signed with one key. A package name
+  alone is not enough: anyone can ship that name on a TV without Homeboard.
 
 ## 3. What Homeboard then does
 
