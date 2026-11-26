@@ -116,7 +116,15 @@ clock chosen in the app's own settings and saves nothing:
 - **Use everywhere…** still makes it Android's screensaver in every app, as for any app.
   Android then runs the app's real screensaver and Homeboard's Home timer is off.
 
-If the app is uninstalled, Homeboard plays Clock on Home and says so once. If its preview
+If the chosen app is uninstalled while Homeboard does not manage the TV, your choice is
+kept and nothing is saved. Home says once: "‹app› is no longer installed. Homeboard plays
+Clock on Home until it is back or you choose another screensaver." Until then Clock plays
+on Home, from **Start screensaver** and from the remote's screensaver button. The
+Screensaver list still shows the app, under its saved name, with **Not installed**, its
+**In use** or **On Home** badge, no Preview or Use, and a short explanation on the right.
+Choose another entry to replace it, with the usual Undo. Reinstall the app and it plays
+again with nothing to do. (When Homeboard manages the TV, see "When something goes wrong"
+below.) If its preview
 screen is missing, not exported, or will not start, the app is listed as one without a
 preview screen and Home plays Homeboard's default screensaver (Clock) instead.
 
@@ -178,9 +186,10 @@ what Android starts, after how long, and the kept original. It offers:
 - **Android did not accept the change. This TV's screensaver is still ‹x›.** Android
   refused the write, or read back something else; Homeboard put back what was there and
   changed nothing else. **Retry**, or check the one-time setup.
-- **‹app› is no longer installed.** The app in use was uninstalled. Homeboard restores the
-  TV's original screensaver, plays Clock on Home and says so once on Home, without Undo
-  because the app is gone.
+- **‹app› is no longer installed.** The app in use was uninstalled while Homeboard manages
+  the TV. Homeboard restores the TV's original screensaver, plays Clock on Home and says so
+  once on Home, without Undo because the app is gone. This is kept as it was because what
+  Android itself does with a screensaver that is no longer installed has not been tested.
 
 ### Start it now
 

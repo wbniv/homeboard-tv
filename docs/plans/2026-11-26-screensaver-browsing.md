@@ -123,6 +123,14 @@ show its unavailable state and the existing runtime fallback; do not silently
 save a replacement. Permission denial and a failed external launch keep the
 entry and initiating action available for retry, using the existing failure UI.
 
+**Decided 26 November (coordinator's recommendation; Will: "whatever you recommend"; deferred,
+not reviewed):** when Homeboard does not manage the TV and the saved app is gone, the saved
+choice is kept (nothing is saved over it), Home plays the default slot meanwhile, the notice appears once per
+disappearance, and the list shows the app as an unavailable row with no Preview or Use; a
+reinstall works again. When Homeboard manages the TV, the previous fall-back (restore Android's
+setting, choose the default slot) is unchanged, because Android's behaviour with a missing
+component is untested.
+
 ## Cooper design review
 
 Apply the [shared filter](/home/will/docs/howtos/alan-cooper-design-filter.md).
