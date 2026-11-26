@@ -50,8 +50,14 @@ settings and expanded widgets, with a separate draft, fixed automatic spans,
 24-cell limits and larger-grid phone editing. Six new regression tests and all
 697 JVM tests pass; both package lint checks and phone browser suites pass.
 Both packages are installed as 0.1.162 on Cast1, Cast2 and Pixel; the tablet is
-queued while unreachable. Device scale acceptance remains open after an
-incomplete Cast2 session ended with target-left-foreground. See the
+queued while unreachable. The 26 November follow-up passed native preview,
+Cancel, Save/Undo and Rain/Calendar/Air/Favorites Back and visible Restore at 50%.
+Phone browser UI, actual Android editor protocol and an ordinary-app provider
+control also passed with a 16×8 grid. Native provider fixture hosting also passed on Cast2 that evening, including
+move/resize, expansion, Back/Restore and same-binding Remove/Undo. External phone
+transport remains unverified; broader accessibility/lifecycle checks remain open.
+See the [follow-up acceptance](../testing/2026-11-26-dashboard-scale-acceptance.md)
+and the
 [scale implementation and acceptance record](../testing/2026-11-25-dashboard-scale.md).
 
 **Evidence:** coordinator passive inspection on Cast2, 2026-11-23, reported physical/output 3840 × 2160 at 60 Hz, Android logical display override 1920 × 1080. The detailed coordinator display evidence is retained locally in `docs/diagnostics/cast2-display-2026-11-23/`. The current dashboard is a normal Android View hierarchy. [Android's surface documentation](https://developer.android.com/media/media3/ui/surface) says a SurfaceView can use the full display resolution even when the UI layer is lower resolution. [SurfaceHolder](https://developer.android.com/reference/android/view/SurfaceHolder#setFixedSize(int,%20int)) supports a fixed buffer size. Neither establishes that the existing View hierarchy can be transparently rendered into that surface with correct input, app widgets, animations, video, overlays and accessibility. [View.draw documentation](https://developer.android.com/reference/android/view/View) warns that software snapshots have compatibility issues with hardware-only features. Android's [TV memory guidance](https://developer.android.com/training/tv/playback/memory) identifies 1080p UI on many 4K devices and limited memory.

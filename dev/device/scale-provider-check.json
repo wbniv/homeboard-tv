@@ -1,0 +1,30 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 24,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 6,
+      "capture": "scale-provider-compact"
+    },
+    {
+      "at": 10,
+      "capture": "scale-provider-expanded"
+    },
+    {
+      "at": 15,
+      "capture": "scale-provider-back"
+    },
+    {
+      "at": 20,
+      "capture": "scale-provider-result"
+    },
+    {
+      "at": 22,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    }
+  ]
+}

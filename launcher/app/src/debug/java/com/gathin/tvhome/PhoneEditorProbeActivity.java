@@ -24,6 +24,7 @@ public final class PhoneEditorProbeActivity extends MainActivity {
     @Override public void onCreate(Bundle b){
         if(b==null){
             HomeLayout seed=HomeLayout.firstRun();
+            seed.setDashboardScale(50,8,4);
             try{
                 HomeLayout household=HomeLayout.parse(super.getSharedPreferences("widget-home",0).getString("layout",seed.encode()));
                 for(String key:household.favorites)seed.addFavorite(key);
@@ -57,6 +58,7 @@ public final class PhoneEditorProbeActivity extends MainActivity {
             probe.post(()->approveVisible(0));
             for(int i=0;i<20;i++){if("approved".equals(post("/api/status",new JSONObject(),true).getString("status")))break;Thread.sleep(300);}
             JSONObject baseline=post("/api/state",new JSONObject(),true),draft=new JSONObject(baseline.getJSONObject("draft").toString());
+            require(draft.getInt("columns")==16&&draft.getInt("rows")==8,"Scaled phone grid is not 16×8");
             require(!baseline.getString("tvId").isEmpty(),"TV identity missing");
             require(baseline.getJSONObject("instances").length()>0,"Widget identities missing");
             require(post("/api/touch",new JSONObject(),true).getBoolean("ok"),"Draft activity touch failed");
@@ -66,7 +68,7 @@ public final class PhoneEditorProbeActivity extends MainActivity {
             for(int i=0;i<draft.getJSONArray("widgets").length();i++){
                 JSONObject w=draft.getJSONArray("widgets").getJSONObject(i),s=w.getJSONObject("settings");
                 switch(w.getString("type")){
-                    case "rain":s.put("label","Phone verification");break;
+                    case "rain":s.put("label","Phone verification");w.put("column",9).put("row",4).put("width",6).put("height",2);break;
                     case "calendar":s.put("holidayLookaheadDays",7);break;
                     case "air":s.put("source","airbkk").put("station","119");break;
                 }
@@ -79,6 +81,11 @@ public final class PhoneEditorProbeActivity extends MainActivity {
             Thread.sleep(2000);
             String operation=PhoneEditorSession.random();JSONObject request=new JSONObject().put("revision",baseline.getLong("revision")).put("operation",operation).put("draft",draft);
             applied=post("/api/apply",request,true);
+            require(HomeLayout.parse(getSharedPreferences("widget-home",0).getString("layout","{}")).dashboardScale==50,"Phone Apply changed scale");
+            for(int i=0;i<applied.getJSONObject("draft").getJSONArray("widgets").length();i++){
+                JSONObject widget=applied.getJSONObject("draft").getJSONArray("widgets").getJSONObject(i);
+                if(widget.getString("type").equals("rain"))require(widget.getInt("column")==9&&widget.getInt("row")==4&&widget.getInt("width")==6&&widget.getInt("height")==2,"Phone move/resize did not use extra workspace");
+            }
             JSONObject repeated=post("/api/apply",request,true);require(applied.getLong("revision")==repeated.getLong("revision"),"Duplicate Apply changed revision");
             require(!canonical(applied.getJSONObject("draft")).equals(canonical(baseline.getJSONObject("draft"))),"Apply made no changes");
             require(applied.getJSONObject("draft").getJSONObject("headerClock").getString("title").equals("Phone header verification"),"Header settings missing from atomic Apply");
@@ -87,8 +94,9 @@ public final class PhoneEditorProbeActivity extends MainActivity {
             stage("PHONE · native temporary preview active");Thread.sleep(4500);post("/api/cancel-preview",new JSONObject(),true);
             JSONObject restored=post("/api/undo",new JSONObject().put("revision",applied.getLong("revision")).put("operation",PhoneEditorSession.random()),true);applied=null;
             require(canonical(restored.getJSONObject("draft")).equals(canonical(baseline.getJSONObject("draft"))),"Composite Undo did not restore all settings");
+            require(HomeLayout.parse(getSharedPreferences("widget-home",0).getString("layout","{}")).dashboardScale==50,"Phone Undo changed scale");
             post("/api/stop",new JSONObject(),true);
-            stage("PHONE_PASS · Android HTTP, TV approval, mixed Apply, idempotent retry, preview, composite Undo, Stop · isolated test settings restored; household untouched");
+            stage("PHONE_PASS · 50% / 16×8 · Android HTTP, TV approval, move/resize into extra space, mixed Apply, idempotent retry, preview, composite Undo, Stop · isolated test settings restored; household untouched");
         }catch(Exception failure){
             if(applied!=null){try{post("/api/cancel-preview",new JSONObject(),true);post("/api/undo",new JSONObject().put("revision",applied.getLong("revision")).put("operation",PhoneEditorSession.random()),true);}catch(Exception restore){stage("PHONE_FAIL · "+failure.getClass().getSimpleName()+"; cleanup "+restore.getClass().getSimpleName());return;}}
             fail(failure);

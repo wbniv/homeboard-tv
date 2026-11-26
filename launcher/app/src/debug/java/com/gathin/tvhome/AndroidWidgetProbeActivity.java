@@ -23,6 +23,7 @@ public final class AndroidWidgetProbeActivity extends MainActivity {
     @Override protected void onCreate(Bundle state){
         household=new LinkedHashMap<>(super.getSharedPreferences("widget-home",0).getAll());
         if(state==null){HomeLayout seed=new HomeLayout();seed.homeColumns=8;seed.homeRows=4;seed.favoritesContainer=true;
+            seed.setDashboardScale(50);
             getSharedPreferences("widget-home",0).edit().putString("layout",seed.encode()).putBoolean("single-screen-default-v1",true).putBoolean("favorites-container-v1",true).commit();}
         super.onCreate(state);report("running","Starting real host acceptance");
         step(2500,()->beginAndroidWidgetTest(new ComponentName("net.biohack.homeboard.widgetprovider","net.biohack.homeboard.widgetprovider.ProbeProvider")));
@@ -33,7 +34,9 @@ public final class AndroidWidgetProbeActivity extends MainActivity {
         });
         step(6500,()->{
             require(text(getWindow().getDecorView()).contains("Widget bound across apps"),"Real compact RemoteViews not painted");
+            require(layout().dashboardScale==50&&layout().homeColumns==16&&layout().homeRows==8,"Provider host lost 50% / 16×8 grid");
             JSONObject snapshot=phoneState(),draft=snapshot.getJSONObject("draft");draft.getJSONArray("widgets").getJSONObject(0).put("page",1);
+            draft.getJSONArray("widgets").getJSONObject(0).put("column",10).put("row",4).put("width",4).put("height",2);
             phoneApply(new JSONObject().put("revision",snapshot.getLong("revision")).put("operation","android-widget-proof-move").put("draft",draft));
             before=layout().encode();set("homePage",1);set("focused",key);set("homeFocus",key);call("render",new Class<?>[]{int.class},0);
             press(KeyEvent.KEYCODE_DPAD_CENTER);
@@ -49,13 +52,14 @@ public final class AndroidWidgetProbeActivity extends MainActivity {
             JSONObject removed=phoneApply(new JSONObject().put("revision",snapshot.getLong("revision")).put("operation","android-widget-proof-remove").put("draft",draft));
             require(android.appwidget.AppWidgetManager.getInstance(this).getAppWidgetInfo(id)!=null,"Remove prematurely deleted Undo binding");
             phoneUndo(new JSONObject().put("revision",removed.getLong("revision")).put("operation","android-widget-proof-undo"));require(layout().androidWidget(key).id==id,"Undo replaced original binding");
+            require(layout().dashboardScale==50&&layout().panelSpan(key).width==4&&layout().panelSpan(key).height==2,"Provider Undo changed scale or resized span");
             press(KeyEvent.KEYCODE_DPAD_CENTER);
         });
         step(14000,()->{require(expanded()!=null,"Reopening after Undo failed");expanded().dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_BACK));expanded().dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_BACK));});
         step(16000,()->{
             require(expanded()==null,"Back failed to restore");require(household.equals(super.getSharedPreferences("widget-home",0).getAll()),"Household settings changed");
             android.appwidget.AppWidgetHost cleanup=new android.appwidget.AppWidgetHost(this,androidWidgetHostId());for(int id:cleanup.getAppWidgetIds())cleanup.deleteAppWidgetId(id);require(cleanup.getAppWidgetIds().length==0,"Disposable host IDs remain");
-            report("pass","Actual compact/expanded RemoteViews; short OK, Restore/Back, phone move/remove/Undo; original binding retained; disposable IDs released; household unchanged");
+            report("pass","50% / 16×8; actual compact/expanded RemoteViews; short OK, Restore/Back, phone move/resize into extra space/remove/Undo; original binding retained; disposable IDs released; household unchanged");
         });
     }
     private Object field(String name){try{Field f=MainActivity.class.getDeclaredField(name);f.setAccessible(true);return f.get(this);}catch(Exception e){throw new IllegalStateException(e);}}

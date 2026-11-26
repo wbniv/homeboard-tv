@@ -1,9 +1,20 @@
 # Dashboard scale · 25 November 2026
 
+## Follow-up acceptance · 26 November
+
+Native scale preview/Cancel/Save/Undo and four widget Back/Restore checks now pass.
+Phone browser UI, actual Android editor protocol and an ordinary provider control
+pass at 50% / 16×8. Native provider fixture hosting also passed that evening:
+move/resize, expansion, Back/Restore and same-binding Remove/Undo. Original layout,
+focus and permission were restored, with zero native host widget IDs remaining.
+External phone transport remains unverified. See the [current acceptance record](2026-11-26-dashboard-scale-acceptance.md)
+for evidence, deployment 0.1.163 and remaining scope. Earlier incomplete sessions
+below remain historical records.
+
 Implemented in local build **0.1.161** for ordinary Homeboard and the separate
 native 4K dashboard app. **0.1.162 is installed on Cast1, Cast2 and Pixel** in
 both packages. Install verification is complete; scale interaction acceptance
-remains open. The earlier network interruption and later deployment are recorded
+is recorded in the follow-up above. The earlier network interruption and later deployment are recorded
 separately below.
 
 ## Behavior
