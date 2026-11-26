@@ -1,6 +1,9 @@
 # What a screensaver app must offer Homeboard (Stage 5)
 
-**Status (2026‑11‑26): accepted in a reduced form; nothing is built.** Will's decisions in the
+**Status (2026‑11‑26): accepted in a reduced form. The apps' half is built:** WorldFoundry
+`5a117e85d` declares the keys below on Aquarium, Clocks and Seahorse Grid (Verification 1). The
+APKs installed on Cast1 carry them only after a WorldFoundry rebuild and install. The chooser
+(Verification 2) and Homeboard's half (Verification 3) are not built. Will's decisions in the
 [screensaver integration investigation](../investigations/2026-11-26-screensaver-integration.md)
 (decision 1: the app chooses its own tank or clock; decision 2: Homeboard plays installed World
 Foundry screensavers on Home and in Preview) remove the earlier provider‑admission section and
@@ -12,11 +15,16 @@ On its Dream `<service>`, beside the existing `SETTINGS_AUTHORITY`. The key name
 package name, as in the
 [settings provider contract](../../../chromecast-coordinator/docs/settings-provider-contract.md).
 
-| Key (`org.worldfoundry.screensaver.` +) | Aquarium | Clocks | Meaning |
-|---|---|---|---|
-| `PREVIEW_ACTIVITY` | `org.worldfoundry.screensaver.ScreensaverPreviewActivity` | the same | Full class name in the Dream's own package, never a leading `.` |
-| `PREVIEW_EXTRA` (optional) | `org.worldfoundry.screensaver.DREAM` | omitted | Name of a string extra to send |
-| `PREVIEW_VALUE` (optional) | `aquarium` | omitted | Its value |
+| Key (`org.worldfoundry.screensaver.` +) | Aquarium | Clocks | Seahorse Grid | Meaning |
+|---|---|---|---|---|
+| `PREVIEW_ACTIVITY` | `org.worldfoundry.screensaver.ScreensaverPreviewActivity` | the same | the same | Full class name in the Dream's own package, never a leading `.` |
+| `PREVIEW_EXTRA` (optional) | `org.worldfoundry.screensaver.DREAM` | omitted | `org.worldfoundry.screensaver.DREAM` | Name of a string extra to send |
+| `PREVIEW_VALUE` (optional) | `aquarium` | omitted | `seahorse_grid` | Its value |
+
+Seahorse Grid stays its own app (WorldFoundry decision D7) and is a World Foundry screensaver, so
+it declares the same keys; the coordinator registry already had its values. Without the extra, or
+with `aquarium`, the preview screen plays the app's saved tank or clock; with `seahorse_grid` it
+plays the Seahorse Grid level.
 
 The values match the coordinator registry's `preview_activity`, `preview_extra` and
 `preview_value`, so one test in WorldFoundry can hold the manifest and the registry together.
@@ -58,6 +66,17 @@ at another app. An app without these keys behaves as it does today: listed, no P
 
 1. WorldFoundry: a test shows the Aquarium and Clocks Dream services declare the keys above with
    the coordinator registry's values, and a `settingsActivity`.
+
+    ```
+    $ task test-screensaver-preview-metadata     # WorldFoundry 2026-new-level at 2f9f28eb4
+    task: [test-screensaver-preview-metadata] python3 -m pytest -q -rs tests/test_screensaver_preview_metadata.py
+    ..........                                                               [100%]
+    10 passed in 1.23s
+    ```
+
+    **PARTIAL (2026‑11‑26):** the keys match the registry for Aquarium, Clocks and Seahorse Grid,
+    and the preview activity is exported (`tests/test_screensaver_preview_metadata.py`, 10 cases).
+    `settingsActivity` is not declared yet; it arrives with the chooser (WorldFoundry T4 item).
 2. WorldFoundry: on Cast1, the settings link opens the chooser, a choice is saved, and the next
    Dream plays it.
 3. Homeboard on Cast1: a World Foundry entry previews and plays on Home through the app's preview
