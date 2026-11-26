@@ -1,8 +1,7 @@
 # Screensavers across Homeboard, the World Foundry apps and Android
 
-**Status (2026‑11‑26):** investigation for Will, with three decisions open (below). Nothing
-here is built. It reframes Stage 5 of the [screensaver plan](../plans/2026-11-20-screensavers.md),
-which is on hold.
+**Status (2026‑11‑26):** four decisions made by Will (below). Nothing here is built. It
+reframes Stage 5 of the [screensaver plan](../plans/2026-11-20-screensavers.md).
 
 ## Three questions, three owners
 
@@ -67,33 +66,33 @@ flowchart LR
     AS --> D[Aquarium screensaver] --> SC
 ```
 
-## Decisions for Will
+## Decisions
 
-1. **Who chooses the tank or clock?**
-    - **The app (recommended).** Works on every device, with or without Homeboard. No app has
-      to trust another, and Homeboard needs no new code. You lose picking a tank from
-      Homeboard's own list or its phone controller: they open the app's menu instead.
-    - **Homeboard.** Needs the trust list in the
-      [companion contract](../plans/2026-11-26-screensaver-companion-contract.md), kept current
-      for every Homeboard signing key, including a test key to remove before publishing.
-    - **The app now, Homeboard later** if the phone controller turns out to need it.
-2. **Should Homeboard play installed World Foundry screensavers on Home and in Preview?**
-    - **Yes (recommended).** It gives Preview, and without `adb` it is the only way to see them
-      on Google TV, though only until Android's idle time, when Android's own screensaver takes
-      over (point 3). The apps only declare names; nothing gains access to anything. Still to
-      check: a ringing timer must bring Homeboard back while the app's screen is in front.
-    - **No.** World Foundry screensavers run only through Use everywhere.
-    - Related, not decided: Homeboard could keep the screen on while its own screensaver plays,
-      so Android's never replaces it. That would also stop Android from turning the TV off, so
-      it needs a limit of its own.
-3. **The default screensaver.** Homeboard's Clock today. Will, 2026‑11‑20: "perhaps some sort
-   of world foundry 3d clock? i'll provide that later". The Clocks app now exists.
-    - **Keep Clock and offer the Clocks app (recommended until Homeboard is published).** No
-      new obligations.
-    - **Compile a World Foundry clock into Homeboard.** It is there at once, but Homeboard grows
-      by about 3.5 MB, its build needs the engine, the licence grant must be written down, and
-      every scene fix needs a Homeboard release
-      ([distribution research](2026-11-20-screensaver-distribution.md#the-bundled-default)).
+**Decided by Will on 2026‑11‑26:** "go with your recommendations on all four". Decision 4 had
+no recommendation when he answered; the one given in the same reply is recorded below, and he
+can still reverse it.
+
+1. **Who chooses the tank or clock? The app.** Each app gets its own "use for screensaver"
+   choice, reached through Android's standard settings link. That works on every device, with or
+   without Homeboard; no app trusts another, and Homeboard needs no new code. Given up: picking a
+   tank from Homeboard's own list or its phone controller, which open the app's menu instead.
+   Rejected: Homeboard choosing, which needed the trust list in the
+   [companion contract](../plans/2026-11-26-screensaver-companion-contract.md). It can be
+   revisited if the phone controller needs it.
+2. **Homeboard plays installed World Foundry screensavers on Home and in Preview: yes**, through
+   each app's own preview screen, with names the apps declare and no access rights. It lasts only
+   until Android's idle time on a TV Homeboard does not manage (point 3). Still to check: a ringing
+   timer must bring Homeboard back while the app's screen is in front.
+3. **The default screensaver: keep Homeboard's Clock and offer the Clocks app** until Homeboard is
+   published. Will, 2026‑11‑20: "perhaps some sort of world foundry 3d clock? i'll provide that
+   later". Rejected for now: compiling a World Foundry clock into Homeboard, which would add about
+   3.5 MB, the engine in Homeboard's build, a written licence grant, and a Homeboard release for
+   every scene fix ([distribution research](2026-11-20-screensaver-distribution.md#the-bundled-default)).
+4. **Homeboard does not keep the screen on while its own screensaver plays.** Doing so would
+   override the TV's own power settings, including turning the TV off, and need a shutdown limit
+   of Homeboard's own. On a TV Homeboard manages, Android plays Homeboard's choice for the whole
+   idle time anyway. Homeboard's screen should say that Android's screensaver follows its own
+   (see the [user guide](../how-to/screensaver.md#when-it-starts)).
 
 ## Without debugging switched on
 

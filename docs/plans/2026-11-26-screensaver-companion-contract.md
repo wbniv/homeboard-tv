@@ -1,92 +1,65 @@
 # What a screensaver app must offer Homeboard (Stage 5)
 
-**Status (2026‑11‑26): on hold, not accepted; nothing is built.** Whether Homeboard should change the
-app's settings at all is being re‑evaluated in the
-[screensaver integration investigation](../investigations/2026-11-26-screensaver-integration.md).
-The alternative is a tank choice inside the app itself, which needs no section 2.
+**Status (2026‑11‑26): accepted in a reduced form; nothing is built.** Will's decisions in the
+[screensaver integration investigation](../investigations/2026-11-26-screensaver-integration.md)
+(decision 1: the app chooses its own tank or clock; decision 2: Homeboard plays installed World
+Foundry screensavers on Home and in Preview) remove the earlier provider‑admission section and
+the level names. What is left needs no access rights between the apps.
 
-## Why Stage 5 cannot be built yet
+## What each app declares
 
-Checked in `~/WorldFoundry-wbniv` (branch `2026-new-level`) on 2026‑11‑26. The one‑run
-`LEVEL` start it also needs is done.
-
-| Stage 5 control | Needs | Today |
-|---|---|---|
-| Tank list in Options | `getCapabilities` from the app's settings provider | `TankSettingsProvider` throws `SecurityException` for any caller but the device shell and itself |
-| **Use this screensaver** with a tank | `setSetting tank:<id>` | The same refusal |
-| **Preview**, Home idle, remote key | The preview activity and extra names, declared by the app | Only `SETTINGS_AUTHORITY` is declared. The other names are in the coordinator's registry, which Homeboard cannot read |
-
-Install, in the wider [screensaver plan](2026-11-20-screensavers.md), also needs a published app,
-Stage 2 and Stage 0 questions 10 and 11. It is not covered here.
-
-## 1. Metadata on the Dream service
-
-Beside the existing `SETTINGS_AUTHORITY`. The key names do not follow the package name, as in the
+On its Dream `<service>`, beside the existing `SETTINGS_AUTHORITY`. The key names do not follow the
+package name, as in the
 [settings provider contract](../../../chromecast-coordinator/docs/settings-provider-contract.md).
 
 | Key (`org.worldfoundry.screensaver.` +) | Aquarium | Clocks | Meaning |
 |---|---|---|---|
-| `SETTINGS_AUTHORITY` (exists) | `${applicationId}.settings` | as now | The settings provider |
-| `PREVIEW_ACTIVITY` | `org.worldfoundry.screensaver.ScreensaverPreviewActivity` | the same | Full class name, never a leading `.` |
-| `PREVIEW_VALUE` (optional) | `aquarium` | omitted | Sent as the `…DREAM` extra |
-| `LEVEL_EXTRA` | `org.worldfoundry.screensaver.LEVEL` | the same | Extra that starts one level for one run |
-| `LEVEL_SETTING` | `tank` | `clock` | The choice setting that lists the levels |
+| `PREVIEW_ACTIVITY` | `org.worldfoundry.screensaver.ScreensaverPreviewActivity` | the same | Full class name in the Dream's own package, never a leading `.` |
+| `PREVIEW_EXTRA` (optional) | `org.worldfoundry.screensaver.DREAM` | omitted | Name of a string extra to send |
+| `PREVIEW_VALUE` (optional) | `aquarium` | omitted | Its value |
 
-The values match the coordinator's `preview_value`, `level_launch_extra` and `level_setting_id`,
-so one test in WorldFoundry can hold the manifest and the registry together.
+The values match the coordinator registry's `preview_activity`, `preview_extra` and
+`preview_value`, so one test in WorldFoundry can hold the manifest and the registry together.
 
-## 2. The provider admits Homeboard
+In the Dream's `android.service.dream` XML, **`settingsActivity`** names the app's own "use for
+screensaver" chooser (decision 1). It is Android's standard link: Homeboard's existing **Open
+‹app› settings** button and a phone's own screensaver picker both open it, with no Homeboard
+code. What the chooser looks like belongs to a WorldFoundry plan.
 
-**Proposed:** keep the provider exported and, besides the shell and itself, admit a caller only
-when both its package name and its signing certificate's SHA‑256 are on a list built into the app.
+Not needed any more: the `LEVEL_EXTRA` and `LEVEL_SETTING` keys, and any caller other than the
+device shell on the settings providers. The certificate‑based admission proposed earlier the same
+day was dropped with decision 1.
 
-| Package | Signing certificate SHA‑256 |
-|---|---|
-| `net.biohack.homeboard` | `4ae3fa8a0c926c8b82edff09e20653bcaaa1ea55e5ae3a274291314853bd3d59` |
-| `net.biohack.homeboard.debug` | `dbb3446edcf5f2a66e810c266ee9195dce842e95d618d75529fc26c0d6caf3ff` |
-
-- Both rows apply in every build of the app. The app is usable only as a release build (its debug
-  build is far too slow), and the test devices run Homeboard's debug build. The debug key is
-  Homeboard's own, kept on the build machine, not the stock Android debug key. **Remove the debug row
-  before the app is published.**
-- Android 9 (API 28) and later; older versions refuse Homeboard.
-- Methods: `getCapabilities` and `setSetting`, with the validation the provider already does.
-- Rejected: a signature‑level permission, which needs both apps signed with one key. A package name
-  alone is not enough: anyone can ship that name on a TV without Homeboard.
-
-## 3. What Homeboard then does
+## What Homeboard does
 
 ```mermaid
 sequenceDiagram
+    participant P as Person
     participant H as Homeboard
     participant PM as Android PackageManager
-    participant P as App settings provider
-    participant A as App preview activity
+    participant A as App preview screen
+    participant C as App chooser
     H->>PM: installed Dream services, with metadata
-    PM-->>H: authority, preview activity, extra, level setting
-    H->>P: getCapabilities
-    alt Homeboard admitted
-        P-->>H: levels and the saved choice
-        H->>A: Preview: start with LEVEL, nothing saved
-        H->>P: Use this screensaver: setSetting tank:id
-        P-->>H: saved
-        H->>P: getCapabilities, read the value back
-    else refused or no answer
-        P-->>H: SecurityException
-        H->>H: no Options, the app stays usable through Use everywhere
-    end
+    PM-->>H: preview screen, extra, settings link
+    P->>H: Preview, or Home idle, or remote key
+    H->>A: start in the Dream's own package, with the extra if declared
+    A-->>P: plays the app's saved tank or clock, saves nothing
+    P->>H: Open Aquarium settings
+    H->>C: start the settings link
+    C-->>P: choose a tank for the screensaver, saved by the app
+    P->>H: Use this screensaver
+    H->>H: Use everywhere: Android's setting, as today
 ```
 
 Homeboard builds the preview component from the Dream's own package, so metadata cannot point it
-at another app. An app without these keys behaves as it does today. The screen is the one in the
-WorldFoundry [tank settings mockups](../../../WorldFoundry-wbniv/docs/plans/2026-11-21-aquarium-menu-and-screensaver-launch.md);
-this document changes nothing on screen.
+at another app. An app without these keys behaves as it does today: listed, no Preview.
 
 ## Verification
 
 1. WorldFoundry: a test shows the Aquarium and Clocks Dream services declare the keys above with
-   the coordinator registry's values.
-2. WorldFoundry: a test shows the provider admits the listed package and certificate, and refuses
-   a wrong certificate and an unlisted package.
-3. Homeboard, once 1 and 2 are installed on Cast1: the [screensaver plan](2026-11-20-screensavers.md)'s
-   step 13, without its Install clause.
+   the coordinator registry's values, and a `settingsActivity`.
+2. WorldFoundry: on Cast1, the settings link opens the chooser, a choice is saved, and the next
+   Dream plays it.
+3. Homeboard on Cast1: a World Foundry entry previews and plays on Home through the app's preview
+   screen; **Open ‹app› settings** opens the chooser; a ringing timer brings Homeboard back while
+   the app's screen is in front.
