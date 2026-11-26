@@ -36,7 +36,8 @@ no menu, editor or full-screen widget is open. It never starts over live TV or a
 Until you use the screensaver everywhere (below), Android's own screensaver and idle
 time are not changed by this screen; **In other apps** shows what Android has now, for
 example "Android's Ambient mode after 10&nbsp;min · unchanged by Homeboard". If Android's
-timeout is shorter than Homeboard's, Android's screensaver starts first. If Homeboard
+timeout is shorter than Homeboard's, Android's screensaver starts first. If it is longer,
+Homeboard's plays first and Android's replaces it when Android's time comes. If Homeboard
 cannot read Android's setting on your TV, the line says so ("Unknown").
 
 Any remote key ends the screensaver and returns to Home where you left it; that key does

@@ -1,0 +1,65 @@
+[
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795664932.3947704,
+    "end": 1795664932.6054657,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pm path net.biohack.homeboard.debug"
+    ],
+    "start": 1795664932.7666519,
+    "end": 1795664933.0383143,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "sha256sum '/data/app/~~ZlbAn4fmr4vxAqgShG2xUA==/net.biohack.homeboard.debug-ieCVTww0g8Zsg6SC1QudUw==/base.apk'"
+    ],
+    "start": 1795664933.0401516,
+    "end": 1795664933.302012,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am force-stop net.biohack.homeboard.debug"
+    ],
+    "start": 1795664933.3477705,
+    "end": 1795664933.7021577,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795664933.7052226,
+    "end": 1795664934.1019294,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am start -W -n net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity"
+    ],
+    "start": 1795664934.255265,
+    "end": 1795664934.9736362,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795664939.9775817,
+    "end": 1795664940.3171268,
+    "returncode": 0
+  }
+]

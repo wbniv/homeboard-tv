@@ -1,0 +1,68 @@
+ACTIVITY MANAGER PROCESS EXIT INFO (dumpsys activity exit-info)
+Last Timestamp of Persistence Into Persistent Storage: 2026-11-26 09:47:16.936
+  package: net.biohack.homeboard.debug
+    Historical Process Exit for uid=10128
+        ApplicationExitInfo #0:
+          timestamp=2026-11-26 10:50:16.344 pid=10472 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=0.00 rss=0.00 description=stop net.biohack.homeboard.debug due to from pid 10769 state=empty trace=null
+        ApplicationExitInfo #1:
+          timestamp=2026-11-26 10:49:00.605 pid=10318 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=400 pss=0.00 rss=0.00 description=stop net.biohack.homeboard.debug due to from pid 10387 state=empty trace=null
+        ApplicationExitInfo #2:
+          timestamp=2026-11-26 09:30:37.943 pid=28948 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=0.00 rss=0.00 description=stop net.biohack.homeboard.debug due to from pid 29242 state=empty trace=null
+        ApplicationExitInfo #3:
+          timestamp=2026-11-26 09:29:26.680 pid=28555 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=0.00 rss=0.00 description=stop net.biohack.homeboard.debug due to from pid 28837 state=empty trace=null
+        ApplicationExitInfo #4:
+          timestamp=2026-11-26 09:25:51.115 pid=27952 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=0.00 rss=0.00 description=stop net.biohack.homeboard.debug due to from pid 28270 state=empty trace=null
+        ApplicationExitInfo #5:
+          timestamp=2026-11-26 09:19:38.990 pid=27093 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=73MB rss=154MB description=stop net.biohack.homeboard.debug due to from pid 27325 state=empty trace=null
+        ApplicationExitInfo #6:
+          timestamp=2026-11-26 09:17:57.731 pid=26047 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=400 pss=25MB rss=78MB description=stop net.biohack.homeboard.debug due to from pid 26886 state=empty trace=null
+        ApplicationExitInfo #7:
+          timestamp=2026-11-26 09:17:16.912 pid=22373 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=16 (PACKAGE UPDATED) subreason=0 (UNKNOWN) status=0
+          importance=400 pss=40MB rss=65MB description=stop net.biohack.homeboard.debug due to installPackageLI state=empty trace=null
+        ApplicationExitInfo #8:
+          timestamp=2026-11-25 12:24:41.010 pid=24743 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=70MB rss=151MB description=stop net.biohack.homeboard.debug due to from pid 25159 state=empty trace=null
+        ApplicationExitInfo #9:
+          timestamp=2026-11-25 09:22:31.328 pid=10173 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=70MB rss=152MB description=stop net.biohack.homeboard.debug due to from pid 10433 state=empty trace=null
+        ApplicationExitInfo #10:
+          timestamp=2026-11-25 09:10:51.198 pid=8102 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=0.00 rss=0.00 description=stop net.biohack.homeboard.debug due to from pid 8360 state=empty trace=null
+        ApplicationExitInfo #11:
+          timestamp=2026-11-25 09:03:40.493 pid=6289 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=81MB rss=169MB description=stop net.biohack.homeboard.debug due to from pid 6588 state=empty trace=null
+        ApplicationExitInfo #12:
+          timestamp=2026-11-24 04:25:56.068 pid=6632 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=29MB rss=80MB description=stop net.biohack.homeboard.debug due to from pid 7141 state=empty trace=null
+        ApplicationExitInfo #13:
+          timestamp=2026-11-24 04:25:18.131 pid=5249 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=16 (PACKAGE UPDATED) subreason=0 (UNKNOWN) status=0
+          importance=200 pss=60MB rss=70MB description=stop net.biohack.homeboard.debug due to installPackageLI state=empty trace=null
+        ApplicationExitInfo #14:
+          timestamp=2026-11-23 21:48:47.128 pid=4832 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=100 pss=86MB rss=148MB description=stop net.biohack.homeboard.debug due to from pid 5016 state=empty trace=null
+        ApplicationExitInfo #15:
+          timestamp=2026-11-23 21:48:02.694 pid=4122 realUid=10128 packageUid=10128 definingUid=10128 user=0
+          process=net.biohack.homeboard.debug reason=10 (USER REQUESTED) subreason=21 (FORCE STOP) status=0
+          importance=125 pss=0.00 rss=0.00 description=stop net.biohack.homeboard.debug due to from pid 4712 state=empty trace=null

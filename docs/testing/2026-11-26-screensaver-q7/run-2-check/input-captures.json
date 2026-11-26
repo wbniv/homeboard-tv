@@ -1,0 +1,89 @@
+{
+  "score_sha256": "689aad568256432f4c0e81ffee07e4d07d9f63053ac8ad20b31f9889bfd9dc93",
+  "host_start_wall": 1795665171.8946192,
+  "host_start_monotonic": 145109.316324592,
+  "captures": [
+    {
+      "label": "01-shortcut-focused",
+      "planned_ms": 13000,
+      "started": 1795665185.9316723,
+      "ended": 1795665187.4831684,
+      "file": "input-frame-001.png",
+      "bytes": 262403,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-chooser",
+      "planned_ms": 19000,
+      "started": 1795665191.9316866,
+      "ended": 1795665193.41841,
+      "file": "input-frame-002.png",
+      "bytes": 274375,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-change-focused",
+      "planned_ms": 24000,
+      "started": 1795665196.932341,
+      "ended": 1795665198.4825087,
+      "file": "input-frame-003.png",
+      "bytes": 234120,
+      "schedule_lateness_ms": 1
+    },
+    {
+      "label": "04-options",
+      "planned_ms": 28000,
+      "started": 1795665200.9316618,
+      "ended": 1795665202.4189434,
+      "file": "input-frame-004.png",
+      "bytes": 234480,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "05-one-minute-set",
+      "planned_ms": 32000,
+      "started": 1795665204.9316764,
+      "ended": 1795665206.4362104,
+      "file": "input-frame-005.png",
+      "bytes": 160710,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "06-home-last-input",
+      "planned_ms": 38000,
+      "started": 1795665210.9316869,
+      "ended": 1795665212.5413125,
+      "file": "input-frame-006.png",
+      "bytes": 262403,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "07-home-before-homeboard-timer",
+      "planned_ms": 70000,
+      "started": 1795665242.9316819,
+      "ended": 1795665244.4405816,
+      "file": "input-frame-007.png",
+      "bytes": 259556,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "08-homeboard-screensaver",
+      "planned_ms": 105000,
+      "started": 1795665277.9316802,
+      "ended": 1795665279.4003656,
+      "file": "input-frame-008.png",
+      "bytes": 259556,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "09-homeboard-screensaver-later",
+      "planned_ms": 180000,
+      "started": 1795665352.9316854,
+      "ended": 1795665354.4962533,
+      "file": "input-frame-009.png",
+      "bytes": 258728,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "failed"
+}

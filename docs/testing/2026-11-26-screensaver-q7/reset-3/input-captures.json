@@ -1,0 +1,44 @@
+{
+  "score_sha256": "0713c18073be7440e05d2db1294b1d1b9e1dbdd77b6297546f421c35cadf7025",
+  "host_start_wall": 1795666225.6913588,
+  "host_start_monotonic": 146163.113064011,
+  "captures": [
+    {
+      "label": "01-change-focused",
+      "planned_ms": 15000,
+      "started": 1795666241.7743568,
+      "ended": 1795666243.5150983,
+      "file": "input-frame-001.png",
+      "bytes": 266536,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-options",
+      "planned_ms": 19000,
+      "started": 1795666245.7803843,
+      "ended": 1795666247.1144705,
+      "file": "input-frame-002.png",
+      "bytes": 155476,
+      "schedule_lateness_ms": 6
+    },
+    {
+      "label": "03-android-decides-set",
+      "planned_ms": 23000,
+      "started": 1795666249.775258,
+      "ended": 1795666251.4192429,
+      "file": "input-frame-003.png",
+      "bytes": 155829,
+      "schedule_lateness_ms": 1
+    },
+    {
+      "label": "04-home",
+      "planned_ms": 32000,
+      "started": 1795666258.7742023,
+      "ended": 1795666260.2842562,
+      "file": "input-frame-004.png",
+      "bytes": 273986,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

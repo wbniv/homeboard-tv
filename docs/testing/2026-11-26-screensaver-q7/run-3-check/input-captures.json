@@ -1,0 +1,98 @@
+{
+  "score_sha256": "713cd4ff655d9ebdd5b28f55d4b0d101662ef71a157b49fc3564aceb8402315b",
+  "host_start_wall": 1795665865.831422,
+  "host_start_monotonic": 145803.253127466,
+  "captures": [
+    {
+      "label": "01-change-focused",
+      "planned_ms": 15000,
+      "started": 1795665881.7973723,
+      "ended": 1795665883.4901235,
+      "file": "input-frame-001.png",
+      "bytes": 272527,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-options",
+      "planned_ms": 19000,
+      "started": 1795665885.7987123,
+      "ended": 1795665887.0784304,
+      "file": "input-frame-002.png",
+      "bytes": 155829,
+      "schedule_lateness_ms": 2
+    },
+    {
+      "label": "03-one-minute-set",
+      "planned_ms": 23000,
+      "started": 1795665889.7975245,
+      "ended": 1795665891.2769992,
+      "file": "input-frame-003.png",
+      "bytes": 155476,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "04-home-last-input",
+      "planned_ms": 31000,
+      "started": 1795665897.797312,
+      "ended": 1795665899.3787968,
+      "file": "input-frame-004.png",
+      "bytes": 274028,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "05-home-before-homeboard-timer",
+      "planned_ms": 70000,
+      "started": 1795665936.7973337,
+      "ended": 1795665938.343716,
+      "file": "input-frame-005.png",
+      "bytes": 257376,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "06-homeboard-screensaver",
+      "planned_ms": 100000,
+      "started": 1795665966.798343,
+      "ended": 1795665968.1694999,
+      "file": "input-frame-006.png",
+      "bytes": 121740,
+      "schedule_lateness_ms": 1
+    },
+    {
+      "label": "07-homeboard-screensaver-later",
+      "planned_ms": 150000,
+      "started": 1795666016.7973242,
+      "ended": 1795666018.3957317,
+      "file": "input-frame-007.png",
+      "bytes": 147486,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "08-before-android-idle",
+      "planned_ms": 200000,
+      "started": 1795666066.7973208,
+      "ended": 1795666068.278768,
+      "file": "input-frame-008.png",
+      "bytes": 151955,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "09-after-android-idle",
+      "planned_ms": 240000,
+      "started": 1795666106.7973316,
+      "ended": 1795666108.3813632,
+      "file": "input-frame-009.png",
+      "bytes": 196745,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "10-later",
+      "planned_ms": 300000,
+      "started": 1795666166.7973814,
+      "ended": 1795666168.7086802,
+      "file": "input-frame-010.png",
+      "bytes": 197365,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

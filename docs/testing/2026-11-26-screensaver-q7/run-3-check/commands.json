@@ -1,0 +1,319 @@
+[
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795665850.2137597,
+    "end": 1795665850.4230726,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pm path net.biohack.homeboard.debug"
+    ],
+    "start": 1795665850.5569754,
+    "end": 1795665850.835334,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "sha256sum '/data/app/~~ZlbAn4fmr4vxAqgShG2xUA==/net.biohack.homeboard.debug-ieCVTww0g8Zsg6SC1QudUw==/base.apk'"
+    ],
+    "start": 1795665850.838052,
+    "end": 1795665851.0744772,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am force-stop net.biohack.homeboard.debug"
+    ],
+    "start": 1795665851.1155424,
+    "end": 1795665851.4626718,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795665851.4657748,
+    "end": 1795665851.6740224,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am start -W -n net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity"
+    ],
+    "start": 1795665851.8280196,
+    "end": 1795665858.3265326,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795665863.3323302,
+    "end": 1795665863.6707911,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795665863.681211,
+    "end": 1795665863.9694805,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795665863.9941087,
+    "end": 1795665864.2579553,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795665864.2626247,
+    "end": 1795665864.458752,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795665864.4635024,
+    "end": 1795665864.6400015,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795665864.6445827,
+    "end": 1795665864.84723,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/capture-helper.jar",
+      "/data/local/tmp/wf-J-614c522a316c-keyscore.jar"
+    ],
+    "start": 1795665864.9459853,
+    "end": 1795665865.5519328,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/var/lib/wf-device-coordinator/evidence/J-614c522a316c/input-score.csv",
+      "/data/local/tmp/wf-J-614c522a316c-input.csv"
+    ],
+    "start": 1795665865.5538611,
+    "end": 1795665865.6631532,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "date",
+      "+%s%3N"
+    ],
+    "start": 1795665865.689006,
+    "end": 1795665865.8313866,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test -s /data/local/tmp/wf-J-614c522a316c-input-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795665865.8422074,
+    "end": 1795665866.0432656,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test -s /data/local/tmp/wf-J-614c522a316c-input-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795665866.1461112,
+    "end": 1795665866.4536273,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test -s /data/local/tmp/wf-J-614c522a316c-input-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795665866.5593498,
+    "end": 1795665866.8716884,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test -s /data/local/tmp/wf-J-614c522a316c-input-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795665866.9741094,
+    "end": 1795665867.1474004,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "head",
+      "-n",
+      "1",
+      "/data/local/tmp/wf-J-614c522a316c-input-log.csv"
+    ],
+    "start": 1795665867.150484,
+    "end": 1795665867.325169,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795665881.8011823,
+    "end": 1795665883.4896884,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795665885.8012872,
+    "end": 1795665887.0782132,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795665889.800314,
+    "end": 1795665891.27682,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795665897.798942,
+    "end": 1795665899.3782902,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795665936.801347,
+    "end": 1795665938.3432903,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795665966.8018494,
+    "end": 1795665968.1692045,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795666016.8008947,
+    "end": 1795666018.3954883,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795666066.7994812,
+    "end": 1795666068.2785447,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795666106.8009474,
+    "end": 1795666108.378063,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795666166.7995927,
+    "end": 1795666168.7083738,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "pull",
+      "/data/local/tmp/wf-J-614c522a316c-input-log.csv",
+      "/var/lib/wf-device-coordinator/evidence/J-614c522a316c/input-timeline.csv"
+    ],
+    "start": 1795666168.711379,
+    "end": 1795666168.9647534,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "logcat",
+      "-d",
+      "-v",
+      "epoch",
+      "--pid=13763"
+    ],
+    "start": 1795666168.9716861,
+    "end": 1795666169.2007916,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795666169.2104053,
+    "end": 1795666169.4596977,
+    "returncode": 0
+  }
+]

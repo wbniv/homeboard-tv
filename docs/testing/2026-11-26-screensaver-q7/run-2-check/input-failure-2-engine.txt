@@ -1,0 +1,2 @@
+I/homeboard.debug(11341): Background concurrent mark compact GC freed 220776(9109KB) AllocSpace objects, 65(3060KB) LOS objects, 49% free, 4167KB/8335KB, paused 417us,5.530ms total 78.255ms
+I/homeboard.debug(11341): Background concurrent mark compact GC freed 104932(3646KB) AllocSpace objects, 9(372KB) LOS objects, 49% free, 4267KB/8534KB, paused 766us,6.820ms total 78.782ms

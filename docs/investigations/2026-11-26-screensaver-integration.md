@@ -28,7 +28,7 @@ flowchart TD
     WF --> SC[Saved tank or clock<br/>only adb can change it]
     U[Person on Google TV] -. no screen for it .-> SEL
     HB[Homeboard: Use everywhere<br/>after one adb command] --> SEL
-    AT -. probably covers it, not yet seen .-> HS
+    AT -. replaces it when Android's time comes .-> HS
 ```
 
 ## What this shows
@@ -38,9 +38,12 @@ flowchart TD
    command per TV.
 2. **Android cannot preview another app's screensaver.** Homeboard can only play one by
    starting that app's own preview screen, which both World Foundry apps already export.
-3. **Homeboard's screensaver on Home does not keep the screen on** (no `KEEP_SCREEN_ON` or wake
-   lock in its code), so Android's own screensaver probably starts over it when Android's
-   time runs out: 10 min on Cast1. Not yet seen on a device (Stage 0 Q7).
+3. **Android's own screensaver replaces Homeboard's when Android's time comes.** Seen on Cast1
+   on 2026‑11‑26: Homeboard's Clock played from 1 min, and Android's selected screensaver took
+   over at Android's idle time, leaving Homeboard's paused underneath
+   ([Q7 record](../testing/2026-11-26-screensaver-q7.md)). Homeboard holds no wake lock and does
+   not keep the screen on. So on a TV Homeboard does not manage, its screensaver is only a
+   lead‑in to Android's, which on Google TV is Ambient mode unless someone changed it with `adb`.
 4. **Homeboard already has Open ‹app› settings** for any screensaver that declares Android's
    settings link (`settingsActivity`). The World Foundry apps declare none.
 
@@ -75,10 +78,14 @@ flowchart LR
       for every Homeboard signing key, including a test key to remove before publishing.
     - **The app now, Homeboard later** if the phone controller turns out to need it.
 2. **Should Homeboard play installed World Foundry screensavers on Home and in Preview?**
-    - **Yes (recommended).** It is the only way someone without `adb` sees them on Google TV,
-      and it gives Preview. The apps only declare names; nothing gains access to anything.
-      Still to check: a ringing timer must bring Homeboard back while the app's screen is in front.
+    - **Yes (recommended).** It gives Preview, and without `adb` it is the only way to see them
+      on Google TV, though only until Android's idle time, when Android's own screensaver takes
+      over (point 3). The apps only declare names; nothing gains access to anything. Still to
+      check: a ringing timer must bring Homeboard back while the app's screen is in front.
     - **No.** World Foundry screensavers run only through Use everywhere.
+    - Related, not decided: Homeboard could keep the screen on while its own screensaver plays,
+      so Android's never replaces it. That would also stop Android from turning the TV off, so
+      it needs a limit of its own.
 3. **The default screensaver.** Homeboard's Clock today. Will, 2026‑11‑20: "perhaps some sort
    of world foundry 3d clock? i'll provide that later". The Clocks app now exists.
     - **Keep Clock and offer the Clocks app (recommended until Homeboard is published).** No
@@ -105,6 +112,7 @@ guides, but not tried on our devices, which the coordinator reaches through debu
 
 - Debugging switched off: a device check needs a person to switch it off, change the
   screensaver in Homeboard and switch it back on for a coordinator read.
-- Stage 0 Q7, Android's screensaver over Homeboard's: needs a device run.
+- Stage 0 Q7's wake half: where the TV returns after Android's screensaver, and what Homeboard
+  does then. The coordinator's `check` stops watching once another app is in front.
 - Installing apps from Homeboard (the rest of Stage 5): unchanged, waits on publishing.
 - Seahorse Grid stays its own app (WorldFoundry decision D7); Planted Tank is being retired.

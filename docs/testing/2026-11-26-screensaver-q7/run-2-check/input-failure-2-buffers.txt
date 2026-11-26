@@ -1,0 +1,452 @@
+--- logcat -b crash, last 200 lines
+--------- beginning of crash
+11-26 09:19:30.571 27212 27212 E AndroidRuntime: FATAL EXCEPTION: main
+11-26 09:19:30.571 27212 27212 E AndroidRuntime: PID: 27212
+11-26 09:19:30.571 27212 27212 E AndroidRuntime: java.lang.IllegalArgumentException: Incomplete score
+11-26 09:19:30.571 27212 27212 E AndroidRuntime: 	at WfKeyScore.parse(WfKeyScore.java:67)
+11-26 09:19:30.571 27212 27212 E AndroidRuntime: 	at WfKeyScore.read(WfKeyScore.java:80)
+11-26 09:19:30.571 27212 27212 E AndroidRuntime: 	at WfKeyScore.main(WfKeyScore.java:657)
+11-26 09:19:30.571 27212 27212 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-26 09:19:30.571 27212 27212 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:359)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: Error reporting crash
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: java.lang.RuntimeException: Bad file descriptor
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.os.BinderProxy.transactNative(Native Method)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.os.BinderProxy.transact(BinderProxy.java:584)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.os.IServiceManager$Stub$Proxy.checkService(IServiceManager.java:443)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.os.ServiceManagerProxy.getService(ServiceManagerNative.java:63)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.os.ServiceManager.rawGetService(ServiceManager.java:378)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.os.ServiceManager.getService(ServiceManager.java:147)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.app.ActivityManager$3.create(ActivityManager.java:5214)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.app.ActivityManager$3.create(ActivityManager.java:5211)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.util.Singleton.get(Singleton.java:43)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at android.app.ActivityManager.getService(ActivityManager.java:5202)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$KillApplicationHandler.uncaughtException(RuntimeInit.java:160)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1071)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1066)
+11-26 09:19:30.577 27212 27212 E AndroidRuntime: 	at java.lang.Thread.dispatchUncaughtException(Thread.java:2306)
+11-26 10:56:27.667 11433 11433 E AndroidRuntime: FATAL EXCEPTION: main
+11-26 10:56:27.667 11433 11433 E AndroidRuntime: PID: 11433
+11-26 10:56:27.667 11433 11433 E AndroidRuntime: java.lang.IllegalStateException: Target app left foreground
+11-26 10:56:27.667 11433 11433 E AndroidRuntime: 	at WfKeyScore$Foreground.require(WfKeyScore.java:566)
+11-26 10:56:27.667 11433 11433 E AndroidRuntime: 	at WfKeyScore.play(WfKeyScore.java:597)
+11-26 10:56:27.667 11433 11433 E AndroidRuntime: 	at WfKeyScore.main(WfKeyScore.java:681)
+11-26 10:56:27.667 11433 11433 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-26 10:56:27.667 11433 11433 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:359)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: Error reporting crash
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: java.lang.RuntimeException: Bad file descriptor
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.os.BinderProxy.transactNative(Native Method)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.os.BinderProxy.transact(BinderProxy.java:584)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.os.IServiceManager$Stub$Proxy.checkService(IServiceManager.java:443)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.os.ServiceManagerProxy.getService(ServiceManagerNative.java:63)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.os.ServiceManager.rawGetService(ServiceManager.java:378)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.os.ServiceManager.getService(ServiceManager.java:147)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.app.ActivityManager$3.create(ActivityManager.java:5214)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.app.ActivityManager$3.create(ActivityManager.java:5211)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.util.Singleton.get(Singleton.java:43)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at android.app.ActivityManager.getService(ActivityManager.java:5202)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$KillApplicationHandler.uncaughtException(RuntimeInit.java:160)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1071)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1066)
+11-26 10:56:27.692 11433 11433 E AndroidRuntime: 	at java.lang.Thread.dispatchUncaughtException(Thread.java:2306)
+--- logcat -b system, last 200 lines
+11-26 10:50:20.587   655   757 D ActivityManager: freezing 27743 com.google.android.tts
+11-26 10:50:20.588   655   757 D ActivityManager: freezing 14748 com.google.android.apps.tv.dreamx
+11-26 10:50:20.589   655   757 D ActivityManager: freezing 29002 net.biohack.homeboard.widgetprovider
+11-26 10:50:20.590   655   757 D ActivityManager: freezing 26170 net.biohack.homeboard
+11-26 10:50:20.590   655   757 D ActivityManager: freezing 27795 com.google.process.gservices
+11-26 10:50:20.591   655   757 D ActivityManager: freezing 8991 com.google.android.partnersetup
+11-26 10:50:20.591   655   757 D ActivityManager: freezing 29718 com.google.android.videos
+11-26 10:50:20.593   655   757 D ActivityManager: freezing 10236 org.worldfoundry.game.clocks
+11-26 10:50:20.593   655   757 D ActivityManager: freezing 30304 org.worldfoundry.coordinator.clockprobe
+11-26 10:50:22.866   655   707 D ActivityManager: sync unfroze 15940 com.google.android.katniss:search for 3
+11-26 10:50:31.180   655  2243 D ActivityManager: sync unfroze 10236 org.worldfoundry.game.clocks for 7
+11-26 10:50:32.869   655  2243 W ProcessStats: Tracking association SourceState{28c712d com.google.android.katniss:interactor/10057 BTop #34193} whose proc state 2 is better than process ProcessState{1e8b7b4 com.google.android.gms.persistent/10058 pkg=com.google.android.gms} proc state 3 (326 skipped)
+11-26 10:50:39.752   655   655 V HotPlugDetectionAction: Poll all devices.
+11-26 10:50:41.237   655   757 D ActivityManager: freezing 10236 org.worldfoundry.game.clocks
+11-26 10:50:46.979   655  2243 W ProcessStats: Tracking association SourceState{28c712d com.google.android.katniss:interactor/10057 BTop #34202} whose proc state 2 is better than process ProcessState{1e8b7b4 com.google.android.gms.persistent/10058 pkg=com.google.android.gms} proc state 3 (63 skipped)
+11-26 10:50:47.095   655   655 V HotPlugDetectionAction: Finish poll all devices.
+11-26 10:50:54.181   655   757 D ActivityManager: freezing 15940 com.google.android.katniss:search
+11-26 10:50:54.528   655   691 D ActivityManager: sync unfroze 10236 org.worldfoundry.game.clocks for 7
+11-26 10:50:56.981   655   757 D ActivityManager: freezing 24050 com.google.android.gms
+11-26 10:50:59.169   655  2243 W ProcessStats: Tracking association SourceState{28c712d com.google.android.katniss:interactor/10057 BTop #34213} whose proc state 2 is better than process ProcessState{1e8b7b4 com.google.android.gms.persistent/10058 pkg=com.google.android.gms} proc state 3 (77 skipped)
+11-26 10:51:04.537   655   757 D ActivityManager: freezing 10236 org.worldfoundry.game.clocks
+11-26 10:51:39.758   655   655 V HotPlugDetectionAction: Poll all devices.
+11-26 10:51:41.046   655   714 W BatteryExternalStatsWorker: error reading modem stats:ERROR_PHONE_NOT_AVAILABLE
+11-26 10:51:47.112   655   655 V HotPlugDetectionAction: Finish poll all devices.
+11-26 10:52:14.409   655  1891 W ProcessStats: Tracking association SourceState{28c712d com.google.android.katniss:interactor/10057 BTop #34216} whose proc state 2 is better than process ProcessState{1e8b7b4 com.google.android.gms.persistent/10058 pkg=com.google.android.gms} proc state 3 (12 skipped)
+11-26 10:52:28.018   655  1891 D ActivityManager: sync unfroze 10236 org.worldfoundry.game.clocks for 7
+11-26 10:52:30.004   655  1891 W ProcessStats: Tracking association SourceState{28c712d com.google.android.katniss:interactor/10057 BTop #34224} whose proc state 2 is better than process ProcessState{1e8b7b4 com.google.android.gms.persistent/10058 pkg=com.google.android.gms} proc state 3 (25 skipped)
+11-26 10:52:37.963   655   691 I ActivityManager: Force stopping net.biohack.homeboard.debug appid=10128 user=0: from pid 11326
+11-26 10:52:37.967   655   691 I AppsFilter: interaction: PackageSetting{46c3e46 tv.projectivy.plugin.wallpaperprovider.immich/10086} -> PackageSetting{9625147 net.biohack.homeboard.debug/10128} BLOCKED
+11-26 10:52:37.967   655   691 I AppsFilter: interaction: PackageSetting{dc4c2c1 net.biohack.homeboard.widgetprovider/10123} -> PackageSetting{9625147 net.biohack.homeboard.debug/10128} BLOCKED
+11-26 10:52:37.967   655   691 I AppsFilter: interaction: PackageSetting{d75975d org.worldfoundry.tvmediaphase0/10023} -> PackageSetting{9625147 net.biohack.homeboard.debug/10128} BLOCKED
+11-26 10:52:37.968   655   691 I AppsFilter: interaction: PackageSetting{e1df8d2 net.biohack.homeboard.fixture/10079} -> PackageSetting{9625147 net.biohack.homeboard.debug/10128} BLOCKED
+11-26 10:52:37.968   655   691 I AppsFilter: interaction: PackageSetting{8ff1da3 net.biohack.homeboard.widgetfixture/10091} -> PackageSetting{9625147 net.biohack.homeboard.debug/10128} BLOCKED
+11-26 10:52:38.074   655   757 D ActivityManager: freezing 10236 org.worldfoundry.game.clocks
+11-26 10:52:38.584   655   691 D CompatibilityChangeReporter: Compat change id reported: 161252188; UID 10128; state: DISABLED
+11-26 10:52:38.585   655   691 W ActivityTaskManager: callingPackage for (uid=2000, pid=11336) has no WPC
+11-26 10:52:38.586   655   691 D CompatibilityChangeReporter: Compat change id reported: 265464455; UID 10128; state: DISABLED
+11-26 10:52:38.587   655   691 D CompatibilityChangeReporter: Compat change id reported: 265452344; UID 10128; state: DISABLED
+11-26 10:52:38.587   655   691 D CompatibilityChangeReporter: Compat change id reported: 266124927; UID 10128; state: DISABLED
+11-26 10:52:38.587   655   691 D CompatibilityChangeReporter: Compat change id reported: 265451093; UID 10128; state: DISABLED
+11-26 10:52:38.587   655   691 D CompatibilityChangeReporter: Compat change id reported: 265456536; UID 10128; state: DISABLED
+11-26 10:52:38.588   655   691 D CompatibilityChangeReporter: Compat change id reported: 255940284; UID 10128; state: DISABLED
+11-26 10:52:38.588   655   691 D CompatibilityChangeReporter: Compat change id reported: 236283604; UID 10128; state: DISABLED
+11-26 10:52:38.588   655   691 D CompatibilityChangeReporter: Compat change id reported: 263959004; UID 10128; state: DISABLED
+11-26 10:52:38.588   655   691 D CompatibilityChangeReporter: Compat change id reported: 264304459; UID 10128; state: DISABLED
+11-26 10:52:38.589   655   691 D CompatibilityChangeReporter: Compat change id reported: 264301586; UID 10128; state: DISABLED
+11-26 10:52:38.589   655   691 D CompatibilityChangeReporter: Compat change id reported: 254631730; UID 10128; state: DISABLED
+11-26 10:52:38.589   655   691 D CompatibilityChangeReporter: Compat change id reported: 273509367; UID 10128; state: DISABLED
+11-26 10:52:38.590   655   691 D CompatibilityChangeReporter: Compat change id reported: 263259275; UID 10128; state: DISABLED
+11-26 10:52:38.590   655   691 D CompatibilityChangeReporter: Compat change id reported: 174042980; UID 10128; state: DISABLED
+11-26 10:52:38.590   655   691 D CompatibilityChangeReporter: Compat change id reported: 174042936; UID 10128; state: DISABLED
+11-26 10:52:38.590   655   691 D CompatibilityChangeReporter: Compat change id reported: 181136395; UID 10128; state: DISABLED
+11-26 10:52:38.592   655   691 D CompatibilityChangeReporter: Compat change id reported: 194480991; UID 10128; state: ENABLED
+11-26 10:52:38.601   655   691 D CompatibilityChangeReporter: Compat change id reported: 205907456; UID 10128; state: ENABLED
+11-26 10:52:38.607   655   691 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity} with LAUNCH_SINGLE_TASK from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+11-26 10:52:38.608   879   954 V WindowManagerShell: Transition requested: android.os.BinderProxy@ca075f9 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=5657 displayId=0 isRunning=true baseIntent=Intent { flg=0x10800000 cmp=net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity } baseActivity=ComponentInfo{net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity} topActivity=ComponentInfo{net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity} origActivity=null realActivity=ComponentInfo{net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity} numActivities=1 lastActiveTime=109858776 supportsMultiWindow=false resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@bda493e} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=true launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{236439f com.gathin.tvhome.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+11-26 10:52:38.615   655   697 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10128; state: DISABLED
+11-26 10:52:38.615   655   697 D CompatibilityChangeReporter: Compat change id reported: 177438394; UID 10128; state: DISABLED
+11-26 10:52:38.615   655   697 D CompatibilityChangeReporter: Compat change id reported: 135772972; UID 10128; state: DISABLED
+11-26 10:52:38.615   655   697 D CompatibilityChangeReporter: Compat change id reported: 135754954; UID 10128; state: ENABLED
+11-26 10:52:38.618   655   708 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10128; state: ENABLED
+11-26 10:52:38.628   655   748 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10128; state: ENABLED
+11-26 10:52:38.636   655   708 I ActivityManager: Start proc 11341:net.biohack.homeboard.debug/u0a128 for next-top-activity {net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity}
+11-26 10:52:38.723   879   954 D WindowManagerShell: TvPipController: onTaskStackChanged()
+11-26 10:52:38.824   655  2243 D CompatibilityChangeReporter: Compat change id reported: 170503758; UID 10128; state: ENABLED
+11-26 10:52:39.326   655  2243 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10128. pid: 11341
+11-26 10:52:39.762   655   655 V HotPlugDetectionAction: Poll all devices.
+11-26 10:52:42.706   655  2243 D CompatibilityChangeReporter: Compat change id reported: 161145287; UID 10128; state: ENABLED
+11-26 10:52:43.597   655   697 W BLASTSyncEngine: Sync group 208 timeout
+11-26 10:52:43.597   655   697 I BLASTSyncEngine: Unfinished container: Task{e2f8fc2 #5657 type=standard A=10128:net.biohack.homeboard.debug}
+11-26 10:52:43.598   655   697 I BLASTSyncEngine: Unfinished container: ActivityRecord{d64740d u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5657}
+11-26 10:52:43.604   879   954 V WindowManagerShell: onTransitionReady android.os.BinderProxy@ca075f9: {id=208 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@f457abb} m=OPEN f=NONE leash=Surface(name=Task=5657)/@0x5af6cec sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@39c6bd8} m=TO_BACK f=NONE leash=Surface(name=Task=5651)/@0x96978b5 sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0}]}
+11-26 10:52:43.604   879   954 V WindowManagerShell: Playing animation for (#208)android.os.BinderProxy@ca075f9@0
+11-26 10:52:43.604   879   954 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@432ef3d
+11-26 10:52:43.604   879   954 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@4c2a332
+11-26 10:52:43.604   879   954 V WindowManagerShell:  try handler com.android.wm.shell.pip.tv.TvPipTransition@f44e883
+11-26 10:52:43.604   879   954 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@7811a00
+11-26 10:52:43.604   879   954 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=208 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@f457abb} m=OPEN f=NONE leash=Surface(name=Task=5657)/@0x5af6cec sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@39c6bd8} m=TO_BACK f=NONE leash=Surface(name=Task=5651)/@0x96978b5 sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0}]}
+11-26 10:52:43.604   879   954 V WindowManagerShell:  Delegate animation for #208 to null
+11-26 10:52:43.604   879   954 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultTransitionHandler@3e44239
+11-26 10:52:43.605   879   954 V WindowManagerShell: start default transition animation, info = {id=208 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@f457abb} m=OPEN f=NONE leash=Surface(name=Task=5657)/@0x5af6cec sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@39c6bd8} m=TO_BACK f=NONE leash=Surface(name=Task=5651)/@0x96978b5 sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0}]}
+11-26 10:52:43.605   655   694 V WindowManager: Sent Transition #208 createdAt=11-26 10:52:38.593 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=5657 displayId=0 isRunning=true baseIntent=Intent { flg=0x10800000 cmp=net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity } baseActivity=ComponentInfo{net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity} topActivity=ComponentInfo{net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity} origActivity=null realActivity=ComponentInfo{net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity} numActivities=1 lastActiveTime=109858776 supportsMultiWindow=false resizeMode=1 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{6107c35 Task{e2f8fc2 #5657 type=standard A=10128:net.biohack.homeboard.debug}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=true launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{db38ca com.gathin.tvhome.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+11-26 10:52:43.605   655   694 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+11-26 10:52:43.606   879   954 V WindowManagerShell: loadAnimation: anim=android.view.animation.AlphaAnimation@c470797 animAttr=0x9 type=OPEN isEntrance=false
+11-26 10:52:43.606   655   694 V WindowManager:     info={id=208 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{6107c35 Task{e2f8fc2 #5657 type=standard A=10128:net.biohack.homeboard.debug}}} m=OPEN f=NONE leash=Surface(name=Task=5657)/@0xad1bb1f sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0},{WCT{RemoteToken{2ccc340 Task{3248326 #5651 type=home}}} m=TO_BACK f=NONE leash=Surface(name=Task=5651)/@0x49578c5 sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0}]}
+11-26 10:52:43.606   879   954 V WindowManagerShell: loadAnimation: anim=android.view.animation.AlphaAnimation@31d096d animAttr=0x8 type=OPEN isEntrance=true
+11-26 10:52:43.607   655  2243 D CompatibilityChangeReporter: Compat change id reported: 271850009; UID 10128; state: ENABLED
+11-26 10:52:43.607   655  2243 D CompatibilityChangeReporter: Compat change id reported: 253665015; UID 10128; state: ENABLED
+11-26 10:52:43.608   655  2243 D CompatibilityChangeReporter: Compat change id reported: 194532703; UID 10128; state: ENABLED
+11-26 10:52:43.623   879   954 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@3e44239
+11-26 10:52:43.792   655   692 W WindowManager: Failed looking up window session=Session{630fced 11341:u0a10128} callers=com.android.server.wm.WindowManagerService.windowForClientLocked:6034 com.android.server.wm.Session.updateRequestedVisibleTypes:690 android.view.IWindowSession$Stub.onTransact:1034 
+11-26 10:52:43.818   655  1977 D CoreBackPreview: Window{11e0770 u0 Toast}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@11b687a, mPriority=0, mIsAnimationCallback=false}
+11-26 10:52:43.851   655  1977 D CompatibilityChangeReporter: Compat change id reported: 171306433; UID 10128; state: ENABLED
+11-26 10:52:43.851   655  1977 D CompatibilityChangeReporter: Compat change id reported: 226439802; UID 10128; state: ENABLED
+11-26 10:52:43.863   655  1977 D CoreBackPreview: Window{65aa0f u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@adcd82b, mPriority=0, mIsAnimationCallback=false}
+11-26 10:52:44.041   879   954 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#208)android.os.BinderProxy@ca075f9@0
+11-26 10:52:44.044   655   694 V WindowManager: Finish Transition #208: created at 11-26 10:52:38.593 collect-started=0.098ms request-sent=13.066ms started=16.773ms ready=174.371ms sent=5007.18ms finished=5450.738ms
+11-26 10:52:44.060   879   954 V WindowManagerShell: Track 0 became idle
+11-26 10:52:44.060   879   954 V WindowManagerShell: All active transition animations finished
+11-26 10:52:44.512   655  2243 W ProcessStats: Tracking association SourceState{82843fc com.google.android.apps.tv.launcherx/10052 BTop #34237} whose proc state 2 is better than process ProcessState{1e8b7b4 com.google.android.gms.persistent/10058 pkg=com.google.android.gms} proc state 3 (64 skipped)
+11-26 10:52:44.879   655   691 D CompatibilityChangeReporter: Compat change id reported: 214016041; UID 10128; state: ENABLED
+11-26 10:52:46.396   655  1977 D CoreBackPreview: Window{11e0770 u0 Toast}: Setting back callback null
+11-26 10:52:46.422   655  1977 W NotificationService: Toast already killed. pkg=net.biohack.homeboard.debug token=android.os.BinderProxy@39cefb8
+11-26 10:52:47.135   655   655 V HotPlugDetectionAction: Finish poll all devices.
+11-26 10:52:48.005   655   757 D ActivityManager: freezing 26467 com.android.providers.tv
+11-26 10:52:49.631   655  1977 D CompatibilityChangeReporter: Compat change id reported: 168419799; UID 10128; state: DISABLED
+11-26 10:52:49.631   655  1977 D CompatibilityChangeReporter: Compat change id reported: 273564678; UID 10128; state: DISABLED
+11-26 10:52:49.632   655  1977 D CompatibilityChangeReporter: Compat change id reported: 184838306; UID 10128; state: DISABLED
+11-26 10:52:49.633   655  1977 D CompatibilityChangeReporter: Compat change id reported: 185004937; UID 10128; state: DISABLED
+11-26 10:52:52.388   655  1977 D AccessibilityManagerService: changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+11-26 10:52:52.388   655  1977 I UiAutomationManager: Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation) when called by user 0
+11-26 10:52:52.394   655   655 D BatterySaverPolicy: accessibility changed to true, updating policy.
+11-26 10:53:39.767   655   655 V HotPlugDetectionAction: Poll all devices.
+11-26 10:53:47.095   655   655 V HotPlugDetectionAction: Finish poll all devices.
+11-26 10:54:39.775   655   655 V HotPlugDetectionAction: Poll all devices.
+11-26 10:54:47.107   655   655 V HotPlugDetectionAction: Finish poll all devices.
+11-26 10:55:39.778   655   655 V HotPlugDetectionAction: Poll all devices.
+11-26 10:55:47.099   655   655 V HotPlugDetectionAction: Finish poll all devices.
+11-26 10:56:20.437   655   727 V DisplayPowerController2[0]: Brightness [0.05] reason changing to: 'manual [ dim ]', previous reason: 'manual'.
+11-26 10:56:20.438   655   727 I DisplayPowerController2[0]: BrightnessEvent: disp=0, physDisp=local:11, brt=0.05, initBrt=0.39763778, rcmdBrt=NaN, preBrt=NaN, lux=0.0, preLux=0.0, hbmMax=1.0, hbmMode=off, rbcStrength=0, thrmMax=1.0, powerFactor=1.0, wasShortTermModelActive=false, flags=, reason=manual [ dim ], autoBrightness=false, strategy=InvalidBrightnessStrategy
+11-26 10:56:20.440   655   727 W PowerManagerService: Screen on took 447038 ms
+11-26 10:56:20.441   655   697 D DisplayManagerService: Ignore redundant display event 0/4 to 10056/22096
+11-26 10:56:20.442   655   697 D DisplayManagerService: Ignore redundant display event 0/4 to 10039/30304
+11-26 10:56:27.411   655   727 I PowerGroup: Napping power group (groupId=0, uid=1000)...
+11-26 10:56:27.411   655   727 I PowerManagerService: Nap time (uid 1000)...
+11-26 10:56:27.413   655   727 I DreamManagerService: Entering dreamland.
+11-26 10:56:27.416   655   727 I PowerManagerService: Dreaming...
+11-26 10:56:27.417   655   694 I DreamController: Starting dream: name=ComponentInfo{org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService}, isPreviewMode=false, canDoze=false, userId=0, reason='power manager request'
+11-26 10:56:27.419   879   954 D WindowManagerShell: TvPipMenuController: closeMenu()
+11-26 10:56:27.421   879   954 D WindowManagerShell: TvPipMenuController: switchToMenuMode: from=MODE_NO_MENU, to=MODE_NO_MENU
+11-26 10:56:27.425   655   694 D CompatibilityChangeReporter: Compat change id reported: 135634846; UID 10133; state: DISABLED
+11-26 10:56:27.429   655   708 D CompatibilityChangeReporter: Compat change id reported: 143937733; UID 10133; state: ENABLED
+11-26 10:56:27.455   655   708 I ActivityManager: Start proc 11717:org.worldfoundry.game.clocks:dream/u0a133 for service {org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService}
+11-26 10:56:27.514   655   691 D CompatibilityChangeReporter: Compat change id reported: 168419799; UID 10133; state: DISABLED
+11-26 10:56:27.514   655   691 D CompatibilityChangeReporter: Compat change id reported: 273564678; UID 10133; state: DISABLED
+11-26 10:56:27.518   655   748 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10133; state: ENABLED
+11-26 10:56:27.553   655   691 D CompatibilityChangeReporter: Compat change id reported: 170503758; UID 10133; state: ENABLED
+11-26 10:56:27.605   655   691 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10133. pid: 11717
+11-26 10:56:27.620   655   694 W ActivityTaskManager: callingPackage for (uid=1000, pid=0) has no WPC
+11-26 10:56:27.622   655   694 D CompatibilityChangeReporter: Compat change id reported: 265464455; UID 10133; state: DISABLED
+11-26 10:56:27.622   655   694 D CompatibilityChangeReporter: Compat change id reported: 265452344; UID 10133; state: DISABLED
+11-26 10:56:27.623   655   694 D CompatibilityChangeReporter: Compat change id reported: 266124927; UID 10133; state: DISABLED
+11-26 10:56:27.623   655   694 D CompatibilityChangeReporter: Compat change id reported: 265451093; UID 10133; state: DISABLED
+11-26 10:56:27.623   655   694 D CompatibilityChangeReporter: Compat change id reported: 265456536; UID 10133; state: DISABLED
+11-26 10:56:27.624   655   694 D CompatibilityChangeReporter: Compat change id reported: 255940284; UID 10133; state: DISABLED
+11-26 10:56:27.624   655   694 D CompatibilityChangeReporter: Compat change id reported: 236283604; UID 10133; state: DISABLED
+11-26 10:56:27.624   655   694 D CompatibilityChangeReporter: Compat change id reported: 263959004; UID 10133; state: DISABLED
+11-26 10:56:27.624   655   694 D CompatibilityChangeReporter: Compat change id reported: 264304459; UID 10133; state: DISABLED
+11-26 10:56:27.625   655   694 D CompatibilityChangeReporter: Compat change id reported: 264301586; UID 10133; state: DISABLED
+11-26 10:56:27.625   655   694 D CompatibilityChangeReporter: Compat change id reported: 254631730; UID 10133; state: DISABLED
+11-26 10:56:27.625   655   694 D CompatibilityChangeReporter: Compat change id reported: 273509367; UID 10133; state: DISABLED
+11-26 10:56:27.625   655   694 D CompatibilityChangeReporter: Compat change id reported: 263259275; UID 10133; state: DISABLED
+11-26 10:56:27.626   655   694 D CompatibilityChangeReporter: Compat change id reported: 174042980; UID 10133; state: DISABLED
+11-26 10:56:27.626   655   694 D CompatibilityChangeReporter: Compat change id reported: 174042936; UID 10133; state: DISABLED
+11-26 10:56:27.626   655   694 D CompatibilityChangeReporter: Compat change id reported: 181136395; UID 10133; state: DISABLED
+11-26 10:56:27.627   655   694 D CompatibilityChangeReporter: Compat change id reported: 184838306; UID 10133; state: DISABLED
+11-26 10:56:27.628   655   694 D CompatibilityChangeReporter: Compat change id reported: 185004937; UID 10133; state: DISABLED
+11-26 10:56:27.629   655   694 D CompatibilityChangeReporter: Compat change id reported: 194480991; UID 10133; state: ENABLED
+11-26 10:56:27.640   655   694 D CompatibilityChangeReporter: Compat change id reported: 205907456; UID 10133; state: ENABLED
+11-26 10:56:27.644   655   694 I ActivityTaskManager: START u0 {flg=0x10040000 pkg=org.worldfoundry.game.clocks cmp=org.worldfoundry.game.clocks/android.service.dreams.DreamActivity (has extras)} with LAUNCH_SINGLE_INSTANCE from uid 10133 (realCallingUid=1000) (BAL_ALLOW_PENDING_INTENT) result code=0
+11-26 10:56:27.648   879   954 V WindowManagerShell: Transition requested: android.os.BinderProxy@6c21450 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=5659 displayId=0 isRunning=true baseIntent=Intent { flg=0x10840000 pkg=org.worldfoundry.game.clocks cmp=org.worldfoundry.game.clocks/android.service.dreams.DreamActivity } baseActivity=ComponentInfo{org.worldfoundry.game.clocks/android.service.dreams.DreamActivity} topActivity=ComponentInfo{org.worldfoundry.game.clocks/android.service.dreams.DreamActivity} origActivity=null realActivity=ComponentInfo{org.worldfoundry.game.clocks/android.service.dreams.DreamActivity} numActivities=1 lastActiveTime=110087813 supportsMultiWindow=false resizeMode=0 isResizeable=false minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@8b33649} topActivityType=5 pictureInPictureParams=null shouldDockBigOverlays=true launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{44e8b4e android.service.dreams.DreamActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+11-26 10:56:27.660   655   691 D AccessibilityManagerService: restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+11-26 10:56:27.664   655   655 D BatterySaverPolicy: accessibility changed to false, updating policy.
+11-26 10:56:27.756   655  2243 W WindowManager: Failed looking up window session=Session{553f7cb 11717:u0a10133} callers=com.android.server.wm.WindowManagerService.windowForClientLocked:6034 com.android.server.wm.Session.updateRequestedVisibleTypes:690 android.view.IWindowSession$Stub.onTransact:1034 
+11-26 10:56:27.776   879   954 D WindowManagerShell: TvPipController: onTaskStackChanged()
+11-26 10:56:27.834   655   691 D CoreBackPreview: Window{37a6e66 u0 org.worldfoundry.game.clocks/android.service.dreams.DreamActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@8ba54, mPriority=0, mIsAnimationCallback=false}
+11-26 10:56:27.955   879   954 V WindowManagerShell: onTransitionReady android.os.BinderProxy@6c21450: {id=209 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@e8c0e5a} m=TO_FRONT f=NONE leash=Surface(name=Task=5658)/@0x37446f sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@19db88b} m=TO_BACK f=NONE leash=Surface(name=Task=5657)/@0xb3c257c sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0}]}
+11-26 10:56:27.955   879   954 V WindowManagerShell: Playing animation for (#209)android.os.BinderProxy@6c21450@0
+11-26 10:56:27.957   879   954 V WindowManagerShell:  try handler com.android.wm.shell.keyguard.KeyguardTransitionHandler@432ef3d
+11-26 10:56:27.957   879   954 V WindowManagerShell:  try handler com.android.wm.shell.activityembedding.ActivityEmbeddingController@4c2a332
+11-26 10:56:27.957   879   954 V WindowManagerShell:  try handler com.android.wm.shell.pip.tv.TvPipTransition@f44e883
+11-26 10:56:27.957   879   954 V WindowManagerShell:  try handler com.android.wm.shell.transition.RemoteTransitionHandler@7811a00
+11-26 10:56:27.957   879   954 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=209 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@e8c0e5a} m=TO_FRONT f=NONE leash=Surface(name=Task=5658)/@0x37446f sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@19db88b} m=TO_BACK f=NONE leash=Surface(name=Task=5657)/@0xb3c257c sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0}]}
+11-26 10:56:27.957   879   954 V WindowManagerShell:  Delegate animation for #209 to null
+11-26 10:56:27.957   879   954 V WindowManagerShell:  try handler com.android.wm.shell.transition.DefaultTransitionHandler@3e44239
+11-26 10:56:27.957   879   954 V WindowManagerShell: start default transition animation, info = {id=209 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{android.window.IWindowContainerToken$Stub$Proxy@e8c0e5a} m=TO_FRONT f=NONE leash=Surface(name=Task=5658)/@0x37446f sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0},{WCT{android.window.IWindowContainerToken$Stub$Proxy@19db88b} m=TO_BACK f=NONE leash=Surface(name=Task=5657)/@0xb3c257c sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0}]}
+11-26 10:56:27.958   879   954 V WindowManagerShell: loadAnimation: anim=null animAttr=0x1d type=OPEN isEntrance=false
+11-26 10:56:27.958   879   954 V WindowManagerShell: loadAnimation: anim=null animAttr=0x1c type=OPEN isEntrance=true
+11-26 10:56:27.958   655   727 V DisplayPowerController2[0]: Brightness [0.39763778] reason changing to: 'manual', previous reason: 'manual [ dim ]'.
+11-26 10:56:27.958   655   727 I DisplayPowerController2[0]: BrightnessEvent: disp=0, physDisp=local:11, brt=0.39763778, initBrt=0.05, rcmdBrt=NaN, preBrt=NaN, lux=0.0, preLux=0.0, hbmMax=1.0, hbmMode=off, rbcStrength=0, thrmMax=1.0, powerFactor=1.0, wasShortTermModelActive=false, flags=, reason=manual, autoBrightness=false, strategy=InvalidBrightnessStrategy
+11-26 10:56:27.959   655   697 D DisplayManagerService: Ignore redundant display event 0/4 to 10056/22096
+11-26 10:56:27.959   655   697 D DisplayManagerService: Ignore redundant display event 0/4 to 10039/30304
+11-26 10:56:27.960   879   954 V WindowManagerShell: Transition animation finished (aborted=false), notifying core (#209)android.os.BinderProxy@6c21450@0
+11-26 10:56:27.966   879   954 V WindowManagerShell: Track 0 became idle
+11-26 10:56:27.966   879   954 V WindowManagerShell: All active transition animations finished
+11-26 10:56:27.966   879   954 V WindowManagerShell:  animated by com.android.wm.shell.transition.DefaultTransitionHandler@3e44239
+11-26 10:56:27.967   879   954 V WindowManagerShell: Track 0 became idle
+11-26 10:56:27.967   879   954 V WindowManagerShell: All active transition animations finished
+11-26 10:56:27.973   655   692 D CompatibilityChangeReporter: Compat change id reported: 214016041; UID 10133; state: ENABLED
+11-26 10:56:27.982   655   748 D CompatibilityChangeReporter: Compat change id reported: 265195908; UID 10128; state: ENABLED
+11-26 10:56:27.983   655   694 V WindowManager: Sent Transition #209 createdAt=11-26 10:56:27.630 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=5659 displayId=0 isRunning=true baseIntent=Intent { flg=0x10840000 pkg=org.worldfoundry.game.clocks cmp=org.worldfoundry.game.clocks/android.service.dreams.DreamActivity } baseActivity=ComponentInfo{org.worldfoundry.game.clocks/android.service.dreams.DreamActivity} topActivity=ComponentInfo{org.worldfoundry.game.clocks/android.service.dreams.DreamActivity} origActivity=null realActivity=ComponentInfo{org.worldfoundry.game.clocks/android.service.dreams.DreamActivity} numActivities=1 lastActiveTime=110087813 supportsMultiWindow=false resizeMode=0 isResizeable=false minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{e1ee43e Task{244cd42 #5659 type=dream A=10133:android:org.worldfoundry.game.clocks/dream:1778028960}}} topActivityType=5 pictureInPictureParams=null shouldDockBigOverlays=true launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{2a6429f android.service.dreams.DreamActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=false isVisible=false isVisibleRequested=false isSleeping=false topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= false topActivityLetterboxed= false isFromDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 locusId=null displayAreaFeatureId=1 cameraCompatControlState=hidden}, remoteTransition = null, displayChange = null }
+11-26 10:56:27.983   655   694 V WindowManager:     startWCT=WindowContainerTransaction { changes = {} hops = [] errorCallbackToken=null taskFragmentOrganizer=null }
+11-26 10:56:27.983   655   694 V WindowManager:     info={id=209 t=OPEN f=0x0 trk=0 r=[0@Point(0, 0)] c=[{WCT{RemoteToken{f10ffec Task{aba378d #5658 type=dream}}} m=TO_FRONT f=NONE leash=Surface(name=Task=5658)/@0x8af0af2 sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0},{WCT{RemoteToken{6107c35 Task{e2f8fc2 #5657 type=standard A=10128:net.biohack.homeboard.debug}}} m=TO_BACK f=NONE leash=Surface(name=Task=5657)/@0xad1bb1f sb=Rect(0, 0 - 1920, 1080) eb=Rect(0, 0 - 1920, 1080) d=0}]}
+11-26 10:56:27.983   655   694 V WindowManager: Finish Transition #209: created at 11-26 10:56:27.630 collect-started=0.154ms request-sent=12.683ms started=21.319ms ready=45.169ms sent=320.226ms finished=331.675ms
+11-26 10:56:28.019  1121  1279 I AudioSystemCmdService: updateAudioPatch cur sink does not change.
+11-26 10:56:28.043  1121  1280 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.sendBroadcast:1220 android.content.ContextWrapper.sendBroadcast:504 com.droidlogic.audioservice.services.AudioSystemCmdService$1.onUEvent:175 com.droidlogic.UEventObserver$UEventThread.sendEvent:213 com.droidlogic.UEventObserver$UEventThread.run:190 
+11-26 10:56:28.063  1121  1279 I AudioSystemCmdService: updateAudioPatch cur sink does not change.
+11-26 10:56:28.209 26405 11762 E ActivityThread: Failed to find provider info for com.google.android.apps.youtube.tvunplugged.client.provider
+11-26 10:56:32.981   655   714 W BatteryExternalStatsWorker: error reading modem stats:ERROR_PHONE_NOT_AVAILABLE
+11-26 10:56:39.780   655   655 V HotPlugDetectionAction: Poll all devices.
+--- logcat -b events, last 200 lines
+11-26 10:50:16.685   655   692 I wm_task_moved: [5651,5651,0,1,4]
+11-26 10:50:16.686   655   692 I wm_set_resumed_activity: [0,com.google.android.apps.tv.launcherx/.home.HomeActivity,positionChildTaskAt]
+11-26 10:50:16.687   655   692 I wm_task_moved: [5652,5651,0,1,2147483647]
+11-26 10:50:16.687   655   692 I wm_task_to_front: [0,5652,0]
+11-26 10:50:16.687   655   692 I wm_focused_root_task: [0,0,5651,5656,bringingFoundTaskToFront]
+11-26 10:50:16.688   655   692 I wm_set_resumed_activity: [0,com.google.android.apps.tv.launcherx/.home.HomeActivity,bringingFoundTaskToFront]
+11-26 10:50:16.688   655   692 I wm_new_intent: [0,247905556,5652,com.google.android.apps.tv.launcherx/.home.HomeActivity,android.intent.action.MAIN,NULL,NULL,276824320]
+11-26 10:50:16.689 26405 26405 I wm_on_top_resumed_gained_called: [247905556,com.google.android.apps.tv.launcherx.home.HomeActivity,topStateChangedWhenResumed]
+11-26 10:50:16.689 26405 26405 I wm_on_top_resumed_lost_called: [247905556,com.google.android.apps.tv.launcherx.home.HomeActivity,pausing]
+11-26 10:50:16.701 26405 26405 I wm_on_paused_called: [247905556,com.google.android.apps.tv.launcherx.home.HomeActivity,performPause,12]
+11-26 10:50:16.728 26405 26405 I wm_on_resume_called: [247905556,com.google.android.apps.tv.launcherx.home.HomeActivity,LIFECYCLER_RESUME_ACTIVITY,26]
+11-26 10:50:16.743 26405 26405 I wm_on_top_resumed_gained_called: [247905556,com.google.android.apps.tv.launcherx.home.HomeActivity,topWhenResuming]
+11-26 10:50:16.763   655  2243 I wm_task_removed: [5656,5656,0,removeChild, last child = ActivityRecord{e1d6865 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t-1 f} isExiting} in Task{b72693a #5656 type=standard A=10128:net.biohack.homeboard.debug}]
+11-26 10:50:18.391   655   696 I commit_sys_config_file: [jobs,4]
+11-26 10:50:20.581   655   757 I am_freeze: [26049,com.google.android.permissioncontroller]
+11-26 10:50:20.584   655   757 I am_freeze: [26582,com.google.android.apps.tv.dreamx:smarthome]
+11-26 10:50:20.586   655   757 I am_freeze: [26338,com.google.android.youtube.tv]
+11-26 10:50:20.587   655   757 I am_freeze: [26558,com.google.android.tungsten.setupwraith]
+11-26 10:50:20.587   655   757 I am_freeze: [27743,com.google.android.tts]
+11-26 10:50:20.589   655   757 I am_freeze: [14748,com.google.android.apps.tv.dreamx]
+11-26 10:50:20.589   655   757 I am_freeze: [29002,net.biohack.homeboard.widgetprovider]
+11-26 10:50:20.590   655   757 I am_freeze: [26170,net.biohack.homeboard]
+11-26 10:50:20.591   655   757 I am_freeze: [27795,com.google.process.gservices]
+11-26 10:50:20.591   655   757 I am_freeze: [8991,com.google.android.partnersetup]
+11-26 10:50:20.592   655   757 I am_freeze: [29718,com.google.android.videos]
+11-26 10:50:20.593   655   757 I am_freeze: [10236,org.worldfoundry.game.clocks]
+11-26 10:50:20.594   655   757 I am_freeze: [30304,org.worldfoundry.coordinator.clockprobe]
+11-26 10:50:20.638   655   757 I am_compact: [26170,net.biohack.homeboard,ANON,42820,29436,12732,25844,-1684,0,-1684,1684,42,FULL,104655831,925,19,100916,-92]
+11-26 10:50:22.867   655   757 I am_unfreeze: [15940,com.google.android.katniss:search,3]
+11-26 10:50:22.871 18812 10778 I c2dm    : [-7,,14,8]
+11-26 10:50:26.392   655   730 I commit_sys_config_file: [package-user-0,12]
+11-26 10:50:26.992   655   756 I commit_sys_config_file: [settings-1-0,4]
+11-26 10:50:31.164 10910 10910 I auditd  : type=1400 audit(0.0:3098): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:31.164 10910 10910 I auditd  : type=1400 audit(0.0:3099): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:31.164 10910 10910 I auditd  : type=1400 audit(0.0:3100): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:31.164 10910 10910 I auditd  : type=1400 audit(0.0:3101): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:31.164 10910 10910 I auditd  : type=1400 audit(0.0:3102): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:31.180   655  2243 I am_uid_active: 10133
+11-26 10:50:31.182   655   757 I am_unfreeze: [10236,org.worldfoundry.game.clocks,7]
+11-26 10:50:41.238   655   757 I am_freeze: [10236,org.worldfoundry.game.clocks]
+11-26 10:50:50.404 11013 11013 I auditd  : type=1400 audit(0.0:3103): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:50.408 11013 11013 I auditd  : type=1400 audit(0.0:3104): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:50.408 11013 11013 I auditd  : type=1400 audit(0.0:3105): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:50.408 11013 11013 I auditd  : type=1400 audit(0.0:3106): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:50.408 11013 11013 I auditd  : type=1400 audit(0.0:3107): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:54.183   655   757 I am_freeze: [15940,com.google.android.katniss:search]
+11-26 10:50:54.512 11066 11066 I auditd  : type=1400 audit(0.0:3108): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:54.512 11066 11066 I auditd  : type=1400 audit(0.0:3109): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:54.512 11066 11066 I auditd  : type=1400 audit(0.0:3110): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:54.512 11066 11066 I auditd  : type=1400 audit(0.0:3111): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:54.512 11066 11066 I auditd  : type=1400 audit(0.0:3112): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:50:54.529   655   757 I am_unfreeze: [10236,org.worldfoundry.game.clocks,7]
+11-26 10:50:56.983   655   757 I am_freeze: [24050,com.google.android.gms]
+11-26 10:51:04.538   655   757 I am_freeze: [10236,org.worldfoundry.game.clocks]
+11-26 10:51:22.509   655   707 I am_uid_idle: 10027
+11-26 10:51:41.096   261   261 I auditd  : type=1400 audit(0.0:3113): avc:  denied  { read } for  comm="binder:261_6" name="wakeup4" dev="sysfs" ino=423405 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+11-26 10:51:41.112   261   261 I auditd  : type=1400 audit(0.0:3114): avc:  denied  { read } for  comm="binder:261_6" name="wakeup5" dev="sysfs" ino=423450 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+11-26 10:51:41.128   261   261 I auditd  : type=1400 audit(0.0:3115): avc:  denied  { read } for  comm="binder:261_6" name="wakeup6" dev="sysfs" ino=423569 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+11-26 10:51:41.215   655   706 I commit_sys_config_file: [batterystats,36]
+11-26 10:51:41.219   655   706 I commit_sys_config_file: [batterystats,4]
+11-26 10:51:54.553   655   707 I am_uid_idle: 10133
+11-26 10:52:14.422   655   706 I am_pss  : [29718,10062,com.google.android.videos,28789760,16744448,10080256,64598016,0,19,9]
+11-26 10:52:23.851   655   756 I commit_sys_config_file: [settings-1-0,10]
+11-26 10:52:28.000 11260 11260 I auditd  : type=1400 audit(0.0:3116): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:28.000 11260 11260 I auditd  : type=1400 audit(0.0:3117): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:28.000 11260 11260 I auditd  : type=1400 audit(0.0:3118): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:28.000 11260 11260 I auditd  : type=1400 audit(0.0:3119): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:28.000 11260 11260 I auditd  : type=1400 audit(0.0:3120): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:28.017   655  1891 I am_uid_active: 10133
+11-26 10:52:28.019   655   757 I am_unfreeze: [10236,org.worldfoundry.game.clocks,7]
+11-26 10:52:37.973   655   655 I notification_cancel_all: [1000,655,net.biohack.homeboard.debug,0,0,0,5,NULL]
+11-26 10:52:37.976   655   706 I am_pss  : [26170,10088,net.biohack.homeboard,6391808,1269760,3864576,43098112,0,19,7]
+11-26 10:52:37.992   655   706 I am_pss  : [22096,10056,com.android.vending,26163200,2121728,22449152,49950720,0,19,14]
+11-26 10:52:38.076   655   757 I am_freeze: [10236,org.worldfoundry.game.clocks]
+11-26 10:52:38.595   655   691 I wm_task_created: 5657
+11-26 10:52:38.599   655   691 I wm_task_moved: [5657,5657,0,1,4]
+11-26 10:52:38.599   655   691 I wm_task_to_front: [0,5657,0]
+11-26 10:52:38.600 26405 26405 I wm_on_top_resumed_lost_called: [247905556,com.google.android.apps.tv.launcherx.home.HomeActivity,topStateChangedWhenResumed]
+11-26 10:52:38.600   655   691 I wm_create_task: [0,5657,5657,0]
+11-26 10:52:38.600   655   691 I wm_create_activity: [0,224687117,5657,net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity,NULL,NULL,NULL,276824064]
+11-26 10:52:38.600   655   691 I wm_task_moved: [5657,5657,0,1,4]
+11-26 10:52:38.603   655   691 I wm_pause_activity: [0,247905556,com.google.android.apps.tv.launcherx/.home.HomeActivity,userLeaving=true,pauseBackTasks]
+11-26 10:52:38.611   655   697 I am_uid_running: 10128
+11-26 10:52:38.616 26405 26405 I wm_on_paused_called: [247905556,com.google.android.apps.tv.launcherx.home.HomeActivity,performPause,6]
+11-26 10:52:38.622   655  1891 I wm_add_to_stopping: [0,247905556,com.google.android.apps.tv.launcherx/.home.HomeActivity,makeInvisible]
+11-26 10:52:38.623   655   694 I sysui_multi_action: [757,803,799,window_time_0,802,207]
+11-26 10:52:38.635   655   768 I input_focus: [Focus leaving c84d947 com.google.android.apps.tv.launcherx/com.google.android.apps.tv.launcherx.home.HomeActivity (server),reason=NO_WINDOW]
+11-26 10:52:38.636   655   708 I am_proc_start: [0,11341,10128,net.biohack.homeboard.debug,next-top-activity,{net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity}]
+11-26 10:52:38.760   655  2243 I am_proc_bound: [0,11341,net.biohack.homeboard.debug]
+11-26 10:52:38.764   655  2243 I wm_restart_activity: [0,224687117,5657,net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity]
+11-26 10:52:38.767   655  2243 I wm_set_resumed_activity: [0,net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity,minimalResumeActivityLocked - onActivityStateChanged]
+11-26 10:52:38.768   655   697 I am_uid_active: 10128
+11-26 10:52:43.581 11341 11341 I wm_on_create_called: [224687117,com.gathin.tvhome.MainActivity,performCreate,4058]
+11-26 10:52:43.587 11341 11341 I wm_on_start_called: [224687117,com.gathin.tvhome.MainActivity,handleStartActivity,0]
+11-26 10:52:43.752 11341 11341 I wm_on_resume_called: [224687117,com.gathin.tvhome.MainActivity,RESUME_ACTIVITY,156]
+11-26 10:52:43.806 11341 11341 I wm_on_top_resumed_gained_called: [224687117,com.gathin.tvhome.MainActivity,topStateChangedWhenResumed]
+11-26 10:52:43.909   655   698 I input_focus: [Focus request 65aa0f net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity,reason=UpdateInputWindows]
+11-26 10:52:44.458   655   768 I input_focus: [Focus entering 65aa0f net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity (server),reason=Window became focusable. Previous reason: NOT_VISIBLE]
+11-26 10:52:44.461   655   697 I wm_stop_activity: [0,247905556,com.google.android.apps.tv.launcherx/.home.HomeActivity]
+11-26 10:52:44.476   655   694 I sysui_multi_action: [319,5017,322,5869,325,109858,757,761,758,7,759,1,806,net.biohack.homeboard.debug,871,com.gathin.tvhome.MainActivity,904,com.android.shell,905,0,945,178,1320,12,1321,1]
+11-26 10:52:44.510   655   694 I wm_activity_launch_time: [0,224687117,net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity,5869]
+11-26 10:52:44.522 26405 26405 I wm_on_stop_called: [247905556,com.google.android.apps.tv.launcherx.home.HomeActivity,STOP_ACTIVITY_ITEM,41]
+11-26 10:52:45.639   655   696 I commit_sys_config_file: [jobs,20]
+11-26 10:52:48.006   655   757 I am_freeze: [26467,com.android.providers.tv]
+11-26 10:52:48.644   655   730 I commit_sys_config_file: [package-user-0,13]
+11-26 10:52:52.045   655 24359 I commit_sys_config_file: [appops_accesses,109833724]
+11-26 10:52:52.356 11433 11433 I auditd  : type=1400 audit(0.0:3121): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:52.356 11433 11433 I auditd  : type=1400 audit(0.0:3122): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:52.356 11433 11433 I auditd  : type=1400 audit(0.0:3123): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:52.356 11433 11433 I auditd  : type=1400 audit(0.0:3124): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:52.356 11433 11433 I auditd  : type=1400 audit(0.0:3125): avc:  denied  { read } for  comm="main" name="u:object_r:build_attestation_prop:s0" dev="tmpfs" ino=115 scontext=u:r:shell:s0 tcontext=u:object_r:build_attestation_prop:s0 tclass=file permissive=0
+11-26 10:52:52.594   655   756 I commit_sys_config_file: [settings-2-0,4]
+11-26 10:52:55.425   655   768 I input_interaction: Interaction with: 65aa0f net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity (server), PointerEventDispatcher0 (server), 
+11-26 10:52:59.424   655   655 I service_manager_stats: [100,98,3618459]
+11-26 10:53:05.864 11474 11474 I auditd  : type=1400 audit(0.0:3126): avc:  denied  { read } for  comm="screencap" name="heap-gfx" dev="tmpfs" ino=540 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:05.864 11474 11474 I auditd  : type=1400 audit(0.0:3127): avc:  denied  { read } for  comm="screencap" name="heap-fb" dev="tmpfs" ino=541 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:05.864 11474 11474 I auditd  : type=1400 audit(0.0:3128): avc:  denied  { read } for  comm="screencap" name="heap-cached-codecmm" dev="tmpfs" ino=542 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:05.868 11474 11474 I auditd  : type=1400 audit(0.0:3129): avc:  denied  { read } for  comm="screencap" name="heap-codecmm" dev="tmpfs" ino=533 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:07.822   655   796 I netstats_mobile_sample: [0,0,0,0,0,0,0,0,1795665188232]
+11-26 10:53:07.823   655   796 I netstats_wifi_sample: [292677319,579744587,737598,812105,384483280,567835946,1095061,778988,1795665188232]
+11-26 10:53:11.816 11483 11483 I auditd  : type=1400 audit(0.0:3130): avc:  denied  { read } for  comm="screencap" name="heap-gfx" dev="tmpfs" ino=540 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:11.816 11483 11483 I auditd  : type=1400 audit(0.0:3131): avc:  denied  { read } for  comm="screencap" name="heap-fb" dev="tmpfs" ino=541 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:11.816 11483 11483 I auditd  : type=1400 audit(0.0:3132): avc:  denied  { read } for  comm="screencap" name="heap-cached-codecmm" dev="tmpfs" ino=542 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:11.816 11483 11483 I auditd  : type=1400 audit(0.0:3133): avc:  denied  { read } for  comm="screencap" name="heap-codecmm" dev="tmpfs" ino=533 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:16.940 11496 11496 I auditd  : type=1400 audit(0.0:3134): avc:  denied  { read } for  comm="screencap" name="heap-gfx" dev="tmpfs" ino=540 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:16.940 11496 11496 I auditd  : type=1400 audit(0.0:3135): avc:  denied  { read } for  comm="screencap" name="heap-fb" dev="tmpfs" ino=541 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:16.940 11496 11496 I auditd  : type=1400 audit(0.0:3136): avc:  denied  { read } for  comm="screencap" name="heap-cached-codecmm" dev="tmpfs" ino=542 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:16.940 11496 11496 I auditd  : type=1400 audit(0.0:3137): avc:  denied  { read } for  comm="screencap" name="heap-codecmm" dev="tmpfs" ino=533 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:20.824 11504 11504 I auditd  : type=1400 audit(0.0:3138): avc:  denied  { read } for  comm="screencap" name="heap-gfx" dev="tmpfs" ino=540 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:20.824 11504 11504 I auditd  : type=1400 audit(0.0:3139): avc:  denied  { read } for  comm="screencap" name="heap-fb" dev="tmpfs" ino=541 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:20.824 11504 11504 I auditd  : type=1400 audit(0.0:3140): avc:  denied  { read } for  comm="screencap" name="heap-cached-codecmm" dev="tmpfs" ino=542 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:20.824 11504 11504 I auditd  : type=1400 audit(0.0:3141): avc:  denied  { read } for  comm="screencap" name="heap-codecmm" dev="tmpfs" ino=533 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:24.808 11513 11513 I auditd  : type=1400 audit(0.0:3142): avc:  denied  { read } for  comm="screencap" name="heap-gfx" dev="tmpfs" ino=540 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:24.808 11513 11513 I auditd  : type=1400 audit(0.0:3143): avc:  denied  { read } for  comm="screencap" name="heap-fb" dev="tmpfs" ino=541 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:24.808 11513 11513 I auditd  : type=1400 audit(0.0:3144): avc:  denied  { read } for  comm="screencap" name="heap-cached-codecmm" dev="tmpfs" ino=542 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:24.808 11513 11513 I auditd  : type=1400 audit(0.0:3145): avc:  denied  { read } for  comm="screencap" name="heap-codecmm" dev="tmpfs" ino=533 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:25.485   655  1977 I sysui_multi_action: [757,803,799,key_back_press,802,1]
+11-26 10:53:27.493   655  1977 I sysui_multi_action: [757,803,799,key_back_press,802,1]
+11-26 10:53:28.026   655   707 I am_uid_idle: 10133
+11-26 10:53:30.856 11523 11523 I auditd  : type=1400 audit(0.0:3146): avc:  denied  { read } for  comm="screencap" name="heap-gfx" dev="tmpfs" ino=540 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:30.856 11523 11523 I auditd  : type=1400 audit(0.0:3147): avc:  denied  { read } for  comm="screencap" name="heap-fb" dev="tmpfs" ino=541 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:30.856 11523 11523 I auditd  : type=1400 audit(0.0:3148): avc:  denied  { read } for  comm="screencap" name="heap-cached-codecmm" dev="tmpfs" ino=542 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:53:30.856 11523 11523 I auditd  : type=1400 audit(0.0:3149): avc:  denied  { read } for  comm="screencap" name="heap-codecmm" dev="tmpfs" ino=533 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:54:02.812 11557 11557 I auditd  : type=1400 audit(0.0:3150): avc:  denied  { read } for  comm="screencap" name="heap-gfx" dev="tmpfs" ino=540 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:54:02.812 11557 11557 I auditd  : type=1400 audit(0.0:3151): avc:  denied  { read } for  comm="screencap" name="heap-fb" dev="tmpfs" ino=541 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:54:02.812 11557 11557 I auditd  : type=1400 audit(0.0:3152): avc:  denied  { read } for  comm="screencap" name="heap-cached-codecmm" dev="tmpfs" ino=542 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:54:02.812 11557 11557 I auditd  : type=1400 audit(0.0:3153): avc:  denied  { read } for  comm="screencap" name="heap-codecmm" dev="tmpfs" ino=533 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:54:24.185 18812 10966 I c2dm    : [-1,,16,9]
+11-26 10:54:37.824 11597 11597 I auditd  : type=1400 audit(0.0:3154): avc:  denied  { read } for  comm="screencap" name="heap-gfx" dev="tmpfs" ino=540 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:54:37.824 11597 11597 I auditd  : type=1400 audit(0.0:3155): avc:  denied  { read } for  comm="screencap" name="heap-fb" dev="tmpfs" ino=541 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:54:37.824 11597 11597 I auditd  : type=1400 audit(0.0:3156): avc:  denied  { read } for  comm="screencap" name="heap-cached-codecmm" dev="tmpfs" ino=542 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:54:37.824 11597 11597 I auditd  : type=1400 audit(0.0:3157): avc:  denied  { read } for  comm="screencap" name="heap-codecmm" dev="tmpfs" ino=533 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:55:52.896 11676 11676 I auditd  : type=1400 audit(0.0:3158): avc:  denied  { read } for  comm="screencap" name="heap-gfx" dev="tmpfs" ino=540 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:55:52.896 11676 11676 I auditd  : type=1400 audit(0.0:3159): avc:  denied  { read } for  comm="screencap" name="heap-fb" dev="tmpfs" ino=541 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:55:52.896 11676 11676 I auditd  : type=1400 audit(0.0:3160): avc:  denied  { read } for  comm="screencap" name="heap-cached-codecmm" dev="tmpfs" ino=542 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:55:52.896 11676 11676 I auditd  : type=1400 audit(0.0:3161): avc:  denied  { read } for  comm="screencap" name="heap-codecmm" dev="tmpfs" ino=533 scontext=u:r:shell:s0 tcontext=u:object_r:dmabuf_heap_device:s0 tclass=chr_file permissive=0
+11-26 10:55:54.320   655   796 I netstats_mobile_sample: [0,0,0,0,0,0,0,0,1795665354730]
+11-26 10:55:54.321   655   796 I netstats_wifi_sample: [292842083,581904972,739085,814459,384810241,569972713,1097151,781286,1795665354730]
+11-26 10:56:20.439   655   727 I sysui_multi_action: [757,1696,758,6,759,2]
+11-26 10:56:27.417   655   694 I sysui_multi_action: [757,222,758,1]
+11-26 10:56:27.445   655   706 I am_pss  : [11341,10128,net.biohack.homeboard.debug,81304576,60928000,418816,161935360,0,2,24]
+11-26 10:56:27.455   655   708 I am_proc_start: [0,11717,10133,org.worldfoundry.game.clocks:dream,service,{org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService}]
+11-26 10:56:27.513   655   691 I am_proc_bound: [0,11717,org.worldfoundry.game.clocks:dream]
+11-26 10:56:27.516   655   691 I am_uid_active: 10133
+11-26 10:56:27.632   655   694 I wm_task_created: 5658
+11-26 10:56:27.634   655   694 I wm_task_created: 5659
+11-26 10:56:27.636   655   694 I wm_task_moved: [5659,5658,0,1,2147483647]
+11-26 10:56:27.638   655   694 I wm_task_moved: [5658,5658,0,1,5]
+11-26 10:56:27.638   655   694 I wm_create_task: [0,5659,5658,0]
+11-26 10:56:27.638   655   694 I wm_create_activity: [0,64159780,5659,org.worldfoundry.game.clocks/android.service.dreams.DreamActivity,NULL,NULL,NULL,277086208]
+11-26 10:56:27.639   655   694 I wm_task_moved: [5658,5658,0,1,5]
+11-26 10:56:27.639   655   694 I wm_task_moved: [5659,5658,0,1,2147483647]
+11-26 10:56:27.639   655   694 I wm_task_to_front: [0,5659,0]
+11-26 10:56:27.640 11341 11341 I wm_on_top_resumed_lost_called: [224687117,com.gathin.tvhome.MainActivity,topStateChangedWhenResumed]
+11-26 10:56:27.640   655   694 I wm_pause_activity: [0,224687117,net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity,userLeaving=false,pauseBackTasks]
+11-26 10:56:27.666 11341 11341 I wm_on_paused_called: [224687117,com.gathin.tvhome.MainActivity,performPause,15]
+11-26 10:56:27.671   655  1891 I wm_add_to_stopping: [0,224687117,net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity,makeInvisible]
+11-26 10:56:27.672   655  1891 I wm_restart_activity: [0,64159780,5659,org.worldfoundry.game.clocks/android.service.dreams.DreamActivity]
+11-26 10:56:27.674   655  1891 I wm_set_resumed_activity: [0,org.worldfoundry.game.clocks/android.service.dreams.DreamActivity,minimalResumeActivityLocked - onActivityStateChanged]
+11-26 10:56:27.676   655   694 I sysui_multi_action: [757,803,799,window_time_0,802,229]
+11-26 10:56:27.686   655   698 I input_focus: [Requesting to set focus to null window,reason=UpdateInputWindows]
+11-26 10:56:27.698   655   768 I input_focus: [Focus leaving 65aa0f net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity (server),reason=Waiting for window because NO_WINDOW]
+11-26 10:56:27.732 11717 11717 I wm_on_create_called: [64159780,android.service.dreams.DreamActivity,performCreate,19]
+11-26 10:56:27.732 11717 11717 I wm_on_start_called: [64159780,android.service.dreams.DreamActivity,handleStartActivity,0]
+11-26 10:56:27.736 11717 11717 I wm_on_resume_called: [64159780,android.service.dreams.DreamActivity,RESUME_ACTIVITY,0]
+11-26 10:56:27.763 11717 11717 I wm_on_top_resumed_gained_called: [64159780,android.service.dreams.DreamActivity,topStateChangedWhenResumed]
+11-26 10:56:27.769   655   691 I wm_set_requested_orientation: [0,org.worldfoundry.game.clocks/android.service.dreams.DreamActivity]
+11-26 10:56:27.840   655   698 I input_focus: [Focus request 37a6e66 org.worldfoundry.game.clocks/android.service.dreams.DreamActivity,reason=UpdateInputWindows]
+11-26 10:56:27.870   879  1176 I jank_cuj_events_end_request: [55,1795665387870025000,110088040613825,110088040614700]
+11-26 10:56:27.881   655   756 I commit_sys_config_file: [settings-2-0,19]
+11-26 10:56:27.958   655  2243 I wm_set_keyguard_shown: [0,0,0,0,1,updateVisibility]
+11-26 10:56:27.958   655   727 I sysui_multi_action: [757,1696,758,6,759,3]
+11-26 10:56:27.967   655   697 I wm_stop_activity: [0,224687117,net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity]
+11-26 10:56:27.970   655   768 I input_focus: [Focus entering 37a6e66 org.worldfoundry.game.clocks/android.service.dreams.DreamActivity (server),reason=Window became focusable. Previous reason: NOT_VISIBLE]
+11-26 10:56:27.980   655   694 I sysui_multi_action: [319,332,322,324,325,110087,757,761,758,8,759,2,806,org.worldfoundry.game.clocks,871,android.service.dreams.DreamActivity,904,org.worldfoundry.game.clocks,905,0,1320,4,1321,4]
+11-26 10:56:27.982   655   694 I wm_activity_launch_time: [0,64159780,org.worldfoundry.game.clocks/android.service.dreams.DreamActivity,324]
+11-26 10:56:28.044 11341 11341 I wm_on_stop_called: [224687117,com.gathin.tvhome.MainActivity,STOP_ACTIVITY_ITEM,1]
+11-26 10:56:33.032   261   261 I auditd  : type=1400 audit(0.0:3162): avc:  denied  { read } for  comm="binder:261_6" name="wakeup4" dev="sysfs" ino=423405 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+11-26 10:56:33.052   261   261 I auditd  : type=1400 audit(0.0:3163): avc:  denied  { read } for  comm="binder:261_6" name="wakeup5" dev="sysfs" ino=423450 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0
+11-26 10:56:33.068   261   261 I auditd  : type=1400 audit(0.0:3164): avc:  denied  { read } for  comm="binder:261_6" name="wakeup6" dev="sysfs" ino=423569 scontext=u:r:system_suspend:s0 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0

@@ -1,0 +1,53 @@
+{
+  "score_sha256": "21cbd8b5b28f752d5d78b07976958c50b2e15e2349d953fa980e2013c9ffdff4",
+  "host_start_wall": 1795665712.9435027,
+  "host_start_monotonic": 145650.365207904,
+  "captures": [
+    {
+      "label": "01-options-button",
+      "planned_ms": 13000,
+      "started": 1795665727.0375755,
+      "ended": 1795665728.623611,
+      "file": "input-frame-001.png",
+      "bytes": 274579,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-below-options",
+      "planned_ms": 16000,
+      "started": 1795665730.0376081,
+      "ended": 1795665731.9478548,
+      "file": "input-frame-002.png",
+      "bytes": 273114,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-opened",
+      "planned_ms": 20000,
+      "started": 1795665734.0375686,
+      "ended": 1795665735.4207768,
+      "file": "input-frame-003.png",
+      "bytes": 155879,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "04-opened-right",
+      "planned_ms": 23000,
+      "started": 1795665737.0376666,
+      "ended": 1795665738.4528873,
+      "file": "input-frame-004.png",
+      "bytes": 156884,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "05-after-backs",
+      "planned_ms": 31000,
+      "started": 1795665745.0375955,
+      "ended": 1795665746.5979965,
+      "file": "input-frame-005.png",
+      "bytes": 257808,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}
