@@ -1,7 +1,8 @@
 # What a screensaver app must offer Homeboard (Stage 5)
 
-**Status (2026‑11‑26):** contract accepted (Will: "certificate"); neither side is built. Homeboard's
-half waits for the two app changes below.
+**Status (2026‑11‑26): on hold, not accepted; nothing is built.** Whether Homeboard should change the
+app's settings at all is being re‑evaluated. The alternative is a tank choice inside the app itself,
+which needs no section 2.
 
 ## Why Stage 5 cannot be built yet
 
@@ -35,7 +36,7 @@ so one test in WorldFoundry can hold the manifest and the registry together.
 
 ## 2. The provider admits Homeboard
 
-**Accepted:** keep the provider exported and, besides the shell and itself, admit a caller only
+**Proposed:** keep the provider exported and, besides the shell and itself, admit a caller only
 when both its package name and its signing certificate's SHA‑256 are on a list built into the app.
 
 | Package | Signing certificate SHA‑256 |
