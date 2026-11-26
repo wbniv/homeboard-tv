@@ -1,0 +1,134 @@
+{
+  "score_sha256": "fc12ce59ced8f2c7e773f9824e8fefaaae97ac6d1362f82acdea97810d995f9b",
+  "host_start_wall": 1795706418.342415,
+  "host_start_monotonic": 186138.962099252,
+  "captures": [
+    {
+      "label": "01-home",
+      "planned_ms": 4000,
+      "started": 1795706423.6096177,
+      "ended": 1795706425.4539661,
+      "file": "input-frame-001.png",
+      "bytes": 257125,
+      "schedule_lateness_ms": 3
+    },
+    {
+      "label": "02-up1",
+      "planned_ms": 7000,
+      "started": 1795706426.6068738,
+      "ended": 1795706428.0673351,
+      "file": "input-frame-002.png",
+      "bytes": 255551,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-up2",
+      "planned_ms": 10000,
+      "started": 1795706429.6068556,
+      "ended": 1795706431.0851188,
+      "file": "input-frame-003.png",
+      "bytes": 255595,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "04-up3",
+      "planned_ms": 13000,
+      "started": 1795706432.6067963,
+      "ended": 1795706434.2078393,
+      "file": "input-frame-004.png",
+      "bytes": 258853,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "05-up4",
+      "planned_ms": 16000,
+      "started": 1795706435.6067793,
+      "ended": 1795706437.3484972,
+      "file": "input-frame-005.png",
+      "bytes": 258844,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "06-right1",
+      "planned_ms": 19000,
+      "started": 1795706438.6067877,
+      "ended": 1795706440.7953799,
+      "file": "input-frame-006.png",
+      "bytes": 377796,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "07-right2",
+      "planned_ms": 22000,
+      "started": 1795706441.6067884,
+      "ended": 1795706443.3439636,
+      "file": "input-frame-007.png",
+      "bytes": 371626,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "08-right3",
+      "planned_ms": 26000,
+      "started": 1795706445.6067855,
+      "ended": 1795706447.134949,
+      "file": "input-frame-008.png",
+      "bytes": 373394,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "09-left1",
+      "planned_ms": 29000,
+      "started": 1795706448.6067882,
+      "ended": 1795706450.1898816,
+      "file": "input-frame-009.png",
+      "bytes": 371626,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "10-left2",
+      "planned_ms": 32000,
+      "started": 1795706451.6067781,
+      "ended": 1795706453.3964949,
+      "file": "input-frame-010.png",
+      "bytes": 376733,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "11-left3",
+      "planned_ms": 35000,
+      "started": 1795706454.6068132,
+      "ended": 1795706456.4054837,
+      "file": "input-frame-011.png",
+      "bytes": 258852,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "12-left4",
+      "planned_ms": 38000,
+      "started": 1795706457.6068742,
+      "ended": 1795706459.412133,
+      "file": "input-frame-012.png",
+      "bytes": 258712,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "13-left5",
+      "planned_ms": 41000,
+      "started": 1795706460.606863,
+      "ended": 1795706462.1402194,
+      "file": "input-frame-013.png",
+      "bytes": 253486,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 52000,
+      "started": 1795706471.6068869,
+      "ended": 1795706473.1318414,
+      "file": "input-frame-014.png",
+      "bytes": 253485,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

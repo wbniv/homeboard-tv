@@ -1,0 +1,18 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 30,
+ "panel": "require-hidden",
+ "foreground": "observe",
+ "input_script": [
+  {"at": 2, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 4, "key": "MENU", "action": "hold", "ms": 80},
+  {"at": 6, "capture": "01-home-settings-page1"},
+  {"at": 7, "key": "DPAD_LEFT", "action": "hold", "ms": 80},
+  {"at": 11, "capture": "02-android-settings"},
+  {"at": 13, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 17, "capture": "03-after-back"},
+  {"at": 20, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 24, "capture": "99-final"}
+ ]
+}

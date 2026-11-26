@@ -1,0 +1,53 @@
+{
+  "score_sha256": "19165be9afcf144a5aa23fd89dd55efa22f09cd38ee372d92382c4f00b46a21e",
+  "host_start_wall": 1795707048.8670113,
+  "host_start_monotonic": 186769.486695248,
+  "captures": [
+    {
+      "label": "01-home-settings-page2",
+      "planned_ms": 8000,
+      "started": 1795707057.894233,
+      "ended": 1795707059.599632,
+      "file": "input-frame-001.png",
+      "bytes": 306844,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-language-screen",
+      "planned_ms": 12000,
+      "started": 1795707061.8942444,
+      "ended": 1795707063.448879,
+      "file": "input-frame-002.png",
+      "bytes": 303983,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-down",
+      "planned_ms": 15000,
+      "started": 1795707064.8942327,
+      "ended": 1795707067.0713053,
+      "file": "input-frame-003.png",
+      "bytes": 311628,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "04-down-down",
+      "planned_ms": 18000,
+      "started": 1795707067.89426,
+      "ended": 1795707069.232924,
+      "file": "input-frame-004.png",
+      "bytes": 200421,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-final",
+      "planned_ms": 30000,
+      "started": 1795707079.8942502,
+      "ended": 1795707081.928134,
+      "file": "input-frame-005.png",
+      "bytes": 305410,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

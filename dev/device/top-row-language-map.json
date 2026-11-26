@@ -1,0 +1,22 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 34,
+ "panel": "require-hidden",
+ "input_script": [
+  {"at": 2, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 4, "key": "MENU", "action": "hold", "ms": 80},
+  {"at": 6, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+  {"at": 8, "capture": "01-home-settings-page2"},
+  {"at": 9, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+  {"at": 12, "capture": "02-language-screen"},
+  {"at": 13, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 15, "capture": "03-down"},
+  {"at": 16, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 18, "capture": "04-down-down"},
+  {"at": 20, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 23, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 26, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 30, "capture": "99-final"}
+ ]
+}

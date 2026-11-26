@@ -1,0 +1,10 @@
+[
+  {
+    "attempt": 1,
+    "endpoint": "192.168.4.61:39843",
+    "connected": true,
+    "started_at": 1795706783.211,
+    "attempt_seconds": 0.306,
+    "advertised_at": 1795706783.291
+  }
+]

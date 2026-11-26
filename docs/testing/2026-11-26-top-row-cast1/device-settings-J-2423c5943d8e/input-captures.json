@@ -1,0 +1,56 @@
+{
+  "score_sha256": "e11138275a362ac1526ce00e9da8129bc33a638973038c536c4ef1f81effe037",
+  "host_start_wall": 1795706943.8455727,
+  "host_start_monotonic": 186664.465256474,
+  "captures": [
+    {
+      "label": "01-home-settings-page1",
+      "planned_ms": 6000,
+      "started": 1795706951.3693569,
+      "ended": 1795706953.1717484,
+      "file": "input-frame-001.png",
+      "bytes": 311966,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{88b0006 u0 com.android.tv.settings/.MainSettings t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "02-android-settings",
+      "planned_ms": 11000,
+      "started": 1795706956.3694243,
+      "ended": 1795706957.7508695,
+      "file": "input-frame-002.png",
+      "bytes": 116157,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{88b0006 u0 com.android.tv.settings/.MainSettings t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "03-after-back",
+      "planned_ms": 17000,
+      "started": 1795706962.369243,
+      "ended": 1795706963.9503772,
+      "file": "input-frame-003.png",
+      "bytes": 260655,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{75f5655 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "99-final",
+      "planned_ms": 24000,
+      "started": 1795706969.369266,
+      "ended": 1795706970.9779751,
+      "file": "input-frame-004.png",
+      "bytes": 260668,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{75f5655 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    }
+  ],
+  "result": "completed"
+}

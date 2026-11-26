@@ -1,0 +1,125 @@
+{
+  "score_sha256": "ca32eca8ad843004479f2fef03ab9e962a223eabbf7cdc8404ef7c9093aeb334",
+  "host_start_wall": 1795706801.7422516,
+  "host_start_monotonic": 186522.361935535,
+  "captures": [
+    {
+      "label": "01-start-focused",
+      "planned_ms": 13000,
+      "started": 1795706816.0650678,
+      "ended": 1795706817.7111394,
+      "file": "input-frame-001.png",
+      "bytes": 258848,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-after-hold-ok",
+      "planned_ms": 18000,
+      "started": 1795706821.065062,
+      "ended": 1795706822.382696,
+      "file": "input-frame-002.png",
+      "bytes": 200421,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-after-back",
+      "planned_ms": 22000,
+      "started": 1795706825.0650423,
+      "ended": 1795706826.6928656,
+      "file": "input-frame-003.png",
+      "bytes": 257973,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "04-all-apps",
+      "planned_ms": 27000,
+      "started": 1795706830.0650942,
+      "ended": 1795706831.5829961,
+      "file": "input-frame-004.png",
+      "bytes": 376865,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "05-all-apps-up",
+      "planned_ms": 30000,
+      "started": 1795706833.0651603,
+      "ended": 1795706834.5285013,
+      "file": "input-frame-005.png",
+      "bytes": 359061,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "06-left1",
+      "planned_ms": 33000,
+      "started": 1795706836.0651326,
+      "ended": 1795706837.6955488,
+      "file": "input-frame-006.png",
+      "bytes": 359029,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "07-left2",
+      "planned_ms": 36000,
+      "started": 1795706839.065133,
+      "ended": 1795706840.7680054,
+      "file": "input-frame-007.png",
+      "bytes": 355765,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "08-right1",
+      "planned_ms": 39000,
+      "started": 1795706842.065149,
+      "ended": 1795706843.6226025,
+      "file": "input-frame-008.png",
+      "bytes": 359029,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "09-right2",
+      "planned_ms": 42000,
+      "started": 1795706845.065076,
+      "ended": 1795706846.845718,
+      "file": "input-frame-009.png",
+      "bytes": 359061,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "10-right3",
+      "planned_ms": 45000,
+      "started": 1795706848.0650506,
+      "ended": 1795706849.6975331,
+      "file": "input-frame-010.png",
+      "bytes": 359061,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "11-left-left",
+      "planned_ms": 49000,
+      "started": 1795706852.065064,
+      "ended": 1795706854.3547914,
+      "file": "input-frame-011.png",
+      "bytes": 355765,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "12-left-from-clock",
+      "planned_ms": 53000,
+      "started": 1795706856.065053,
+      "ended": 1795706857.742698,
+      "file": "input-frame-012.png",
+      "bytes": 258017,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-final",
+      "planned_ms": 60000,
+      "started": 1795706863.0650606,
+      "ended": 1795706865.0320754,
+      "file": "input-frame-013.png",
+      "bytes": 258013,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

@@ -1,0 +1,31 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 50,
+ "panel": "require-hidden",
+ "input_script": [
+  {"at": 2, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 4, "key": "MENU", "action": "hold", "ms": 80},
+  {"at": 6, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+  {"at": 8, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+  {"at": 10, "capture": "01-language-screen"},
+  {"at": 11, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+  {"at": 15, "capture": "02-after-thai"},
+  {"at": 16, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 18, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 20, "capture": "03-home-thai"},
+  {"at": 21, "key": "MENU", "action": "hold", "ms": 80},
+  {"at": 23, "capture": "04-home-settings-page1-thai"},
+  {"at": 25, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+  {"at": 27, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+  {"at": 29, "capture": "05-language-screen-thai"},
+  {"at": 30, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 34, "capture": "06-after-follow-device"},
+  {"at": 35, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 37, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 39, "key": "MENU", "action": "hold", "ms": 80},
+  {"at": 41, "capture": "07-home-settings-english-again"},
+  {"at": 42, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 45, "capture": "99-final"}
+ ]
+}

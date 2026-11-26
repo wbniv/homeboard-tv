@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "mode": "observe",
+  "package": "net.biohack.homeboard.debug",
+  "uid": 10128,
+  "uid_source": "pm list packages -U",
+  "foreground_left": true,
+  "observations": 13,
+  "transitions": [
+    {
+      "host_monotonic": 186661.976,
+      "seconds_since_start": 0.389,
+      "host_wall": 1795706941.3565378,
+      "device_uptime_ms": 151641190,
+      "foreground": "topResumedActivity=ActivityRecord{75f5655 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "23396",
+      "source": "start",
+      "events": [
+        "initial"
+      ]
+    },
+    {
+      "host_monotonic": 186673.796,
+      "seconds_since_start": 12.209,
+      "host_wall": 1795706953.1762302,
+      "device_uptime_ms": 151652870,
+      "foreground": "topResumedActivity=ActivityRecord{88b0006 u0 com.android.tv.settings/.MainSettings t5724}",
+      "top_component": "com.android.tv.settings/.MainSettings",
+      "target_in_front": false,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "23396",
+      "source": "capture:01-home-settings-page1",
+      "events": [
+        "target-left",
+        "other-app-in-front"
+      ]
+    },
+    {
+      "host_monotonic": 186681.039,
+      "seconds_since_start": 19.453,
+      "host_wall": 1795706960.4198115,
+      "device_uptime_ms": 151660260,
+      "foreground": "topResumedActivity=ActivityRecord{75f5655 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "23396",
+      "source": "poll",
+      "events": [
+        "target-returned"
+      ]
+    },
+    {
+      "host_monotonic": 186696.851,
+      "seconds_since_start": 35.264,
+      "host_wall": 1795706976.2308955,
+      "device_uptime_ms": 151676200,
+      "foreground": "topResumedActivity=ActivityRecord{75f5655 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "23396",
+      "source": "end",
+      "events": []
+    }
+  ],
+  "logcat": {
+    "method": "uid",
+    "uid": 10128,
+    "file": "logcat.txt"
+  }
+}

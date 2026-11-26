@@ -1,0 +1,80 @@
+{
+  "score_sha256": "5c98b7e05dc2771d6c3735ce9eb59480bda6547cb26fd85479aa5b147d1abecb",
+  "host_start_wall": 1795707140.8900628,
+  "host_start_monotonic": 186861.509746765,
+  "captures": [
+    {
+      "label": "01-language-screen",
+      "planned_ms": 10000,
+      "started": 1795707152.2426763,
+      "ended": 1795707154.0375595,
+      "file": "input-frame-001.png",
+      "bytes": 303781,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-after-thai",
+      "planned_ms": 15000,
+      "started": 1795707157.242774,
+      "ended": 1795707159.2102573,
+      "file": "input-frame-002.png",
+      "bytes": 267516,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-home-thai",
+      "planned_ms": 20000,
+      "started": 1795707162.2426846,
+      "ended": 1795707163.8998928,
+      "file": "input-frame-003.png",
+      "bytes": 278002,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "04-home-settings-page1-thai",
+      "planned_ms": 23000,
+      "started": 1795707165.242757,
+      "ended": 1795707166.8745646,
+      "file": "input-frame-004.png",
+      "bytes": 325616,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "05-language-screen-thai",
+      "planned_ms": 29000,
+      "started": 1795707171.2426813,
+      "ended": 1795707172.6862414,
+      "file": "input-frame-005.png",
+      "bytes": 317638,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "06-after-follow-device",
+      "planned_ms": 34000,
+      "started": 1795707176.2426906,
+      "ended": 1795707177.955859,
+      "file": "input-frame-006.png",
+      "bytes": 278247,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "07-home-settings-english-again",
+      "planned_ms": 41000,
+      "started": 1795707183.2426805,
+      "ended": 1795707185.0391626,
+      "file": "input-frame-007.png",
+      "bytes": 310721,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-final",
+      "planned_ms": 45000,
+      "started": 1795707187.2427351,
+      "ended": 1795707188.822286,
+      "file": "input-frame-008.png",
+      "bytes": 258413,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

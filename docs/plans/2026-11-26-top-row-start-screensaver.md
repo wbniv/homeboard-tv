@@ -1,9 +1,10 @@
 # Home's top row: Start screensaver and Homeboard settings
 
 **Status (2026‑11‑26): implemented on main** (`d74d9b8`, `18b5fae`, `a08cf4e`).
-D1–D3 were decided by Will ("D1 … yes", "d2: ok", "d3: ok"). Device acceptance
-for this top-row change remains open; Stage 5's 0.1.171 captures predate it and
-do not verify the new buttons. See the [Stage 5 record](../testing/2026-11-26-screensaver-stage5-cast1.md).
+D1–D3 were decided by Will ("D1 … yes", "d2: ok", "d3: ok"). **Verified on Cast1 with 0.1.172
+(2026‑11‑26):** steps 1–7 pass; step 8 is partial, since the device shows the Thai Device settings
+entry but no coordinator workflow can read the spoken descriptions. See the
+[Cast1 record](../testing/2026-11-26-top-row-cast1.md).
 
 Will, 2026‑11‑26: "add another button (at the top?) to START the screensaver (something present
 in the original google launcher). move system preferences to inside the app preferences. move
@@ -171,17 +172,130 @@ moves one menu deeper, and the hold on Start screensaver is not discoverable; bo
 1. `task check` passes, with a unit test that the `screensaver` action and the button use the same
    start rule for a Homeboard entry, an app with a preview screen and an app without one, and a
    test of the Home settings entry order (Device settings on page 1 under D2).
+
+    ```
+    $ task deploy DEVICE=chromecast-test-01        # 0.1.172, its task check
+    task: [check] dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest :app:lintDebug
+    > Task :app:lintDebug
+    BUILD SUCCESSFUL in 1m 38s
+    107 actionable tasks: 24 executed, 83 up-to-date
+
+    TEST-com.gathin.tvhome.StartScreensaverTest.xml  tests="5" failures="0" errors="0"
+      theShortcutIsAskedOnlyForAnAndroidOnlyApp
+      aHomeboardEntryPlaysAtOnceThroughShowNowFromBoth
+      anAppWithAPreviewScreenPlaysItInHomeboardsTaskFromBoth
+      anAppWithoutAPreviewScreenUsesAndroidsStartNowFromBoth
+      withoutAndroidsStartNowShortcutBothFallBackToShowNow
+    TEST-com.gathin.tvhome.HomeSettingsMenuTest.xml  tests="3" failures="0" errors="0"
+      deviceSettingsIsOnPageOneInTheLeftSlot
+      homeBehaviorMovesToPageTwoAndAboutToPageThree
+      aNewerDashboardOpensOnlyDeviceSettingsAndAbout
+    all suites: tests 726 failures 0 errors 0
+    Deployment 0.1.172 on chromecast-test-01: succeeded; J-129e4655aaea
+    ```
+
+    **PASS (2026‑11‑26).**
+
 2. Cast1, coordinator `check`: Home's top row shows exactly two buttons right of the world
    clock; Right from the world clock focuses Start screensaver, then Homeboard settings, then
    advances; Left walks back.
+
+    ```
+    $ task chromecast:check DEVICE=chromecast-test-01 APP=homeboard-tv \
+        APK=artifacts/deployments/0.1.172/homeboard.apk RECIPE=dev/device/top-row-focus.json
+    J-7d3be1def917: completed {"error": null, "health": "ready"}
+      top row: world clock, then two round buttons (moon with play, sliders); nothing else
+      Up x3 → Homeboard settings · Right → All Apps · Left … → Homeboard settings → Start screensaver → world clock
+    $ task chromecast:check … RECIPE=dev/device/top-row-start-clock.json
+    J-8e1e823b8703: completed {"error": null, "health": "ready"}
+      frames 01–04: world clock → Right → Start screensaver → Right → Homeboard settings → Left → Start screensaver
+    ```
+
+    **PASS (2026‑11‑26):** focus read from each job's `top-row-strip.jpg`; see the [Cast1 record](../testing/2026-11-26-top-row-cast1.md).
+
 3. With Homeboard's Clock chosen, OK on Start screensaver logs
    `screensaver started mode=now entry=clock` and the Clock is in front; one key returns to
    Home with Start screensaver focused and nothing else changed.
+
+    ```
+    J-8e1e823b8703 (top-row-start-clock.json), Homeboard's choice: Clock (built in)
+    11-26 22:22:46.909 21418 21418 I HomeboardScreensaver: screensaver started mode=now entry=clock
+    11-26 22:23:00.254 21418 21418 I HomeboardScreensaver: screensaver stopped mode=now entry=clock reason=key
+      frame 05: the Clock in front · frame 07 (after one Back): Home, Start screensaver focused, unchanged
+    ```
+
+    **PASS (2026‑11‑26).**
+
 4. With WF Clocks chosen (its preview screen declared), OK on Start screensaver brings the app's
    preview screen to the front (`player=app` in the log); Back returns to Home.
+
+    ```
+    $ task chromecast:check … RECIPE=dev/device/top-row-start-app.json
+    J-8b0200787a5e: completed {"error": null, "health": "ready"}
+      frame 02: WF Clocks "In use" (Use this screensaver, page 3)
+    11-26 22:25:04.120 22054 22054 I HomeboardScreensaver: screensaver started mode=now entry=org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService player=app
+    11-26 22:25:17.039 22054 22054 I HomeboardScreensaver: screensaver stopped mode=now entry=org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService player=app reason=left
+      frame 04: WF Clocks' preview screen in front · frame 06 (after Back): Home, Start screensaver focused
+    ```
+
+    **PASS (2026‑11‑26).**
+
 5. Hold OK on Start screensaver opens Home settings · Screensaver; Back returns to Home with Start
    screensaver focused (D1).
+
+    ```
+    $ task chromecast:check … RECIPE=dev/device/top-row-hold-allapps.json
+    J-12df26e9b58c: completed {"error": null, "health": "ready"}
+      frame 01: Start screensaver focused · OK held 1100 ms
+      frame 02: Home settings · Screensaver (WF Clocks In use)
+      frame 03 (after Back): Home, Start screensaver focused
+    ```
+
+    **PASS (2026‑11‑26).**
+
 6. Home settings page 1 shows Device settings; OK opens Android's Settings in front; Back
    returns to Homeboard.
+
+    ```
+    $ task chromecast:check … RECIPE=dev/device/top-row-device-settings.json
+    J-2423c5943d8e: completed {"error": null, "health": "ready"}
+      frame 01: Home settings, page 1 of 3: Widgets & restore (up), Appearance (right), Screensaver (down), Device settings (left)
+      foreground-timeline.json:
+        topResumedActivity=… net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724
+        topResumedActivity=… com.android.tv.settings/.MainSettings t5724
+        topResumedActivity=… net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724
+    ```
+
+    **PASS (2026‑11‑26):** the radial menu chooses by direction, so Device settings was opened with
+    Left rather than OK; Back returned to Homeboard.
+
 7. All Apps shows the same two buttons and focus order.
+
+    ```
+    J-12df26e9b58c (top-row-hold-allapps.json), after Right, Right into All Apps
+      frames 04–12: the same two buttons; Up → Homeboard settings · Left → Start screensaver · Left → world clock
+                    · Right → Start screensaver · Right → Homeboard settings · Right → stays · Left, Left → world clock
+                    · Left → Home
+    ```
+
+    **PASS (2026‑11‑26):** same buttons and order; Right on Homeboard settings advances only on
+    Home (by design), so in All Apps it stays.
+
 8. With Thai selected, the spoken descriptions and the Device settings entry are in Thai.
+
+    ```
+    $ task chromecast:check … RECIPE=dev/device/top-row-thai.json
+    J-d139082a13b5: completed {"error": null, "health": "ready"}
+      frame 04 (ไทย): Home settings page 1 = การตั้งค่าหน้าหลัก; left arm การตั้งค่าอุ… (Device settings)
+      frame 07: back to Follow device, English again
+    aapt2 dump resources artifacts/deployments/0.1.172/homeboard.apk
+      string/hb_device_settings      (th) "การตั้งค่าอุปกรณ์"
+      string/hb_homeboard_settings   (th) "การตั้งค่า Homeboard"
+      string/hb_ss_start_screensaver (th) "เริ่มโปรแกรมรักษาหน้าจอ"
+    ```
+
+    **PARTIAL (2026‑11‑26):** the Device settings entry is Thai on the device. The spoken
+    descriptions could not be read on the device, because no coordinator workflow returns a TV
+    view's `contentDescription`; the APK carries the Thai strings that `addTopSettingsButton`
+    passes to `setContentDescription`. The read‑only short menu is not testable without a layout
+    from a newer Homeboard (unit test only).
