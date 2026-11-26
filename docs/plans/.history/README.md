@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/6219170) | docs: index the top-row plan; triage its captured deferrals |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/4fbccca) | docs: index the companion contract and drop its duplicate inbox item |
 | [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/cc4934f) | feat: show rendering resolution in About and refine US calendar band |
 | [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/289e060) | feat: add native 4K dashboard proof and fix All Apps grid |
@@ -52,6 +53,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+6219170	author	Will Norris
+6219170	added	2
+6219170	deleted	1
+6219170	files	1
+6219170	body	The four lines the deferral hook captured are non-goals or tracked elsewhere.\nThe companion contract's index row now says both halves are built.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 4fbccca	author	Will Norris
 4fbccca	added	1
 4fbccca	deleted	0

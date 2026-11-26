@@ -105,6 +105,8 @@ missing rows on commit.*
 | [Air-quality startup without a preference wait](2026-11-23-air-quality-startup.md) | Loads saved air settings and cache on a worker; preserves selections/history and records Cast1 0.1.130 acceptance with other installs queued. | `2c370f4`, `de27e5b` | Fix |
 | [What a screensaver app must offer Homeboard (Stage 5)](2026-11-26-screensaver-companion-contract.md) | The preview metadata a screensaver app declares so Homeboard can play it on Home and in Preview; both halves built (WorldFoundry `5a117e85d`, Homeboard `2395376`), awaiting the Cast1 check. | [`12e5c64`](https://github.com/wbniv/homeboard-tv/commit/12e5c64) | Docs |
 | [Home's top row: Start screensaver and Homeboard settings](2026-11-26-top-row-start-screensaver.md) | A button that starts the chosen screensaver; Device settings and Screensaver settings move inside Homeboard settings; waiting on decisions D1–D3. | [`d778920`](https://github.com/wbniv/homeboard-tv/commit/d778920) | Docs |
+| [Screensaver browsing without Previous and Next](2026-11-26-screensaver-browsing.md) | Proposes a continuous remote-friendly list with separate actions, stable focus, diagrams and an interactive browser mockup. | [`4e5d198`](https://github.com/wbniv/homeboard-tv/commit/4e5d198) | UX / Docs |
+
 - [Screensavers: choose, configure and get more](2026-11-20-screensavers.md): one Screensaver
   screen for built-in, provider and Android screensavers, with mockups; plan for review.
 - [Screensavers Stage 0: the probe recipe](2026-11-20-screensavers-stage0-probe.md): how the
