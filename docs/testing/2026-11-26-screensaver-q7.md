@@ -64,4 +64,7 @@ Reported to the coordinator session.
 ## Still open
 
 - Where the TV returns on wake, and what Homeboard does then. Needs a coordinator check that
-  keeps watching after another app comes to the front, or a person with a remote.
+  keeps watching after another app comes to the front, or a person with a remote. Requested
+  from the coordinator session on 2026‑11‑26: an opt‑in that records leaving the foreground
+  instead of failing, the top activity and Dream state at each capture, and the app's log for
+  the whole run.
