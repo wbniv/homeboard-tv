@@ -1,9 +1,14 @@
 | Date | Change |
 |------|--------|
+| [2026-11-21](https://github.com/wbniv/homeboard-tv/commit/78e0aa6) | Clarify Play tester accounts, fees and continuous opt-in requirement |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/5d1a6b6) | Screensavers: record Play account, Play edition and copyright answers |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/161d3b6) | Screensavers: settle decisions and research store distribution |
 
 <!--history-meta v1
+78e0aa6	author	Will Norris
+78e0aa6	added	8
+78e0aa6	deleted	4
+78e0aa6	files	1
 5d1a6b6	author	Will Norris
 5d1a6b6	added	34
 5d1a6b6	deleted	20

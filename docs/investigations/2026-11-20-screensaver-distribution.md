@@ -58,10 +58,25 @@ Measured in `~/WorldFoundry-wbniv/android` on 2026‑11‑20.
 
 | App | Package | Module | Release APK | What it is |
 |---|---|---|---|---|
-| Aquarium screensaver | `org.worldfoundry.screensaver` | `screensaver` | 9.3 MB | Screensaver, a TV launcher entry that plays the chosen tank, a preview activity, a settings provider |
+| Aquarium screensaver | `org.worldfoundry.game.aquarium` (was `org.worldfoundry.screensaver`) | `screensaver` | 9.3 MB | Screensaver, a TV launcher entry that plays the chosen tank, a preview activity, a settings provider |
 | Seahorse Grid | `org.worldfoundry.seahorsegrid` | `screensaver` | 4.5 MB | The same, one scene |
 | Planted Tank | `org.worldfoundry.plantedtank` | `screensaver` | 4.6 MB | The same, one scene |
-| WF Aquarium | `org.worldfoundry.wf_game.aquarium` | `app` | 10.7 MB | The playable app: eight tanks behind a selector, phone as a gamepad |
+| WF Aquarium (retired) | `org.worldfoundry.wf_game.aquarium` | `app` | 10.7 MB | The playable app: eight tanks behind a selector, phone as a gamepad |
+
+**Package names changed on 2026‑11‑22.** Sizes and descriptions above are still the 2026‑11‑20
+measurements. The playable app is retired: one Aquarium app now does both jobs. 3D Clocks, added
+after that measurement, was renamed at the same time. Only the package before the `/` changed;
+Java class names, the `org.worldfoundry.screensaver.DREAM`, `…LEVEL` and `…SETTINGS_AUTHORITY`
+keys and their values did not.
+
+| App | Package | Dream component | Settings authority |
+|---|---|---|---|
+| Aquarium | `org.worldfoundry.game.aquarium` | `org.worldfoundry.game.aquarium/org.worldfoundry.screensaver.AquariumDreamService` | `org.worldfoundry.game.aquarium.settings` |
+| Clocks (was `org.worldfoundry.clocks`) | `org.worldfoundry.game.clocks` | `org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService` | `org.worldfoundry.game.clocks.settings` |
+
+Both apps' preview activity is `org.worldfoundry.screensaver.ScreensaverPreviewActivity` in the
+new package. See the coordinator's
+[rename plan](../../../chromecast-coordinator/docs/plans/2026-11-22-game-package-rename.md).
 
 Gaps between these and a store release:
 
