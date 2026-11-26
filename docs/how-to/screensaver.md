@@ -75,6 +75,13 @@ on the TV's screen; **Show QR code** puts the command on your phone. Run it once
 computer with `adb` connected to the TV, then press **Retry**. Opening the screen and
 Retry change nothing. Without setup, everything else on this page still works on Home.
 
+The permission belongs to this install of Homeboard, not to the `adb` connection, so you
+can switch USB or wireless debugging off afterwards. Setup guides for other apps that use
+this permission say the same. It has not been tried on our test TVs, which stay connected
+for testing. The permission is lost if Homeboard is uninstalled or the TV is reset; then
+**Use everywhere…** shows the setup screen again. The screensaver Android already uses keeps
+running either way.
+
 ### Asked once
 
 With the permission granted, **Use everywhere…** asks one question, once: **Let

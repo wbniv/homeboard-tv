@@ -88,8 +88,23 @@ flowchart LR
       every scene fix needs a Homeboard release
       ([distribution research](2026-11-20-screensaver-distribution.md#the-bundled-default)).
 
+## Without debugging switched on
+
+Will asked (2026‑11‑26) what still works once USB and wireless debugging are switched off
+after the one‑time `adb` command. Expected, from Android's design and other apps' setup
+guides, but not tried on our devices, which the coordinator reaches through debugging:
+
+| | After debugging is switched off |
+|---|---|
+| Homeboard's own screensaver, its options and Home timer | Works; never needed `adb` |
+| The screensaver Android already uses | Keeps running; Android stores the choice itself |
+| Use this screensaver, Undo and Restore everywhere | Should work: the permission stays with the installed Homeboard, which checks it on every change. Lost on uninstall or reset; then the setup screen returns |
+| Which tank or clock a World Foundry app shows | Cannot be changed; today only `adb` changes it (decision 1) |
+
 ## Not decided here
 
+- Debugging switched off: a device check needs a person to switch it off, change the
+  screensaver in Homeboard and switch it back on for a coordinator read.
 - Stage 0 Q7, Android's screensaver over Homeboard's: needs a device run.
 - Installing apps from Homeboard (the rest of Stage 5): unchanged, waits on publishing.
 - Seahorse Grid stays its own app (WorldFoundry decision D7); Planted Tank is being retired.
