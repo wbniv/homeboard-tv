@@ -1,0 +1,12 @@
+<!-- Start screensaver on Home's top row (D3, docs/plans/2026-11-26-top-row-start-screensaver.md): the screensaver
+     moon with a small play mark. A gap is clipped out of the moon around the play mark, so the icon still reads when
+     drawn in a single colour. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <group>
+        <!-- The whole square, less a slightly larger play mark (wound the other way, so it is a hole). -->
+        <clip-path android:pathData="M0,0H24V24H0Z M12.2,8.2V23.8L24.8,16Z"/>
+        <path android:fillColor="#FFFFFFFF" android:pathData="M11.2,2.6a9.4,9.4 0,1 0,8.8 13.5A8.1,8.1 0,0 1,11.2 2.6z"/>
+    </group>
+    <path android:fillColor="#FF7FB4FF" android:pathData="M13.6,10.4v11.2l9,-5.6z"/>
+</vector>

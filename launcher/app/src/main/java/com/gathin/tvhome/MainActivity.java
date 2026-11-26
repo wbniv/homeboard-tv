@@ -62,8 +62,8 @@ public class MainActivity extends NativeDashboardActivity {
     static int COLUMNS = 4;
     private static final String SETTINGS = "control:settings";
     private static final String HOME_SETTINGS = "control:homeboard-settings";
-    private static final String SCREENSAVER_SETTINGS = "control:screensaver-settings";
-    private static final String DEVICE_SETTINGS = "control:device-settings";
+    /** Start screensaver, left of Homeboard settings on the top row (docs/plans/2026-11-26-top-row-start-screensaver.md). */
+    private static final String START_SCREENSAVER = "control:start-screensaver";
     private static final int REQUEST_HOME_ROLE = 7402;
     private static final int MENU_PAGE_SIZE = 4;
     private static final int MAX_UNDO_ENTRIES = 20;
@@ -1181,13 +1181,23 @@ public class MainActivity extends NativeDashboardActivity {
         clock.setOnFocusChangeListener((v,has)->{if(has){focused=HomeLayout.HEADER_CLOCK;if(allApps)appsFocus=focused;else homeFocus=focused;}});
         clock.setOnLongClickListener(v->{configureClock(HomeLayout.HEADER_CLOCK);return true;});
         FrameLayout.LayoutParams cp=new FrameLayout.LayoutParams(-1,dp(60),Gravity.TOP);
-        cp.setMargins(dp(32),dp(16),dp(234),0);surface.addView(clock,cp);tiles.put(HomeLayout.HEADER_CLOCK,clock);clockWidgets.put(HomeLayout.HEADER_CLOCK,clock);
-        addTopSettingsButton(SCREENSAVER_SETTINGS, R.drawable.ic_screensaver, getString(R.string.hb_screensaver),
-                this::screensaverShortcut, dp(170));
+        cp.setMargins(dp(32),dp(16),dp(174),0);surface.addView(clock,cp);tiles.put(HomeLayout.HEADER_CLOCK,clock);clockWidgets.put(HomeLayout.HEADER_CLOCK,clock);
+        addTopSettingsButton(START_SCREENSAVER, R.drawable.ic_screensaver_start, getString(R.string.hb_ss_start_screensaver),
+                this::startScreensaverFromTopRow, dp(110));
         addTopSettingsButton(HOME_SETTINGS, R.drawable.ic_app_settings, getString(R.string.hb_homeboard_settings),
-                this::homeSettings, dp(110));
-        addTopSettingsButton(DEVICE_SETTINGS, R.drawable.ic_settings, getString(R.string.hb_device_settings),
-                () -> open(new Intent(Settings.ACTION_SETTINGS)), dp(50));
+                this::homeSettings, dp(50));
+    }
+    /**
+     * Start screensaver: exactly the remote's "screensaver" action (RemoteKeys.startScreensaver), except that an app's
+     * preview screen is played here directly instead of through an intent to Home itself. Any key ends it and Home
+     * comes back with this button focused.
+     */
+    private void startScreensaverFromTopRow() {
+        if (layout == null) return;
+        RemoteKeys.startScreensaver(this, layout.screensaver.choice, () -> {
+            try { playScreensaver(ScreensaverActivity.MODE_NOW); }
+            catch (RuntimeException unavailable) { toast(getString(R.string.hb_android_could_not_open_that_action)); }
+        });
     }
     private void addTopSettingsButton(String key, int icon, String description, Runnable action, int rightMargin) {
         ImageView button = new ImageView(this);
@@ -1658,8 +1668,8 @@ public class MainActivity extends NativeDashboardActivity {
             if (target == null && visibleCells.isEmpty()) { focused="";homeFocus="";target=surface; }
         }
         if (target == null && !tiles.isEmpty()) {
-            focused = DEVICE_SETTINGS;
-            target = tiles.get(DEVICE_SETTINGS);
+            focused = HOME_SETTINGS;
+            target = tiles.get(HOME_SETTINGS);
         }
         if (target == null) target = surface;
         if (!target.requestFocus()) {
@@ -1702,7 +1712,7 @@ public class MainActivity extends NativeDashboardActivity {
             if(focusUndo())return;focused="";restoreFocus();return;
         }
         if(focusUndo())return;
-        focused = DEVICE_SETTINGS;
+        focused = HOME_SETTINGS;
         restoreFocus();
     }
     private void showApps() {
@@ -1960,26 +1970,20 @@ public class MainActivity extends NativeDashboardActivity {
         }
         if(allApps&&appItems().isEmpty()&&key==KeyEvent.KEYCODE_DPAD_LEFT){showHome();return;}
         if(HomeLayout.HEADER_CLOCK.equals(focused)){
-            if(key==KeyEvent.KEYCODE_DPAD_RIGHT){focused=SCREENSAVER_SETTINGS;restoreFocus();}
+            if(key==KeyEvent.KEYCODE_DPAD_RIGHT){focused=START_SCREENSAVER;restoreFocus();}
             else if(key==KeyEvent.KEYCODE_DPAD_DOWN)focusFirstSurfaceItem();
             else if(key==KeyEvent.KEYCODE_DPAD_LEFT&&allApps)showHome();
             return;
         }
-        if (SCREENSAVER_SETTINGS.equals(focused)) {
+        if (START_SCREENSAVER.equals(focused)) {
             if (key == KeyEvent.KEYCODE_DPAD_LEFT) { focused = HomeLayout.HEADER_CLOCK; restoreFocus(); }
             else if (key == KeyEvent.KEYCODE_DPAD_RIGHT) { focused = HOME_SETTINGS; restoreFocus(); }
             else if (key == KeyEvent.KEYCODE_DPAD_DOWN) focusFirstSurfaceItem();
             return;
         }
         if (HOME_SETTINGS.equals(focused)) {
-            if(key==KeyEvent.KEYCODE_DPAD_LEFT){focused=SCREENSAVER_SETTINGS;restoreFocus();}
-            if (key == KeyEvent.KEYCODE_DPAD_RIGHT) { focused = DEVICE_SETTINGS; restoreFocus(); }
-            else if (key == KeyEvent.KEYCODE_DPAD_DOWN) focusFirstSurfaceItem();
-            return;
-        }
-        if (DEVICE_SETTINGS.equals(focused)) {
             if (key == KeyEvent.KEYCODE_DPAD_DOWN) focusFirstSurfaceItem();
-            else if (key == KeyEvent.KEYCODE_DPAD_LEFT) { focused = HOME_SETTINGS; restoreFocus(); }
+            else if (key == KeyEvent.KEYCODE_DPAD_LEFT) { focused = START_SCREENSAVER; restoreFocus(); }
             else if(key==KeyEvent.KEYCODE_DPAD_RIGHT&&!allApps)advanceHomePage(1);
             return;
         }
@@ -2100,9 +2104,8 @@ public class MainActivity extends NativeDashboardActivity {
     private void activate(String key) {
         if(HomeLayout.HEADER_CLOCK.equals(key)){expandWidget(key,null);return;}
         if (SETTINGS.equals(key)) { homeSettings(); return; }
-        if (SCREENSAVER_SETTINGS.equals(key)) { screensaverShortcut(); return; }
+        if (START_SCREENSAVER.equals(key)) { startScreensaverFromTopRow(); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
-        if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
         if(AndroidWidgetSpec.key(key)){expandWidget(key,null);return;}
         if(HomeLayout.FAVORITES.equals(key)){activateFavorite();return;}
         if (HomeLayout.TIMER.equals(key)||HomeLayout.isRainWidget(key)||HomeLayout.isCalendarWidget(key)||isAirWidgetKey(key)||HomeLayout.isWorldClockWidget(key)||HomeLayout.isGroceryWidget(key)) { expandWidget(key,null); return; }
@@ -2147,8 +2150,8 @@ public class MainActivity extends NativeDashboardActivity {
     }
     private void contextMenu(String key) {
         if(HomeLayout.HEADER_CLOCK.equals(key)){configureClock(key);return;}
-        if (DEVICE_SETTINGS.equals(key)) { open(new Intent(Settings.ACTION_SETTINGS)); return; }
-        if (SCREENSAVER_SETTINGS.equals(key)) { screensaverShortcut(); return; }
+        // Hold OK on Start screensaver (D1): Home settings · Screensaver on its own, so Back returns to the button.
+        if (START_SCREENSAVER.equals(key)) { screensaverSettings(); return; }
         if (HOME_SETTINGS.equals(key)) { homeSettings(); return; }
         if (key.isEmpty() || SETTINGS.equals(key)) { homeSettings(); return; }
         if(HomeLayout.FAVORITES.equals(key)){favoriteContext();return;}
@@ -2394,24 +2397,44 @@ public class MainActivity extends NativeDashboardActivity {
     }
 
     private void homeSettings() {
-        if(layoutReadOnly){androidWidgets.notice(getString(R.string.hb_aw_newer_layout));return;}
-        menu(getString(R.string.hb_home_settings), getString(R.string.hb_choose_an_area_to_customize), new String[]{
-                getString(R.string.hb_widgets_restore), getString(R.string.hb_appearance), getString(R.string.hb_screensaver), getString(R.string.hb_home_behavior), getString(R.string.hb_language), getString(R.string.hb_undo_history),
-                homeButtonMenuLabel(), getString(R.string.hb_about_homeboard_tv),getString(R.string.hb_phone_title),getString(R.string.hb_cleanup_title)}, choice -> {
-            switch (choice) {
-                case 0: widgetsAndRestore(); break;
-                case 1: appearanceSettings(); break;
-                case 2: screensaverSettings(); break;
-                case 3: homeBehaviorSettings(); break;
-                case 4: languageSettings(); break;
-                case 5: openUndoHistory(); break;
-                case 6: homeButtonSettings(); break;
-                case 7: aboutHomeboard(); break;
-                case 8: if(phoneEditor==null)phoneEditor=new PhoneEditor(this);phoneEditor.open();break;
-                case 9: cleanupInstructions(); break;
+        // A dashboard saved by a newer Homeboard: only Device settings and About, so Android's Settings, which has no
+        // other on-screen route since the top row lost its gear, is never out of reach.
+        List<HomeSettingsMenu.Entry> entries = HomeSettingsMenu.entries(layoutReadOnly);
+        String[] labels = new String[entries.size()];
+        for (int i = 0; i < labels.length; i++) labels[i] = homeSettingsLabel(entries.get(i));
+        menu(getString(R.string.hb_home_settings), getString(R.string.hb_choose_an_area_to_customize), labels, choice -> {
+            if (choice < 0 || choice >= entries.size()) return;
+            switch (entries.get(choice)) {
+                case WIDGETS_AND_RESTORE: widgetsAndRestore(); break;
+                case APPEARANCE: appearanceSettings(); break;
+                case SCREENSAVER: screensaverSettings(); break;
+                case DEVICE_SETTINGS: open(new Intent(Settings.ACTION_SETTINGS)); break;
+                case HOME_BEHAVIOR: homeBehaviorSettings(); break;
+                case LANGUAGE: languageSettings(); break;
+                case UNDO_HISTORY: openUndoHistory(); break;
+                case HOME_BUTTON: homeButtonSettings(); break;
+                case ABOUT: aboutHomeboard(); break;
+                case PHONE: if(phoneEditor==null)phoneEditor=new PhoneEditor(this);phoneEditor.open();break;
+                case CLEANUP: cleanupInstructions(); break;
                 default: break;
             }
         });
+    }
+    private String homeSettingsLabel(HomeSettingsMenu.Entry entry) {
+        switch (entry) {
+            case WIDGETS_AND_RESTORE: return getString(R.string.hb_widgets_restore);
+            case APPEARANCE: return getString(R.string.hb_appearance);
+            case SCREENSAVER: return getString(R.string.hb_screensaver);
+            case DEVICE_SETTINGS: return getString(R.string.hb_device_settings);
+            case HOME_BEHAVIOR: return getString(R.string.hb_home_behavior);
+            case LANGUAGE: return getString(R.string.hb_language);
+            case UNDO_HISTORY: return getString(R.string.hb_undo_history);
+            case HOME_BUTTON: return homeButtonMenuLabel();
+            case ABOUT: return getString(R.string.hb_about_homeboard_tv);
+            case PHONE: return getString(R.string.hb_phone_title);
+            case CLEANUP: return getString(R.string.hb_cleanup_title);
+            default: throw new IllegalArgumentException(entry.name());
+        }
     }
 
     // Screensaver (docs/plans/2026-11-20-screensavers.md, Stages 1 and 3): Home settings → Screensaver, its Options,
@@ -2441,7 +2464,7 @@ public class MainActivity extends NativeDashboardActivity {
     private String screensaverFocusTag;
     /** Set while a Preview is up: the entry, and whether its Options screen was open. */
     private String returningToScreensaver, screensaverAccepted;
-    private boolean screensaverOptionsOpen, screensaverFromShortcut;
+    private boolean screensaverOptionsOpen;
     private View screensaverFirstAction;
     private EverywhereScreensaver everywhere;
     /** Built-ins plus the installed Android screensaver apps, read again each time the Screensaver screen opens. */
@@ -2525,9 +2548,11 @@ public class MainActivity extends NativeDashboardActivity {
     }
     /** The chosen entry as the list shows it: the default slot when the chosen app is no longer installed. */
     private ScreensaverRegistry.Entry chosenScreensaver() { return ScreensaverRegistry.resolve(layout.screensaver.choice, screensaverEntries); }
-    private void screensaverShortcut() { screensaverFromShortcut = true; showScreensaverSettings(); }
-    private void screensaverSettings() { screensaverFromShortcut = false; showScreensaverSettings(); }
-    private void showScreensaverSettings() {
+    /**
+     * Home settings → Screensaver. Opened from Home settings it stacks on that menu; opened by holding OK on Start
+     * screensaver (D1) it stands alone, so Back returns to Home with the button focused.
+     */
+    private void screensaverSettings() {
         refreshScreensaverEntries(); screensaverFailure = null; screensaverRetry = null;
         screensaverFocus = ScreensaverRegistry.indexOf(chosenScreensaver().id, screensaverEntries);
         screensaverPage = screensaverFocus / SCREENSAVER_PAGE_SIZE; screensaverFocusTag = null;
@@ -2539,8 +2564,7 @@ public class MainActivity extends NativeDashboardActivity {
         boolean options = screensaverOptionsOpen; String accepted = screensaverAccepted; screensaverAccepted = null;
         refreshScreensaverEntries();
         int focus = ScreensaverRegistry.indexOf(entry, screensaverEntries);
-        if (screensaverFromShortcut) { dismissMenu(); activeMenu = null; menuStack.clear(); }
-        else homeSettings();
+        homeSettings();
         invokingMenuAction = true;
         try {
             screensaverFocus = focus; screensaverPage = focus / SCREENSAVER_PAGE_SIZE; screensaverFocusTag = "act:preview";

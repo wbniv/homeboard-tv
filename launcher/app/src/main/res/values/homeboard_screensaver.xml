@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hb_screensaver">Screensaver</string>
+    <string name="hb_ss_start_screensaver">Start screensaver</string>
     <string name="hb_ss_list_heading">Plays when the TV is idle</string>
     <string name="hb_ss_in_use">In use</string>
     <string name="hb_ss_built_in">Built in</string>

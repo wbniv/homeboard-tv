@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hb_screensaver">โปรแกรมรักษาหน้าจอ</string>
+    <string name="hb_ss_start_screensaver">เริ่มโปรแกรมรักษาหน้าจอ</string>
     <string name="hb_ss_list_heading">แสดงเมื่อทีวีไม่ได้ใช้งาน</string>
     <string name="hb_ss_in_use">ใช้อยู่</string>
     <string name="hb_ss_built_in">มีในตัว</string>
