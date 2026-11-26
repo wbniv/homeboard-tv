@@ -1,0 +1,143 @@
+{
+  "score_sha256": "8ab229593052a82d68988f569999b13096f450904b0166b0400d31c74fb2e326",
+  "host_start_wall": 1795701464.5554082,
+  "host_start_monotonic": 181185.175092271,
+  "captures": [
+    {
+      "label": "01-after-menu",
+      "planned_ms": 5000,
+      "started": 1795701471.000814,
+      "ended": 1795701472.859082,
+      "file": "input-frame-001.png",
+      "bytes": 312924,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-after-dpad_down",
+      "planned_ms": 8000,
+      "started": 1795701474.000791,
+      "ended": 1795701475.591957,
+      "file": "input-frame-002.png",
+      "bytes": 274646,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-after-dpad_down",
+      "planned_ms": 11000,
+      "started": 1795701477.001179,
+      "ended": 1795701478.575535,
+      "file": "input-frame-003.png",
+      "bytes": 243970,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "04-after-dpad_down",
+      "planned_ms": 14000,
+      "started": 1795701480.0008063,
+      "ended": 1795701481.5382612,
+      "file": "input-frame-004.png",
+      "bytes": 233991,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "05-after-dpad_down",
+      "planned_ms": 17000,
+      "started": 1795701483.0008247,
+      "ended": 1795701484.43887,
+      "file": "input-frame-005.png",
+      "bytes": 234166,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "06-after-dpad_down",
+      "planned_ms": 20000,
+      "started": 1795701486.0026312,
+      "ended": 1795701488.0490944,
+      "file": "input-frame-006.png",
+      "bytes": 235160,
+      "schedule_lateness_ms": 2
+    },
+    {
+      "label": "07-after-dpad_center",
+      "planned_ms": 23000,
+      "started": 1795701489.0008008,
+      "ended": 1795701490.4245405,
+      "file": "input-frame-007.png",
+      "bytes": 241766,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "08-after-dpad_down",
+      "planned_ms": 26000,
+      "started": 1795701492.0008085,
+      "ended": 1795701493.5500274,
+      "file": "input-frame-008.png",
+      "bytes": 241915,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "09-after-dpad_down",
+      "planned_ms": 29000,
+      "started": 1795701495.0008156,
+      "ended": 1795701496.697429,
+      "file": "input-frame-009.png",
+      "bytes": 244093,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "10-after-dpad_down",
+      "planned_ms": 32000,
+      "started": 1795701498.0008097,
+      "ended": 1795701499.3730674,
+      "file": "input-frame-010.png",
+      "bytes": 245596,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "11-after-dpad_down",
+      "planned_ms": 35000,
+      "started": 1795701501.000804,
+      "ended": 1795701502.8630874,
+      "file": "input-frame-011.png",
+      "bytes": 247727,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "12-after-dpad_center",
+      "planned_ms": 38000,
+      "started": 1795701504.0008109,
+      "ended": 1795701505.5621705,
+      "file": "input-frame-012.png",
+      "bytes": 275869,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "13-after-dpad_down",
+      "planned_ms": 41000,
+      "started": 1795701507.0008135,
+      "ended": 1795701508.5180097,
+      "file": "input-frame-013.png",
+      "bytes": 245471,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "14-after-dpad_down",
+      "planned_ms": 44000,
+      "started": 1795701510.000809,
+      "ended": 1795701511.5886474,
+      "file": "input-frame-014.png",
+      "bytes": 233991,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 52000,
+      "started": 1795701518.0025544,
+      "ended": 1795701519.588924,
+      "file": "input-frame-015.png",
+      "bytes": 261667,
+      "schedule_lateness_ms": 2
+    }
+  ],
+  "result": "completed"
+}

@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/79c4d9f) | docs: no remote has a screensaver button |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/d69822e) | docs: Stage 5 built and merged; awaiting the Cast1 check |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/a847020) | docs: screensaver apps with their own preview screen; Stage 5 status in the contract |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/ef2fb21) | docs: WorldFoundry declares the preview metadata; Stage 5 unblocked |
@@ -10,6 +11,11 @@
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/12e5c64) | docs: define the screensaver companion app contract; Stage 5 is blocked |
 
 <!--history-meta v1
+79c4d9f	author	Will Norris
+79c4d9f	added	2
+79c4d9f	deleted	2
+79c4d9f	files	1
+79c4d9f	body	The screensaver action word only runs from a spare remote button that a build\nor theme maps through app_keys, which ships empty. The top-row plan, its\nmockup, the user guide, the contract, the investigation and the Stage 5 TODO\nsaid "the remote" as if a button existed.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 d69822e	author	Will Norris
 d69822e	added	1
 d69822e	deleted	1

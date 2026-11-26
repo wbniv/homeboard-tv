@@ -88,3 +88,24 @@ at another app. An app without these keys behaves as it does today: listed, no P
 3. Homeboard on Cast1: a World Foundry entry previews and plays on Home through the app's preview
    screen; **Open ‹app› settings** opens the chooser; a ringing timer brings Homeboard back while
    the app's screen is in front.
+
+    ```
+    $ task chromecast:check DEVICE=chromecast-test-01 APP=homeboard-tv \
+        APK=artifacts/deployments/0.1.165/homeboard.apk RECIPE=dev/device/screensaver-stage5-map.json
+    Accepted J-f43c1d1151ff: queued; check — waiting: device busy with J-fc9424e67b72
+    J-f43c1d1151ff: completed {"error": null, "health": "ready"}
+    J-f43c1d1151ff: completed
+
+    Screensaver list, page 2, WF Clocks focused (frame 07):
+      Clock   Needs Use everywhere · ☾ Android screensaver app · Android runs it, in every app
+      [glyph] No preview: Android gives apps no way to start another app's screensaver.
+      Actions: Use everywhere…   (no Preview, no Open Clock settings)
+    ```
+
+    **FAIL (2026‑11‑26):** Homeboard 0.1.165 lists WF Clocks (sha256 `89a31982…`, whose manifest
+    does declare `PREVIEW_ACTIVITY` and an exported `ScreensaverPreviewActivity`, checked with
+    `aapt2 dump xmltree`) as an app **without** a preview screen, so there is no Preview and no
+    Home choice to play. The preview and ringing‑timer parts could not be run. **Open ‹app›
+    settings** is not testable: WF Clocks declares no `settingsActivity`, and the button is absent
+    (frame 07). Cause not yet known; see the
+    [Cast1 record](../testing/2026-11-26-screensaver-stage5-cast1.md).

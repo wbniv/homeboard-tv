@@ -1,0 +1,170 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 55,
+ "panel": "require-hidden",
+ "input_script": [
+  {
+   "at": 3,
+   "key": "MENU",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 5,
+   "capture": "01-after-menu"
+  },
+  {
+   "at": 6,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 8,
+   "capture": "02-after-dpad_down"
+  },
+  {
+   "at": 9,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 11,
+   "capture": "03-after-dpad_down"
+  },
+  {
+   "at": 12,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 14,
+   "capture": "04-after-dpad_down"
+  },
+  {
+   "at": 15,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 17,
+   "capture": "05-after-dpad_down"
+  },
+  {
+   "at": 18,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 20,
+   "capture": "06-after-dpad_down"
+  },
+  {
+   "at": 21,
+   "key": "DPAD_CENTER",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 23,
+   "capture": "07-after-dpad_center"
+  },
+  {
+   "at": 24,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 26,
+   "capture": "08-after-dpad_down"
+  },
+  {
+   "at": 27,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 29,
+   "capture": "09-after-dpad_down"
+  },
+  {
+   "at": 30,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 32,
+   "capture": "10-after-dpad_down"
+  },
+  {
+   "at": 33,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 35,
+   "capture": "11-after-dpad_down"
+  },
+  {
+   "at": 36,
+   "key": "DPAD_CENTER",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 38,
+   "capture": "12-after-dpad_center"
+  },
+  {
+   "at": 39,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 41,
+   "capture": "13-after-dpad_down"
+  },
+  {
+   "at": 42,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 44,
+   "capture": "14-after-dpad_down"
+  },
+  {
+   "at": 45,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 47,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 49,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 52,
+   "capture": "99-home"
+  }
+ ]
+}
