@@ -1,6 +1,6 @@
 # Browse screensavers without page buttons
 
-**Status: implementation authorized by Will ("do"), 26 November; not yet implemented.**
+**Status: implementation authorized by Will ("do"), 26 November; steps 2–4 built on branch `screensaver-browsing`, device acceptance (step 5) not yet run.**
 The documentation sweep precedes the UI change. Will, 26 November: “I hate the
 'previous' and 'next' buttons on the screensaver page … there must be a better way.”
 
@@ -62,6 +62,16 @@ the current companion contract supplies a separate full-screen activity.
 | Options / app settings, then Back | Restore the same entry, scroll position and initiating action. |
 | Touch / pointer | Scroll naturally; tap a row to inspect it, tap an action to act. No page controls. |
 
+**As built (branch `screensaver-browsing`):** the workflow above is what the code does. The
+list is a RecyclerView with stable ids (one per entry id); a row's focus redraws only the
+detail pane and the count. `ScreensaverPicker.State` keeps the browsed id, the first visible
+row's id and offset, the last action's tag and whether the chooser came from Home settings
+or from holding OK on Start screensaver; a return (Preview of either kind, Options, an app's
+settings screen, Use everywhere, a package change, an Activity recreation) restores all four.
+Back from the action area returns to the row; Back or header Back from the list closes to
+the origin. Below 720 dp of measured width the list and detail stack vertically with the
+same state. Use redraws the screen in place on the same row, offset and action.
+
 The focus ring means “you are browsing this”; the saved-choice badge means “this
 is used.” If Home and Android use different entries, label the badges **On Home**
 and **In other apps** with the actual scopes, rather than displaying two ambiguous
@@ -100,6 +110,10 @@ preview screen retain that app's real Preview, Home selection and app settings.
 Android-only apps show “Preview is not available from this app”, their settings
 action if provided, and the existing Use everywhere flow. Hide unsupported
 actions rather than add a dead-end Preview button.
+
+**Folded in by Will (26 November, "fold it into the list rework"):** when Home's choice is an app,
+**Change** under When it starts opens only When it starts (Home timer, In other apps, the
+Android-follows note), titled for the app, never the built-in Clock's look options.
 
 Two built-ins alone need no scrollbar. A long catalogue uses the same list with
 recycled rows. Re-querying installed apps must preserve the browsed ID and first

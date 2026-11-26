@@ -3,16 +3,38 @@
 Open **Home settings → Screensaver**, or on Home or All Apps hold OK on **Start screensaver** in the top row; Back from
 there returns to Home with Start screensaver focused. The list on the left shows what can
 play when the TV is idle: **Clock** (clock and date on a slow glow) and **Home
-background** (the background Home is showing, full screen). Both are built in. Four
-entries fit a page; there is no scrollbar. The entry in use carries an **In use** label.
+background** (the background Home is showing, full screen), both built in, then the
+screensaver apps installed on the TV in name order. It is one list that scrolls: there
+are no page buttons. Below it, "3 of 12" and a thin bar at the side show where you are;
+neither is a stop for the remote.
 
-Move to an entry and the right side shows a preview, one sentence about it, its actions
-and **When it starts**. Press OK on an entry to reach its actions:
+Each row shows a name and one short line ("◆ Built in", or what an app can do); the
+description is on the right. A badge shows what is in use: **In use** when Home and
+other apps use the same screensaver, otherwise **On Home** and **In other apps** on
+their own rows. The focus ring only means you are looking at that row; looking never
+saves anything.
 
-- **Preview** plays it full screen at once. OK uses it; Back cancels and nothing is saved.
+- **Up / Down** move one row and update the right side, without playing or saving
+  anything. Holding a direction keeps moving and stops at the first or last row; it
+  never wraps. Up from the first row reaches **Back** at the top; Down from there
+  returns to the row.
+- **Right** or **OK** on a row moves to its actions. **Left** or **Back** from the
+  actions returns to the same row and scroll position; **Back** from the list closes
+  the screen, back to where you opened it.
+- On a touch screen, scroll the list and tap a row to look at it, then tap an action.
+
+The actions an entry offers (others are left out rather than shown dimmed):
+
+- **Preview** plays it full screen at once. For a built-in, OK uses it; Back cancels
+  and nothing is saved. For an app with its own preview screen, Back ends it.
 - **Use this screensaver** saves the choice, with the usual Undo banner. Hold Back to
   Undo, or open **Home settings → Undo history**.
-- **Options** opens that entry's settings and **When it starts**.
+- **Options** (built-in entries) opens that entry's settings and **When it starts**.
+- **Open ‹app› settings** and **Use everywhere…** for apps, as described below.
+
+After Preview, Options, an app's settings screen or Use everywhere, the screen comes
+back on the same entry, scroll position and action. If an app is uninstalled while you
+look at it, the list moves to the nearest entry and says "‹app› is no longer installed."
 
 ## Options
 
@@ -21,6 +43,11 @@ and **When it starts**. Press OK on an entry to reach its actions:
 | Clock | Backdrop: Glow, Home background or Black (for OLED panels). Dim backdrop, used with Home background. |
 | Home background | Show clock on or off. Dim. |
 | All | Start on Home after: Android decides, 1, 2, 5, 10, 15 or 30 min without input. |
+
+When Home's choice is an app, **Change** under **When it starts** opens **When it
+starts** alone (the Home timer, **In other apps** and, where it applies, the note that
+Android's screensaver follows), titled with the app's name, because the built-in look
+options do not apply to an app.
 
 Each change saves as you make it, with Undo. These settings are kept apart from Home's
 own background, so dimming the screensaver does not dim Home. Some things are not
