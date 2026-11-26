@@ -26,6 +26,16 @@ final class ScreensaverRules {
 
     enum HomeLine { NO_TIMER, AFTER_MINUTES, ANDROID_STARTS }
 
+    /** What plays when Homeboard itself starts a screensaver: Home idle, or the remote's screensaver action. */
+    enum Player {
+        /** Homeboard's own ScreensaverActivity, with the chosen built-in or the default slot. */
+        HOMEBOARD,
+        /** The chosen app's own preview screen (Stage 5), which plays the app's saved screensaver. */
+        APP_SCREEN,
+        /** Android's "start now" shortcut: an app without a preview screen, set through Use everywhere. */
+        ANDROID
+    }
+
     enum OtherLine { UNCHANGED, THE_SAME, UNKNOWN }
 
     /** timeoutMinutes: the timeout could not be read. */
@@ -57,9 +67,14 @@ final class ScreensaverRules {
         return mayWrite ? Screen.ASK_ONCE : Screen.SETUP;
     }
 
-    static Use use(boolean managed, String entryId) {
+    /**
+     * playsOnHome: the entry is an app with its own preview screen (ScreensaverRegistry.Entry.playsOnHome), which
+     * Homeboard can play on Home like a built-in, so before the one-time question it is used on Home too. Any other
+     * app needs Use everywhere, because only Android can run it.
+     */
+    static Use use(boolean managed, String entryId, boolean playsOnHome) {
         if (managed) return Use.APPLY_NOW;
-        return isApp(entryId) ? Use.EVERYWHERE_SCREEN : Use.ON_HOME;
+        return isApp(entryId) && !playsOnHome ? Use.EVERYWHERE_SCREEN : Use.ON_HOME;
     }
 
     static HomeLine homeLine(boolean managed, String choice, int idleMinutes) {
@@ -95,11 +110,25 @@ final class ScreensaverRules {
     }
 
     /**
-     * The remote's screensaver action. A Homeboard entry is chosen: Homeboard plays it at once (Show now), whether
-     * or not it manages the TV. An Android screensaver app is chosen, which happens only through Use everywhere:
-     * Android's own "start now" shortcut, since Android is set to that app and Homeboard cannot run it.
+     * Home idle: what Homeboard's own Home timer starts. chosen is the saved choice resolved against the installed
+     * entries (ScreensaverRegistry.resolve), so an uninstalled app is already the default slot. An app with its own
+     * preview screen plays through it; any other app falls back to Homeboard's default slot, which ScreensaverActivity
+     * plays for a choice it does not know.
      */
-    static boolean remoteStartsHomeboard(String choice) { return !isApp(choice); }
+    static Player homePlayer(ScreensaverRegistry.Entry chosen) {
+        return chosen != null && chosen.playsOnHome() ? Player.APP_SCREEN : Player.HOMEBOARD;
+    }
+
+    /**
+     * The remote's screensaver action. A Homeboard entry is chosen: Homeboard plays it at once (Show now), whether
+     * or not it manages the TV. An app with its own preview screen (appScreen) plays at once through that screen, the
+     * same way as Home idle. Any other app is chosen only through Use everywhere: Android's own "start now" shortcut,
+     * since Android is set to that app and Homeboard cannot run it.
+     */
+    static Player remotePlayer(String choice, boolean appScreen) {
+        if (!isApp(choice)) return Player.HOMEBOARD;
+        return appScreen ? Player.APP_SCREEN : Player.ANDROID;
+    }
 
     /** The component Android must name for choice: the app itself, or this install's ScreensaverDream. */
     static String componentFor(String choice, String ownComponent) { return isApp(choice) ? choice : ownComponent; }

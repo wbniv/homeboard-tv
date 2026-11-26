@@ -52,6 +52,9 @@
     <string name="hb_ss_app_kind">Android screensaver app</string>
     <string name="hb_ss_app_summary">Android runs it, in every app</string>
     <string name="hb_ss_app_detail">An Android screensaver app. Android runs it, not Homeboard, so it must become this TV\'s screensaver to be used.</string>
+    <!-- Stage 5: an app that declares its own preview screen (docs/plans/2026-11-26-screensaver-companion-contract.md). -->
+    <string name="hb_ss_app_screen_summary">Plays on Home, or in every app</string>
+    <string name="hb_ss_app_screen_detail">An Android screensaver app. Homeboard plays it on Home and in Preview through the app\'s own screen, showing what the app\'s own settings chose. Use everywhere makes it this TV\'s screensaver in every app.</string>
     <string name="hb_ss_no_preview">No preview: Android gives apps no way to start another app\'s screensaver.</string>
     <string name="hb_ss_needs_everywhere">Needs Use everywhere</string>
     <string name="hb_ss_open_settings">Open %1$s settings</string>

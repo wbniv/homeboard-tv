@@ -95,21 +95,21 @@ public class ScreensaverRulesTest {
 
     @Test public void transitionsFromHomeOnly() {
         // HomeOnly → EverywhereHomeboard / EverywhereApp: Use everywhere, through setup or the question.
-        assertEquals(Use.ON_HOME, use(false, CLOCK));
-        assertEquals(Use.EVERYWHERE_SCREEN, use(false, AERIAL));
+        assertEquals(Use.ON_HOME, use(false, CLOCK, false));
+        assertEquals(Use.EVERYWHERE_SCREEN, use(false, AERIAL, false));
     }
 
     @Test public void transitionsBetweenTheEverywhereStatesNeedNoQuestion() {
         // EverywhereHomeboard → EverywhereApp and back: every later choice applies at once with Undo.
-        assertEquals(Use.APPLY_NOW, use(true, AERIAL));
-        assertEquals(Use.APPLY_NOW, use(true, CLOCK));
-        assertEquals(Use.APPLY_NOW, use(true, BACKGROUND));
+        assertEquals(Use.APPLY_NOW, use(true, AERIAL, false));
+        assertEquals(Use.APPLY_NOW, use(true, CLOCK, false));
+        assertEquals(Use.APPLY_NOW, use(true, BACKGROUND, false));
     }
 
     @Test public void restoreReturnsToHomeOnly() {
         // Everywhere* → HomeOnly: Restore clears the managed flag, and the next Use is on Home again.
         assertEquals(Mode.HOME_ONLY, mode(false, CLOCK));
-        assertEquals(Use.ON_HOME, use(false, BACKGROUND));
+        assertEquals(Use.ON_HOME, use(false, BACKGROUND, false));
         assertEquals(Screen.ASK_ONCE, everywhereScreen(false, true));
     }
 
@@ -126,9 +126,52 @@ public class ScreensaverRulesTest {
     }
 
     @Test public void theRemoteStartsHomeboardsOwnEntryAndAndroidsShortcutForAnApp() {
-        assertTrue(remoteStartsHomeboard(CLOCK));
-        assertTrue(remoteStartsHomeboard(BACKGROUND));
-        assertFalse(remoteStartsHomeboard(AERIAL));
+        assertEquals(Player.HOMEBOARD, remotePlayer(CLOCK, false));
+        assertEquals(Player.HOMEBOARD, remotePlayer(BACKGROUND, false));
+        assertEquals(Player.ANDROID, remotePlayer(AERIAL, false));
+    }
+
+    // Stage 5: an app that declares its own preview screen (docs/plans/2026-11-26-screensaver-companion-contract.md).
+    private static final String AQUARIUM = "org.worldfoundry.game.aquarium/org.worldfoundry.screensaver.AquariumDream";
+
+    private static ScreensaverRegistry.Entry app(String component, ScreensaverGateway.AppScreen screen) {
+        return ScreensaverRegistry.app(new ScreensaverGateway.InstalledDream(component, "App", null, screen));
+    }
+
+    private static ScreensaverGateway.AppScreen aquariumScreen() {
+        return ScreensaverRegistry.appScreen("org.worldfoundry.game.aquarium", "org.worldfoundry.screensaver.ScreensaverPreviewActivity",
+                "org.worldfoundry.screensaver.DREAM", "aquarium");
+    }
+
+    @Test public void anAppWithItsOwnPreviewScreenIsUsedOnHomeBeforeTheQuestion() {
+        assertEquals(Use.ON_HOME, use(false, AQUARIUM, true));
+        assertEquals(Use.EVERYWHERE_SCREEN, use(false, AQUARIUM, false));   // without the metadata: as before Stage 5
+        // Once Homeboard manages the TV, Use everywhere works as today for every app.
+        assertEquals(Use.APPLY_NOW, use(true, AQUARIUM, true));
+        assertEquals(Use.APPLY_NOW, use(true, AQUARIUM, false));
+        // A built-in never needs the flag.
+        assertEquals(Use.ON_HOME, use(false, CLOCK, true));
+    }
+
+    @Test public void homeIdlePlaysAnAppsOwnScreenAndHomeboardsForEverythingElse() {
+        assertEquals(Player.APP_SCREEN, homePlayer(app(AQUARIUM, aquariumScreen())));
+        assertEquals(Player.HOMEBOARD, homePlayer(app(AERIAL, null)));   // no preview screen: Homeboard's default slot
+        assertEquals(Player.HOMEBOARD, homePlayer(ScreensaverRegistry.find(CLOCK)));
+        assertEquals(Player.HOMEBOARD, homePlayer(ScreensaverRegistry.find(BACKGROUND)));
+        assertEquals(Player.HOMEBOARD, homePlayer(null));
+        // An app that was uninstalled resolves to the default slot before homePlayer sees it.
+        java.util.List<ScreensaverRegistry.Entry> none = ScreensaverRegistry.entries(java.util.Collections.emptyList(), OWN);
+        assertEquals(Player.HOMEBOARD, homePlayer(ScreensaverRegistry.resolve(AQUARIUM, none)));
+        // On Home only the Home timer runs for an app choice; managed, Android's timer is in charge as before.
+        assertTrue(homeTimerRuns(false, AQUARIUM, 5));
+        assertFalse(homeTimerRuns(true, AQUARIUM, 5));
+    }
+
+    @Test public void theRemotePlaysAnAppsOwnScreenAtOnce() {
+        assertEquals(Player.APP_SCREEN, remotePlayer(AQUARIUM, true));
+        assertEquals(Player.ANDROID, remotePlayer(AQUARIUM, false));
+        assertEquals(Player.HOMEBOARD, remotePlayer(CLOCK, true));   // a built-in id never names an app screen
+        assertEquals(Player.HOMEBOARD, remotePlayer(null, false));
     }
 
     @Test public void componentsCompareInTheirLongForm() {

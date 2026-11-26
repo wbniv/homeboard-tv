@@ -97,6 +97,91 @@ public class ScreensaverRegistryTest {
         assertEquals(ScreensaverRegistry.CLOCK, ScreensaverRegistry.stored("plasma"));
     }
 
+    // Stage 5: the preview screen a Dream service declares (docs/plans/2026-11-26-screensaver-companion-contract.md).
+    private static final String AQUARIUM_PACKAGE = "org.worldfoundry.game.aquarium";
+    private static final String PREVIEW = "org.worldfoundry.screensaver.ScreensaverPreviewActivity", DREAM_EXTRA = "org.worldfoundry.screensaver.DREAM";
+
+    @Test public void theMetadataKeysAreTheContractsNames() {
+        assertEquals("org.worldfoundry.screensaver.PREVIEW_ACTIVITY", ScreensaverRegistry.PREVIEW_ACTIVITY);
+        assertEquals("org.worldfoundry.screensaver.PREVIEW_EXTRA", ScreensaverRegistry.PREVIEW_EXTRA);
+        assertEquals("org.worldfoundry.screensaver.PREVIEW_VALUE", ScreensaverRegistry.PREVIEW_VALUE);
+    }
+
+    @Test public void aValidPreviewScreenWithItsExtra() {
+        ScreensaverGateway.AppScreen screen = ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, PREVIEW, DREAM_EXTRA, "aquarium");
+        assertEquals(AQUARIUM_PACKAGE + "/" + PREVIEW, screen.component);
+        assertEquals(DREAM_EXTRA, screen.extra);
+        assertEquals("aquarium", screen.value);
+        ScreensaverGateway.AppScreen seahorse = ScreensaverRegistry.appScreen("org.worldfoundry.seahorsegrid", " " + PREVIEW + " ", DREAM_EXTRA, "seahorse_grid");
+        assertEquals("org.worldfoundry.seahorsegrid/" + PREVIEW, seahorse.component);
+        assertEquals("seahorse_grid", seahorse.value);
+    }
+
+    @Test public void aPreviewScreenWithoutAnExtraLikeClocks() {
+        ScreensaverGateway.AppScreen clocks = ScreensaverRegistry.appScreen("org.worldfoundry.game.clocks", PREVIEW, null, null);
+        assertEquals("org.worldfoundry.game.clocks/" + PREVIEW, clocks.component);
+        assertNull(clocks.extra);
+        assertNull(clocks.value);
+    }
+
+    @Test public void anExtraIsSentOnlyWhenBothItsNameAndValueAreDeclared() {
+        ScreensaverGateway.AppScreen noValue = ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, PREVIEW, DREAM_EXTRA, null);
+        assertNotNull(noValue);
+        assertNull(noValue.extra);
+        assertNull(noValue.value);
+        ScreensaverGateway.AppScreen emptyValue = ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, PREVIEW, DREAM_EXTRA, "");
+        assertNull(emptyValue.extra);
+        ScreensaverGateway.AppScreen noName = ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, PREVIEW, null, "aquarium");
+        assertNull(noName.extra);
+        assertNull(noName.value);
+        assertNull(ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, PREVIEW, "  ", "aquarium").extra);
+    }
+
+    @Test public void aMissingOrUnusablePreviewActivityIsNoPreviewScreen() {
+        assertNull(ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, null, DREAM_EXTRA, "aquarium"));
+        assertNull(ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, "", null, null));
+        assertNull(ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, "   ", null, null));
+        assertNull(ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, ".ScreensaverPreviewActivity", null, null));   // leading dot
+        assertNull(ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, "com.evil/com.evil.Grab", null, null));   // slash
+        assertNull(ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, "/" + PREVIEW, null, null));
+        assertNull(ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, PREVIEW + ".", null, null));
+        assertNull(ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, "org.example.Bad Name", null, null));
+        assertNull(ScreensaverRegistry.appScreen(null, PREVIEW, null, null));
+        assertNull(ScreensaverRegistry.appScreen("", PREVIEW, null, null));
+    }
+
+    @Test public void thePreviewScreenIsAlwaysInTheDreamsOwnPackage() {
+        // A class name from another app's namespace still resolves inside the Dream's package, never in that app.
+        ScreensaverGateway.AppScreen screen = ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, "com.android.settings.Settings", null, null);
+        assertEquals(AQUARIUM_PACKAGE + "/com.android.settings.Settings", screen.component);
+        assertTrue(screen.component.startsWith(AQUARIUM_PACKAGE + "/"));
+        assertNull(ScreensaverRegistry.appScreen("com.a/b", PREVIEW, null, null));   // a malformed package
+    }
+
+    @Test public void anAppWithAPreviewScreenSaysItPlaysOnHome() {
+        String aquarium = AQUARIUM_PACKAGE + "/org.worldfoundry.screensaver.AquariumDream";
+        ScreensaverGateway.AppScreen screen = ScreensaverRegistry.appScreen(AQUARIUM_PACKAGE, PREVIEW, DREAM_EXTRA, "aquarium");
+        List<ScreensaverRegistry.Entry> entries = ScreensaverRegistry.entries(Arrays.asList(
+                new ScreensaverGateway.InstalledDream(aquarium, "Aquarium", null, screen),
+                dream(FakeScreensaverGateway.AERIAL, "Aerial Views", null)), FakeScreensaverGateway.OWN);
+        ScreensaverRegistry.Entry withScreen = ScreensaverRegistry.resolve(aquarium, entries);
+        assertTrue(withScreen.app());
+        assertTrue(withScreen.playsOnHome());
+        assertSame(screen, withScreen.screen);
+        assertNull(withScreen.scene);   // Homeboard still has no scene of its own for it
+        assertEquals(R.string.hb_ss_app_screen_summary, withScreen.summary);
+        assertEquals(R.string.hb_ss_app_screen_detail, withScreen.description);
+        ScreensaverRegistry.Entry without = ScreensaverRegistry.resolve(FakeScreensaverGateway.AERIAL, entries);
+        assertFalse(without.playsOnHome());   // an app without the keys behaves as before Stage 5
+        assertNull(without.screen);
+        assertEquals(R.string.hb_ss_app_summary, without.summary);
+        assertEquals(R.string.hb_ss_app_detail, without.description);
+        for (ScreensaverRegistry.Entry builtIn : ScreensaverRegistry.BUILT_IN) {
+            assertFalse(builtIn.playsOnHome());
+            assertNull(builtIn.screen);
+        }
+    }
+
     @Test public void aDeclaredSettingsActivityIsReadAsAndroidReadsIt() {
         assertEquals("com.a/com.a.Settings", ScreensaverRegistry.settingsComponent("com.a", "com.a.Settings"));
         assertEquals("com.a/com.a.ui.Settings", ScreensaverRegistry.settingsComponent("com.a", ".ui.Settings"));

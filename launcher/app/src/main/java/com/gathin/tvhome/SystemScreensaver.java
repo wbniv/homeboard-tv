@@ -97,9 +97,49 @@ final class SystemScreensaver implements ScreensaverGateway {
             String label;
             try { label = String.valueOf(si.loadLabel(pm)); } catch (RuntimeException failed) { label = si.packageName; }
             found.add(new InstalledDream(si.packageName + "/" + si.name, label,
-                    ScreensaverRegistry.settingsComponent(si.packageName, declaredSettings(pm, si))));
+                    ScreensaverRegistry.settingsComponent(si.packageName, declaredSettings(pm, si)), appScreen(pm, si)));
         }
         return found;
+    }
+
+    /**
+     * The preview screen the service declares in its meta-data (ScreensaverRegistry.appScreen), kept only when that
+     * activity is installed, enabled, exported and needs no permission Homeboard lacks; otherwise null, and the app
+     * is listed as one without a preview screen.
+     */
+    private ScreensaverGateway.AppScreen appScreen(PackageManager pm, ServiceInfo si) {
+        android.os.Bundle meta = si.metaData;
+        if (meta == null) return null;
+        ScreensaverGateway.AppScreen screen;
+        try {
+            screen = ScreensaverRegistry.appScreen(si.packageName, meta.getString(ScreensaverRegistry.PREVIEW_ACTIVITY),
+                    meta.getString(ScreensaverRegistry.PREVIEW_EXTRA), meta.getString(ScreensaverRegistry.PREVIEW_VALUE));
+        } catch (RuntimeException unreadable) { return null; }
+        if (screen == null) return null;
+        try {
+            ComponentName component = ComponentName.unflattenFromString(screen.component);
+            if (component == null) return null;
+            android.content.pm.ActivityInfo activity = pm.getActivityInfo(component, 0);
+            if (!activity.exported || !activity.isEnabled()) return null;
+            if (activity.permission != null && context.checkSelfPermission(activity.permission) != PackageManager.PERMISSION_GRANTED) return null;
+            return screen;
+        } catch (PackageManager.NameNotFoundException | RuntimeException missing) { return null; }
+    }
+
+    /** Whether choice is an installed screensaver app with a usable preview screen; false for a built-in id. */
+    static boolean hasAppScreen(Context context, String choice) {
+        if (!ScreensaverRules.isApp(choice)) return false;
+        for (InstalledDream dream : new SystemScreensaver(context).installedDreams())
+            if (dream.component.equals(choice)) return dream.screen != null;
+        return false;
+    }
+
+    /** The intent that starts an app's preview screen, with its extra when declared; null when it cannot be built. */
+    static Intent appScreenIntent(ScreensaverGateway.AppScreen screen) {
+        ComponentName component = screen == null ? null : ComponentName.unflattenFromString(screen.component);
+        if (component == null) return null;
+        Intent intent = new Intent().setComponent(component);
+        return screen.extra == null ? intent : intent.putExtra(screen.extra, screen.value);
     }
 
     /** settingsActivity from the service's android.service.dream metadata, or null. */

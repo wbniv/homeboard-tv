@@ -16,10 +16,15 @@ import java.util.Set;
  * The screensavers the Screensaver screen lists: the built-in entries, then the Android screensaver apps installed
  * on this TV (Stage 3). The first built-in row is the default slot, so a better bundled screensaver later is one
  * more row placed first, with no change to the Screensaver screen, the settings or the scenes. An Android app is
- * listed by its own label under its flattened component; Android runs it, so it has no scene and no Preview.
+ * listed by its own label under its flattened component; Android runs it, so it has no scene. An app that declares its
+ * own preview screen (Stage 5, docs/plans/2026-11-26-screensaver-companion-contract.md) also previews and plays on
+ * Home through that screen; one that does not has no Preview and is used only through Use everywhere.
  */
 final class ScreensaverRegistry {
     static final String CLOCK = "clock", HOME_BACKGROUND = "background";
+    /** The Dream service meta-data that names its preview screen (the companion contract's "What each app declares"). */
+    static final String PREVIEW_ACTIVITY = "org.worldfoundry.screensaver.PREVIEW_ACTIVITY",
+            PREVIEW_EXTRA = "org.worldfoundry.screensaver.PREVIEW_EXTRA", PREVIEW_VALUE = "org.worldfoundry.screensaver.PREVIEW_VALUE";
 
     /** The options an entry's Options screen offers. "Start on Home after" applies to every entry. */
     enum Option { BACKDROP, BACKDROP_DIM, SHOW_CLOCK, DIM }
@@ -44,16 +49,20 @@ final class ScreensaverRegistry {
         final SceneFactory scene;
         /** An app's declared settings activity, flattened; null when it declares none. Always null when built in. */
         final String settings;
+        /** An app's own preview screen, which Preview, Home idle and the remote start; null when none or built in. */
+        final ScreensaverGateway.AppScreen screen;
         Entry(String id, int label, int summary, int description, String glyph, Set<Option> options, SceneFactory scene) {
-            this(id, Kind.BUILT_IN, label, null, summary, description, glyph, options, scene, null);
+            this(id, Kind.BUILT_IN, label, null, summary, description, glyph, options, scene, null, null);
         }
         private Entry(String id, Kind kind, int label, String name, int summary, int description, String glyph,
-                      Set<Option> options, SceneFactory scene, String settings) {
+                      Set<Option> options, SceneFactory scene, String settings, ScreensaverGateway.AppScreen screen) {
             this.id = id; this.kind = kind; this.label = label; this.name = name; this.summary = summary;
             this.description = description; this.glyph = glyph; this.options = Collections.unmodifiableSet(options);
-            this.scene = scene; this.settings = settings;
+            this.scene = scene; this.settings = settings; this.screen = screen;
         }
         boolean app() { return kind == Kind.ANDROID_APP; }
+        /** An app Homeboard can play itself, through the app's own preview screen. */
+        boolean playsOnHome() { return app() && screen != null; }
         String title(Context context) { return app() ? name : context.getString(label); }
     }
 
@@ -83,10 +92,13 @@ final class ScreensaverRegistry {
      */
     static String stored(String id) { return ScreensaverRules.isApp(id) ? id : known(id); }
 
-    /** An Android screensaver app as a list entry. */
+    /** An Android screensaver app as a list entry; one with a preview screen says it also plays on Home. */
     static Entry app(ScreensaverGateway.InstalledDream dream) {
-        return new Entry(dream.component, Kind.ANDROID_APP, 0, dream.label, R.string.hb_ss_app_summary,
-                R.string.hb_ss_app_detail, "☾", EnumSet.noneOf(Option.class), null, dream.settings);
+        boolean screen = dream.screen != null;
+        return new Entry(dream.component, Kind.ANDROID_APP, 0, dream.label,
+                screen ? R.string.hb_ss_app_screen_summary : R.string.hb_ss_app_summary,
+                screen ? R.string.hb_ss_app_screen_detail : R.string.hb_ss_app_detail,
+                "☾", EnumSet.noneOf(Option.class), null, dream.settings, dream.screen);
     }
 
     /**
@@ -137,6 +149,24 @@ final class ScreensaverRegistry {
         String value = declared.trim();
         if (value.indexOf('/') > 0) return value.endsWith("/") ? null : value;
         return packageName + "/" + (value.startsWith(".") ? packageName + value : value);
+    }
+
+    /**
+     * The preview screen a Dream service declares in its meta-data (PREVIEW_ACTIVITY, PREVIEW_EXTRA, PREVIEW_VALUE),
+     * or null when it declares none or an unusable one. The activity is always built in the Dream's own package, so
+     * the metadata can never point Homeboard at another app: a value with a '/' or a leading '.' is refused, as is
+     * one that is blank or not a dotted class name. The extra is sent only when both its name and value are given.
+     */
+    static ScreensaverGateway.AppScreen appScreen(String packageName, String activity, String extra, String value) {
+        if (packageName == null || packageName.isEmpty() || packageName.indexOf('/') >= 0 || activity == null) return null;
+        String name = activity.trim();
+        if (name.isEmpty() || name.startsWith(".") || name.endsWith(".") || name.indexOf('/') >= 0) return null;
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            if (c != '.' && c != '$' && c != '_' && !Character.isLetterOrDigit(c)) return null;
+        }
+        boolean withExtra = extra != null && !extra.trim().isEmpty() && value != null && !value.isEmpty();
+        return new ScreensaverGateway.AppScreen(packageName + "/" + name, withExtra ? extra.trim() : null, withExtra ? value : null);
     }
 
     /** The label for a component in entries; null when it is not an installed app's. */

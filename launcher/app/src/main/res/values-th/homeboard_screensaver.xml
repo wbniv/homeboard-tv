@@ -52,6 +52,9 @@
     <string name="hb_ss_app_kind">แอปโปรแกรมรักษาหน้าจอของ Android</string>
     <string name="hb_ss_app_summary">Android เป็นผู้เล่น ในทุกแอป</string>
     <string name="hb_ss_app_detail">แอปโปรแกรมรักษาหน้าจอของ Android ซึ่ง Android เป็นผู้เล่น ไม่ใช่ Homeboard จึงต้องตั้งเป็นโปรแกรมรักษาหน้าจอของทีวีเครื่องนี้ก่อนจึงจะใช้ได้</string>
+    <!-- Stage 5: an app that declares its own preview screen (docs/plans/2026-11-26-screensaver-companion-contract.md). -->
+    <string name="hb_ss_app_screen_summary">เล่นบนหน้าหลัก หรือในทุกแอป</string>
+    <string name="hb_ss_app_screen_detail">แอปโปรแกรมรักษาหน้าจอของ Android ซึ่ง Homeboard เล่นบนหน้าหลักและในการดูตัวอย่างผ่านหน้าจอของแอปเอง โดยแสดงสิ่งที่เลือกไว้ในการตั้งค่าของแอป ใช้ทุกที่จะตั้งให้เป็นโปรแกรมรักษาหน้าจอของทีวีเครื่องนี้ในทุกแอป</string>
     <string name="hb_ss_no_preview">ไม่มีตัวอย่าง: Android ไม่เปิดให้แอปเริ่มโปรแกรมรักษาหน้าจอของแอปอื่น</string>
     <string name="hb_ss_needs_everywhere">ต้องใช้ทุกที่</string>
     <string name="hb_ss_open_settings">เปิดการตั้งค่าของ %1$s</string>

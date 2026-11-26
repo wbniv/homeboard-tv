@@ -383,17 +383,27 @@ final class RemoteKeys {
                 if (audio != null) audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                         AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                 break;
-            case "screensaver":
-                // The screensaver chosen in Home settings (ScreensaverRules.remoteStartsHomeboard): a Homeboard
-                // entry plays at once through Show now; an Android screensaver app, which Homeboard cannot run,
-                // starts through Android's "start now" shortcut, since Use everywhere set Android to it. Show now
-                // again where the firmware has no such shortcut.
+            case "screensaver": {
+                // The screensaver chosen in Home settings (ScreensaverRules.remotePlayer): a Homeboard entry plays at
+                // once through Show now. An app with its own preview screen plays through it, started by Home
+                // (MainActivity.ACTION_PLAY_SCREENSAVER) as Home idle starts it, so a ringing timer can close it again.
+                // Any other app, which Homeboard cannot run, starts through Android's "start now" shortcut, since Use
+                // everywhere set Android to it; Show now again where the firmware has no such shortcut.
+                String choice = ScreensaverActivity.savedLayout(ctx).screensaver.choice;
                 Intent dream = SystemScreensaver.startNowIntent();
-                if (ScreensaverRules.remoteStartsHomeboard(ScreensaverActivity.savedLayout(ctx).screensaver.choice)
-                        || ctx.getPackageManager().resolveActivity(dream, 0) == null)
-                    dream = ScreensaverActivity.intent(ctx, ScreensaverActivity.MODE_NOW, null);
+                switch (ScreensaverRules.remotePlayer(choice, SystemScreensaver.hasAppScreen(ctx, choice))) {
+                    case APP_SCREEN:
+                        dream = new Intent(ctx, MainActivity.class).setAction(MainActivity.ACTION_PLAY_SCREENSAVER);
+                        break;
+                    case ANDROID:
+                        if (ctx.getPackageManager().resolveActivity(dream, 0) != null) break;
+                        // falls through: this firmware has no "start now" shortcut
+                    default:
+                        dream = ScreensaverActivity.intent(ctx, ScreensaverActivity.MODE_NOW, null);
+                }
                 start(ctx, dream);
                 break;
+            }
             case "settings":
                 start(ctx, SystemSettings.intent(ctx, Settings.ACTION_SETTINGS));
                 break;

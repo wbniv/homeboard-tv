@@ -56,6 +56,8 @@ public class MainActivity extends Activity {
     private static final float APP_FOCUS_SCALE = AppFocusHighlight.SCALE;
     static final String ACTION_LAUNCHER_SETTINGS = "com.gathin.tvhome.action.LAUNCHER_SETTINGS";
     static final String ACTION_APP_LIBRARY = "com.gathin.tvhome.action.APP_LIBRARY";
+    /** The remote's screensaver action for an app with its own preview screen: Home starts it, as Home idle does. */
+    static final String ACTION_PLAY_SCREENSAVER = "com.gathin.tvhome.action.PLAY_SCREENSAVER";
     static final String ACTION_VIEW_INPUTS = "com.android.tv.action.VIEW_INPUTS";
     static int COLUMNS = 4;
     private static final String SETTINGS = "control:settings";
@@ -345,6 +347,8 @@ public class MainActivity extends Activity {
         filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
         filter.addDataScheme("package");
         registerReceiver(packages, filter);
+        androidx.core.content.ContextCompat.registerReceiver(this, screensaverAlarm, new IntentFilter(ScreensaverActivity.ACTION_END),
+                androidx.core.content.ContextCompat.RECEIVER_NOT_EXPORTED);
         boolean repairedDashboard = false;
         if (!preferences.getBoolean("single-screen-default-v1",false)) {
             if(encoded!=null&&!layout.widgets.isEmpty()) {
@@ -384,6 +388,7 @@ public class MainActivity extends Activity {
         }
         checkChosenScreensaverApp();
         lastHomeInput = SystemClock.uptimeMillis(); scheduleScreensaver();
+        if (timersAfterAppScreen) { timersAfterAppScreen = false; returningToScreensaver = null; handler.post(() -> expandWidget(HomeLayout.TIMER, null)); }
         if (returningToScreensaver != null) { String entry = returningToScreensaver; returningToScreensaver = null; handler.post(() -> reopenScreensaver(entry)); }
         resumeHomeButton();
         if(returningToProvider!=null) {
@@ -443,6 +448,7 @@ public class MainActivity extends Activity {
         if(expandedWidget!=null){expandedWidget.release();expandedWidget=null;}
         wallpaperHost.close(); wallpaperSurface.close();
         unregisterReceiver(packages);
+        unregisterReceiver(screensaverAlarm);
         handler.removeCallbacksAndMessages(null);
         loader.shutdownNow(); for (AirQualityCard widget : airWidgets.values()) widget.close();
         for (RainWidgetController widget : rainWidgets.values()) widget.close();
@@ -462,9 +468,13 @@ public class MainActivity extends Activity {
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(androidWidgets!=null&&androidWidgets.result(requestCode,resultCode,data))return;
+        boolean appScreen = appScreenRequest != 0 && requestCode == appScreenRequest;
+        if (appScreen) appScreenEnded(timersAfterAppScreen ? "alarm" : "left");
+        if (requestCode == REQUEST_APP_SCREENSAVER) return;
         if (requestCode == REQUEST_SCREENSAVER_PREVIEW) {
-            // Preview: OK uses the entry (saved with Undo once the screen is back), Back saved nothing.
-            screensaverAccepted = resultCode == RESULT_OK && data != null ? data.getStringExtra(ScreensaverActivity.EXTRA_ENTRY) : null;
+            // Preview: OK uses the entry (saved with Undo once the screen is back), Back saved nothing. An app's own
+            // preview screen never chooses anything here, whatever it returns.
+            screensaverAccepted = !appScreen && resultCode == RESULT_OK && data != null ? data.getStringExtra(ScreensaverActivity.EXTRA_ENTRY) : null;
             return;
         }
         if (requestCode == REQUEST_HOME_ROLE) {
@@ -490,6 +500,12 @@ public class MainActivity extends Activity {
     private void handleIntent(Intent intent) {
         if (intent == null) return;
         if (ScreensaverActivity.ACTION_OPEN_TIMERS.equals(intent.getAction())) { expandWidget(HomeLayout.TIMER,null); return; }
+        if (ACTION_PLAY_SCREENSAVER.equals(intent.getAction())) {
+            setIntent(new Intent());   // played once, not again when the activity is recreated
+            try { playScreensaver(ScreensaverActivity.MODE_NOW); }
+            catch (RuntimeException unavailable) { toast(getString(R.string.hb_android_could_not_open_that_action)); }
+            return;
+        }
         if (ACTION_APP_LIBRARY.equals(intent.getAction())) showApps();
         else if (ACTION_LAUNCHER_SETTINGS.equals(intent.getAction())) homeSettings();
         else if (ACTION_VIEW_INPUTS.equals(intent.getAction())) open(new Intent(ACTION_VIEW_INPUTS));
@@ -2398,7 +2414,24 @@ public class MainActivity extends Activity {
     // Screensaver (docs/plans/2026-11-20-screensavers.md, Stages 1 and 3): Home settings → Screensaver, its Options,
     // Preview through ScreensaverActivity, the Home idle timer, and Use everywhere (EverywhereScreensaver through
     // SystemScreensaver). Every change saves at once with Undo; a change to Android's setting carries its previous value.
-    private static final int REQUEST_SCREENSAVER_PREVIEW = 7404;
+    private static final int REQUEST_SCREENSAVER_PREVIEW = 7404, REQUEST_APP_SCREENSAVER = 7405;
+    /** The request an app's preview screen was started with while it is up (Preview or REQUEST_APP_SCREENSAVER); 0 when none. */
+    private int appScreenRequest;
+    private String appScreenEntry, appScreenMode;
+    /** A ringing timer closed an app's preview screen: Home opens the timer screen when it is back in front. */
+    private boolean timersAfterAppScreen;
+    /**
+     * A timer or alarm started ringing (KitchenTimerSound's ACTION_END). Homeboard's own screensaver ends itself; an
+     * app's preview screen that Home started is closed here, so Home comes back with the timer screen open.
+     */
+    private final BroadcastReceiver screensaverAlarm = new BroadcastReceiver() {
+        @Override public void onReceive(Context context, Intent intent) {
+            if (appScreenRequest == 0) return;
+            timersAfterAppScreen = true;
+            try { finishActivity(appScreenRequest); }
+            catch (RuntimeException refused) { android.util.Log.w(ScreensaverActivity.TAG, "could not close the app screensaver: " + refused); }
+        }
+    };
     private static final int SCREENSAVER_PAGE_SIZE = 4;
     private int screensaverFocus, screensaverPage;
     /** The control to focus after a redraw, by tag; null focuses the entry card. */
@@ -2440,9 +2473,42 @@ public class MainActivity extends Activity {
         ScreensaverIdle.Decision next = ScreensaverIdle.decide(SystemClock.uptimeMillis(), lastHomeInput,
                 idle, active && !closed && hasWindowFocus(), homeBusy());
         if (next.kind == ScreensaverIdle.Kind.START) {
-            try { startActivity(ScreensaverActivity.intent(this, ScreensaverActivity.MODE_IDLE, null)); }
+            try { playScreensaver(ScreensaverActivity.MODE_IDLE); }
             catch (RuntimeException unavailable) { lastHomeInput = SystemClock.uptimeMillis(); }
         } else if (next.kind == ScreensaverIdle.Kind.WAIT) handler.postDelayed(screensaverDue, next.delayMs);
+    }
+
+    /**
+     * Home idle (MODE_IDLE) and the remote's action (MODE_NOW): the chosen app's own preview screen when it declares
+     * one (ScreensaverRules.homePlayer), otherwise Homeboard's ScreensaverActivity, which plays the chosen built-in or
+     * the default slot. An app screen that cannot start falls back to Homeboard's. Throws only when that fails too.
+     */
+    private void playScreensaver(String mode) {
+        if (layout == null) return;
+        ScreensaverRegistry.Entry chosen = ScreensaverRegistry.resolve(layout.screensaver.choice, refreshScreensaverEntries());
+        if (ScreensaverRules.homePlayer(chosen) == ScreensaverRules.Player.APP_SCREEN && startAppScreen(chosen, REQUEST_APP_SCREENSAVER, mode)) return;
+        startActivity(ScreensaverActivity.intent(this, mode, null));
+    }
+    /**
+     * Starts an app's preview screen for a result, so it opens in Home's own task, above Home: when it ends, Home is
+     * underneath, and a ringing timer closes it with finishActivity (screensaverAlarm), which needs no permission to
+     * start an activity from the background. False when it cannot start (missing, not exported, refused).
+     */
+    private boolean startAppScreen(ScreensaverRegistry.Entry entry, int request, String mode) {
+        Intent intent = SystemScreensaver.appScreenIntent(entry.screen);
+        if (intent == null) return false;
+        try { startActivityForResult(intent, request); }
+        catch (RuntimeException unavailable) {
+            android.util.Log.w(ScreensaverActivity.TAG, "app screensaver did not start entry=" + entry.id + ": " + unavailable);
+            return false;
+        }
+        appScreenRequest = request; appScreenEntry = entry.id; appScreenMode = mode;
+        android.util.Log.i(ScreensaverActivity.TAG, "screensaver started mode=" + mode + " entry=" + entry.id + " player=app");
+        return true;
+    }
+    private void appScreenEnded(String reason) {
+        android.util.Log.i(ScreensaverActivity.TAG, "screensaver stopped mode=" + appScreenMode + " entry=" + appScreenEntry + " player=app reason=" + reason);
+        appScreenRequest = 0; appScreenEntry = null; appScreenMode = null;
     }
 
     private EverywhereScreensaver everywhere() {
@@ -2482,11 +2548,11 @@ public class MainActivity extends Activity {
     }
     /** Use: on Home only before the one-time question; once Homeboard manages the TV, in every app with Undo. */
     private void useScreensaver(ScreensaverRegistry.Entry entry, String focusTag) {
-        switch (ScreensaverRules.use(everywhere().managed(), entry.id)) {
+        switch (ScreensaverRules.use(everywhere().managed(), entry.id, entry.playsOnHome())) {
             case APPLY_NOW: changeEverywhere(entry, false, focusTag); return;
             case EVERYWHERE_SCREEN: openEverywhere(entry.id); return;
             default:
-                layout.screensaver.choice = entry.id; layout.screensaver.choiceName = "";
+                layout.screensaver.choice = entry.id; layout.screensaver.choiceName = entry.app() ? entry.name : "";
                 save(getString(R.string.hb_ss_undo_choice, entry.title(this)));
                 redrawScreensaver(focusTag);
         }
@@ -2600,6 +2666,13 @@ public class MainActivity extends Activity {
     }
     private void previewScreensaver(ScreensaverRegistry.Entry entry, boolean fromOptions) {
         returningToScreensaver = entry.id; screensaverOptionsOpen = fromOptions; screensaverAccepted = null;
+        if (entry.app()) {
+            // An app's own preview screen: Back ends it and the Screensaver screen comes back; nothing is saved.
+            if (!entry.playsOnHome() || !startAppScreen(entry, REQUEST_SCREENSAVER_PREVIEW, ScreensaverActivity.MODE_PREVIEW)) {
+                returningToScreensaver = null; toast(getString(R.string.hb_android_could_not_open_that_action));
+            }
+            return;
+        }
         try { startActivityForResult(ScreensaverActivity.intent(this, ScreensaverActivity.MODE_PREVIEW, entry.id), REQUEST_SCREENSAVER_PREVIEW); }
         catch (RuntimeException unavailable) { returningToScreensaver = null; toast(getString(R.string.hb_android_could_not_open_that_action)); }
     }
@@ -2737,7 +2810,7 @@ public class MainActivity extends Activity {
             LinearLayout nameRow = new LinearLayout(this); nameRow.setGravity(Gravity.CENTER_VERTICAL);
             TextView title = bold(entry.title(this), 19); title.setSingleLine(true); title.setEllipsize(android.text.TextUtils.TruncateAt.END);
             nameRow.addView(title, new LinearLayout.LayoutParams(0, -2, 1));
-            boolean needsEverywhere = entry.app() && !inUse && !screensaverStatus.managed;
+            boolean needsEverywhere = !inUse && ScreensaverRules.use(screensaverStatus.managed, entry.id, entry.playsOnHome()) == ScreensaverRules.Use.EVERYWHERE_SCREEN;
             if (inUse || needsEverywhere) {
                 TextView use = inUse ? badge(getString(R.string.hb_ss_in_use), paletteColors.focus, contrastingText(paletteColors.focus))
                         : badge(getString(R.string.hb_ss_needs_everywhere), paletteColors.raised, paletteColors.text);
@@ -2778,12 +2851,15 @@ public class MainActivity extends Activity {
         FrameLayout sample = new FrameLayout(this);
         String backdrop = clock ? settings.clockBackdrop : ScreensaverSettings.BACKDROP_HOME;
         if (entry.app()) {
-            // Android gives apps no way to start a specific screensaver, so say so instead of offering a Preview.
+            // Android gives apps no way to start another app's screensaver: an app without its own preview screen says
+            // so instead of offering a Preview; one with it shows its glyph, and Preview opens that screen.
             sample.setBackground(shape(paletteColors.raised, paletteColors.edge, 1));
             LinearLayout none = new LinearLayout(this); none.setGravity(Gravity.CENTER_VERTICAL); none.setPadding(dp(24), 0, dp(24), 0);
             TextView glyph = text(entry.glyph, 40); none.addView(glyph);
-            TextView why = muted(getString(R.string.hb_ss_no_preview), 15); why.setPadding(dp(18), 0, 0, 0);
-            none.addView(why, new LinearLayout.LayoutParams(0, -2, 1));
+            if (!entry.playsOnHome()) {
+                TextView why = muted(getString(R.string.hb_ss_no_preview), 15); why.setPadding(dp(18), 0, 0, 0);
+                none.addView(why, new LinearLayout.LayoutParams(0, -2, 1));
+            }
             sample.addView(none, new FrameLayout.LayoutParams(-1, -1));
         } else if (ScreensaverSettings.BACKDROP_GLOW.equals(backdrop)) {
             GradientDrawable glow = new GradientDrawable(); glow.setGradientType(GradientDrawable.RADIAL_GRADIENT);
@@ -2805,7 +2881,7 @@ public class MainActivity extends Activity {
             FrameLayout.LayoutParams timeLp = new FrameLayout.LayoutParams(-2, -2, Gravity.CENTER_VERTICAL | Gravity.START);
             timeLp.leftMargin = dp(30); sample.addView(time, timeLp);
         }
-        if (!entry.app()) {
+        if (!entry.app() || entry.playsOnHome()) {
             TextView tag = badge(getString(R.string.hb_ss_preview), 0xCC000000, Color.WHITE);
             FrameLayout.LayoutParams tagLp = new FrameLayout.LayoutParams(-2, -2, Gravity.BOTTOM | Gravity.END);
             tagLp.setMargins(0, 0, dp(10), dp(10)); sample.addView(tag, tagLp);
@@ -2820,11 +2896,13 @@ public class MainActivity extends Activity {
         screensaverFirstAction = null;
         if (!inUse) {
             // Before the one-time question an app needs Use everywhere; once managed, Use applies in every app.
-            if (ScreensaverRules.use(status.managed, entry.id) == ScreensaverRules.Use.EVERYWHERE_SCREEN)
+            if (ScreensaverRules.use(status.managed, entry.id, entry.playsOnHome()) == ScreensaverRules.Use.EVERYWHERE_SCREEN)
                 addScreensaverAction(actions, getString(R.string.hb_ss_everywhere), "act:use", () -> openEverywhere(entry.id));
             else addScreensaverAction(actions, getString(R.string.hb_ss_use), "act:use", () -> useScreensaver(entry, entry.app() ? "act:use" : "act:preview"));
         }
         if (entry.app()) {
+            if (entry.playsOnHome())
+                addScreensaverAction(actions, getString(R.string.hb_ss_preview), "act:preview", () -> previewScreensaver(entry, false));
             if (entry.settings != null)
                 addScreensaverAction(actions, getString(R.string.hb_ss_open_settings, entry.name), "act:settings", () -> openScreensaverAppSettings(entry));
         } else {
