@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/4fbccca) | docs: index the companion contract and drop its duplicate inbox item |
 | [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/cc4934f) | feat: show rendering resolution in About and refine US calendar band |
 | [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/289e060) | feat: add native 4K dashboard proof and fix All Apps grid |
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/654a552) | Consolidate repository records and retire merged worktrees |
@@ -51,6 +52,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+4fbccca	author	Will Norris
+4fbccca	added	1
+4fbccca	deleted	0
+4fbccca	files	1
+4fbccca	body	The Stage 5 TODO item already tracks the blocked verification.\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 cc4934f	author	Will Norris
 cc4934f	added	1
 cc4934f	deleted	0
