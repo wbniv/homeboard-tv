@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "mode": "observe",
+  "package": "net.biohack.homeboard.debug",
+  "uid": 10128,
+  "uid_source": "pm list packages -U",
+  "foreground_left": true,
+  "observations": 127,
+  "transitions": [
+    {
+      "host_monotonic": 178822.399,
+      "seconds_since_start": 0.294,
+      "host_wall": 1795699101.779376,
+      "device_uptime_ms": 143801730,
+      "foreground": "topResumedActivity=ActivityRecord{44514aa u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5700}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "12670",
+      "source": "start",
+      "events": [
+        "initial"
+      ]
+    },
+    {
+      "host_monotonic": 179035.766,
+      "seconds_since_start": 213.66,
+      "host_wall": 1795699315.1460874,
+      "device_uptime_ms": 144014850,
+      "foreground": "topResumedActivity=ActivityRecord{eac2417 u0 org.worldfoundry.game.clocks/android.service.dreams.DreamActivity t5702}",
+      "top_component": "org.worldfoundry.game.clocks/android.service.dreams.DreamActivity",
+      "target_in_front": false,
+      "dream": "org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService",
+      "display": "available",
+      "target_pid": "12670",
+      "source": "poll",
+      "events": [
+        "target-left",
+        "dream-started"
+      ]
+    },
+    {
+      "host_monotonic": 179075.198,
+      "seconds_since_start": 253.093,
+      "host_wall": 1795699354.5787418,
+      "device_uptime_ms": 144054450,
+      "foreground": "topResumedActivity=ActivityRecord{44514aa u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5700}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "12670",
+      "source": "capture:08-wake-plus-2s",
+      "events": [
+        "target-returned",
+        "dream-ended"
+      ]
+    },
+    {
+      "host_monotonic": 179186.96,
+      "seconds_since_start": 364.854,
+      "host_wall": 1795699466.3402646,
+      "device_uptime_ms": 144166060,
+      "foreground": "topResumedActivity=ActivityRecord{106c244 u0 net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverActivity t5700}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "12670",
+      "source": "end",
+      "events": []
+    }
+  ],
+  "logcat": {
+    "method": "uid",
+    "uid": 10128,
+    "file": "logcat.txt"
+  }
+}

@@ -1,0 +1,147 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 360,
+ "panel": "require-hidden",
+ "foreground": "observe",
+ "input_script": [
+  {
+   "at": 3,
+   "key": "MENU",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 6,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 9,
+   "key": "DPAD_RIGHT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 11,
+   "key": "DPAD_RIGHT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 13,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 15,
+   "capture": "01-change-focused"
+  },
+  {
+   "at": 16,
+   "key": "DPAD_CENTER",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 19,
+   "capture": "02-options"
+  },
+  {
+   "at": 20,
+   "key": "DPAD_RIGHT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 21,
+   "key": "DPAD_CENTER",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 23,
+   "capture": "03-one-minute-set"
+  },
+  {
+   "at": 24,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 26,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 28,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 31,
+   "capture": "04-home-last-input"
+  },
+  {
+   "at": 100,
+   "capture": "05-homeboard-screensaver"
+  },
+  {
+   "at": 200,
+   "capture": "06-before-android-idle"
+  },
+  {
+   "at": 235,
+   "capture": "07-android-screensaver"
+  },
+  {
+   "at": 245,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 247,
+   "capture": "08-wake-plus-2s"
+  },
+  {
+   "at": 250,
+   "capture": "09-wake-plus-5s"
+  },
+  {
+   "at": 256,
+   "capture": "10-wake-plus-11s"
+  },
+  {
+   "at": 270,
+   "capture": "11-wake-plus-25s"
+  },
+  {
+   "at": 280,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 282,
+   "capture": "12-second-key-plus-2s"
+  },
+  {
+   "at": 287,
+   "capture": "13-second-key-plus-7s"
+  },
+  {
+   "at": 310,
+   "capture": "14-second-key-plus-30s"
+  },
+  {
+   "at": 345,
+   "capture": "15-second-key-plus-65s"
+  }
+ ]
+}

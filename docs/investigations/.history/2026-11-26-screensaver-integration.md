@@ -1,11 +1,17 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/d69822e) | docs: Stage 5 built and merged; awaiting the Cast1 check |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/38d5be9) | docs: record Will's four screensaver integration decisions |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/6847440) | test: answer screensaver Q7 on Cast1 |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/9189502) | docs: say what still works once debugging is switched off |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/011c5f1) | docs: map screensaver ownership across Homeboard, apps and Android |
 
 <!--history-meta v1
+d69822e	author	Will Norris
+d69822e	added	6
+d69822e	deleted	2
+d69822e	files	1
+d69822e	body	The contract, the integration investigation and the original plan's Stage 5\nrow now say what is built (2395376) and what is left. TODO: Stage 5 moves to\nverify; the device check needs the WF Clocks APK and a Homeboard deploy.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 38d5be9	author	Will Norris
 38d5be9	added	29
 38d5be9	deleted	30

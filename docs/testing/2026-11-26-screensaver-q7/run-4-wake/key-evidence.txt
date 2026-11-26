@@ -1,0 +1,18 @@
+# J-9057cc5effc7 excerpts (raw files: task chromecast:evidence JOB=J-9057cc5effc7 OUT=<dir>)
+
+## logcat.txt: HomeboardScreensaver
+11-26 20:19:53.561 12670 12670 I HomeboardScreensaver: screensaver started mode=idle entry=clock
+11-26 20:21:53.810 12670 12670 I HomeboardScreensaver: screensaver stopped mode=idle entry=clock reason=left
+11-26 20:24:05.527 12670 12670 I HomeboardScreensaver: screensaver started mode=idle entry=clock
+
+## foreground-timeline.json: transitions (seconds since start, top component, dream)
+0.3 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity none
+213.7 org.worldfoundry.game.clocks/android.service.dreams.DreamActivity org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService
+253.1 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity none
+364.9 net.biohack.homeboard.debug/com.gathin.tvhome.ScreensaverActivity none
+
+## input-timeline.json: the two wake keys (t ms, edge, focus)
+245000 DPAD_DOWN down org.worldfoundry.game.clocks
+245080 DPAD_DOWN up net.biohack.homeboard.debug
+280000 DPAD_DOWN down net.biohack.homeboard.debug
+280080 DPAD_DOWN up net.biohack.homeboard.debug

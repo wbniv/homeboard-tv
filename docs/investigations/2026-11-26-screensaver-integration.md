@@ -43,8 +43,8 @@ flowchart TD
    starting that app's own preview screen, which both World Foundry apps already export.
 3. **Android's own screensaver replaces Homeboard's when Android's time comes.** Seen on Cast1
    on 2026‑11‑26: Homeboard's Clock played from 1 min, and Android's selected screensaver took
-   over at Android's idle time, leaving Homeboard's paused underneath
-   ([Q7 record](../testing/2026-11-26-screensaver-q7.md)). Homeboard holds no wake lock and does
+   over at Android's idle time. Homeboard's closes itself as Android's comes to the front, and a
+   key wakes the TV to Homeboard's Home ([Q7 record](../testing/2026-11-26-screensaver-q7.md)). Homeboard holds no wake lock and does
    not keep the screen on. So on a TV Homeboard does not manage, its screensaver is only a
    lead‑in to Android's, which on Google TV is Ambient mode unless someone changed it with `adb`.
 4. **Homeboard already has Open ‹app› settings** for any screensaver that declares Android's
@@ -115,7 +115,5 @@ guides, but not tried on our devices, which the coordinator reaches through debu
 
 - Debugging switched off: a device check needs a person to switch it off, change the
   screensaver in Homeboard and switch it back on for a coordinator read.
-- Stage 0 Q7's wake half: where the TV returns after Android's screensaver, and what Homeboard
-  does then. The coordinator's `check` stops watching once another app is in front.
 - Installing apps from Homeboard (the rest of Stage 5): unchanged, waits on publishing.
 - Seahorse Grid stays its own app (WorldFoundry decision D7); Planted Tank is being retired.

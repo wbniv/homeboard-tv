@@ -3,7 +3,7 @@
 **Status:** read-only `screensaver-list` pass done on Cast1, Cast2 and the Pixel 8 Pro
 (2026‑11‑21, 01:42 UTC). Nothing was changed on any device. The coordinator's
 `screensaver_probe` option and the Homeboard probe screen (0.1.117) now run on Cast1; see
-the Cast1 probe results below. Q7 is answered on Cast1 except for where wake returns
+the Cast1 probe results below. Q7 is answered on Cast1, including where wake returns
 ([record](2026-11-26-screensaver-q7.md)). Recipe:
 [2026-11-20-screensavers-stage0-probe.md](../plans/2026-11-20-screensavers-stage0-probe.md).
 
@@ -57,12 +57,11 @@ evidence under [2026-11-21-screensaver-probe](2026-11-21-screensaver-probe/).
 ## Q7 on Cast1 (0.1.163, 2026‑11‑26)
 
 With Android's idle time shortened to 3 min for the run, Android started its own screensaver
-over Homeboard's Home and over Homeboard's own Clock screensaver, which it left paused
-underneath. Where the TV returns on wake was not seen, because the coordinator's `check`
-ends once another app is in front. Jobs and frames are in the
-[Q7 record](2026-11-26-screensaver-q7.md).
+over Homeboard's Home and over Homeboard's own Clock screensaver. Homeboard's Clock closes
+itself as Android's comes to the front, so a key wakes the TV to Homeboard's Home where it was
+left, and Homeboard's Home timer then runs again (run 4, with the coordinator's
+`"foreground": "observe"`). Jobs and frames are in the [Q7 record](2026-11-26-screensaver-q7.md).
 
 ## Still open
 
-Q7's wake half (where the TV returns, and what Homeboard does then), Q8 (not built in the
-probe) and Q11 `offer`.
+Q8 (not built in the probe) and Q11 `offer`.

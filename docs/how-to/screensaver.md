@@ -37,7 +37,8 @@ Until you use the screensaver everywhere (below), Android's own screensaver and 
 time are not changed by this screen; **In other apps** shows what Android has now, for
 example "Android's Ambient mode after 10&nbsp;min · unchanged by Homeboard". If Android's
 timeout is shorter than Homeboard's, Android's screensaver starts first. If it is longer,
-Homeboard's plays first and Android's replaces it when Android's time comes. If Homeboard
+Homeboard's plays first and Android's replaces it when Android's time comes; a key then
+brings you back to Homeboard's Home, where you left it, and Homeboard's timer starts again. If Homeboard
 cannot read Android's setting on your TV, the line says so ("Unknown").
 
 Under **In other apps** the screen also says: "Android's screensaver replaces Homeboard's
