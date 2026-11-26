@@ -1,6 +1,7 @@
 # Choose and configure the screensaver
 
-On Home or All Apps, select the **Screensaver** moon icon in the top row, or open **Home settings → Screensaver**. The list on the left shows what can
+Open **Home settings → Screensaver**, or on Home or All Apps hold OK on **Start screensaver** in the top row; Back from
+there returns to Home with Start screensaver focused. The list on the left shows what can
 play when the TV is idle: **Clock** (clock and date on a slow glow) and **Home
 background** (the background Home is showing, full screen). Both are built in. Four
 entries fit a page; there is no scrollbar. The entry in use carries an **In use** label.
@@ -154,11 +155,19 @@ what Android starts, after how long, and the kept original. It offers:
   TV's original screensaver, plays Clock on Home and says so once on Home, without Undo
   because the app is gone.
 
+### Start it now
+
+On Home or All Apps, select **Start screensaver**, the moon with a play mark left of
+Homeboard settings in the top row, and press OK. A Homeboard choice (Clock, Home
+background) plays at once. When the chosen app has its own preview screen, Home opens that
+screen at once, as Home idle does, so a ringing timer can still close it. For any other
+Android screensaver app, Homeboard asks Android to start it, or plays its own Show now where
+the TV has no such shortcut (Google TV). Any key ends the screensaver and returns to Home
+with Start screensaver focused.
+
 No remote we test has a screensaver button. On a remote with spare buttons, a build or theme
-can map one to the **screensaver** action (`app_keys`, read by `RemoteKeys`; empty by default),
-and that button plays your Homeboard choice at once. When the chosen app has its own preview screen, Home opens that screen at
-once, as Home idle does, and you return to Home when it ends. For any other Android
-screensaver app, it asks Android to start it.
+can map one to the **screensaver** action (`app_keys`, read by `RemoteKeys`; empty by default).
+That button runs exactly what Start screensaver runs.
 
 Playing wallpaper providers as screensavers and the phone panel are later stages of the
 [screensaver plan](../plans/2026-11-20-screensavers.md).

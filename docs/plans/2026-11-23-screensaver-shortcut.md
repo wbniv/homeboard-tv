@@ -1,5 +1,7 @@
 # Screensaver shortcut in the top row
 
+**Replaced (2026‑11‑26)** by [Home's top row: Start screensaver and Homeboard settings](2026-11-26-top-row-start-screensaver.md): the moon gave way to Start screensaver, and holding OK on it opens the Screensaver chooser.
+
 On Home and All Apps, add a moon icon immediately left of Homeboard settings. OK opens the existing Screensaver chooser; hold OK does the same. Back returns to the originating page and focused shortcut. The existing Home settings entry remains available.
 
 ![Home with focused screensaver shortcut](2026-11-23-screensaver-shortcut.svg)

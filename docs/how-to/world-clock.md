@@ -1,6 +1,6 @@
 # World clock
 
-The fixed **World clock** sits immediately left of both Settings buttons on Home
+The fixed **World clock** sits immediately left of the Start screensaver and Homeboard settings buttons on Home
 and All Apps. It uses the reserved 60 dp top bar; dashboard widgets keep their
 space. Filled city cards show uppercase names, countries, tabular time and a
 sun/moon. When space or enlarged text limits the list, the primary remains
@@ -12,11 +12,11 @@ off. The list is fully configurable (1–12 places); Local remains an explicit
 choice. Existing custom lists keep their settings and saved city IDs.
 
 **Short OK/click opens full screen. Hold OK configures the clock.** The header
-has no Move, Resize or Remove action. Left from Homeboard Settings selects it;
-Right selects Homeboard Settings, then Device Settings, then the existing
+has no Move, Resize or Remove action. Left from Start screensaver selects it;
+Right selects Start screensaver, then Homeboard Settings, then the existing
 next-page / All Apps route. Back restores the calling screen and header focus.
 On an empty Home with no grid focus, one Right still opens All Apps. Up reaches
-Settings; Left then reaches the clock. Previously saved extra grid clocks remain
+Homeboard Settings; Left then reaches Start screensaver, and Left again the clock. Previously saved extra grid clocks remain
 editable.
 
 ## Settings

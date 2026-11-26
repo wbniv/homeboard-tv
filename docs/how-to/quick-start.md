@@ -8,7 +8,7 @@ is one screen to the right. Home can be completely empty if you prefer.
 
 The current dashboard puts hourly Rain across the top, Calendar beside compact
 Air quality, and one row of Favorites across the bottom. The fixed World clock
-sits left of the Settings buttons.
+sits left of the Start screensaver and Homeboard settings buttons.
 
 ![Default dashboard with YouTube in Favorites — actual Cast1 capture, 0.1.74](quick-start/dashboard-youtube.png)
 
@@ -214,10 +214,13 @@ interaction and readability checks remain open in the
 
 ![App artwork, icon shape and dense grid — design mockup](../plans/2026-11-15-widget-home/compact-grid-settings.svg)
 
-The two top-right buttons are separate: the sliders button opens **Homeboard
-settings**, which includes **About Homeboard TV**, and the gear opens **Android device Settings**. System Settings is not
-a tile in the app grid. Homeboard settings are also available by holding OK on a
-Home tile or on the empty Home screen.
+The two top-right buttons are **Start screensaver** (the moon with a play mark), which
+plays the chosen [screensaver](screensaver.md) at once, and the sliders button, which opens
+**Homeboard settings**. Android's own Settings is **Home settings → Device settings**, on the
+first page of the menu, left of the centre; System Settings is not a tile in the app grid.
+Home settings also lists **About Homeboard TV**. Homeboard settings are also available by
+holding OK on a Home tile or on the empty Home screen. When the dashboard was saved by a newer
+Homeboard, Home settings offers only Device settings and About Homeboard TV.
 
 ### The Home button
 
@@ -381,7 +384,7 @@ shows only the background; it will not add tiles back automatically.
 **Right still opens All Apps. Up from the first app row returns to the previous
 All Apps page; Up on the first page focuses Homeboard settings.** Hold OK on the
 empty background also opens Home settings. The sliders button opens Homeboard
-settings; the gear opens Android device Settings. Appearance offers a color palette
+settings, where **Device settings** opens Android's Settings. Appearance offers a color palette
 and circular icon mask; Reduced motion switches pages without the sliding
 animation.
 
@@ -441,5 +444,5 @@ dashboard once on update. Later customizations and Undo are respected. Additiona
 widget instances and their settings are retained.
 
 An empty Home stays empty until you add widgets or apply the preset. Right still
-advances to the next Home page or All Apps. Up reaches the settings buttons; Down
-returns to the empty canvas. Right from the last settings button also advances.
+advances to the next Home page or All Apps. Up reaches Homeboard settings in the top row; Down
+returns to the empty canvas. Right from Homeboard settings also advances.

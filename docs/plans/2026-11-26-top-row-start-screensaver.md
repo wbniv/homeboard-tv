@@ -67,9 +67,9 @@ Each is a recommendation; saying no to any of them leaves that part as described
    `DEVICE_SETTINGS` (`restoreFocus`, about line 1698, and the empty-page path, about line 1742)
    fall back to Homeboard settings. The world clock's right margin shrinks from 234&nbsp;dp to
    174&nbsp;dp to use the freed space.
-5. **Strings:** one new string, `hb_ss_start_now`, "Start screensaver" / "เริ่มโปรแกรมรักษาหน้าจอ"
-   (spoken description; the Thai needs a Thai speaker's read). The menu entry reuses
-   `hb_device_settings`.
+5. **Strings:** one new string, `hb_ss_start_screensaver`, "Start screensaver" / "เริ่มโปรแกรมรักษาหน้าจอ"
+   (spoken description; the Thai needs a Thai speaker's read). It was planned as `hb_ss_start_now`, but that name
+   already holds "Start now" on This TV's screensaver. The menu entry reuses `hb_device_settings`.
 6. **Docs:** [screensaver](../how-to/screensaver.md) (start it from Home; the chooser through
    Home settings), [quick start](../how-to/quick-start.md) (the two buttons, Device settings in
    Home settings), [world clock](../how-to/world-clock.md) (what Right selects). The

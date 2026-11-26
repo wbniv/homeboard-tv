@@ -1,9 +1,15 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/25182eb) | plan: Will decides D1-D3 for the top row; building |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/79c4d9f) | docs: no remote has a screensaver button |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/d778920) | plan: Home's top row with Start screensaver and Homeboard settings only |
 
 <!--history-meta v1
+25182eb	author	Will Norris
+25182eb	added	2
+25182eb	deleted	1
+25182eb	files	1
+25182eb	body	Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 79c4d9f	author	Will Norris
 79c4d9f	added	9
 79c4d9f	deleted	5
