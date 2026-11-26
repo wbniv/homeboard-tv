@@ -154,8 +154,9 @@ what Android starts, after how long, and the kept original. It offers:
   TV's original screensaver, plays Clock on Home and says so once on Home, without Undo
   because the app is gone.
 
-A remote button mapped to the **screensaver** action (`RemoteKeys`) plays your Homeboard
-choice at once. When the chosen app has its own preview screen, Home opens that screen at
+No remote we test has a screensaver button. On a remote with spare buttons, a build or theme
+can map one to the **screensaver** action (`app_keys`, read by `RemoteKeys`; empty by default),
+and that button plays your Homeboard choice at once. When the chosen app has its own preview screen, Home opens that screen at
 once, as Home idle does, and you return to Home when it ends. For any other Android
 screensaver app, it asks Android to start it.
 

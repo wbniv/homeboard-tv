@@ -20,8 +20,11 @@ Today the top row of Home and All Apps has three round buttons right of the worl
 | Sliders (`ic_app_settings`) | Home settings, the radial menu (`homeSettings`) | the widget Home |
 | Gear (`ic_settings`) | Android's own Settings (`Settings.ACTION_SETTINGS`) | the widget Home |
 
-Nothing on screen starts the screensaver. Only a remote key mapped to the `screensaver` action
-word does (`RemoteKeys`, case `"screensaver"`), which most people never set up. Screensaver is
+Nothing starts the screensaver on demand today: no remote we test has a screensaver button, so
+it starts only when the TV has been idle. Homeboard inherited a way for a build or theme to map
+a spare remote button to the action word `screensaver` (`app_keys` in `config.xml`, read by
+`RemoteKeys`), for remotes with extra buttons; the list ships empty, so nothing uses it. That
+action's code already picks the right player (Stage 5), and the new button reuses it. Screensaver is
 already an entry in Home settings (page 1, bottom), so the moon is a second route to the same
 screen. Android's Settings is not a tile in the app grid (quick start, "The two top-right
 buttons are separate"), so the gear is its only on-screen route today.
@@ -39,7 +42,8 @@ Each is a recommendation; saying no to any of them leaves that part as described
 ## Approach
 
 1. **Start screensaver** replaces the moon, left of Homeboard settings, on Home and All Apps.
-   OK runs exactly the remote's `screensaver` action, so there is one rule for both:
+   OK runs exactly the `screensaver` action a mapped remote button would run, so there is one
+   rule for both:
     - a Homeboard entry (Clock, Home background) plays at once: `ScreensaverActivity`, mode now;
     - an app with a declared preview screen plays it in Homeboard's task (Stage 5,
       `playScreensaver`), so a ringing timer can close it;
@@ -155,12 +159,12 @@ moves one menu deeper, and the hold on Start screensaver is not discoverable; bo
 ## Out of scope
 
 - The phone controller, which has no top row.
-- Remote key mappings: the `screensaver` and `settings` action words stay as they are.
+- `app_keys` remote mappings: the `screensaver` and `settings` action words stay as they are.
 - What any screensaver shows, and Stage 5's own device check.
 
 ## Verification
 
-1. `task check` passes, with a unit test that the remote's action and the button use the same
+1. `task check` passes, with a unit test that the `screensaver` action and the button use the same
    start rule for a Homeboard entry, an app with a preview screen and an app without one, and a
    test of the Home settings entry order (Device settings on page 1 under D2).
 2. Cast1, coordinator `check`: Home's top row shows exactly two buttons right of the world

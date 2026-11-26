@@ -6,7 +6,7 @@ APKs installed on Cast1 carry them only after a WorldFoundry rebuild and install
 (Verification 2) is not built. **Homeboard's half is built (Stage 5, `2395376` on main) and awaits
 Verification 3 on Cast1:** it reads the keys from each Dream service, places the preview activity in the Dream's
 own package (refusing a value with a leading `.` or a `/`), and keeps it only when that activity is exported.
-Preview, Home idle and the remote's screensaver action start it, with the extra when both are declared; such an
+Preview, Home idle and the `screensaver` action (a remote button a build maps through `app_keys`; none by default) start it, with the extra when both are declared; such an
 entry can be chosen for Home without Use everywhere, which works as before. Home starts the screen in its own task,
 so a ringing timer closes it with `finishActivity` and opens the timer screen, with no new permission. An app
 without the keys, or whose screen is missing or will not start, gets Homeboard's default screensaver. Will's decisions in the
@@ -55,7 +55,7 @@ sequenceDiagram
     participant C as App chooser
     H->>PM: installed Dream services, with metadata
     PM-->>H: preview screen, extra, settings link
-    P->>H: Preview, or Home idle, or remote key
+    P->>H: Preview, or Home idle, or the screensaver action
     H->>A: start in the Dream's own package, with the extra if declared
     A-->>P: plays the app's saved tank or clock, saves nothing
     P->>H: Open Aquarium settings

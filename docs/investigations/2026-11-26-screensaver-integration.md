@@ -3,7 +3,7 @@
 **Status (2026‑11‑26):** four decisions made by Will (below). It reframes Stage 5 of the
 [screensaver plan](../plans/2026-11-20-screensavers.md). Built the same day, not yet checked on
 a device: the apps' preview metadata (WorldFoundry `5a117e85d`) and Homeboard playing it on
-Home, in Preview and from the remote (`2395376`); see the
+Home, in Preview and from a mapped remote button (`2395376`); see the
 [companion contract](../plans/2026-11-26-screensaver-companion-contract.md). Decision 1's
 chooser is not built.
 

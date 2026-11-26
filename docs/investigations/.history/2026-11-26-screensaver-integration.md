@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/c684abc) | test: answer screensaver Q7's wake half on Cast1 |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/d69822e) | docs: Stage 5 built and merged; awaiting the Cast1 check |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/38d5be9) | docs: record Will's four screensaver integration decisions |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/6847440) | test: answer screensaver Q7 on Cast1 |
@@ -7,6 +8,11 @@
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/011c5f1) | docs: map screensaver ownership across Homeboard, apps and Android |
 
 <!--history-meta v1
+c684abc	author	Will Norris
+c684abc	added	2
+c684abc	deleted	4
+c684abc	files	1
+c684abc	body	With the coordinator's foreground: observe (0.1.240), run 4 follows the TV\npast Android's screensaver: Homeboard's own Clock closes itself (reason=left)\nas Android's comes to the front, the wake key's press goes to Android's\nscreensaver and the TV returns to Homeboard's Home where it was left, and\nHomeboard's Home timer plays its Clock again 64 s after the next key.\nRecipe, contact sheet, job JSON and a log excerpt; the Q7 record, the Stage 0\nrecord, the user guide and the integration investigation updated.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 d69822e	author	Will Norris
 d69822e	added	6
 d69822e	deleted	2
