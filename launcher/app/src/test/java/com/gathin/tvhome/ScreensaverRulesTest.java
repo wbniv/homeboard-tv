@@ -63,6 +63,28 @@ public class ScreensaverRulesTest {
         assertFalse(androidFollows(false, ScreensaverGateway.Reading.of(OWN + "," + AMBIENT), OWN));
     }
 
+    @Test public void theMainPaneSaysAndroidFollowsOnlyWhileHomeboardsHomeTimerIsSet() {
+        ScreensaverGateway.Reading ambient = ScreensaverGateway.Reading.of(AMBIENT);
+        // AFTER_MINUTES: Homeboard plays on Home first, then Android's takes over.
+        for (int minutes : ScreensaverSettings.IDLE_MINUTES) {
+            if (minutes == OFF) continue;
+            assertEquals(HomeLine.AFTER_MINUTES, homeLine(false, CLOCK, minutes));
+            assertTrue("" + minutes, androidFollowsOnPane(false, CLOCK, minutes, ambient, OWN));
+        }
+        // NO_TIMER: Homeboard's screensaver never plays on Home, so there is nothing to be replaced.
+        assertEquals(HomeLine.NO_TIMER, homeLine(false, CLOCK, OFF));
+        assertFalse(androidFollowsOnPane(false, CLOCK, OFF, ambient, OWN));
+        // ANDROID_STARTS: managed, whatever the minutes were.
+        for (int minutes : ScreensaverSettings.IDLE_MINUTES) {
+            assertEquals(HomeLine.ANDROID_STARTS, homeLine(true, CLOCK, minutes));
+            assertFalse("" + minutes, androidFollowsOnPane(true, CLOCK, minutes, ambient, OWN));
+        }
+        // A timer is set but Android already names Homeboard's own screensaver: nothing visible changes.
+        assertFalse(androidFollowsOnPane(false, CLOCK, 5, ScreensaverGateway.Reading.of(OWN), OWN));
+        // The Options box does not depend on the timer: it explains what a timer will do.
+        assertTrue(androidFollows(false, ambient, OWN));
+    }
+
     @Test public void useEverywhereAsksOnceThenGoesStraightToInUse() {
         assertEquals(Screen.SETUP, everywhereScreen(false, false));
         assertEquals(Screen.ASK_ONCE, everywhereScreen(false, true));

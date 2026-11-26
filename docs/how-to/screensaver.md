@@ -43,10 +43,14 @@ cannot read Android's setting on your TV, the line says so ("Unknown").
 Under **In other apps** the screen also says: "Android's screensaver replaces Homeboard's
 when Android's own idle time comes. Homeboard does not keep the screen on." (In Thai:
 โปรแกรมรักษาหน้าจอของ Android จะมาแทนของ Homeboard เมื่อถึงเวลาที่ Android ไม่ได้ใช้งาน
-Homeboard ไม่ได้เปิดหน้าจอค้างไว้.) It shows on the Screensaver screen and in **Options**
-whenever Homeboard does not manage the TV. It is left out when Android is set to
-Homeboard's own screensaver, because Android then plays Homeboard's choice anyway and
-nothing changes when its time comes. Cast1 showed this hand-over on 2026‑11‑26; see
+Homeboard ไม่ได้เปิดหน้าจอค้างไว้.) On the Screensaver screen it shows only while
+Homeboard's own timer on Home is set to a number of minutes, because only then does
+Homeboard's screensaver play before Android's takes over. With **Android decides**, or
+when Android starts it everywhere, it is left out. In **Options**, where you set the
+minutes, it shows whenever Homeboard does not manage the TV, to explain what a timer
+will do. In both places it is left out when Android is set to Homeboard's own
+screensaver, because Android then plays Homeboard's choice anyway and nothing changes
+when its time comes. Cast1 showed this hand-over on 2026‑11‑26; see
 [the Q7 record](../testing/2026-11-26-screensaver-q7.md).
 
 Any remote key ends the screensaver and returns to Home where you left it; that key does

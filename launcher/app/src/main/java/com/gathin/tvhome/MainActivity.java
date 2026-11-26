@@ -2686,9 +2686,14 @@ public class MainActivity extends Activity {
         screensaverFocusTag = null;
         if (target != null) target.requestFocus();
     }
-    /** Whether to say, beside When it starts, that Android's screensaver replaces Homeboard's at Android's idle time. */
+    /** Whether the Options box says that Android's screensaver replaces Homeboard's at Android's idle time. */
     private boolean screensaverAndroidFollows(EverywhereScreensaver.Status status) {
         return ScreensaverRules.androidFollows(status.managed, status.component, everywhere().gateway().ownComponent());
+    }
+    /** The same note on the main pane, only while Homeboard's own Home timer is set. */
+    private boolean screensaverAndroidFollowsOnPane(EverywhereScreensaver.Status status) {
+        return ScreensaverRules.androidFollowsOnPane(status.managed, layout.screensaver.choice, layout.screensaver.idleMinutes,
+                status.component, everywhere().gateway().ownComponent());
     }
     private String screensaverStartsOnHome(EverywhereScreensaver.Status status) {
         int minutes = layout.screensaver.idleMinutes;
@@ -2848,7 +2853,7 @@ public class MainActivity extends Activity {
         manage.setTag("act:everywhere"); manage.setPadding(dp(18), 0, dp(18), 0);
         other.addView(manage, new LinearLayout.LayoutParams(-2, dp(40)));
         pane.addView(other);
-        if (screensaverAndroidFollows(status)) pane.addView(muted(getString(R.string.hb_ss_android_follows), 14));
+        if (screensaverAndroidFollowsOnPane(status)) pane.addView(muted(getString(R.string.hb_ss_android_follows), 14));
     }
     private void openScreensaverAppSettings(ScreensaverRegistry.Entry entry) {
         ComponentName settings = entry.settings == null ? null : ComponentName.unflattenFromString(entry.settings);

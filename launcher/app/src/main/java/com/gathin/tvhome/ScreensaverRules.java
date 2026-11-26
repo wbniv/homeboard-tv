@@ -85,6 +85,16 @@ final class ScreensaverRules {
     }
 
     /**
+     * The same note on the main Screensaver pane, which also shows what Home does now: only when Homeboard's own Home
+     * timer is set (AFTER_MINUTES). On "Android decides" or when Android starts it everywhere, Homeboard's screensaver
+     * never plays on Home, so "Android's replaces Homeboard's" would be false. The Options box shows the note
+     * whenever androidFollows holds, because that is where the minutes are set and the note explains what a timer does.
+     */
+    static boolean androidFollowsOnPane(boolean managed, String choice, int idleMinutes, ScreensaverGateway.Reading component, String ownComponent) {
+        return homeLine(managed, choice, idleMinutes) == HomeLine.AFTER_MINUTES && androidFollows(managed, component, ownComponent);
+    }
+
+    /**
      * The remote's screensaver action. A Homeboard entry is chosen: Homeboard plays it at once (Show now), whether
      * or not it manages the TV. An Android screensaver app is chosen, which happens only through Use everywhere:
      * Android's own "start now" shortcut, since Android is set to that app and Homeboard cannot run it.
