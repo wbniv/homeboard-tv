@@ -8,7 +8,9 @@ performance measurements are not a deployment gate under Will's updated directio
 
 **A real interactive dashboard hierarchy now renders at 3840 × 2160.** It runs in
 an independent engineering app using the production Java sources and resources.
-The normal Homeboard launcher has not switched to native rendering. This record
+At that proof checkpoint, the normal Homeboard launcher had not switched to
+native rendering; the 26 November production follow-up above supersedes that
+status. This record
 closes specific proof checks, not the complete native 4K plan.
 
 ## Rendering and interaction
@@ -37,7 +39,7 @@ clock detail and restores the originating toolbar focus.
 | 1080p control | Cast1 `J‑5438761fec0a` passed the same Rain/Back/All Apps script, with `dashboard=1920x1080 surface=1920x1080 hardware=true`, density 320. |
 | Background process recovery | Cast2 `J‑6e71ddde8b56` killed PID 21224 and cold-started PID 21386; the actual 4K dashboard returned. Cold start was 4407 ms. No persistent settings changed. This is not exhaustive mode/allocation recovery acceptance. |
 | Physical panel pixel detail | Still requires independent output/panel evidence; these captures are 1920 × 1080. The LG itself is already known to be 4K. |
-| Complete production 4K launcher | Not enabled or accepted. |
+| Complete production 4K launcher | Not enabled at this proof checkpoint; automatic integration followed on 26 November, with remaining checks recorded above. |
 
 ![Actual dashboard restored after Rain expansion](2026-11-25-native-4k-dashboard/home-restored.png)
 

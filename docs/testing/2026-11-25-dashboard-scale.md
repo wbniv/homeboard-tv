@@ -1,5 +1,11 @@
 # Dashboard scale · 25 November 2026
 
+**Current baseline:** ordinary Homeboard 0.1.170 uses native UHD **100%** for
+the same 16×8 workspace previously labelled 50%, with 150%/200% for larger
+widgets. Saved sizes and positions are unchanged. See the
+[production rollout and actual preview](2026-11-26-automatic-4k.md). Percentages
+and version/install states below describe the dated scale implementation.
+
 ## Follow-up acceptance · 26 November
 
 Native scale preview/Cancel/Save/Undo and four widget Back/Restore checks now pass.
@@ -17,7 +23,7 @@ both packages. Install verification is complete; scale interaction acceptance
 is recorded in the follow-up above. The earlier network interruption and later deployment are recorded
 separately below.
 
-## Behavior
+## Behavior at initial implementation · 0.1.161
 
 **Home settings → Appearance → Dashboard scale** opens the actual Home preview
 with 100%, 75% and 50% choices and explicit Save scale / Cancel. The preview shows
@@ -75,7 +81,7 @@ Neither package was submitted or installed in this iteration. Build inputs inclu
 the existing working-tree changes; the frozen source/hash record identifies the
 native artifact precisely. The ordinary output has not been frozen for deployment.
 
-## Device acceptance still pending
+## Original acceptance checklist · superseded by the follow-up above
 
 - Check 100%/75%/50% preview, Save, Cancel, Back, interruption and relaunch.
 - Inspect text/focus readability from the sofa on Cast1 and native Cast2.

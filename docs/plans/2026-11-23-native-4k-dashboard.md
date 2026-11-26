@@ -5,13 +5,14 @@
 **Goal:** render Homeboard's actual dashboard, text, charts and widgets at 3840 × 2160 when the connected device and display can support it, by default, while preserving the existing layout, D-pad focus, accessibility, widget interactions, wallpaper behavior and recovery. A 4K HDMI signal carrying an upscaled 1080p dashboard does not meet this goal. On a device whose UI is already 4K, the existing View hierarchy should use that UI without changing display settings.
 
 **Workspace goal clarified by Will, 25 November:** the 4K dashboard should offer
-roughly four times the space for widgets. The current proof doubles both rendering
-pixels and density, preserving apparent size and logical workspace; it does not
+roughly four times the space for widgets. At that checkpoint the proof doubled both rendering
+pixels and density, preserving apparent size and logical workspace; it did not
 meet this capacity goal. A candidate Dashboard scale setting at 50% would double
 the logical width and height (for example, 8×4 cells to 16×8), with smaller text
 and controls. Plan a live preview, intermediate scales, preserved placements and
 Undo, and verify widget readability/layout at the chosen scale before implementing.
-Implementation authorized by Will on 25 November. See the scale workflow below.
+Implementation was authorized by Will on 25 November and has since shipped.
+The current native percentage baseline and acceptance are recorded below.
 
 ### Dashboard scale implementation
 
@@ -61,9 +62,10 @@ Acceptance: deterministic 8×4→16×8 capacity and inverse change; persistence 
 Undo restore exact layout/widget data; Auto fit, existing positions, invalid saved
 scale and grid counts; container tests/lint/build for both packages. Live preview,
 focus/touch transforms, provider widgets, small-text readability, Save/Cancel/Back,
-interruption and expanded Restore require device acceptance after connectivity
-returns. Design disposition: conditional on those device checks; do not report
-them passed from a build alone.
+interruption and expanded Restore require device evidence. Preview, Save/Cancel,
+Undo and built-in widget Back/Restore passed in the follow-up linked below;
+native 100% labelling passed in 0.1.170. External phone transport, screen-reader
+and broader provider acceptance remain open. Do not infer those from a build.
 
 **Implemented locally in 0.1.161:** the Home tile area scales independently of
 settings and expanded widgets, with a separate draft, fixed automatic spans,
@@ -135,14 +137,16 @@ measurement work or make its completion a deployment prerequisite.
 ordinary 0.1.165 reports native dashboard/surface dimensions and passed Home,
 All Apps, Rain and external-settings return checks; injected attachment failure
 recreated an ordinary dashboard with the layout unchanged. The 0.1.168 rollout
-corrects menu/editor bounds to the actual embedded hierarchy. See the
+corrects menu/editor bounds to the actual embedded hierarchy. Version 0.1.170
+labels the full UHD workspace 100% (16×8), with 150%/200% for larger widgets;
+Cast2 verified the actual preview without changing saved placements. See the
 [production integration record](../testing/2026-11-26-automatic-4k.md) for current
 receipts and remaining acceptance. Performance characterization is informative,
 not a gate, per Will's direction. Independent pixel detail, broader providers,
 accessibility and lifecycle/output coverage remain verification work. Preserve
 user data, the existing interaction model and the pinned upstream boundary.
 
-### Current priority · 24 November
+### Historical priority and connection blocker · 24 November
 
 Will requested focusing on using the standalone tester to determine whether the
 new TVs display native 4K detail. The LG is already known to be 4K; its panel
@@ -157,10 +161,11 @@ new panel verification or an exact retail model identification.
 
 Cast2 reconnect job `J‑d8c468ecb9a1` failed `device-not-found-on-network`;
 Wireless debugging was not advertising. Fresh display inspection and foreground
-tester acceptance cannot proceed until the enrolled connection returns. Do not
+tester acceptance could not proceed until the enrolled connection returned.
+Later coordinator checks succeeded; this is not a current Cast2 connection block. Do not
 bypass recovery or change global display settings. Reconnect evidence is retained
-locally in `docs/diagnostics/2026-11-24-4k-reconnect/`. Next: obtain the TV model
-numbers, restore the coordinator connection, and run the existing standalone
+locally in `docs/diagnostics/2026-11-24-4k-reconnect/`. At that point, the next
+steps were to obtain the TV model numbers, restore the connection, and run the existing standalone
 tester with physical observation of the black/white horizontal and vertical
 1-, 2- and 4-pixel bands. Record accepted output, buffer size and panel observations
 separately for each TV; ordinary coordinator screenshots alone cannot prove panel
@@ -170,7 +175,7 @@ pixel detail.
 
 Apply the [shared Alan Cooper design filter](/home/will/docs/howtos/alan-cooper-design-filter.md) to the existing dashboard rather than introduce a separate configuration workflow. The observed goal is a sharp 4K dashboard on the new TVs; assume the same reading distance, remote navigation and layout until measured. The normal scenario is opening Homeboard on a 4K display and seeing the same dashboard at native detail; variations include a 1080p display, mode changes and an unavailable 4K surface. The finish is a readable, responsive dashboard with unchanged focus and settings. Fallback must preserve the working dashboard, never present an upscaled image as verified native 4K. Acceptance requires the device and interaction checks above; native detail and performance remain open findings.
 
-## Candidate for a real interactive View hierarchy
+## Historical candidate investigation · before production embedding
 
 Investigate a private, own-content `VirtualDisplay` rendered to the native-size `SurfaceView`, with a `Presentation` hosting Android Views at native dimensions and appropriately scaled density. The [DisplayManager API](https://developer.android.com/reference/android/hardware/display/DisplayManager#createVirtualDisplay(java.lang.String,int,int,int,android.view.Surface,int)) supports an application-supplied output surface. This is an **unverified candidate**, not an implementation decision: it must preserve normal D-pad/touch dispatch, accessibility, embedded app widgets, focus, TextureView/video, dialogs, animations and Homeboard lifecycle without privileged input injection. In particular, it must be compared against a native-size renderer and tested against real widgets before any default change. A surface containing only a drawn clock or image is not the requested dashboard.
 
@@ -443,4 +448,5 @@ the shared version number across the two separate packages.
 
 The [user guide](../how-to/quick-start.md#check-whether-the-dashboard-is-rendering-at-4k)
 now explains About's dashboard/output/surface readings and distinguishes native
-detail from the still-pending larger widget workspace.
+detail from widget workspace capacity. The later Dashboard scale and native
+100% follow-ups above supersede this network/deployment checkpoint.

@@ -20,18 +20,22 @@ for remaining work. Examples here match the repository's compile SDK 34; the
 direct embedding module requires Android 11 / API 30 or newer.
 
 In **Home settings → About**, read **Dashboard rendering** separately from
-**TV output**. The proof also shows the observed **Rendering surface** size.
+**TV output**. The normal launcher and proof also show the observed
+**Rendering surface** size.
 For native 4K, its measured dashboard and surface should both read
 **3840 × 2160 (4K)**. Ordinary Homeboard can show a 1920 × 1080 dashboard while
 the TV output reads 3840 × 2160; the output alone does not establish 4K rendering.
 
-For more widget capacity, build 0.1.161 adds **Home settings → Appearance →
-Dashboard scale**. At 50%, an 8×4 workspace becomes 16×8 with smaller Home tiles;
-settings and expanded widgets retain their normal size. This is independent of
-native rendering and does not change Android's display density. See the
-[user guide](quick-start.md#fit-more-widgets-on-home) and
-[scale acceptance record](../testing/2026-11-25-dashboard-scale.md). Build 0.1.162
-is installed on both TVs; interaction/readability validation remains pending.
+For more widget capacity, open **Home settings → Appearance → Dashboard scale**.
+On UHD-capable TVs, **100%** means the full native workspace (typically 16×8),
+with **150%** and **200%** for larger widgets. Build 0.1.170 corrected the old
+50% label to native 100%; existing widget sizes and positions are preserved.
+Fresh UHD layouts start at 100%. HD-only devices retain their own 100% baseline
+and 75%/50% choices. Settings and expanded widgets keep their normal size.
+Workspace scale is independent of the rendering buffer and changes no Android
+display density. See the [user guide](quick-start.md#fit-more-widgets-on-home),
+[scale acceptance](../testing/2026-11-26-dashboard-scale-acceptance.md) and
+[actual 0.1.170 native 100% preview](../testing/2026-11-26-automatic-4k.md).
 
 ## 1 Measure the four resolutions
 
@@ -83,7 +87,7 @@ is documented in the [tester sections of the plan](../plans/2026-11-23-native-4k
 | SurfaceView with a hardware Canvas | Useful for pixel patterns or a renderer that already draws its own scene. Allocating a 4K buffer does not transplant an interactive app. |
 | VirtualDisplay plus Presentation | Hosted the real Homeboard hierarchy at 4K. Required explicit window/context and forwarded-focus handling. |
 | Activity launched on a private display | Check platform support first. Cast2 reported secondary-display activities unsupported, so this candidate was rejected. |
-| SurfaceControlViewHost embedded in SurfaceView | Rendered the actual hierarchy at 4K without using a virtual display as the composition output. This is the current direct-embedding proof. |
+| SurfaceControlViewHost embedded in SurfaceView | Rendered the actual hierarchy at 4K without using a virtual display as the composition output. This is the production embedding path as well as the direct-embedding proof. |
 
 Do not substitute a screenshot, scaled bitmap or a hand-redrawn facsimile for the
 real dashboard. Preserve its actual text, charts, app icons, widgets, menus and
@@ -223,7 +227,7 @@ It preserves existing content and callbacks rather than maintaining a second
 full-screen widget design. Verify sizing, dismissal, draft Save/Cancel, focus and
 accessibility isolation for every modal type.
 
-## 7 Handle lifecycle and resource cost before enabling by default
+## 7 Handle lifecycle, recovery and resource cost
 
 Retain ownership of the view host and release it when the Activity is destroyed.
 Do not release the surface package a second time after transferring its ownership
@@ -249,7 +253,8 @@ Measure frame timing, input response, memory and thermal behavior against the
 ordinary renderer on the same hardware and comparable state. A missing windowless
 frame series is **unmeasured**, not zero jank. Our direct embedded hierarchy was
 not included in the collector's per-window rows; process aggregates still showed
-slow frames. No performance improvement has been accepted.
+slow frames. No performance improvement has been accepted. Performance characterization
+continues separately and does not gate native 4K deployment, per Will's direction.
 
 ## 8 Reproduce the Homeboard proof
 

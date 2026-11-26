@@ -1,6 +1,7 @@
 # Automatic native 4K in ordinary Homeboard · 26 November
 
-Rollout and extended acceptance in progress. Will authorized production integration and clarified that
+Automatic native 4K and the native 100% baseline are implemented and deployed;
+extended acceptance and the offline tablet install remain open. Will authorized production integration and clarified that
 performance metrics are informative, not a prerequisite for going 4K.
 
 ## Implementation
@@ -73,7 +74,7 @@ panel pixel detail and broader real-provider compatibility remain open. Earlier
 fixture and HD evidence remain in their dated records. The ordinary MainActivity
 catalog entry was restored; no temporary provider catalog entry remains.
 
-## Verification underway
+## Initial 0.1.165 verification · historical deployment state
 
 Ordinary **0.1.165** was frozen by the concurrent screensaver deployment. Its
 source manifest matches every automatic-4K implementation file and fallback
@@ -81,7 +82,8 @@ probe exactly, so the identical APK was reused for the remaining fleet targets.
 SHA-256: `bb48861e8ae2ef754e46dc66b50e6902b19f0258b9a2747164e1ab647bc9f1c9`.
 Cast1 install is J‑8ae05e7befd0; Cast2 J‑81410cb0064a completed healthy with the
 installed hash verified. Pixel J‑42daea0739fd failed its foreground continuation
-after installation; tablet J‑6f40ba04d58c is queued offline. Extra-target receipts
+after installation; tablet J‑6f40ba04d58c was initially queued offline
+and was subsequently cancelled as superseded. Extra-target receipts
 are recorded separately in the frozen artifact directory to preserve the other
 deployment owner's manifest.
 

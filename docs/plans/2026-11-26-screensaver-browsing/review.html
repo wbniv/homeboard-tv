@@ -5,7 +5,8 @@
 <div class="scenario"><button id="large">Larger text</button><button id="android-only">Jump to app without preview</button><button id="reset">Reset prototype</button><span id="demo-toast" role="status">Illustrative catalogue · 12 entries</span></div>
 <div class="tv" id="demo" aria-label="Screensaver navigation prototype"><header><div><h3>Screensaver</h3><span>↑ ↓ Browse · Right or OK opens actions</span></div><button id="demo-back">← Back</button></header><div class="tv-body"><section class="rail-side"><div class="eyebrow">ON THIS TV</div><div id="rail" role="list" aria-label="Available screensavers"></div><div id="position"></div></section><section id="detail" aria-label="Screensaver details"></section></div><div class="demo-overlay" id="demo-overlay" hidden><div class="overlay-art"></div><h3 id="overlay-title"></h3><p id="overlay-copy"></p><button id="close-overlay">← Return to screensaver</button></div></div></section>
 <article><h1>Browse screensavers without page buttons</h1>
-<p><strong>Status: design proposal; not implemented.</strong> Will, 26 November: “I hate the
+<p><strong>Status: implementation authorized by Will ("do"), 26 November; not yet implemented.</strong>
+The documentation sweep precedes the UI change. Will, 26 November: “I hate the
 'previous' and 'next' buttons on the screensaver page … there must be a better way.”</p>
 <p><strong>Recommendation:</strong> replace the four-item pages with one continuously scrolling
 list. Up and Down move through screensavers themselves. The focused row stays
@@ -196,7 +197,7 @@ catalogue demonstrates a need.</p>
 <li>Pause/recreate and package refresh retain picker state. Scroll does not start
   app activities, decode large artwork or create per-row live players.</li>
 </ul>
-<p>This plan changes the chooser only. It does not change the separately proposed
+<p>This plan changes the chooser only. It preserves the implemented
 <a href="2026-11-26-top-row-start-screensaver.md">top-row Start screensaver button</a>, the
 <a href="2026-11-26-screensaver-companion-contract.md">companion contract</a>, or who owns
 Android's idle behavior.</p></article><footer>Design proposal only. Mockups and prototype are illustrations; they do not change the TV or the app.</footer></main><script>

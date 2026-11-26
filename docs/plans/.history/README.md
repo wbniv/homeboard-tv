@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/f9c8f2d) | Index the screensaver browsing proposal |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/6219170) | docs: index the top-row plan; triage its captured deferrals |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/4fbccca) | docs: index the companion contract and drop its duplicate inbox item |
 | [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/cc4934f) | feat: show rendering resolution in About and refine US calendar band |
@@ -53,6 +54,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+f9c8f2d	author	Will Norris
+f9c8f2d	added	2
+f9c8f2d	deleted	0
+f9c8f2d	files	1
 6219170	author	Will Norris
 6219170	added	2
 6219170	deleted	1

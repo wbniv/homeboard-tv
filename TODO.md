@@ -75,7 +75,7 @@ trigger that promotes it back to Open._
 
 - ✅ 2026‑11‑26 — [screensaver-stage5] WF Clocks previews, plays on Home and yields to a ringing timer on Cast1. See [record](docs/testing/2026-11-26-screensaver-stage5-cast1.md).
 - ✅ 2026‑11‑26 — [screensaver-android-follows] Screensaver screen says Android's screensaver replaces Homeboard's (EN/TH). See [Q7](docs/testing/2026-11-26-screensaver-q7.md).
-- ✅ 2026-11-25 — [native-4k-dashboard-proof] Actual 4K dashboard and native overlays verified on Cast2; 1080p control and process recovery checked. Automatic integration remains open. See [record](docs/testing/2026-11-25-native-4k-dashboard.md).
+- ✅ 2026-11-25 — [native-4k-dashboard-proof] Actual 4K dashboard and native overlays verified on Cast2; 1080p control and process recovery checked. Automatic integration subsequently shipped; see [current rollout](docs/testing/2026-11-26-automatic-4k.md) and [original proof](docs/testing/2026-11-25-native-4k-dashboard.md).
 
 - ✅ 2026-11-23 — [repository-cleanup] Retired 20 merged worktrees/branches with verified recovery archives; consolidated loose files. See [record](docs/testing/2026-11-23-repository-cleanup.md).
 

@@ -1,10 +1,16 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/a08cf4e) | docs: Start screensaver and Device settings in Home settings |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/25182eb) | plan: Will decides D1-D3 for the top row; building |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/79c4d9f) | docs: no remote has a screensaver button |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/d778920) | plan: Home's top row with Start screensaver and Homeboard settings only |
 
 <!--history-meta v1
+a08cf4e	author	Will Norris
+a08cf4e	added	3
+a08cf4e	deleted	3
+a08cf4e	files	1
+a08cf4e	body	Screensaver, quick start and world clock how-tos describe the new top row; the\nscreensaver shortcut plan points at its replacement; the top-row plan records\nthe string name hb_ss_start_screensaver.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 25182eb	author	Will Norris
 25182eb	added	2
 25182eb	deleted	1

@@ -1,6 +1,7 @@
 # Browse screensavers without page buttons
 
-**Status: design proposal; not implemented.** Will, 26 November: “I hate the
+**Status: implementation authorized by Will ("do"), 26 November; not yet implemented.**
+The documentation sweep precedes the UI change. Will, 26 November: “I hate the
 'previous' and 'next' buttons on the screensaver page … there must be a better way.”
 
 **Recommendation:** replace the four-item pages with one continuously scrolling
@@ -168,7 +169,7 @@ catalogue demonstrates a need.
 - Pause/recreate and package refresh retain picker state. Scroll does not start
   app activities, decode large artwork or create per-row live players.
 
-This plan changes the chooser only. It does not change the separately proposed
+This plan changes the chooser only. It preserves the implemented
 [top-row Start screensaver button](2026-11-26-top-row-start-screensaver.md), the
 [companion contract](2026-11-26-screensaver-companion-contract.md), or who owns
 Android's idle behavior.

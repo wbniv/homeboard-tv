@@ -1,15 +1,18 @@
 # Home's top row: Start screensaver and Homeboard settings
 
-**Status (2026‑11‑26): D1–D3 decided by Will ("D1 … yes", "d2: ok", "d3: ok").** Being built.
+**Status (2026‑11‑26): implemented on main** (`d74d9b8`, `18b5fae`, `a08cf4e`).
+D1–D3 were decided by Will ("D1 … yes", "d2: ok", "d3: ok"). Device acceptance
+for this top-row change remains open; Stage 5's 0.1.171 captures predate it and
+do not verify the new buttons. See the [Stage 5 record](../testing/2026-11-26-screensaver-stage5-cast1.md).
 
 Will, 2026‑11‑26: "add another button (at the top?) to START the screensaver (something present
 in the original google launcher). move system preferences to inside the app preferences. move
 screensaver preferences inside the app preferences (leaving only start screensaver and app
 preferences)".
 
-## Context
+## Original context · before implementation
 
-Today the top row of Home and All Apps has three round buttons right of the world clock
+Before this change, the top row of Home and All Apps has three round buttons right of the world clock
 (`MainActivity.addTopSettingsButtons`, about line 1213):
 
 ![Today's top row on Cast1, 0.1.163: world clock, then the moon, the sliders and the gear](2026-11-26-top-row-start-screensaver/top-row-today.png)
@@ -20,7 +23,7 @@ Today the top row of Home and All Apps has three round buttons right of the worl
 | Sliders (`ic_app_settings`) | Home settings, the radial menu (`homeSettings`) | the widget Home |
 | Gear (`ic_settings`) | Android's own Settings (`Settings.ACTION_SETTINGS`) | the widget Home |
 
-Nothing starts the screensaver on demand today: no remote we test has a screensaver button, so
+At that baseline, nothing started the screensaver on demand: no remote we test has a screensaver button, so
 it starts only when the TV has been idle. Homeboard inherited a way for a build or theme to map
 a spare remote button to the action word `screensaver` (`app_keys` in `config.xml`, read by
 `RemoteKeys`), for remotes with extra buttons; the list ships empty, so nothing uses it. That

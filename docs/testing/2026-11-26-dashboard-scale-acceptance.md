@@ -9,6 +9,11 @@ checks, preserving Cast2's saved 50% dashboard. Baseline: native dashboard
 control used owned coordinator Remotes J‑bac2402572e0 and J‑3b8972038efe. No default Home,
 network settings or household credentials are changed.
 
+**Later baseline correction:** 0.1.170 calls this same UHD workspace **100%**,
+with 150%/200% for larger widgets. The 50%/75% labels in the dated checks below
+are the original labels, not current UHD instructions. See the
+[automatic 4K rollout](2026-11-26-automatic-4k.md).
+
 ## Native Cast2 results
 
 - 75% preview renders 11×5; Back cancels and reopening still shows saved 50%/16×8.
@@ -60,8 +65,9 @@ Its capture schedule began after expansion had finished: the screenshots show
 the restored compact widget, while assertions inspected the actual expanded dialog
 and RemoteViews. Do not label those screenshots as expanded captures.
 
-These probes are controls in ordinary Homeboard. **Native 4K provider hosting is
-still unverified**: the native package displays Widget permission setup, Android's
+At this earlier checkpoint, these probes were controls in ordinary Homeboard
+and **native 4K provider hosting was still unverified** (subsequently passed
+for the fixture in the evening follow-up below): the native package displays Widget permission setup, Android's
 consent activity is unavailable, and the coordinator widget-binding workflow only
 accepts normal Homeboard packages. The native request was rejected before any job
 or permission change. No allowlist modification or raw grant was attempted. Cast1
