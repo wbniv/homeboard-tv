@@ -21,7 +21,7 @@
     <string name="hb_ss_no_timer">Android decides · Homeboard runs no timer of its own</string>
     <string name="hb_ss_change">Change</string>
     <string name="hb_ss_other_apps">In other apps</string>
-    <string name="hb_ss_hint">OK selects · Back returns · Hold Back for Undo.</string>
+    <string name="hb_ss_hint">↑ ↓ browse · Right or OK opens actions · Back returns</string>
     <string name="hb_ss_options_title">Screensaver · Options</string>
     <string name="hb_ss_backdrop">Backdrop</string>
     <string name="hb_ss_glow">Glow</string>
@@ -109,4 +109,7 @@
     <string name="hb_ss_gone_failed">%1$s is no longer installed. Android did not accept the original back, so this TV\'s screensaver is still %2$s. Homeboard plays %3$s on Home.</string>
     <string name="hb_ss_undo_tv">This TV\'s screensaver: %1$s</string>
     <string name="hb_ss_undo_restore">Restored this TV\'s screensaver: %1$s</string>
+    <!-- The continuous list (docs/plans/2026-11-26-screensaver-browsing.md). -->
+    <string name="hb_ss_position">%1$d of %2$d</string>
+    <string name="hb_ss_removed">%1$s is no longer installed.</string>
 </resources>

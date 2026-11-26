@@ -21,7 +21,7 @@
     <string name="hb_ss_no_timer">ให้ Android กำหนด · Homeboard ไม่ได้จับเวลาเอง</string>
     <string name="hb_ss_change">เปลี่ยน</string>
     <string name="hb_ss_other_apps">ในแอปอื่น</string>
-    <string name="hb_ss_hint">OK เพื่อเลือก · Back เพื่อกลับ · กด Back ค้างเพื่อเลิกทำ</string>
+    <string name="hb_ss_hint">↑ ↓ เลื่อนดู · ขวาหรือ OK เพื่อเปิดคำสั่ง · Back เพื่อกลับ</string>
     <string name="hb_ss_options_title">โปรแกรมรักษาหน้าจอ · ตัวเลือก</string>
     <string name="hb_ss_backdrop">ฉากหลัง</string>
     <string name="hb_ss_glow">แสงเรือง</string>
@@ -109,4 +109,7 @@
     <string name="hb_ss_gone_failed">ไม่มี %1$s ติดตั้งอยู่แล้ว Android ไม่รับค่าเดิมคืน โปรแกรมรักษาหน้าจอของทีวีเครื่องนี้จึงยังคงเป็น %2$s Homeboard แสดง %3$s บนหน้าหลัก</string>
     <string name="hb_ss_undo_tv">โปรแกรมรักษาหน้าจอของทีวีเครื่องนี้: %1$s</string>
     <string name="hb_ss_undo_restore">คืนค่าโปรแกรมรักษาหน้าจอของทีวีเครื่องนี้: %1$s</string>
+    <!-- The continuous list (docs/plans/2026-11-26-screensaver-browsing.md). -->
+    <string name="hb_ss_position">%1$d จาก %2$d</string>
+    <string name="hb_ss_removed">ไม่มี %1$s ติดตั้งอยู่แล้ว</string>
 </resources>

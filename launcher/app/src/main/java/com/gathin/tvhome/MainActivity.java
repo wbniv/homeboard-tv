@@ -224,6 +224,7 @@ public class MainActivity extends NativeDashboardActivity {
             }
             loadApps();
             if (wallpaperHost != null) wallpaperHost.packagesChanged();
+            if (active && screensaverChooserShowing()) refreshScreensaverChooser();
             if(active && activeMenu!=null && activeMenu.panelRenderer!=null &&
                     (activeMenu.title.equals(getString(R.string.hb_get_providers)) ||
                      ProviderCatalog.ENTRIES.stream().anyMatch(e->e.name.equals(activeMenu.title))))
@@ -364,6 +365,15 @@ public class MainActivity extends NativeDashboardActivity {
         if(repairedDashboard)save(getString(R.string.hb_dashboard_applied));
         loadApps();
         handleIntent(getIntent());
+        Bundle picker = savedInstanceState == null ? null : savedInstanceState.getBundle("screensaverPicker");
+        if (picker != null) {
+            // Recreated with the chooser open or about to return: onResume reopens it on the same entry and position.
+            screensaverPicker.browsed = picker.getString("browsed"); screensaverPicker.browsedIndex = picker.getInt("browsedIndex");
+            screensaverPicker.anchor = picker.getString("anchor"); screensaverPicker.anchorOffset = picker.getInt("anchorOffset");
+            screensaverPicker.action = picker.getString("action"); screensaverPicker.fromHomeSettings = picker.getBoolean("fromHomeSettings");
+            screensaverOptionsOpen = picker.getBoolean("options");
+            returningToScreensaver = screensaverPicker.browsed;
+        }
         if (savedInstanceState != null && savedInstanceState.getBoolean("languageSettings")) {
             homeSettings();
             showUndoBanner(getString(R.string.hb_language));
@@ -391,6 +401,7 @@ public class MainActivity extends NativeDashboardActivity {
         lastHomeInput = SystemClock.uptimeMillis(); scheduleScreensaver();
         if (timersAfterAppScreen) { timersAfterAppScreen = false; returningToScreensaver = null; handler.post(() -> expandWidget(HomeLayout.TIMER, null)); }
         if (returningToScreensaver != null) { String entry = returningToScreensaver; returningToScreensaver = null; handler.post(() -> reopenScreensaver(entry)); }
+        screensaverPausedPicker = null;
         resumeHomeButton();
         if(returningToProvider!=null) {
             ProviderCatalog.Entry entry=returningToProvider;returningToProvider=null;
@@ -417,6 +428,8 @@ public class MainActivity extends NativeDashboardActivity {
         if (!returningFromProviderSettings) cancelWallpaperPreview();
         wallpaperHost.visible(false); wallpaperSurface.visible(false);
         if (activeMenu != null && activeMenu.paletteGrid) finishUndoGroup();
+        // Kept only for a recreation (onSaveInstanceState); a plain resume does not reopen the chooser.
+        if (screensaverChooserShowing()) { captureScreensaverAnchor(); screensaverPausedPicker = screensaverPicker.copy(); }
         gridSelector = null;
         menuStack.clear(); activeMenu = null; aboutBackButton = null;
         dismissMenu();
@@ -461,6 +474,16 @@ public class MainActivity extends NativeDashboardActivity {
         state.putBoolean("ignoreBackRelease",backUndoIgnoreRelease||backUndo.down());
         if(expandedWidget!=null){Bundle expanded=expandedWidget.state();expanded.putBoolean("originApps",allApps);state.putBundle("expandedWidget",expanded);}
         state.putBoolean("languageSettings", reopenLanguageSettings);
+        // The chooser, if a return to it is pending or it was showing at the pause: reopened after a recreation.
+        ScreensaverPicker.State picker = returningToScreensaver != null ? screensaverPicker : screensaverPausedPicker;
+        if (picker != null && picker.browsed != null) {
+            Bundle saved = new Bundle();
+            saved.putString("browsed", picker.browsed); saved.putInt("browsedIndex", picker.browsedIndex);
+            saved.putString("anchor", picker.anchor); saved.putInt("anchorOffset", picker.anchorOffset);
+            saved.putString("action", picker.action); saved.putBoolean("fromHomeSettings", picker.fromHomeSettings);
+            saved.putBoolean("options", returningToScreensaver != null && screensaverOptionsOpen);
+            state.putBundle("screensaverPicker", saved);
+        }
         state.putBoolean("allApps", allApps); state.putInt("homePage", homePage);
         state.putInt("appsPage", appsPage); state.putString("focus", focused);
         state.putString("homeFocus", homeFocus); state.putString("appsFocus", appsFocus);
@@ -1813,7 +1836,9 @@ public class MainActivity extends NativeDashboardActivity {
         }
         if (activeMenu != null && activeMenu.panelRenderer != null) {
             if (key == KeyEvent.KEYCODE_BACK || key == KeyEvent.KEYCODE_ESCAPE) {
-                if (event.getAction() == KeyEvent.ACTION_UP) backMenu();
+                // The chooser's action area: Back returns to the same list row; from the list it closes the chooser.
+                boolean toRow = screensaverChooserShowing() && screensaverPane != null && screensaverPane.hasFocus();
+                if (event.getAction() == KeyEvent.ACTION_UP) { if (toRow) focusScreensaverRow(screensaverPicker.browsedIndex); else backMenu(); }
                 return true;
             }
             return dispatchDashboardWindowKey(event);
@@ -2458,9 +2483,19 @@ public class MainActivity extends NativeDashboardActivity {
             catch (RuntimeException refused) { android.util.Log.w(ScreensaverActivity.TAG, "could not close the app screensaver: " + refused); }
         }
     };
-    private static final int SCREENSAVER_PAGE_SIZE = 4;
-    private int screensaverFocus, screensaverPage;
-    /** The control to focus after a redraw, by tag; null focuses the entry card. */
+    /** The chooser's browsing state: browsed entry, scroll anchor and last action (ScreensaverPicker.State). */
+    private final ScreensaverPicker.State screensaverPicker = new ScreensaverPicker.State();
+    /** The chooser's own menu, so a key, a package change or a pause can tell it is the one showing. */
+    private MenuSpec screensaverMenu;
+    /** The chooser's views while it is drawn; replaced on every full draw. */
+    private androidx.recyclerview.widget.RecyclerView screensaverList;
+    private LinearLayout screensaverPane;
+    private TextView screensaverCount;
+    private View screensaverThumb;
+    private String screensaverPaneEntry;
+    /** The chooser state at the last pause while it was open, saved only if Android recreates the Activity. */
+    private ScreensaverPicker.State screensaverPausedPicker;
+    /** The control to focus after a redraw, by tag; null focuses the browsed row. */
     private String screensaverFocusTag;
     /** Set while a Preview is up: the entry, and whether its Options screen was open. */
     private String returningToScreensaver, screensaverAccepted;
@@ -2554,21 +2589,31 @@ public class MainActivity extends NativeDashboardActivity {
      */
     private void screensaverSettings() {
         refreshScreensaverEntries(); screensaverFailure = null; screensaverRetry = null;
-        screensaverFocus = ScreensaverRegistry.indexOf(chosenScreensaver().id, screensaverEntries);
-        screensaverPage = screensaverFocus / SCREENSAVER_PAGE_SIZE; screensaverFocusTag = null;
-        openMenu(new MenuSpec(getString(R.string.hb_screensaver), this::drawScreensaver));
+        String chosen = chosenScreensaver().id;
+        // Fresh openings start at the saved choice; activeMenu is Home settings when opened from there.
+        screensaverPicker.reset(chosen, Math.max(0, ScreensaverPicker.indexOf(chosen, screensaverEntries)), activeMenu != null);
+        screensaverFocusTag = null;
+        openScreensaverMenu();
     }
-    /** After a Preview: Home settings → Screensaver (→ Options) again, then save an accepted choice with Undo. */
+    private void openScreensaverMenu() {
+        screensaverMenu = new MenuSpec(getString(R.string.hb_screensaver), this::drawScreensaver);
+        openMenu(screensaverMenu);
+    }
+    /**
+     * After a Preview or an app's settings screen (both pause Home, which closes its menus): the chooser again from
+     * where it was opened, on the same entry, scroll position and action (→ Options when the Preview came from
+     * there), then save an accepted built-in Preview with Undo.
+     */
     private void reopenScreensaver(String entry) {
         if (!active || layoutReadOnly) return;
         boolean options = screensaverOptionsOpen; String accepted = screensaverAccepted; screensaverAccepted = null;
         refreshScreensaverEntries();
-        int focus = ScreensaverRegistry.indexOf(entry, screensaverEntries);
-        homeSettings();
+        if (screensaverPicker.fromHomeSettings) homeSettings();
         invokingMenuAction = true;
         try {
-            screensaverFocus = focus; screensaverPage = focus / SCREENSAVER_PAGE_SIZE; screensaverFocusTag = "act:preview";
-            openMenu(new MenuSpec(getString(R.string.hb_screensaver), this::drawScreensaver));
+            if (entry != null) screensaverPicker.browsed = entry;
+            screensaverPicker.returning = screensaverPicker.action != null;
+            openScreensaverMenu();
             if (options) openScreensaverOptions(entry, "opt:preview");
         } finally { invokingMenuAction = false; }
         if (accepted != null) useScreensaver(ScreensaverRegistry.entry(accepted), options ? "opt:preview" : "act:preview");
@@ -2709,8 +2754,12 @@ public class MainActivity extends NativeDashboardActivity {
         screensaverFocusTag = focusTag; activeMenu.panelRenderer.run();
     }
 
-    /** The two-pane panel both screensaver screens share: heading and Back on top, then the body. */
-    private LinearLayout screensaverPanel(String title, LinearLayout body) {
+    private LinearLayout screensaverPanel(String title, LinearLayout body) { return screensaverPanel(title, body, false); }
+    /**
+     * The panel the screensaver screens share: heading and Back on top, then the body. fill: the chooser, which
+     * takes the measured dashboard height so its list scrolls inside it and its detail pane scrolls on its own.
+     */
+    private LinearLayout screensaverPanel(String title, LinearLayout body, boolean fill) {
         if (overlay != null) root.removeView(overlay);
         hideAppFocusHighlight();
         surface.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
@@ -2741,10 +2790,12 @@ public class MainActivity extends NativeDashboardActivity {
             LinearLayout.LayoutParams noticeLp = new LinearLayout.LayoutParams(-1, -2); noticeLp.topMargin = dp(8);
             panel.addView(notice, noticeLp);
         }
-        LinearLayout.LayoutParams bodyLp = new LinearLayout.LayoutParams(-1, -2); bodyLp.topMargin = dp(8);
+        LinearLayout.LayoutParams bodyLp = fill ? new LinearLayout.LayoutParams(-1, 0, 1) : new LinearLayout.LayoutParams(-1, -2);
+        bodyLp.topMargin = dp(8);
         panel.addView(body, bodyLp);
         int width = Math.min(dp(1180), dashboardWidthPixels() - dp(40));
-        overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
+        int height = fill ? Math.max(dp(320), Math.min(dp(760), dashboardHeightPixels() - dp(40))) : -2;
+        overlay.addView(panel, new FrameLayout.LayoutParams(width, height, Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); updateUndoHint();
         return panel;
     }
@@ -2804,75 +2855,266 @@ public class MainActivity extends NativeDashboardActivity {
         }
     }
 
-    /** Home settings → Screensaver: the paged list on the left, the focused entry's preview and actions on the right. */
+    /**
+     * Home settings → Screensaver (docs/plans/2026-11-26-screensaver-browsing.md): one continuous list on the left,
+     * the browsed entry's preview, actions and timing on the right. Up and Down browse rows and update only the
+     * detail pane; Right or OK enters the entry's actions; Left and Back return to the same row. A full draw (open,
+     * return, redraw after a change) restores the browsed row, scroll position and last action from screensaverPicker.
+     */
     private void drawScreensaver() {
+        captureScreensaverAnchor();
+        screensaverStatus = everywhere().status();
+        List<ScreensaverRegistry.Entry> entries = screensaverEntries;
+        int browsed = ScreensaverPicker.browsedRow(screensaverPicker.browsed, screensaverPicker.browsedIndex, entries);
+        screensaverPicker.browsed = entries.get(browsed).id; screensaverPicker.browsedIndex = browsed;
+        String homeId = chosenScreensaver().id;
+        java.util.Map<String, ScreensaverPicker.Badge> badges = ScreensaverPicker.badges(homeId,
+                ScreensaverPicker.otherAppsEntry(screensaverStatus.component, everywhere().gateway().ownComponent(), layout.screensaver.choice, entries));
+        boolean narrow = dashboardWidthPixels() < dp(720);
+
         LinearLayout body = new LinearLayout(this);
-        LinearLayout list = new LinearLayout(this); list.setOrientation(LinearLayout.VERTICAL);
+        body.setOrientation(narrow ? LinearLayout.VERTICAL : LinearLayout.HORIZONTAL);
+        LinearLayout column = new LinearLayout(this); column.setOrientation(LinearLayout.VERTICAL);
+        column.addView(bold(getString(R.string.hb_ss_list_heading), 19));
+        FrameLayout listFrame = new FrameLayout(this);
+        androidx.recyclerview.widget.RecyclerView list = new androidx.recyclerview.widget.RecyclerView(this);
+        androidx.recyclerview.widget.LinearLayoutManager rows = new androidx.recyclerview.widget.LinearLayoutManager(this);
+        list.setLayoutManager(rows); list.setItemAnimator(null); list.setVerticalScrollBarEnabled(false);
+        list.setPadding(0, 0, dp(12), 0); list.setClipToPadding(false);
+        list.setAdapter(new ScreensaverRows(entries, badges));
+        listFrame.addView(list, new FrameLayout.LayoutParams(-1, -1));
+        // A subtle, non-focusable position indicator; hidden when every row fits.
+        FrameLayout track = new FrameLayout(this); track.setFocusable(false);
+        View thumb = new View(this); thumb.setBackground(shape(paletteColors.muted, paletteColors.muted, 0)); thumb.setVisibility(View.INVISIBLE);
+        track.addView(thumb, new FrameLayout.LayoutParams(-1, 0));
+        listFrame.addView(track, new FrameLayout.LayoutParams(dp(4), -1, Gravity.END));
+        LinearLayout.LayoutParams listLp = new LinearLayout.LayoutParams(-1, 0, 1); listLp.topMargin = dp(8);
+        column.addView(listFrame, listLp);
+        LinearLayout foot = new LinearLayout(this); foot.setGravity(Gravity.CENTER_VERTICAL);
+        TextView count = muted("", 14); count.setSingleLine(true);
+        foot.addView(count, new LinearLayout.LayoutParams(-2, -2));
+        TextView hint = muted(getString(R.string.hb_ss_hint), 13); hint.setPadding(dp(14), 0, 0, 0); hint.setMaxLines(2);
+        foot.addView(hint, new LinearLayout.LayoutParams(0, -2, 1));
+        LinearLayout.LayoutParams footLp = new LinearLayout.LayoutParams(-1, -2); footLp.topMargin = dp(8); column.addView(foot, footLp);
+
         LinearLayout pane = new LinearLayout(this); pane.setOrientation(LinearLayout.VERTICAL);
         pane.setPadding(dp(18), dp(14), dp(18), dp(12));
-        pane.setBackground(shape(paletteColors.surface, paletteColors.edge, 1));
-        body.addView(list, new LinearLayout.LayoutParams(0, -2, 0.42f));
-        LinearLayout.LayoutParams paneLp = new LinearLayout.LayoutParams(0, -2, 0.58f); paneLp.leftMargin = dp(18);
-        body.addView(pane, paneLp);
-        screensaverStatus = everywhere().status();
-        LinearLayout panel = screensaverPanel(getString(R.string.hb_home_settings) + " · " + getString(R.string.hb_screensaver), body);
-        list.addView(bold(getString(R.string.hb_ss_list_heading), 19));
-        List<ScreensaverRegistry.Entry> entries = screensaverEntries;
-        String chosen = chosenScreensaver().id;
-        int pages = Math.max(1, (entries.size() + SCREENSAVER_PAGE_SIZE - 1) / SCREENSAVER_PAGE_SIZE);
-        screensaverPage = Math.max(0, Math.min(pages - 1, screensaverPage));
-        int first = screensaverPage * SCREENSAVER_PAGE_SIZE;
-        screensaverFocus = Math.max(first, Math.min(Math.min(entries.size(), first + SCREENSAVER_PAGE_SIZE) - 1, screensaverFocus));
-        View focusCard = null;
-        for (int i = first; i < Math.min(entries.size(), first + SCREENSAVER_PAGE_SIZE); i++) {
-            ScreensaverRegistry.Entry entry = entries.get(i); int index = i;
-            boolean inUse = entry.id.equals(chosen);
-            LinearLayout card = new LinearLayout(this); card.setGravity(Gravity.CENTER_VERTICAL);
-            card.setPadding(dp(14), dp(10), dp(14), dp(10)); card.setBackground(tileBackground());
-            card.setFocusable(true); card.setClickable(true); card.setTag("card:" + entry.id);
-            TextView glyph = text(entry.glyph, 24); glyph.setGravity(Gravity.CENTER);
-            glyph.setBackground(shape(paletteColors.raised, paletteColors.edge, 1));
-            card.addView(glyph, new LinearLayout.LayoutParams(dp(50), dp(50)));
-            LinearLayout copy = new LinearLayout(this); copy.setOrientation(LinearLayout.VERTICAL); copy.setPadding(dp(14), 0, 0, 0);
-            LinearLayout nameRow = new LinearLayout(this); nameRow.setGravity(Gravity.CENTER_VERTICAL);
-            TextView title = bold(entry.title(this), 19); title.setSingleLine(true); title.setEllipsize(android.text.TextUtils.TruncateAt.END);
-            nameRow.addView(title, new LinearLayout.LayoutParams(0, -2, 1));
-            boolean needsEverywhere = !inUse && ScreensaverRules.use(screensaverStatus.managed, entry.id, entry.playsOnHome()) == ScreensaverRules.Use.EVERYWHERE_SCREEN;
-            if (inUse || needsEverywhere) {
-                TextView use = inUse ? badge(getString(R.string.hb_ss_in_use), paletteColors.focus, contrastingText(paletteColors.focus))
-                        : badge(getString(R.string.hb_ss_needs_everywhere), paletteColors.raised, paletteColors.text);
-                LinearLayout.LayoutParams useLp = new LinearLayout.LayoutParams(-2, -2); useLp.leftMargin = dp(8); nameRow.addView(use, useLp);
+        android.widget.ScrollView detail = new android.widget.ScrollView(this);
+        detail.setBackground(shape(paletteColors.surface, paletteColors.edge, 1)); detail.setFillViewport(true);
+        detail.addView(pane, new FrameLayout.LayoutParams(-1, -2));
+        if (narrow) {
+            body.addView(column, new LinearLayout.LayoutParams(-1, 0, 0.45f));
+            LinearLayout.LayoutParams detailLp = new LinearLayout.LayoutParams(-1, 0, 0.55f); detailLp.topMargin = dp(12);
+            body.addView(detail, detailLp);
+        } else {
+            body.addView(column, new LinearLayout.LayoutParams(0, -1, 0.42f));
+            LinearLayout.LayoutParams detailLp = new LinearLayout.LayoutParams(0, -1, 0.58f); detailLp.leftMargin = dp(18);
+            body.addView(detail, detailLp);
+        }
+        LinearLayout panel = screensaverPanel(getString(R.string.hb_home_settings) + " · " + getString(R.string.hb_screensaver), body, true);
+        screensaverList = list; screensaverPane = pane; screensaverCount = count; screensaverThumb = thumb; screensaverPaneEntry = null;
+        list.addOnScrollListener(new androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            @Override public void onScrolled(androidx.recyclerview.widget.RecyclerView view, int dx, int dy) { updateScreensaverThumb(view, thumb); }
+        });
+        list.addOnLayoutChangeListener((v, l, t, r, b2, ol, ot, or, ob) -> updateScreensaverThumb(list, thumb));
+
+        // Header Back (and Retry when a failure is shown): Down returns to the browsed row.
+        View back = panel.findViewWithTag("back"), retry = panel.findViewWithTag("fail:retry");
+        if (back != null) back.setOnKeyListener((v, key, event) -> {
+            if (key != KeyEvent.KEYCODE_DPAD_DOWN) return false;
+            if (event.getAction() == KeyEvent.ACTION_DOWN) { if (retry != null) retry.requestFocus(); else focusScreensaverRow(screensaverPicker.browsedIndex); }
+            return true;
+        });
+        if (retry != null) retry.setOnKeyListener((v, key, event) -> {
+            if (key != KeyEvent.KEYCODE_DPAD_DOWN) return false;
+            if (event.getAction() == KeyEvent.ACTION_DOWN) focusScreensaverRow(screensaverPicker.browsedIndex);
+            return true;
+        });
+
+        drawScreensaverPane(pane, entries.get(browsed));
+        updateScreensaverCount();
+        int anchor = ScreensaverPicker.indexOf(screensaverPicker.anchor, entries);
+        if (anchor >= 0) rows.scrollToPositionWithOffset(anchor, screensaverPicker.anchorOffset);
+        else rows.scrollToPosition(browsed);
+        String explicit = screensaverFocusTag; screensaverFocusTag = null;
+        String returnTo = screensaverPicker.takeReturnFocus();
+        String tag = explicit != null ? explicit : returnTo;
+        list.post(() -> {
+            if (screensaverList != list) return;
+            View target = tag == null ? null : panel.findViewWithTag(tag);
+            if (target != null && target.isFocusable()) target.requestFocus();
+            else focusScreensaverRow(screensaverPicker.browsedIndex);
+        });
+    }
+
+    /** One chooser row per entry, with stable ids so a redraw or package refresh keeps rows and focus by identity. */
+    private final class ScreensaverRows extends androidx.recyclerview.widget.RecyclerView.Adapter<ScreensaverRows.Row> {
+        private final List<ScreensaverRegistry.Entry> entries;
+        private final java.util.Map<String, ScreensaverPicker.Badge> badges;
+        ScreensaverRows(List<ScreensaverRegistry.Entry> entries, java.util.Map<String, ScreensaverPicker.Badge> badges) {
+            this.entries = entries; this.badges = badges; setHasStableIds(true);
+        }
+        final class Row extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
+            final TextView glyph, title, status; final LinearLayout badgeBox;
+            Row(LinearLayout card, TextView glyph, TextView title, LinearLayout badgeBox, TextView status) {
+                super(card); this.glyph = glyph; this.title = title; this.badgeBox = badgeBox; this.status = status;
             }
+        }
+        @Override public int getItemCount() { return entries.size(); }
+        @Override public long getItemId(int position) { return ScreensaverPicker.stableId(entries.get(position).id); }
+        @Override public Row onCreateViewHolder(ViewGroup parent, int viewType) {
+            LinearLayout card = new LinearLayout(MainActivity.this); card.setGravity(Gravity.CENTER_VERTICAL);
+            card.setPadding(dp(14), dp(8), dp(14), dp(8)); card.setBackground(tileBackground());
+            card.setFocusable(true); card.setClickable(true);
+            TextView glyph = text("", 22); glyph.setGravity(Gravity.CENTER);
+            glyph.setBackground(shape(paletteColors.raised, paletteColors.edge, 1));
+            card.addView(glyph, new LinearLayout.LayoutParams(dp(44), dp(44)));
+            LinearLayout copy = new LinearLayout(MainActivity.this); copy.setOrientation(LinearLayout.VERTICAL); copy.setPadding(dp(14), 0, 0, 0);
+            LinearLayout nameRow = new LinearLayout(MainActivity.this); nameRow.setGravity(Gravity.CENTER_VERTICAL);
+            TextView title = bold("", 19); title.setMaxLines(2); title.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            nameRow.addView(title, new LinearLayout.LayoutParams(0, -2, 1));
+            LinearLayout badgeBox = new LinearLayout(MainActivity.this); badgeBox.setGravity(Gravity.CENTER_VERTICAL);
+            nameRow.addView(badgeBox, new LinearLayout.LayoutParams(-2, -2));
             copy.addView(nameRow);
-            String role = entry.app() ? "☾ " + getString(R.string.hb_ss_app_kind) : "◆ " + getString(R.string.hb_ss_built_in);
-            copy.addView(muted(role, 14));
-            copy.addView(muted("· " + getString(entry.summary), 14));
+            TextView status = muted("", 14); status.setSingleLine(true); status.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            copy.addView(status);
             card.addView(copy, new LinearLayout.LayoutParams(0, -2, 1));
-            card.setContentDescription(entry.title(this) + (inUse ? ", " + getString(R.string.hb_ss_in_use) : "") + ", " + role.substring(2) + ", " + getString(entry.summary));
-            card.setOnFocusChangeListener((v, has) -> { if (has && screensaverFocus != index) { screensaverFocus = index; drawScreensaverPane(pane, entry); } });
-            card.setOnClickListener(v -> { if (screensaverFirstAction != null) screensaverFirstAction.requestFocus(); });
-            LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(-1, -2); cardLp.topMargin = dp(8);
-            list.addView(card, cardLp);
-            if (i == screensaverFocus) focusCard = card;
+            androidx.recyclerview.widget.RecyclerView.LayoutParams lp = new androidx.recyclerview.widget.RecyclerView.LayoutParams(-1, -2);
+            lp.topMargin = dp(4); lp.bottomMargin = dp(4); card.setLayoutParams(lp);
+            return new Row(card, glyph, title, badgeBox, status);
         }
-        if (pages > 1) {
-            LinearLayout nav = new LinearLayout(this);
-            TextView previous = infoButton("‹ " + getString(R.string.hb_previous), () -> { screensaverPage--; screensaverFocus = screensaverPage * SCREENSAVER_PAGE_SIZE; drawScreensaver(); });
-            TextView next = infoButton(getString(R.string.hb_next) + " ›", () -> { screensaverPage++; screensaverFocus = screensaverPage * SCREENSAVER_PAGE_SIZE; drawScreensaver(); });
-            if (screensaverPage == 0) { previous.setFocusable(false); previous.setAlpha(0.45f); }
-            if (screensaverPage == pages - 1) { next.setFocusable(false); next.setAlpha(0.45f); }
-            LinearLayout.LayoutParams navLp = new LinearLayout.LayoutParams(0, dp(44), 1); navLp.rightMargin = dp(8);
-            nav.addView(previous, navLp); nav.addView(next, new LinearLayout.LayoutParams(0, dp(44), 1));
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2); lp.topMargin = dp(8); list.addView(nav, lp);
+        @Override public void onBindViewHolder(Row row, int position) {
+            ScreensaverRegistry.Entry entry = entries.get(position);
+            View card = row.itemView;
+            card.setTag("card:" + entry.id);
+            row.glyph.setText(entry.glyph);
+            row.title.setText(entry.title(MainActivity.this));
+            row.badgeBox.removeAllViews();
+            ScreensaverPicker.Badge scope = badges.get(entry.id);
+            StringBuilder spoken = new StringBuilder(entry.title(MainActivity.this));
+            if (scope != null) {
+                String label = getString(scope == ScreensaverPicker.Badge.ON_HOME ? R.string.hb_ss_on_home
+                        : scope == ScreensaverPicker.Badge.IN_OTHER_APPS ? R.string.hb_ss_other_apps : R.string.hb_ss_in_use);
+                addRowBadge(row.badgeBox, badge(label, paletteColors.focus, contrastingText(paletteColors.focus)));
+                spoken.append(", ").append(label);
+            } else if (ScreensaverRules.use(screensaverStatus.managed, entry.id, entry.playsOnHome()) == ScreensaverRules.Use.EVERYWHERE_SCREEN) {
+                String label = getString(R.string.hb_ss_needs_everywhere);
+                addRowBadge(row.badgeBox, badge(label, paletteColors.raised, paletteColors.text));
+                spoken.append(", ").append(label);
+            }
+            // One short status line; descriptions live in the detail pane only.
+            String status = entry.app() ? "☾ " + getString(entry.summary) : "◆ " + getString(R.string.hb_ss_built_in);
+            row.status.setText(status);
+            spoken.append(", ").append(status.substring(2));
+            card.setContentDescription(spoken);
+            card.setOnFocusChangeListener((v, has) -> {
+                if (!has) return;
+                int at = row.getBindingAdapterPosition();
+                if (at == androidx.recyclerview.widget.RecyclerView.NO_POSITION) return;
+                screensaverPicker.browsed = entry.id; screensaverPicker.browsedIndex = at;
+                if (!entry.id.equals(screensaverPaneEntry) && screensaverPane != null) drawScreensaverPane(screensaverPane, entry);
+                updateScreensaverCount();
+            });
+            card.setOnClickListener(v -> {
+                screensaverPicker.browsed = entry.id; screensaverPicker.browsedIndex = row.getBindingAdapterPosition();
+                // Touch: a tap inspects the row. Remote: short OK enters its actions, launching nothing.
+                if (v.isInTouchMode()) { if (screensaverPane != null) drawScreensaverPane(screensaverPane, entry); updateScreensaverCount(); }
+                else if (screensaverFirstAction != null) screensaverFirstAction.requestFocus();
+            });
+            card.setOnKeyListener((v, key, event) -> {
+                int at = row.getBindingAdapterPosition();
+                if (at == androidx.recyclerview.widget.RecyclerView.NO_POSITION) return false;
+                if (key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_DOWN) {
+                    if (event.getAction() != KeyEvent.ACTION_DOWN) return true;
+                    int delta = key == KeyEvent.KEYCODE_DPAD_UP ? -1 : 1;
+                    switch (ScreensaverPicker.move(at, entries.size(), delta)) {
+                        case HEADER: {
+                            View retry = overlay == null ? null : overlay.findViewWithTag("fail:retry");
+                            View back = overlay == null ? null : overlay.findViewWithTag("back");
+                            if (retry != null) retry.requestFocus(); else if (back != null) back.requestFocus();
+                            break;
+                        }
+                        case ROW: focusScreensaverRow(ScreensaverPicker.target(at, entries.size(), delta)); break;
+                        default: break;   // the last row: stay; the count shows the end
+                    }
+                    return true;
+                }
+                if (key == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                    if (event.getAction() == KeyEvent.ACTION_DOWN && screensaverFirstAction != null) screensaverFirstAction.requestFocus();
+                    return true;
+                }
+                return key == KeyEvent.KEYCODE_DPAD_LEFT;   // nothing to the left of the list
+            });
         }
-        TextView hint = muted(getString(R.string.hb_ss_hint), 13);
-        LinearLayout.LayoutParams hintLp = new LinearLayout.LayoutParams(-1, -2); hintLp.topMargin = dp(10); list.addView(hint, hintLp);
-        drawScreensaverPane(pane, entries.get(screensaverFocus));
-        focusScreensaver(panel, focusCard);
+    }
+    private void addRowBadge(LinearLayout box, TextView badge) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, -2); lp.leftMargin = dp(8); box.addView(badge, lp);
+    }
+    /** Focuses row index, scrolling only enough to reveal it; a row not laid out yet is focused after the scroll. */
+    private void focusScreensaverRow(int index) {
+        androidx.recyclerview.widget.RecyclerView list = screensaverList;
+        if (list == null || list.getAdapter() == null || index < 0 || index >= list.getAdapter().getItemCount()) return;
+        androidx.recyclerview.widget.RecyclerView.LayoutManager rows = list.getLayoutManager();
+        View row = rows == null ? null : rows.findViewByPosition(index);
+        if (row != null) { row.requestFocus(); return; }
+        list.scrollToPosition(index);
+        list.post(() -> {
+            View laid = list.getLayoutManager() == null ? null : list.getLayoutManager().findViewByPosition(index);
+            if (laid != null) laid.requestFocus();
+        });
+    }
+    /** Remembers the first visible row and its offset, so the next draw restores the scroll exactly. */
+    private void captureScreensaverAnchor() {
+        androidx.recyclerview.widget.RecyclerView list = screensaverList;
+        if (list == null || !list.isAttachedToWindow() || !(list.getLayoutManager() instanceof androidx.recyclerview.widget.LinearLayoutManager)) return;
+        androidx.recyclerview.widget.LinearLayoutManager rows = (androidx.recyclerview.widget.LinearLayoutManager) list.getLayoutManager();
+        int first = rows.findFirstVisibleItemPosition();
+        View view = first == androidx.recyclerview.widget.RecyclerView.NO_POSITION ? null : rows.findViewByPosition(first);
+        if (view == null || first >= screensaverEntries.size()) return;
+        screensaverPicker.anchor = screensaverEntries.get(first).id;
+        screensaverPicker.anchorOffset = rows.getDecoratedTop(view) - list.getPaddingTop()
+                - ((androidx.recyclerview.widget.RecyclerView.LayoutParams) view.getLayoutParams()).topMargin;
+    }
+    private void updateScreensaverCount() {
+        if (screensaverCount != null)
+            screensaverCount.setText(getString(R.string.hb_ss_position, screensaverPicker.browsedIndex + 1, screensaverEntries.size()));
+    }
+    private void updateScreensaverThumb(androidx.recyclerview.widget.RecyclerView list, View thumb) {
+        View track = (View) thumb.getParent();
+        int[] at = ScreensaverPicker.thumb(list.computeVerticalScrollOffset(), list.computeVerticalScrollExtent(),
+                list.computeVerticalScrollRange(), track.getHeight(), dp(24));
+        if (at == null) { thumb.setVisibility(View.INVISIBLE); return; }
+        FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) thumb.getLayoutParams();
+        if (lp.topMargin != at[0] || lp.height != at[1]) { lp.topMargin = at[0]; lp.height = at[1]; thumb.setLayoutParams(lp); }
+        thumb.setVisibility(View.VISIBLE);
+    }
+    /** The chooser is the menu showing. */
+    private boolean screensaverChooserShowing() { return activeMenu != null && activeMenu == screensaverMenu && screensaverList != null; }
+    /**
+     * Installed apps changed while the chooser is open: re-read them and redraw on the same browsed entry and scroll
+     * position. If the browsed app went away, browse the nearest remaining entry and say why.
+     */
+    private void refreshScreensaverChooser() {
+        captureScreensaverAnchor();
+        View focused = getCurrentFocus();
+        String focusTag = focused != null && screensaverPane != null && isDescendant(screensaverPane, focused) && focused.getTag() instanceof String ? (String) focused.getTag() : null;
+        int before = ScreensaverPicker.indexOf(screensaverPicker.browsed, screensaverEntries);
+        String goneName = before >= 0 ? screensaverEntries.get(before).title(this) : null;
+        refreshScreensaverEntries();
+        if (before >= 0 && ScreensaverPicker.indexOf(screensaverPicker.browsed, screensaverEntries) < 0) {
+            focusTag = null; screensaverPicker.returning = false;
+            toast(getString(R.string.hb_ss_removed, goneName));
+        }
+        redrawScreensaver(focusTag);
+    }
+    private static boolean isDescendant(View ancestor, View view) {
+        for (android.view.ViewParent p = view.getParent(); p != null; p = p.getParent()) if (p == ancestor) return true;
+        return false;
     }
 
     private void drawScreensaverPane(LinearLayout pane, ScreensaverRegistry.Entry entry) {
         pane.removeAllViews();
+        if (pane == screensaverPane) screensaverPaneEntry = entry.id;
         ScreensaverSettings settings = layout.screensaver;
         boolean clock = ScreensaverRegistry.CLOCK.equals(entry.id);
         FrameLayout sample = new FrameLayout(this);
@@ -2916,25 +3158,21 @@ public class MainActivity extends NativeDashboardActivity {
         sample.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         pane.addView(sample, new LinearLayout.LayoutParams(-1, dp(130)));
         TextView name = bold(entry.title(this), 21); name.setPadding(0, dp(8), 0, 0); pane.addView(name);
-        TextView detail = muted(getString(entry.description), 16); detail.setMaxLines(3); pane.addView(detail);
-        LinearLayout actions = new LinearLayout(this);
+        TextView detail = muted(getString(entry.description), 16); pane.addView(detail);
+        // Wraps, so large text never pushes the actions off a fixed row; the pane itself scrolls.
+        android.widget.GridLayout actions = new android.widget.GridLayout(this);
+        actions.setColumnCount(Math.max(1, (dashboardWidthPixels() < dp(900)) ? 2 : 3));
         EverywhereScreensaver.Status status = screensaverStatus;
         boolean inUse = entry.id.equals(chosenScreensaver().id);
         screensaverFirstAction = null;
-        if (!inUse) {
-            // Before the one-time question an app needs Use everywhere; once managed, Use applies in every app.
-            if (ScreensaverRules.use(status.managed, entry.id, entry.playsOnHome()) == ScreensaverRules.Use.EVERYWHERE_SCREEN)
-                addScreensaverAction(actions, getString(R.string.hb_ss_everywhere), "act:use", () -> openEverywhere(entry.id));
-            else addScreensaverAction(actions, getString(R.string.hb_ss_use), "act:use", () -> useScreensaver(entry, entry.app() ? "act:use" : "act:preview"));
-        }
-        if (entry.app()) {
-            if (entry.playsOnHome())
-                addScreensaverAction(actions, getString(R.string.hb_ss_preview), "act:preview", () -> previewScreensaver(entry, false));
-            if (entry.settings != null)
-                addScreensaverAction(actions, getString(R.string.hb_ss_open_settings, entry.name), "act:settings", () -> openScreensaverAppSettings(entry));
-        } else {
-            addScreensaverAction(actions, getString(R.string.hb_ss_preview), "act:preview", () -> previewScreensaver(entry, false));
-            addScreensaverAction(actions, getString(R.string.hb_ss_options), "act:options", () -> openScreensaverOptions(entry.id, null));
+        for (ScreensaverPicker.Action action : ScreensaverPicker.actions(entry, status.managed, inUse)) {
+            switch (action) {
+                case EVERYWHERE: addScreensaverAction(actions, getString(R.string.hb_ss_everywhere), action.tag, () -> openEverywhere(entry.id)); break;
+                case USE: addScreensaverAction(actions, getString(R.string.hb_ss_use), action.tag, () -> useScreensaver(entry, entry.app() ? "act:use" : "act:preview")); break;
+                case PREVIEW: addScreensaverAction(actions, getString(R.string.hb_ss_preview), action.tag, () -> previewScreensaver(entry, false)); break;
+                case OPTIONS: addScreensaverAction(actions, getString(R.string.hb_ss_options), action.tag, () -> openScreensaverOptions(entry.id, null)); break;
+                case SETTINGS: addScreensaverAction(actions, getString(R.string.hb_ss_open_settings, entry.name), action.tag, () -> openScreensaverAppSettings(entry)); break;
+            }
         }
         LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(-1, -2); actionsLp.topMargin = dp(8); pane.addView(actions, actionsLp);
         LinearLayout.LayoutParams lineLp = new LinearLayout.LayoutParams(-1, dp(1)); lineLp.setMargins(0, dp(12), 0, dp(8));
@@ -2945,47 +3183,84 @@ public class MainActivity extends NativeDashboardActivity {
         onHome.addView(text(screensaverStartsOnHome(status), 16), new LinearLayout.LayoutParams(0, -2, 1));
         if (!status.managed) {
             // While Android is in charge Homeboard's own Home timer is off, so there is nothing to change here.
-            String optionsFor = entry.app() ? chosenHomeboardEntry().id : entry.id;
-            TextView change = infoButton(getString(R.string.hb_ss_change), () -> openScreensaverOptions(optionsFor, "idle:" + settings.idleMinutes));
-            change.setTag("act:change"); change.setPadding(dp(18), 0, dp(18), 0);
+            // Home's choice is an app: Change opens When it starts alone, without a built-in's look options.
+            ScreensaverRegistry.Entry chosen = chosenScreensaver();
+            boolean whenOnly = ScreensaverPicker.changeOpens(chosen) == ScreensaverPicker.OptionsView.WHEN_ONLY;
+            String optionsFor = whenOnly ? chosen.id : entry.app() ? chosenHomeboardEntry().id : entry.id;
+            TextView change = infoButton(getString(R.string.hb_ss_change), chooserAction("act:change",
+                    () -> openScreensaverOptions(optionsFor, "idle:" + settings.idleMinutes, whenOnly)));
+            change.setTag("act:change"); change.setPadding(dp(18), 0, dp(18), 0); returnToRowOnLeft(change);
             onHome.addView(change, new LinearLayout.LayoutParams(-2, dp(40)));
         }
         pane.addView(onHome);
         LinearLayout other = new LinearLayout(this); other.setGravity(Gravity.CENTER_VERTICAL); other.setMinimumHeight(dp(46));
         other.addView(bold(getString(R.string.hb_ss_other_apps), 16), new LinearLayout.LayoutParams(dp(140), -2));
         other.addView(muted(screensaverOtherApps(status), 15), new LinearLayout.LayoutParams(0, -2, 1));
-        TextView manage = infoButton(getString(status.managed ? R.string.hb_ss_this_tv_open : R.string.hb_ss_everywhere), () -> openEverywhere(entry.id));
-        manage.setTag("act:everywhere"); manage.setPadding(dp(18), 0, dp(18), 0);
+        TextView manage = infoButton(getString(status.managed ? R.string.hb_ss_this_tv_open : R.string.hb_ss_everywhere),
+                chooserAction("act:everywhere", () -> openEverywhere(entry.id)));
+        manage.setTag("act:everywhere"); manage.setPadding(dp(18), 0, dp(18), 0); returnToRowOnLeft(manage);
         other.addView(manage, new LinearLayout.LayoutParams(-2, dp(40)));
         pane.addView(other);
         if (screensaverAndroidFollowsOnPane(status)) pane.addView(muted(getString(R.string.hb_ss_android_follows), 14));
     }
+    /**
+     * Opens an app's own settings screen. Home pauses, which closes its menus, so the chooser comes back on resume on
+     * the same entry, position and action (returningToScreensaver). A failed launch keeps everything for a retry.
+     */
     private void openScreensaverAppSettings(ScreensaverRegistry.Entry entry) {
         ComponentName settings = entry.settings == null ? null : ComponentName.unflattenFromString(entry.settings);
         if (settings == null) { toast(getString(R.string.hb_android_could_not_open_that_action)); return; }
-        open(new Intent().setComponent(settings));
+        boolean fromChooser = screensaverChooserShowing();
+        try {
+            startActivity(new Intent().setComponent(settings));
+            if (fromChooser) { returningToScreensaver = entry.id; screensaverOptionsOpen = false; screensaverAccepted = null; }
+        } catch (RuntimeException e) { toast(getString(R.string.hb_android_could_not_open_that_action)); }
     }
-    private void addScreensaverAction(LinearLayout actions, String label, String tag, Runnable action) {
-        TextView button = infoButton(label, action); button.setTag(tag); button.setPadding(dp(18), 0, dp(18), 0);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(42)); lp.rightMargin = dp(8);
+    /** An action that leaves or redraws the chooser: remembers the scroll and the action, so the return focuses it. */
+    private Runnable chooserAction(String tag, Runnable action) {
+        return () -> { if (screensaverChooserShowing()) { captureScreensaverAnchor(); screensaverPicker.used(tag); } action.run(); };
+    }
+    /** Left from the leftmost control of the detail pane returns to the browsed row, not to whichever row is nearest. */
+    private void returnToRowOnLeft(View control) {
+        control.setOnKeyListener((v, key, event) -> {
+            if (key != KeyEvent.KEYCODE_DPAD_LEFT || screensaverPane == null || !screensaverChooserShowing()) return false;
+            View next = v.focusSearch(View.FOCUS_LEFT);
+            if (next != null && isDescendant(screensaverPane, next)) return false;
+            if (event.getAction() == KeyEvent.ACTION_DOWN) focusScreensaverRow(screensaverPicker.browsedIndex);
+            return true;
+        });
+    }
+    private void addScreensaverAction(ViewGroup actions, String label, String tag, Runnable action) {
+        TextView button = infoButton(label, chooserAction(tag, action)); button.setTag(tag); button.setPadding(dp(18), 0, dp(18), 0);
+        ViewGroup.MarginLayoutParams lp = actions instanceof android.widget.GridLayout ? new android.widget.GridLayout.LayoutParams() : new LinearLayout.LayoutParams(-2, dp(42));
+        lp.width = -2; lp.height = dp(42); lp.rightMargin = dp(8); lp.bottomMargin = dp(8);
         actions.addView(button, lp);
+        returnToRowOnLeft(button);
         if (screensaverFirstAction == null) screensaverFirstAction = button;
     }
 
-    private void openScreensaverOptions(String entryId, String focusTag) {
+    private void openScreensaverOptions(String entryId, String focusTag) { openScreensaverOptions(entryId, focusTag, false); }
+    /** whenOnly: When it starts alone, for Home's app choice (ScreensaverPicker.changeOpens). */
+    private void openScreensaverOptions(String entryId, String focusTag, boolean whenOnly) {
         screensaverFocusTag = focusTag;
-        openMenu(new MenuSpec(getString(R.string.hb_ss_options_title), () -> drawScreensaverOptions(entryId)));
+        openMenu(new MenuSpec(getString(whenOnly ? R.string.hb_ss_when : R.string.hb_ss_options_title), () -> drawScreensaverOptions(entryId, whenOnly)));
     }
-    /** An entry's Options and When it starts. Each choice saves at once with Undo; sound and screen care are statements. */
-    private void drawScreensaverOptions(String entryId) {
+    /**
+     * An entry's Options and When it starts. Each choice saves at once with Undo; sound and screen care are
+     * statements. whenOnly shows When it starts alone, titled for Home's app choice, with no built-in look rows.
+     */
+    private void drawScreensaverOptions(String entryId, boolean whenOnly) {
+        java.util.Set<ScreensaverPicker.Group> groups = ScreensaverPicker.groups(whenOnly
+                ? ScreensaverPicker.OptionsView.WHEN_ONLY : ScreensaverPicker.OptionsView.ENTRY_OPTIONS);
         ScreensaverRegistry.Entry entry = ScreensaverRegistry.entry(entryId);
         ScreensaverSettings settings = layout.screensaver;
         LinearLayout body = new LinearLayout(this); body.setOrientation(LinearLayout.VERTICAL);
         LinearLayout box = new LinearLayout(this); box.setOrientation(LinearLayout.VERTICAL);
         box.setPadding(dp(18), dp(10), dp(18), dp(10)); box.setBackground(shape(paletteColors.surface, paletteColors.edge, 1));
-        body.addView(box, new LinearLayout.LayoutParams(-1, -2));
+        if (groups.contains(ScreensaverPicker.Group.LOOK)) body.addView(box, new LinearLayout.LayoutParams(-1, -2));
         screensaverStatus = everywhere().status();
-        LinearLayout panel = screensaverPanel(getString(R.string.hb_ss_options_title), body);
+        String appName = whenOnly ? ScreensaverRegistry.resolve(entryId, screensaverEntries).title(this) : null;
+        LinearLayout panel = screensaverPanel(whenOnly ? getString(R.string.hb_ss_when) + " · " + appName : getString(R.string.hb_ss_options_title), body);
         LinearLayout title = new LinearLayout(this); title.setGravity(Gravity.CENTER_VERTICAL);
         title.addView(bold(getString(entry.label), 21));
         TextView builtIn = badge(getString(R.string.hb_ss_built_in), paletteColors.raised, paletteColors.text);
@@ -3048,6 +3323,7 @@ public class MainActivity extends NativeDashboardActivity {
         tail.addView(separate, new LinearLayout.LayoutParams(0, -2, 1));
         LinearLayout.LayoutParams tailLp = new LinearLayout.LayoutParams(-1, -2); tailLp.topMargin = dp(4); box.addView(tail, tailLp);
         if (first == null) first = preview;
+        if (!groups.contains(ScreensaverPicker.Group.LOOK)) first = null;   // the look box is not shown
 
         LinearLayout when = new LinearLayout(this); when.setOrientation(LinearLayout.VERTICAL);
         when.setPadding(dp(18), dp(8), dp(18), dp(8)); when.setBackground(shape(paletteColors.surface, paletteColors.edge, 1));
@@ -3063,6 +3339,7 @@ public class MainActivity extends NativeDashboardActivity {
                 settings.idleMinutes = minutes; save(getString(R.string.hb_ss_undo_idle, undo)); redrawScreensaver("idle:" + minutes);
             });
             addSegment(idle, segment);
+            if (first == null) first = segment;
         }
         if (homeTimer) { TextView unit = text(getString(R.string.hb_ss_min_without_input), 16); unit.setPadding(dp(6), 0, 0, 0); idle.addView(unit); }
         LinearLayout other = optionRow(when, getString(R.string.hb_ss_other_apps), true);
