@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/ef2fb21) | docs: WorldFoundry declares the preview metadata; Stage 5 unblocked |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/38d5be9) | docs: record Will's four screensaver integration decisions |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/011c5f1) | docs: map screensaver ownership across Homeboard, apps and Android |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/569a077) | docs: put the companion contract on hold for re-evaluation |
@@ -7,6 +8,11 @@
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/12e5c64) | docs: define the screensaver companion app contract; Stage 5 is blocked |
 
 <!--history-meta v1
+ef2fb21	author	Will Norris
+ef2fb21	added	25
+ef2fb21	deleted	6
+ef2fb21	files	1
+ef2fb21	body	WorldFoundry 5a117e85d puts PREVIEW_ACTIVITY (and PREVIEW_EXTRA/VALUE where\nthe registry has them) on Aquarium, Clocks and Seahorse Grid. The contract\ngains the Seahorse Grid column and Verification 1's evidence (partial:\nsettingsActivity comes with the chooser).\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 38d5be9	author	Will Norris
 38d5be9	added	40
 38d5be9	deleted	67

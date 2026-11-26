@@ -56,16 +56,40 @@ when its time comes. Cast1 showed this hand-over on 2026‑11‑26; see
 Any remote key ends the screensaver and returns to Home where you left it; that key does
 not also act on Home. A ringing timer or alarm from
 [Timers & alarms](timers-and-alarms.md) always ends it and opens the timer screen, so you
-see it and can stop it.
+see it and can stop it. That includes an app's own preview screen that Homeboard started
+(below): Homeboard closes it and opens the timer screen.
 
 ## Android screensaver apps
 
 Screensaver apps installed on the TV (for example Aerial Views, or an Ambient mode that
 came with the TV) appear in the list after the built-in entries, under their own names,
-marked **☾ Android screensaver app**. Android runs them, not Homeboard, so they have no
+marked **☾ Android screensaver app**. Android runs them, not Homeboard, so most have no
 Preview: Android gives apps no way to start another app's screensaver, and the right side
 says so. When the app has its own settings screen, **Open ‹app› settings** opens it. To
 use one, choose **Use everywhere…**.
+
+### Apps with their own preview screen
+
+Some screensaver apps, such as the World Foundry apps Aquarium, Clocks and Seahorse Grid,
+name their own preview screen to Homeboard (the
+[companion contract](../plans/2026-11-26-screensaver-companion-contract.md)). Any installed
+screensaver app that does so is treated the same way. Their list entry says "Plays on Home,
+or in every app", and Homeboard plays them through that screen, which shows the tank or
+clock chosen in the app's own settings and saves nothing:
+
+- **Preview** opens the app's screen. Back ends it and the Screensaver screen comes back;
+  nothing is chosen.
+- **Use this screensaver** saves it for Home, like a built-in entry, without
+  **Use everywhere…**. With a time under **Start on Home after**, Home idle opens the
+  app's screen instead of Homeboard's.
+- **Open ‹app› settings** opens the app's own chooser, where you pick the tank or clock.
+  Homeboard never picks it.
+- **Use everywhere…** still makes it Android's screensaver in every app, as for any app.
+  Android then runs the app's real screensaver and Homeboard's Home timer is off.
+
+If the app is uninstalled, Homeboard plays Clock on Home and says so once. If its preview
+screen is missing, not exported, or will not start, the app is listed as one without a
+preview screen and Home plays Homeboard's default screensaver (Clock) instead.
 
 ## Use everywhere
 
@@ -130,8 +154,9 @@ what Android starts, after how long, and the kept original. It offers:
   because the app is gone.
 
 A remote button mapped to the **screensaver** action (`RemoteKeys`) plays your Homeboard
-choice at once, or, when an Android screensaver app is chosen, asks
-Android to start it.
+choice at once. When the chosen app has its own preview screen, Home opens that screen at
+once, as Home idle does, and you return to Home when it ends. For any other Android
+screensaver app, it asks Android to start it.
 
 Playing wallpaper providers as screensavers and the phone panel are later stages of the
 [screensaver plan](../plans/2026-11-20-screensavers.md).

@@ -3,7 +3,13 @@
 **Status (2026‑11‑26): accepted in a reduced form. The apps' half is built:** WorldFoundry
 `5a117e85d` declares the keys below on Aquarium, Clocks and Seahorse Grid (Verification 1). The
 APKs installed on Cast1 carry them only after a WorldFoundry rebuild and install. The chooser
-(Verification 2) and Homeboard's half (Verification 3) are not built. Will's decisions in the
+(Verification 2) is not built. **Homeboard's half is built (Stage 5, branch `screensaver-stage5`) and awaits
+Verification 3 on Cast1:** it reads the keys from each Dream service, places the preview activity in the Dream's
+own package (refusing a value with a leading `.` or a `/`), and keeps it only when that activity is exported.
+Preview, Home idle and the remote's screensaver action start it, with the extra when both are declared; such an
+entry can be chosen for Home without Use everywhere, which works as before. Home starts the screen in its own task,
+so a ringing timer closes it with `finishActivity` and opens the timer screen, with no new permission. An app
+without the keys, or whose screen is missing or will not start, gets Homeboard's default screensaver. Will's decisions in the
 [screensaver integration investigation](../investigations/2026-11-26-screensaver-integration.md)
 (decision 1: the app chooses its own tank or clock; decision 2: Homeboard plays installed World
 Foundry screensavers on Home and in Preview) remove the earlier provider‑admission section and
