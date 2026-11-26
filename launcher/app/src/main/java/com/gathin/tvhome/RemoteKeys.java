@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
@@ -383,27 +384,12 @@ final class RemoteKeys {
                 if (audio != null) audio.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                         AudioManager.ADJUST_TOGGLE_MUTE, AudioManager.FLAG_SHOW_UI);
                 break;
-            case "screensaver": {
-                // The screensaver chosen in Home settings (ScreensaverRules.remotePlayer): a Homeboard entry plays at
-                // once through Show now. An app with its own preview screen plays through it, started by Home
-                // (MainActivity.ACTION_PLAY_SCREENSAVER) as Home idle starts it, so a ringing timer can close it again.
-                // Any other app, which Homeboard cannot run, starts through Android's "start now" shortcut, since Use
-                // everywhere set Android to it; Show now again where the firmware has no such shortcut.
-                String choice = ScreensaverActivity.savedLayout(ctx).screensaver.choice;
-                Intent dream = SystemScreensaver.startNowIntent();
-                switch (ScreensaverRules.remotePlayer(choice, SystemScreensaver.hasAppScreen(ctx, choice))) {
-                    case APP_SCREEN:
-                        dream = new Intent(ctx, MainActivity.class).setAction(MainActivity.ACTION_PLAY_SCREENSAVER);
-                        break;
-                    case ANDROID:
-                        if (ctx.getPackageManager().resolveActivity(dream, 0) != null) break;
-                        // falls through: this firmware has no "start now" shortcut
-                    default:
-                        dream = ScreensaverActivity.intent(ctx, ScreensaverActivity.MODE_NOW, null);
-                }
-                start(ctx, dream);
+            case "screensaver":
+                // An app's preview screen is started by Home (MainActivity.ACTION_PLAY_SCREENSAVER) as Home idle
+                // starts it, so a ringing timer can close it again.
+                startScreensaver(ctx, ScreensaverActivity.savedLayout(ctx).screensaver.choice, () -> start(ctx,
+                        new Intent(ctx, MainActivity.class).setAction(MainActivity.ACTION_PLAY_SCREENSAVER)));
                 break;
-            }
             case "settings":
                 start(ctx, SystemSettings.intent(ctx, Settings.ACTION_SETTINGS));
                 break;
@@ -418,6 +404,47 @@ final class RemoteKeys {
                 break;   // "ignore", or "sleep" below Android 9: consumed, nothing to do
         }
         return true;
+    }
+
+    /** The three ways the screensaver starts at once. Only appScreen differs between its two callers. */
+    interface ScreensaverStart {
+        /** Homeboard's own Show now (ScreensaverActivity, MODE_NOW). */
+        void showNow();
+        /** The chosen app's preview screen, in Homeboard's task (Stage 5). */
+        void appScreen();
+        /** Android's "start now" shortcut. */
+        void androidStartNow();
+    }
+
+    /**
+     * The one rule for starting the chosen screensaver now, shared by the "screensaver" action word and Home's
+     * Start screensaver button (docs/plans/2026-11-26-top-row-start-screensaver.md). A Homeboard entry plays at once
+     * through Show now. An app with its own preview screen plays through it (ScreensaverRules.remotePlayer). Any other
+     * app, which Homeboard cannot run, starts through Android's "start now" shortcut, since Use everywhere set Android
+     * to it; Show now again where the firmware has no such shortcut (startNowShortcut, asked only then). Returns the
+     * player it started.
+     */
+    static ScreensaverRules.Player startScreensaver(String choice, boolean appScreen, BooleanSupplier startNowShortcut,
+                                                   ScreensaverStart start) {
+        ScreensaverRules.Player player = ScreensaverRules.remotePlayer(choice, appScreen);
+        if (player == ScreensaverRules.Player.ANDROID && !startNowShortcut.getAsBoolean()) player = ScreensaverRules.Player.HOMEBOARD;
+        switch (player) {
+            case APP_SCREEN: start.appScreen(); break;
+            case ANDROID: start.androidStartNow(); break;
+            default: start.showNow(); break;
+        }
+        return player;
+    }
+
+    /** startScreensaver on a device; appScreen starts the app's preview screen the caller's way. */
+    static void startScreensaver(Context ctx, String choice, Runnable appScreen) {
+        Intent startNow = SystemScreensaver.startNowIntent();
+        startScreensaver(choice, SystemScreensaver.hasAppScreen(ctx, choice),
+                () -> ctx.getPackageManager().resolveActivity(startNow, 0) != null, new ScreensaverStart() {
+                    @Override public void showNow() { start(ctx, ScreensaverActivity.intent(ctx, ScreensaverActivity.MODE_NOW, null)); }
+                    @Override public void appScreen() { appScreen.run(); }
+                    @Override public void androidStartNow() { start(ctx, startNow); }
+                });
     }
 
     private static void start(Context ctx, Intent intent) {
