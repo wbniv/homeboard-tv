@@ -11,6 +11,7 @@ import android.content.pm.ServiceInfo;
 import android.content.res.XmlResourceParser;
 import android.provider.Settings;
 import android.service.dreams.DreamService;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -105,25 +106,37 @@ final class SystemScreensaver implements ScreensaverGateway {
     /**
      * The preview screen the service declares in its meta-data (ScreensaverRegistry.appScreen), kept only when that
      * activity is installed, enabled, exported and needs no permission Homeboard lacks; otherwise null, and the app
-     * is listed as one without a preview screen.
+     * is listed as one without a preview screen. A service with no PREVIEW_ACTIVITY key is skipped quietly; every
+     * other outcome logs one line under ScreensaverActivity.TAG ("preview screen kept" or "preview screen dropped"
+     * with the reason), so a device check can tell which app was accepted and why one was not.
      */
     private ScreensaverGateway.AppScreen appScreen(PackageManager pm, ServiceInfo si) {
         android.os.Bundle meta = si.metaData;
-        if (meta == null) return null;
+        if (meta == null || !meta.containsKey(ScreensaverRegistry.PREVIEW_ACTIVITY)) return null;   // declares none: quiet
         ScreensaverGateway.AppScreen screen;
         try {
             screen = ScreensaverRegistry.appScreen(si.packageName, meta.getString(ScreensaverRegistry.PREVIEW_ACTIVITY),
                     meta.getString(ScreensaverRegistry.PREVIEW_EXTRA), meta.getString(ScreensaverRegistry.PREVIEW_VALUE));
-        } catch (RuntimeException unreadable) { return null; }
-        if (screen == null) return null;
-        try {
-            ComponentName component = ComponentName.unflattenFromString(screen.component);
-            if (component == null) return null;
-            android.content.pm.ActivityInfo activity = pm.getActivityInfo(component, 0);
-            if (!activity.exported || !activity.isEnabled()) return null;
-            if (activity.permission != null && context.checkSelfPermission(activity.permission) != PackageManager.PERMISSION_GRANTED) return null;
-            return screen;
-        } catch (PackageManager.NameNotFoundException | RuntimeException missing) { return null; }
+        } catch (RuntimeException unreadable) { return dropped(si, "metadata unreadable", unreadable); }
+        if (screen == null) return dropped(si, "metadata refused value=" + meta.get(ScreensaverRegistry.PREVIEW_ACTIVITY), null);
+        ComponentName component = ComponentName.unflattenFromString(screen.component);
+        if (component == null) return dropped(si, "component unparsable " + screen.component, null);
+        android.content.pm.ActivityInfo activity;
+        try { activity = pm.getActivityInfo(component, 0); }
+        catch (PackageManager.NameNotFoundException | RuntimeException missing) { return dropped(si, "activity lookup failed " + screen.component, missing); }
+        if (!activity.exported) return dropped(si, "activity not exported " + screen.component, null);
+        if (!activity.isEnabled()) return dropped(si, "activity not enabled " + screen.component, null);
+        if (activity.permission != null && context.checkSelfPermission(activity.permission) != PackageManager.PERMISSION_GRANTED)
+            return dropped(si, "activity needs permission " + activity.permission, null);
+        Log.i(ScreensaverActivity.TAG, "preview screen kept package=" + si.packageName + " service=" + si.name + " screen=" + screen.component);
+        return screen;
+    }
+
+    /** Logs why a declared preview screen was dropped (one line, under ScreensaverActivity.TAG) and returns null. */
+    private static ScreensaverGateway.AppScreen dropped(ServiceInfo si, String reason, Throwable cause) {
+        Log.w(ScreensaverActivity.TAG, "preview screen dropped package=" + si.packageName + " service=" + si.name
+                + " reason=" + reason + (cause == null ? "" : " error=" + cause.getClass().getName() + ": " + cause.getMessage()));
+        return null;
     }
 
     /** Whether choice is an installed screensaver app with a usable preview screen; false for a built-in id. */
