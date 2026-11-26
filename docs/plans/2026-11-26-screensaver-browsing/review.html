@@ -1,0 +1,215 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><base href="../"><title>Screensaver browsing — design review</title><style>
+:root{color-scheme:dark;--bg:#101722;--panel:#202a37;--edge:#425063;--text:#f0f3f7;--muted:#afbbc9;--green:#8fe0c6}*{box-sizing:border-box}body{margin:0;background:#0b1018;color:var(--text);font:17px/1.55 system-ui,sans-serif}main{max-width:1260px;margin:auto;padding:30px 32px 90px}h1{font-size:38px;line-height:1.15;letter-spacing:-.7px}h2{margin-top:2em;font-size:28px}h3{font-size:23px}a{color:var(--green)}.intro{max-width:880px;color:var(--muted);font-size:20px}.kicker{color:var(--green);font-size:14px;letter-spacing:2px;text-transform:uppercase}.top{padding:18px 0 22px;border-bottom:1px solid var(--edge)}button{font:inherit;color:inherit;background:var(--panel);border:1px solid var(--edge);border-radius:10px;padding:9px 15px;cursor:pointer}button:hover{background:#304353}button:focus-visible{outline:3px solid #f0f3f7;outline-offset:2px}.scenario{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:18px 0}.scenario span{font-size:14px;color:var(--muted);flex:1;padding-left:10px}.tv{position:relative;aspect-ratio:16/9;background:var(--bg);border:1px solid var(--edge);border-radius:18px;padding:23px;overflow:hidden}.tv header{display:flex;align-items:center;justify-content:space-between;height:13%;gap:12px}.tv header h3{margin:0;font-size:clamp(19px,2.4vw,34px)}.tv header span{font-size:clamp(11px,1.2vw,17px);color:var(--muted)}.tv-body{height:84%;display:grid;grid-template-columns:32% 1fr;gap:27px;margin-top:10px;min-height:0}.rail-side{height:100%;display:flex;flex-direction:column;min-height:0}.eyebrow{font-size:12px;color:var(--muted);letter-spacing:1.4px;margin-bottom:9px}#rail{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--green) #273342;flex:1;min-height:0;padding:3px 7px 3px 3px}#rail button{display:flex;align-items:center;gap:13px;text-align:left;width:100%;min-height:80px;margin-bottom:8px;padding:12px;border-radius:11px;background:#17202b}#rail button.browsed{background:#293b47;border-color:var(--green)}#rail button:focus{outline:3px solid var(--text);outline-offset:-2px}#rail .glyph{display:grid;place-items:center;flex:none;width:42px;height:42px;background:#344456;border-radius:10px;font-size:24px}#rail strong{display:block;font-weight:600;font-size:clamp(13px,1.5vw,21px);line-height:1.2}#rail small{display:block;color:var(--muted);font-size:clamp(10px,1vw,14px);margin-top:7px}#rail .used{color:var(--green)}#position{padding:6px 0 0;color:var(--muted);font-size:14px}#detail{height:100%;overflow-y:auto;overscroll-behavior:contain;padding:3px 6px 6px 0;scrollbar-width:thin}#detail h3{font-size:clamp(19px,2.3vw,32px);margin:12px 0 5px;line-height:1.2}#detail p{font-size:clamp(12px,1.3vw,18px);color:var(--muted);margin:6px 0 13px}.art{height:40%;min-height:100px;border:1px solid var(--edge);border-radius:12px;background:linear-gradient(135deg,#5b3b90,#252044);display:grid;place-items:center;font-size:clamp(28px,5vw,72px);line-height:1.1}.art.tank{background:linear-gradient(135deg,#12495d,#102b39);color:#8fe0c6}.art.unavailable{background:#273441;font-size:clamp(16px,1.6vw,23px);padding:20px}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.actions button{font-size:clamp(12px,1.2vw,17px);padding:9px 12px;min-height:43px}.actions button:focus{outline:3px solid var(--text);outline-offset:1px;background:#334a54}.timing{margin-top:17px;border-top:1px solid var(--edge);padding-top:10px}.timing b{font-size:clamp(14px,1.4vw,20px)}.timing p{margin-bottom:5px!important}.large #rail button{min-height:110px}.large #rail strong{font-size:clamp(17px,2vw,29px)}.large #rail small{font-size:clamp(13px,1.3vw,18px)}.large #detail{font-size:1.3em}.large #detail .art{display:none}.large #detail p{font-size:clamp(17px,1.7vw,24px)}.large .actions button{font-size:clamp(16px,1.6vw,22px)}.large #detail h3{font-size:clamp(24px,3vw,42px)}.demo-overlay{position:absolute;inset:0;background:#121a27f8;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center}.demo-overlay[hidden]{display:none}.overlay-art{width:70%;height:35%;border-radius:18px;background:linear-gradient(135deg,#12495d,#252044);display:grid;place-items:center;color:var(--green);font-size:64px}.demo-overlay h3{font-size:32px}.demo-overlay p{max-width:600px;color:var(--muted)}article{margin-top:45px;border-top:1px solid var(--edge);padding-top:10px}article>p,article>ul,article>ol{max-width:1000px}article h1{display:none}article img{display:block;width:100%;height:auto;border:1px solid var(--edge);border-radius:12px;margin:24px 0}article code{background:#202a37;border-radius:4px;padding:1px 4px;font-size:.9em}table{border-collapse:collapse;width:100%;margin:24px 0;font-size:15px}th,td{text-align:left;padding:13px 16px;border:1px solid var(--edge);vertical-align:top}th{background:var(--panel)}td:first-child{width:29%;font-weight:600}li{margin:10px 0}blockquote{border-left:3px solid var(--green);padding-left:20px}footer{margin-top:50px;color:var(--muted)}@media(max-width:700px){main{padding:20px 12px 50px}h1{font-size:30px}.tv{aspect-ratio:auto;height:640px;padding:15px}.tv-body{grid-template-columns:40% 1fr;gap:12px}.tv header{height:12%}#rail .glyph{display:none}#rail button{padding:10px}#rail strong{font-size:16px}#rail small{font-size:12px}#detail h3{font-size:22px}#detail p{font-size:15px}.art{height:22%;font-size:38px}.actions{flex-direction:column}.actions button{font-size:14px}.timing b{font-size:16px}.tv header span{font-size:11px}.scenario{font-size:14px}table{font-size:13px}th,td{padding:8px}}
+</style></head><body><main><div class="top"><div class="kicker">Homeboard TV · proposal · 26 November 2026</div><h1>Browse the screensavers, without page buttons</h1><p class="intro">One continuous list. Up and Down move through entries; Right or OK reaches their actions. Keep your place after Preview and Options. Browsing does not save a choice.</p></div>
+<section class="prototype-section"><h2>Try the proposed navigation</h2><p>Click a row, then use ↑ ↓ → ←, Enter and Escape. Use the buttons with a mouse too. This prototype never controls the TV.</p>
+<div class="scenario"><button id="large">Larger text</button><button id="android-only">Jump to app without preview</button><button id="reset">Reset prototype</button><span id="demo-toast" role="status">Illustrative catalogue · 12 entries</span></div>
+<div class="tv" id="demo" aria-label="Screensaver navigation prototype"><header><div><h3>Screensaver</h3><span>↑ ↓ Browse · Right or OK opens actions</span></div><button id="demo-back">← Back</button></header><div class="tv-body"><section class="rail-side"><div class="eyebrow">ON THIS TV</div><div id="rail" role="list" aria-label="Available screensavers"></div><div id="position"></div></section><section id="detail" aria-label="Screensaver details"></section></div><div class="demo-overlay" id="demo-overlay" hidden><div class="overlay-art"></div><h3 id="overlay-title"></h3><p id="overlay-copy"></p><button id="close-overlay">← Return to screensaver</button></div></div></section>
+<article><h1>Browse screensavers without page buttons</h1>
+<p><strong>Status: design proposal; not implemented.</strong> Will, 26 November: “I hate the
+'previous' and 'next' buttons on the screensaver page … there must be a better way.”</p>
+<p><strong>Recommendation:</strong> replace the four-item pages with one continuously scrolling
+list. Up and Down move through screensavers themselves. The focused row stays
+visible and updates the adjacent detail pane. Right or OK enters that entry's
+actions. Browsing never changes the saved screensaver.</p>
+<p><strong><a href="2026-11-26-screensaver-browsing/review.html">Open the visual review and keyboard prototype</a></strong>
+— includes four screen mockups, the navigation diagram and the implementation plan.</p>
+<h2>Current problem</h2>
+<p><code>MainActivity.drawScreensaver()</code> uses <code>SCREENSAVER_PAGE_SIZE = 4</code>, then adds
+Previous and Next buttons. Reaching another screensaver requires leaving the
+list to operate its paging controls. Descriptions appear in both the cards and
+detail pane, making rows tall and limiting the working set.</p>
+<p>The <a href="2026-11-26-screensaver-browsing/current-native-picker.png">current Cast2 capture</a>
+also exposes a separate native-rendering sizing defect: resource/window bounds
+can be smaller than the actual embedded dashboard, squeezing the panel and
+clipping its controls. That width correction was deployed separately in 0.1.168;
+the proposed navigation is still a design only. Removing paging alone would not
+fix geometry. The proposed layout fits measured dashboard bounds.</p>
+<h2>Proposed screens</h2>
+<p><img alt="Continuous list with visible focus and a separate saved-choice badge" src="2026-11-26-screensaver-browsing/list.svg" /></p>
+<p><img alt="Action focus while preserving the browsed entry and list position" src="2026-11-26-screensaver-browsing/actions.svg" /></p>
+<p><img alt="Large text uses fewer visible rows and scrolling details" src="2026-11-26-screensaver-browsing/large-text.svg" /></p>
+<p><img alt="An Android app without preview exposes only its supported actions" src="2026-11-26-screensaver-browsing/no-preview.svg" /></p>
+<p>The images are proposed UI illustrations, not device acceptance captures. Preview
+artwork is illustrative. Do not promise a live embedded preview from another app:
+the current companion contract supplies a separate full-screen activity.</p>
+<h2>Navigation and state</h2>
+<p><img alt="Focus and return-state diagram" src="2026-11-26-screensaver-browsing/workflow.svg" /></p>
+<p><img alt="Directional focus map with first and last row boundaries" src="2026-11-26-screensaver-browsing/focus-map.svg" /></p>
+<table>
+<thead>
+<tr>
+<th>Input or event</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Open Screensaver</td>
+<td>Focus the saved entry; scroll it into view. Preserve the actual Home and Android choices.</td>
+</tr>
+<tr>
+<td>Up / Down in list</td>
+<td>Move one entry; scroll only enough to reveal it. Update details, without playing, launching or saving.</td>
+</tr>
+<tr>
+<td>Hold Up / Down</td>
+<td>Ordinary key-repeat browsing; bounded at the ends; no wrap to the other end.</td>
+</tr>
+<tr>
+<td>Up on the first entry</td>
+<td>Move to the header Back button. Down from Back returns to that entry.</td>
+</tr>
+<tr>
+<td>Down on the last entry</td>
+<td>Stay on the last entry. The count and scroll indicator show the end.</td>
+</tr>
+<tr>
+<td>Right or short OK on a row</td>
+<td>Focus that entry's first available action. No implicit selection or app launch.</td>
+</tr>
+<tr>
+<td>Left from actions</td>
+<td>Return to the same row and scroll position.</td>
+</tr>
+<tr>
+<td>Back from action area</td>
+<td>Return to the same list row. Back from the list closes the picker to its originating settings entry.</td>
+</tr>
+<tr>
+<td>Header Back</td>
+<td>Close the whole picker to its origin.</td>
+</tr>
+<tr>
+<td>Preview, then Back</td>
+<td>Restore the same entry, scroll position and Preview action; save nothing. Preserve the existing explicit acceptance behavior of each preview.</td>
+</tr>
+<tr>
+<td>Use this screensaver</td>
+<td>Use the existing save/Undo transaction; update its badge in place. Keep focus on the action.</td>
+</tr>
+<tr>
+<td>Options / app settings, then Back</td>
+<td>Restore the same entry, scroll position and initiating action.</td>
+</tr>
+<tr>
+<td>Touch / pointer</td>
+<td>Scroll naturally; tap a row to inspect it, tap an action to act. No page controls.</td>
+</tr>
+</tbody>
+</table>
+<p>The focus ring means “you are browsing this”; the saved-choice badge means “this
+is used.” If Home and Android use different entries, label the badges <strong>On Home</strong>
+and <strong>In other apps</strong> with the actual scopes, rather than displaying two ambiguous
+“In use” badges. The details retain the existing <strong>When it starts</strong> and Android
+handover explanation. Changing scope still uses the existing permission and
+confirmation flow.</p>
+<h2>Layout</h2>
+<ul>
+<li>Use the available dashboard area, with a header and a stable left list/right
+  detail arrangement. Calculate bounds from the measured root, not Android's
+  lower-resolution window metrics. Keep this UI independent of widget scale.</li>
+<li>List rows show an icon, app/name and at most a short capability/status line.
+  Long explanations belong on the right. At normal TV text size, show roughly
+  six rows and a partial next row where space permits; the count is not a fixed
+  page size or an acceptance requirement.</li>
+<li>A subtle, non-focusable scrollbar plus “3 of 12” communicate position. A partly
+  visible next row indicates more content. Neither is an extra navigation stop.</li>
+<li>Keep built-in entries first, then installed apps in stable localized name order.
+  Use the existing stable entry/component ID for focus and saved identity. Do not
+  expand each app's internal scenes into fake separate screensavers: its own
+  settings still choose the tank, clock or scene.</li>
+<li>Right pane: a bounded static illustration/icon, title, short description,
+  available actions, and timing/scope. Its content can scroll independently; keep
+  actions reachable and do not let long help displace them below the screen.</li>
+<li>Large text shows fewer rows; allow longer names to wrap to two lines and let
+  details scroll. Do not shrink the type to retain six rows. On narrow touch
+  displays, stack list and detail with the same saved identity and explicit Back
+  to list; preserve position. This is a layout adaptation, not a second settings
+  model.</li>
+</ul>
+<h2>Supported actions and edge states</h2>
+<p>Built-ins retain Preview, Use this screensaver and Options. Apps declaring a
+preview screen retain that app's real Preview, Home selection and app settings.
+Android-only apps show “Preview is not available from this app”, their settings
+action if provided, and the existing Use everywhere flow. Hide unsupported
+actions rather than add a dead-end Preview button.</p>
+<p>Two built-ins alone need no scrollbar. A long catalogue uses the same list with
+recycled rows. Re-querying installed apps must preserve the browsed ID and first
+visible ID/offset; do not snap to item zero. If the focused app disappears, focus
+the nearest remaining entry and explain its removal. If it was the saved choice,
+show its unavailable state and the existing runtime fallback; do not silently
+save a replacement. Permission denial and a failed external launch keep the
+entry and initiating action available for retry, using the existing failure UI.</p>
+<h2>Cooper design review</h2>
+<p>Apply the <a href="/home/will/docs/howtos/alan-cooper-design-filter.md">shared filter</a>.
+The primary person is Will browsing from the sofa with a D-pad. His stated
+objection is the navigation work imposed by page buttons. His goal is to find,
+preview and choose a screensaver; page boundaries are an implementation detail.</p>
+<p>The design removes those artificial stops, keeps the objects themselves navigable,
+distinguishes browsing from a saved choice, and remembers position through Preview,
+Options and interruptions. It reuses existing save, scope, permission and Undo
+semantics. Descriptions move out of the navigation rail to reduce visual and
+remote-control effort. Visible overflow/count, larger-text layouts and explicit
+returns make the same interaction discoverable without adding onboarding.</p>
+<p>A thumbnail grid was considered: it favors visual comparison, but most installed
+Android apps expose neither a thumbnail nor a preview, and it weakens the stable
+Right-to-actions relationship. A horizontal carousel keeps much of the same
+serial browsing problem. A continuous vertical list best fits the current mixed
+catalogue and remote controls. Search and filters are deferred until a real
+catalogue demonstrates a need.</p>
+<h2>Implementation sequence</h2>
+<ol>
+<li>Verify the separately deployed measured-bounds correction (0.1.168) at 1080p
+   and 4K. Keep it separate from this proposed navigation change.</li>
+<li>Replace <code>screensaverPage</code>/<code>SCREENSAVER_PAGE_SIZE</code> and the Previous/Next builder
+   with a vertical RecyclerView using stable IDs. Bind a row once; focusing it
+   updates only the detail pane and positional hint. Do not rebuild the list on
+   every focus move.</li>
+<li>Add explicit cross-pane focus handling and a small picker state containing
+   browsed ID, list anchor/offset and last action ID. Restore it after subviews,
+   external activities and Activity recreation. Fresh openings start at the
+   active choice. Remove the old pagination state; no compatibility layer.</li>
+<li>Preserve existing ScreensaverRegistry capability checks, Stage 5 companion
+   preview contract, timing/scope management, error handling and Undo. Add English
+   and Thai strings for new labels and counts.</li>
+<li>Check in containers, deploy one numbered frozen APK through the coordinator,
+   then run the acceptance walkthrough below. Update the user guide and workflow
+   diagram to the implemented behavior.</li>
+</ol>
+<h2>Acceptance</h2>
+<ul>
+<li>Cast1 at 1080p and Cast2 at native 4K: reach every entry using Up/Down alone;
+  no Previous/Next buttons and no page reset. Hold a direction across former
+  boundaries and verify release stops movement.</li>
+<li>Compare zero external apps, the actual installed set and a controlled 40-entry
+  fixture; first/last boundaries and scrollbar/count are correct.</li>
+<li>Right/OK, Left, Back and header Back follow the table. Return from both types
+  of Preview, built-in Options and an external settings activity to the exact
+  entry, action and list position.</li>
+<li>Merely browsing changes no saved choice or Android setting. Use/Undo restores
+  the previous choice and scope. Permission refusal changes neither.</li>
+<li>Test preview-capable, Android-only, settings-less, removed and failed-to-launch
+  apps. Unsupported actions are absent and explanations remain readable.</li>
+<li>Larger device text (1.3× and 2×), long Thai names, narrow touch layouts and
+  accessibility traversal: rows and actions remain reachable, focus never leaks
+  to Home, no clipped action labels, no forced text shrink.</li>
+<li>Pause/recreate and package refresh retain picker state. Scroll does not start
+  app activities, decode large artwork or create per-row live players.</li>
+</ul>
+<p>This plan changes the chooser only. It does not change the separately proposed
+<a href="2026-11-26-top-row-start-screensaver.md">top-row Start screensaver button</a>, the
+<a href="2026-11-26-screensaver-companion-contract.md">companion contract</a>, or who owns
+Android's idle behavior.</p></article><footer>Design proposal only. Mockups and prototype are illustrations; they do not change the TV or the app.</footer></main><script>
+const names=['Clock','Home background','Aquarium','WF Clocks','Seahorse Grid','Android Ambient','Sample saver 7','Sample saver 8','Sample saver 9','Sample saver 10','Sample saver 11','Sample saver 12'];
+const demo=document.querySelector('#demo'),rail=document.querySelector('#rail'),detail=document.querySelector('#detail'),overlay=document.querySelector('#demo-overlay');let browsed=2,used=0,lastAction='preview';
+const glyph=i=>['◷','▦','≈','◷','∿','☾'][i%6];
+function list(){let offset=rail.scrollTop;rail.innerHTML=names.map((n,i)=>`<button role="listitem" data-index="${i}" class="${i===browsed?'browsed':''}" aria-label="${n}${i===used?', in use on Home':''}"><span class="glyph">${glyph(i)}</span><span><strong>${n}</strong><small class="${i===used?'used':''}">${i===used?'In use on Home':i<2?'Built in':'Installed app'}</small></span></button>`).join('');rail.scrollTop=offset;rail.querySelectorAll('button').forEach(b=>{b.onfocus=()=>browse(+b.dataset.index,false);b.onclick=()=>browse(+b.dataset.index,true)});}
+function pane(){const unavailable=browsed===5;detail.innerHTML=`<div class="art ${unavailable?'unavailable':browsed===2?'tank':''}">${unavailable?'Preview is not available from this app':browsed===2?'◁  ≈  ◁':'21:30'}</div><h3>${names[browsed]}</h3><p>${unavailable?'Android runs this screensaver in other apps.':browsed===2?'A full-screen aquarium using the scene chosen in the app.':browsed===3?'Clocks using the design chosen in the app.':'Inspect it here. Preview opens a full-screen presentation.'}</p><div class="actions">${unavailable?'':`<button data-action="preview">Preview</button><button data-action="use">${browsed===used?'In use on Home':'Use this screensaver'}</button>`}<button data-action="options">${browsed<2?'Options':'Open app settings'}</button>${unavailable?'<button data-action="everywhere">Use everywhere…</button>':''}</div><div class="timing"><b>When it starts</b><p>On Home: ${unavailable?'Clock remains selected':'after 5 minutes'}</p><p>In other apps: Android Ambient mode · unchanged</p></div>`;detail.querySelectorAll('button').forEach(b=>b.onclick=()=>act(b.dataset.action));document.querySelector('#position').textContent=`${browsed+1} of ${names.length} · ↑ ↓ browse`;}
+function browse(i,focus){browsed=Math.max(0,Math.min(names.length-1,i));rail.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('browsed',j===browsed));pane();if(focus){const b=rail.children[browsed];b.focus({preventScroll:true});const row=b.getBoundingClientRect(),viewport=rail.getBoundingClientRect();if(row.top<viewport.top)rail.scrollTop-=viewport.top-row.top;else if(row.bottom>viewport.bottom)rail.scrollTop+=row.bottom-viewport.bottom;}}
+function actionFocus(id){(detail.querySelector(`[data-action="${id}"]`)||detail.querySelector('button')).focus({preventScroll:true});}
+function act(id){lastAction=id;if(id==='use'){used=browsed;list();pane();actionFocus('use');document.querySelector('#demo-toast').textContent=`Prototype only · ${names[used]} selected. TV unchanged.`;return;}document.querySelector('#overlay-title').textContent=id==='preview'?names[browsed]+' · Preview':id==='options'?names[browsed]+' · Options':'Use everywhere';document.querySelector('#overlay-copy').textContent=id==='preview'?'Illustrative full-screen preview. Escape or Back returns to the same entry and Preview action.':id==='options'?'The existing options or this app’s own settings open here. Return restores the same row and action.':'The existing Android permission and scope flow opens here. Nothing in this prototype changes Android settings.';document.querySelector('.overlay-art').textContent=id==='preview'?(browsed===2?'◁  ≈  ◁':'21:30'):'Prototype';overlay.hidden=false;document.querySelector('#close-overlay').focus();}
+function closeOverlay(){overlay.hidden=true;actionFocus(lastAction)}document.querySelector('#close-overlay').onclick=closeOverlay;
+demo.addEventListener('keydown',e=>{if(!['ArrowDown','ArrowUp','ArrowLeft','ArrowRight','Escape'].includes(e.key))return;if(!overlay.hidden){if(e.key==='Escape'){e.preventDefault();closeOverlay()}return;}const row=e.target.closest('[data-index]');if(row){e.preventDefault();if(e.key==='ArrowDown')browse(browsed+1,true);if(e.key==='ArrowUp'){if(browsed===0)document.querySelector('#demo-back').focus();else browse(browsed-1,true)}if(e.key==='ArrowRight')actionFocus('preview');if(e.key==='Escape')document.querySelector('#demo-toast').textContent='Prototype: return to Home settings. TV unchanged.';}else if(e.target.closest('.actions')){if(e.key==='ArrowLeft'||e.key==='Escape'){e.preventDefault();browse(browsed,true)}else if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const buttons=[...detail.querySelectorAll('button')];let ix=buttons.indexOf(e.target)+(e.key==='ArrowUp'?-1:1);buttons[Math.max(0,Math.min(buttons.length-1,ix))].focus();}}else if(e.target.id==='demo-back'&&e.key==='ArrowDown'){e.preventDefault();browse(0,true)}});
+document.querySelector('#demo-back').onclick=()=>document.querySelector('#demo-toast').textContent='Prototype: return to Home settings. TV unchanged.';
+document.querySelector('#large').onclick=()=>demo.classList.toggle('large');document.querySelector('#android-only').onclick=()=>browse(5,true);document.querySelector('#reset').onclick=()=>{used=0;browsed=2;demo.classList.remove('large');overlay.hidden=true;list();rail.scrollTop=0;pane();document.querySelector('#demo-toast').textContent='Illustrative catalogue · 12 entries'};list();pane();
+</script></body></html>
