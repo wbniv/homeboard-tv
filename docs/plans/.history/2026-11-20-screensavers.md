@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-21](https://github.com/wbniv/homeboard-tv/commit/478b383) | Screensavers stage 3: record Verification 10 PASS on Cast1; Cast2 dropped; follow-ups ranked |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/2fd314a) | Preserve debug signing identity and record 0.1.112 deployment |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/046aa0a) | Screensavers stage 1 complete: the alarm check passes on Cast1 |
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/e25250d) | An alarm that ends a screensaver opens the timer screen |
@@ -15,6 +16,11 @@
 | [2026-11-20](https://github.com/wbniv/homeboard-tv/commit/5bb93a2) | Plan screensaver choice, configuration and installation |
 
 <!--history-meta v1
+478b383	author	Will Norris
+478b383	added	15
+478b383	deleted	0
+478b383	files	1
+478b383	body	Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqPQdhoTFbeEWpQH2Wb
 2fd314a	author	Will Norris
 2fd314a	added	15
 2fd314a	deleted	2

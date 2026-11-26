@@ -1,10 +1,16 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/38d5be9) | docs: record Will's four screensaver integration decisions |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/6847440) | test: answer screensaver Q7 on Cast1 |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/9189502) | docs: say what still works once debugging is switched off |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/011c5f1) | docs: map screensaver ownership across Homeboard, apps and Android |
 
 <!--history-meta v1
+38d5be9	author	Will Norris
+38d5be9	added	29
+38d5be9	deleted	30
+38d5be9	files	1
+38d5be9	body	The app chooses its own tank or clock, Homeboard plays installed\nWorld Foundry screensavers on Home and in Preview, Clock stays the\ndefault, and Homeboard does not keep the screen on. The companion\ncontract shrinks to preview metadata and the app's settings link.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 6847440	author	Will Norris
 6847440	added	16
 6847440	deleted	8

@@ -343,7 +343,7 @@ Each stage ships on its own and is deployed to both TVs. The build order is 0, 1
 | **2. Providers and directory** | Providers as screensavers, Get screensavers with roles, Found on this TV. | Stage 1. |
 | **3. Use everywhere** | The one‑time setup and question, then every choice applied in every app; Android screensaver apps; Restore. | Stage 0 answers 2, 4 and 5. |
 | **4. Phone** | The phone panel and directory. | Stages 1 and 2. |
-| **5. Companion apps** | Discovery from an app's metadata, Preview and Home idle through its activity, Options from its settings document, and Install for Homeboard's own publisher's apps. | Stage 2; the World Foundry app admitting Homeboard and being published; Stage 0 answers 10 and 11. |
+| **5. Companion apps** | Discovery from an app's metadata, Preview and Home idle through its activity, Options from its settings document, and Install for Homeboard's own publisher's apps. **Reduced on 2026‑11‑26** (integration decisions 1 and 2): no Options or tank choice in Homeboard; the app's own settings link instead. Built (`2395376`), awaiting the device check; see the [companion contract](2026-11-26-screensaver-companion-contract.md). Install stays here. | Stage 2; the World Foundry app admitting Homeboard and being published; Stage 0 answers 10 and 11. The reduced form needs none of these. |
 
 **Stage 0 questions**, each answered per TV:
 

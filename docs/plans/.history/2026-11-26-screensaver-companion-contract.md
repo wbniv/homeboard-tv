@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/a847020) | docs: screensaver apps with their own preview screen; Stage 5 status in the contract |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/ef2fb21) | docs: WorldFoundry declares the preview metadata; Stage 5 unblocked |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/38d5be9) | docs: record Will's four screensaver integration decisions |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/011c5f1) | docs: map screensaver ownership across Homeboard, apps and Android |
@@ -8,6 +9,11 @@
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/12e5c64) | docs: define the screensaver companion app contract; Stage 5 is blocked |
 
 <!--history-meta v1
+a847020	author	Will Norris
+a847020	added	7
+a847020	deleted	1
+a847020	files	1
+a847020	body	Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 ef2fb21	author	Will Norris
 ef2fb21	added	25
 ef2fb21	deleted	6

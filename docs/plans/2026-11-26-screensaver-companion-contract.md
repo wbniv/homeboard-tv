@@ -3,7 +3,7 @@
 **Status (2026‑11‑26): accepted in a reduced form. The apps' half is built:** WorldFoundry
 `5a117e85d` declares the keys below on Aquarium, Clocks and Seahorse Grid (Verification 1). The
 APKs installed on Cast1 carry them only after a WorldFoundry rebuild and install. The chooser
-(Verification 2) is not built. **Homeboard's half is built (Stage 5, branch `screensaver-stage5`) and awaits
+(Verification 2) is not built. **Homeboard's half is built (Stage 5, `2395376` on main) and awaits
 Verification 3 on Cast1:** it reads the keys from each Dream service, places the preview activity in the Dream's
 own package (refusing a value with a leading `.` or a `/`), and keeps it only when that activity is exported.
 Preview, Home idle and the remote's screensaver action start it, with the extra when both are declared; such an
