@@ -2686,6 +2686,10 @@ public class MainActivity extends Activity {
         screensaverFocusTag = null;
         if (target != null) target.requestFocus();
     }
+    /** Whether to say, beside When it starts, that Android's screensaver replaces Homeboard's at Android's idle time. */
+    private boolean screensaverAndroidFollows(EverywhereScreensaver.Status status) {
+        return ScreensaverRules.androidFollows(status.managed, status.component, everywhere().gateway().ownComponent());
+    }
     private String screensaverStartsOnHome(EverywhereScreensaver.Status status) {
         int minutes = layout.screensaver.idleMinutes;
         switch (ScreensaverRules.homeLine(status.managed, layout.screensaver.choice, minutes)) {
@@ -2844,6 +2848,7 @@ public class MainActivity extends Activity {
         manage.setTag("act:everywhere"); manage.setPadding(dp(18), 0, dp(18), 0);
         other.addView(manage, new LinearLayout.LayoutParams(-2, dp(40)));
         pane.addView(other);
+        if (screensaverAndroidFollows(status)) pane.addView(muted(getString(R.string.hb_ss_android_follows), 14));
     }
     private void openScreensaverAppSettings(ScreensaverRegistry.Entry entry) {
         ComponentName settings = entry.settings == null ? null : ComponentName.unflattenFromString(entry.settings);
@@ -2952,6 +2957,7 @@ public class MainActivity extends Activity {
         if (homeTimer) { TextView unit = text(getString(R.string.hb_ss_min_without_input), 16); unit.setPadding(dp(6), 0, 0, 0); idle.addView(unit); }
         LinearLayout other = optionRow(when, getString(R.string.hb_ss_other_apps), true);
         other.addView(muted(screensaverOtherApps(screensaverStatus), 15), new LinearLayout.LayoutParams(0, -2, 1));
+        if (screensaverAndroidFollows(screensaverStatus)) when.addView(muted(getString(R.string.hb_ss_android_follows), 14));
         TextView footer = muted(getString(R.string.hb_ss_footer), 13);
         LinearLayout.LayoutParams footerLp = new LinearLayout.LayoutParams(-1, -2); footerLp.topMargin = dp(8); body.addView(footer, footerLp);
         focusScreensaver(panel, first);

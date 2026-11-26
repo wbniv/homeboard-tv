@@ -73,6 +73,18 @@ final class ScreensaverRules {
     }
 
     /**
+     * Whether the Screensaver screen says that Android's own screensaver replaces Homeboard's at Android's idle time
+     * (Q7, docs/testing/2026-11-26-screensaver-q7.md). It does on any TV Homeboard does not manage, because Android runs
+     * its own screensaver and idle time in every app and Homeboard holds no wake lock. When Android is set to Homeboard's
+     * own screensaver (managed), Android plays Homeboard's choice anyway, so the hand-over is invisible and the note is
+     * left out. A setting Homeboard cannot read does not hide it: Android still takes over, only its choice is unknown.
+     */
+    static boolean androidFollows(boolean managed, ScreensaverGateway.Reading component, String ownComponent) {
+        if (managed) return false;
+        return !(component.readable && ownComponent.equals(first(component.value)));
+    }
+
+    /**
      * The remote's screensaver action. A Homeboard entry is chosen: Homeboard plays it at once (Show now), whether
      * or not it manages the TV. An Android screensaver app is chosen, which happens only through Use everywhere:
      * Android's own "start now" shortcut, since Android is set to that app and Homeboard cannot run it.

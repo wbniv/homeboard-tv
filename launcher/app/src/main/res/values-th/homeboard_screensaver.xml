@@ -65,6 +65,7 @@
     <string name="hb_ss_other_unchanged">%1$s ของ Android %2$s · Homeboard ไม่ได้เปลี่ยน</string>
     <string name="hb_ss_other_same">เหมือนกัน: %1$s %2$s ในทุกแอป</string>
     <string name="hb_ss_other_unknown">ไม่ทราบ: Homeboard อ่านการตั้งค่าของ Android บนทีวีเครื่องนี้ไม่ได้</string>
+    <string name="hb_ss_android_follows">โปรแกรมรักษาหน้าจอของ Android จะมาแทนของ Homeboard เมื่อถึงเวลาที่ Android ไม่ได้ใช้งาน Homeboard ไม่ได้เปิดหน้าจอค้างไว้</string>
     <string name="hb_ss_android_starts">Android เริ่ม %1$s · ปิดตัวจับเวลาของ Homeboard แล้ว</string>
     <string name="hb_ss_home_timer_off">ปิด: Android เริ่มโปรแกรมรักษาหน้าจอในทุกแอป</string>
     <string name="hb_ss_unknown">ไม่ทราบ</string>

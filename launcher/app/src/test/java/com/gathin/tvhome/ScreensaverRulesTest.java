@@ -45,6 +45,24 @@ public class ScreensaverRulesTest {
         assertEquals(OtherLine.UNKNOWN, otherLine(true, false));
     }
 
+    @Test public void androidsScreensaverFollowsHomeboardsOnATvHomeboardDoesNotManage() {
+        // Q7 (Cast1, 2026-11-26): Homeboard's plays first, then Android's selected one at Android's idle time.
+        assertTrue(androidFollows(false, ScreensaverGateway.Reading.of(AMBIENT), OWN));
+        assertTrue(androidFollows(false, ScreensaverGateway.Reading.of(AERIAL), OWN));
+        assertTrue(androidFollows(false, ScreensaverGateway.Reading.of(null), OWN));          // Android's default
+        assertTrue(androidFollows(false, ScreensaverGateway.Reading.UNREADABLE, OWN));        // still true, only its choice is unknown
+    }
+
+    @Test public void theNoteIsLeftOutWhenTheHandOverCannotBeSeen() {
+        // Managed ("Use everywhere"): Android plays the choice in every app, with Homeboard's own timer off.
+        assertFalse(androidFollows(true, ScreensaverGateway.Reading.of(OWN), OWN));
+        assertFalse(androidFollows(true, ScreensaverGateway.Reading.of(AERIAL), OWN));
+        assertFalse(androidFollows(true, ScreensaverGateway.Reading.UNREADABLE, OWN));
+        // Not managed, but Android already names Homeboard's own screensaver: it plays Homeboard's choice anyway.
+        assertFalse(androidFollows(false, ScreensaverGateway.Reading.of(OWN), OWN));
+        assertFalse(androidFollows(false, ScreensaverGateway.Reading.of(OWN + "," + AMBIENT), OWN));
+    }
+
     @Test public void useEverywhereAsksOnceThenGoesStraightToInUse() {
         assertEquals(Screen.SETUP, everywhereScreen(false, false));
         assertEquals(Screen.ASK_ONCE, everywhereScreen(false, true));

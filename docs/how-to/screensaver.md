@@ -40,6 +40,15 @@ timeout is shorter than Homeboard's, Android's screensaver starts first. If it i
 Homeboard's plays first and Android's replaces it when Android's time comes. If Homeboard
 cannot read Android's setting on your TV, the line says so ("Unknown").
 
+Under **In other apps** the screen also says: "Android's screensaver replaces Homeboard's
+when Android's own idle time comes. Homeboard does not keep the screen on." (In Thai:
+โปรแกรมรักษาหน้าจอของ Android จะมาแทนของ Homeboard เมื่อถึงเวลาที่ Android ไม่ได้ใช้งาน
+Homeboard ไม่ได้เปิดหน้าจอค้างไว้.) It shows on the Screensaver screen and in **Options**
+whenever Homeboard does not manage the TV. It is left out when Android is set to
+Homeboard's own screensaver, because Android then plays Homeboard's choice anyway and
+nothing changes when its time comes. Cast1 showed this hand-over on 2026‑11‑26; see
+[the Q7 record](../testing/2026-11-26-screensaver-q7.md).
+
 Any remote key ends the screensaver and returns to Home where you left it; that key does
 not also act on Home. A ringing timer or alarm from
 [Timers & alarms](timers-and-alarms.md) always ends it and opens the timer screen, so you

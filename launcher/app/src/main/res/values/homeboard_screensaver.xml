@@ -65,6 +65,7 @@
     <string name="hb_ss_other_unchanged">Android\'s %1$s %2$s · unchanged by Homeboard</string>
     <string name="hb_ss_other_same">The same: %1$s %2$s, in every app</string>
     <string name="hb_ss_other_unknown">Unknown: Homeboard cannot read Android\'s setting on this TV</string>
+    <string name="hb_ss_android_follows">Android\'s screensaver replaces Homeboard\'s when Android\'s own idle time comes. Homeboard does not keep the screen on.</string>
     <string name="hb_ss_android_starts">Android starts it %1$s · Homeboard\'s own timer is off</string>
     <string name="hb_ss_home_timer_off">Off: Android starts the screensaver in every app</string>
     <string name="hb_ss_unknown">unknown</string>
