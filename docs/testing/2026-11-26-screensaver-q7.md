@@ -91,7 +91,8 @@ Cast1 was showing the Clocks screensaver when attempt 1 began (the configure job
 exit records show no crash: Homeboard's only exit is the cleanup's force stop. With a separate
 key press first (`J‑8629868e6487`), the next launch worked. The order of events between the wake
 and the launch was not recorded, so why Google TV's home ended up in front is not known.
-Reported to the coordinator session.
+Reported to the coordinator session, which fixed the launch in coordinator 0.1.239 and verified
+it on Cast1 with check `J‑5527a436fd1c`, started during the Clocks Dream (2026‑11‑26).
 
 ## Still open
 
