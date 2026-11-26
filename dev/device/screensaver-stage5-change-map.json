@@ -1,0 +1,19 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 30,
+ "panel": "require-hidden",
+ "input_script": [
+  {"at": 3, "key": "MENU", "action": "hold", "ms": 80},
+  {"at": 6, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 9, "capture": "01-in-use-focused"},
+  {"at": 10, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+  {"at": 12, "capture": "02-right"},
+  {"at": 13, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 15, "capture": "03-right-down"},
+  {"at": 17, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 20, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 23, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 27, "capture": "99-home"}
+ ]
+}

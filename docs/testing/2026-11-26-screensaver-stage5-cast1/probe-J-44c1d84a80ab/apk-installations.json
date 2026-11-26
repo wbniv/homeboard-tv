@@ -1,0 +1,14 @@
+[
+  {
+    "input": "18ca983d894e9af32f63ab0f5aacf6eacd8beefcd2485f2163e45937143fca15.apk",
+    "package": "net.biohack.homeboard.debug",
+    "before_sha256": "18ca983d894e9af32f63ab0f5aacf6eacd8beefcd2485f2163e45937143fca15",
+    "action": "reuse",
+    "reason": "exact-match",
+    "variant": null,
+    "status": "verified",
+    "start": 1795703187.7685359,
+    "installed_sha256": "18ca983d894e9af32f63ab0f5aacf6eacd8beefcd2485f2163e45937143fca15",
+    "end": 1795703187.797722
+  }
+]

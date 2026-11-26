@@ -1,0 +1,44 @@
+{
+  "score_sha256": "b65aa71819e29e3161a1b63896d203ea777e0e04c1a183038ac2ae4a10a7ed43",
+  "host_start_wall": 1795703950.8351011,
+  "host_start_monotonic": 183671.454785069,
+  "captures": [
+    {
+      "label": "01-in-use-focused",
+      "planned_ms": 9000,
+      "started": 1795703961.026499,
+      "ended": 1795703962.4436388,
+      "file": "input-frame-001.png",
+      "bytes": 200421,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-right",
+      "planned_ms": 12000,
+      "started": 1795703964.026498,
+      "ended": 1795703965.5046554,
+      "file": "input-frame-002.png",
+      "bytes": 200756,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-right-down",
+      "planned_ms": 15000,
+      "started": 1795703967.0265615,
+      "ended": 1795703968.7422023,
+      "file": "input-frame-003.png",
+      "bytes": 200708,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 27000,
+      "started": 1795703979.026552,
+      "ended": 1795703981.0869381,
+      "file": "input-frame-004.png",
+      "bytes": 261789,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

@@ -1,0 +1,89 @@
+{
+  "score_sha256": "6f41412eaabf2be87d4a7aedfa8ced0804cc18bffb9ce16c87f79cd4cc82bdea",
+  "host_start_wall": 1795703361.4709477,
+  "host_start_monotonic": 183082.090631855,
+  "captures": [
+    {
+      "label": "01-page1",
+      "planned_ms": 8000,
+      "started": 1795703370.5895078,
+      "ended": 1795703372.253179,
+      "file": "input-frame-001.png",
+      "bytes": 274376,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-page1-next",
+      "planned_ms": 14000,
+      "started": 1795703376.5895097,
+      "ended": 1795703378.2131886,
+      "file": "input-frame-002.png",
+      "bytes": 235160,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-page2",
+      "planned_ms": 18000,
+      "started": 1795703380.5905597,
+      "ended": 1795703382.2753646,
+      "file": "input-frame-003.png",
+      "bytes": 241766,
+      "schedule_lateness_ms": 1
+    },
+    {
+      "label": "04-page2-bottom",
+      "planned_ms": 24000,
+      "started": 1795703386.5895016,
+      "ended": 1795703388.2795265,
+      "file": "input-frame-004.png",
+      "bytes": 247727,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "05-page2-next",
+      "planned_ms": 27000,
+      "started": 1795703389.5894778,
+      "ended": 1795703391.361376,
+      "file": "input-frame-005.png",
+      "bytes": 247797,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "06-page3-first",
+      "planned_ms": 31000,
+      "started": 1795703393.5894883,
+      "ended": 1795703395.0573328,
+      "file": "input-frame-006.png",
+      "bytes": 201461,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "07-page3-second",
+      "planned_ms": 34000,
+      "started": 1795703396.5894861,
+      "ended": 1795703398.0959902,
+      "file": "input-frame-007.png",
+      "bytes": 204092,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "08-page3-third",
+      "planned_ms": 37000,
+      "started": 1795703399.5894992,
+      "ended": 1795703401.1544905,
+      "file": "input-frame-008.png",
+      "bytes": 204317,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 50000,
+      "started": 1795703412.5895066,
+      "ended": 1795703414.5291383,
+      "file": "input-frame-009.png",
+      "bytes": 260477,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

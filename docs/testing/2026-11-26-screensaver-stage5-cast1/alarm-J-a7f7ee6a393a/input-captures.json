@@ -1,0 +1,140 @@
+{
+  "score_sha256": "a9f289d73a9663f04db4b23549501eb5c57ef11d6feefee3c4a17103598502a7",
+  "host_start_wall": 1795705226.0883768,
+  "host_start_monotonic": 184946.708060909,
+  "captures": [
+    {
+      "label": "01-timer-widget-focused",
+      "planned_ms": 6000,
+      "started": 1795705233.4255722,
+      "ended": 1795705235.5081708,
+      "file": "input-frame-001.png",
+      "bytes": 258001,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "02-one-minute-focused",
+      "planned_ms": 14000,
+      "started": 1795705241.4258068,
+      "ended": 1795705242.8352845,
+      "file": "input-frame-002.png",
+      "bytes": 145501,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "03-timer-started",
+      "planned_ms": 17000,
+      "started": 1795705244.4255636,
+      "ended": 1795705245.9949164,
+      "file": "input-frame-003.png",
+      "bytes": 144830,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "04-preview-focused",
+      "planned_ms": 28000,
+      "started": 1795705255.4255733,
+      "ended": 1795705257.1265373,
+      "file": "input-frame-004.png",
+      "bytes": 200756,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{16a34ea u0 org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ScreensaverPreviewActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "05-app-screen-before-ring",
+      "planned_ms": 40000,
+      "started": 1795705267.4255724,
+      "ended": 1795705269.2909393,
+      "file": "input-frame-005.png",
+      "bytes": 55380,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{16a34ea u0 org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ScreensaverPreviewActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "06-app-screen-just-before-ring",
+      "planned_ms": 70000,
+      "started": 1795705297.4255564,
+      "ended": 1795705299.0100098,
+      "file": "input-frame-006.png",
+      "bytes": 54768,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{16a34ea u0 org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ScreensaverPreviewActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "07-after-ring",
+      "planned_ms": 80000,
+      "started": 1795705307.425532,
+      "ended": 1795705308.9769938,
+      "file": "input-frame-007.png",
+      "bytes": 145399,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "08-timer-screen",
+      "planned_ms": 90000,
+      "started": 1795705317.425536,
+      "ended": 1795705318.8499181,
+      "file": "input-frame-008.png",
+      "bytes": 145399,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "09-timer-screen-later",
+      "planned_ms": 110000,
+      "started": 1795705337.4259105,
+      "ended": 1795705338.8960192,
+      "file": "input-frame-009.png",
+      "bytes": 145399,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "10-after-sound",
+      "planned_ms": 140000,
+      "started": 1795705367.4269798,
+      "ended": 1795705368.7841384,
+      "file": "input-frame-010.png",
+      "bytes": 145399,
+      "schedule_lateness_ms": 2,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 150000,
+      "started": 1795705377.4255695,
+      "ended": 1795705378.9863062,
+      "file": "input-frame-011.png",
+      "bytes": 259964,
+      "schedule_lateness_ms": 0,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "dream": "none",
+      "target_pid_alive": true
+    }
+  ],
+  "result": "completed"
+}

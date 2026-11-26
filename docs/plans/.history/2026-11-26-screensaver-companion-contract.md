@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/c65f49e) | test: Stage 5 on Cast1 fails at discovery; WF Clocks listed without its preview screen |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/79c4d9f) | docs: no remote has a screensaver button |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/d69822e) | docs: Stage 5 built and merged; awaiting the Cast1 check |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/a847020) | docs: screensaver apps with their own preview screen; Stage 5 status in the contract |
@@ -11,6 +12,11 @@
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/12e5c64) | docs: define the screensaver companion app contract; Stage 5 is blocked |
 
 <!--history-meta v1
+c65f49e	author	Will Norris
+c65f49e	added	21
+c65f49e	deleted	0
+c65f49e	files	1
+c65f49e	body	Verification 3 of the screensaver companion contract, run through the\ncoordinator: Homeboard 0.1.165 lists WF Clocks (89a31982, whose manifest\ndeclares PREVIEW_ACTIVITY and an exported ScreensaverPreviewActivity) as\nan app with no preview screen, so Preview, Home play and the ringing-timer\ncheck could not run. Open settings is not testable (no settingsActivity).\nCast1 left unchanged.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 79c4d9f	author	Will Norris
 79c4d9f	added	2
 79c4d9f	deleted	2

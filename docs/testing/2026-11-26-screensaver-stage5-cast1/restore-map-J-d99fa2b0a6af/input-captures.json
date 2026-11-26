@@ -1,0 +1,53 @@
+{
+  "score_sha256": "2090c1024d5cdeea8aedde06f136a590909f746b5dac25e4c9cb6f9c30446c5e",
+  "host_start_wall": 1795705467.0482066,
+  "host_start_monotonic": 185187.667890477,
+  "captures": [
+    {
+      "label": "01-in-use-focused",
+      "planned_ms": 9000,
+      "started": 1795705476.9702742,
+      "ended": 1795705478.8419964,
+      "file": "input-frame-001.png",
+      "bytes": 200421,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-previous-focused",
+      "planned_ms": 13000,
+      "started": 1795705480.9702585,
+      "ended": 1795705482.764497,
+      "file": "input-frame-002.png",
+      "bytes": 207293,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-page2-after-previous",
+      "planned_ms": 17000,
+      "started": 1795705484.9733996,
+      "ended": 1795705486.6130939,
+      "file": "input-frame-003.png",
+      "bytes": 241766,
+      "schedule_lateness_ms": 3
+    },
+    {
+      "label": "04-after-down",
+      "planned_ms": 20000,
+      "started": 1795705487.971098,
+      "ended": 1795705489.5522816,
+      "file": "input-frame-004.png",
+      "bytes": 241915,
+      "schedule_lateness_ms": 1
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 30000,
+      "started": 1795705497.9703283,
+      "ended": 1795705499.4907017,
+      "file": "input-frame-005.png",
+      "bytes": 259543,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

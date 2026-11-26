@@ -1,0 +1,80 @@
+{
+  "score_sha256": "3b4b542f01b20ae5f7ef0500da760c38017eb2662ce1b49afeb88a7712cf854a",
+  "host_start_wall": 1795704986.821187,
+  "host_start_monotonic": 184707.440871281,
+  "captures": [
+    {
+      "label": "01-home-start",
+      "planned_ms": 4000,
+      "started": 1795704992.0496893,
+      "ended": 1795704993.9615474,
+      "file": "input-frame-001.png",
+      "bytes": 260358,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-down1",
+      "planned_ms": 7000,
+      "started": 1795704995.0496874,
+      "ended": 1795704996.8401656,
+      "file": "input-frame-002.png",
+      "bytes": 260356,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-down2",
+      "planned_ms": 10000,
+      "started": 1795704998.052859,
+      "ended": 1795704999.7240376,
+      "file": "input-frame-003.png",
+      "bytes": 260369,
+      "schedule_lateness_ms": 3
+    },
+    {
+      "label": "04-down3",
+      "planned_ms": 13000,
+      "started": 1795705001.0580537,
+      "ended": 1795705002.7310395,
+      "file": "input-frame-004.png",
+      "bytes": 260335,
+      "schedule_lateness_ms": 8
+    },
+    {
+      "label": "05-down4",
+      "planned_ms": 16000,
+      "started": 1795705004.0496597,
+      "ended": 1795705005.5877974,
+      "file": "input-frame-005.png",
+      "bytes": 260363,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "06-right1",
+      "planned_ms": 19000,
+      "started": 1795705007.0496662,
+      "ended": 1795705008.5282829,
+      "file": "input-frame-006.png",
+      "bytes": 366756,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "07-right2",
+      "planned_ms": 22000,
+      "started": 1795705010.0496728,
+      "ended": 1795705011.7472963,
+      "file": "input-frame-007.png",
+      "bytes": 366756,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 30000,
+      "started": 1795705018.050385,
+      "ended": 1795705019.6977336,
+      "file": "input-frame-008.png",
+      "bytes": 260372,
+      "schedule_lateness_ms": 1
+    }
+  ],
+  "result": "completed"
+}

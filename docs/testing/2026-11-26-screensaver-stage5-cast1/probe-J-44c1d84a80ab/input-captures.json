@@ -1,0 +1,44 @@
+{
+  "score_sha256": "be5ea05f69c46d6b0d5d65b992f026ea4857372cd1006b024d276d5981ca0a02",
+  "host_start_wall": 1795703203.7717052,
+  "host_start_monotonic": 182924.391388953,
+  "captures": [
+    {
+      "label": "01-screensaver-page1",
+      "planned_ms": 8000,
+      "started": 1795703212.9056976,
+      "ended": 1795703214.606503,
+      "file": "input-frame-001.png",
+      "bytes": 274411,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-next-focused",
+      "planned_ms": 14000,
+      "started": 1795703218.9056346,
+      "ended": 1795703220.3894868,
+      "file": "input-frame-002.png",
+      "bytes": 235160,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "03-wf-clocks-entry",
+      "planned_ms": 18000,
+      "started": 1795703222.9056187,
+      "ended": 1795703224.2733486,
+      "file": "input-frame-003.png",
+      "bytes": 241766,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 29000,
+      "started": 1795703233.9056401,
+      "ended": 1795703235.720852,
+      "file": "input-frame-004.png",
+      "bytes": 257460,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

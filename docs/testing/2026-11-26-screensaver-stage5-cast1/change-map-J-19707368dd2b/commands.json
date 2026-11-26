@@ -1,0 +1,335 @@
+[
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795703934.1029809,
+    "end": 1795703934.4131172,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pm path net.biohack.homeboard.debug"
+    ],
+    "start": 1795703934.5403118,
+    "end": 1795703934.974788,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "sha256sum '/data/app/~~1Llk9Zyq8PRE7IJkrSaMTQ==/net.biohack.homeboard.debug-b9bKE_AjwZ8qlNfEA6_nEA==/base.apk'"
+    ],
+    "start": 1795703934.9767337,
+    "end": 1795703935.2063,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am force-stop net.biohack.homeboard.debug"
+    ],
+    "start": 1795703935.240268,
+    "end": 1795703935.465069,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795703935.467366,
+    "end": 1795703935.665589,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795703935.818478,
+    "end": 1795703936.0497851,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am start -W -n net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity"
+    ],
+    "start": 1795703936.0521753,
+    "end": 1795703942.7643645,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795703947.7688873,
+    "end": 1795703948.016698,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795703948.0312116,
+    "end": 1795703948.562026,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795703948.5951164,
+    "end": 1795703948.8204079,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795703948.8259552,
+    "end": 1795703949.0299647,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795703949.035936,
+    "end": 1795703949.4126377,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795703949.4195526,
+    "end": 1795703949.6157365,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/capture-helper.jar",
+      "/data/local/tmp/wf-J-19707368dd2b-keyscore.jar"
+    ],
+    "start": 1795703949.6600387,
+    "end": 1795703950.2198484,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/var/lib/wf-device-coordinator/evidence/J-19707368dd2b/input-score.csv",
+      "/data/local/tmp/wf-J-19707368dd2b-input.csv"
+    ],
+    "start": 1795703950.2225718,
+    "end": 1795703950.6190777,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "date",
+      "+%s%3N"
+    ],
+    "start": 1795703950.6482732,
+    "end": 1795703950.835066,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test -s /data/local/tmp/wf-J-19707368dd2b-input-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795703950.8468468,
+    "end": 1795703951.1714337,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test -s /data/local/tmp/wf-J-19707368dd2b-input-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795703951.2747624,
+    "end": 1795703951.5981145,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test -s /data/local/tmp/wf-J-19707368dd2b-input-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795703951.7024286,
+    "end": 1795703951.9445558,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test -s /data/local/tmp/wf-J-19707368dd2b-input-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795703952.0478668,
+    "end": 1795703952.4041924,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "head",
+      "-n",
+      "1",
+      "/data/local/tmp/wf-J-19707368dd2b-input-log.csv"
+    ],
+    "start": 1795703952.4095087,
+    "end": 1795703952.6156616,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795703961.0299253,
+    "end": 1795703962.4432697,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795703964.0321703,
+    "end": 1795703965.5042825,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795703967.0296023,
+    "end": 1795703968.7418408,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795703979.0369637,
+    "end": 1795703981.0865402,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "pull",
+      "/data/local/tmp/wf-J-19707368dd2b-input-log.csv",
+      "/var/lib/wf-device-coordinator/evidence/J-19707368dd2b/input-timeline.csv"
+    ],
+    "start": 1795703981.0924215,
+    "end": 1795703981.5192316,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "logcat",
+      "-d",
+      "-v",
+      "epoch",
+      "--pid=6720"
+    ],
+    "start": 1795703981.527525,
+    "end": 1795703981.9979756,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795703982.0063624,
+    "end": 1795703982.401302,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795703982.4093776,
+    "end": 1795703982.6189752,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795703982.6207912,
+    "end": 1795703984.137666,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795703984.1407835,
+    "end": 1795703984.3854299,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "logcat",
+      "-d",
+      "-v",
+      "threadtime",
+      "--pid=6720"
+    ],
+    "start": 1795703984.3895297,
+    "end": 1795703984.900019,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "tail -c 4000000 /sdcard/Android/data/net.biohack.homeboard.debug/files/wf.log"
+    ],
+    "start": 1795703984.903706,
+    "end": 1795703985.2153728,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys meminfo net.biohack.homeboard.debug"
+    ],
+    "start": 1795703985.217875,
+    "end": 1795703985.9943545,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys thermalservice"
+    ],
+    "start": 1795703985.9963143,
+    "end": 1795703986.2490876,
+    "returncode": 0
+  }
+]

@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "mode": "observe",
+  "package": "net.biohack.homeboard.debug",
+  "uid": 10128,
+  "uid_source": "pm list packages -U",
+  "foreground_left": true,
+  "observations": 56,
+  "transitions": [
+    {
+      "host_monotonic": 184942.611,
+      "seconds_since_start": 0.495,
+      "host_wall": 1795705221.9916904,
+      "device_uptime_ms": 149922280,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "15008",
+      "source": "start",
+      "events": [
+        "initial"
+      ]
+    },
+    {
+      "host_monotonic": 184977.754,
+      "seconds_since_start": 35.638,
+      "host_wall": 1795705257.134461,
+      "device_uptime_ms": 149957100,
+      "foreground": "topResumedActivity=ActivityRecord{16a34ea u0 org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ScreensaverPreviewActivity t5724}",
+      "top_component": "org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ScreensaverPreviewActivity",
+      "target_in_front": false,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "15008",
+      "source": "capture:04-preview-focused",
+      "events": [
+        "target-left",
+        "other-app-in-front"
+      ]
+    },
+    {
+      "host_monotonic": 185025.246,
+      "seconds_since_start": 83.13,
+      "host_wall": 1795705304.626806,
+      "device_uptime_ms": 150004620,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "15008",
+      "source": "poll",
+      "events": [
+        "target-returned"
+      ]
+    },
+    {
+      "host_monotonic": 185109.295,
+      "seconds_since_start": 167.178,
+      "host_wall": 1795705388.675,
+      "device_uptime_ms": 150088480,
+      "foreground": "topResumedActivity=ActivityRecord{3667986 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5724}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "15008",
+      "source": "end",
+      "events": []
+    }
+  ],
+  "logcat": {
+    "method": "uid",
+    "uid": 10128,
+    "file": "logcat.txt"
+  }
+}

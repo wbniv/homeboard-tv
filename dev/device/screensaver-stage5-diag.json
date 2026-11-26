@@ -1,0 +1,22 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 32,
+ "panel": "require-hidden",
+ "input_script": [
+  {"at": 3, "key": "MENU", "action": "hold", "ms": 80},
+  {"at": 6, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 8, "capture": "01-screensaver-page1"},
+  {"at": 9, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 10, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 11, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 12, "key": "DPAD_DOWN", "action": "hold", "ms": 80},
+  {"at": 14, "capture": "02-next-focused"},
+  {"at": 15, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+  {"at": 18, "capture": "03-wf-clocks-entry"},
+  {"at": 20, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 23, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 26, "key": "BACK", "action": "hold", "ms": 80},
+  {"at": 29, "capture": "99-home"}
+ ]
+}

@@ -3,8 +3,8 @@
 **Status (2026‑11‑26): accepted in a reduced form. The apps' half is built:** WorldFoundry
 `5a117e85d` declares the keys below on Aquarium, Clocks and Seahorse Grid (Verification 1). The
 APKs installed on Cast1 carry them only after a WorldFoundry rebuild and install. The chooser
-(Verification 2) is not built. **Homeboard's half is built (Stage 5, `2395376` on main) and awaits
-Verification 3 on Cast1:** it reads the keys from each Dream service, places the preview activity in the Dream's
+(Verification 2) is not built. **Homeboard's half is built (Stage 5, `2395376` on main) and passed
+Verification 3 on Cast1 except Open ‹app› settings, which waits for the chooser (2026‑11‑26):** it reads the keys from each Dream service, places the preview activity in the Dream's
 own package (refusing a value with a leading `.` or a `/`), and keeps it only when that activity is exported.
 Preview, Home idle and the `screensaver` action (a remote button a build maps through `app_keys`; none by default) start it, with the extra when both are declared; such an
 entry can be chosen for Home without Use everywhere, which works as before. Home starts the screen in its own task,
@@ -102,10 +102,43 @@ at another app. An app without these keys behaves as it does today: listed, no P
       Actions: Use everywhere…   (no Preview, no Open Clock settings)
     ```
 
-    **FAIL (2026‑11‑26):** Homeboard 0.1.165 lists WF Clocks (sha256 `89a31982…`, whose manifest
-    does declare `PREVIEW_ACTIVITY` and an exported `ScreensaverPreviewActivity`, checked with
-    `aapt2 dump xmltree`) as an app **without** a preview screen, so there is no Preview and no
-    Home choice to play. The preview and ringing‑timer parts could not be run. **Open ‹app›
-    settings** is not testable: WF Clocks declares no `settingsActivity`, and the button is absent
-    (frame 07). Cause not yet known; see the
+    ~~**FAIL (2026‑11‑26):** Homeboard 0.1.165 lists WF Clocks as an app without a preview
+    screen.~~ Withdrawn the same evening: the row read above is page 2's "Clock", the old release
+    Homeboard's `ClockDream` (no preview screen). WF Clocks' Dream is labelled "WF Clocks" and is on
+    page 3. Homeboard had no defect; see the record's root‑cause section.
+
+    Rerun on Homeboard 0.1.171 (sha256 `a12f4006…`, with the `kept`/`dropped` diagnostic `a636047`),
+    WF Clocks `4ab6bddd…`:
+
+    ```
+    $ task chromecast:check DEVICE=chromecast-test-01 APP=homeboard-tv \
+        APK=artifacts/deployments/0.1.171/homeboard.apk RECIPE=dev/device/screensaver-stage5-preview.json
+    Accepted J-4f2448999362: queued; check
+    J-4f2448999362: completed {"error": null, "health": "ready"}
+    21:36:52.022 I HomeboardScreensaver: preview screen kept package=org.worldfoundry.game.clocks service=org.worldfoundry.screensaver.ClocksDreamService screen=org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ScreensaverPreviewActivity
+    21:37:14.841 I HomeboardScreensaver: screensaver started mode=preview entry=org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService player=app
+    21:37:27.858 I HomeboardScreensaver: screensaver stopped mode=preview entry=org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService player=app reason=left
+      (frame 08: WF Clocks "In use" after Use this screensaver; Undo banner "Screensaver: WF Clocks")
+
+    $ task chromecast:check … RECIPE=dev/device/screensaver-stage5-idle.json
+    Accepted J-7aa301eabf78: queued; check
+    J-7aa301eabf78: completed {"error": null, "health": "ready"}
+      (last key 21:46:53.713, Home timer 1 min)
+    21:47:54.098 I HomeboardScreensaver: screensaver started mode=idle entry=org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService player=app
+    21:48:20.039 I HomeboardScreensaver: screensaver stopped mode=idle entry=org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService player=app reason=left
+
+    $ task chromecast:check … RECIPE=dev/device/screensaver-stage5-alarm.json
+    Accepted J-a7f7ee6a393a: queued; check — waiting: device busy with J-3c1f51271fab
+    J-a7f7ee6a393a: completed {"error": null, "health": "ready"}
+      (OK on "1 Minutes" at 22:00:41.109, then WF Clocks › Preview)
+    22:00:55.823 I HomeboardScreensaver: screensaver started mode=preview entry=org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService player=app
+    22:01:42.716 I HomeboardScreensaver: screensaver stopped mode=preview entry=org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ClocksDreamService player=app reason=alarm
+      (frame 07, 22:01:5x: Timers & alarms in front)
+    ```
+
+    **PARTIAL (2026‑11‑26):** previews through the app's screen **PASS**; plays on Home through it
+    on Home idle **PASS**; a ringing timer brings Homeboard back with the timer screen **PASS**
+    (checked over Preview, since a 1‑minute kitchen timer always rings before a 1‑minute Home idle).
+    **Open ‹app› settings** not testable until WF Clocks declares a `settingsActivity` (the
+    WorldFoundry chooser). Frames, jobs and the final Cast1 state are in the
     [Cast1 record](../testing/2026-11-26-screensaver-stage5-cast1.md).
