@@ -1,6 +1,6 @@
 # Home's top row: Start screensaver and Homeboard settings
 
-**Status (2026‑11‑26): proposed, waiting on Will's decisions D1–D3.** Nothing is built.
+**Status (2026‑11‑26): D1–D3 decided by Will ("D1 … yes", "d2: ok", "d3: ok").** Being built.
 
 Will, 2026‑11‑26: "add another button (at the top?) to START the screensaver (something present
 in the original google launcher). move system preferences to inside the app preferences. move
@@ -32,6 +32,7 @@ buttons are separate"), so the gear is its only on-screen route today.
 ## Decisions for Will
 
 Each is a recommendation; saying no to any of them leaves that part as described in "If not".
+**Decided by Will, 2026‑11‑26:** D1 yes, D2 yes, D3 yes.
 
 | | Recommendation | What changes | If not |
 |---|---|---|---|
