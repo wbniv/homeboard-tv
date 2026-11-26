@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mockup — Home settings with Device settings</title>
+<style>
+  :root { --bg:#151b26; --surface:#212a39; --raised:#2d394c; --edge:#3a4558; --focus:#eef3fb; --text:#e6edf3; --muted:#93a1b5; --accent:#7fb4ff; --new:#ffd27f; }
+  * { box-sizing:border-box; }
+  body { margin:0; width:1440px; height:900px; overflow:hidden; background:#0b0f16; color:var(--text); font:15px/1.4 system-ui, "Segoe UI", sans-serif; }
+  main { position:relative; width:1440px; height:900px; padding:18px 24px; }
+  h1 { font-size:20px; margin:0 0 4px; } .sub { color:var(--muted); margin:0 0 12px; }
+  .bar { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+  .bar button { background:var(--surface); color:var(--text); border:1px solid var(--edge); border-radius:18px; padding:6px 14px; font:inherit; cursor:pointer; }
+  .bar button.on { background:var(--accent); color:#0b0f16; border-color:var(--accent); }
+  .stage { display:flex; gap:24px; }
+  .tv { position:relative; width:900px; height:640px; background:var(--bg); border-radius:14px; border:1px solid #263042; overflow:hidden; }
+  .dim { position:absolute; inset:0; background:repeating-linear-gradient(0deg,#1a2130 0 60px,#18202d 60px 120px); opacity:.55; }
+  .wheel { position:absolute; left:150px; top:20px; width:600px; height:600px; border-radius:50%; background:#3a4150; box-shadow:0 0 0 2px #4a5263 inset; }
+  .slot { position:absolute; width:200px; text-align:center; color:#f2f5fa; font-size:17px; }
+  .slot .ic { font-size:30px; display:block; margin:8px 0; color:#dfe6f1; }
+  .slot.f { color:#fff; } .slot.f .lab { border:2px solid var(--focus); border-radius:10px; padding:2px 8px; background:rgba(255,255,255,.08); }
+  .slot.new .lab::after { content:" ●"; color:var(--new); font-size:12px; vertical-align:super; }
+  .s0 { left:200px; top:40px; } .s1 { left:390px; top:240px; } .s2 { left:200px; top:440px; } .s3 { left:10px; top:240px; }
+  .hub { position:absolute; left:200px; top:200px; width:200px; height:200px; border-radius:50%; background:#2b3140; border:2px solid #555e70; display:grid; place-items:center; text-align:center; font-size:12px; color:var(--muted); }
+  .hub b { display:block; font-size:16px; color:var(--text); }
+  .notice { position:absolute; left:120px; right:120px; bottom:40px; background:#2a2030; border:1px solid #6b4a5a; border-radius:12px; padding:14px 18px; color:#f0dce4; display:none; }
+  .side { width:460px; color:var(--muted); font-size:14px; }
+  .side h2 { color:var(--text); font-size:16px; margin:4px 0 6px; }
+  .side table { border-collapse:collapse; width:100%; font-size:13px; }
+  .side td, .side th { border-bottom:1px solid #263042; padding:5px 6px; text-align:left; vertical-align:top; }
+  .side th { color:var(--text); font-weight:600; }
+  .side .n { color:var(--new); }
+  .fb { margin-top:12px; color:var(--accent); font-size:14px; min-height:40px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Home settings · Device settings moves in</h1>
+  <p class="sub">The radial Home settings menu, 4 entries a page. ● marks what changes. Hold OK on Home, the Menu key or the top-row settings button opens it.</p>
+  <div class="bar">
+    <button id="bNew" class="on" onclick="setMode('new')">Proposed</button>
+    <button id="bToday" onclick="setMode('today')">Today</button>
+    <button onclick="page(0)">Page 1</button>
+    <button onclick="page(1)">Page 2</button>
+    <button onclick="page(2)">Page 3</button>
+    <button onclick="pick()">OK on the focused entry</button>
+    <button onclick="step()">Next entry (Right)</button>
+    <button id="bRo" onclick="readOnly()">Layout saved by a newer Homeboard</button>
+  </div>
+  <div class="stage">
+    <div class="tv">
+      <div class="dim"></div>
+      <div class="wheel" id="wheel">
+        <div class="slot s0"><span class="ic">▤</span><span class="lab"></span></div>
+        <div class="slot s1"><span class="ic">◐</span><span class="lab"></span></div>
+        <div class="slot s2"><span class="ic">◷</span><span class="lab"></span></div>
+        <div class="slot s3"><span class="ic">⚙</span><span class="lab"></span></div>
+        <div class="hub"><div><b>Home settings</b>Choose an area to customize<br><br>More<br><span id="pg">Page 1 of 3 · OK changes page</span></div></div>
+      </div>
+      <div class="notice" id="notice"></div>
+    </div>
+    <div class="side">
+      <h2>Entry order</h2>
+      <table>
+        <tr><th>Page</th><th>Today</th><th>Proposed</th></tr>
+        <tr><td>1</td><td>Widgets &amp; restore · Appearance · Screensaver · Home behavior</td><td>Widgets &amp; restore · Appearance · Screensaver · <span class="n">Device settings</span></td></tr>
+        <tr><td>2</td><td>Language · Undo history · Home button · About Homeboard TV</td><td><span class="n">Home behavior</span> · Language · Undo history · Home button</td></tr>
+        <tr><td>3</td><td>Configure from phone · TV cleanup</td><td>About Homeboard TV · Configure from phone · TV cleanup</td></tr>
+      </table>
+      <h2 style="margin-top:14px">Why page 1, left</h2>
+      Android's Settings is not a tile in the app grid, so after the gear goes this is its only on-screen route. Left of the hub on page 1 is one key from opening the menu. Home behavior, changed rarely, moves to page 2 (decision D2).
+      <h2 style="margin-top:14px">Newer layout</h2>
+      Today Home settings shows only a notice when the dashboard was saved by a newer Homeboard. Proposed: it opens a short menu with Device settings and About Homeboard TV, so Android's Settings stays reachable.
+      <div class="fb" id="fb">Proposed, page 1. Device settings is focused (left).</div>
+    </div>
+  </div>
+</main>
+<script>
+const MENUS = {
+  today: [['Widgets & restore','Appearance','Screensaver','Home behavior'],['Language / ภาษา','Undo history','Home button','About Homeboard TV'],['Configure from phone','TV cleanup']],
+  new: [['Widgets & restore','Appearance','Screensaver','Device settings'],['Home behavior','Language / ภาษา','Undo history','Home button'],['About Homeboard TV','Configure from phone','TV cleanup']],
+  ro: [['Device settings','About Homeboard TV']]
+};
+const NEW = { 'Device settings': true, 'Home behavior': true };
+let mode = 'new', p = 0, f = 3, ro = false;
+function cur() { return MENUS[ro ? 'ro' : mode]; }
+function draw() {
+  document.getElementById('bNew').className = mode === 'new' ? 'on' : '';
+  document.getElementById('bToday').className = mode === 'today' ? 'on' : '';
+  document.getElementById('bRo').className = ro ? 'on' : '';
+  const items = cur()[p] || [];
+  document.querySelectorAll('.slot').forEach((s, i) => {
+    const label = items[i] || '';
+    s.style.visibility = label ? 'visible' : 'hidden';
+    s.querySelector('.lab').textContent = label;
+    s.className = 'slot s' + i + (i === f ? ' f' : '') + (mode === 'new' && NEW[label] && (label !== 'Home behavior' || p === 1) ? ' new' : '');
+  });
+  document.getElementById('pg').textContent = 'Page ' + (p + 1) + ' of ' + cur().length + ' · OK changes page';
+  const n = document.getElementById('notice');
+  if (ro && mode === 'today') { n.style.display = 'block'; n.textContent = 'This dashboard was saved by a newer Homeboard version. Update Homeboard to edit it. (Today nothing opens, so with the gear gone Android’s Settings would be unreachable.)'; document.getElementById('wheel').style.visibility = 'hidden'; }
+  else { n.style.display = 'none'; document.getElementById('wheel').style.visibility = 'visible'; }
+}
+function say(t) { document.getElementById('fb').textContent = t; }
+function setMode(x) { mode = x; p = 0; f = mode === 'new' ? 3 : 0; draw(); say(x === 'new' ? 'Proposed, page 1. Device settings is focused (left).' : 'Today, page 1. Android’s Settings is the gear in the top row, not in this menu.'); }
+function page(i) { if (i >= cur().length) { say('Only ' + cur().length + ' page(s) here.'); return; } p = i; f = 0; draw(); say('Page ' + (i + 1) + ': ' + cur()[i].join(' · ') + '.'); }
+function step() { const items = cur()[p]; f = (f + 1) % items.length; draw(); say(items[f] + ' focused.'); }
+function readOnly() { ro = !ro; p = 0; f = 0; draw(); say(ro ? (mode === 'new' ? 'Newer layout, proposed: a short menu with Device settings and About Homeboard TV.' : 'Newer layout, today: only the notice; no menu opens.') : 'Normal layout again.'); }
+function pick() {
+  const label = (cur()[p] || [])[f];
+  if (!label) { say('Nothing focused.'); return; }
+  if (label === 'Device settings') { say('OK: Android’s own Settings opens (Settings.ACTION_SETTINGS, as the gear did). Back returns to Home settings.'); return; }
+  if (label === 'Screensaver') { say('OK: Home settings · Screensaver, unchanged. Hold OK on the top row’s Start screensaver opens it too (decision D1).'); return; }
+  say('OK: ' + label + ', unchanged.');
+}
+draw();
+</script>
+</body>
+</html>

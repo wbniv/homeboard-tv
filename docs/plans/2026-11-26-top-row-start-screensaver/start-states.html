@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mockup — Start screensaver: what plays, and the other states</title>
+<style>
+  :root { --bg:#151b26; --surface:#212a39; --raised:#2d394c; --edge:#3a4558; --focus:#eef3fb; --text:#e6edf3; --muted:#93a1b5; --accent:#7fb4ff; }
+  * { box-sizing:border-box; }
+  body { margin:0; width:1440px; height:900px; overflow:hidden; background:#0b0f16; color:var(--text); font:14px/1.4 system-ui, "Segoe UI", sans-serif; }
+  main { width:1440px; height:900px; padding:16px 22px; }
+  h1 { font-size:20px; margin:0 0 2px; } .sub { color:var(--muted); margin:0 0 10px; }
+  .grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; }
+  .card { background:#121823; border:1px solid #263042; border-radius:12px; padding:10px; height:356px; display:flex; flex-direction:column; }
+  .card h2 { font-size:14px; margin:0 0 6px; }
+  .scr { position:relative; height:186px; border-radius:8px; overflow:hidden; background:var(--bg); border:1px solid #263042; }
+  .cap { color:var(--muted); font-size:12.5px; margin-top:8px; flex:1; }
+  .card button { align-self:flex-start; background:var(--surface); color:var(--text); border:1px solid var(--edge); border-radius:14px; padding:4px 12px; font:inherit; font-size:12.5px; cursor:pointer; }
+  .top { position:absolute; left:10px; right:10px; top:8px; height:30px; display:flex; gap:5px; align-items:center; }
+  .chips { flex:1; display:flex; gap:3px; height:26px; } .chips span { flex:1; border-radius:5px; }
+  .b { width:26px; height:26px; border-radius:13px; background:var(--surface); border:1px solid var(--edge); display:grid; place-items:center; flex:none; }
+  .b.f { background:var(--raised); border:2px solid var(--focus); }
+  .b svg { width:14px; height:14px; fill:#fff; }
+  .blocks { position:absolute; left:10px; right:10px; top:46px; bottom:10px; display:grid; grid-template-columns:2fr 1fr; gap:5px; }
+  .blocks span { background:var(--surface); border-radius:5px; }
+  .full { position:absolute; inset:0; display:grid; place-items:center; text-align:center; }
+  .clk { background:radial-gradient(ellipse at 30% 40%, #2a1f4a, #0c0a18 70%); } .clk b { font-size:44px; font-weight:200; color:#f5f3ff; display:block; }
+  .homebg { background:linear-gradient(135deg,#1f3b4d,#3b2f55 60%,#13202b); color:#dfe8f2; }
+  .wf { background:linear-gradient(#0d0d0d,#000); }
+  .toast { position:absolute; left:50%; bottom:12px; transform:translateX(-50%); background:#2b2f3a; border:1px solid #545c6c; border-radius:16px; padding:4px 12px; font-size:12px; white-space:nowrap; }
+  .tag { position:absolute; right:8px; top:8px; font-size:11px; background:rgba(0,0,0,.45); border-radius:6px; padding:2px 6px; color:#cfd8e6; }
+  .fb { margin-top:10px; color:var(--accent); font-size:14px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Start screensaver: what plays, and the other states</h1>
+  <p class="sub">OK on Start screensaver runs exactly the remote's <code>screensaver</code> action, so what plays follows the chosen screensaver. Any key ends it and returns to Home with Start screensaver focused.</p>
+  <div class="grid">
+    <div class="card"><h2>1 · Focused on Home</h2>
+      <div class="scr"><div class="top"><div class="chips"><span style="background:#4b3a6b"></span><span style="background:#3e4350"></span><span style="background:#34513b"></span><span style="background:#2c4a63"></span></div><div class="b f" id="i1"></div><div class="b" id="i2"></div></div><div class="blocks"><span></span><span></span><span></span><span></span></div></div>
+      <div class="cap">Two buttons right of the world clock. The world clock grows into the freed space. Spoken description: "Start screensaver".</div>
+      <button onclick="say('Focus order: world clock → Start screensaver → Homeboard settings; Right from the last advances, as today. Up from the first Home row lands on Homeboard settings, as today.')">Focus order</button></div>
+    <div class="card"><h2>2 · Homeboard's Clock chosen</h2>
+      <div class="scr"><div class="full clk"><div><b>20:22</b><span style="letter-spacing:.2em;font-size:10px;color:#c9c3e6">THURSDAY 26 NOVEMBER</span></div></div><span class="tag">Show now</span></div>
+      <div class="cap">A Homeboard entry plays at once (ScreensaverActivity, mode now). Log: <code>screensaver started mode=now entry=clock</code>.</div>
+      <button onclick="say('Built-in choice: Homeboard plays it at once. Any key ends it; the key does nothing else on Home.')">What plays</button></div>
+    <div class="card"><h2>3 · Home background chosen</h2>
+      <div class="scr"><div class="full homebg"><div style="font-size:13px">Home's background, full screen</div></div><span class="tag">Show now</span></div>
+      <div class="cap">Same path as the Clock: the other built-in entry.</div>
+      <button onclick="say('Home background: whatever Home is showing as its background, full screen, until a key.')">What plays</button></div>
+    <div class="card"><h2>4 · WF Clocks chosen (has a preview screen)</h2>
+      <div class="scr"><div class="full wf"><div style="color:#d9b36a;font-size:13px">WF Clocks' own preview screen<br><span style="color:#8a8a8a;font-size:11px">the clock the app's settings chose</span></div></div><span class="tag">App screen</span></div>
+      <div class="cap">Stage 5: the app's preview screen in Homeboard's task. A ringing timer closes it and opens the timer screen. Back ends it.</div>
+      <button onclick="say('App with a declared preview screen: Homeboard starts that screen for a result, so a ringing timer can close it (Stage 5). Its own keys: Back ends it.')">What plays</button></div>
+    <div class="card"><h2>5 · Android app without a preview screen</h2>
+      <div class="scr"><div class="full" style="background:#0e1622"><div style="font-size:13px;color:#bcd">Android's own screensaver<br><span style="font-size:11px;color:#8899aa">or Homeboard's Clock where the TV has no start-now</span></div></div><span class="tag">Android</span></div>
+      <div class="cap">Chosen through Use everywhere. Android starts it when the TV offers start-now; otherwise Homeboard plays its default Clock.</div>
+      <button onclick="say('App without a preview screen: Android’s start-now; where the firmware lacks it, Homeboard’s Show now plays the default Clock. Same as the remote today.')">What plays</button></div>
+    <div class="card"><h2>6 · The app's screen will not open</h2>
+      <div class="scr"><div class="full clk"><div><b>20:22</b></div></div><div class="toast">Couldn't open that action</div></div>
+      <div class="cap">Uninstalled, disabled or refused: Homeboard plays its own default Clock instead and never crashes (Stage 5 fallbacks). The toast shows only if that also fails.</div>
+      <button onclick="say('Failure: fall back to Homeboard’s default screensaver; only if that also fails, the existing toast and Home stays as it was.')">Fallback</button></div>
+    <div class="card"><h2>7 · All Apps</h2>
+      <div class="scr"><div class="top"><div class="chips"><span style="background:#4b3a6b"></span><span style="background:#3e4350"></span><span style="background:#34513b"></span><span style="background:#2c4a63"></span></div><div class="b" id="i3"></div><div class="b f" id="i4"></div></div><div class="blocks" style="grid-template-columns:repeat(6,1fr)"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+      <div class="cap">The same two buttons on every All Apps page; Homeboard settings focused here.</div>
+      <button onclick="say('All Apps shares the top row: Start screensaver and Homeboard settings, the same focus order and Right-advances rule.')">All Apps</button></div>
+    <div class="card"><h2>8 · Thai and hold OK</h2>
+      <div class="scr" style="padding:14px;color:#cfd8e6;font-size:13px">เริ่มโปรแกรมรักษาหน้าจอ<br><span style="color:#8899aa;font-size:11px">Start screensaver (spoken)</span><br><br>การตั้งค่า Homeboard<br><span style="color:#8899aa;font-size:11px">Homeboard settings (spoken)</span><br><br>การตั้งค่าอุปกรณ์<br><span style="color:#8899aa;font-size:11px">Device settings (menu entry)</span></div>
+      <div class="cap">Hold OK on Start screensaver opens Home settings · Screensaver (D1). The new Thai string needs a Thai speaker's check.</div>
+      <button onclick="say('Hold OK on Start screensaver: the Screensaver chooser, then Back to Home with Start focused. Thai: one new string, เริ่มโปรแกรมรักษาหน้าจอ.')">Hold OK</button></div>
+  </div>
+  <div class="fb" id="fb">Choose a card's button to read what happens.</div>
+</main>
+<script>
+const START = '<svg viewBox="0 0 24 24"><path d="M11.2,2.6a9.4,9.4 0,1 0,8.8 13.5A8.1,8.1 0,0 1,11.2 2.6z"/><path d="M13.6,10.4v11.2l9,-5.6z" fill="#7fb4ff" stroke="#151b26" stroke-width="1"/></svg>';
+const SLIDERS = '<svg viewBox="0 0 24 24"><path d="M3,6h8v2H3zM15,6h6v2h-6zM3,11h3v2H3zM10,11h11v2H10zM3,16h10v2H3zM17,16h4v2h-4z"/><circle cx="13" cy="7" r="2.5" fill="#243448" stroke="#fff" stroke-width="1.5"/></svg>';
+['i1','i3'].forEach(id => document.getElementById(id).innerHTML = START);
+['i2','i4'].forEach(id => document.getElementById(id).innerHTML = SLIDERS);
+function say(t) { document.getElementById('fb').textContent = t; }
+</script>
+</body>
+</html>
