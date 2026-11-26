@@ -437,9 +437,12 @@ final class RemoteKeys {
     }
 
     /** startScreensaver on a device; appScreen starts the app's preview screen the caller's way. */
-    static void startScreensaver(Context ctx, String choice, Runnable appScreen) {
+    static void startScreensaver(Context ctx, String saved, Runnable appScreen) {
         Intent startNow = SystemScreensaver.startNowIntent();
-        startScreensaver(choice, SystemScreensaver.hasAppScreen(ctx, choice),
+        // A chosen app that is not installed plays Homeboard's default slot; the saved choice is kept.
+        ScreensaverGateway.InstalledDream dream = SystemScreensaver.installedDream(ctx, saved);
+        String choice = ScreensaverRules.playable(saved, dream != null);
+        startScreensaver(choice, dream != null && dream.screen != null,
                 () -> ctx.getPackageManager().resolveActivity(startNow, 0) != null, new ScreensaverStart() {
                     @Override public void showNow() { start(ctx, ScreensaverActivity.intent(ctx, ScreensaverActivity.MODE_NOW, null)); }
                     @Override public void appScreen() { appScreen.run(); }

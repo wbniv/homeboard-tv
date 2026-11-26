@@ -105,11 +105,14 @@
     <string name="hb_ss_refused">Android ไม่รับการเปลี่ยนแปลง โปรแกรมรักษาหน้าจอของทีวีเครื่องนี้ยังคงเป็น %1$s ไม่มีอะไรเปลี่ยน ลองอีกครั้ง หรือตรวจการตั้งค่าครั้งเดียว</string>
     <string name="hb_ss_unreadable">Homeboard อ่านการตั้งค่าโปรแกรมรักษาหน้าจอของทีวีเครื่องนี้ไม่ได้ จึงไม่ได้เปลี่ยนอะไร</string>
     <string name="hb_ss_gone">ไม่มี %1$s ติดตั้งอยู่แล้ว Homeboard คืนค่าโปรแกรมรักษาหน้าจอเดิมของทีวีเครื่องนี้ (%2$s) และแสดง %3$s บนหน้าหลัก</string>
-    <string name="hb_ss_gone_home">ไม่มี %1$s ติดตั้งอยู่แล้ว Homeboard แสดง %2$s บนหน้าหลัก</string>
     <string name="hb_ss_gone_failed">ไม่มี %1$s ติดตั้งอยู่แล้ว Android ไม่รับค่าเดิมคืน โปรแกรมรักษาหน้าจอของทีวีเครื่องนี้จึงยังคงเป็น %2$s Homeboard แสดง %3$s บนหน้าหลัก</string>
     <string name="hb_ss_undo_tv">โปรแกรมรักษาหน้าจอของทีวีเครื่องนี้: %1$s</string>
     <string name="hb_ss_undo_restore">คืนค่าโปรแกรมรักษาหน้าจอของทีวีเครื่องนี้: %1$s</string>
     <!-- The continuous list (docs/plans/2026-11-26-screensaver-browsing.md). -->
     <string name="hb_ss_position">%1$d จาก %2$d</string>
     <string name="hb_ss_removed">ไม่มี %1$s ติดตั้งอยู่แล้ว</string>
+    <!-- The saved app is no longer installed and Homeboard does not manage the TV: the choice is kept. -->
+    <string name="hb_ss_not_installed">ไม่ได้ติดตั้ง</string>
+    <string name="hb_ss_missing_detail">ไม่มีแอปนี้ติดตั้งอยู่แล้ว Homeboard แสดง %1$s บนหน้าหลักจนกว่าจะติดตั้งแอปอีกครั้งหรือคุณเลือกโปรแกรมรักษาหน้าจออื่น</string>
+    <string name="hb_ss_missing_home">ไม่มี %1$s ติดตั้งอยู่แล้ว Homeboard แสดง %2$s บนหน้าหลักจนกว่าแอปจะกลับมาหรือคุณเลือกโปรแกรมรักษาหน้าจออื่น</string>
 </resources>

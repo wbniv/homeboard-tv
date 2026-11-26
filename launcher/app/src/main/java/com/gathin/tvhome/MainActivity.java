@@ -2511,6 +2511,8 @@ public class MainActivity extends NativeDashboardActivity {
     private Runnable screensaverRetry;
     private boolean screensaverSetupChecked, screensaverShowQr;
     private static final String UNDO_SYSTEM_SCREENSAVER = "screensaver-system";
+    /** The saved choice whose disappearance Home last announced; cleared when it is back or replaced. */
+    private static final String PREF_SCREENSAVER_MISSING_NOTICED = "screensaver-missing-noticed";
     private long lastHomeInput = SystemClock.uptimeMillis();
     private final Runnable screensaverDue = this::scheduleScreensaver;
 
@@ -2578,7 +2580,9 @@ public class MainActivity extends NativeDashboardActivity {
     }
     private List<ScreensaverRegistry.Entry> refreshScreensaverEntries() {
         ScreensaverGateway gateway = everywhere().gateway();
-        screensaverEntries = ScreensaverRegistry.entries(gateway.installedDreams(), gateway.ownComponent());
+        List<ScreensaverRegistry.Entry> installed = ScreensaverRegistry.entries(gateway.installedDreams(), gateway.ownComponent());
+        // A saved app that is no longer installed stays visible as an unavailable row (checkChosenScreensaverApp).
+        screensaverEntries = layout == null ? installed : ScreensaverRegistry.withSaved(installed, layout.screensaver.choice, layout.screensaver.choiceName);
         return screensaverEntries;
     }
     /** The chosen entry as the list shows it: the default slot when the chosen app is no longer installed. */
@@ -2626,6 +2630,7 @@ public class MainActivity extends NativeDashboardActivity {
             default:
                 layout.screensaver.choice = entry.id; layout.screensaver.choiceName = entry.app() ? entry.name : "";
                 save(getString(R.string.hb_ss_undo_choice, entry.title(this)));
+                refreshScreensaverEntries();   // a replaced unavailable app's row goes away
                 redrawScreensaver(focusTag);
         }
     }
@@ -2688,22 +2693,37 @@ public class MainActivity extends NativeDashboardActivity {
         else showUndoBanner(screensaverFailure, false);
     }
     /**
-     * On Home: the chosen Android screensaver app was uninstalled. Falls back to the default slot, restores the
-     * TV's original when Homeboard manages it, and says so once (no Undo: the app is gone).
+     * On Home: is the chosen Android screensaver app still installed (ScreensaverRules.missing)?
+     * Not managed: the saved choice is kept unchanged and nothing is saved; Home idle, the Start rule and Show now
+     * play the default slot meanwhile, the Screensaver list shows the app as an unavailable row, and a reinstall
+     * works again with no action. The notice is shown once per disappearance (the announced choice is kept in
+     * preferences, outside the layout and its Undo). docs/plans/2026-11-26-screensaver-browsing.md, edge states.
+     * Managed: unchanged from before. Android's setting is restored and the choice falls back to the default slot,
+     * because what Android does with a screensaver component that is no longer installed has not been tested.
      */
     private void checkChosenScreensaverApp() {
-        if (layout == null || layoutReadOnly || !ScreensaverRules.isApp(layout.screensaver.choice)) return;
+        if (layout == null || layoutReadOnly) return;
+        String choice = layout.screensaver.choice;
         boolean managed = everywhere().managed();
-        String gone = layout.screensaver.choice, goneName = layout.screensaver.choiceName.isEmpty() ? packageOf(gone) : layout.screensaver.choiceName;
+        boolean installed = !ScreensaverRules.isApp(choice) || ScreensaverRegistry.installed(refreshScreensaverEntries()).contains(choice);
+        String noticed = preferences.getString(PREF_SCREENSAVER_MISSING_NOTICED, null);
+        ScreensaverRules.Missing missing = ScreensaverRules.missing(choice, installed, managed, noticed);
+        String nextNoticed = ScreensaverRules.noticedAfter(missing, choice);
+        if (!java.util.Objects.equals(noticed, nextNoticed)) preferences.edit().putString(PREF_SCREENSAVER_MISSING_NOTICED, nextNoticed).apply();
+        if (missing == ScreensaverRules.Missing.NONE || missing == ScreensaverRules.Missing.KEEP) return;
+        String gone = choice, goneName = layout.screensaver.choiceName.isEmpty() ? packageOf(gone) : layout.screensaver.choiceName;
+        if (missing == ScreensaverRules.Missing.KEEP_AND_NOTICE) {
+            showUndoBanner(getString(R.string.hb_ss_missing_home, goneName, ScreensaverRegistry.fallback().title(this)), false);
+            return;
+        }
         ScreensaverValues original = everywhere().original();
-        EverywhereScreensaver.Outcome outcome = everywhere().fallBackIfGone(gone, ScreensaverRegistry.installed(refreshScreensaverEntries()));
+        EverywhereScreensaver.Outcome outcome = everywhere().fallBackIfGone(gone, ScreensaverRegistry.installed(screensaverEntries));
         if (outcome == null) return;
         ScreensaverRegistry.Entry fallback = ScreensaverRegistry.fallback();
         layout.screensaver.choice = fallback.id; layout.screensaver.choiceName = "";
         saveWithoutUndo();
         String home = fallback.title(this);
-        showUndoBanner(!managed ? getString(R.string.hb_ss_gone_home, goneName, home)
-                : outcome.ok() ? getString(R.string.hb_ss_gone, goneName, screensaverName(original == null ? null : original.component()), home)
+        showUndoBanner(outcome.ok() ? getString(R.string.hb_ss_gone, goneName, screensaverName(original == null ? null : original.component()), home)
                 : getString(R.string.hb_ss_gone_failed, goneName, screensaverName(outcome.now), home), false);
     }
     private static String packageOf(String component) { int slash = component.indexOf('/'); return slash > 0 ? component.substring(0, slash) : component; }
@@ -3119,7 +3139,12 @@ public class MainActivity extends NativeDashboardActivity {
         boolean clock = ScreensaverRegistry.CLOCK.equals(entry.id);
         FrameLayout sample = new FrameLayout(this);
         String backdrop = clock ? settings.clockBackdrop : ScreensaverSettings.BACKDROP_HOME;
-        if (entry.app()) {
+        if (entry.missing()) {
+            // The saved app is not installed: its glyph only; the description says what plays meanwhile.
+            sample.setBackground(shape(paletteColors.raised, paletteColors.edge, 1));
+            TextView glyph = text(entry.glyph, 40); glyph.setAlpha(0.45f); glyph.setGravity(Gravity.CENTER);
+            sample.addView(glyph, new FrameLayout.LayoutParams(-1, -1));
+        } else if (entry.app()) {
             // Android gives apps no way to start another app's screensaver: an app without its own preview screen says
             // so instead of offering a Preview; one with it shows its glyph, and Preview opens that screen.
             sample.setBackground(shape(paletteColors.raised, paletteColors.edge, 1));
@@ -3150,7 +3175,7 @@ public class MainActivity extends NativeDashboardActivity {
             FrameLayout.LayoutParams timeLp = new FrameLayout.LayoutParams(-2, -2, Gravity.CENTER_VERTICAL | Gravity.START);
             timeLp.leftMargin = dp(30); sample.addView(time, timeLp);
         }
-        if (!entry.app() || entry.playsOnHome()) {
+        if (!entry.missing() && (!entry.app() || entry.playsOnHome())) {
             TextView tag = badge(getString(R.string.hb_ss_preview), 0xCC000000, Color.WHITE);
             FrameLayout.LayoutParams tagLp = new FrameLayout.LayoutParams(-2, -2, Gravity.BOTTOM | Gravity.END);
             tagLp.setMargins(0, 0, dp(10), dp(10)); sample.addView(tag, tagLp);
@@ -3158,7 +3183,8 @@ public class MainActivity extends NativeDashboardActivity {
         sample.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         pane.addView(sample, new LinearLayout.LayoutParams(-1, dp(130)));
         TextView name = bold(entry.title(this), 21); name.setPadding(0, dp(8), 0, 0); pane.addView(name);
-        TextView detail = muted(getString(entry.description), 16); pane.addView(detail);
+        TextView detail = muted(entry.missing() ? getString(R.string.hb_ss_missing_detail, ScreensaverRegistry.fallback().title(this))
+                : getString(entry.description), 16); pane.addView(detail);
         // Wraps, so large text never pushes the actions off a fixed row; the pane itself scrolls.
         android.widget.GridLayout actions = new android.widget.GridLayout(this);
         actions.setColumnCount(Math.max(1, (dashboardWidthPixels() < dp(900)) ? 2 : 3));

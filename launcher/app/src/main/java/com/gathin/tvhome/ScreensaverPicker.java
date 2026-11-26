@@ -111,6 +111,7 @@ final class ScreensaverPicker {
      */
     static List<Action> actions(ScreensaverRegistry.Entry entry, boolean managed, boolean inUseOnHome) {
         List<Action> out = new ArrayList<>();
+        if (entry.missing()) return Collections.unmodifiableList(out);   // not installed: nothing to preview or use
         if (!inUseOnHome) out.add(ScreensaverRules.use(managed, entry.id, entry.playsOnHome()) == ScreensaverRules.Use.EVERYWHERE_SCREEN
                 ? Action.EVERYWHERE : Action.USE);
         if (entry.app()) {

@@ -139,12 +139,12 @@ final class SystemScreensaver implements ScreensaverGateway {
         return null;
     }
 
-    /** Whether choice is an installed screensaver app with a usable preview screen; false for a built-in id. */
-    static boolean hasAppScreen(Context context, String choice) {
-        if (!ScreensaverRules.isApp(choice)) return false;
+    /** The installed screensaver service choice names; null for a built-in id or an app that is not installed. */
+    static InstalledDream installedDream(Context context, String choice) {
+        if (!ScreensaverRules.isApp(choice)) return null;
         for (InstalledDream dream : new SystemScreensaver(context).installedDreams())
-            if (dream.component.equals(choice)) return dream.screen != null;
-        return false;
+            if (dream.component.equals(choice)) return dream;
+        return null;
     }
 
     /** The intent that starts an app's preview screen, with its extra when declared; null when it cannot be built. */

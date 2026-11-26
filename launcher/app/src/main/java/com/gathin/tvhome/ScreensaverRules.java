@@ -130,6 +130,41 @@ final class ScreensaverRules {
         return appScreen ? Player.APP_SCREEN : Player.ANDROID;
     }
 
+    /**
+     * The choice a start rule plays: the saved choice, or Homeboard's default slot while the chosen app is not
+     * installed (the saved choice itself is kept; docs/plans/2026-11-26-screensaver-browsing.md, edge states).
+     */
+    static String playable(String choice, boolean installed) {
+        return isApp(choice) && !installed ? ScreensaverRegistry.fallback().id : choice;
+    }
+
+    /** What Home does on resume about the saved choice (checkChosenScreensaverApp). */
+    enum Missing {
+        /** A built-in, or an installed app: nothing. */
+        NONE,
+        /** Not managed, app gone, first time seen: keep the saved choice unchanged and say so once. */
+        KEEP_AND_NOTICE,
+        /** Not managed, app gone, already said: keep it, say nothing. */
+        KEEP,
+        /**
+         * Managed, app gone: today's behaviour. Android's setting is put back and Home falls back to the default slot,
+         * because what Android does with a component that is no longer installed has not been tested.
+         */
+        FALL_BACK
+    }
+
+    /** noticed: the choice whose disappearance was last announced (kept outside the layout), or null. */
+    static Missing missing(String choice, boolean installed, boolean managed, String noticed) {
+        if (!isApp(choice) || installed) return Missing.NONE;
+        if (managed) return Missing.FALL_BACK;
+        return choice.equals(noticed) ? Missing.KEEP : Missing.KEEP_AND_NOTICE;
+    }
+
+    /** The announced choice to keep after missing(): cleared once the app is back or replaced, so a later loss is said again. */
+    static String noticedAfter(Missing outcome, String choice) {
+        return outcome == Missing.KEEP || outcome == Missing.KEEP_AND_NOTICE ? choice : null;
+    }
+
     /** The component Android must name for choice: the app itself, or this install's ScreensaverDream. */
     static String componentFor(String choice, String ownComponent) { return isApp(choice) ? choice : ownComponent; }
 

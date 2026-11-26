@@ -105,11 +105,14 @@
     <string name="hb_ss_refused">Android did not accept the change. This TV\'s screensaver is still %1$s. Nothing else changed. Retry, or check the one-time setup.</string>
     <string name="hb_ss_unreadable">Homeboard could not read this TV\'s screensaver setting, so it changed nothing.</string>
     <string name="hb_ss_gone">%1$s is no longer installed. Homeboard restored this TV\'s original screensaver (%2$s) and plays %3$s on Home.</string>
-    <string name="hb_ss_gone_home">%1$s is no longer installed. Homeboard plays %2$s on Home.</string>
     <string name="hb_ss_gone_failed">%1$s is no longer installed. Android did not accept the original back, so this TV\'s screensaver is still %2$s. Homeboard plays %3$s on Home.</string>
     <string name="hb_ss_undo_tv">This TV\'s screensaver: %1$s</string>
     <string name="hb_ss_undo_restore">Restored this TV\'s screensaver: %1$s</string>
     <!-- The continuous list (docs/plans/2026-11-26-screensaver-browsing.md). -->
     <string name="hb_ss_position">%1$d of %2$d</string>
     <string name="hb_ss_removed">%1$s is no longer installed.</string>
+    <!-- The saved app is no longer installed and Homeboard does not manage the TV: the choice is kept. -->
+    <string name="hb_ss_not_installed">Not installed</string>
+    <string name="hb_ss_missing_detail">This app is no longer installed. Homeboard plays %1$s on Home until it is installed again or you choose another screensaver.</string>
+    <string name="hb_ss_missing_home">%1$s is no longer installed. Homeboard plays %2$s on Home until it is back or you choose another screensaver.</string>
 </resources>

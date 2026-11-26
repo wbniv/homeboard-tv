@@ -34,7 +34,7 @@ final class ScreensaverRegistry {
         ScreensaverScene create(Context context, FrameLayout container, HomeLayout layout);
     }
 
-    enum Kind { BUILT_IN, ANDROID_APP }
+    enum Kind { BUILT_IN, ANDROID_APP, MISSING_APP }
 
     static final class Entry {
         final String id;
@@ -60,9 +60,12 @@ final class ScreensaverRegistry {
             this.description = description; this.glyph = glyph; this.options = Collections.unmodifiableSet(options);
             this.scene = scene; this.settings = settings; this.screen = screen;
         }
-        boolean app() { return kind == Kind.ANDROID_APP; }
+        /** An Android screensaver app, installed or (missing) not. */
+        boolean app() { return kind == Kind.ANDROID_APP || kind == Kind.MISSING_APP; }
         /** An app Homeboard can play itself, through the app's own preview screen. */
         boolean playsOnHome() { return app() && screen != null; }
+        /** The saved choice's app, no longer installed: listed so it can be seen, with no actions of its own. */
+        boolean missing() { return kind == Kind.MISSING_APP; }
         String title(Context context) { return app() ? name : context.getString(label); }
     }
 
@@ -121,6 +124,28 @@ final class ScreensaverRegistry {
         return Collections.unmodifiableList(all);
     }
 
+    /**
+     * entries plus, when the saved choice is an app that is no longer installed, an unavailable row for it under its
+     * saved name (or package), among the apps in name order. Home still plays the default slot for it: the row has no
+     * scene and no preview screen. Unchanged when the choice is a built-in or installed.
+     */
+    static List<Entry> withSaved(List<Entry> entries, String choice, String choiceName) {
+        if (!ScreensaverRules.isApp(choice)) return entries;
+        for (Entry entry : entries) if (entry.id.equals(choice)) return entries;
+        int slash = choice.indexOf('/');
+        String name = choiceName != null && !choiceName.isEmpty() ? choiceName : choice.substring(0, slash);
+        Entry gone = new Entry(choice, Kind.MISSING_APP, 0, name, R.string.hb_ss_not_installed, R.string.hb_ss_missing_detail,
+                "☾", EnumSet.noneOf(Option.class), null, null, null);
+        List<Entry> all = new ArrayList<>(entries);
+        int at = all.size();
+        for (int i = 0; i < all.size(); i++) {
+            Entry e = all.get(i);
+            if (e.app() && e.name.toLowerCase(Locale.ROOT).compareTo(name.toLowerCase(Locale.ROOT)) > 0) { at = i; break; }
+        }
+        all.add(at, gone);
+        return Collections.unmodifiableList(all);
+    }
+
     /** The entry for id in entries; the default slot when it is unknown or its app is no longer installed. */
     static Entry resolve(String id, List<Entry> entries) {
         for (Entry entry : entries) if (entry.id.equals(id)) return entry;
@@ -135,7 +160,7 @@ final class ScreensaverRegistry {
     /** The flattened components of the installed apps in entries. */
     static Set<String> installed(List<Entry> entries) {
         Set<String> found = new HashSet<>();
-        for (Entry entry : entries) if (entry.app()) found.add(entry.id);
+        for (Entry entry : entries) if (entry.kind == Kind.ANDROID_APP) found.add(entry.id);
         return found;
     }
 
@@ -171,7 +196,7 @@ final class ScreensaverRegistry {
 
     /** The label for a component in entries; null when it is not an installed app's. */
     static String appLabel(String component, List<Entry> entries) {
-        for (Entry entry : entries) if (entry.app() && entry.id.equals(component)) return entry.name;
+        for (Entry entry : entries) if (entry.kind == Kind.ANDROID_APP && entry.id.equals(component)) return entry.name;
         return null;
     }
 
