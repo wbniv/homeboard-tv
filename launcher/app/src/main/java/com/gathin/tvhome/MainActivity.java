@@ -52,7 +52,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /** Homeboard's widgets-first native Home shell, using CleanYourTV's launcher foundation. */
-public class MainActivity extends Activity {
+public class MainActivity extends NativeDashboardActivity {
     private static final float APP_FOCUS_SCALE = AppFocusHighlight.SCALE;
     static final String ACTION_LAUNCHER_SETTINGS = "com.gathin.tvhome.action.LAUNCHER_SETTINGS";
     static final String ACTION_APP_LIBRARY = "com.gathin.tvhome.action.APP_LIBRARY";
@@ -272,6 +272,7 @@ public class MainActivity extends Activity {
             layout = new HomeLayout();
             Toast.makeText(this, getString(layoutReadOnly?R.string.hb_aw_newer_layout:R.string.hb_saved_layout_could_not_be_read_starting_with_empty_home), Toast.LENGTH_LONG).show();
         }
+        if (encoded == null) layout.setDashboardScale(DashboardScale.defaultRendererPercent(native4kWorkspace()), 8, 4);
         if ("theme".equals(layout.palette)) {
             // Move former theme defaults to a deterministic palette; retain any saved image data.
             layout.palette = "midnight";
@@ -528,8 +529,8 @@ public class MainActivity extends Activity {
         JSONArray next=new JSONArray();for(int i=Math.max(0,old.length()-MAX_UNDO_ENTRIES+1);i<old.length();i++)next.put(old.getJSONObject(i));
         return next.put(new JSONObject().put("kind",kind).put("key",key).put("state",state).put("label",label));
     }
-    private int androidGridWidth(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getWidth()>0?surface.getWidth():getResources().getDisplayMetrics().widthPixels)/density)-AppGridSizing.SIDE_MARGIN*2)*100/dashboardScale();}
-    private int androidGridHeight(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getHeight()>0?surface.getHeight():getResources().getDisplayMetrics().heightPixels)/density)-AppGridSizing.HOME_TOP-AppGridSizing.BOTTOM_MARGIN)*100/dashboardScale();}
+    private int androidGridWidth(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getWidth()>0?surface.getWidth():dashboardWidthPixels())/density)-AppGridSizing.SIDE_MARGIN*2)*100/dashboardScale();}
+    private int androidGridHeight(){float density=getResources().getDisplayMetrics().density;return Math.max(1,(int)((surface!=null&&surface.getHeight()>0?surface.getHeight():dashboardHeightPixels())/density)-AppGridSizing.HOME_TOP-AppGridSizing.BOTTOM_MARGIN)*100/dashboardScale();}
     private void addAndroidWidget(String key,AndroidWidgetSpec spec,int width,int height){
         if(layoutReadOnly)return;
         try{
@@ -614,7 +615,7 @@ public class MainActivity extends Activity {
         }
         row.setMinimumHeight(dp(66));
         undoBanner.addView(row, new FrameLayout.LayoutParams(-1, -1));
-        int width = Math.min(dp(820), getResources().getDisplayMetrics().widthPixels - dp(80));
+        int width = Math.min(dp(820), dashboardWidthPixels() - dp(80));
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width, -2, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
         lp.bottomMargin = dp(28);
         root.addView(undoBanner, lp);
@@ -960,7 +961,7 @@ public class MainActivity extends Activity {
         if (overlay == null) restoreFocus();
         if (direction != 0 && !reducedMotion()) {
             // Both surfaces stay in the same window. Outgoing content remains visible during the slide.
-            int width = getResources().getDisplayMetrics().widthPixels;
+            int width = dashboardWidthPixels();
             surface.setTranslationX(direction * width);
             surface.animate().translationX(0).setDuration(420).setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
             if (old != null) {
@@ -1409,8 +1410,8 @@ public class MainActivity extends Activity {
     private void drawCalendarSources(String key) {
         if(overlay!=null)root.removeView(overlay);overlay=new FrameLayout(this);overlay.setBackgroundColor(paletteColors.scrim);
         CalendarSourcePanel panel=new CalendarSourcePanel(this,calendarData,layout.calendarSettings.get(key),paletteColors,uiBackgroundOpacity,this::backMenu);
-        int width=Math.min(dp(840),getResources().getDisplayMetrics().widthPixels-dp(64));
-        int height=Math.min(dp(510),getResources().getDisplayMetrics().heightPixels-dp(48));
+        int width=Math.min(dp(840),dashboardWidthPixels()-dp(64));
+        int height=Math.min(dp(510),dashboardHeightPixels()-dp(48));
         overlay.addView(panel,new FrameLayout.LayoutParams(width,height,Gravity.CENTER));root.addView(overlay,new FrameLayout.LayoutParams(-1,-1));updateUndoHint();
     }
     private void configureCalendar(String key) { calendarController(key).configure(); }
@@ -1445,7 +1446,7 @@ public class MainActivity extends Activity {
         buttons.addView(infoButton(getString(R.string.hb_cal_save), apply), new LinearLayout.LayoutParams(0, dp(52), 1));
         buttons.addView(infoButton(getString(R.string.hb_cal_cancel), this::backMenu), new LinearLayout.LayoutParams(0, dp(52), 1));
         panel.addView(buttons);
-        overlay.addView(panel, new FrameLayout.LayoutParams(Math.min(dp(650), getResources().getDisplayMetrics().widthPixels - dp(48)), -2, Gravity.CENTER));
+        overlay.addView(panel, new FrameLayout.LayoutParams(Math.min(dp(650), dashboardWidthPixels() - dp(48)), -2, Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));updateUndoHint(); input.requestFocus();
     }
     private void calendarDetails(String title, String detail) {
@@ -1467,8 +1468,8 @@ public class MainActivity extends Activity {
         panel.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1));
         aboutBackButton = infoButton(getString(R.string.hb_fs_back), this::backMenu);
         panel.addView(aboutBackButton, new LinearLayout.LayoutParams(-1, dp(52)));
-        int width = Math.min(dp(840), getResources().getDisplayMetrics().widthPixels - dp(64));
-        int height = Math.min(dp(510), getResources().getDisplayMetrics().heightPixels - dp(48));
+        int width = Math.min(dp(840), dashboardWidthPixels() - dp(64));
+        int height = Math.min(dp(510), dashboardHeightPixels() - dp(48));
         overlay.addView(panel, new FrameLayout.LayoutParams(width, height, Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));updateUndoHint(); aboutBackButton.requestFocus();
     }
@@ -1567,10 +1568,10 @@ public class MainActivity extends Activity {
     }
     // Embedded hierarchies can outsize the Activity's resource/window metrics.
     // Once attached, fit the grid to the hierarchy that actually contains it.
-    private int dashboardWidthPixels() {
+    int dashboardWidthPixels() {
         return root != null && root.getWidth() > 0 ? root.getWidth() : getResources().getDisplayMetrics().widthPixels;
     }
-    private int dashboardHeightPixels() {
+    int dashboardHeightPixels() {
         return root != null && root.getHeight() > 0 ? root.getHeight() : getResources().getDisplayMetrics().heightPixels;
     }
     private int appColumns() {
@@ -1756,12 +1757,14 @@ public class MainActivity extends Activity {
         if(backUndoProgressShown){backUndoProgressShown=false;if(restore&&active&&!closed)showUndoBanner(backUndoTarget);else hideUndoBanner.run();}
     }
 
-    protected FrameLayout dashboardOverlayRoot() { return null; }
+    @Override protected FrameLayout dashboardOverlayRoot() { return super.dashboardOverlayRoot(); }
     protected Context dashboardDialogContext() { return this; }
-    protected void configureDashboardDialog(android.app.Dialog dialog) { }
+    @Override protected void configureDashboardDialog(android.app.Dialog dialog) { super.configureDashboardDialog(dialog); }
     /** Window dispatch can be supplied by the native-resolution rendering proof. */
-    protected boolean dispatchDashboardWindowKey(KeyEvent event) { return super.dispatchKeyEvent(event); }
+    @Override protected boolean dispatchDashboardWindowKey(KeyEvent event) { return super.dispatchDashboardWindowKey(event); }
     @Override public boolean dispatchKeyEvent(KeyEvent event) {
+        android.app.Dialog nativeDialog = nativeDashboardDialog();
+        if (nativeDialog != null) { noteHomeInput(); return nativeDialog.dispatchKeyEvent(event); }
         noteHomeInput();   // also for keys that return before Activity.dispatchKeyEvent calls onUserInteraction
         if(event.getKeyCode()==KeyEvent.KEYCODE_BACK){
             if(event.getAction()==KeyEvent.ACTION_UP&&backUndoIgnoreRelease){backUndoIgnoreRelease=false;return true;}
@@ -2289,7 +2292,7 @@ public class MainActivity extends Activity {
         if(bitmap!=null){ImageView qr=new ImageView(this);qr.setImageBitmap(bitmap);qr.setContentDescription(getString(R.string.hb_phone_scan));panel.addView(qr,new LinearLayout.LayoutParams(dp(160),dp(160)));}
         LinearLayout buttons=new LinearLayout(this);View first=null;
         for(int i=0;i<choices.length;i++){final int index=i;View button=infoButton(choices[i],()->action.accept(index));buttons.addView(button,new LinearLayout.LayoutParams(0,dp(48),1));if(first==null)first=button;}
-        panel.addView(buttons);overlay.addView(panel,new FrameLayout.LayoutParams(Math.min(dp(740),getResources().getDisplayMetrics().widthPixels-dp(48)),-2,Gravity.CENTER));root.addView(overlay,new FrameLayout.LayoutParams(-1,-1));updateUndoHint();if(first!=null)first.requestFocus();
+        panel.addView(buttons);overlay.addView(panel,new FrameLayout.LayoutParams(Math.min(dp(740),dashboardWidthPixels()-dp(48)),-2,Gravity.CENTER));root.addView(overlay,new FrameLayout.LayoutParams(-1,-1));updateUndoHint();if(first!=null)first.requestFocus();
     }
     void phoneConnectionChanged(boolean connected){
         if(root==null)return;if(phoneIndicator!=null){root.removeView(phoneIndicator);phoneIndicator=null;}
@@ -2716,7 +2719,7 @@ public class MainActivity extends Activity {
         }
         LinearLayout.LayoutParams bodyLp = new LinearLayout.LayoutParams(-1, -2); bodyLp.topMargin = dp(8);
         panel.addView(body, bodyLp);
-        int width = Math.min(dp(1180), getResources().getDisplayMetrics().widthPixels - dp(40));
+        int width = Math.min(dp(1180), dashboardWidthPixels() - dp(40));
         overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); updateUndoHint();
         return panel;
@@ -3158,7 +3161,7 @@ public class MainActivity extends Activity {
         description.setPadding(0, dp(18), 0, dp(18)); description.setLineSpacing(0, 1.12f); panel.addView(description);
         View back = infoButton(getString(R.string.hb_hint_back), this::backMenu);
         panel.addView(back, new LinearLayout.LayoutParams(-1, dp(48)));
-        int width = Math.min(dp(800), getResources().getDisplayMetrics().widthPixels - dp(80));
+        int width = Math.min(dp(800), dashboardWidthPixels() - dp(80));
         overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1)); updateUndoHint(); back.requestFocus();
     }
@@ -3235,14 +3238,14 @@ public class MainActivity extends Activity {
         LinearLayout panel = new LinearLayout(this);
         panel.setOrientation(LinearLayout.VERTICAL); panel.setPadding(dp(20),dp(12),dp(20),dp(12));
         panel.setBackground(shape(paletteColors.raised, paletteColors.edge, 2));
-        TextView title = text(getString(R.string.hb_dashboard_scale_preview, scalePreview, homeGridColumns(), homeGridRows()), 20);
+        TextView title = text(getString(R.string.hb_dashboard_scale_preview, DashboardScale.nativePercent(scalePreview, native4kWorkspace()), homeGridColumns(), homeGridRows()), 20);
         title.setTypeface(null, Typeface.BOLD); panel.addView(title);
-        TextView explanation = text(getString(R.string.hb_dashboard_scale_help), 15);
+        TextView explanation = text(getString(native4kWorkspace() ? R.string.hb_dashboard_scale_help_native : R.string.hb_dashboard_scale_help), 15);
         explanation.setTextColor(paletteColors.muted); panel.addView(explanation);
         LinearLayout buttons = new LinearLayout(this); buttons.setOrientation(LinearLayout.HORIZONTAL);
         TextView selected = null;
-        for (int value : new int[]{100,75,50}) {
-            TextView button = infoButton((value == scalePreview ? "✓ " : "") + value + "%", () -> {
+        for (int value : DashboardScale.choices(native4kWorkspace())) {
+            TextView button = infoButton((value == scalePreview ? "✓ " : "") + DashboardScale.nativePercent(value, native4kWorkspace()) + "%", () -> {
                 scalePreview = value; showDashboardScale();
             });
             buttons.addView(button, new LinearLayout.LayoutParams(0,dp(48),1));
@@ -3535,8 +3538,8 @@ public class MainActivity extends Activity {
         hint.setTextColor(paletteColors.muted); hint.setGravity(Gravity.CENTER);
         LinearLayout.LayoutParams hintLp = new LinearLayout.LayoutParams(-1, dp(34));
         hintLp.topMargin = dp(14); panel.addView(hint, hintLp);
-        int width = Math.min(dp(780), getResources().getDisplayMetrics().widthPixels - dp(80));
-        int height = Math.min(dp(420), getResources().getDisplayMetrics().heightPixels - dp(48));
+        int width = Math.min(dp(780), dashboardWidthPixels() - dp(80));
+        int height = Math.min(dp(420), dashboardHeightPixels() - dp(48));
         overlay.addView(panel, new FrameLayout.LayoutParams(width, height, Gravity.CENTER));
         overlay.requestFocus();
     }
@@ -3572,7 +3575,7 @@ public class MainActivity extends Activity {
         openMenu(new MenuSpec(getString(R.string.hb_about_homeboard_tv), this::showAboutDialog));
     }
     /** Null for an ordinary Activity; proof implementations return observed surface callbacks. */
-    protected int[] dashboardRenderingSurface() { return null; }
+    @Override protected int[] dashboardRenderingSurface() { return super.dashboardRenderingSurface(); }
     private RenderingStatus renderingStatus() {
         int outputWidth = 0, outputHeight = 0; float refresh = 0;
         try {
@@ -4042,8 +4045,8 @@ public class MainActivity extends Activity {
         int columns = spec.gridColumns;
         int rows = Math.max(1, (count + columns - 1) / columns);
         float density = getResources().getDisplayMetrics().density;
-        int screenWidthDp = Math.round(getResources().getDisplayMetrics().widthPixels / density);
-        int screenHeightDp = Math.round(getResources().getDisplayMetrics().heightPixels / density);
+        int screenWidthDp = Math.round(dashboardWidthPixels() / density);
+        int screenHeightDp = Math.round(dashboardHeightPixels() / density);
         int panelWidth = Math.max(dp(300), Math.min(dp(850), dp(screenWidthDp - 64)));
         int padding = dp(spec.compactCards ? 10 : 20);
         int cardHeight = dp(spec.paletteGrid ? 82 : spec.compactCards ? 56 : 104);
@@ -4253,11 +4256,11 @@ public class MainActivity extends Activity {
                     }
                     @Override public void onCenter() { menuCenter(spec); }
                 });
-        int width = Math.round(getResources().getDisplayMetrics().widthPixels - dp(56));
-        int height = Math.round(getResources().getDisplayMetrics().heightPixels - dp(40));
+        int width = Math.round(dashboardWidthPixels() - dp(56));
+        int height = Math.round(dashboardHeightPixels() - dp(40));
         int diameter = Math.max(dp(360), Math.min(width, height));
         diameter = Math.min(diameter, dp(760));
-        if (preview) diameter = Math.min(diameter, getResources().getDisplayMetrics().widthPixels / 2 - dp(32));
+        if (preview) diameter = Math.min(diameter, dashboardWidthPixels() / 2 - dp(32));
         FrameLayout.LayoutParams pieLp = new FrameLayout.LayoutParams(diameter, diameter,
                 preview ? Gravity.RIGHT | Gravity.CENTER_VERTICAL : Gravity.CENTER);
         if (preview) pieLp.rightMargin = dp(16);
@@ -4271,7 +4274,7 @@ public class MainActivity extends Activity {
             fill.setFillOpacity(WallpaperSettings.PIE_BACKGROUND_OPACITY);
             caption.setBackground(fill);
             FrameLayout.LayoutParams captionLp = new FrameLayout.LayoutParams(
-                    getResources().getDisplayMetrics().widthPixels / 2 - dp(40), -2, Gravity.TOP | Gravity.LEFT);
+                    dashboardWidthPixels() / 2 - dp(40), -2, Gravity.TOP | Gravity.LEFT);
             captionLp.leftMargin = dp(16); captionLp.topMargin = dp(16);
             overlay.addView(caption, captionLp);
         }
@@ -4279,7 +4282,7 @@ public class MainActivity extends Activity {
             TextView explanation=text(spec.explanation,18);explanation.setPadding(dp(12),dp(12),dp(12),dp(12));
             explanation.setAutoSizeTextTypeUniformWithConfiguration(12,18,1,android.util.TypedValue.COMPLEX_UNIT_SP);
             explanation.setGravity(Gravity.CENTER_VERTICAL);UiBackgroundDrawable helpBackground=shape(paletteColors.raised,paletteColors.edge,1);helpBackground.setFillOpacity(WallpaperSettings.PIE_BACKGROUND_OPACITY);explanation.setBackground(helpBackground);
-            FrameLayout.LayoutParams help=new FrameLayout.LayoutParams(Math.min(dp(250),getResources().getDisplayMetrics().widthPixels/3),getResources().getDisplayMetrics().heightPixels-dp(32),Gravity.LEFT|Gravity.TOP);
+            FrameLayout.LayoutParams help=new FrameLayout.LayoutParams(Math.min(dp(250),dashboardWidthPixels()/3),dashboardHeightPixels()-dp(32),Gravity.LEFT|Gravity.TOP);
             help.leftMargin=dp(16);help.topMargin=dp(16);overlay.addView(explanation,help);
         }
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));updateUndoHint();
@@ -4532,7 +4535,7 @@ public class MainActivity extends Activity {
         panel.setPadding(dp(22),dp(18),dp(22),dp(18));
         panel.setBackground(shape(paletteColors.raised,paletteColors.edge,2));
         panel.addView(text(title,24));
-        int width=Math.min(dp(900),getResources().getDisplayMetrics().widthPixels-dp(48));
+        int width=Math.min(dp(900),dashboardWidthPixels()-dp(48));
         overlay.addView(panel,new FrameLayout.LayoutParams(width,-2,Gravity.CENTER));
         root.addView(overlay,new FrameLayout.LayoutParams(-1,-1));updateUndoHint();
         return panel;
@@ -4770,7 +4773,7 @@ public class MainActivity extends Activity {
         aboutBackButton = infoButton(getString(R.string.hb_back), this::backMenu);
         buttons.addView(aboutBackButton, new LinearLayout.LayoutParams(0, dp(60), 1));
         LinearLayout.LayoutParams buttonsLp = new LinearLayout.LayoutParams(-1, dp(64)); buttonsLp.topMargin = dp(16); panel.addView(buttons, buttonsLp);
-        int width = Math.min(dp(840), getResources().getDisplayMetrics().widthPixels - dp(64));
+        int width = Math.min(dp(840), dashboardWidthPixels() - dp(64));
         overlay.addView(panel, new FrameLayout.LayoutParams(width, -2, Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));updateUndoHint(); aboutBackButton.requestFocus();
     }
@@ -4821,7 +4824,7 @@ public class MainActivity extends Activity {
                     @Override public void onArm(int arm) { if (adjustmentArm != null) adjustmentArm.accept(arm); }
                     @Override public void onCenter() { if (adjustmentDone != null) adjustmentDone.run(); }
                 });
-        int diameter = Math.min(dp(760), Math.min(getResources().getDisplayMetrics().widthPixels - dp(56), getResources().getDisplayMetrics().heightPixels - dp(40)));
+        int diameter = Math.min(dp(760), Math.min(dashboardWidthPixels() - dp(56), dashboardHeightPixels() - dp(40)));
         overlay.addView(pie, new FrameLayout.LayoutParams(diameter, diameter, Gravity.CENTER));
         root.addView(overlay, new FrameLayout.LayoutParams(-1, -1));updateUndoHint(); pie.requestFocus();
     }

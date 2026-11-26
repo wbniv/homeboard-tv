@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 /** The production dashboard hierarchy attached to a native-size Presentation window. */
 public final class Native4kDashboardProbeActivity extends MainActivity implements SurfaceHolder.Callback {
+    @Override protected boolean automaticNativeDashboard() { return false; }
     private Resources nativeResources;
     private VirtualDisplay display;
     private Presentation presentation;

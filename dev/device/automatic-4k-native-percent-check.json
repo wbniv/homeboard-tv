@@ -1,0 +1,14 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 24,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 5, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 8, "key": "DPAD_RIGHT", "action": "hold", "ms": 80},
+    {"at": 11, "key": "DPAD_CENTER", "action": "hold", "ms": 80},
+    {"at": 14, "key": "DPAD_UP", "action": "hold", "ms": 80},
+    {"at": 18, "capture": "native-one-hundred-percent-workspace"},
+    {"at": 21, "key": "BACK", "action": "hold", "ms": 80}
+  ]
+}

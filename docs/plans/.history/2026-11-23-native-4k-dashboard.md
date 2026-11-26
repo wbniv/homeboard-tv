@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/1f208a4) | test: verify reduced-scale dashboard and native 4K widget hosting |
 | [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/734465b) | feat: add dashboard scale for a larger widget workspace |
 | [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/1ba18f5) | fix: keep PM2.5 map tiles stable at native 4K |
 | [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/cc4934f) | feat: show rendering resolution in About and refine US calendar band |
@@ -8,6 +9,10 @@
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/c3234b6) | Add standalone 4K tester and screensaver shortcut |
 
 <!--history-meta v1
+1f208a4	author	Will Norris
+1f208a4	added	8
+1f208a4	deleted	2
+1f208a4	files	1
 734465b	author	Will Norris
 734465b	added	42
 734465b	deleted	1

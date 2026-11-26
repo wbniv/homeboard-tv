@@ -1,0 +1,10 @@
+{
+  "workflow": "record",
+  "app": "homeboard-tv",
+  "duration": 360,
+  "warmup": 20,
+  "panel": "require-hidden",
+  "interactive": true,
+  "record": false,
+  "idle_seconds": 120
+}

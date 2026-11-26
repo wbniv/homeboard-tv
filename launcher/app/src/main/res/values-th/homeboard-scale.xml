@@ -3,5 +3,6 @@
     <string name="hb_dashboard_scale_current">ขนาดวิดเจ็ตบนหน้าหลัก: %1$d%%</string>
     <string name="hb_dashboard_scale_preview">ตัวอย่าง · %1$d%% · %2$d คอลัมน์ × %3$d แถว</string>
     <string name="hb_dashboard_scale_help">วิดเจ็ตที่เล็กลงช่วยเพิ่มพื้นที่ มุมมองเต็มหน้าจอยังคงขนาดเดิม</string>
+    <string name="hb_dashboard_scale_help_native">100% ใช้พื้นที่ 4K เต็มรูปแบบ ค่าที่สูงขึ้นทำให้วิดเจ็ตใหญ่ขึ้น มุมมองเต็มหน้าจอยังคงขนาดเดิม</string>
     <string name="hb_dashboard_scale_save">บันทึกขนาด</string>
 </resources>

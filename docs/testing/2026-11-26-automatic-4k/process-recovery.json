@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "device": "chromecast-test-02",
+  "app": "homeboard-tv",
+  "collected_at": "2026-11-26T14:13:59.570982+00:00",
+  "stress": "background-kill",
+  "package": "net.biohack.homeboard.debug",
+  "scene": null,
+  "pid_before": 31638,
+  "meminfo_before": {
+    "total_pss_kb": 101747,
+    "raw_artifact": "stress-meminfo-before.txt"
+  },
+  "home_left_foreground": true,
+  "pid_cached": 31638,
+  "killed": true,
+  "cold_start_ms": 4733,
+  "launch_state": "COLD",
+  "result": "completed",
+  "inconclusive": false,
+  "note": null,
+  "pid_after": 31790,
+  "survived": false,
+  "meminfo_after": {
+    "total_pss_kb": 93982,
+    "raw_artifact": "stress-meminfo-after.txt"
+  },
+  "foreground_after": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+  "validator": null,
+  "validator_result": null,
+  "persistent_settings_changed": false,
+  "restoration": "none needed: no setting is written; cleanup force-stops the app and restores the foreground observed before the launch"
+}

@@ -1,0 +1,10 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 12,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 6, "capture": "ordinary-renderer-after-native-failure"},
+    {"at": 10, "key": "DPAD_UP", "action": "hold", "ms": 80}
+  ]
+}

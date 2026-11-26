@@ -36,7 +36,7 @@ final class WorldClockEditor extends DashboardDialog {
         root=new LinearLayout(activity);root.setOrientation(LinearLayout.VERTICAL);root.setPadding(dp(20),dp(16),dp(20),dp(16));root.setBackgroundColor(palette.surface);
         setContentView(root);setOnKeyListener((d,key,event)->{if(key==KeyEvent.KEYCODE_BACK||key==KeyEvent.KEYCODE_ESCAPE){if(event.getAction()==KeyEvent.ACTION_UP)back.run();return true;}return false;});main();
     }
-    void open() { show();if(getWindow()!=null)setDashboardLayout(Math.min(dp(820),activity.getResources().getDisplayMetrics().widthPixels-dp(40)),Math.min(dp(470),activity.getResources().getDisplayMetrics().heightPixels-dp(36))); }
+    void open() { show();if(getWindow()!=null)setDashboardLayout(Math.min(dp(820),DashboardDialogs.width(activity)-dp(40)),Math.min(dp(470),DashboardDialogs.height(activity)-dp(36))); }
     private int dp(float n) { return Math.round(n*activity.getResources().getDisplayMetrics().density); }
     private String t(int id) { return activity.getString(id); }
     private TextView text(String value,int size) { TextView v=new TextView(activity);v.setText(value);v.setTextColor(palette.text);v.setTextSize(size);v.setPadding(dp(6),dp(3),dp(6),dp(3));return v; }

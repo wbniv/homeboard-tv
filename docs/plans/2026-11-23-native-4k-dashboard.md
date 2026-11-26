@@ -15,15 +15,35 @@ Implementation authorized by Will on 25 November. See the scale workflow below.
 
 ### Dashboard scale implementation
 
+**Baseline corrected by Will, 26 November:** show widget size from the TV's native
+4K workspace perspective. The full 16×8 workspace is **100%**, not “50% of the old
+1080p-sized layout”. On UHD-capable TVs the existing three renderer scales are
+presented as **100%, 150%, 200%**; higher values enlarge widgets. Fresh UHD layouts
+start at native 100%. Existing saved layouts retain their actual visual size and
+cell placements; only the percentage's reference changes. The saved renderer-unit
+representation need not change or gain a compatibility layer. HD-only devices
+retain their own native 100% baseline. Settings/header/All Apps/full-screen views
+keep normal readable sizing. Use source/sink UHD capability for the baseline so
+temporary output-mode changes or ordinary-renderer fallback do not relabel a
+UHD TV's saved choice. This supersedes the old percentage labels below.
+
+Cooper application: percentages must express Will's native workspace goal, not
+an implementation's compensation for artificial density doubling. State the
+native baseline and resulting grid in the live preview. Keep Save/Cancel/Undo
+behavior and existing choices stable. The updated
+[mockup and flow](2026-11-25-dashboard-scale.svg) precede implementation.
+
 Apply the [shared Cooper filter](/home/will/docs/howtos/alan-cooper-design-filter.md).
 Scope: Home settings → Appearance → Dashboard scale, on both normal and native
 dashboard builds. Will's explicit goal is four times the widget capacity. The
 current fixed apparent size blocks that goal. Keep settings, header, All Apps
 and expanded presentations readable at their existing size; scale only Home tiles.
 
-[Screen and workflow mockup](2026-11-25-dashboard-scale.svg) defines 100%, 75% and
-50% choices, the actual Home preview, grid dimensions and Save/Cancel. At 50%,
-8×4 becomes 16×8. Existing cell spans/positions and widget configurations remain
+[Screen and workflow mockup](2026-11-25-dashboard-scale.svg) defines native UHD
+100%, 150% and 200% choices, the actual Home preview, grid dimensions and
+Save/Cancel. Native 100% provides 16×8; 200% provides the former 8×4 capacity.
+HD-only devices keep their own 100%, 75% and 50% choices.
+Existing cell spans/positions and widget configurations remain
 intact; smaller widgets occupy the same cell coordinates. Explicit grid counts
 adjust with scale; Auto calculates the scaled fit. Do not stretch existing spans
 to fill the new space. A compact control panel overlays the bottom of the preview;
@@ -66,6 +86,43 @@ Do not change the system-wide display size, density or preferred HDMI mode as a 
 
 ## Engineering gates
 
+### Production integration authorized · 26 November
+
+Will directed automatic 4K implementation and clarified that performance metrics
+are informative, not a gate on going 4K. Use the proven embedded hierarchy in the
+ordinary launcher on Android 11+ when the active TV output is UHD and Android's
+ordinary UI is lower resolution. A UI already at native resolution needs no extra
+surface. Keep the native 100% workspace preference independent, and preserve existing
+settings, widget IDs, focus, phone editing and Home intent identity.
+
+Applying the [shared Cooper filter](/home/will/docs/howtos/alan-cooper-design-filter.md):
+Will wants sharper widgets and the chosen larger workspace without launching a
+separate engineering app. Automatic selection introduces no new setup or UI flow;
+existing About readings explain the actual surface, and existing scale controls
+remain the user's capacity/readability choice. Recover to the ordinary renderer
+if native allocation/attachment fails, without a crash loop or a settings reset.
+Retain accessibility input forwarding and richer full-screen presentations.
+
+```mermaid
+flowchart TD
+    A[Open existing Homeboard launcher] --> B{UHD TV output, API 30+, lower-resolution UI?}
+    B -- No --> C[Ordinary dashboard]
+    B -- Yes --> D[Native embedded dashboard, bounded UHD buffers]
+    D -- Setup fails --> C
+    D -- Output size changes --> E[Recreate with saved navigation and layout]
+    C -- Output size changes --> E
+    E --> B
+```
+
+Acceptance: Cast2 ordinary-package About and actual Home/All Apps, native 100% grid,
+widget Back/Restore and pause/resume; Cast1 ordinary 1080p control. Add meaningful
+selection/failure-policy tests and container checks. Test output/lifecycle and
+larger-text paths without treating a settings readback as visual acceptance.
+Physical panel detail, screen-reader behavior, external phone transport and
+broader provider compatibility remain explicit follow-ups where device evidence
+is unavailable. Review existing FPS evidence; do not duplicate the other agent's
+measurement work or make its completion a deployment prerequisite.
+
 1. **Isolated native surface proof:** in a debug-only activity, request a full-resolution SurfaceView buffer using the current physical display mode, display a diagnostic 4K pattern, and report logical UI size, physical mode and actual surface buffer dimensions. On Cast2, verify native-resolution presentation using independent compositor/output evidence; a 1080p screenshot alone cannot resolve one-pixel 4K detail. Test resize, pause/resume, no-4K output and cleanup. No saved settings or system display changes.
 2. **Real dashboard renderer proof:** compare candidate approaches against the real dashboard, including custom Canvas widgets, text, app icons, live Android widgets, video TextureView, focus, accessibility, overlays and full-screen widgets. Measure input latency, memory and frame timing on Cast2. A static 4K bitmap or manually redrawn facsimile is not acceptance. Choose an implementation only after it renders the real interactive dashboard faithfully and actually presents native detail.
 3. **Automatic mode and fallback:** choose native 4K only when the output and renderer are verified to support it, keep existing 1080p behavior on Cast1 and unsupported devices, and recover safely from allocation, surface, output mode and lifecycle failures. Never change global settings.
@@ -74,7 +131,16 @@ Do not change the system-wide display size, density or preferred HDMI mode as a 
 
 ## Status
 
-**The actual dashboard now renders at 3840 × 2160 in a separate proof APK**, with reviewed Home/All Apps, Rain expansion, Restore/Back and World clock captures. Automatic native rendering in the normal launcher is **not enabled**; performance, remaining widgets/providers, accessibility and lifecycle/output acceptance remain gates. See the [25 November verification record](../testing/2026-11-25-native-4k-dashboard.md). Preserve user data, the existing interaction model and the pinned upstream boundary.
+**Automatic native UHD rendering is implemented in the normal launcher.** Cast2
+ordinary 0.1.165 reports native dashboard/surface dimensions and passed Home,
+All Apps, Rain and external-settings return checks; injected attachment failure
+recreated an ordinary dashboard with the layout unchanged. The 0.1.168 rollout
+corrects menu/editor bounds to the actual embedded hierarchy. See the
+[production integration record](../testing/2026-11-26-automatic-4k.md) for current
+receipts and remaining acceptance. Performance characterization is informative,
+not a gate, per Will's direction. Independent pixel detail, broader providers,
+accessibility and lifecycle/output coverage remain verification work. Preserve
+user data, the existing interaction model and the pinned upstream boundary.
 
 ### Current priority · 24 November
 

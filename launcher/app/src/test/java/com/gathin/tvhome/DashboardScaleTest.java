@@ -7,6 +7,25 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class DashboardScaleTest {
+    @Test public void nativeUhdDefaultIsOneHundredPercentWithFourTimesTheWorkspace() {
+        HomeLayout fresh=HomeLayout.firstRun();
+        fresh.setDashboardScale(DashboardScale.defaultRendererPercent(true),8,4);
+        assertEquals(100,DashboardScale.nativePercent(fresh.dashboardScale,true));
+        assertEquals(16,fresh.homeColumns); assertEquals(8,fresh.homeRows);
+        assertEquals(150,DashboardScale.nativePercent(75,true));
+        assertEquals(200,DashboardScale.nativePercent(100,true));
+        assertEquals(100,DashboardScale.nativePercent(DashboardScale.defaultRendererPercent(false),false));
+        assertArrayEquals(new int[]{50,75,100},DashboardScale.choices(true));
+    }
+    @Test public void nativeLabelsDoNotRewriteAnExistingSavedLayout() throws Exception {
+        HomeLayout saved=HomeLayout.firstRun(); saved.setDashboardScale(50);
+        String before=saved.encode();
+        assertEquals(100,DashboardScale.nativePercent(saved.dashboardScale,true));
+        assertEquals(before,saved.encode());
+        saved.setDashboardScale(100);
+        assertEquals(200,DashboardScale.nativePercent(saved.dashboardScale,true));
+        assertEquals(8,saved.homeColumns); assertEquals(4,saved.homeRows);
+    }
     private Object normalized(Object value) throws Exception {
         if (value instanceof JSONObject) {
             JSONObject object=(JSONObject)value;

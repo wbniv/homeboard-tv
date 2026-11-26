@@ -172,19 +172,30 @@ In **About Homeboard TV**, read **Dashboard rendering** and **TV output** separa
 4K. **TV output** reports the signal sent to the television; a 4K output can still
 carry a dashboard drawn at 1920 × 1080.
 
-The separate **Homeboard 4K Dashboard Test** app also shows **Rendering surface**;
-both its dashboard and surface should read **3840 × 2160 (4K)**. Native 4K remains
-an engineering test in that separate app; the normal launcher does not yet
-automatically enable it. See the [Android 4K HOWTO](android-4k.md) for details.
+The automatic-4K launcher build also shows **Rendering surface** when it uses the
+native embedded renderer. On supported Android 11+ TVs with active UHD output,
+the dashboard and surface should both read **3840 × 2160 (4K)**. A UI already at
+native UHD resolution uses its ordinary rendering path. Other devices retain
+ordinary rendering; native setup failure also falls back to it without resetting
+your layout. Dashboard scale remains your separate choice below. The older
+**Homeboard 4K Dashboard Test** app is still available for comparison. See the
+[current rollout and verification](../testing/2026-11-26-automatic-4k.md) and
+[Android 4K HOWTO](android-4k.md).
 
 ### Fit more widgets on Home
 
-In builds **0.1.161 and newer**, open **Home settings → Appearance → Dashboard
-scale**. Choose **100%**, **75%** or **50%** to preview the actual dashboard.
-At 50%, an 8×4 grid becomes **16×8**, giving roughly four times the widget space.
-Widgets and their text become smaller. Settings, the top controls, All Apps and
-full-screen widget views keep their normal size. Grid dimensions are capped at 24
-cells per direction.
+Open **Home settings → Appearance → Dashboard scale**. On a UHD-capable TV,
+**100% means the native 4K workspace**: a typical **16×8** grid, roughly four times
+the widget space of an 8×4 Full HD layout. Choose **150%** or **200%** for larger
+widgets. The live preview shows the resulting grid. Fresh UHD layouts start at
+100%; existing layouts keep their visual size. The earlier 4K build called the
+same full workspace “50%”; its new label is 100%.
+
+HD-only devices keep their own native 100% baseline, with 75% and 50% available
+for smaller widgets. Settings, the top controls, All Apps and full-screen widget
+views keep their normal readable size. Grid dimensions are capped at 24 cells per
+direction. See the [rollout record](../testing/2026-11-26-automatic-4k.md) for the
+build carrying the updated labels.
 
 Choose **Save scale** to keep the preview, or **Cancel / Back** to restore your
 previous layout. Leaving the app also discards an unsaved preview. Save adds one

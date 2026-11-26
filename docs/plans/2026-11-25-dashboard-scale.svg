@@ -2,7 +2,7 @@
 <rect width="1100" height="650" fill="#10202f"/>
 <g font-family="sans-serif" fill="white">
 <text x="35" y="44" font-size="25">Dashboard scale · design mockup</text>
-<text x="35" y="78" font-size="18">Home preview · 50% · 16 columns × 8 rows</text>
+<text x="35" y="78" font-size="18">Native 4K preview · 100% · 16 columns × 8 rows</text>
 <defs><pattern id="cells" x="35" y="100" width="60" height="38" patternUnits="userSpaceOnUse"><rect width="60" height="38" fill="none" stroke="#496173"/></pattern></defs>
 <rect x="35" y="100" width="960" height="304" fill="url(#cells)"/>
 <rect x="35" y="100" width="480" height="38" fill="#285a70"/>
@@ -16,9 +16,9 @@
 <text x="570" y="260" font-size="22">Room for more widgets</text>
 <rect x="35" y="422" width="960" height="146" rx="12" fill="#253d51"/>
 <text x="55" y="451" font-size="22">Dashboard scale</text>
-<text x="55" y="481" font-size="17">Smaller widgets give you more room. Expanded widgets keep their normal size.</text>
-<g stroke="#7595ad" fill="#344e63"><rect x="55" y="500" width="150" height="48" rx="6"/><rect x="220" y="500" width="150" height="48" rx="6"/><rect x="385" y="500" width="150" height="48" rx="6" fill="#366f87" stroke="white"/><rect x="550" y="500" width="230" height="48" rx="6"/><rect x="795" y="500" width="180" height="48" rx="6"/></g>
-<g font-size="22"><text x="100" y="531">100%</text><text x="270" y="531">75%</text><text x="427" y="531">✓ 50%</text><text x="610" y="531">Save scale</text><text x="850" y="531">Cancel</text></g>
+<text x="55" y="481" font-size="17">100% uses the native 4K workspace. Higher values make widgets larger.</text>
+<g stroke="#7595ad" fill="#344e63"><rect x="55" y="500" width="150" height="48" rx="6" fill="#366f87" stroke="white"/><rect x="220" y="500" width="150" height="48" rx="6"/><rect x="385" y="500" width="150" height="48" rx="6"/><rect x="550" y="500" width="230" height="48" rx="6"/><rect x="795" y="500" width="180" height="48" rx="6"/></g>
+<g font-size="22"><text x="80" y="531">✓ 100%</text><text x="270" y="531">150%</text><text x="427" y="531">200%</text><text x="610" y="531">Save scale</text><text x="850" y="531">Cancel</text></g>
 <text x="35" y="603" font-size="17">Appearance → Preview → Save → Appearance · one layout Undo entry</text>
 <text x="35" y="630" font-size="17">Cancel / Back / leave app → discard draft → restore previous page and focus</text>
 </g></svg>

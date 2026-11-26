@@ -1,0 +1,7 @@
+{
+  "workflow": "app-diagnostics",
+  "app": "homeboard-tv",
+  "launch_app": true,
+  "duration": 5,
+  "settings": [{"control": "font-scale", "value": 1.3}]
+}

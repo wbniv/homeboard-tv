@@ -1,5 +1,11 @@
 # Native 4K dashboard proof on 25 November
 
+**26 November production follow-up:** native embedding is now automatic in the
+ordinary launcher on supported UHD TVs. See the
+[production rollout and recovery checks](2026-11-26-automatic-4k.md). The original
+proof results and performance limitations below remain historical evidence;
+performance measurements are not a deployment gate under Will's updated direction.
+
 **A real interactive dashboard hierarchy now renders at 3840 × 2160.** It runs in
 an independent engineering app using the production Java sources and resources.
 The normal Homeboard launcher has not switched to native rendering. This record

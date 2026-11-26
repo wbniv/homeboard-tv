@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 
 /** Comparison: direct embedded native hierarchy, without virtual-display composition. */
 public final class Native4kEmbeddedDashboardActivity extends MainActivity implements SurfaceHolder.Callback {
+    @Override protected boolean automaticNativeDashboard() { return false; }
     private Resources nativeResources;
     private SurfaceControlViewHost viewHost;
     private SurfaceView surface;

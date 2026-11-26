@@ -15,6 +15,7 @@ class DashboardDialog extends Dialog {
     private final FrameLayout plane;
     private FrameLayout modal;
     private View content, previousFocus;
+    private final java.util.Map<View, Integer> previousAccessibility = new java.util.LinkedHashMap<>();
     private int width = -1, height = -1;
     private boolean showing;
     private DialogInterface.OnDismissListener dismissed;
@@ -46,13 +47,20 @@ class DashboardDialog extends Dialog {
         if (showing) return;
         if (content == null) throw new IllegalStateException("Missing dashboard dialog content");
         previousFocus = plane.findFocus();
+        for (int i = 0; i < plane.getChildCount(); i++) {
+            View sibling = plane.getChildAt(i);
+            previousAccessibility.put(sibling, sibling.getImportantForAccessibility());
+            sibling.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        }
         modal = new FrameLayout(getContext());
+        modal.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         modal.setBackgroundColor(0x99000000); modal.setClickable(true);
         modal.setFocusableInTouchMode(true); modal.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
         attachContent();
         plane.addView(modal, new FrameLayout.LayoutParams(-1,-1));
         showing = true;
         content.requestFocus();
+        modal.sendAccessibilityEvent(android.view.accessibility.AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
         if (shown != null) shown.onShow(this);
     }
     @Override public boolean isShowing() { return plane == null ? super.isShowing() : showing; }
@@ -61,6 +69,9 @@ class DashboardDialog extends Dialog {
         if (!showing) return;
         showing = false;
         plane.removeView(modal); modal = null;
+        for (java.util.Map.Entry<View, Integer> sibling : previousAccessibility.entrySet())
+            sibling.getKey().setImportantForAccessibility(sibling.getValue());
+        previousAccessibility.clear();
         if (previousFocus != null && previousFocus.isAttachedToWindow()) previousFocus.requestFocus();
         previousFocus = null;
         if (dismissed != null) dismissed.onDismiss(this);

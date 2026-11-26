@@ -5,7 +5,15 @@ an ordinary 1920 × 1080 UI. The aim is to render the actual interactive View
 hierarchy at higher resolution while retaining its layout and remote controls.
 
 Homeboard has demonstrated this in a separate engineering app on Android 14.
-**Automatic 4K rendering in the normal launcher remains pending.** Follow the
+**Automatic native rendering is implemented in ordinary Homeboard 0.1.165.**
+On Android 11+ TVs with active UHD output and an ordinary UI below UHD, the same
+dashboard uses a bounded 3840×2160 embedded hardware hierarchy. Already-native
+UHD UI, HD outputs and phones use ordinary rendering. Setup failure recreates
+the ordinary dashboard without resetting saved layout; native allocation is not
+retried in that process. Output-size changes re-evaluate the renderer, and text
+scale/density changes rebuild its resources. No system density or HDMI mode is
+changed to achieve this. See the
+[production rollout checks](../testing/2026-11-26-automatic-4k.md). Follow the
 [verification record](../testing/2026-11-25-native-4k-dashboard.md) for accepted
 behavior and the [implementation plan](../plans/2026-11-23-native-4k-dashboard.md)
 for remaining work. Examples here match the repository's compile SDK 34; the
@@ -226,7 +234,10 @@ Exercise surface destruction/recreation, background return, actual process death
 output changes and memory pressure. Save navigation and expanded-widget state
 independently of rendering objects. A production implementation must re-evaluate
 output size and safely choose the ordinary path when the native path is unavailable.
-The current proof has not completed that automatic selection/recovery work.
+Production selection/recovery is implemented in
+[NativeDashboardActivity.java](../../launcher/app/src/main/java/com/gathin/tvhome/NativeDashboardActivity.java)
+and [NativeDashboardHost.java](../../launcher/app/src/main/java/com/gathin/tvhome/NativeDashboardHost.java).
+The separate proof activities retain their explicit comparison paths.
 
 One 3840 × 2160 four-byte pixel buffer is about 31.6 MiB. Multiple buffers, decoded
 images, transitions and compositor allocations increase the total. Budget for

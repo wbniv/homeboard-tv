@@ -47,6 +47,11 @@ the invoking host user. On rootful Docker it uses the host user's UID/GID.
 `BUILD_UID` and `BUILD_GID` are optional explicit overrides; the variables avoid
 reassigning Bash's reserved `UID`. This keeps bind-mounted artifacts owned by Will.
 The named cache directory is initialized writable for either mode.
+`dev/container.sh` serializes cache-using containers with the shared host lock
+`/tmp/homeboard-tv-gradle-cache.lock`, including across worktrees. Gradle's own
+lock negotiation cannot reliably identify another container's PID namespace.
+Leave an active build running; another invocation waits for its turn. This lock
+does not replace the single-owner rule for numbered deployments and frozen APKs.
 
 Copy `.env.example` to `.env` for a `BUILD_IMAGE` override. A build server can pull
 that image, then run the same wrapper with no toolchain installation. The current
