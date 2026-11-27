@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/815e3e3) | test: Screensaver list round 2 on Cast1 and the Pixel (0.1.175) |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/982263f) | test: continuous Screensaver list on Cast1 (0.1.173) |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/f225564) | docs: a missing screensaver app keeps its place unless Homeboard manages the TV |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/3e1956f) | docs: the continuous Screensaver list and When-it-starts-only Change, as built |
@@ -7,6 +8,11 @@
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/4e5d198) | Plan continuous screensaver browsing with visual mockups |
 
 <!--history-meta v1
+815e3e3	author	Will Norris
+815e3e3	added	8
+815e3e3	deleted	0
+815e3e3	files	1
+815e3e3	body	Focus after Use now stays on Preview for an app and a built-in. Large\ntext on Cast1: at 1.3x actions stay reachable and the pane scrolls, but\nnames beside a badge break mid-word; at 2.0x Options is clipped, the\nlast row's name disappears behind its badge and When it starts values\nbreak mid-word. Pixel: Homeboard runs in landscape, so the stacked\nlayout is not reachable; taps inspect and act, a failed Open Clock\nsettings keeps its retry, but a row name breaks mid-word, the action row\nis cut and swipes change the inspected entry instead of scrolling.\n\nCast2 at 4K not run: the deploy naming chromecast-test-02 was refused by\nthe agent's permission check. Cast1 restored (Clock, Android decides,\nfont scale 1.0, Android WF Clocks at 10 min).\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 982263f	author	Will Norris
 982263f	added	15
 982263f	deleted	1

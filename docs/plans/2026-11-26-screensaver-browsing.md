@@ -208,6 +208,8 @@ catalogue demonstrates a need.
   **Evidence: not run** (no coordinator workflow for large text, narrow touch layouts or accessibility traversal on Cast1).
 
   **Round 2 (0.1.175): partial, with defects.** Cast1 at 1.3×: actions reachable and the pane scrolls, but names beside a badge break mid-word and are ellipsized. At 2.0×: Options is clipped at the pane edge, the last row's name disappears behind its badge, and the When it starts values break mid-word (`J‑eb788c478c96`, `J‑4878341483f5`). Pixel: Homeboard runs in landscape, so the stacked layout is not reachable; taps inspect rows and act on actions, but a row name breaks mid-word, the action row is cut at the bottom, and swipes change the inspected entry instead of scrolling naturally (`J‑721ea550e5ae`). Long Thai names and accessibility traversal not run.
+
+  **Fixes after round 2 (branch `screensaver-list-layout`, not yet on a device):** a row's badge sits beside the name only when the whole name fits on one line beside it, otherwise below it, and names wrap at word boundaries to at most two lines; actions and the When it starts rows wrap whole to new lines (labels wrap inside their buttons, never clipped); the illustration is shorter when the pane is short or the text is 1.5× or larger; the footer hint wraps in full; under touch only a tap inspects a row, never a swipe or scroll. **Portrait needs a rotation workflow:** Homeboard runs in landscape on the Pixel, so the stacked layout below 720 dp cannot be reached there without one; the app's orientation is deliberately not changed.
 - Pause/recreate and package refresh retain picker state. Scroll does not start
   app activities, decode large artwork or create per-row live players.
 
