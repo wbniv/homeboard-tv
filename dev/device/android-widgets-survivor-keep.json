@@ -1,6 +1,6 @@
 {
   "workflow": "check",
-  "app": "homeboard-widget-survivor-keep",
+  "app": "homeboard-tv",
   "duration": 40,
   "panel": "require-hidden",
   "input_script": [

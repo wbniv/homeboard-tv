@@ -541,3 +541,99 @@ mobile hosting and resource/long-duration acceptance remain separate open checks
 ![Real configured Calendar empty state and saved size](2026-11-19-android-app-widgets/v97-calendar-expanded.png)
 
 ![Original dashboard after both test additions were undone](2026-11-19-android-app-widgets/v97-dashboard-restored.png)
+
+## Close-out on Cast1 · 0.1.179 · 27 November
+
+The widget host was last exercised on 0.1.97 (Cast2) and, through the older probe,
+0.1.163 at reduced scale. This pass retests it on the current build and covers the
+acceptance rows no earlier run touched. Design and dispositions are in the plan's
+[Close-out](../plans/2026-11-19-android-app-widgets.md#close-out--november-27).
+
+**Build.** `task deploy DEVICE=chromecast-test-01` froze **0.1.179**, SHA-256
+`55c83d05c29c2c43dee5c58001d4312ad2ad39252be2369eb488860f50668d44`, base commit
+`3deef1b` plus the tree's other uncommitted work (Trello, native 4K), and installed it
+on Cast1 in J‑f52d02c33582 (completed, 19 verified artifacts). Version 178 was taken by
+another session's bump and never frozen, so this deployment is 179. The JVM suite on a
+clean worktree of `3deef1b` (no foreign changes): **745 tests, 0 failures, 0 errors**,
+`lintDebug` passed, calendar 7, cleanup 71 and deployment 5 Python tests OK.
+
+**Fixture provider 0.0.3**, SHA-256
+`1ceef112a5a636d1d765a22d6a75291c0550ff1627679f6d8bf67e713fc4f829`. Installing it over
+0.0.2 was refused, `INSTALL_FAILED_UPDATE_INCOMPATIBLE` (J‑f0f9fd1376d9): 0.0.2 was
+signed with a debug key (certificate `ee78e78e…`) that no longer exists in the build
+cache, which now signs with `605ba215…`. So the in-place **provider update** case could
+not be run; the uninstall/reinstall case below replaced it.
+
+**Registration.** The coordinator allows one registration per package, so each probe
+run temporarily pointed the `homeboard-tv` registration at the probe alias and restored
+`MainActivity` afterwards (the restores are in the job log below). That registration is
+global across devices; later probe runs are sequenced with the other sessions.
+
+| Step | Job | Result |
+|---|---|---|
+| survivor-keep: add fixture 0.0.2, leave bound | J‑5ae4f9261f26 | **PASS**: ID 3 rendered, PID 6304 |
+| survivor-reopen: next job, same binding | J‑db56eabc4e8f | **PASS**: ID 3 rendered again in a new process, PID 6979 |
+| Uninstall fixture (coordinator) | J‑0935e8033f07 | completed; removed for users 0 and 10, verified absent |
+| Reinstall fixture 0.0.3 | J‑5935f4615a5e | installed hash verified; the launcher continuation ended `plugin-error`, automatic recovery J‑00a1ec89cae5 completed ready (the pattern recorded for 0.0.2) |
+| survivor-reinstalled: lost binding, Set up again | J‑546da9bc8853 | **PASS**: tile showed **Widget unavailable**; Set up again bound new ID 4 under the same key and saved size; all probe IDs released |
+| lifecycle (full list below) | J‑1df41b2106dd | **PASS** |
+
+```text
+lifecycle wf.log (J-1df41b2106dd)
+{"pid":8496,"idA":5,"idB":6,"minimumSpan":"4x4","grid":"12x8",
+ "beforeResize":"Widget bound across apps · id 5 Updates 2 · 243×128 dp · Presses 0 …",
+ "afterResize":"Widget bound across apps · id 5 Updates 3 · 392×128 dp · Presses 0 …",
+ "afterPress":"Widget bound across apps · id 5 Updates 5 · 603×357 dp · Presses 1 …",
+ "illegalResize":"Size not supported at this grid setting. Hold OK to resize, or change the Home grid.",
+ "afterRecreation":"Widget bound across apps · id 5 Updates 6 · 392×128 dp · Presses 1 …",
+ "releasedAfterEdits":20,"liveViews":4,"idsAfterRelease":0,"status":"pass","mode":"lifecycle",
+ "detail":"two instances; provider update and size response; Interact Press and nested Back;
+  illegal resize rejected; 24×24 placeholder and recovery; lost binding placeholder, Remove/Undo;
+  recreation keeps ID; Remove/Undo same ID; release after history eviction; four-view cap",
+ "homeboardVersion":"0.1.179","provider":"0.0.3"}
+```
+
+What that run establishes, in the probe's order: two instances bind distinct IDs (5, 6)
+and each paints its own content; a legal widen makes Android report the new size to the
+provider, which re-renders (update 2 → 3, 243 → 392 dp wide); in full screen, **Interact
+with widget** moves D-pad focus onto the provider's own button, OK presses it and the
+provider's re-render arrives (Presses 1); the first Back leaves Interact and keeps full
+screen, the second restores Home with focus on the widget; a 1×1 resize is refused by both
+the native rule and the browser path, layout unchanged; a 24×24 grid shows **Too small**
+in place with the same ID and span, and the live view returns at 12×8; deleting B's
+binding leaves **Widget unavailable** in B's place with A unaffected, and Remove/Undo/
+Remove works on that tile; after activity recreation A renders with the same ID; Remove
+keeps the binding for Undo, Undo restores the same ID, and the binding is released only
+on the 20th later edit, when history no longer references it; five instances on one page
+give four live views and one **Open full screen to use this widget.** tile.
+
+![Four live provider views and the inactive fifth tile, 0.1.179](2026-11-19-android-app-widgets/v179-four-view-cap.png)
+
+Limits of this evidence: recreation is an activity restart, not process death (the
+survivor jobs cover a new process); the binding deletion is done by the host, which is
+the same state the platform leaves after an uninstall (shown separately above). At its
+4×4 minimum on this grid the fixture's **Press** button is clipped, which is the fixture's
+own layout, not a host defect.
+
+### Required configuration twice, Open app and return · owned Remote
+
+Owned Remote **J‑919da3fc0ebb** on Cast1, 0.1.179, remote keys only, a frame inspected
+after each step (frames in `docs/diagnostics/2026-11-27-widget-remote/`, 30 verified
+artifacts in the session evidence):
+
+- Google TV → Homeboard → Home settings → Widgets & restore → Add widget → Android app
+  widgets → **Required configuration test**. The provider's configuration activity opened
+  with **Widget ID 12**; Save returned to the 3×2 Add review; Add rendered
+  **Configuration saved · id 12** on Home page 2.
+- The same path again: configuration received **ID 13**, saved, added beside it. Two
+  independently configured instances on one page. This is the Android 14 handoff fix's
+  first pass on Cast1 (it passed on Cast2 in 0.1.97).
+- Short OK on ID 13 opened full screen with provider app 0.0.3 and saved size 3×2. **Open**
+  launched the provider's own activity; Back returned to the same full-screen view with
+  Open still focused; Back again restored Home page 2 with ID 13 focused.
+- Cleanup: Undo history's newest entry was read as **Undo · Android app widgets** before
+  each selection. Two undos removed exactly the two additions; the original one-page
+  dashboard returned and the next entry is the pre-existing **Screensaver: Clock**.
+  `remote-stop` finished coordinator cleanup.
+
+![Two independently configured instances on Cast1, 0.1.179](2026-11-19-android-app-widgets/v179-cast1-two-configured.png)
