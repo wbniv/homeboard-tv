@@ -205,4 +205,38 @@ public class ScreensaverPickerTest {
         for (String id : all) assertTrue(id, ids.add(stableId(id)));
         assertEquals(stableId(WF_CLOCKS), stableId(new String(WF_CLOCKS)));
     }
+
+    // Round 2 layout defects (docs/testing/2026-11-26-screensaver-list-cast1.md).
+
+    @Test public void theBadgeSitsBesideTheNameOnlyWhenTheWholeNameFits() {
+        assertTrue(badgeInline(400, 120, 100, 16));          // "Clock" + "On Home" at 1.0x
+        assertFalse(badgeInline(400, 300, 220, 16));         // "Ambient Mode" + "Needs Use everywhere" at 1.3x: badge below
+        assertTrue(badgeInline(236, 120, 100, 16));          // exactly fits
+        assertFalse(badgeInline(235, 120, 100, 16));
+        assertFalse(badgeInline(300, 200, 400, 16));         // a badge wider than the row: below, name keeps the width
+    }
+
+    @Test public void wrappedControlsMoveWholeToTheNextLine() {
+        assertTrue(staysOnLine(0, 500, 900, false, 0, true));        // the first child of a line always stays
+        assertTrue(staysOnLine(200, 500, 300, false, 0, false));     // fits whole
+        assertFalse(staysOnLine(260, 500, 300, false, 0, false));    // a button never shrinks: Options moves down
+        assertTrue(staysOnLine(140, 500, 600, true, 200, false));    // wrapping text keeps the line while 9 ems fit
+        assertFalse(staysOnLine(400, 500, 600, true, 200, false));   // "Andr / oid's": too little left, a new line
+    }
+
+    @Test public void theIllustrationIsShortForShortPanesAndLargeText() {
+        assertFalse(compactSample(420, 1.0f));   // Cast1 at 1.0x
+        assertTrue(compactSample(250, 1.0f));    // the Pixel in landscape
+        assertTrue(compactSample(420, 1.5f));
+        assertTrue(compactSample(420, 2.0f));
+        assertFalse(compactSample(420, 1.3f));
+    }
+
+    @Test public void onlyATapInspectsARowNeverASwipe() {
+        assertTrue(isTap(3, 4, 16, 0, true));
+        assertFalse(isTap(0, 40, 16, 0, true));    // moved past the slop
+        assertFalse(isTap(0, 2, 16, 60, true));    // the list scrolled under the finger
+        assertFalse(isTap(0, 0, 16, 0, false));    // still settling from a fling
+        assertTrue(isTap(16, 0, 16, 0, true));     // on the slop edge
+    }
 }

@@ -201,4 +201,34 @@ final class ScreensaverPicker {
         for (int i = 0; i < id.length(); i++) { hash ^= id.charAt(i); hash *= 0x100000001b3L; }
         return hash;
     }
+
+    // Layout rules for the chooser at any text size (device acceptance round 2,
+    // docs/testing/2026-11-26-screensaver-list-cast1.md): names wrap at words, badges never squeeze them, actions wrap
+    // whole, and a swipe never inspects.
+
+    /** A row's badge sits beside the name only when the whole name fits on one line beside it; otherwise below it. */
+    static boolean badgeInline(int available, int nameWidth, int badgeWidth, int gap) {
+        return nameWidth + gap + badgeWidth <= available;
+    }
+
+    /**
+     * A wrapping row of controls: a child stays on the current line when it fits whole, or, for wrapping text
+     * (shrinkable), when at least minShrink is left for it; otherwise it starts a new line. The first child of a line
+     * always stays, so nothing is ever placed outside the width.
+     */
+    static boolean staysOnLine(int used, int width, int natural, boolean shrinkable, int minShrink, boolean lineEmpty) {
+        if (lineEmpty) return true;
+        int remaining = width - used;
+        return natural <= remaining || (shrinkable && remaining >= minShrink);
+    }
+
+    /** The detail pane's illustration is short when the pane is short or the text is large, so the actions stay in view. */
+    static boolean compactSample(int paneHeightDp, float fontScale) {
+        return paneHeightDp < 380 || fontScale >= 1.5f;
+    }
+
+    /** A touch on a row is a tap (inspect it) only when it neither moved past the slop nor scrolled the list. */
+    static boolean isTap(float dx, float dy, int slop, int scrolledPx, boolean listIdle) {
+        return listIdle && scrolledPx == 0 && dx * dx + dy * dy <= (float) slop * slop;
+    }
 }

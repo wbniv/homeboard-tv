@@ -2493,6 +2493,10 @@ public class MainActivity extends NativeDashboardActivity {
     private TextView screensaverCount;
     private View screensaverThumb;
     private String screensaverPaneEntry;
+    /** The current touch on a chooser row: where it went down, the list's scroll then, and whether it became a swipe. */
+    private float screensaverTouchX, screensaverTouchY;
+    private int screensaverTouchScroll;
+    private boolean screensaverTouchMoved;
     /** The chooser state at the last pause while it was open, saved only if Android recreates the Activity. */
     private ScreensaverPicker.State screensaverPausedPicker;
     /** The control to focus after a redraw, by tag; null focuses the browsed row. */
@@ -2913,7 +2917,8 @@ public class MainActivity extends NativeDashboardActivity {
         LinearLayout foot = new LinearLayout(this); foot.setGravity(Gravity.CENTER_VERTICAL);
         TextView count = muted("", 14); count.setSingleLine(true);
         foot.addView(count, new LinearLayout.LayoutParams(-2, -2));
-        TextView hint = muted(getString(R.string.hb_ss_hint), 13); hint.setPadding(dp(14), 0, 0, 0); hint.setMaxLines(2);
+        // Wraps in full at any text size: the footer is never cut (the list above takes what is left).
+        TextView hint = muted(getString(R.string.hb_ss_hint), 13); hint.setPadding(dp(14), 0, 0, 0); ScreensaverLayouts.wholeWords(hint);
         foot.addView(hint, new LinearLayout.LayoutParams(0, -2, 1));
         LinearLayout.LayoutParams footLp = new LinearLayout.LayoutParams(-1, -2); footLp.topMargin = dp(8); column.addView(foot, footLp);
 
@@ -2990,12 +2995,11 @@ public class MainActivity extends NativeDashboardActivity {
             glyph.setBackground(shape(paletteColors.raised, paletteColors.edge, 1));
             card.addView(glyph, new LinearLayout.LayoutParams(dp(44), dp(44)));
             LinearLayout copy = new LinearLayout(MainActivity.this); copy.setOrientation(LinearLayout.VERTICAL); copy.setPadding(dp(14), 0, 0, 0);
-            LinearLayout nameRow = new LinearLayout(MainActivity.this); nameRow.setGravity(Gravity.CENTER_VERTICAL);
+            // Name and badge: side by side only when the whole name fits beside the badge, else the badge goes below.
             TextView title = bold("", 19); title.setMaxLines(2); title.setEllipsize(android.text.TextUtils.TruncateAt.END);
-            nameRow.addView(title, new LinearLayout.LayoutParams(0, -2, 1));
+            ScreensaverLayouts.wholeWords(title);
             LinearLayout badgeBox = new LinearLayout(MainActivity.this); badgeBox.setGravity(Gravity.CENTER_VERTICAL);
-            nameRow.addView(badgeBox, new LinearLayout.LayoutParams(-2, -2));
-            copy.addView(nameRow);
+            copy.addView(new ScreensaverLayouts.NameBadge(MainActivity.this, title, badgeBox, dp(8)), new LinearLayout.LayoutParams(-1, -2));
             TextView status = muted("", 14); status.setSingleLine(true); status.setEllipsize(android.text.TextUtils.TruncateAt.END);
             copy.addView(status);
             card.addView(copy, new LinearLayout.LayoutParams(0, -2, 1));
@@ -3009,7 +3013,7 @@ public class MainActivity extends NativeDashboardActivity {
             card.setTag("card:" + entry.id);
             row.glyph.setText(entry.glyph);
             row.title.setText(entry.title(MainActivity.this));
-            row.badgeBox.removeAllViews();
+            row.badgeBox.removeAllViews(); row.badgeBox.setVisibility(View.GONE);
             ScreensaverPicker.Badge scope = badges.get(entry.id);
             StringBuilder spoken = new StringBuilder(entry.title(MainActivity.this));
             if (scope != null) {
@@ -3028,18 +3032,41 @@ public class MainActivity extends NativeDashboardActivity {
             spoken.append(", ").append(status.substring(2));
             card.setContentDescription(spoken);
             card.setOnFocusChangeListener((v, has) -> {
-                if (!has) return;
+                // Under touch only a tap inspects; a focus change during a swipe or scroll never does.
+                if (!has || v.isInTouchMode()) return;
                 int at = row.getBindingAdapterPosition();
                 if (at == androidx.recyclerview.widget.RecyclerView.NO_POSITION) return;
                 screensaverPicker.browsed = entry.id; screensaverPicker.browsedIndex = at;
                 if (!entry.id.equals(screensaverPaneEntry) && screensaverPane != null) drawScreensaverPane(screensaverPane, entry);
                 updateScreensaverCount();
             });
+            card.setOnTouchListener((v, event) -> {
+                androidx.recyclerview.widget.RecyclerView list = screensaverList;
+                if (event.getActionMasked() == android.view.MotionEvent.ACTION_DOWN) {
+                    screensaverTouchX = event.getRawX(); screensaverTouchY = event.getRawY();
+                    screensaverTouchScroll = list == null ? 0 : list.computeVerticalScrollOffset();
+                    screensaverTouchMoved = false;
+                } else if (event.getActionMasked() == android.view.MotionEvent.ACTION_MOVE || event.getActionMasked() == android.view.MotionEvent.ACTION_UP) {
+                    int slop = android.view.ViewConfiguration.get(MainActivity.this).getScaledTouchSlop();
+                    int scrolled = list == null ? 0 : Math.abs(list.computeVerticalScrollOffset() - screensaverTouchScroll);
+                    boolean idle = list == null || list.getScrollState() == androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
+                    if (!ScreensaverPicker.isTap(event.getRawX() - screensaverTouchX, event.getRawY() - screensaverTouchY, slop, scrolled, idle))
+                        screensaverTouchMoved = true;
+                } else if (event.getActionMasked() == android.view.MotionEvent.ACTION_CANCEL) screensaverTouchMoved = true;
+                return false;
+            });
             card.setOnClickListener(v -> {
+                if (v.isInTouchMode()) {
+                    // Touch: only a tap inspects the row; a swipe that ends on a row changes nothing.
+                    if (screensaverTouchMoved) return;
+                    screensaverPicker.browsed = entry.id; screensaverPicker.browsedIndex = row.getBindingAdapterPosition();
+                    if (screensaverPane != null) drawScreensaverPane(screensaverPane, entry);
+                    updateScreensaverCount();
+                    return;
+                }
+                // Remote: short OK enters the row's actions, launching nothing.
                 screensaverPicker.browsed = entry.id; screensaverPicker.browsedIndex = row.getBindingAdapterPosition();
-                // Touch: a tap inspects the row. Remote: short OK enters its actions, launching nothing.
-                if (v.isInTouchMode()) { if (screensaverPane != null) drawScreensaverPane(screensaverPane, entry); updateScreensaverCount(); }
-                else if (screensaverFirstAction != null) screensaverFirstAction.requestFocus();
+                if (screensaverFirstAction != null) screensaverFirstAction.requestFocus();
             });
             card.setOnKeyListener((v, key, event) -> {
                 int at = row.getBindingAdapterPosition();
@@ -3068,7 +3095,7 @@ public class MainActivity extends NativeDashboardActivity {
         }
     }
     private void addRowBadge(LinearLayout box, TextView badge) {
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, -2); lp.leftMargin = dp(8); box.addView(badge, lp);
+        badge.setSingleLine(true); box.addView(badge, new LinearLayout.LayoutParams(-2, -2)); box.setVisibility(View.VISIBLE);
     }
     /** Focuses row index, scrolling only enough to reveal it; a row not laid out yet is focused after the scroll. */
     private void focusScreensaverRow(int index) {
@@ -3166,10 +3193,12 @@ public class MainActivity extends NativeDashboardActivity {
         if (!entry.app() && (clock || settings.backgroundShowsClock)) {
             LinearLayout time = new LinearLayout(this); time.setOrientation(LinearLayout.VERTICAL);
             android.widget.TextClock hours = new android.widget.TextClock(this);
-            hours.setFormat12Hour("h:mm"); hours.setFormat24Hour("HH:mm"); hours.setTextSize(46); hours.setTextColor(0xE6FFFFFF);
+            // The illustration's clock is a picture of the screensaver, sized to its box in dp, not with the text scale.
+            boolean compact = screensaverCompactSample();
+            hours.setFormat12Hour("h:mm"); hours.setFormat24Hour("HH:mm"); hours.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, compact ? 34 : 46); hours.setTextColor(0xE6FFFFFF);
             android.widget.TextClock date = new android.widget.TextClock(this);
             date.setFormat12Hour(getString(R.string.date_format)); date.setFormat24Hour(getString(R.string.date_format));
-            date.setTextSize(15); date.setTextColor(0xB3FFFFFF);
+            date.setTextSize(android.util.TypedValue.COMPLEX_UNIT_DIP, compact ? 12 : 15); date.setTextColor(0xB3FFFFFF);
             time.addView(hours); time.addView(date);
             ClockFormat.apply(time, Config.load(this).clockFormat);
             FrameLayout.LayoutParams timeLp = new FrameLayout.LayoutParams(-2, -2, Gravity.CENTER_VERTICAL | Gravity.START);
@@ -3181,13 +3210,13 @@ public class MainActivity extends NativeDashboardActivity {
             tagLp.setMargins(0, 0, dp(10), dp(10)); sample.addView(tag, tagLp);
         }
         sample.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
-        pane.addView(sample, new LinearLayout.LayoutParams(-1, dp(130)));
+        pane.addView(sample, new LinearLayout.LayoutParams(-1, dp(screensaverCompactSample() ? 84 : 130)));
         TextView name = bold(entry.title(this), 21); name.setPadding(0, dp(8), 0, 0); pane.addView(name);
+        ScreensaverLayouts.wholeWords(name);
         TextView detail = muted(entry.missing() ? getString(R.string.hb_ss_missing_detail, ScreensaverRegistry.fallback().title(this))
-                : getString(entry.description), 16); pane.addView(detail);
+                : getString(entry.description), 16); ScreensaverLayouts.wholeWords(detail); pane.addView(detail);
         // Wraps, so large text never pushes the actions off a fixed row; the pane itself scrolls.
-        android.widget.GridLayout actions = new android.widget.GridLayout(this);
-        actions.setColumnCount(Math.max(1, (dashboardWidthPixels() < dp(900)) ? 2 : 3));
+        ScreensaverLayouts.Wrap actions = new ScreensaverLayouts.Wrap(this, dp(8), dp(8));
         EverywhereScreensaver.Status status = screensaverStatus;
         boolean inUse = entry.id.equals(chosenScreensaver().id);
         screensaverFirstAction = null;
@@ -3204,9 +3233,12 @@ public class MainActivity extends NativeDashboardActivity {
         LinearLayout.LayoutParams lineLp = new LinearLayout.LayoutParams(-1, dp(1)); lineLp.setMargins(0, dp(12), 0, dp(8));
         pane.addView(divider(), lineLp);
         pane.addView(bold(getString(R.string.hb_ss_when), 18));
-        LinearLayout onHome = new LinearLayout(this); onHome.setGravity(Gravity.CENTER_VERTICAL); onHome.setMinimumHeight(dp(46));
-        onHome.addView(bold(getString(R.string.hb_ss_on_home), 16), new LinearLayout.LayoutParams(dp(140), -2));
-        onHome.addView(text(screensaverStartsOnHome(status), 16), new LinearLayout.LayoutParams(0, -2, 1));
+        // Label, value and button wrap whole to new lines when the text is large or the pane narrow.
+        ScreensaverLayouts.Wrap onHome = new ScreensaverLayouts.Wrap(this, dp(14), dp(6)); onHome.setMinimumHeight(dp(46));
+        onHome.setPadding(0, dp(4), 0, dp(4));
+        onHome.addView(bold(getString(R.string.hb_ss_on_home), 16), new ViewGroup.MarginLayoutParams(-2, -2));
+        TextView onHomeValue = text(screensaverStartsOnHome(status), 16); ScreensaverLayouts.wholeWords(onHomeValue);
+        onHome.addShrinkable(onHomeValue, new ViewGroup.MarginLayoutParams(-2, -2));
         if (!status.managed) {
             // While Android is in charge Homeboard's own Home timer is off, so there is nothing to change here.
             // Home's choice is an app: Change opens When it starts alone, without a built-in's look options.
@@ -3216,18 +3248,29 @@ public class MainActivity extends NativeDashboardActivity {
             TextView change = infoButton(getString(R.string.hb_ss_change), chooserAction("act:change",
                     () -> openScreensaverOptions(optionsFor, "idle:" + settings.idleMinutes, whenOnly)));
             change.setTag("act:change"); change.setPadding(dp(18), 0, dp(18), 0); returnToRowOnLeft(change);
-            onHome.addView(change, new LinearLayout.LayoutParams(-2, dp(40)));
+            change.setMinHeight(dp(40)); change.setPadding(dp(18), dp(4), dp(18), dp(4));
+            onHome.addView(change, new ViewGroup.MarginLayoutParams(-2, -2));
         }
         pane.addView(onHome);
-        LinearLayout other = new LinearLayout(this); other.setGravity(Gravity.CENTER_VERTICAL); other.setMinimumHeight(dp(46));
-        other.addView(bold(getString(R.string.hb_ss_other_apps), 16), new LinearLayout.LayoutParams(dp(140), -2));
-        other.addView(muted(screensaverOtherApps(status), 15), new LinearLayout.LayoutParams(0, -2, 1));
+        ScreensaverLayouts.Wrap other = new ScreensaverLayouts.Wrap(this, dp(14), dp(6)); other.setMinimumHeight(dp(46));
+        other.setPadding(0, dp(4), 0, dp(4));
+        other.addView(bold(getString(R.string.hb_ss_other_apps), 16), new ViewGroup.MarginLayoutParams(-2, -2));
+        TextView otherValue = muted(screensaverOtherApps(status), 15); ScreensaverLayouts.wholeWords(otherValue);
+        other.addShrinkable(otherValue, new ViewGroup.MarginLayoutParams(-2, -2));
         TextView manage = infoButton(getString(status.managed ? R.string.hb_ss_this_tv_open : R.string.hb_ss_everywhere),
                 chooserAction("act:everywhere", () -> openEverywhere(entry.id)));
-        manage.setTag("act:everywhere"); manage.setPadding(dp(18), 0, dp(18), 0); returnToRowOnLeft(manage);
-        other.addView(manage, new LinearLayout.LayoutParams(-2, dp(40)));
+        manage.setTag("act:everywhere"); manage.setPadding(dp(18), dp(4), dp(18), dp(4)); manage.setMinHeight(dp(40)); returnToRowOnLeft(manage);
+        other.addView(manage, new ViewGroup.MarginLayoutParams(-2, -2));
         pane.addView(other);
-        if (screensaverAndroidFollowsOnPane(status)) pane.addView(muted(getString(R.string.hb_ss_android_follows), 14));
+        if (screensaverAndroidFollowsOnPane(status)) {
+            TextView follows = muted(getString(R.string.hb_ss_android_follows), 14); ScreensaverLayouts.wholeWords(follows); pane.addView(follows);
+        }
+    }
+    /** A short illustration when the detail pane is short or the text large (ScreensaverPicker.compactSample). */
+    private boolean screensaverCompactSample() {
+        float density = getResources().getDisplayMetrics().density;
+        int paneHeightDp = Math.round((Math.min(dp(760), dashboardHeightPixels() - dp(40)) - dp(80)) / density);
+        return ScreensaverPicker.compactSample(paneHeightDp, getResources().getConfiguration().fontScale);
     }
     /**
      * Opens an app's own settings screen. Home pauses, which closes its menus, so the chooser comes back on resume on
@@ -3257,10 +3300,10 @@ public class MainActivity extends NativeDashboardActivity {
         });
     }
     private void addScreensaverAction(ViewGroup actions, String label, String tag, Runnable action) {
-        TextView button = infoButton(label, chooserAction(tag, action)); button.setTag(tag); button.setPadding(dp(18), 0, dp(18), 0);
-        ViewGroup.MarginLayoutParams lp = actions instanceof android.widget.GridLayout ? new android.widget.GridLayout.LayoutParams() : new LinearLayout.LayoutParams(-2, dp(42));
-        lp.width = -2; lp.height = dp(42); lp.rightMargin = dp(8); lp.bottomMargin = dp(8);
-        actions.addView(button, lp);
+        // Whole buttons that grow with the text: a long label wraps at words inside its button, never clipped.
+        TextView button = infoButton(label, chooserAction(tag, action)); button.setTag(tag); button.setPadding(dp(18), dp(6), dp(18), dp(6));
+        button.setMinHeight(dp(42)); ScreensaverLayouts.wholeWords(button);
+        actions.addView(button, new ViewGroup.MarginLayoutParams(-2, -2));
         returnToRowOnLeft(button);
         if (screensaverFirstAction == null) screensaverFirstAction = button;
     }
