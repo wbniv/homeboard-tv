@@ -142,3 +142,33 @@ at another app. An app without these keys behaves as it does today: listed, no P
     **Open ‹app› settings** not testable until WF Clocks declares a `settingsActivity` (the
     WorldFoundry chooser). Frames, jobs and the final Cast1 state are in the
     [Cast1 record](../testing/2026-11-26-screensaver-stage5-cast1.md).
+
+    **Open ‹app› settings**, rerun 2026‑11‑27 on Homeboard 0.1.177 (sha256 `6216656b…`) with
+    WF Clocks Release from WorldFoundry `a66b87250` (sha256 `9b5fdec3…`, install job
+    `J‑a4bcdbe3475c`):
+
+    ```
+    $ task chromecast:check DEVICE=chromecast-test-01 APP=homeboard-tv \
+        APK=artifacts/deployments/0.1.177/homeboard.apk RECIPE=dev/device/chooser-cast1-open-settings.json
+    Accepted J-b7b0107aa62e: queued; check
+    J-b7b0107aa62e: completed {"error": null, "health": "ready"}
+      04-right3            foreground net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity
+      05-after-ok-chooser  foreground org.worldfoundry.game.clocks/org.worldfoundry.screensaver.ScreensaverChooserActivity
+                           "16 choices" · no row marked · "Nothing is chosen, so the screensaver picks one at random…"
+      07-chooser-saved     Tide Harbour  [Saved] [Preview] [Undo]
+                           "Saved. The screensaver shows Tide Harbour from its next start. Before: one at random."
+      08-back-in-homeboard foreground …tvhome.MainActivity · WF Clocks entry, Open WF Clocks settings focused
+
+    $ task chromecast:check … RECIPE=dev/device/chooser-cast1-preview.json
+    Accepted J-0cca79e86613
+    J-0cca79e86613: completed {"error": null, "health": "ready"}
+    17:58:48.474 I HomeboardScreensaver: screensaver started mode=preview entry=org.worldfoundry.game.clocks/…ClocksDreamService
+    17:59:19.465 I HomeboardScreensaver: screensaver stopped mode=preview entry=org.worldfoundry.game.clocks/…ClocksDreamService
+      (frames 02–03: Tide Harbour, the harbour clock tower and tide gauge)
+    ```
+
+    **PASS (2026‑11‑27):** WF Clocks shows **Use this screensaver · Preview · Open WF Clocks
+    settings**; Seahorse Grid shows only **Use everywhere…** (no settings button, exploratory job
+    `J‑40be0dd4e61f`). **Open WF Clocks settings** opens the chooser, OK saves Tide Harbour, Back
+    returns to Homeboard on the WF Clocks entry, and Homeboard's Preview plays Tide Harbour.
+    With the earlier results, Verification 3 **PASS**.

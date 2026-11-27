@@ -1,0 +1,127 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 41,
+ "panel": "require-hidden",
+ "foreground": "observe",
+ "input_script": [
+  {
+   "at": 2,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 4,
+   "key": "MENU",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 6,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 9,
+   "capture": "r00"
+  },
+  {
+   "at": 10,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 11.5,
+   "capture": "r01"
+  },
+  {
+   "at": 13,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 14.5,
+   "capture": "r02"
+  },
+  {
+   "at": 16,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 17.5,
+   "capture": "r03"
+  },
+  {
+   "at": 19,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 20.5,
+   "capture": "r04"
+  },
+  {
+   "at": 22,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 23.5,
+   "capture": "r05"
+  },
+  {
+   "at": 25,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 26.5,
+   "capture": "r06"
+  },
+  {
+   "at": 28,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 29.5,
+   "capture": "r07"
+  },
+  {
+   "at": 31,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 32.5,
+   "capture": "r08"
+  },
+  {
+   "at": 34,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 36,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 39,
+   "capture": "99-home"
+  }
+ ]
+}

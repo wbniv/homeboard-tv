@@ -1,0 +1,185 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 162,
+ "panel": "require-hidden",
+ "foreground": "observe",
+ "input_script": [
+  {
+   "at": 2,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 4,
+   "key": "MENU",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 6,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 9,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 10,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 11,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 12,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 13,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 14,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 15,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 18,
+   "capture": "01-wfclocks-row"
+  },
+  {
+   "at": 28,
+   "key": "DPAD_RIGHT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 30,
+   "capture": "02-right1"
+  },
+  {
+   "at": 40,
+   "key": "DPAD_RIGHT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 42,
+   "capture": "03-right2"
+  },
+  {
+   "at": 52,
+   "key": "DPAD_RIGHT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 54,
+   "capture": "04-right3"
+  },
+  {
+   "at": 64,
+   "key": "DPAD_CENTER",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 69,
+   "capture": "05-after-ok-chooser"
+  },
+  {
+   "at": 80,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 82,
+   "capture": "06-chooser-down"
+  },
+  {
+   "at": 92,
+   "key": "DPAD_CENTER",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 95,
+   "capture": "07-chooser-saved"
+  },
+  {
+   "at": 106,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 110,
+   "capture": "08-back-in-homeboard"
+  },
+  {
+   "at": 120,
+   "key": "DPAD_LEFT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 122,
+   "capture": "09-left"
+  },
+  {
+   "at": 132,
+   "key": "DPAD_LEFT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 134,
+   "capture": "10-left2"
+  },
+  {
+   "at": 144,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 147,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 150,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 154,
+   "capture": "99-end"
+  }
+ ]
+}

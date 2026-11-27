@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/89d09cd) | test: Stage 5 Verification 3 on Cast1 passes; the first FAIL read the wrong row |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/c65f49e) | test: Stage 5 on Cast1 fails at discovery; WF Clocks listed without its preview screen |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/79c4d9f) | docs: no remote has a screensaver button |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/d69822e) | docs: Stage 5 built and merged; awaiting the Cast1 check |
@@ -12,6 +13,11 @@
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/12e5c64) | docs: define the screensaver companion app contract; Stage 5 is blocked |
 
 <!--history-meta v1
+89d09cd	author	Will Norris
+89d09cd	added	41
+89d09cd	deleted	8
+89d09cd	files	1
+89d09cd	body	The 0.1.165 run read page 2's 'Clock' as WF Clocks. That row is the old\nrelease Homeboard's ClockDream (no preview screen); WF Clocks' Dream is\nlabelled 'WF Clocks' and sorts onto page 3. Found in three device runs:\nno 'preview screen dropped' line (J-f0c1d8cc4a3a), Clocks' metadata\ncarries PREVIEW_ACTIVITY (J-44c1d84a80ab), and page 3 lists WF Clocks\nwith Preview (J-4f3caffeca1e).\n\nOn 0.1.171: Preview plays WF Clocks' own screen (player=app,\nJ-4f2448999362); chosen for Home with a 1 min timer, Home idle plays it\n(mode=idle, J-7aa301eabf78); a 1 min kitchen timer rings over it and\nHomeboard returns with Timers & alarms (reason=alarm, J-a7f7ee6a393a).\nOpen app settings stays untestable (no settingsActivity yet). Cast1 left\nwith the built-in Clock, Android decides, Android's WF Clocks at 10 min.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 c65f49e	author	Will Norris
 c65f49e	added	21
 c65f49e	deleted	0
