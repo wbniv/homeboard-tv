@@ -1,6 +1,6 @@
 # Android app widgets on Homeboard
 
-Status: **developer-grant binding/rendering proved on Cast1 and Cast2**, November 19, 2026. Both lack the ordinary binding-consent screen; the explicitly authorized disposable-host experiment succeeded with a temporary developer grant and verified grant/ID restoration. Homeboard host integration is implemented in 0.1.95 and installed on both TVs. Cast1 normal-menu fixture rendering/expansion and Cast2 isolated host/phone-Undo assertions passed; a real Breezy placeholder was added/expanded/undone on Cast2. Broader provider/mobile/resource checks remain open. See [measured results and captures](../testing/2026-11-19-android-app-widgets.md). Pixel's resolver/provider census passed (172 components); tablet remains unverified.
+Status: **host accepted on Cast1 (0.1.179); two sizing defects open on Cast2's native 4K renderer**, November 27, 2026. Cast1 passes lifecycle, survivor, provider update/reinstall, two configured instances, app return and the resource budgets; Cast2 passes the resource budgets but fails the minimum-span and collapsed-placeholder checks. 24-hour exposure, Pixel/tablet and real-provider configured data are separate items. See the [Close-out](#close-out--november-27) and the [testing record](../testing/2026-11-19-android-app-widgets.md).
 
 Host widgets supplied by other installed Android apps alongside Homeboard's own
 Groceries, Timers & alarms, Rain, Calendar, Air quality, Favorites and World clock. Start with one working
@@ -38,7 +38,7 @@ sequenceDiagram
     H->>A: Release owned widget IDs
     C->>H: Run fixed cleanup receiver
     C->>A: Restore original grant and verify
-    C->>C: Restore previous foreground; export evidence
+    C->>C: Restore previous foreground, export evidence
 ```
 
 A normal ungranted baseline must fail to bind the separate provider. Success in
@@ -735,7 +735,7 @@ person or a device that is not reachable, and what is blocked outside this host.
 | Provider update, removal and reinstall; relaunch in a new process | **Cast1 device check**: survivor probe across separate jobs, fixture v2→v3 install, coordinator uninstall and reinstall | A real package change is the only honest test of the platform dropping a binding. |
 | Zero/one/four views and 50 cycles | **Cast1 device check**: resource probe under coordinator `app:diagnostics` (package PSS timeline) | Coordinator-supplied PSS; the probe only times the phases. Provider-process PSS is not package-scoped to Homeboard, so it stays a stated gap. |
 | Required configuration twice, Open app and return on Cast1 | **Cast1 owned Remote session** through ordinary menus | Cross-app activity transitions are outside a `check` job's foreground guard. |
-| Cast2 repeat | **Needs Will's go-ahead** | Cast2 rule. |
+| Cast2 repeat | **Cast2 device check** when the coordinator shows it idle | Will relaxed the Cast2 rule on November 27. |
 | 24-hour exposure | **Own TODO item** | Coordinator jobs end at 900 s at most; a 24-hour on-screen session is a coordinator capability and a decision to hold Cast1 for a day. |
 | Pixel and tablet hosting | **Own TODO item** | Both unreachable on November 27 (Pixel wireless debugging off, tablet battery 2%); each needs a person's step first. |
 | Breezy Weather configured data | **Watch item** | 6.2.2's Add location is not reachable with the TV remote (J‑5c70d8486393) and Will declined a mouse; recheck on a new Breezy release. |
@@ -752,17 +752,17 @@ observable; the required-configuration widget is unchanged.
 
 ```mermaid
 flowchart TD
-    S[Seed isolated 50% dashboard] --> A[Add fixture twice: distinct IDs render]
-    A --> U[Legal resize: provider reports new size, update count rises]
+    S[Seed isolated 50% dashboard] --> A["Add fixture twice: distinct IDs render"]
+    A --> U["Legal resize: provider reports new size, update count rises"]
     U --> X[Expand, Interact, OK on Press, Back, Back]
-    X --> R[Illegal 1×1 resize rejected; layout unchanged]
-    R --> G[Grid 24×24: Too small placeholder, same ID] --> G2[Grid restored: live view returns]
-    G2 --> L[Delete one binding: Widget unavailable; neighbour unaffected]
+    X --> R["Illegal 1×1 resize rejected, layout unchanged"]
+    R --> G["Grid 24×24: Too small placeholder, same ID"] --> G2["Grid restored: live view returns"]
+    G2 --> L["Delete one binding: Widget unavailable, neighbour unaffected"]
     L --> RU[Remove unavailable tile, Undo, Remove]
-    RU --> C[Recreate activity: same ID renders]
-    C --> D[Remove, Undo same ID, Remove, 20 later edits evict history: ID released]
+    RU --> C["Recreate activity: same ID renders"]
+    C --> D["Remove, Undo same ID, Remove, 20 later edits evict history: ID released"]
     D --> F[Five instances: four live views, one Open placeholder]
-    F --> Z[Release all probe IDs; household preferences unchanged]
+    F --> Z["Release all probe IDs, household preferences unchanged"]
 ```
 
 ```mermaid
@@ -775,9 +775,27 @@ sequenceDiagram
     C->>C: Install fixture 0.0.3 over 0.0.2
     O->>O: New launch: same ID, provider 0.0.3 content
     C->>C: Uninstall fixture, reinstall 0.0.3
-    N->>N: Tile shows Widget unavailable; Set up again
-    N->>N: New ID, same key and saved size; release all
+    N->>N: Tile shows Widget unavailable, then Set up again
+    N->>N: New ID, same key and saved size, release all
 ```
+
+### Close-out results
+
+| Check | Cast1 (ordinary renderer) | Cast2 (native 4K) |
+|---|---|---|
+| Lifecycle probe | PASS · J‑1df41b2106dd | FAIL at the grid step · J‑ad7a532771e6 |
+| New process, uninstall, Set up again | PASS · J‑5ae4f9261f26, J‑db56eabc4e8f, J‑546da9bc8853 | not run |
+| Provider update in place (0.0.3 → 0.0.4) | PASS · J‑5174b5e17cdc, J‑76a0ae41efe7 | not run |
+| Two configured instances, Open app and return | PASS · Remote J‑919da3fc0ebb | passed on 0.1.97 (J‑5201a9261061) |
+| Four views, 50 cycles (coordinator PSS) | PASS: +5.1 MiB, no retained growth · J‑613ee0faa715 | PASS: +8.6 MiB, no retained growth · J‑4fa6f903aca7 |
+
+Cast2 defects, both in the host's sizing, recorded in the
+[testing record](../testing/2026-11-19-android-app-widgets.md#cast2--native-4k-renderer--01179):
+the minimum span computed for the native surface gives the provider 168×78 dp against
+its 240×100 dp minimum, and when the provider area collapses to zero height the
+**Too small** placeholder never appears because it lives inside that zero-height view.
+The second is a renderer-independent code path; the first needs the dashboard root's
+pixel size, density and the provider view's measured size logged before a fix.
 
 ## References
 

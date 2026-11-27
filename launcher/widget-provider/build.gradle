@@ -2,6 +2,6 @@ plugins { id 'com.android.application' }
 android {
  namespace 'net.biohack.homeboard.widgetprovider'
  compileSdk 34
- defaultConfig { applicationId 'net.biohack.homeboard.widgetprovider'; minSdk 26; targetSdk 34; versionCode 3; versionName '0.0.3' }
+ defaultConfig { applicationId 'net.biohack.homeboard.widgetprovider'; minSdk 26; targetSdk 34; versionCode 4; versionName '0.0.4' }
  compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
 }

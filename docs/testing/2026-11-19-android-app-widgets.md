@@ -1,16 +1,15 @@
 # Android app widgets: implementation and testing
 
-**Current:** development build **0.1.97** is installed and hash-verified on Cast2;
-Cast1 still has **0.1.95**, with 97 queued pending reconnection. Both have one-time
-widget binding enabled through the coordinator. Android 14's configuration-launch
-fix passed controlled Save/Cancel and real Calendar setup on Cast2 in
-J‑5201a9261061. Both additions were undone and Cast2 was released for another tester.
-Cast1 normal menus rendered/expanded the fixture; Cast2 passed isolated host assertions
-and ordinary-menu Breezy placeholder Add/expand/Undo. All 525 JVM tests, lint and
-Chromium/WebKit checks passed. The final setup/review explanations are visually
-verified. Pixel 94 ordinary entry passed; local mobile widgets, populated provider
-data, resource budgets and 24-hour exposure remain open. Earlier census
-and experiment results below are historical stages, not the current feature status.
+**Current (27 November):** both TVs run **0.1.179** with fixture provider **0.0.4**.
+On Cast1 the full lifecycle, survivor (new process, provider update, uninstall and Set up
+again), two configured instances, Open app and return, and the resource budgets all
+pass. On Cast2's native 4K renderer the resource budgets pass but the lifecycle probe
+fails: the minimum span hands the provider less than its declared minimum, and a
+collapsed provider area shows no **Too small** placeholder. Still open: those two
+defects, 24-hour exposure, Pixel and tablet hosting, and configured data from the real
+providers. See [Close-out on Cast1](#close-out-on-cast1--01179--27-november) and the
+[verification record](#verification-record--27-november). Everything above the
+close-out is historical.
 
 
 November 19, 2026. **The developer-grant route successfully bound and rendered a separate app’s Android widget on both Cast1 and Cast2.** Both TVs still lack the ordinary binding-consent screen. At that experiment stage, product integration was still pending; those results came from the disposable host/provider. The current implementation and acceptance results follow below.
@@ -637,3 +636,226 @@ artifacts in the session evidence):
   `remote-stop` finished coordinator cleanup.
 
 ![Two independently configured instances on Cast1, 0.1.179](2026-11-19-android-app-widgets/v179-cast1-two-configured.png)
+
+### Provider update in place · Cast1
+
+A second fixture build, **0.0.4** (0.0.3 with only the version raised, same signing key
+`605ba215…`, SHA-256 `7d395702267a0e42999d48a53d4b2eff727e8f5700875253ffb5939102a3412b`),
+replaced 0.0.3 over a kept binding:
+
+| Step | Job | Result |
+|---|---|---|
+| survivor-keep on 0.0.3 | J‑5174b5e17cdc | ID 18 bound, `Updates 2`, PID 11441 |
+| Install 0.0.4 over 0.0.3 | J‑3cfe3ca7cd5c | installed hash verified (before: 0.0.3's hash); launcher continuation `plugin-error`, recovery J‑6720ccc11290 ready |
+| survivor-reopen | J‑76a0ae41efe7 | **PASS**: same ID 18 renders, provider 0.0.4, `Updates 3`, PID 12392 |
+| Release the kept binding | J‑4dc2da849e60 | the reinstalled mode's failure path, used as cleanup: it waited for **Widget unavailable**, which never came because the binding was still valid, then released every probe ID (`idsAfterRelease 0`) and cleared the survivor preferences |
+
+### Resource budget · Cast1
+
+Interactive `RECORD=false` job **J‑613ee0faa715** launched the resource probe, and the
+coordinator's `input:sample` read Homeboard's PID and total PSS (`dumpsys meminfo`) every
+20 s. The PID stayed 10331 throughout. Phase times come from the probe's own log lines in
+each sample's logcat tail; the probe's self-measured PSS is logged too but is not used for
+the verdict.
+
+| Phase (60 s each unless noted) | Coordinator PSS, KiB | Views (meminfo) |
+|---|---|---|
+| Zero Android views, after start-up | 65,324 · 65,360 | 11 |
+| One view | 70,712 · 69,524 · 69,564 | 28 |
+| Four views | 74,904 · 70,520 · 70,400 | 52 |
+| 50 expand/restore cycles (59 s) | 79,524 · 65,397 | 124 · 146 |
+| 60 s after the cycles, four views still live | 68,184 · 61,908 · 59,448 | 144 · 52 · 52 |
+| Probe IDs released | 59,202 … 59,219 (six samples) | 52 |
+
+Against the plan's proposed budgets: four lightweight views add about **5.1 MiB** over
+zero (settled 70,450 against 65,340; budget 64 MiB), **PASS**. After 50 cycles the
+sustained figure is **lower** than before them (59,448 against 70,450) and the view count
+returns to the pre-cycle 52, so there is no retained growth (budget 16 MiB), **PASS**. No
+crash, restart or ANR: one PID across all 20 samples. Not measured: the provider process's
+own PSS (the sample is scoped to the registered app) and provider wakeups; the zero-view
+baseline is the probe's seeded empty dashboard, not the household one.
+
+### Cast2 · native 4K renderer · 0.1.179
+
+Cast2 was idle and unreserved, which Will's updated rule allows. It already had 0.1.179
+(installed by the Native 4K session's own probe run, which also passed the older
+AndroidWidgetProbeActivity on the native surface). The fixture was moved from 0.0.2 to
+0.0.4 the same way as on Cast1: uninstall (removed for users 0 and 10, verified absent),
+then install J‑a287e4f12311 (hash verified; launcher continuation `plugin-error`, recovery
+J‑2fa72aba4e45 ready). 0.0.2 cannot be put back because its signing key is gone; 0.0.4
+keeps the **Widget bound across apps** text the other probes look for.
+
+Lifecycle probe **J‑ad7a532771e6**: **FAIL** at the grid step.
+
+```text
+{"pid":28045,"idA":5,"idB":6,"minimumSpan":"3x3","grid":"12x8",
+ "beforeResize":"Widget bound across apps · id 5 Updates 2 · 168×78 dp · Presses 0 …",
+ "afterResize":"Widget bound across apps · id 5 Updates 3 · 318×78 dp · Presses 0 …",
+ "afterPress":"Widget bound across apps · id 5 Updates 5 · 603×357 dp · Presses 1 …",
+ "illegalResize":"Size not supported at this grid setting. Hold OK to resize, or change the Home grid.",
+ "idsAfterRelease":0,"status":"fail","mode":"lifecycle",
+ "detail":"java.lang.IllegalStateException: Timed out waiting for text \"Size not supported at this grid setting. Hold OK to resize, or change the Home grid.\"",
+ "homeboardVersion":"0.1.179","provider":"0.0.4"}
+```
+
+Passed before the failure: two instances, size response, Interact with Press and nested
+Back, illegal 1×1 rejection. Two defects are visible:
+
+1. **The minimum span is too small under the native renderer.** At 12×8 the host chose
+   3×3 as the fixture's minimum, but Android reported **168×78 dp** to the provider, below
+   its declared 240×100 dp minimum. On Cast1 the same grid gave 4×4 and 243×128 dp. The
+   host's grid arithmetic (`androidGridWidth/Height` and `contentWidth/Height`) and the
+   size the provider view actually receives disagree on the native surface. Cause not yet
+   established; the missing evidence is the dashboard root's pixel size, the density and
+   the provider view's measured pixels at that moment, which the probe does not yet log.
+2. **No "Too small" placeholder when the provider area collapses.** At 24×24 the tiles
+   kept only their label row (capture below); the provider area had no height, and
+   `SizedView.size()` returns early for a zero width or height, so the placeholder that
+   lives inside that view never appears. This code path is renderer-independent; Cast1's
+   24×24 tiles still had some height, which is why it passed there.
+
+![Cast2 at 24×24: label-only tiles, no Too small placeholder](2026-11-19-android-app-widgets/v179-cast2-collapsed-tiles.png)
+
+The failure path released every probe ID. Registration was restored to `MainActivity`.
+
+Resource probe on Cast2, interactive job **J‑4fa6f903aca7**, same method (PID 28554
+throughout, probe reported pass and released its IDs):
+
+| Phase | Coordinator PSS, KiB | Views |
+|---|---|---|
+| Zero | 68,252 · 74,709 | 13 |
+| One | 83,212 · 78,084 · 77,976 | 30 |
+| Four | 87,092 · 83,524 · 83,368 | 54 |
+| 50 cycles | 89,575 · 90,475 · 91,455 | 74 · 74 · 108 |
+| 60 s after, four views live | 85,311 · 83,051 · 73,810 | 54 |
+| Released | 74,046 … 74,169 (five samples) | 54 |
+
+Four views add about **8.6 MiB** (83,450 against 74,709), and the post-cycle figure
+returns below the four-view level with the view count back to 54: both budgets **PASS**
+on the native surface. Caveat: defect 1 above means these Cast2 views ran at the
+too-small 3×3 span, so they are smaller than a correct minimum would make them.
+
+## Verification record · 27 November
+
+Steps verbatim from the plan; evidence and verdict below each.
+
+1. Run `task chromecast:version`, `task chromecast:devices`,
+   `task chromecast:support DEVICE=chromecast-test-01`,
+   `task chromecast:support DEVICE=chromecast-test-02` and `task chromecast:queue`.
+   Expected: actual support identified for passive census, expected cross-app
+   configuration, install, recording, profile and cleanup. Record missing support.
+
+    ```text
+    Coordinator: 0.1.245 (0d168f4c) · This client: 0.1.245 (af22a5cd)
+    ▭ chromecast-test-01: ready; Chromecast HD; Android 14
+    ▭ chromecast-test-02: ready; Chromecast; Android 14
+    ▯ phone-pixel-8-pro: Coordinator control unavailable … last connect device-not-found-on-network
+    ▢ tablet-lenovo-tab-p11-pro-19a57145: recovery-required · device unreachable … Last battery 2%
+    support cast1/cast2: install, uninstall-package, check, record, profile, app-diagnostics, tv-remote, capture: ready
+    queue: chromecast-test-01 Idle · chromecast-test-02 Idle
+    ```
+
+    **PASS** (support identified). Gaps recorded: no job longer than 900 s for check/profile and 7,200 s for an interactive RECORD=false session, so no 24-hour exposure; app-diagnostics is capped at 60 s; PSS is package-scoped (no provider-process PSS); Pixel and tablet unreachable.
+
+2. Run supported passive census jobs, watch and export each. If unavailable,
+   use the stage-0 diagnostic activity through a complete supported job. Expected:
+   typed provider list, package versions and binding resolver result for each TV;
+   apply the stop criteria. Merely listing packages is not a provider census.
+
+    ```text
+    Historical: Cast1 census (census-v1), Cast2 census J‑bb6885e6e0b4 (17 providers). Not rerun.
+    ```
+
+    **PASS** (historical, stop criteria applied: no consent UI on either TV, developer-grant route authorized).
+
+3. Run `task check`, `task build`, `task bundle` and `task widget-fixture`
+   (deliverable). Expected: unit tests/lint/packaging and separate fixture APK pass.
+   Include ownership failure/recovery, retained-ID GC, unknown-key/schema and
+   browser-forged-ID tests. Never infer device rendering from these tests.
+
+    ```text
+    task check on a clean worktree of 3deef1b: calendar 7 OK, cleanup 71 OK, deployment 5 OK,
+    :app:testDebugUnitTest 745 tests, 0 failures, 0 errors; :app:lintDebug BUILD SUCCESSFUL
+    task build via task deploy (0.1.179); widget-provider assembleDebug + lintDebug 0.0.3/0.0.4 built
+    task bundle: not rerun this pass (passed on 0.1.95)
+    ```
+
+    **PASS** for check/build/fixture; bundle not rerun.
+
+4. Run `task android-widgets:plan-check` (delivered by this revision). Expected:
+   standalone HTML screens render at 1440×900, same-basename PNGs exist, no external
+   assets/errors/overflow, bundle within the size limit. Then `task md --
+   docs/plans/2026-11-19-android-app-widgets.md`; inspect flow, state and sequence
+   diagrams and the embedded mockups visually.
+
+    ```text
+    task android-widgets:plan-check
+    PASS index/picker/expanded/recovery/phone: 1440x900, inline assets, no overflow/errors, PNG captured
+    PASS bundle size: 738009 bytes
+    task md -- docs/plans/2026-11-19-android-app-widgets.md → no mermaid fallback after fixing three ';' in diagram labels
+    ```
+
+    **PASS**
+
+5. Install/register the frozen fixture and candidate APKs through the coordinator's
+   supported install jobs, recording hashes; run `task deploy` for Homeboard after
+   merging intended feature work and comparing all worktree version codes.
+   Expected: one incremented APK, identical bytes submitted to both TVs. Watch
+   each job and export evidence; distinguish installed from foreground-verified.
+
+    ```text
+    0.1.179 SHA-256 55c83d05… installed: Cast1 J‑f52d02c33582 (this pass), Cast2 by the Native 4K session's check (installed_sha256 55c83d05…).
+    Fixture 0.0.3 1ceef112… Cast1 J‑5935f4615a5e; 0.0.4 7d395702… Cast1 J‑3cfe3ca7cd5c, Cast2 J‑a287e4f12311 (hash verified; launcher continuation plugin-error, recovered)
+    ```
+
+    **PASS** (installed). Pixel/tablet not installed: unreachable.
+
+6. Submit the reviewed native recipe at `dev/device/android-widgets-check.json`
+   (deliverable) on Cast1, then Cast2. Expected: setup success/denial/cancellation,
+   two independent instances, full-screen/app-return restoration, illegal-size
+   rejection, global-grid placeholder, Remove/Undo/restart and provider loss
+   match the acceptance table. Recipe must declare expected system/provider
+   transitions; use an owned Remote session if automated cross-app work is not
+   supported. Capture both ordinary and failure states.
+
+    ```text
+    Cast1: lifecycle J‑1df41b2106dd pass; survivor J‑5ae4f9261f26 / J‑db56eabc4e8f / J‑546da9bc8853 pass; update J‑5174b5e17cdc / J‑76a0ae41efe7 pass; Remote J‑919da3fc0ebb (two configured instances, Open app and return, Undo) pass.
+    Cast2: lifecycle J‑ad7a532771e6 FAIL at the grid placeholder; minimum span gives the provider 168×78 dp
+    ```
+
+    **FAIL** overall: Cast1 PASS; Cast2 FAIL (two defects, see Cast2 section). Denial: not testable (no consent screen on either TV).
+
+7. Run `task android-widgets:phone-check` (deliverable). Expected: host-backed tile
+   representation, legal resize, lost-draft prevention, Cancel/Update TV/Undo and
+   forged-ID rejection pass. Then use supported coordinator jobs on Pixel/tablet
+   for local launch/touch/configuration acceptance; report either result or pending.
+
+    ```text
+    task android-widgets:phone-check passed on 0.1.94 (Chromium and WebKit); not rerun. Pixel/tablet: unreachable.
+    ```
+
+    **PENDING**: browser PASS (historical); mobile not run.
+
+8. Use coordinator profile jobs for the zero/one/four configurations and the
+   50-cycle/24-hour scenarios above. Record each actual profile command/recipe and
+   its supported metrics before running. Expected: measured budgets pass; missing
+   PSS/wakeup support remains an explicit verification gap. Do not replace it
+   with host `ps`, an unsupported shell recipe or guessed numbers.
+
+    ```text
+    Cast1 J‑613ee0faa715: zero 65,340 → four 70,450 KiB; after 50 cycles 59,448 KiB; views 52 → 146 → 52
+    Cast2 J‑4fa6f903aca7: zero 74,709 → four 83,450 KiB; after 50 cycles 73,810 KiB; views 54 → 108 → 54
+    ```
+
+    **PASS** for the zero/one/four and 50-cycle budgets on both TVs. 24-hour exposure NOT RUN (coordinator limit). Provider PSS and wakeups not measured.
+
+9. Run `task guide` after updating the guide sources. Expected: generated print PDF
+   and guides explain local provider installation, setup, expansion, removal/Undo
+   and verified compatibility. Inspect page boundaries and translated controls.
+
+    ```text
+    task guide passed on 0.1.95 (two A4 pages inspected). Not rerun; no guide source changed in this pass.
+    ```
+
+    **PASS** (historical).
+
