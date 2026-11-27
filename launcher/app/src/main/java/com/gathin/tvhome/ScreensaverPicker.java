@@ -124,6 +124,16 @@ final class ScreensaverPicker {
         return Collections.unmodifiableList(out);
     }
 
+    /**
+     * Where focus goes after Use: the first action the entry still offers once it is the saved choice (Preview on a
+     * built-in or on an app with its own preview screen, the settings link on an Android-only app), or null for its
+     * row. Use itself is gone after the redraw, so its own tag would leave focus nowhere to land.
+     */
+    static String focusAfterUse(ScreensaverRegistry.Entry entry, boolean managed) {
+        List<Action> left = actions(entry, managed, true);
+        return left.isEmpty() ? null : left.get(0).tag;
+    }
+
     /** The saved-choice badge on a row; the focus ring is separate and means only "browsing this". */
     enum Badge { IN_USE, ON_HOME, IN_OTHER_APPS }
 

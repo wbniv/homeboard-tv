@@ -134,6 +134,14 @@ public class ScreensaverPickerTest {
             if (e.app() && !e.playsOnHome()) assertFalse(e.id, actions(e, false, false).contains(Action.PREVIEW));
     }
 
+    @Test public void afterUseFocusGoesToTheFirstActionLeftNotTheVanishedUse() {
+        // Cast1, 2026-11-27: after Use on WF Clocks focus fell to the row, while a built-in kept Preview.
+        assertEquals("act:preview", focusAfterUse(entry(BACKGROUND), false));
+        assertEquals("act:preview", focusAfterUse(entry(WF_CLOCKS), false));
+        assertEquals("act:settings", focusAfterUse(entry(AERIAL), true));   // managed: Use applied everywhere
+        assertNull(focusAfterUse(entry(AMBIENT), true));                    // nothing left: its row
+    }
+
     @Test public void actionTagsMatchTheControlsTheyFocus() {
         assertEquals("act:use", Action.USE.tag);
         assertEquals("act:use", Action.EVERYWHERE.tag);

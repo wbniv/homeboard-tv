@@ -3194,7 +3194,7 @@ public class MainActivity extends NativeDashboardActivity {
         for (ScreensaverPicker.Action action : ScreensaverPicker.actions(entry, status.managed, inUse)) {
             switch (action) {
                 case EVERYWHERE: addScreensaverAction(actions, getString(R.string.hb_ss_everywhere), action.tag, () -> openEverywhere(entry.id)); break;
-                case USE: addScreensaverAction(actions, getString(R.string.hb_ss_use), action.tag, () -> useScreensaver(entry, entry.app() ? "act:use" : "act:preview")); break;
+                case USE: addScreensaverAction(actions, getString(R.string.hb_ss_use), action.tag, () -> useScreensaver(entry, ScreensaverPicker.focusAfterUse(entry, status.managed))); break;
                 case PREVIEW: addScreensaverAction(actions, getString(R.string.hb_ss_preview), action.tag, () -> previewScreensaver(entry, false)); break;
                 case OPTIONS: addScreensaverAction(actions, getString(R.string.hb_ss_options), action.tag, () -> openScreensaverOptions(entry.id, null)); break;
                 case SETTINGS: addScreensaverAction(actions, getString(R.string.hb_ss_open_settings, entry.name), action.tag, () -> openScreensaverAppSettings(entry)); break;
