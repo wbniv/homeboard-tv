@@ -8,3 +8,6 @@ meminfo.txt
 thermal.txt
 input-score.*
 input-timeline.*
+step-*-touch-*.png
+step-*-touch-score.*
+step-*-touch-timeline.csv

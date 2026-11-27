@@ -1,0 +1,479 @@
+[
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-touch-geometry.xml"
+    ],
+    "start": 1795743203.261355,
+    "end": 1795743203.5480342,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-touch-geometry.xml; echo wf-status=$?"
+    ],
+    "start": 1795743203.5519824,
+    "end": 1795743203.768051,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0002-touch.jar"
+    ],
+    "start": 1795743203.804313,
+    "end": 1795743204.0825603,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0002-touch.jar; echo wf-status=$?"
+    ],
+    "start": 1795743204.0862474,
+    "end": 1795743204.386509,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0002-touch.csv"
+    ],
+    "start": 1795743204.4681063,
+    "end": 1795743204.713108,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0002-touch.csv; echo wf-status=$?"
+    ],
+    "start": 1795743204.720631,
+    "end": 1795743205.0504913,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0002-touch-log.csv"
+    ],
+    "start": 1795743205.0839622,
+    "end": 1795743205.3314617,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0002-touch-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795743205.338807,
+    "end": 1795743205.620697,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0004-touch.jar"
+    ],
+    "start": 1795743205.6406243,
+    "end": 1795743205.8670046,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0004-touch.jar; echo wf-status=$?"
+    ],
+    "start": 1795743205.869948,
+    "end": 1795743206.1226008,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0004-touch.csv"
+    ],
+    "start": 1795743206.1557076,
+    "end": 1795743206.4962168,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0004-touch.csv; echo wf-status=$?"
+    ],
+    "start": 1795743206.5004895,
+    "end": 1795743206.7315028,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0004-touch-log.csv"
+    ],
+    "start": 1795743206.7611794,
+    "end": 1795743207.0617192,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0004-touch-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795743207.065085,
+    "end": 1795743207.3511717,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0006-touch.jar"
+    ],
+    "start": 1795743207.4661634,
+    "end": 1795743207.6963823,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0006-touch.jar; echo wf-status=$?"
+    ],
+    "start": 1795743207.7026196,
+    "end": 1795743208.090914,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0006-touch.csv"
+    ],
+    "start": 1795743208.13273,
+    "end": 1795743208.389098,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0006-touch.csv; echo wf-status=$?"
+    ],
+    "start": 1795743208.3928957,
+    "end": 1795743208.5917602,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0006-touch-log.csv"
+    ],
+    "start": 1795743208.632426,
+    "end": 1795743208.9013321,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0006-touch-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795743208.90463,
+    "end": 1795743209.211291,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0008-touch.jar"
+    ],
+    "start": 1795743209.2617698,
+    "end": 1795743209.507745,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0008-touch.jar; echo wf-status=$?"
+    ],
+    "start": 1795743209.510771,
+    "end": 1795743209.8107007,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0008-touch.csv"
+    ],
+    "start": 1795743209.8762956,
+    "end": 1795743210.1454597,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0008-touch.csv; echo wf-status=$?"
+    ],
+    "start": 1795743210.1504617,
+    "end": 1795743210.4727545,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0008-touch-log.csv"
+    ],
+    "start": 1795743210.5009015,
+    "end": 1795743210.7430582,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0008-touch-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795743210.7466443,
+    "end": 1795743210.9362266,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0010-touch.jar"
+    ],
+    "start": 1795743210.9665506,
+    "end": 1795743211.2571294,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0010-touch.jar; echo wf-status=$?"
+    ],
+    "start": 1795743211.261747,
+    "end": 1795743211.580561,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0010-touch.csv"
+    ],
+    "start": 1795743211.6235564,
+    "end": 1795743211.9779825,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0010-touch.csv; echo wf-status=$?"
+    ],
+    "start": 1795743211.9813573,
+    "end": 1795743212.277698,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0010-touch-log.csv"
+    ],
+    "start": 1795743212.3477895,
+    "end": 1795743212.6037824,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0010-touch-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795743212.6102285,
+    "end": 1795743212.8786073,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0012-touch.jar"
+    ],
+    "start": 1795743212.9342253,
+    "end": 1795743213.2738008,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0012-touch.jar; echo wf-status=$?"
+    ],
+    "start": 1795743213.280499,
+    "end": 1795743213.495643,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0012-touch.csv"
+    ],
+    "start": 1795743213.5370011,
+    "end": 1795743213.8328702,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0012-touch.csv; echo wf-status=$?"
+    ],
+    "start": 1795743213.8371744,
+    "end": 1795743214.1164079,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0012-touch-log.csv"
+    ],
+    "start": 1795743214.15447,
+    "end": 1795743214.4348497,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0012-touch-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795743214.4384768,
+    "end": 1795743214.7602384,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0014-touch.jar"
+    ],
+    "start": 1795743214.8074331,
+    "end": 1795743215.0465395,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0014-touch.jar; echo wf-status=$?"
+    ],
+    "start": 1795743215.049663,
+    "end": 1795743215.331104,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0014-touch.csv"
+    ],
+    "start": 1795743215.3682475,
+    "end": 1795743215.7017286,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0014-touch.csv; echo wf-status=$?"
+    ],
+    "start": 1795743215.7050345,
+    "end": 1795743215.9508765,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0014-touch-log.csv"
+    ],
+    "start": 1795743216.004277,
+    "end": 1795743216.301523,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0014-touch-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795743216.3045113,
+    "end": 1795743216.5638225,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0016-touch.jar"
+    ],
+    "start": 1795743216.5930934,
+    "end": 1795743216.8943856,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0016-touch.jar; echo wf-status=$?"
+    ],
+    "start": 1795743216.8991623,
+    "end": 1795743217.1446006,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0016-touch.csv"
+    ],
+    "start": 1795743217.1777017,
+    "end": 1795743217.4381256,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0016-touch.csv; echo wf-status=$?"
+    ],
+    "start": 1795743217.4429767,
+    "end": 1795743217.6993573,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-721ea550e5ae-step-0016-touch-log.csv"
+    ],
+    "start": 1795743217.7354198,
+    "end": 1795743218.0197742,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-721ea550e5ae-step-0016-touch-log.csv; echo wf-status=$?"
+    ],
+    "start": 1795743218.0231347,
+    "end": 1795743218.3064568,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am force-stop net.biohack.homeboard.debug"
+    ],
+    "start": 1795743218.3445203,
+    "end": 1795743218.7199066,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am start -W -n com.google.android.apps.nexuslauncher/.NexusLauncherActivity"
+    ],
+    "start": 1795743218.7229698,
+    "end": 1795743219.230669,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795743219.2341666,
+    "end": 1795743219.745434,
+    "returncode": 0
+  }
+]

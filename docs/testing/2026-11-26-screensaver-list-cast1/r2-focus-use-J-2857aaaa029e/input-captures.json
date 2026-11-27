@@ -1,0 +1,107 @@
+{
+  "score_sha256": "58dd1af7761103843599ff078b714e582f99e5ce0a676c6198f089d01e1ab023",
+  "host_start_wall": 1795742824.2805176,
+  "host_start_monotonic": 222544.900201548,
+  "captures": [
+    {
+      "label": "f0-open",
+      "planned_ms": 10000,
+      "started": 1795742835.3987389,
+      "ended": 1795742836.7686741,
+      "file": "input-frame-001.png",
+      "bytes": 263736,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "f1-wf-use-focused",
+      "planned_ms": 22100,
+      "started": 1795742847.49873,
+      "ended": 1795742848.9511557,
+      "file": "input-frame-002.png",
+      "bytes": 227644,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "f2-wf-after-use",
+      "planned_ms": 28100,
+      "started": 1795742853.4987314,
+      "ended": 1795742855.0272357,
+      "file": "input-frame-003.png",
+      "bytes": 219938,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "f3-home-banner",
+      "planned_ms": 39600,
+      "started": 1795742864.9987402,
+      "ended": 1795742866.6875927,
+      "file": "input-frame-004.png",
+      "bytes": 276328,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "f4-after-undo",
+      "planned_ms": 46600,
+      "started": 1795742871.9987385,
+      "ended": 1795742873.7415688,
+      "file": "input-frame-005.png",
+      "bytes": 270328,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "f5-home-background-use-focused",
+      "planned_ms": 57600,
+      "started": 1795742882.998743,
+      "ended": 1795742884.746536,
+      "file": "input-frame-006.png",
+      "bytes": 235510,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "f6-home-background-after-use",
+      "planned_ms": 63600,
+      "started": 1795742889.0003793,
+      "ended": 1795742890.5477357,
+      "file": "input-frame-007.png",
+      "bytes": 231275,
+      "schedule_lateness_ms": 2
+    },
+    {
+      "label": "f7-home-banner",
+      "planned_ms": 75100,
+      "started": 1795742900.4987462,
+      "ended": 1795742902.2018209,
+      "file": "input-frame-008.png",
+      "bytes": 278891,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "f8-after-undo",
+      "planned_ms": 82100,
+      "started": 1795742907.5005214,
+      "ended": 1795742909.1571705,
+      "file": "input-frame-009.png",
+      "bytes": 272508,
+      "schedule_lateness_ms": 2
+    },
+    {
+      "label": "f9-list-clock-on-home",
+      "planned_ms": 90600,
+      "started": 1795742915.9993656,
+      "ended": 1795742917.7870603,
+      "file": "input-frame-010.png",
+      "bytes": 265080,
+      "schedule_lateness_ms": 1
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 101100,
+      "started": 1795742926.5016222,
+      "ended": 1795742928.380951,
+      "file": "input-frame-011.png",
+      "bytes": 260266,
+      "schedule_lateness_ms": 3
+    }
+  ],
+  "result": "completed"
+}

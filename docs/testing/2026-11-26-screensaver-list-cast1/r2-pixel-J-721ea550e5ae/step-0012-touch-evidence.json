@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "job": "J-721ea550e5ae",
+  "device": "3A131FDJG005WF",
+  "package": "net.biohack.homeboard.debug",
+  "apk": "7c5bdd884c9bd45a0e4adfbf4e3a0f3897da63cbbdea7ecfde8ad61e399aad6c.apk",
+  "score_sha256": "2942ec9e4656eef0551a9f18b5af39192322ccbe1a96dec326f23ce7af2d27f6",
+  "frame": {
+    "width": 2244,
+    "height": 1008,
+    "rotation": 1,
+    "display_id": 0,
+    "content_rect": [
+      113,
+      0,
+      2244,
+      1008
+    ]
+  },
+  "initial": {
+    "file": "step-0012-touch-initial.png",
+    "sha256": "1667127cabf28fc6b0ac248f6d20f33de8ea1e8780160bc4d1e981ca5cc0da19",
+    "bytes": 191570,
+    "width": 2244,
+    "height": 1008,
+    "started": 1795743072.9568427,
+    "ended": 1795743073.7148314
+  },
+  "final": {
+    "file": "step-0012-touch-final.png",
+    "sha256": "67307833e640a564b191daf00b42840677acc0b2d50beabf807999c751c6d064",
+    "bytes": 190984,
+    "width": 2244,
+    "height": 1008,
+    "started": 1795743080.2164109,
+    "ended": 1795743080.9727607
+  },
+  "captures": [
+    {
+      "file": "step-0012-touch-frame-001.png",
+      "sha256": "67307833e640a564b191daf00b42840677acc0b2d50beabf807999c751c6d064",
+      "bytes": 190984,
+      "width": 2244,
+      "height": 1008,
+      "started": 1795743078.4210567,
+      "ended": 1795743079.173601,
+      "label": "after-swipe",
+      "planned_ms": 3000,
+      "host_lateness_ms": 1712,
+      "planned_device_uptime_ms": 2589409
+    }
+  ],
+  "device_anchor": {
+    "device_uptime_ms": 2586409,
+    "device_wall_ms": 1795743073376
+  },
+  "observed_edges": {
+    "1": {
+      "device_uptime_ms": 2586646,
+      "contact": 0,
+      "action": 0,
+      "x": 594,
+      "y": 680,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743073613
+    },
+    "2": {
+      "device_uptime_ms": 2586846,
+      "contact": 0,
+      "action": 1,
+      "x": 594,
+      "y": 560,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743073813
+    },
+    "3": {
+      "device_uptime_ms": 2587050,
+      "contact": 0,
+      "action": 1,
+      "x": 594,
+      "y": 420,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743074017
+    },
+    "4": {
+      "device_uptime_ms": 2587231,
+      "contact": 0,
+      "action": 1,
+      "x": 594,
+      "y": 330,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743074198
+    },
+    "5": {
+      "device_uptime_ms": 2587443,
+      "contact": 0,
+      "action": 2,
+      "x": 594,
+      "y": 330,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743074410
+    }
+  },
+  "host_start_wall": 1795743074.461847,
+  "host_start_monotonic": 222795.081531096,
+  "result": "device-edges-verified",
+  "timeline": "step-0012-touch-timeline.csv"
+}

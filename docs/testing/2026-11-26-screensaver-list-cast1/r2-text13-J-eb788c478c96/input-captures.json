@@ -1,0 +1,143 @@
+{
+  "score_sha256": "32b388a0e4a9be23baf2e1b3e58af8be325e15c5664c91530a22a3ad35afa26a",
+  "host_start_wall": 1795743329.4671557,
+  "host_start_monotonic": 223050.086839732,
+  "captures": [
+    {
+      "label": "t0-home",
+      "planned_ms": 4000,
+      "started": 1795743334.7670994,
+      "ended": 1795743336.4028146,
+      "file": "input-frame-001.png",
+      "bytes": 238051,
+      "schedule_lateness_ms": 1
+    },
+    {
+      "label": "t1-open",
+      "planned_ms": 12000,
+      "started": 1795743342.7663076,
+      "ended": 1795743344.4082148,
+      "file": "input-frame-002.png",
+      "bytes": 256057,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t2-home-background",
+      "planned_ms": 18000,
+      "started": 1795743348.7663047,
+      "ended": 1795743350.2988791,
+      "file": "input-frame-003.png",
+      "bytes": 225711,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t3-use",
+      "planned_ms": 22500,
+      "started": 1795743353.2662861,
+      "ended": 1795743354.980941,
+      "file": "input-frame-004.png",
+      "bytes": 229909,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t4-preview",
+      "planned_ms": 27000,
+      "started": 1795743357.7662923,
+      "ended": 1795743359.333296,
+      "file": "input-frame-005.png",
+      "bytes": 228767,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t5-options",
+      "planned_ms": 31500,
+      "started": 1795743362.2663703,
+      "ended": 1795743363.8255794,
+      "file": "input-frame-006.png",
+      "bytes": 229107,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t6-down-in-pane",
+      "planned_ms": 36000,
+      "started": 1795743366.7662787,
+      "ended": 1795743368.3616633,
+      "file": "input-frame-007.png",
+      "bytes": 226495,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t7-down-in-pane",
+      "planned_ms": 40500,
+      "started": 1795743371.2663605,
+      "ended": 1795743372.9429657,
+      "file": "input-frame-008.png",
+      "bytes": 245307,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t8-down-in-pane",
+      "planned_ms": 45000,
+      "started": 1795743375.766337,
+      "ended": 1795743377.4584908,
+      "file": "input-frame-009.png",
+      "bytes": 242422,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t9-back-to-row",
+      "planned_ms": 49500,
+      "started": 1795743380.2681851,
+      "ended": 1795743381.9106627,
+      "file": "input-frame-010.png",
+      "bytes": 242381,
+      "schedule_lateness_ms": 2
+    },
+    {
+      "label": "t10-last-row",
+      "planned_ms": 59100,
+      "started": 1795743389.866366,
+      "ended": 1795743391.3258932,
+      "file": "input-frame-011.png",
+      "bytes": 254709,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t11-last-first-action",
+      "planned_ms": 64100,
+      "started": 1795743394.8662913,
+      "ended": 1795743396.3908892,
+      "file": "input-frame-012.png",
+      "bytes": 255266,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t12-down-in-pane",
+      "planned_ms": 68600,
+      "started": 1795743399.3662865,
+      "ended": 1795743400.951732,
+      "file": "input-frame-013.png",
+      "bytes": 255116,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t13-down-in-pane",
+      "planned_ms": 73100,
+      "started": 1795743403.8678746,
+      "ended": 1795743405.481462,
+      "file": "input-frame-014.png",
+      "bytes": 255162,
+      "schedule_lateness_ms": 2
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 84600,
+      "started": 1795743415.3663874,
+      "ended": 1795743417.2424836,
+      "file": "input-frame-015.png",
+      "bytes": 239725,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

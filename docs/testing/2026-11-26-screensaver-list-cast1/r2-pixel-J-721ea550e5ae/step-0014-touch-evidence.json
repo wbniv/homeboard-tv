@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "job": "J-721ea550e5ae",
+  "device": "3A131FDJG005WF",
+  "package": "net.biohack.homeboard.debug",
+  "apk": "7c5bdd884c9bd45a0e4adfbf4e3a0f3897da63cbbdea7ecfde8ad61e399aad6c.apk",
+  "score_sha256": "20251a1503bd8a628c88abc2d3c87a8a9afd73ae90f1ddfb95f95920dc90b4d9",
+  "frame": {
+    "width": 2244,
+    "height": 1008,
+    "rotation": 1,
+    "display_id": 0,
+    "content_rect": [
+      113,
+      0,
+      2244,
+      1008
+    ]
+  },
+  "initial": {
+    "file": "step-0014-touch-initial.png",
+    "sha256": "400b85792f19eb172cc3ca9a9d202fe46d3a1f2d063b0988e058f9f2526bc822",
+    "bytes": 185012,
+    "width": 2244,
+    "height": 1008,
+    "started": 1795743109.6054385,
+    "ended": 1795743110.3961852
+  },
+  "final": {
+    "file": "step-0014-touch-final.png",
+    "sha256": "70c7642ca828fb15c2745e0a48eb5309d67c56ff7ae67b39af46ae1edc83e32e",
+    "bytes": 185553,
+    "width": 2244,
+    "height": 1008,
+    "started": 1795743116.9577355,
+    "ended": 1795743117.738305
+  },
+  "captures": [
+    {
+      "file": "step-0014-touch-frame-001.png",
+      "sha256": "a52b9a6077bfac54e5969274b8760e9e7e3953743548ff4dcd6715e40373a556",
+      "bytes": 194300,
+      "width": 2244,
+      "height": 1008,
+      "started": 1795743115.1913412,
+      "ended": 1795743115.942172,
+      "label": "after-swipe2",
+      "planned_ms": 3500,
+      "host_lateness_ms": 1447,
+      "planned_device_uptime_ms": 2626545
+    }
+  ],
+  "device_anchor": {
+    "device_uptime_ms": 2623045,
+    "device_wall_ms": 1795743110012
+  },
+  "observed_edges": {
+    "1": {
+      "device_uptime_ms": 2623280,
+      "contact": 0,
+      "action": 0,
+      "x": 500,
+      "y": 700,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743110247
+    },
+    "2": {
+      "device_uptime_ms": 2623398,
+      "contact": 0,
+      "action": 1,
+      "x": 500,
+      "y": 660,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743110365
+    },
+    "3": {
+      "device_uptime_ms": 2623523,
+      "contact": 0,
+      "action": 1,
+      "x": 500,
+      "y": 600,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743110490
+    },
+    "4": {
+      "device_uptime_ms": 2623641,
+      "contact": 0,
+      "action": 1,
+      "x": 500,
+      "y": 540,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743110608
+    },
+    "5": {
+      "device_uptime_ms": 2623756,
+      "contact": 0,
+      "action": 1,
+      "x": 500,
+      "y": 480,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743110723
+    },
+    "6": {
+      "device_uptime_ms": 2623882,
+      "contact": 0,
+      "action": 1,
+      "x": 500,
+      "y": 420,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743110849
+    },
+    "7": {
+      "device_uptime_ms": 2623990,
+      "contact": 0,
+      "action": 1,
+      "x": 500,
+      "y": 360,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743110957
+    },
+    "8": {
+      "device_uptime_ms": 2624115,
+      "contact": 0,
+      "action": 1,
+      "x": 500,
+      "y": 320,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743111082
+    },
+    "9": {
+      "device_uptime_ms": 2624233,
+      "contact": 0,
+      "action": 1,
+      "x": 500,
+      "y": 300,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743111200
+    },
+    "10": {
+      "device_uptime_ms": 2624541,
+      "contact": 0,
+      "action": 2,
+      "x": 500,
+      "y": 300,
+      "accepted": true,
+      "device_reported_wall_ms": 1795743111508
+    }
+  },
+  "host_start_wall": 1795743110.9949741,
+  "host_start_monotonic": 222831.614658384,
+  "result": "device-edges-verified",
+  "timeline": "step-0014-touch-timeline.csv"
+}

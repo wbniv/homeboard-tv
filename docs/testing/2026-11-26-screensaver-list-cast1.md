@@ -103,3 +103,84 @@ and the action buttons from each frame.
 
 Raw frames, logcat and score files stay on disk (see the folder's `.gitignore`); re-export with
 `task chromecast:evidence JOB=<id> OUT=<dir>`.
+
+## Round 2 (2026‑11‑27, 08:15–08:42 Bangkok)
+
+**Build:** Homeboard **0.1.175** (sha256 `7c5bdd88…`), with the removed-app fix and the focus fix
+(`cf38dfb`). It was deployed with `task deploy DEVICE=chromecast-test-01,phone-pixel-8-pro`
+(Cast1 `J‑07ec83309871`, Pixel `J‑0b9b3dcb2df5`; [log](2026-11-26-screensaver-list-cast1/deploy-0.1.175.log),
+`task check` `BUILD SUCCESSFUL in 1m 46s`). As before, it was a combined build from the shared
+tree. **Cast2 was not deployed:** the agent's permission check refused the deploy command that
+named `chromecast-test-02`, so the Cast2 part needs Will's approval and was not run.
+
+| Item | Result |
+|---|---|
+| 1 Deploy | **PASS for Cast1 and the Pixel; Cast2 not deployed** (permission refused, see above). The tablet was left out (recovery-required). |
+| 2 Cast2 at native 4K | **Not run.** No deploy to Cast2 was possible; nothing was changed on Cast2. |
+| 3 Large text (Cast1) | **1.3×: PASS with one defect. 2.0×: FAIL.** See below. Font scale read first as `1.0` (`J‑686e99382811`); set to 1.3 (`J‑36df3f6c51df`) and 2.0 (`J‑f74606ba0f7e`) persistently, because `TEMPORARY=true` restores inside the same job, before a separate check could open the list; set back to `1.0` (`J‑5bde02d8600e`; readback 1.0, and 1.0 again on a final read). |
+| 4 Narrow layout (Pixel) | **Partly testable; the stacked layout is not reachable.** Homeboard runs in landscape on the Pixel (frame 2244×1008, rotation 1, content 2131 px wide), so the list and detail stay side by side and the stacked layout below 720 dp never appears. Touch works: a tap on a row inspects it (2 of 11, detail updated, nothing launched); a tap on Options opens Options; header Back returns to the same row. Defects below. (`J‑721ea550e5ae`) |
+| 5 Focus after Use (Cast1) | **PASS.** Use on WF Clocks leaves focus on **Preview**; Use on Home background leaves focus on **Preview**; Undo restored Clock both times (`J‑2857aaaa029e`, [zoom](2026-11-26-screensaver-list-cast1/r2-focus-use-J-2857aaaa029e/focus-after-use.jpg)). |
+
+### Large text (Cast1, `J‑eb788c478c96` at 1.3, `J‑4878341483f5` at 2.0)
+
+- **1.3×:** about four rows show; every action stays reachable and its label whole; the detail
+  pane scrolls to reveal When it starts and In other apps
+  ([t8](2026-11-26-screensaver-list-cast1/r2-text13-J-eb788c478c96/t8-pane-scrolled-1.3.jpg)).
+  **Defect:** names beside a "Needs Use everywhere" badge break mid-word and are cut with an
+  ellipsis ("Amb / ient …", "Seah / orse…", "World / Fou…",
+  [t10](2026-11-26-screensaver-list-cast1/r2-text13-J-eb788c478c96/t10-last-row-1.3.jpg)), instead of
+  wrapping whole words to two lines.
+- **2.0×:** about two rows show and the pane scrolls, but labels are clipped:
+  - **Options** on a built-in is cut off at the pane's right edge, a sliver, though it still takes
+    focus ([t5](2026-11-26-screensaver-list-cast1/r2-text20-J-4878341483f5/t5-options-clipped-2.0.jpg));
+  - the last row's name disappears entirely behind its badge, and "WF Clocks" breaks as "WF Cl / ocks"
+    ([t10](2026-11-26-screensaver-list-cast1/r2-text20-J-4878341483f5/t10-last-row-name-hidden-2.0.jpg));
+  - the When it starts values break mid-word into a narrow column ("Andr / oid's", "Cloc / ks"),
+    and the footer hint and "In other apps" are cut at the bottom.
+  No text was shrunk; focus never left the picker.
+
+### Pixel touch (`J‑721ea550e5ae`, interactive touch session)
+
+- Path: tap Homeboard settings (top row), tap the Screensaver arm. The list showed **11** entries
+  on the Pixel ([frame 05](2026-11-26-screensaver-list-cast1/r2-pixel-J-721ea550e5ae/05-list-side-by-side.jpg)).
+- **Defect, clipping:** the third row's name breaks mid-word, "Cloc / k", beside its badge, and the
+  detail pane's action row is cut at the bottom edge, with **Options** touching the pane's right
+  edge ([frame 07](2026-11-26-screensaver-list-cast1/r2-pixel-J-721ea550e5ae/07-tap-inspects-row.jpg)).
+- **Defect, touch scrolling:** two upward swipes in the list did not scroll it naturally. The first
+  moved nothing and reset the browsed entry to Clock (1 of 11); the second, slower and longer,
+  scrolled about one row and changed the browsed entry to row 3
+  ([frame 15](2026-11-26-screensaver-list-cast1/r2-pixel-J-721ea550e5ae/15-after-swipe-2.jpg)). A swipe
+  should scroll without changing what is inspected.
+- **A failed external launch:** the Pixel lists Android's own Clock screensaver with **Open Clock
+  settings**. Tapping it showed "Android could not open that action" and left the entry and the
+  action in place for a retry
+  ([frame](2026-11-26-screensaver-list-cast1/r2-pixel-J-721ea550e5ae/16-open-clock-settings-failed-toast.jpg)),
+  which is the plan's failed-to-launch behaviour.
+- Nothing was chosen or saved on the Pixel; the session ended with `input:finish`, and the
+  coordinator's cleanup closed Homeboard.
+
+### Round 2 jobs
+
+| Dir | Job | What happened |
+|---|---|---|
+| `deploy-0.1.175.log` | `J‑07ec83309871`, `J‑0b9b3dcb2df5` | 0.1.175 to Cast1 and the Pixel |
+| `r2-focus-use-J-2857aaaa029e` | `J‑2857aaaa029e` | Focus after Use, WF Clocks and Home background; Undo |
+| `r2-pixel-J-721ea550e5ae` | `J‑721ea550e5ae` | Pixel touch session |
+| `r2-font-scale/` | `J‑686e99382811`, `J‑36df3f6c51df`, `J‑f74606ba0f7e`, `J‑5bde02d8600e` | Font scale read 1.0; 1.3; 2.0; back to 1.0 |
+| `r2-text13-J-eb788c478c96` | `J‑eb788c478c96` | The list at 1.3× |
+| `r2-text20-J-4878341483f5` | `J‑4878341483f5` | The list at 2.0× |
+| `r2-list-J-a0c18d47f45b` | `J‑a0c18d47f45b` | Final Android state |
+| `r2-capture-J-2a6873a76d92` | `J‑2a6873a76d92` | Final capture |
+
+Recipes: `dev/device/screensaver-list-r2-{focus-use,large-text,pixel-session}.json`.
+
+### Round 2 final device states
+
+- **Cast1:** Homeboard's choice Clock (On Home, after Undo,
+  [frame](2026-11-26-screensaver-list-cast1/r2-focus-use-J-2857aaaa029e/f9-clock-on-home-after-undo.jpg));
+  Home timer "Android decides" and language "Follow device", never changed; font scale 1.0;
+  Android's screensaver WF Clocks, enabled, activate on sleep, idle 600 000 ms, not running
+  (`J‑a0c18d47f45b`); Google TV Home in front
+  ([capture](2026-11-26-screensaver-list-cast1/r2-capture-J-2a6873a76d92/final.jpg)).
+- **Pixel:** 0.1.175 installed; nothing saved; Homeboard closed by cleanup.
+- **Cast2:** untouched (no deploy, no jobs).

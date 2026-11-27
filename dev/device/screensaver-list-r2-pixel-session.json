@@ -1,0 +1,11 @@
+{
+ "device": "phone-pixel-8-pro",
+ "workflow": "record",
+ "app": "homeboard-tv",
+ "apk": "/home/will/homeboard-tv/artifacts/deployments/0.1.175/homeboard.apk",
+ "panel": "require-hidden",
+ "interactive": true,
+ "touch_interactive": true,
+ "record": false,
+ "duration": 600
+}

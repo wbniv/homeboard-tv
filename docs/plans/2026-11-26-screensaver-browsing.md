@@ -182,6 +182,8 @@ catalogue demonstrates a need.
   fixture; first/last boundaries and scrollbar/count are correct.
 
   **Evidence: PASS for the installed set only.** First row: Up goes to header Back; last row: Down stays; "N of M" and the thumb track the row. Zero external apps and the 40-entry fixture not run.
+
+  **Round 2 (0.1.175):** Cast2 at native 4K not run; the deploy to `chromecast-test-02` was refused by the agent's permission check and needs Will's approval.
 - Right/OK, Left, Back and header Back follow the table. Return from both types
   of Preview, built-in Options and an external settings activity to the exact
   entry, action and list position.
@@ -191,15 +193,21 @@ catalogue demonstrates a need.
   the previous choice and scope. Permission refusal changes neither.
 
   **Evidence: PASS (permission refusal not run).** Android's screensaver settings identical before and after (`J‑90804e8a2588`, `J‑45873a4ed35f`); Use moved the badge in place and Undo restored Clock (`J‑218b87e8e591`, `J‑6f99f658d854`). Finding: after Use, focus goes to Preview for a built-in but to the row for an app (return tag `act:use`, `MainActivity.java:3197`).
+
+  **Round 2 (0.1.175):** after Use, focus now stays on Preview for both WF Clocks and a built-in (`J‑2857aaaa029e`); Undo restored Clock.
 - Test preview-capable, Android-only, settings-less, removed and failed-to-launch
   apps. Unsupported actions are absent and explanations remain readable.
 
   **Evidence: PASS for preview-capable (WF Clocks), Android-only (Aerial Views, Ambient Mode and others) and settings-less entries; removed and failed-to-launch not run on 0.1.173.**
+
+  **Round 2 (0.1.175):** a failed external launch tested on the Pixel: Open Clock settings for Android's Clock showed "Android could not open that action" and kept the entry and action for a retry (`J‑721ea550e5ae`).
 - Larger device text (1.3× and 2×), long Thai names, narrow touch layouts and
   accessibility traversal: rows and actions remain reachable, focus never leaks
   to Home, no clipped action labels, no forced text shrink.
 
   **Evidence: not run** (no coordinator workflow for large text, narrow touch layouts or accessibility traversal on Cast1).
+
+  **Round 2 (0.1.175): partial, with defects.** Cast1 at 1.3×: actions reachable and the pane scrolls, but names beside a badge break mid-word and are ellipsized. At 2.0×: Options is clipped at the pane edge, the last row's name disappears behind its badge, and the When it starts values break mid-word (`J‑eb788c478c96`, `J‑4878341483f5`). Pixel: Homeboard runs in landscape, so the stacked layout is not reachable; taps inspect rows and act on actions, but a row name breaks mid-word, the action row is cut at the bottom, and swipes change the inspected entry instead of scrolling naturally (`J‑721ea550e5ae`). Long Thai names and accessibility traversal not run.
 - Pause/recreate and package refresh retain picker state. Scroll does not start
   app activities, decode large artwork or create per-row live players.
 
