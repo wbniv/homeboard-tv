@@ -1,0 +1,30 @@
+{
+  "workflow": "check",
+  "app": "homeboard-widget-lifecycle",
+  "duration": 150,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 8,
+      "capture": "lifecycle-two-instances"
+    },
+    {
+      "at": 30,
+      "capture": "lifecycle-progress"
+    },
+    {
+      "at": 60,
+      "capture": "lifecycle-later"
+    },
+    {
+      "at": 110,
+      "capture": "lifecycle-result"
+    },
+    {
+      "at": 145,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    }
+  ]
+}

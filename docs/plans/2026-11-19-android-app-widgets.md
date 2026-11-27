@@ -723,6 +723,62 @@ flowchart LR
     W -->|Remove and Undo| W
 ```
 
+## Close-out · November 27
+
+TODO entry: **Android app widget hosting** (`[wip T4]`). The open acceptance rows are
+sorted three ways: what a device-side probe can establish on Cast1 now, what needs a
+person or a device that is not reachable, and what is blocked outside this host.
+
+| Open point | Disposition | Why |
+|---|---|---|
+| Two instances, provider updates and size response, Interact/nested Back, illegal resize, global-grid placeholder, lost binding, Remove/Undo across recreation, history-eviction cleanup, four-view cap | **Code + Cast1 device check**: a lifecycle probe (below) | Deterministic, isolated preferences, no household data; the host code paths are the same ones the menus drive. |
+| Provider update, removal and reinstall; relaunch in a new process | **Cast1 device check**: survivor probe across separate jobs, fixture v2→v3 install, coordinator uninstall and reinstall | A real package change is the only honest test of the platform dropping a binding. |
+| Zero/one/four views and 50 cycles | **Cast1 device check**: resource probe under coordinator `app:diagnostics` (package PSS timeline) | Coordinator-supplied PSS; the probe only times the phases. Provider-process PSS is not package-scoped to Homeboard, so it stays a stated gap. |
+| Required configuration twice, Open app and return on Cast1 | **Cast1 owned Remote session** through ordinary menus | Cross-app activity transitions are outside a `check` job's foreground guard. |
+| Cast2 repeat | **Needs Will's go-ahead** | Cast2 rule. |
+| 24-hour exposure | **Own TODO item** | Coordinator jobs end at 900 s at most; a 24-hour on-screen session is a coordinator capability and a decision to hold Cast1 for a day. |
+| Pixel and tablet hosting | **Own TODO item** | Both unreachable on November 27 (Pixel wireless debugging off, tablet battery 2%); each needs a person's step first. |
+| Breezy Weather configured data | **Watch item** | 6.2.2's Add location is not reachable with the TV remote (J‑5c70d8486393) and Will declined a mouse; recheck on a new Breezy release. |
+
+The probe is debug-only (`AndroidWidgetLifecycleProbeActivity`, activity aliases select
+the mode) with its own preferences namespace and host ID per mode, so neither the
+household dashboard nor the existing probe's host 8724 can lose a binding to its
+reference cleanup. No product surface changes. The fixture provider moves to 0.0.3:
+its no-configuration widget gains an update counter, the size Android reports, and a
+**Press** button, so updates, size response and Interact mode have something
+observable; the required-configuration widget is unchanged.
+
+![Fixture provider 0.0.3 widget](2026-11-19-android-app-widgets/fixture-v3.svg)
+
+```mermaid
+flowchart TD
+    S[Seed isolated 50% dashboard] --> A[Add fixture twice: distinct IDs render]
+    A --> U[Legal resize: provider reports new size, update count rises]
+    U --> X[Expand, Interact, OK on Press, Back, Back]
+    X --> R[Illegal 1×1 resize rejected; layout unchanged]
+    R --> G[Grid 24×24: Too small placeholder, same ID] --> G2[Grid restored: live view returns]
+    G2 --> L[Delete one binding: Widget unavailable; neighbour unaffected]
+    L --> RU[Remove unavailable tile, Undo, Remove]
+    RU --> C[Recreate activity: same ID renders]
+    C --> D[Remove, Undo same ID, Remove, 20 later edits evict history: ID released]
+    D --> F[Five instances: four live views, one Open placeholder]
+    F --> Z[Release all probe IDs; household preferences unchanged]
+```
+
+```mermaid
+sequenceDiagram
+    participant K as keep job
+    participant C as Coordinator
+    participant O as reopen job
+    participant N as reinstalled job
+    K->>K: Add fixture v2 widget, leave it bound (host 8727)
+    C->>C: Install fixture 0.0.3 over 0.0.2
+    O->>O: New launch: same ID, provider 0.0.3 content
+    C->>C: Uninstall fixture, reinstall 0.0.3
+    N->>N: Tile shows Widget unavailable; Set up again
+    N->>N: New ID, same key and saved size; release all
+```
+
 ## References
 
 - [Widget and plugin investigation](../investigations/2026-11-19-widget-plugin-systems.md)

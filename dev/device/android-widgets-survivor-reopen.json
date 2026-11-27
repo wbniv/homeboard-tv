@@ -1,0 +1,22 @@
+{
+  "workflow": "check",
+  "app": "homeboard-widget-survivor-reopen",
+  "duration": 40,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 12,
+      "capture": "survivor-reopened"
+    },
+    {
+      "at": 30,
+      "capture": "survivor-reopen-result"
+    },
+    {
+      "at": 36,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    }
+  ]
+}

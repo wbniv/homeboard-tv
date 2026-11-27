@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<rect width="1280" height="720" fill="#182332"/>
+<text x="64" y="70" fill="#c2e7ff" font-family="sans-serif" font-size="24">Compact tile (dashboard owns focus) · expanded, after Interact with widget</text>
+<rect x="64" y="110" width="520" height="250" rx="10" fill="#24465a"/>
+<g fill="#ffffff" font-family="sans-serif"><text x="90" y="160" font-size="26">Widget bound across apps · id 17</text>
+<text x="90" y="205" font-size="22">Updates 2 · 312×132 dp · Presses 0</text>
+<text x="90" y="245" font-size="20" fill="#c2e7ff">Separate APK · Android RemoteViews</text></g>
+<rect x="90" y="280" width="180" height="56" rx="8" fill="#35566e"/>
+<text x="118" y="317" fill="#ffffff" font-family="sans-serif" font-size="24">Press</text>
+<rect x="640" y="110" width="576" height="420" rx="10" fill="#24465a"/>
+<g fill="#ffffff" font-family="sans-serif"><text x="666" y="160" font-size="26">Widget bound across apps · id 17</text>
+<text x="666" y="205" font-size="22">Updates 3 · 584×300 dp · Presses 1</text>
+<text x="666" y="245" font-size="20" fill="#c2e7ff">Separate APK · Android RemoteViews</text></g>
+<rect x="666" y="280" width="180" height="56" rx="8" fill="#35566e" stroke="#9ad7ff" stroke-width="5"/>
+<text x="694" y="317" fill="#ffffff" font-family="sans-serif" font-size="24">Press</text>
+<text x="64" y="600" fill="#ffffff" font-family="sans-serif" font-size="24">Each size Android reports and each Press re-renders the provider's own RemoteViews.</text>
+<text x="64" y="660" fill="#c2e7ff" font-family="sans-serif" font-size="22">Test fixture mockup · no account or network · net.biohack.homeboard.widgetprovider 0.0.3</text>
+</svg>

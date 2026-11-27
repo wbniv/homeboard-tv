@@ -1,0 +1,6 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#24465a" android:orientation="vertical" android:padding="16dp">
+ <TextView android:id="@+id/probe_value" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Waiting for provider" android:textColor="#ffffff" android:textSize="22sp" />
+ <TextView android:id="@+id/probe_detail" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="" android:textColor="#ffffff" android:textSize="16sp" />
+ <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Separate APK · Android RemoteViews" android:textColor="#c2e7ff" android:textSize="14sp" />
+ <Button android:id="@+id/probe_press" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Press" />
+</LinearLayout>
