@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/952dcb5) | Refresh stale 4K and screensaver documentation status |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/2f5340f) | Enable automatic native 4K with a native 100 percent workspace |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/1f208a4) | test: verify reduced-scale dashboard and native 4K widget hosting |
 | [2026-11-25](https://github.com/wbniv/homeboard-tv/commit/734465b) | feat: add dashboard scale for a larger widget workspace |
@@ -10,6 +11,10 @@
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/c3234b6) | Add standalone 4K tester and screensaver shortcut |
 
 <!--history-meta v1
+952dcb5	author	Will Norris
+952dcb5	added	19
+952dcb5	deleted	13
+952dcb5	files	1
 2f5340f	author	Will Norris
 2f5340f	added	70
 2f5340f	deleted	4

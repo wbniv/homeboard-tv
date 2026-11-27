@@ -74,6 +74,46 @@ panel pixel detail and broader real-provider compatibility remain open. Earlier
 fixture and HD evidence remain in their dated records. The ordinary MainActivity
 catalog entry was restored; no temporary provider catalog entry remains.
 
+## Closing round · 27 November
+
+**Extra HD acceptance, rerun: PASS.** Cast1 on deployed 0.1.177
+(SHA‑256 `6216656b…ef32`). The scripted check `J‑99927171f81c` completed
+healthy and restored the dashboard, but its About step opened the Home button
+panel: the settings menu now has three pages, so
+`dev/device/about-rendering-check.json` is stale. The owned Remote
+`J‑f487348f74e2` (22:09–22:13) read About directly: **Version 0.1.177,
+Dashboard rendering 1920 × 1080, TV output 1920 × 1080 · 59.94 Hz**, with no
+native surface line. The Dashboard scale preview shows the HD baseline,
+**100% · 8 columns × 4 rows**, with 75% and 50%. Cancel left the saved scale
+unchanged. Opening Configure from phone by mistake started phone editing, and
+it was stopped straight away. The session ended `health: ready`.
+
+![Cast1 HD About on 0.1.177](2026-11-26-automatic-4k/cast1-hd-about-177.png)
+![Cast1 HD scale preview on 0.1.177](2026-11-26-automatic-4k/cast1-hd-scale-177.png)
+
+**Isolated provider probe: fixed, waiting on Cast2.** The probe looked for widget
+text in the activity window. Under native rendering that window holds only the
+SurfaceView, so on Cast2 the probe would have failed whatever the dashboard did.
+Commit 51e8181 points it at the embedded root and adds the renderer to its
+report. The 26 November session `J‑e3347659551f` opened MainActivity, because the
+catalog entry still named MainActivity. A rerun has to register the probe
+activity first and restore MainActivity afterwards.
+
+**Live output transitions: probe built, waiting on Cast2.**
+`NativeOutputTransitionProbeActivity` (51e8181, in 0.1.179) switches UHD → HD → UHD
+through its own window's display-mode preference and checks the renderer, the UHD
+baseline, the layout, the page and focus at each stage. Recipe:
+`dev/device/automatic-4k-output-transition.json`, validated against Cast2's profile
+with no job created.
+
+**Moved out of this item:** independent panel detail (needs Will's eyes at the
+LG), screen reader (the coordinator has no TalkBack enablement), external phone
+transport (not specific to 4K) and broader real providers (open-ended). See the
+[plan's closing round](../plans/2026-11-23-native-4k-dashboard.md#closing-round--27-november).
+
+Evidence: `docs/diagnostics/2026-11-27-auto4k-hd-177/` and
+`docs/diagnostics/2026-11-27-auto4k-hd-177-remote/`.
+
 ## Initial 0.1.165 verification · historical deployment state
 
 Ordinary **0.1.165** was frozen by the concurrent screensaver deployment. Its

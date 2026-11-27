@@ -145,6 +145,8 @@ receipts and remaining acceptance. Performance characterization is informative,
 not a gate, per Will's direction. Independent pixel detail, broader providers,
 accessibility and lifecycle/output coverage remain verification work. Preserve
 user data, the existing interaction model and the pinned upstream boundary.
+The [closing round](#closing-round--27-november) on 27 November sorts what is
+left into device checks, Watch entries and a proposed separate item.
 
 ### Historical priority and connection blocker · 24 November
 
@@ -450,3 +452,145 @@ The [user guide](../how-to/quick-start.md#check-whether-the-dashboard-is-renderi
 now explains About's dashboard/output/surface readings and distinguishes native
 detail from widget workspace capacity. The later Dashboard scale and native
 100% follow-ups above supersede this network/deployment checkpoint.
+
+## Closing round · 27 November
+
+TODO entry: **Native 4K dashboard** (T4). This round takes each acceptance point
+still open after 0.1.177 and decides whether it needs code, a device check, or a
+separate item. No new user-visible surface: the only code is two debug-only probe
+activities, so there are no mockups.
+
+| Open point | Disposition | Why |
+| --- | --- | --- |
+| Extra HD acceptance | Device check on Cast1, 0.1.177 | The 26 November run was refused as a downgrade and exercised nothing. |
+| Isolated provider probe | Probe fix, new build, Cast1 control and Cast2 native run | The rerun must open the probe, and the probe itself was blind to the native renderer (below). |
+| Live output transitions | New debug probe, Cast2 run | Only the app can hold the dashboard in the foreground while the output changes; a coordinator mode job cannot. |
+| Independent panel detail | Watch, needs Will at the LG | Captures are 1920 × 1080 and cannot show one-pixel detail; the coordinator's detail check plays its own clips, not Homeboard's surface. |
+| Screen reader | Watch, blocked on the coordinator | TalkBack enablement is a documented coordinator gap (`documented.talkback-enable`: missing). |
+| External phone transport | Own TODO item | Not specific to 4K: it is the phone editor's LAN reachability, which the coordinator's network policy blocks from the host. |
+| Broader real providers | Watch | Open-ended; the fixture passed in the native package, and the probe rerun covers the production native path. |
+
+**Provider probe defect.** `AndroidWidgetProbeActivity` searched
+`getWindow().getDecorView()` for the widget's text. In native mode that window
+holds only the SurfaceView; the dashboard and its modal plane live in the
+embedded root (`dashboardOverlayRoot()`), and `DashboardDialog` puts the expanded
+content there rather than in its own window. On Cast2 the probe would have
+failed at its first assertion whatever the dashboard did. The probe now searches
+the embedded root when there is one and reports which renderer it ran on.
+
+**Output transition probe.** `NativeOutputTransitionProbeActivity` (debug only)
+extends MainActivity and asks for each output mode through its own window's
+`preferredDisplayModeId`, which Android clears when the window goes and which
+changes no global setting. Rejected alternative: the coordinator's `display-mode`
+workflow with `TEMPORARY=true` changes the output in a job of its own, and
+coordinator cleanup restores the previous foreground, so Homeboard cannot be on
+screen to observe the change. If Cast2 refuses the window's mode request, the
+probe reports a refusal, not a pass, and the fallback is a launch-time check
+around `task chromecast:display:set-mode`.
+
+```mermaid
+sequenceDiagram
+    participant P as Output probe (MainActivity)
+    participant W as Probe window
+    participant D as Display manager
+    P->>P: Stage 0: require native 3840x2160, record layout, page, focus
+    P->>W: preferredDisplayModeId = 1920x1080 mode
+    W->>D: request HD output
+    D-->>P: onDisplayChanged, then recreate()
+    P->>P: Stage 1: require ordinary renderer, UHD baseline kept, layout/page/focus kept
+    P->>W: preferredDisplayModeId = original UHD mode
+    W->>D: request UHD output
+    D-->>P: onDisplayChanged, then recreate()
+    P->>P: Stage 2: require native 3840x2160 again, layout/page/focus kept
+    P->>W: preferredDisplayModeId = 0 (system choice)
+    Note over P,D: No recreation within 15 s means a refused request and a fail report
+```
+
+### Verification · closing round
+
+Steps are the five engineering gates above, quoted verbatim. Raw output and
+results follow each.
+
+1. **Isolated native surface proof:** in a debug-only activity, request a full-resolution SurfaceView buffer using the current physical display mode, display a diagnostic 4K pattern, and report logical UI size, physical mode and actual surface buffer dimensions. On Cast2, verify native-resolution presentation using independent compositor/output evidence; a 1080p screenshot alone cannot resolve one-pixel 4K detail. Test resize, pause/resume, no-4K output and cleanup. No saved settings or system display changes.
+
+    Cast2 `J‑31629f813cd8` (23 November, log quoted above):
+
+    ```text
+    logical 1920 x 1080, mode 3840 x 2160, surface and hardware Canvas 3840 x 2160
+    ```
+
+    **PARTIAL.** Buffer allocation and drawing at native size passed; Cast1
+    `J‑76e1bf04b564` covered the no-4K output. Independent compositor/output
+    evidence of one-pixel detail was never obtained: coordinator captures are
+    1920 × 1080. Moved to Watch (needs Will at the LG).
+
+2. **Real dashboard renderer proof:** compare candidate approaches against the real dashboard, including custom Canvas widgets, text, app icons, live Android widgets, video TextureView, focus, accessibility, overlays and full-screen widgets. Measure input latency, memory and frame timing on Cast2. A static 4K bitmap or manually redrawn facsimile is not acceptance. Choose an implementation only after it renders the real interactive dashboard faithfully and actually presents native detail.
+
+    Cast2 `J‑e738cfc3caab` (144) log line; 146 `J‑8b4faf87f160` reported the
+    same 3840 × 2160 hierarchy and surface for the chosen direct embedding, and
+    147 passed its navigation script. See the
+    [proof record](../testing/2026-11-25-native-4k-dashboard.md):
+
+    ```text
+    dashboard=3840x2160 surface=3840x2160 density=640 hardware=true
+    ```
+
+    **PASS** for the chosen SurfaceControlViewHost embedding: real hierarchy,
+    focus, overlays, full-screen widgets and the provider fixture. Frame timing
+    and memory were sampled (`J‑50df18c05376`, about 80 MiB PSS); per Will they
+    inform and do not gate. Video TextureView and accessibility are not covered
+    here; accessibility moves to Watch.
+
+3. **Automatic mode and fallback:** choose native 4K only when the output and renderer are verified to support it, keep existing 1080p behavior on Cast1 and unsupported devices, and recover safely from allocation, surface, output mode and lifecycle failures. Never change global settings.
+
+    Cast1 HD control on deployed 0.1.177, owned Remote `J‑f487348f74e2`
+    (27 November, 22:09–22:13), About as read from the capture:
+
+    ```text
+    Version 0.1.177
+    Dashboard rendering: 1920 × 1080
+    TV output: 1920 × 1080 · 59.94 Hz
+    Preview · 100% · 8 columns × 4 rows   [100%] [75%] [50%] [Save scale] [Cancel]
+    ```
+
+    The same build's scripted check `J‑99927171f81c` completed `health: ready`
+    and restored the dashboard. Its About step landed on the Home button panel,
+    because the settings menu now has three pages, so the About reading comes
+    from the Remote session; `dev/device/about-rendering-check.json` is stale.
+    The 26 November injected fallback `J‑2feb5a800650`
+    (`layoutUnchanged: true`) and process kill `J‑c61f6e848a77` stand.
+
+    **PASS** for HD control, fallback and lifecycle. **OPEN:** live output-mode
+    transition. `NativeOutputTransitionProbeActivity` ships in 0.1.179 and
+    waits for a Cast2 run.
+
+4. **Assets and resources:** remove the current provider-image 1080p target only for a verified native 4K path, with bounded memory and real-device measurements. Test static images, animated assets and video separately; prove actual video output rather than assume TextureView is 4K.
+
+    **NOT DONE, by scope.** Wallpaper and provider images keep their bounded
+    1080p decode target. Native UI rendering makes no claim about wallpaper or
+    video resolution. This is an enhancement, not a defect, and is proposed as
+    its own item.
+
+5. **Acceptance:** Cast2 4K pixel-detail evidence and actual user interactions (Home, All Apps, focus, menus, live Android widgets, widget expansions, screensaver, Back and Undo); Cast1 1080p regression; text scale, Thai, screen changes, idle and memory/frame pacing. Install one numbered build on the standard fleet via coordinator. Cast2 is justified for this 4K-specific check; let the coordinator admit or defer foreground work.
+
+    Interactions: Cast2 0.1.165 to 0.1.170 receipts in the
+    [rollout record](../testing/2026-11-26-automatic-4k.md) (Home, All Apps, Rain
+    expansion and Back, settings return, 1.3× text, native 100% preview) and the
+    native provider fixture `J‑fbd4a4d2143b`. Cast1 1080p regression: step 3
+    above. Fleet: 0.1.179 is installed on Cast1 (`J‑f52d02c33582`, deployed by the
+    concurrent widget-hosting work); the Pixel and tablet are offline.
+
+    **PARTIAL.** Pixel-detail evidence, screen changes (step 3) and the
+    production-native provider probe remain. The provider probe could not have
+    passed on Cast2 before 51e8181 (see above).
+
+**Waiting on Cast2.** Both runs below use frozen 0.1.179
+(`55c83d05…8d44`, source manifest byte-identical to 51e8181 for both probes).
+Each needs the `homeboard-tv` catalog entry temporarily registered to the
+probe activity, then restored to MainActivity.
+
+1. `NativeOutputTransitionProbeActivity` with
+   `dev/device/automatic-4k-output-transition.json` (60 s).
+2. Widget binding for `homeboard-tv` on Cast2 if its recorded state is off,
+   then `AndroidWidgetProbeActivity` with `dev/device/scale-provider-check.json`
+   (24 s), then binding restored to its recorded state.
