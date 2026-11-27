@@ -1,0 +1,312 @@
+[
+  {
+    "seq": 1,
+    "kind": "frame",
+    "state": "applied",
+    "created": 1795745106.423553,
+    "expires": 1795745136.423553,
+    "result": {
+      "file": "input-frame-001.png",
+      "captured": 1795745109.9703734,
+      "bytes": 179440,
+      "touch_frame": {
+        "width": 2244,
+        "height": 1008,
+        "rotation": 1,
+        "display_id": 0,
+        "content_rect": [
+          113,
+          0,
+          2244,
+          1008
+        ]
+      },
+      "latency": {
+        "queued_to_picked_up": 0.099,
+        "run_seconds": 4.083,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 2,
+    "kind": "touch-script",
+    "state": "applied",
+    "created": 1795745124.1269052,
+    "expires": 1795745154.1269052,
+    "result": {
+      "touch_edges": 2,
+      "score_sha256": "1dc164e21bd6e5733580597953fba9ffc63a9db53958f553d8b9800c6d535233",
+      "timeline": "step-0002-touch-timeline.csv",
+      "evidence": "step-0002-touch-evidence.json",
+      "latency": {
+        "queued_to_picked_up": 0.069,
+        "run_seconds": 7.705,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 3,
+    "kind": "touch-script",
+    "state": "applied",
+    "created": 1795745132.534484,
+    "expires": 1795745162.534484,
+    "result": {
+      "touch_edges": 2,
+      "score_sha256": "7330047de617985027fd6b80afef16b24cd3619ac6b22890d6e337e0e37968c4",
+      "timeline": "step-0003-touch-timeline.csv",
+      "evidence": "step-0003-touch-evidence.json",
+      "latency": {
+        "queued_to_picked_up": 0.08,
+        "run_seconds": 7.753,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 4,
+    "kind": "frame",
+    "state": "applied",
+    "created": 1795745141.0139573,
+    "expires": 1795745171.0139573,
+    "result": {
+      "file": "input-frame-004.png",
+      "captured": 1795745145.1038134,
+      "bytes": 200040,
+      "touch_frame": {
+        "width": 2244,
+        "height": 1008,
+        "rotation": 1,
+        "display_id": 0,
+        "content_rect": [
+          113,
+          0,
+          2244,
+          1008
+        ]
+      },
+      "latency": {
+        "queued_to_picked_up": 0.042,
+        "run_seconds": 4.956,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 5,
+    "kind": "touch-script",
+    "state": "applied",
+    "created": 1795745160.5662951,
+    "expires": 1795745190.5662951,
+    "result": {
+      "touch_edges": 10,
+      "score_sha256": "20251a1503bd8a628c88abc2d3c87a8a9afd73ae90f1ddfb95f95920dc90b4d9",
+      "timeline": "step-0005-touch-timeline.csv",
+      "evidence": "step-0005-touch-evidence.json",
+      "latency": {
+        "queued_to_picked_up": 0.086,
+        "run_seconds": 9.032,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 6,
+    "kind": "frame",
+    "state": "applied",
+    "created": 1795745170.262655,
+    "expires": 1795745200.262655,
+    "result": {
+      "file": "input-frame-006.png",
+      "captured": 1795745174.1536005,
+      "bytes": 211887,
+      "touch_frame": {
+        "width": 2244,
+        "height": 1008,
+        "rotation": 1,
+        "display_id": 0,
+        "content_rect": [
+          113,
+          0,
+          2244,
+          1008
+        ]
+      },
+      "latency": {
+        "queued_to_picked_up": 0.047,
+        "run_seconds": 4.775,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 7,
+    "kind": "touch-script",
+    "state": "applied",
+    "created": 1795745190.431482,
+    "expires": 1795745220.431482,
+    "result": {
+      "touch_edges": 2,
+      "score_sha256": "eeba617f7828d5e737d9cba0075cbe7e077298de08f13ce1ee07938a29c8a8c9",
+      "timeline": "step-0007-touch-timeline.csv",
+      "evidence": "step-0007-touch-evidence.json",
+      "latency": {
+        "queued_to_picked_up": 0.068,
+        "run_seconds": 7.587,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 8,
+    "kind": "frame",
+    "state": "applied",
+    "created": 1795745198.584442,
+    "expires": 1795745228.584442,
+    "result": {
+      "file": "input-frame-008.png",
+      "captured": 1795745202.475072,
+      "bytes": 150946,
+      "touch_frame": {
+        "width": 2244,
+        "height": 1008,
+        "rotation": 1,
+        "display_id": 0,
+        "content_rect": [
+          113,
+          0,
+          2244,
+          1008
+        ]
+      },
+      "latency": {
+        "queued_to_picked_up": 0.101,
+        "run_seconds": 4.625,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 9,
+    "kind": "touch-script",
+    "state": "applied",
+    "created": 1795745203.9927654,
+    "expires": 1795745233.9927654,
+    "result": {
+      "touch_edges": 2,
+      "score_sha256": "7ad41720a607d92722114b20aa5ef5a9ce7156c865684e82b189cf32157eb156",
+      "timeline": "step-0009-touch-timeline.csv",
+      "evidence": "step-0009-touch-evidence.json",
+      "latency": {
+        "queued_to_picked_up": 0.078,
+        "run_seconds": 7.013,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 10,
+    "kind": "frame",
+    "state": "applied",
+    "created": 1795745211.6843948,
+    "expires": 1795745241.6843948,
+    "result": {
+      "file": "input-frame-010.png",
+      "captured": 1795745215.2594922,
+      "bytes": 211702,
+      "touch_frame": {
+        "width": 2244,
+        "height": 1008,
+        "rotation": 1,
+        "display_id": 0,
+        "content_rect": [
+          113,
+          0,
+          2244,
+          1008
+        ]
+      },
+      "latency": {
+        "queued_to_picked_up": 0.122,
+        "run_seconds": 4.202,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 11,
+    "kind": "touch-script",
+    "state": "applied",
+    "created": 1795745232.694218,
+    "expires": 1795745262.694218,
+    "result": {
+      "touch_edges": 2,
+      "score_sha256": "5ac162de31d272bfa98a2225db39bfdea5bb7a6c53e21b8cda7d915d0d182607",
+      "timeline": "step-0011-touch-timeline.csv",
+      "evidence": "step-0011-touch-evidence.json",
+      "latency": {
+        "queued_to_picked_up": 0.063,
+        "run_seconds": 6.716,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 12,
+    "kind": "frame",
+    "state": "applied",
+    "created": 1795745240.0856745,
+    "expires": 1795745270.0856745,
+    "result": {
+      "file": "input-frame-012.png",
+      "captured": 1795745243.6261315,
+      "bytes": 190169,
+      "touch_frame": {
+        "width": 2244,
+        "height": 1008,
+        "rotation": 1,
+        "display_id": 0,
+        "content_rect": [
+          113,
+          0,
+          2244,
+          1008
+        ]
+      },
+      "latency": {
+        "queued_to_picked_up": 0.107,
+        "run_seconds": 4.176,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  },
+  {
+    "seq": 13,
+    "kind": "finish",
+    "state": "applied",
+    "created": 1795745255.931812,
+    "expires": 1795745285.931812,
+    "result": {
+      "finish": "requested",
+      "latency": {
+        "queued_to_picked_up": 0.049,
+        "run_seconds": 0.0,
+        "recording": false,
+        "phases": {}
+      }
+    }
+  }
+]

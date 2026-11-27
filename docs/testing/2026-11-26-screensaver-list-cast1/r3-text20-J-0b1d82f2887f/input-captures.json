@@ -1,0 +1,170 @@
+{
+  "score_sha256": "20060e4975d2f5afe967688c406ae92030411a17171364f1ca841855d868cfc7",
+  "host_start_wall": 1795745329.0264518,
+  "host_start_monotonic": 225049.646135737,
+  "captures": [
+    {
+      "label": "t0-home",
+      "planned_ms": 4000,
+      "started": 1795745333.9680185,
+      "ended": 1795745335.3839383,
+      "file": "input-frame-001.png",
+      "bytes": 175704,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t1-open",
+      "planned_ms": 12000,
+      "started": 1795745341.9680014,
+      "ended": 1795745343.565242,
+      "file": "input-frame-002.png",
+      "bytes": 220301,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t2-home-background",
+      "planned_ms": 18000,
+      "started": 1795745347.968013,
+      "ended": 1795745349.5101187,
+      "file": "input-frame-003.png",
+      "bytes": 205514,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t3-use",
+      "planned_ms": 22500,
+      "started": 1795745352.4723165,
+      "ended": 1795745354.0207753,
+      "file": "input-frame-004.png",
+      "bytes": 209220,
+      "schedule_lateness_ms": 4
+    },
+    {
+      "label": "t4-preview",
+      "planned_ms": 27000,
+      "started": 1795745356.9679995,
+      "ended": 1795745358.653442,
+      "file": "input-frame-005.png",
+      "bytes": 209115,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t5-options",
+      "planned_ms": 31500,
+      "started": 1795745361.4679906,
+      "ended": 1795745363.002017,
+      "file": "input-frame-006.png",
+      "bytes": 205554,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t6-pane-down-1",
+      "planned_ms": 36000,
+      "started": 1795745365.968005,
+      "ended": 1795745367.465281,
+      "file": "input-frame-007.png",
+      "bytes": 205514,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t6-pane-down-2",
+      "planned_ms": 40500,
+      "started": 1795745370.4680247,
+      "ended": 1795745371.9682844,
+      "file": "input-frame-008.png",
+      "bytes": 216288,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t6-pane-down-3",
+      "planned_ms": 45000,
+      "started": 1795745374.9680045,
+      "ended": 1795745376.3561578,
+      "file": "input-frame-009.png",
+      "bytes": 223736,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t6-pane-down-4",
+      "planned_ms": 49500,
+      "started": 1795745379.467999,
+      "ended": 1795745380.827802,
+      "file": "input-frame-010.png",
+      "bytes": 215968,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t6-pane-down-5",
+      "planned_ms": 54000,
+      "started": 1795745383.9680157,
+      "ended": 1795745385.4027855,
+      "file": "input-frame-011.png",
+      "bytes": 222683,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t7-back-to-row",
+      "planned_ms": 58500,
+      "started": 1795745388.4680014,
+      "ended": 1795745389.98896,
+      "file": "input-frame-012.png",
+      "bytes": 251041,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t8-last-row",
+      "planned_ms": 68100,
+      "started": 1795745398.068004,
+      "ended": 1795745399.4580016,
+      "file": "input-frame-013.png",
+      "bytes": 226045,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t9-last-first-action",
+      "planned_ms": 73100,
+      "started": 1795745403.0692782,
+      "ended": 1795745404.5936182,
+      "file": "input-frame-014.png",
+      "bytes": 226201,
+      "schedule_lateness_ms": 1
+    },
+    {
+      "label": "t10-pane-down-1",
+      "planned_ms": 77600,
+      "started": 1795745407.568013,
+      "ended": 1795745409.126064,
+      "file": "input-frame-015.png",
+      "bytes": 221092,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t10-pane-down-2",
+      "planned_ms": 82100,
+      "started": 1795745412.0680108,
+      "ended": 1795745413.5516427,
+      "file": "input-frame-016.png",
+      "bytes": 217035,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "t10-pane-down-3",
+      "planned_ms": 86600,
+      "started": 1795745416.568006,
+      "ended": 1795745418.10954,
+      "file": "input-frame-017.png",
+      "bytes": 216249,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 98100,
+      "started": 1795745428.068024,
+      "ended": 1795745429.5881517,
+      "file": "input-frame-018.png",
+      "bytes": 173578,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

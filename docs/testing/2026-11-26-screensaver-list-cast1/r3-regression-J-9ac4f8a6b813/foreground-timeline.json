@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "mode": "observe",
+  "package": "net.biohack.homeboard.debug",
+  "uid": 10128,
+  "uid_source": "pm list packages -U",
+  "foreground_left": false,
+  "observations": 29,
+  "transitions": [
+    {
+      "host_monotonic": 225198.192,
+      "seconds_since_start": 0.264,
+      "host_wall": 1795745477.5728061,
+      "device_uptime_ms": 190176970,
+      "foreground": "topResumedActivity=ActivityRecord{1ea9267 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5784}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "15693",
+      "source": "start",
+      "events": [
+        "initial"
+      ]
+    },
+    {
+      "host_monotonic": 225290.524,
+      "seconds_since_start": 92.596,
+      "host_wall": 1795745569.9044545,
+      "device_uptime_ms": 190269410,
+      "foreground": "topResumedActivity=ActivityRecord{1ea9267 u0 net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity t5784}",
+      "top_component": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+      "target_in_front": true,
+      "dream": "none",
+      "display": "available",
+      "target_pid": "15693",
+      "source": "end",
+      "events": []
+    }
+  ],
+  "logcat": {
+    "method": "uid",
+    "uid": 10128,
+    "file": "logcat.txt"
+  }
+}

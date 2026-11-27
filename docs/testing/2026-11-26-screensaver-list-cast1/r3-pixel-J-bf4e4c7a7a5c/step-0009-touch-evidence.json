@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "job": "J-bf4e4c7a7a5c",
+  "device": "3A131FDJG005WF",
+  "package": "net.biohack.homeboard.debug",
+  "apk": "3872d5897c6521e9047de2f346f900321be1530ed50417179ba144b5ff703143.apk",
+  "score_sha256": "7ad41720a607d92722114b20aa5ef5a9ce7156c865684e82b189cf32157eb156",
+  "frame": {
+    "width": 2244,
+    "height": 1008,
+    "rotation": 1,
+    "display_id": 0,
+    "content_rect": [
+      113,
+      0,
+      2244,
+      1008
+    ]
+  },
+  "initial": {
+    "file": "step-0009-touch-initial.png",
+    "sha256": "e7b22867bfb128ed87a4bb262c42d5ad0fabcec2018abcfc0bb34b3acaf00145",
+    "bytes": 150946,
+    "width": 2244,
+    "height": 1008,
+    "started": 1795745204.7632606,
+    "ended": 1795745205.6800199
+  },
+  "final": {
+    "file": "step-0009-touch-final.png",
+    "sha256": "154fb29c4b33de7ac450a781f585d3865a0c394988f1299dd27a42f4988410bf",
+    "bytes": 211702,
+    "width": 2244,
+    "height": 1008,
+    "started": 1795745210.2519445,
+    "ended": 1795745210.9895492
+  },
+  "captures": [
+    {
+      "file": "step-0009-touch-frame-001.png",
+      "sha256": "154fb29c4b33de7ac450a781f585d3865a0c394988f1299dd27a42f4988410bf",
+      "bytes": 211702,
+      "width": 2244,
+      "height": 1008,
+      "started": 1795745208.9158056,
+      "ended": 1795745209.5800745,
+      "label": "after-tap",
+      "planned_ms": 2000,
+      "host_lateness_ms": 1320,
+      "planned_device_uptime_ms": 4559775
+    }
+  ],
+  "device_anchor": {
+    "device_uptime_ms": 4557775,
+    "device_wall_ms": 1795745205283
+  },
+  "observed_edges": {
+    "1": {
+      "device_uptime_ms": 4558016,
+      "contact": 0,
+      "action": 0,
+      "x": 2046,
+      "y": 81,
+      "accepted": true,
+      "device_reported_wall_ms": 1795745205524
+    },
+    "2": {
+      "device_uptime_ms": 4558113,
+      "contact": 0,
+      "action": 2,
+      "x": 2046,
+      "y": 81,
+      "accepted": true,
+      "device_reported_wall_ms": 1795745205621
+    }
+  },
+  "host_start_wall": 1795745206.2602825,
+  "host_start_monotonic": 224926.879966473,
+  "result": "device-edges-verified",
+  "timeline": "step-0009-touch-timeline.csv"
+}

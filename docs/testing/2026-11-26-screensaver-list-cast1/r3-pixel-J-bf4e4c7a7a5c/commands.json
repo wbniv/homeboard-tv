@@ -1,0 +1,1340 @@
+[
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745072.9704108,
+    "end": 1795745073.236236,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745073.2489338,
+    "end": 1795745073.5444033,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pm path net.biohack.homeboard.debug"
+    ],
+    "start": 1795745073.6829808,
+    "end": 1795745074.0015888,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "sha256sum '/data/app/~~Sn1Oq3X0Nvv5mAHpvItRzg==/net.biohack.homeboard.debug-HkxKGHeke3eP7VLgHPUqLA==/base.apk'"
+    ],
+    "start": 1795745074.0140696,
+    "end": 1795745074.2911437,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745073.6755507,
+    "end": 1795745074.3321142,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "am force-stop net.biohack.homeboard.debug"
+    ],
+    "start": 1795745074.3321493,
+    "end": 1795745074.6711857,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745074.681338,
+    "end": 1795745074.8790874,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745075.0343614,
+    "end": 1795745075.4128234,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am start -W -n net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity"
+    ],
+    "start": 1795745075.4220214,
+    "end": 1795745076.5801446,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745081.6099966,
+    "end": 1795745082.0071213,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745082.0214605,
+    "end": 1795745082.265041,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745083.7228615,
+    "end": 1795745084.064482,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745093.8210468,
+    "end": 1795745094.1447227,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745097.336287,
+    "end": 1795745097.6719358,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745097.6879556,
+    "end": 1795745097.8586123,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745103.879726,
+    "end": 1795745104.2964554,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745106.5271819,
+    "end": 1795745106.8402786,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745106.855364,
+    "end": 1795745107.0263412,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745107.0725043,
+    "end": 1795745107.3085988,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "uiautomator dump /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml 2>&1"
+    ],
+    "start": 1795745107.3141634,
+    "end": 1795745109.7718413,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "cat /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745109.7770786,
+    "end": 1795745109.9703653,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745109.9743624,
+    "end": 1795745110.604734,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745113.951136,
+    "end": 1795745114.266067,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745124.2067869,
+    "end": 1795745124.524099,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745124.075117,
+    "end": 1795745124.5409777,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745124.541003,
+    "end": 1795745124.747396,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745124.7519102,
+    "end": 1795745125.3976028,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/capture-helper.jar",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0002-touch.jar"
+    ],
+    "start": 1795745125.525183,
+    "end": 1795745125.7468555,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0002-touch-score.csv",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0002-touch.csv"
+    ],
+    "start": 1795745125.7513812,
+    "end": 1795745125.8846228,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745127.9692962,
+    "end": 1795745128.4421034,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745128.463638,
+    "end": 1795745128.813638,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745128.8204699,
+    "end": 1795745129.8905263,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "pull",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0002-touch-log.csv",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0002-touch-timeline.csv"
+    ],
+    "start": 1795745129.8983629,
+    "end": 1795745130.0454028,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745130.052332,
+    "end": 1795745130.3904824,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745130.4086425,
+    "end": 1795745130.7643974,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745130.770167,
+    "end": 1795745131.8601902,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745132.6206067,
+    "end": 1795745132.9603448,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745132.9755192,
+    "end": 1795745133.2819724,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745133.2895474,
+    "end": 1795745134.3233905,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/capture-helper.jar",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0003-touch.jar"
+    ],
+    "start": 1795745134.396058,
+    "end": 1795745134.685617,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0003-touch-score.csv",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0003-touch.csv"
+    ],
+    "start": 1795745134.69543,
+    "end": 1795745134.8664522,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745134.3938806,
+    "end": 1795745134.9473674,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745136.9187899,
+    "end": 1795745137.383168,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745137.4006307,
+    "end": 1795745137.6522002,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745137.6573875,
+    "end": 1795745138.5630205,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "pull",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0003-touch-log.csv",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0003-touch-timeline.csv"
+    ],
+    "start": 1795745138.573673,
+    "end": 1795745138.749519,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745138.7588513,
+    "end": 1795745139.1331942,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745139.1595027,
+    "end": 1795745139.4219477,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745139.427961,
+    "end": 1795745140.334574,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745141.060881,
+    "end": 1795745141.6530578,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745141.6698453,
+    "end": 1795745141.9003963,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745141.914032,
+    "end": 1795745142.100237,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "uiautomator dump /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml 2>&1"
+    ],
+    "start": 1795745142.1161132,
+    "end": 1795745144.860702,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "cat /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745144.874004,
+    "end": 1795745145.103804,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745145.1075132,
+    "end": 1795745146.0115478,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745144.871428,
+    "end": 1795745146.09612,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745154.8771963,
+    "end": 1795745155.1949987,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745160.6779034,
+    "end": 1795745161.0345652,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745161.0757296,
+    "end": 1795745161.3433995,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745161.3504956,
+    "end": 1795745162.2346728,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/capture-helper.jar",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0005-touch.jar"
+    ],
+    "start": 1795745162.2994514,
+    "end": 1795745162.516611,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0005-touch-score.csv",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0005-touch.csv"
+    ],
+    "start": 1795745162.5198085,
+    "end": 1795745162.663523,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745164.9027915,
+    "end": 1795745165.1522007,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745166.1976085,
+    "end": 1795745166.6009912,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745166.6151135,
+    "end": 1795745166.8679895,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745166.8830695,
+    "end": 1795745167.7591317,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "pull",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0005-touch-log.csv",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0005-touch-timeline.csv"
+    ],
+    "start": 1795745167.7662358,
+    "end": 1795745167.9076355,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745167.9162474,
+    "end": 1795745168.2489421,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745168.2627335,
+    "end": 1795745168.5007749,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745168.5054855,
+    "end": 1795745169.642612,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745170.33599,
+    "end": 1795745170.7258222,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745170.7436583,
+    "end": 1795745170.9637766,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745170.9761908,
+    "end": 1795745171.2655098,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "uiautomator dump /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml 2>&1"
+    ],
+    "start": 1795745171.2721677,
+    "end": 1795745173.914187,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "cat /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745173.9201581,
+    "end": 1795745174.153593,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745174.157605,
+    "end": 1795745175.0844035,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745175.1313148,
+    "end": 1795745175.576434,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745185.151099,
+    "end": 1795745185.3705046,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745190.5057635,
+    "end": 1795745190.9662745,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745190.9806287,
+    "end": 1795745191.2453039,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745191.250892,
+    "end": 1795745192.36985,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/capture-helper.jar",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0007-touch.jar"
+    ],
+    "start": 1795745192.4829097,
+    "end": 1795745192.7484615,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0007-touch-score.csv",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0007-touch.csv"
+    ],
+    "start": 1795745192.7548237,
+    "end": 1795745192.9046395,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745194.9621599,
+    "end": 1795745195.271961,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745195.2908907,
+    "end": 1795745195.5702562,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745195.2889922,
+    "end": 1795745195.5775077,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745195.577542,
+    "end": 1795745196.532969,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "pull",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0007-touch-log.csv",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0007-touch-timeline.csv"
+    ],
+    "start": 1795745196.5417435,
+    "end": 1795745196.6748857,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745196.6810336,
+    "end": 1795745196.9455383,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745196.9634414,
+    "end": 1795745197.1783948,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745197.1819646,
+    "end": 1795745198.0135465,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745198.7008624,
+    "end": 1795745199.1278234,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745199.1645792,
+    "end": 1795745199.451925,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745199.463999,
+    "end": 1795745199.6388814,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "uiautomator dump /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml 2>&1"
+    ],
+    "start": 1795745199.642855,
+    "end": 1795745202.2726583,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "cat /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745202.281676,
+    "end": 1795745202.4750612,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745202.4791338,
+    "end": 1795745203.3094053,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745204.0782235,
+    "end": 1795745204.4567,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745204.473647,
+    "end": 1795745204.7632499,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745204.7695236,
+    "end": 1795745205.679507,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/capture-helper.jar",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0009-touch.jar"
+    ],
+    "start": 1795745205.7846537,
+    "end": 1795745206.0608833,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0009-touch-score.csv",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0009-touch.csv"
+    ],
+    "start": 1795745206.0694954,
+    "end": 1795745206.2116694,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745205.782408,
+    "end": 1795745206.2680738,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745208.2673833,
+    "end": 1795745208.652031,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745208.6683927,
+    "end": 1795745208.9157875,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745208.921985,
+    "end": 1795745209.579185,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "pull",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0009-touch-log.csv",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0009-touch-timeline.csv"
+    ],
+    "start": 1795745209.5879927,
+    "end": 1795745209.723227,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745209.7288334,
+    "end": 1795745209.9899275,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745210.0068228,
+    "end": 1795745210.2519329,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745210.2577095,
+    "end": 1795745210.9889119,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745211.8122568,
+    "end": 1795745212.1052196,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745212.1213777,
+    "end": 1795745212.292497,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745212.3008301,
+    "end": 1795745212.4376636,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "uiautomator dump /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml 2>&1"
+    ],
+    "start": 1795745212.4463422,
+    "end": 1795745215.0032763,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "cat /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745215.010485,
+    "end": 1795745215.2594817,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745215.2647004,
+    "end": 1795745216.0079093,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745216.0902905,
+    "end": 1795745216.4167333,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745226.0952013,
+    "end": 1795745226.4103029,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745232.7671678,
+    "end": 1795745233.1164017,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745233.1328669,
+    "end": 1795745233.394994,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745233.40215,
+    "end": 1795745234.0151894,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/capture-helper.jar",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0011-touch.jar"
+    ],
+    "start": 1795745234.0783827,
+    "end": 1795745234.2889366,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0011-touch-score.csv",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0011-touch.csv"
+    ],
+    "start": 1795745234.2939594,
+    "end": 1795745234.4358144,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745236.1294675,
+    "end": 1795745236.4332745,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745236.4822094,
+    "end": 1795745236.8746264,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745236.899391,
+    "end": 1795745237.1967587,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745237.2049365,
+    "end": 1795745238.055995,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "pull",
+      "/data/local/tmp/wf-J-bf4e4c7a7a5c-step-0011-touch-log.csv",
+      "/var/lib/wf-device-coordinator/evidence/J-bf4e4c7a7a5c/step-0011-touch-timeline.csv"
+    ],
+    "start": 1795745238.0624166,
+    "end": 1795745238.1849139,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745238.1907594,
+    "end": 1795745238.4918516,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745238.5072665,
+    "end": 1795745238.7042024,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745238.708456,
+    "end": 1795745239.4250617,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "dumpsys activity activities"
+    ],
+    "start": 1795745240.2004926,
+    "end": 1795745240.5688996,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "pidof net.biohack.homeboard.debug"
+    ],
+    "start": 1795745240.584791,
+    "end": 1795745240.7569833,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745240.7659423,
+    "end": 1795745240.907259,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "uiautomator dump /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml 2>&1"
+    ],
+    "start": 1795745240.9141505,
+    "end": 1795745243.4463959,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "cat /data/local/tmp/wf-J-bf4e4c7a7a5c-touch-geometry.xml"
+    ],
+    "start": 1795745243.4529867,
+    "end": 1795745243.6261232,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "exec-out",
+      "screencap",
+      "-p"
+    ],
+    "start": 1795745243.6319065,
+    "end": 1795745244.3676398,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "input keyevent KEYCODE_WAKEUP"
+    ],
+    "start": 1795745246.1558063,
+    "end": 1795745246.475466,
+    "returncode": 0,
+    "session_wake": true,
+    "error": null,
+    "interrupted": false
+  }
+]

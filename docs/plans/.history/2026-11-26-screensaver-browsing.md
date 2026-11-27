@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/aff3a55) | docs: round 2 layout fixes and the portrait note in the browsing plan's acceptance |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/815e3e3) | test: Screensaver list round 2 on Cast1 and the Pixel (0.1.175) |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/982263f) | test: continuous Screensaver list on Cast1 (0.1.173) |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/f225564) | docs: a missing screensaver app keeps its place unless Homeboard manages the TV |
@@ -8,6 +9,11 @@
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/4e5d198) | Plan continuous screensaver browsing with visual mockups |
 
 <!--history-meta v1
+aff3a55	author	Will Norris
+aff3a55	added	2
+aff3a55	deleted	0
+aff3a55	files	1
+aff3a55	body	Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 815e3e3	author	Will Norris
 815e3e3	added	8
 815e3e3	deleted	0

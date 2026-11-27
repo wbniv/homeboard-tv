@@ -184,3 +184,40 @@ Recipes: `dev/device/screensaver-list-r2-{focus-use,large-text,pixel-session}.js
   ([capture](2026-11-26-screensaver-list-cast1/r2-capture-J-2a6873a76d92/final.jpg)).
 - **Pixel:** 0.1.175 installed; nothing saved; Homeboard closed by cleanup.
 - **Cast2:** untouched (no deploy, no jobs).
+
+## Round 3 (2026‑11‑27, 09:00–09:20 Bangkok)
+
+**Build:** Homeboard **0.1.176** (sha256 `3872d589…`), with the layout and touch fixes (`c639eee`,
+`aff3a55`), deployed with `task deploy DEVICE=chromecast-test-01,phone-pixel-8-pro`
+([log](2026-11-26-screensaver-list-cast1/deploy-0.1.176.log); `task check` `BUILD SUCCESSFUL in 1m 36s`).
+Cast1 `J‑a3f284462e41` succeeded. On the Pixel, `J‑e4a50591648b` **installed and verified** 0.1.176
+but the job then failed its launch check with `device-locked`; the touch session that followed
+reused the installed APK ("exact-match"), so the Pixel does run 0.1.176. Cast2 untouched.
+
+| Item | Result | Jobs |
+|---|---|---|
+| 1 Deploy | **PASS** on Cast1; **Pixel installed** (launch check failed: phone locked at that moment). | `J‑a3f284462e41`, `J‑e4a50591648b` |
+| 2 Cast1 1.0× | **PASS.** Close to round 1; the visible change is that "Needs Use everywhere" badges now sit under the names, and Change sits under the On Home value. The pane scrolls to In other apps · Use everywhere…; footer whole. | `J‑f79e3066bd11` |
+| 2 Cast1 1.3× | **PASS.** Names whole on one line ("Ambient Mode", "World Foundry Aquarium Screensaver" on two lines), badges below, all three actions on one line, pane scrolls to its end, footer whole on two lines. | `J‑bef7b1ddad65` |
+| 2 Cast1 2.0× | **PASS with two small defects.** Names wrap at whole words ("Home / background"), actions wrap onto a second line (Options below Use and Preview) and none is clipped, the pane scrolls to its end, the footer is whole on three lines. Defects: the badge text is cut at the row's right edge ("Needs Use everywher") and the status line is ellipsized ("Android runs it, in e…"); and **Right from Preview, when Options has wrapped to the next line, moves focus to header Back** instead of Options (Down from Back then returns to the row), so Options is reached only by Down from Use. | `J‑0b1d82f2887f`, [t2](2026-11-26-screensaver-list-cast1/r3-text20-J-0b1d82f2887f/t2-actions-wrap-2.0.jpg), [zoom](2026-11-26-screensaver-list-cast1/r3-text20-J-0b1d82f2887f/options-down.jpg) |
+| 2 Font scale | Read `1.0` before (round 2), set 1.3 `J‑2c5a55b56f07` and 2.0 `J‑8d8a6ed9c42b`, back to 1.0 `J‑b3bacd726cf2`; read 1.0 at the end (`J‑aa5e459b07b4`). | |
+| 3 Pixel | **PASS.** The action row (Preview, Options) is in full view, with When it starts below it. A swipe scrolled the list by about two rows and the inspected entry stayed Clock, 1 of 11. A tap on Colors inspected it (4 of 11, Use everywhere…). Options round trip: tap Options opens Clock's options; header Back returns to the same scroll and entry. Nothing clipped; names fit and badges sit below. | `J‑bf4e4c7a7a5c` |
+| 4 Regression | **PASS.** Down reached all 9 entries with "1 of 9 … 9 of 9", Down on the last stays, Up ×8 back to row 1; the built-in Clock's Preview (`screensaver started mode=preview entry=clock` … `reason=cancel`) returned to Clock with Preview focused. | `J‑9ac4f8a6b813` |
+
+Frames: [1.0 last row](2026-11-26-screensaver-list-cast1/r3-text10-J-f79e3066bd11/t8-last-row-1.0.jpg),
+[1.3 open](2026-11-26-screensaver-list-cast1/r3-text13-J-bef7b1ddad65/t1-open-1.3.jpg),
+[1.3 pane end](2026-11-26-screensaver-list-cast1/r3-text13-J-bef7b1ddad65/t6-pane-end-1.3.jpg),
+[2.0 pane end](2026-11-26-screensaver-list-cast1/r3-text20-J-0b1d82f2887f/t10-pane-end-2.0.jpg),
+[2.0 badge cut](2026-11-26-screensaver-list-cast1/r3-text20-J-0b1d82f2887f/t6-badge-cut-2.0.jpg),
+[Pixel](2026-11-26-screensaver-list-cast1/r3-pixel-J-bf4e4c7a7a5c/contact-sheet.jpg).
+
+Recipes: `dev/device/screensaver-list-r3-{text,regression,pixel-session}.json`.
+
+### Round 3 final device states
+
+- **Cast1:** Homeboard's choice Clock (On Home; nothing was chosen this round); Home timer "Android
+  decides" and language "Follow device", never changed; font scale 1.0 (`J‑aa5e459b07b4`);
+  Android's screensaver WF Clocks, enabled, activate on sleep, idle 600 000 ms, not running
+  (`J‑52227960799a`); Google TV Home in front ([capture](2026-11-26-screensaver-list-cast1/r3-capture-J-e37e050227e3/final.jpg)).
+- **Pixel:** 0.1.176 installed; nothing chosen or saved; Homeboard closed by the coordinator's cleanup.
+- **Cast2:** untouched. Both Cast1 and the Pixel are free.

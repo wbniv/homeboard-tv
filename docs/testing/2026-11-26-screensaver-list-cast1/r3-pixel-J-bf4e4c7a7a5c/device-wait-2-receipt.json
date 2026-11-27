@@ -1,0 +1,146 @@
+{
+  "budgets": {
+    "cleanup": 180,
+    "cleanup_consumed": 1.1810389909951482,
+    "execution": 900,
+    "execution_consumed": 3.924047612992581,
+    "execution_deadline": 225650.448678382,
+    "forced": 1081,
+    "forced_consumed": 8.498139553004876,
+    "forced_deadline": 225831.448678382,
+    "granted": 224750.448678382
+  },
+  "cleanup_attempts": 1,
+  "connected": true,
+  "device": "phone-pixel-8-pro",
+  "device_wait": {
+    "deadline": null,
+    "device": "phone-pixel-8-pro",
+    "next_probe": 1795745067.9377775,
+    "probes": 2,
+    "reason": "device-locked",
+    "recovery": false,
+    "since": 1795745014.6434433
+  },
+  "diagnostics": {
+    "cached-endpoint-verified": {
+      "endpoint": "192.168.4.35:41535",
+      "observed_at": 1795745033.7591295
+    }
+  },
+  "flags": {},
+  "health": "ready",
+  "job": "J-bf4e4c7a7a5c",
+  "journal": [],
+  "observations": {},
+  "plugin": {
+    "cleanup": {
+      "observations": {},
+      "reason": "restored",
+      "recovery_state": null,
+      "restoration": "safe"
+    },
+    "run": {
+      "details": {
+        "requires_local_unlock": true
+      },
+      "reason": "device-locked",
+      "recovery_state": null,
+      "status": "failed"
+    }
+  },
+  "reaped": [],
+  "reason": "device-locked",
+  "status": "failed",
+  "survivors": [],
+  "tool_diagnostics": [
+    {
+      "healthy": true,
+      "operation": "host-version-probe",
+      "reason": "ready",
+      "seconds": 0.060727415984729305,
+      "timed_out": false
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    },
+    {
+      "phase": "job",
+      "process_policy": "threads-only",
+      "returncode": 0,
+      "timed_out": false,
+      "tool": "adb"
+    }
+  ],
+  "transport_failure_phases": [],
+  "transport_recovery": [],
+  "version": 1,
+  "work_started": true
+}
