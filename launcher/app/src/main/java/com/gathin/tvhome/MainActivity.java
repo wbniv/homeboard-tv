@@ -3000,7 +3000,9 @@ public class MainActivity extends NativeDashboardActivity {
             ScreensaverLayouts.wholeWords(title);
             LinearLayout badgeBox = new LinearLayout(MainActivity.this); badgeBox.setGravity(Gravity.CENTER_VERTICAL);
             copy.addView(new ScreensaverLayouts.NameBadge(MainActivity.this, title, badgeBox, dp(8)), new LinearLayout.LayoutParams(-1, -2));
-            TextView status = muted("", 14); status.setSingleLine(true); status.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            // Wraps at words to two lines, like the name; an ellipsis only after two whole-word lines.
+            TextView status = muted("", 14); status.setMaxLines(2); status.setEllipsize(android.text.TextUtils.TruncateAt.END);
+            ScreensaverLayouts.wholeWords(status);
             copy.addView(status);
             card.addView(copy, new LinearLayout.LayoutParams(0, -2, 1));
             androidx.recyclerview.widget.RecyclerView.LayoutParams lp = new androidx.recyclerview.widget.RecyclerView.LayoutParams(-1, -2);
@@ -3095,7 +3097,8 @@ public class MainActivity extends NativeDashboardActivity {
         }
     }
     private void addRowBadge(LinearLayout box, TextView badge) {
-        badge.setSingleLine(true); box.addView(badge, new LinearLayout.LayoutParams(-2, -2)); box.setVisibility(View.VISIBLE);
+        // Fits, or wraps at words within the row; never clipped at its edge.
+        ScreensaverLayouts.wholeWords(badge); box.addView(badge, new LinearLayout.LayoutParams(-2, -2)); box.setVisibility(View.VISIBLE);
     }
     /** Focuses row index, scrolling only enough to reveal it; a row not laid out yet is focused after the scroll. */
     private void focusScreensaverRow(int index) {
@@ -3299,12 +3302,41 @@ public class MainActivity extends NativeDashboardActivity {
             return true;
         });
     }
+    /**
+     * D-pad among actions that wrap onto several lines, in reading order (ScreensaverPicker.actionTarget): Right and
+     * Left cross line ends, Up and Down change lines. Keys it leaves alone keep the screen's own handling; Left from
+     * the first action returns to the browsed row.
+     */
+    private void actionKeys(View control, ScreensaverLayouts.Wrap actions) {
+        control.setOnKeyListener((v, key, event) -> {
+            ScreensaverPicker.Dir dir = key == KeyEvent.KEYCODE_DPAD_LEFT ? ScreensaverPicker.Dir.LEFT : key == KeyEvent.KEYCODE_DPAD_RIGHT ? ScreensaverPicker.Dir.RIGHT
+                    : key == KeyEvent.KEYCODE_DPAD_UP ? ScreensaverPicker.Dir.UP : key == KeyEvent.KEYCODE_DPAD_DOWN ? ScreensaverPicker.Dir.DOWN : null;
+            if (dir == null) return false;
+            List<View> controls = new ArrayList<>();
+            for (int i = 0; i < actions.getChildCount(); i++) {
+                View child = actions.getChildAt(i);
+                if (child.getVisibility() == View.VISIBLE && child.isFocusable()) controls.add(child);
+            }
+            int[] line = new int[controls.size()], center = new int[controls.size()];
+            for (int i = 0; i < controls.size(); i++) {
+                View child = controls.get(i); line[i] = actions.lineOf(child); center[i] = (child.getLeft() + child.getRight()) / 2;
+            }
+            int target = ScreensaverPicker.actionTarget(line, center, controls.indexOf(v), dir);
+            if (target < 0) {
+                if (dir != ScreensaverPicker.Dir.LEFT || screensaverPane == null || !screensaverChooserShowing()) return false;
+                if (event.getAction() == KeyEvent.ACTION_DOWN) focusScreensaverRow(screensaverPicker.browsedIndex);
+                return true;
+            }
+            if (event.getAction() == KeyEvent.ACTION_DOWN) controls.get(target).requestFocus();
+            return true;
+        });
+    }
     private void addScreensaverAction(ViewGroup actions, String label, String tag, Runnable action) {
         // Whole buttons that grow with the text: a long label wraps at words inside its button, never clipped.
         TextView button = infoButton(label, chooserAction(tag, action)); button.setTag(tag); button.setPadding(dp(18), dp(6), dp(18), dp(6));
         button.setMinHeight(dp(42)); ScreensaverLayouts.wholeWords(button);
         actions.addView(button, new ViewGroup.MarginLayoutParams(-2, -2));
-        returnToRowOnLeft(button);
+        if (actions instanceof ScreensaverLayouts.Wrap) actionKeys(button, (ScreensaverLayouts.Wrap) actions); else returnToRowOnLeft(button);
         if (screensaverFirstAction == null) screensaverFirstAction = button;
     }
 

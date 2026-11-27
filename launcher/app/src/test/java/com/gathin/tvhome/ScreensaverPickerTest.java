@@ -239,4 +239,36 @@ public class ScreensaverPickerTest {
         assertFalse(isTap(0, 0, 16, 0, false));    // still settling from a fling
         assertTrue(isTap(16, 0, 16, 0, true));     // on the slop edge
     }
+
+    // Round 3 at 2.0x: actions wrapped onto two lines (Use, Preview / Options).
+    private static final int[] TWO_LINES = {0, 0, 1}, TWO_LINE_CENTERS = {100, 320, 90};
+
+    @Test public void rightAndLeftFollowReadingOrderAcrossWrappedLines() {
+        assertEquals(1, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 0, Dir.RIGHT));    // Use → Preview
+        assertEquals(2, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 1, Dir.RIGHT));    // Preview → Options, not header Back
+        assertEquals(2, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 2, Dir.RIGHT));    // the last control stays
+        assertEquals(1, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 2, Dir.LEFT));     // Options → Preview
+        assertEquals(0, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 1, Dir.LEFT));
+        assertEquals(-1, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 0, Dir.LEFT));    // first: back to the browsed row
+    }
+
+    @Test public void upAndDownMoveToTheNearestControlOnTheNextLine() {
+        assertEquals(2, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 0, Dir.DOWN));     // Use → Options
+        assertEquals(2, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 1, Dir.DOWN));     // Preview → Options (only one there)
+        assertEquals(0, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 2, Dir.UP));       // Options → Use (nearest centre)
+        assertEquals(-1, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 0, Dir.UP));      // first line: the header, as before
+        assertEquals(-1, actionTarget(TWO_LINES, TWO_LINE_CENTERS, 2, Dir.DOWN));    // last line: the controls below
+        int[] three = {0, 1, 1, 1}, centers = {200, 40, 210, 400};
+        assertEquals(2, actionTarget(three, centers, 0, Dir.DOWN));
+        assertEquals(0, actionTarget(three, centers, 3, Dir.UP));
+    }
+
+    @Test public void oneLineOfActionsBehavesAsBefore() {
+        int[] one = {0, 0, 0}, centers = {80, 240, 400};
+        assertEquals(1, actionTarget(one, centers, 0, Dir.RIGHT));
+        assertEquals(2, actionTarget(one, centers, 2, Dir.RIGHT));
+        assertEquals(-1, actionTarget(one, centers, 1, Dir.UP));
+        assertEquals(-1, actionTarget(one, centers, 1, Dir.DOWN));
+        assertEquals(-1, actionTarget(one, centers, 5, Dir.RIGHT));   // not one of the actions
+    }
 }

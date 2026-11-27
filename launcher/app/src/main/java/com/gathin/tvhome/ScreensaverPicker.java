@@ -231,4 +231,33 @@ final class ScreensaverPicker {
     static boolean isTap(float dx, float dy, int slop, int scrolledPx, boolean listIdle) {
         return listIdle && scrolledPx == 0 && dx * dx + dy * dy <= (float) slop * slop;
     }
+
+    /** A D-pad direction among the detail pane's actions. */
+    enum Dir { LEFT, RIGHT, UP, DOWN }
+
+    /**
+     * Where a D-pad key goes among actions that wrap onto several lines (round 3 at 2.0x). line[i] is control i's line
+     * and center[i] its horizontal centre, in reading order. Right and Left follow reading order across lines (Right
+     * from a line's last control reaches the next line's first); Up and Down move to the nearest control on the line
+     * above or below. -1 leaves the key to the screen's own handling: Up from the first line (the header), Down from
+     * the last (the controls below) and Left from the first control (back to the browsed row). Right from the very
+     * last control stays where it is.
+     */
+    static int actionTarget(int[] line, int[] center, int index, Dir dir) {
+        int n = line.length;
+        if (index < 0 || index >= n) return -1;
+        switch (dir) {
+            case LEFT: return index > 0 ? index - 1 : -1;
+            case RIGHT: return index < n - 1 ? index + 1 : index;
+            default: {
+                int want = line[index] + (dir == Dir.UP ? -1 : 1), best = -1, bestDistance = Integer.MAX_VALUE;
+                for (int i = 0; i < n; i++) {
+                    if (line[i] != want) continue;
+                    int distance = Math.abs(center[i] - center[index]);
+                    if (distance < bestDistance) { best = i; bestDistance = distance; }
+                }
+                return best;
+            }
+        }
+    }
 }

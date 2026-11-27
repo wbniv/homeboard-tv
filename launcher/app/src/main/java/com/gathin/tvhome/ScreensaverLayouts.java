@@ -19,7 +19,7 @@ final class ScreensaverLayouts {
     static final class Wrap extends ViewGroup {
         private final Set<View> shrinkable = new HashSet<>();
         private final int gapX, gapY;
-        private int[] lefts = new int[0], tops = new int[0];
+        private int[] lefts = new int[0], tops = new int[0], lines = new int[0];
 
         Wrap(Context context, int gapX, int gapY) { super(context); this.gapX = gapX; this.gapY = gapY; }
 
@@ -36,6 +36,7 @@ final class ScreensaverLayouts {
             int n = getChildCount();
             lefts = new int[n]; tops = new int[n];
             int[] lineOf = new int[n];
+            lines = lineOf;
             int used = 0, line = 0, lineTop = 0, lineHeight = 0, maxRight = 0;
             boolean empty = true;
             int[] lineHeights = new int[n + 1];
@@ -80,6 +81,12 @@ final class ScreensaverLayouts {
             if (size >= 0) return MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY);
             if (available <= 0) return MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
             return MeasureSpec.makeMeasureSpec(available, MeasureSpec.AT_MOST);
+        }
+
+        /** The line child is on after the last measure; -1 when it is not a laid-out child. */
+        int lineOf(View child) {
+            int i = indexOfChild(child);
+            return i >= 0 && i < lines.length ? lines[i] : -1;
         }
 
         @Override protected void onLayout(boolean changed, int l, int t, int r, int b) {
