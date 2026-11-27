@@ -462,9 +462,9 @@ activities, so there are no mockups.
 
 | Open point | Disposition | Why |
 | --- | --- | --- |
-| Extra HD acceptance | Device check on Cast1, 0.1.177 | The 26 November run was refused as a downgrade and exercised nothing. |
-| Isolated provider probe | Probe fix, new build, Cast1 control and Cast2 native run | The rerun must open the probe, and the probe itself was blind to the native renderer (below). |
-| Live output transitions | New debug probe, Cast2 run | Only the app can hold the dashboard in the foreground while the output changes; a coordinator mode job cannot. |
+| Extra HD acceptance | Device check on Cast1, 0.1.177: **PASS** | The 26 November run was refused as a downgrade and exercised nothing. |
+| Isolated provider probe | Probe fix, then a Cast2 native run on 0.1.179: **PASS** (`J‑5e55f777158f`) | The rerun must open the probe, and the probe itself was blind to the native renderer (below). |
+| Live output transitions | New debug probe, Cast2 run on 0.1.179: **PASS** (`J‑d55b317ebcd5`) | Only the app can hold the dashboard in the foreground while the output changes; a coordinator mode job cannot. |
 | Independent panel detail | Watch, needs Will at the LG | Captures are 1920 × 1080 and cannot show one-pixel detail; the coordinator's detail check plays its own clips, not Homeboard's surface. |
 | Screen reader | Watch, blocked on the coordinator | TalkBack enablement is a documented coordinator gap (`documented.talkback-enable`: missing). |
 | External phone transport | Own TODO item | Not specific to 4K: it is the phone editor's LAN reachability, which the coordinator's network policy blocks from the host. |
@@ -560,16 +560,35 @@ results follow each.
     The 26 November injected fallback `J‑2feb5a800650`
     (`layoutUnchanged: true`) and process kill `J‑c61f6e848a77` stand.
 
-    **PASS** for HD control, fallback and lifecycle. **OPEN:** live output-mode
-    transition. `NativeOutputTransitionProbeActivity` ships in 0.1.179 and
-    waits for a Cast2 run.
+    Live output transition, Cast2 `J‑d55b317ebcd5` on 0.1.179 (27 November,
+    22:46), `logcat.txt`:
+
+    ```text
+    22:46:44.279 HomeboardNative: dashboard=3840x2160 surface=3840x2160 hardware=true
+    22:46:46.141 HomeboardOutputProbe: {"stage":0,"recreations":0,"output":"3840x2160@60","renderer":"native 3840x2160","dashboard":"1920x1080","uhdWorkspace":true}
+    22:46:50.664 HomeboardOutputProbe: {"stage":1,"recreations":1,"output":"1920x1080@60","renderer":"ordinary","dashboard":"1920x1080","uhdWorkspace":true}
+    22:46:51.984 HomeboardNative: dashboard=3840x2160 surface=3840x2160 hardware=true
+    22:46:54.701 HomeboardOutputProbe: {"stage":2,"recreations":2,"output":"3840x2160@60","renderer":"native 3840x2160","dashboard":"1920x1080","uhdWorkspace":true}
+    22:46:54.708 HomeboardOutputProbe: {"status":"pass","detail":"UHD native -> HD ordinary -> UHD native by live output change; layout, page and focus retained; UHD baseline kept", ...}
+    ```
+
+    Cast2 honoured the window's mode request both ways, and each change
+    recreated the dashboard on the right renderer. The whole cycle took about
+    8 s, so all four captures, the first included, show the restored native
+    16×8 layout. The 1080p stage is evidenced by the log, not by a capture. The
+    probe's `dashboard` field reads the activity's base display metrics, not
+    the embedded root, which the `HomeboardNative` lines report. Job ended
+    `health: ready`, and the window preference was cleared at the end.
+
+    **PASS** for HD control, fallback, lifecycle and live output transitions.
 
 4. **Assets and resources:** remove the current provider-image 1080p target only for a verified native 4K path, with bounded memory and real-device measurements. Test static images, animated assets and video separately; prove actual video output rather than assume TextureView is 4K.
 
     **NOT DONE, by scope.** Wallpaper and provider images keep their bounded
     1080p decode target. Native UI rendering makes no claim about wallpaper or
     video resolution. This is an enhancement, not a defect, and is proposed as
-    its own item.
+    its own item. **Split to its own TODO item (Will, 2026‑11‑27):**
+    "4K wallpapers and video". It does not count against closing this item.
 
 5. **Acceptance:** Cast2 4K pixel-detail evidence and actual user interactions (Home, All Apps, focus, menus, live Android widgets, widget expansions, screensaver, Back and Undo); Cast1 1080p regression; text scale, Thai, screen changes, idle and memory/frame pacing. Install one numbered build on the standard fleet via coordinator. Cast2 is justified for this 4K-specific check; let the coordinator admit or defer foreground work.
 
@@ -580,17 +599,28 @@ results follow each.
     above. Fleet: 0.1.179 is installed on Cast1 (`J‑f52d02c33582`, deployed by the
     concurrent widget-hosting work); the Pixel and tablet are offline.
 
-    **PARTIAL.** Pixel-detail evidence, screen changes (step 3) and the
-    production-native provider probe remain. The provider probe could not have
-    passed on Cast2 before 51e8181 (see above).
+    Production-native provider probe, Cast2 `J‑5e55f777158f` on 0.1.179
+    (22:49), `wf.log` and `logcat.txt`:
 
-**Waiting on Cast2.** Both runs below use frozen 0.1.179
-(`55c83d05…8d44`, source manifest byte-identical to 51e8181 for both probes).
-Each needs the `homeboard-tv` catalog entry temporarily registered to the
-probe activity, then restored to MainActivity.
+    ```text
+    {"status":"pass","detail":"50% / 16×8; actual compact/expanded RemoteViews; short OK, Restore/Back, phone move/resize into extra space/remove/Undo; original binding retained; disposable IDs released; household unchanged","renderer":"native surface 3840x2160, dashboard 1920x1080","homeboardVersion":"0.1.179"}
+    22:49:11.852 HomeboardNative: dashboard=3840x2160 surface=3840x2160 hardware=true
+    ```
 
-1. `NativeOutputTransitionProbeActivity` with
-   `dev/device/automatic-4k-output-transition.json` (60 s).
-2. Widget binding for `homeboard-tv` on Cast2 if its recorded state is off,
-   then `AndroidWidgetProbeActivity` with `dev/device/scale-provider-check.json`
-   (24 s), then binding restored to its recorded state.
+    Captures show the fixture's actual RemoteViews ("Widget bound across apps ·
+    id 4") at its moved page‑2 position. Widget binding for `homeboard-tv` was
+    already on (`J‑d44b7b84b0e6`: `before: true`, `target: true`,
+    `changed: false`), so there was nothing to restore. The probe released its
+    disposable host IDs and checked that household settings were unchanged.
+
+    **PASS** for interactions, the provider probe in production native, screen
+    changes and the Cast1 regression. One-pixel panel detail stays on Watch,
+    because only someone looking at the panel can supply it; this round does
+    not claim it.
+
+**Cast2 runs, 27 November.** Both used frozen 0.1.179 (`55c83d05…8d44`, whose
+source manifest is byte-identical to 51e8181 for both probes). The
+`homeboard-tv` catalog entry was registered to each probe activity for its run
+and restored to `com.gathin.tvhome.MainActivity` straight afterwards; the
+final registration read back as
+`net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity`.

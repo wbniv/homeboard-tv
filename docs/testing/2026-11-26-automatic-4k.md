@@ -1,7 +1,8 @@
 # Automatic native 4K in ordinary Homeboard · 26 November
 
-Automatic native 4K and the native 100% baseline are implemented and deployed;
-extended acceptance and the offline tablet install remain open. Will authorized production integration and clarified that
+Automatic native 4K and the native 100% baseline are implemented and deployed.
+The 27 November closing round passed the remaining device checks; panel detail,
+screen reader, phone transport and broader providers are on Watch. Will authorized production integration and clarified that
 performance metrics are informative, not a prerequisite for going 4K.
 
 ## Implementation
@@ -91,28 +92,45 @@ it was stopped straight away. The session ended `health: ready`.
 ![Cast1 HD About on 0.1.177](2026-11-26-automatic-4k/cast1-hd-about-177.png)
 ![Cast1 HD scale preview on 0.1.177](2026-11-26-automatic-4k/cast1-hd-scale-177.png)
 
-**Isolated provider probe: fixed, waiting on Cast2.** The probe looked for widget
-text in the activity window. Under native rendering that window holds only the
-SurfaceView, so on Cast2 the probe would have failed whatever the dashboard did.
+**Production-native provider probe: PASS.** The probe looked for widget text in
+the activity window. Under native rendering that window holds only the
+SurfaceView, so on Cast2 it would have failed whatever the dashboard did.
 Commit 51e8181 points it at the embedded root and adds the renderer to its
-report. The 26 November session `J‑e3347659551f` opened MainActivity, because the
-catalog entry still named MainActivity. A rerun has to register the probe
-activity first and restore MainActivity afterwards.
+report. (The 26 November session `J‑e3347659551f` opened MainActivity because
+the catalog entry still named MainActivity.) Cast2 `J‑5e55f777158f` on 0.1.179
+reported `"status":"pass"` with `"renderer":"native surface 3840x2160"`, and
+`HomeboardNative: dashboard=3840x2160 surface=3840x2160 hardware=true`. It
+covered the actual compact and expanded RemoteViews, short OK, Restore and
+Back, phone move and resize into the extra space, Remove and Undo keeping the
+same binding, release of the disposable IDs, and unchanged household settings.
+Widget binding was already on (`J‑d44b7b84b0e6`: `before: true`,
+`changed: false`), so nothing needed restoring.
 
-**Live output transitions: probe built, waiting on Cast2.**
-`NativeOutputTransitionProbeActivity` (51e8181, in 0.1.179) switches UHD → HD → UHD
-through its own window's display-mode preference and checks the renderer, the UHD
-baseline, the layout, the page and focus at each stage. Recipe:
-`dev/device/automatic-4k-output-transition.json`, validated against Cast2's profile
-with no job created.
+![Native provider probe on Cast2, 0.1.179](2026-11-26-automatic-4k/cast2-native-provider-probe-179.png)
+
+**Live output transitions: PASS.** `NativeOutputTransitionProbeActivity` (51e8181)
+ran on Cast2 as `J‑d55b317ebcd5` on 0.1.179. Output went 3840×2160@60 with the
+native renderer, then 1920×1080@60 with the ordinary renderer, then back to
+3840×2160@60 native, one recreation per change. Layout, page and focus were
+retained and the UHD workspace baseline stayed true throughout. The cycle took
+about 8 s, so the captures all show the restored native layout; the 1080p stage
+rests on the log. The window's mode preference was cleared at the end, and the
+job ended `health: ready`.
+
+![Native dashboard after the HD round trip, Cast2 0.1.179](2026-11-26-automatic-4k/cast2-output-transition-return-179.png)
+
+**Registration.** For each run the `homeboard-tv` catalog entry pointed at that
+probe and went back to MainActivity straight afterwards. The final read-back was
+`net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity`.
 
 **Moved out of this item:** independent panel detail (needs Will's eyes at the
 LG), screen reader (the coordinator has no TalkBack enablement), external phone
 transport (not specific to 4K) and broader real providers (open-ended). See the
 [plan's closing round](../plans/2026-11-23-native-4k-dashboard.md#closing-round--27-november).
 
-Evidence: `docs/diagnostics/2026-11-27-auto4k-hd-177/` and
-`docs/diagnostics/2026-11-27-auto4k-hd-177-remote/`.
+Evidence: `docs/diagnostics/2026-11-27-auto4k-hd-177/`,
+`2026-11-27-auto4k-hd-177-remote/`, `2026-11-27-auto4k-output-transition/`,
+`2026-11-27-auto4k-binding-on/` and `2026-11-27-auto4k-provider-probe/`.
 
 ## Initial 0.1.165 verification · historical deployment state
 

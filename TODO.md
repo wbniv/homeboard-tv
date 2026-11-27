@@ -29,7 +29,6 @@ Check conformance with the shared `python-tui-lib/scripts/todo-lint.py` in the b
 
 Repository consolidation is complete. Archived worktree drafts are described in [the worktree guide](docs/how-to/worktrees.md). Historical coordinator branch/version notes below need a current coordinator check before resuming; they are not live ownership or deployment claims.
 
-- [wip T4] <!-- agent:a888cb2c68a84ca17 --> **Native 4K dashboard**: automatic native rendering ships in ordinary Homeboard; the UHD workspace is labelled 100% (16×8). Passed: Cast2 native hierarchy and surface, the 100% preview, fallback, process-kill recovery and 1.3× text; Cast1 HD control rerun on 0.1.177 (About 1920 × 1080, 100% · 8×4, `J‑f487348f74e2`). Left, both Cast2-only and both waiting for Will’s go-ahead on frozen 0.1.179: the live UHD → HD → UHD output transition (new `NativeOutputTransitionProbeActivity`) and the production-native provider probe (fixed in 51e8181: before that it could not pass under native rendering). Panel detail, screen reader, phone transport and broader providers have moved to Watch. [Closing round](docs/plans/2026-11-23-native-4k-dashboard.md#closing-round--27-november) · [rollout](docs/testing/2026-11-26-automatic-4k.md) · [plan](docs/plans/2026-11-23-native-4k-dashboard.md).
 
 - [T4] **4K wallpapers and video**: on the native 4K path, lift the 1080p decode target for wallpaper and provider images within a measured memory budget, and prove actual 4K video output rather than assume TextureView is 4K. Test static images, animated assets and video separately on Cast2; 1080p devices keep today's behaviour. Split from the 4K dashboard's engineering gate 4 (Will, 2026‑11‑27). T4: memory limits and video output cut across the app. [Plan, gate 4](docs/plans/2026-11-23-native-4k-dashboard.md).
 
@@ -79,6 +78,7 @@ trigger that promotes it back to Open._
 
 ## Done
 
+- ✅ 2026‑11‑27 — [native-4k-dashboard] Automatic native 4K; Cast2 output transition and native provider probe pass (0.1.179). See [plan](docs/plans/2026-11-23-native-4k-dashboard.md#closing-round--27-november).
 - ✅ 2026‑11‑27 — [screensaver-list] One scrolling Screensaver list; Cast1 1×/1.3×/2×, Cast2 4K and Pixel pass (0.1.177). See [record](docs/testing/2026-11-26-screensaver-list-cast1.md).
 - ✅ 2026‑11‑26 — [top-row-start-screensaver] Start screensaver + Homeboard settings only; Cast1 steps 1–7 pass, Thai partial. See [record](docs/testing/2026-11-26-top-row-cast1.md).
 - ✅ 2026‑11‑26 — [screensaver-stage5] WF Clocks previews, plays on Home and yields to a ringing timer on Cast1. See [record](docs/testing/2026-11-26-screensaver-stage5-cast1.md).

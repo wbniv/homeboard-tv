@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/fb10849) | docs: native 4K closing round; Cast1 HD control passes on 0.1.177 |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/952dcb5) | Refresh stale 4K and screensaver documentation status |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/2f5340f) | Enable automatic native 4K with a native 100 percent workspace |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/1f208a4) | test: verify reduced-scale dashboard and native 4K widget hosting |
@@ -11,6 +12,11 @@
 | [2026-11-23](https://github.com/wbniv/homeboard-tv/commit/c3234b6) | Add standalone 4K tester and screensaver shortcut |
 
 <!--history-meta v1
+fb10849	author	Will Norris
+fb10849	added	144
+fb10849	deleted	0
+fb10849	files	1
+fb10849	body	Plan gains a closing-round section: disposition of every open acceptance\npoint, the provider-probe defect, the output-transition probe design and\nthe five engineering gates with evidence and PASS/PARTIAL/OPEN results.\nCast1 HD rerun (J-99927171f81c scripted, J-f487348f74e2 Remote) reads\nAbout 0.1.177, rendering 1920x1080, output 1920x1080 at 59.94 Hz, scale\npreview 100% 8x4. Panel detail, screen reader, phone transport and\nbroader providers move to Watch; the two Cast2 runs remain on the item.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqP8zNDXFEqEEztS56o
 952dcb5	author	Will Norris
 952dcb5	added	19
 952dcb5	deleted	13
