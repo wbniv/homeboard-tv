@@ -33,7 +33,7 @@ public final class AndroidWidgetProbeActivity extends MainActivity {
             require(layout().androidWidget(key).id>0,"Bound widget identity missing");
         });
         step(6500,()->{
-            require(text(getWindow().getDecorView()).contains("Widget bound across apps"),"Real compact RemoteViews not painted");
+            require(text(dashboardView()).contains("Widget bound across apps"),"Real compact RemoteViews not painted");
             require(layout().dashboardScale==50&&layout().homeColumns==16&&layout().homeRows==8,"Provider host lost 50% / 16×8 grid");
             JSONObject snapshot=phoneState(),draft=snapshot.getJSONObject("draft");draft.getJSONArray("widgets").getJSONObject(0).put("page",1);
             draft.getJSONArray("widgets").getJSONObject(0).put("column",10).put("row",4).put("width",4).put("height",2);
@@ -42,9 +42,9 @@ public final class AndroidWidgetProbeActivity extends MainActivity {
             press(KeyEvent.KEYCODE_DPAD_CENTER);
         });
         step(9000,()->{
-            require(expanded()!=null,"Short OK failed to expand");require(text(expanded().getWindow().getDecorView()).contains("Widget bound across apps"),"Expanded provider view missing");
-            require(text(expanded().getWindow().getDecorView()).contains("Saved dashboard size"),"Richer provider detail missing");
-            View restore=find(expanded().getWindow().getDecorView(),getString(R.string.hb_fs_restore));require(restore!=null,"Restore action missing");restore.performClick();
+            require(expanded()!=null,"Short OK failed to expand");require(text(expandedView()).contains("Widget bound across apps"),"Expanded provider view missing");
+            require(text(expandedView()).contains("Saved dashboard size"),"Richer provider detail missing");
+            View restore=find(expandedView(),getString(R.string.hb_fs_restore));require(restore!=null,"Restore action missing");restore.performClick();
         });
         step(11000,()->{
             require(expanded()==null&&before.equals(layout().encode())&&Integer.valueOf(1).equals(field("homePage"))&&key.equals(field("focused")),"Restore changed page, focus or saved size");
@@ -68,12 +68,16 @@ public final class AndroidWidgetProbeActivity extends MainActivity {
     private void choose(int index)throws Exception{Object menu=field("activeMenu");require(menu!=null,"Review menu missing");call("selectMenuChoice",new Class<?>[]{menu.getClass(),int.class,int.class},menu,0,index);}
     private HomeLayout layout(){return (HomeLayout)field("layout");}
     private WidgetExpansion expanded(){return (WidgetExpansion)field("expandedWidget");}
+    /** The native renderer hosts the dashboard and its modal plane in the embedded root, not this window. */
+    private View dashboardView(){View plane=dashboardOverlayRoot();return plane!=null?plane:getWindow().getDecorView();}
+    private View expandedView(){FrameLayout plane=dashboardOverlayRoot();return plane==null?expanded().getWindow().getDecorView():plane.getChildAt(plane.getChildCount()-1);}
+    private String renderer(){int[] surface=dashboardRenderingSurface();android.util.DisplayMetrics ui=getResources().getDisplayMetrics();return (surface==null?"ordinary ":"native surface "+surface[0]+"x"+surface[1]+", ")+"dashboard "+ui.widthPixels+"x"+ui.heightPixels;}
     private void press(int code){dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN,code));dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP,code));}
     private View find(View v,String label){if(v instanceof TextView&&label.contentEquals(((TextView)v).getText()))return v;if(v instanceof ViewGroup)for(int i=0;i<((ViewGroup)v).getChildCount();i++){View found=find(((ViewGroup)v).getChildAt(i),label);if(found!=null)return found;}return null;}
     private String text(View v){String result=v instanceof TextView?String.valueOf(((TextView)v).getText()):"";if(v instanceof ViewGroup)for(int i=0;i<((ViewGroup)v).getChildCount();i++)result+="\n"+text(((ViewGroup)v).getChildAt(i));return result;}
     private interface Stage{void run()throws Exception;}
     private void step(long ms,Stage action){steps.postDelayed(()->{try{action.run();}catch(Exception e){steps.removeCallbacksAndMessages(null);report("fail",e.toString());}},ms);}
     private void require(boolean value,String reason){if(!value)throw new IllegalStateException(reason);}
-    private void report(String status,String detail){try{JSONObject report=new JSONObject().put("status",status).put("detail",detail).put("homeboardVersion",getPackageManager().getPackageInfo(getPackageName(),0).versionName);Files.write(new File(getExternalFilesDir(null),"wf.log").toPath(),report.toString().getBytes(StandardCharsets.UTF_8));}catch(Exception ignored){}}
+    private void report(String status,String detail){try{JSONObject report=new JSONObject().put("status",status).put("detail",detail).put("renderer",renderer()).put("homeboardVersion",getPackageManager().getPackageInfo(getPackageName(),0).versionName);Files.write(new File(getExternalFilesDir(null),"wf.log").toPath(),report.toString().getBytes(StandardCharsets.UTF_8));}catch(Exception ignored){}}
     @Override protected void onDestroy(){steps.removeCallbacksAndMessages(null);super.onDestroy();android.appwidget.AppWidgetHost cleanup=new android.appwidget.AppWidgetHost(this,androidWidgetHostId());for(int id:cleanup.getAppWidgetIds())cleanup.deleteAppWidgetId(id);}
 }

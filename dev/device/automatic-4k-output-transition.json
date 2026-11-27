@@ -1,0 +1,13 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 60,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 4, "capture": "output-transition-native-start"},
+    {"at": 16, "capture": "output-transition-hd-ordinary"},
+    {"at": 32, "capture": "output-transition-native-return"},
+    {"at": 52, "capture": "output-transition-result"},
+    {"at": 56, "key": "DPAD_UP", "action": "hold", "ms": 80}
+  ]
+}
