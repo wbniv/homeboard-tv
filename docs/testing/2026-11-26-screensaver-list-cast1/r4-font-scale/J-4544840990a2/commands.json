@@ -1,0 +1,237 @@
+[
+  {
+    "args": [
+      "shell",
+      "am get-current-user"
+    ],
+    "start": 1795754194.3951247,
+    "end": 1795754194.6269653,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/platform-helper.jar",
+      "/data/local/tmp/wf-J-4544840990a2-platform.jar"
+    ],
+    "start": 1795754194.6626046,
+    "end": 1795754194.8133118,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "CLASSPATH=/data/local/tmp/wf-J-4544840990a2-platform.jar timeout 25 app_process /system/bin WfPlatform preferences /data/local/tmp/wf-J-4544840990a2-platform.jar"
+    ],
+    "start": 1795754194.8431828,
+    "end": 1795754196.2131124,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "ps -A -o PID,ARGS"
+    ],
+    "start": 1795754196.2152402,
+    "end": 1795754196.6437643,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure accessibility_interactive_ui_timeout_ms"
+    ],
+    "start": 1795754196.671111,
+    "end": 1795754196.9698794,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure accessibility_non_interactive_ui_timeout_ms"
+    ],
+    "start": 1795754196.9720125,
+    "end": 1795754197.1704652,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure tts_default_rate"
+    ],
+    "start": 1795754197.1725752,
+    "end": 1795754197.355946,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure tts_default_pitch"
+    ],
+    "start": 1795754197.3575535,
+    "end": 1795754197.5450978,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure minimal_post_processing_allowed"
+    ],
+    "start": 1795754197.5468955,
+    "end": 1795754197.728503,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global user_disabled_hdr_formats"
+    ],
+    "start": 1795754197.7306705,
+    "end": 1795754197.9886422,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global are_user_disabled_hdr_formats_allowed"
+    ],
+    "start": 1795754197.9913778,
+    "end": 1795754198.4019384,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global hdr_conversion_mode"
+    ],
+    "start": 1795754198.4041336,
+    "end": 1795754198.6100338,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global hdr_force_conversion_type"
+    ],
+    "start": 1795754198.6120303,
+    "end": 1795754198.8054419,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global encoded_surround_output"
+    ],
+    "start": 1795754198.8074026,
+    "end": 1795754199.0145743,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global encoded_surround_output_enabled_formats"
+    ],
+    "start": 1795754199.0176368,
+    "end": 1795754199.220872,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get system font_scale"
+    ],
+    "start": 1795754199.2235315,
+    "end": 1795754199.596632,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure accessibility_captioning_enabled"
+    ],
+    "start": 1795754199.5985177,
+    "end": 1795754199.831161,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure accessibility_captioning_font_scale"
+    ],
+    "start": 1795754199.833702,
+    "end": 1795754200.241236,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure accessibility_captioning_preset"
+    ],
+    "start": 1795754200.244749,
+    "end": 1795754200.43462,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure accessibility_captioning_locale"
+    ],
+    "start": 1795754200.4370322,
+    "end": 1795754200.63476,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get secure high_text_contrast_enabled"
+    ],
+    "start": 1795754200.63896,
+    "end": 1795754201.0618386,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global window_animation_scale"
+    ],
+    "start": 1795754201.064004,
+    "end": 1795754201.2553957,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global transition_animation_scale"
+    ],
+    "start": 1795754201.2604048,
+    "end": 1795754201.678074,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global animator_duration_scale"
+    ],
+    "start": 1795754201.680264,
+    "end": 1795754202.0849621,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get global stay_on_while_plugged_in"
+    ],
+    "start": 1795754202.0876107,
+    "end": 1795754202.2935243,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am get-current-user"
+    ],
+    "start": 1795754202.295918,
+    "end": 1795754202.4943795,
+    "returncode": 0
+  }
+]

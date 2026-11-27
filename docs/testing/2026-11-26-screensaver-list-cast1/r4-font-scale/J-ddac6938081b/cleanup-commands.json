@@ -1,0 +1,20 @@
+[
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-ddac6938081b-platform.jar"
+    ],
+    "start": 1795754053.7973013,
+    "end": 1795754053.9827323,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-ddac6938081b-platform.jar; echo wf-status=$?"
+    ],
+    "start": 1795754053.9848797,
+    "end": 1795754054.109056,
+    "returncode": 0
+  }
+]

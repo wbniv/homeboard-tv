@@ -184,11 +184,15 @@ catalogue demonstrates a need.
   **Evidence: PASS for the installed set only.** First row: Up goes to header Back; last row: Down stays; "N of M" and the thumb track the row. Zero external apps and the 40-entry fixture not run.
 
   **Round 2 (0.1.175):** Cast2 at native 4K not run; the deploy to `chromecast-test-02` was refused by the agent's permission check and needs Will's approval.
+
+  **Round 4 (0.1.177):** Cast2 at native 4K: every entry by Up/Down ("1 of 8 … 8 of 8"), the last row stays, header Back above row 1, thumb right; Homeboard lays out on the 3840×2160 surface and nothing is clipped (`J‑cb4327ef7b35`). Captures from the coordinator are 1920×1080 only, Android's window size.
 - Right/OK, Left, Back and header Back follow the table. Return from both types
   of Preview, built-in Options and an external settings activity to the exact
   entry, action and list position.
 
   **Evidence: PASS.** Right/OK, Left, Back and header Back behave as the table (`J‑9064f6100da8`, `J‑39e7e17a2f03`, `J‑b810c89abb7c`); returns from the built-in Clock's Preview, Home background's Options, WF Clocks' app screen and Use everywhere land on the same entry, action and scroll. No listed app declares an external settings activity, so that return is untested.
+
+  **Round 4 (0.1.177):** the same keys and a built-in Preview return pass on Cast2 at 4K (`J‑cb4327ef7b35`).
 - Merely browsing changes no saved choice or Android setting. Use/Undo restores
   the previous choice and scope. Permission refusal changes neither.
 
@@ -210,6 +214,8 @@ catalogue demonstrates a need.
   **Round 2 (0.1.175): partial, with defects.** Cast1 at 1.3×: actions reachable and the pane scrolls, but names beside a badge break mid-word and are ellipsized. At 2.0×: Options is clipped at the pane edge, the last row's name disappears behind its badge, and the When it starts values break mid-word (`J‑eb788c478c96`, `J‑4878341483f5`). Pixel: Homeboard runs in landscape, so the stacked layout is not reachable; taps inspect rows and act on actions, but a row name breaks mid-word, the action row is cut at the bottom, and swipes change the inspected entry instead of scrolling naturally (`J‑721ea550e5ae`). Long Thai names and accessibility traversal not run.
 
   **Round 3 (0.1.176): mostly PASS.** Cast1 at 1.0×, 1.3× and 2.0×: names wrap at whole words, badges sit below, actions wrap instead of clipping, the pane scrolls to its end and the footer is whole (`J‑f79e3066bd11`, `J‑bef7b1ddad65`, `J‑0b1d82f2887f`). At 2.0× the badge text is cut ("Needs Use everywher"), the status line is ellipsized, and Right from Preview goes to header Back when Options has wrapped below. Pixel: the action row is in view, a swipe scrolls without changing the inspected entry, a tap inspects, Options round trip returns to the same place (`J‑bf4e4c7a7a5c`). Up/Down and a Preview return regress cleanly (`J‑9ac4f8a6b813`). The stacked narrow layout and Cast2 4K remain untested.
+
+  **Round 4 (0.1.177): PASS.** Cast1 at 2.0×: badges wrap below names, status lines take two lines, nothing clipped, Right from Preview reaches a wrapped Options and Left returns, Up/Down move between action lines (`J‑87641b26e237`); 1.0× unchanged (`J‑5e873b2457bb`). Only the longest name is cut after two lines.
 
   **Fixes after round 2 (branch `screensaver-list-layout`, not yet on a device):** a row's badge sits beside the name only when the whole name fits on one line beside it, otherwise below it, and names wrap at word boundaries to at most two lines; actions and the When it starts rows wrap whole to new lines (labels wrap inside their buttons, never clipped); the illustration is shorter when the pane is short or the text is 1.5× or larger; the footer hint wraps in full; under touch only a tap inspects a row, never a swipe or scroll. **Portrait needs a rotation workflow:** Homeboard runs in landscape on the Pixel, so the stacked layout below 720 dp cannot be reached there without one; the app's orientation is deliberately not changed.
 - Pause/recreate and package refresh retain picker state. Scroll does not start

@@ -1,0 +1,246 @@
+{
+  "controls": {
+    "action-timeout-interactive": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "accessibility_interactive_ui_timeout_ms",
+          "value": null
+        }
+      ],
+      "title": "Time to act: interactive controls (ms)"
+    },
+    "action-timeout-notices": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "accessibility_non_interactive_ui_timeout_ms",
+          "value": null
+        }
+      ],
+      "title": "Time to act: notices (ms)"
+    },
+    "tts-rate": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "tts_default_rate",
+          "value": null
+        }
+      ],
+      "title": "Text-to-speech rate (%)"
+    },
+    "tts-pitch": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "tts_default_pitch",
+          "value": null
+        }
+      ],
+      "title": "Text-to-speech pitch (%)"
+    },
+    "allow-game-mode": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "minimal_post_processing_allowed",
+          "value": null
+        }
+      ],
+      "title": "Allow app game mode (ALLM policy)"
+    },
+    "hdr-formats": {
+      "state": "known",
+      "value": {
+        "mode": "automatic",
+        "disabled": []
+      },
+      "saved": [
+        {
+          "namespace": "global",
+          "key": "user_disabled_hdr_formats",
+          "value": ""
+        },
+        {
+          "namespace": "global",
+          "key": "are_user_disabled_hdr_formats_allowed",
+          "value": null
+        }
+      ],
+      "title": "HDR format selection"
+    },
+    "hdr-conversion": {
+      "state": "known",
+      "value": {
+        "mode": "passthrough"
+      },
+      "saved": [
+        {
+          "namespace": "global",
+          "key": "hdr_conversion_mode",
+          "value": "1"
+        },
+        {
+          "namespace": "global",
+          "key": "hdr_force_conversion_type",
+          "value": "-1"
+        }
+      ],
+      "title": "HDR conversion policy"
+    },
+    "surround": {
+      "state": "known",
+      "value": {
+        "mode": "automatic",
+        "formats": []
+      },
+      "saved": [
+        {
+          "namespace": "global",
+          "key": "encoded_surround_output",
+          "value": "0"
+        },
+        {
+          "namespace": "global",
+          "key": "encoded_surround_output_enabled_formats",
+          "value": ""
+        }
+      ],
+      "title": "Surround formats"
+    },
+    "font-scale": {
+      "state": "known",
+      "value": "1.0",
+      "saved": [
+        {
+          "namespace": "system",
+          "key": "font_scale",
+          "value": "1.0"
+        }
+      ],
+      "title": "Device text scale"
+    },
+    "captions-enabled": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "accessibility_captioning_enabled",
+          "value": null
+        }
+      ],
+      "title": "Captions"
+    },
+    "caption-font-scale": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "accessibility_captioning_font_scale",
+          "value": null
+        }
+      ],
+      "title": "Caption text scale"
+    },
+    "caption-preset": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "accessibility_captioning_preset",
+          "value": null
+        }
+      ],
+      "title": "Caption style preset"
+    },
+    "caption-locale": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "accessibility_captioning_locale",
+          "value": null
+        }
+      ],
+      "title": "Caption language"
+    },
+    "high-contrast-text": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "secure",
+          "key": "high_text_contrast_enabled",
+          "value": null
+        }
+      ],
+      "title": "High contrast text"
+    },
+    "animation-window": {
+      "state": "known",
+      "value": "1.0",
+      "saved": [
+        {
+          "namespace": "global",
+          "key": "window_animation_scale",
+          "value": "1.0"
+        }
+      ],
+      "title": "Window animation scale"
+    },
+    "animation-transition": {
+      "state": "known",
+      "value": "1.0",
+      "saved": [
+        {
+          "namespace": "global",
+          "key": "transition_animation_scale",
+          "value": "1.0"
+        }
+      ],
+      "title": "Transition animation scale"
+    },
+    "animation-duration": {
+      "state": "known",
+      "value": null,
+      "saved": [
+        {
+          "namespace": "global",
+          "key": "animator_duration_scale",
+          "value": null
+        }
+      ],
+      "title": "Animator duration scale"
+    },
+    "stay-awake-powered": {
+      "state": "known",
+      "value": "0",
+      "saved": [
+        {
+          "namespace": "global",
+          "key": "stay_on_while_plugged_in",
+          "value": "0"
+        }
+      ],
+      "title": "Stay awake power sources"
+    }
+  },
+  "changed": false,
+  "user": 0,
+  "scope": "Android preference/API readback; physical output and application adoption are separate acceptance."
+}

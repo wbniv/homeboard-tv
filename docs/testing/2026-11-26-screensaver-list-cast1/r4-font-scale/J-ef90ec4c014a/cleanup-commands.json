@@ -1,0 +1,20 @@
+[
+  {
+    "args": [
+      "shell",
+      "rm -f /data/local/tmp/wf-J-ef90ec4c014a-platform.jar"
+    ],
+    "start": 1795753882.2547717,
+    "end": 1795753882.459234,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "test ! -e /data/local/tmp/wf-J-ef90ec4c014a-platform.jar; echo wf-status=$?"
+    ],
+    "start": 1795753882.4620194,
+    "end": 1795753882.5943046,
+    "returncode": 0
+  }
+]

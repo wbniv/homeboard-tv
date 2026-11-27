@@ -221,3 +221,37 @@ Recipes: `dev/device/screensaver-list-r3-{text,regression,pixel-session}.json`.
   (`J‑52227960799a`); Google TV Home in front ([capture](2026-11-26-screensaver-list-cast1/r3-capture-J-e37e050227e3/final.jpg)).
 - **Pixel:** 0.1.176 installed; nothing chosen or saved; Homeboard closed by the coordinator's cleanup.
 - **Cast2:** untouched. Both Cast1 and the Pixel are free.
+
+## Round 4 (2026‑11‑27, 11:28–11:40 Bangkok)
+
+**Build:** Homeboard **0.1.177**, with the 2.0× fixes (`2d79f5f`). The orchestrator deployed it,
+with Will's explicit approval for Cast2 ("deploy to Cast2"): Cast1 `J‑f233a211dc68`, Cast2
+`J‑be76353e807a`. This session did not deploy; every check reused the installed APK ("exact-match").
+
+| Item | Result | Jobs |
+|---|---|---|
+| 1 Cast2 start state | Android: Seahorse Grid selected, enabled, activate on sleep, idle 600 000 ms, sleep 3 600 000 ms, stay‑on 3, not running. Homeboard: choice Clock (On Home), 8 entries, "1 of 8". YouTube was in front before the checks. | `J‑b15d4ac5b5b1`, `J‑935f30f8c2ce` |
+| 1 Cast2 at 4K: browse and keys | **PASS.** Down reached all 8 entries ("1 of 8 … 8 of 8"); Down on the last stays; the thumb tracks. Right from a row focuses its first action, Left returns to the row, OK enters the action, Back returns to the row; Up ×7 returns to row 1, Up again reaches header Back, Down from Back returns to row 1. Built-in Clock Preview (`mode=preview entry=clock` … `reason=cancel`) returned with Preview focused. Right → Options, Down → Change, Down → the pane scrolls to In other apps · Use everywhere…; Left returns to the row; header Back closes to Home settings. | `J‑cb4327ef7b35` |
+| 1 Cast2 fit at 4K | **PASS, at the resolution available.** Homeboard logs `dashboard=3840x2160 surface=3840x2160 hardware=true` and `root=3840x2160`, so it laid out on the native 4K surface; the picker sits inside the dashboard with nothing clipped: rows, badges, actions, footer and header Back all whole, and the detail pane's lower lines are reachable by scrolling. **Not native-resolution captures:** Cast2's HDMI output is 3840x2160@60, but every coordinator capture (check frames and `task chromecast:capture`, `J‑14fa05c1d3e5`) returns 1920×1080, Android's window size (`DisplayMetrics width=1920 height=1080 density=4.0`), so 4K pixel detail cannot be inspected from here. | `J‑acbe88d1c1d4` (display modes) |
+| 1 Cast2 end state | **Matches the start.** Android settings identical (`J‑c37510fc93f4`); Homeboard's choice Clock and timer "Android decides" never changed; the coordinator's cleanup put YouTube back in front, as it was. | `J‑c37510fc93f4` |
+| 2 Cast1 2.0× | **PASS.** Badges wrap below names at words ("Needs Use / everywhere"), status lines run to two lines, nothing is clipped. Right from Preview reaches the wrapped Options on the next line, Left goes back to Preview, Down from Preview moves to the Options line and Up from there returns to the first action line; Down then scrolls the pane to its end; Back returns to the row. Only the longest name is cut after two lines ("World Foundry Aquarium Scree…"). | `J‑87641b26e237` |
+| 2 Font scale | Read 1.0 (`J‑ef90ec4c014a`), set 2.0 (`J‑76bede47c128`), back to 1.0 (`J‑ddac6938081b`), read 1.0 (`J‑4544840990a2`). | |
+| 2 Cast1 1.0× | **PASS, no regression.** Same as round 3: Right/Left across the three actions on one line, Down to Change and Use everywhere…, pane end, last row, footer whole. | `J‑5e873b2457bb` |
+
+Frames: [Cast2 start](2026-11-26-screensaver-list-cast1/r4-cast2-state-J-935f30f8c2ce/02-cast2-start-1-of-8.jpg),
+[Cast2 sheet](2026-11-26-screensaver-list-cast1/r4-cast2-keys-J-cb4327ef7b35/contact-sheet.jpg),
+[Cast1 2.0× Right to Options](2026-11-26-screensaver-list-cast1/r4-cast1-text20-J-87641b26e237/w4-right-reaches-wrapped-options-2.0.jpg),
+[2.0× badge and status wrap](2026-11-26-screensaver-list-cast1/r4-cast1-text20-J-87641b26e237/w13-badge-and-status-wrap-2.0.jpg),
+[1.0× sheet](2026-11-26-screensaver-list-cast1/r4-cast1-text10-J-5e873b2457bb/contact-sheet.jpg).
+
+Recipes: `dev/device/screensaver-list-r4-{state,cast2-keys,cast1-text}.json`.
+
+### Round 4 final device states
+
+- **Cast1:** Homeboard choice Clock (On Home); timer "Android decides"; language "Follow device";
+  font scale 1.0 (`J‑4544840990a2`); Android: WF Clocks, enabled, activate on sleep, idle
+  600 000 ms, not running (`J‑bad79c4804f7`); [capture](2026-11-26-screensaver-list-cast1/r4-cast1-capture-J-37d8d34f3a01/final.jpg) `J‑37d8d34f3a01`.
+- **Cast2:** as found. Homeboard choice Clock and timer "Android decides", unchanged; Android:
+  Seahorse Grid, enabled, activate on sleep, idle 600 000 ms, sleep 3 600 000 ms, not running
+  (`J‑c37510fc93f4`); YouTube in front (`J‑14fa05c1d3e5`).
+- Both are free.

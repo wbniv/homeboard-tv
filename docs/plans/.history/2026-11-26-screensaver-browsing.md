@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/756a791) | test: Screensaver list round 3 on Cast1 and the Pixel (0.1.176) |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/aff3a55) | docs: round 2 layout fixes and the portrait note in the browsing plan's acceptance |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/815e3e3) | test: Screensaver list round 2 on Cast1 and the Pixel (0.1.175) |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/982263f) | test: continuous Screensaver list on Cast1 (0.1.173) |
@@ -9,6 +10,11 @@
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/4e5d198) | Plan continuous screensaver browsing with visual mockups |
 
 <!--history-meta v1
+756a791	author	Will Norris
+756a791	added	2
+756a791	deleted	0
+756a791	files	1
+756a791	body	Layout fixes hold: on Cast1 at 1.0x, 1.3x and 2.0x names wrap at whole\nwords with badges below, actions wrap instead of clipping, the detail\npane scrolls to its end and the footer is whole. On the Pixel the action\nrow is in view, a swipe scrolls without changing the inspected entry, a\ntap inspects, and Options returns to the same place. Up/Down and a\nPreview return regress cleanly.\n\nLeft at 2.0x: badge text cut at the row edge, the status line\nellipsized, and Right from Preview goes to header Back when Options has\nwrapped below. Cast1 restored (Clock, Android decides, font scale 1.0,\nAndroid WF Clocks at 10 min); Cast2 untouched.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqQzN1oGqYJXjCkzVJ1
 aff3a55	author	Will Norris
 aff3a55	added	2
 aff3a55	deleted	0

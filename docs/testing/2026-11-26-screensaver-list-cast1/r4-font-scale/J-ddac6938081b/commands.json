@@ -1,0 +1,111 @@
+[
+  {
+    "args": [
+      "shell",
+      "am get-current-user"
+    ],
+    "start": 1795754047.0922291,
+    "end": 1795754047.4864006,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "push",
+      "/opt/wf-device-coordinator/scripts/wf_device/plugins/android/resources/platform-helper.jar",
+      "/data/local/tmp/wf-J-ddac6938081b-platform.jar"
+    ],
+    "start": 1795754047.513728,
+    "end": 1795754047.8122265,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "CLASSPATH=/data/local/tmp/wf-J-ddac6938081b-platform.jar timeout 25 app_process /system/bin WfPlatform preferences /data/local/tmp/wf-J-ddac6938081b-platform.jar"
+    ],
+    "start": 1795754047.8406441,
+    "end": 1795754049.7083755,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "ps -A -o PID,ARGS"
+    ],
+    "start": 1795754049.7101307,
+    "end": 1795754049.985359,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get system font_scale"
+    ],
+    "start": 1795754050.0313976,
+    "end": 1795754050.254926,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am get-current-user"
+    ],
+    "start": 1795754050.2583444,
+    "end": 1795754050.545071,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 put system font_scale 1.0"
+    ],
+    "start": 1795754050.601796,
+    "end": 1795754051.3117843,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get system font_scale"
+    ],
+    "start": 1795754051.3143048,
+    "end": 1795754051.5567954,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get system font_scale"
+    ],
+    "start": 1795754051.5591795,
+    "end": 1795754051.969593,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am get-current-user"
+    ],
+    "start": 1795754051.9712968,
+    "end": 1795754052.1941504,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "settings --user 0 get system font_scale"
+    ],
+    "start": 1795754052.1960921,
+    "end": 1795754052.4851916,
+    "returncode": 0
+  },
+  {
+    "args": [
+      "shell",
+      "am get-current-user"
+    ],
+    "start": 1795754052.5130634,
+    "end": 1795754052.7752006,
+    "returncode": 0
+  }
+]
