@@ -1,6 +1,6 @@
 # Browse screensavers without page buttons
 
-**Status: implementation authorized by Will ("do"), 26 November; steps 2–4 built on branch `screensaver-browsing`, device acceptance (step 5) not yet run.**
+**Status: implementation authorized by Will ("do"), 26 November; steps 2–4 built on branch `screensaver-browsing`; device acceptance (step 5) run on Cast1 with 0.1.173 on 27 November, partial: see the evidence notes under Acceptance and the [Cast1 record](../testing/2026-11-26-screensaver-list-cast1.md).**
 The documentation sweep precedes the UI change. Will, 26 November: “I hate the
 'previous' and 'next' buttons on the screensaver page … there must be a better way.”
 
@@ -176,20 +176,34 @@ catalogue demonstrates a need.
 - Cast1 at 1080p and Cast2 at native 4K: reach every entry using Up/Down alone;
   no Previous/Next buttons and no page reset. Hold a direction across former
   boundaries and verify release stops movement.
+
+  **Evidence (Cast1, 0.1.173, 2026‑11‑27): PASS for Up/Down, partial for hold.** Every entry reached with Down alone, 10 of 10 (`J‑a88c845b3791`) and, after the coordinator removed the old Homeboard, 9 of 9 (`J‑6f99f658d854`); no page buttons, no reset at the old boundaries. The coordinator's held keys give no Android key repeat (700 ms and 1500 ms holds each moved one row, then stopped: `J‑478184f312c4`), so repeat browsing is not testable here; 12 Downs 150 ms apart stopped on the last row. Cast2 at 4K not run. [Cast1 record](../testing/2026-11-26-screensaver-list-cast1.md).
 - Compare zero external apps, the actual installed set and a controlled 40-entry
   fixture; first/last boundaries and scrollbar/count are correct.
+
+  **Evidence: PASS for the installed set only.** First row: Up goes to header Back; last row: Down stays; "N of M" and the thumb track the row. Zero external apps and the 40-entry fixture not run.
 - Right/OK, Left, Back and header Back follow the table. Return from both types
   of Preview, built-in Options and an external settings activity to the exact
   entry, action and list position.
+
+  **Evidence: PASS.** Right/OK, Left, Back and header Back behave as the table (`J‑9064f6100da8`, `J‑39e7e17a2f03`, `J‑b810c89abb7c`); returns from the built-in Clock's Preview, Home background's Options, WF Clocks' app screen and Use everywhere land on the same entry, action and scroll. No listed app declares an external settings activity, so that return is untested.
 - Merely browsing changes no saved choice or Android setting. Use/Undo restores
   the previous choice and scope. Permission refusal changes neither.
+
+  **Evidence: PASS (permission refusal not run).** Android's screensaver settings identical before and after (`J‑90804e8a2588`, `J‑45873a4ed35f`); Use moved the badge in place and Undo restored Clock (`J‑218b87e8e591`, `J‑6f99f658d854`). Finding: after Use, focus goes to Preview for a built-in but to the row for an app (return tag `act:use`, `MainActivity.java:3197`).
 - Test preview-capable, Android-only, settings-less, removed and failed-to-launch
   apps. Unsupported actions are absent and explanations remain readable.
+
+  **Evidence: PASS for preview-capable (WF Clocks), Android-only (Aerial Views, Ambient Mode and others) and settings-less entries; removed and failed-to-launch not run on 0.1.173.**
 - Larger device text (1.3× and 2×), long Thai names, narrow touch layouts and
   accessibility traversal: rows and actions remain reachable, focus never leaks
   to Home, no clipped action labels, no forced text shrink.
+
+  **Evidence: not run** (no coordinator workflow for large text, narrow touch layouts or accessibility traversal on Cast1).
 - Pause/recreate and package refresh retain picker state. Scroll does not start
   app activities, decode large artwork or create per-row live players.
+
+  **Evidence: partial.** Pause and return through Preview, Options and Use everywhere keep the state; Activity recreation and a package change while the picker is open cannot be produced by the coordinator. Browsing ran in a check that fails if another app comes to the front, and completed, so scrolling started no app activity.
 
 This plan changes the chooser only. It preserves the implemented
 [top-row Start screensaver button](2026-11-26-top-row-start-screensaver.md), the

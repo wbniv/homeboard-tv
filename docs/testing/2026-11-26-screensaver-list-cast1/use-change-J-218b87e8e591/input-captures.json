@@ -1,0 +1,152 @@
+{
+  "score_sha256": "397ff8ae2a4180c43985291814b61aa46ad469164ad5290bd8bcf6c14b651dbe",
+  "host_start_wall": 1795737901.8737526,
+  "host_start_monotonic": 217622.493436655,
+  "captures": [
+    {
+      "label": "u0-open",
+      "planned_ms": 10000,
+      "started": 1795737913.1711674,
+      "ended": 1795737914.6626277,
+      "file": "input-frame-001.png",
+      "bytes": 259177,
+      "schedule_lateness_ms": 3
+    },
+    {
+      "label": "u1-use-focused",
+      "planned_ms": 18000,
+      "started": 1795737921.168809,
+      "ended": 1795737922.6697135,
+      "file": "input-frame-002.png",
+      "bytes": 231027,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u2-home-background-in-use",
+      "planned_ms": 23500,
+      "started": 1795737926.6687195,
+      "ended": 1795737928.1479096,
+      "file": "input-frame-003.png",
+      "bytes": 226019,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u3-home-undo-banner",
+      "planned_ms": 33000,
+      "started": 1795737936.1709843,
+      "ended": 1795737937.8700662,
+      "file": "input-frame-004.png",
+      "bytes": 276006,
+      "schedule_lateness_ms": 2
+    },
+    {
+      "label": "u4-after-undo",
+      "planned_ms": 40500,
+      "started": 1795737943.6687984,
+      "ended": 1795737945.2875025,
+      "file": "input-frame-005.png",
+      "bytes": 269761,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "u5-list-after-undo",
+      "planned_ms": 49000,
+      "started": 1795737952.1687045,
+      "ended": 1795737953.8148103,
+      "file": "input-frame-006.png",
+      "bytes": 259177,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c0-wf-use-focused",
+      "planned_ms": 61400,
+      "started": 1795737964.5686963,
+      "ended": 1795737965.9836583,
+      "file": "input-frame-007.png",
+      "bytes": 226868,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c1-wf-in-use",
+      "planned_ms": 66900,
+      "started": 1795737970.0686915,
+      "ended": 1795737971.3986685,
+      "file": "input-frame-008.png",
+      "bytes": 218538,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c2-after-down",
+      "planned_ms": 71900,
+      "started": 1795737975.0687072,
+      "ended": 1795737976.473084,
+      "file": "input-frame-009.png",
+      "bytes": 233671,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c3-change-wf",
+      "planned_ms": 77900,
+      "started": 1795737981.0686965,
+      "ended": 1795737982.5180023,
+      "file": "input-frame-010.png",
+      "bytes": 233971,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c4-after-back",
+      "planned_ms": 83400,
+      "started": 1795737986.568686,
+      "ended": 1795737988.0836782,
+      "file": "input-frame-011.png",
+      "bytes": 233671,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c5-home-undo-banner",
+      "planned_ms": 92900,
+      "started": 1795737996.06871,
+      "ended": 1795737997.8059955,
+      "file": "input-frame-012.png",
+      "bytes": 257987,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c6-after-undo",
+      "planned_ms": 100400,
+      "started": 1795738003.5687048,
+      "ended": 1795738005.2450576,
+      "file": "input-frame-013.png",
+      "bytes": 270001,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "c7-clock-change-focused",
+      "planned_ms": 111400,
+      "started": 1795738014.5718002,
+      "ended": 1795738016.1910176,
+      "file": "input-frame-014.png",
+      "bytes": 259782,
+      "schedule_lateness_ms": 3
+    },
+    {
+      "label": "c8-clock-full-options",
+      "planned_ms": 117400,
+      "started": 1795738020.5687096,
+      "ended": 1795738022.0175846,
+      "file": "input-frame-015.png",
+      "bytes": 161496,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 129400,
+      "started": 1795738032.5686932,
+      "ended": 1795738034.160292,
+      "file": "input-frame-016.png",
+      "bytes": 255371,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

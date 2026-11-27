@@ -1,0 +1,10 @@
+# Raw coordinator exports kept on disk only; named key frames and contact sheets are tracked.
+# Re-export any job with: task chromecast:evidence JOB=<id> OUT=<new dir>
+input-frame-*.png
+screenshot.png
+logcat.txt
+wf.log
+meminfo.txt
+thermal.txt
+input-score.*
+input-timeline.*

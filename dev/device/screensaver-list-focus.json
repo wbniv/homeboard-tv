@@ -1,0 +1,170 @@
+{
+ "workflow": "check",
+ "app": "homeboard-tv",
+ "duration": 73,
+ "panel": "require-hidden",
+ "input_script": [
+  {
+   "at": 2,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 4,
+   "key": "MENU",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 6,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 9,
+   "capture": "f0-open"
+  },
+  {
+   "at": 11,
+   "key": "DPAD_DOWN",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 12.8,
+   "capture": "f1-down-row2-a"
+  },
+  {
+   "at": 15,
+   "capture": "f1-down-row2-b"
+  },
+  {
+   "at": 17,
+   "key": "DPAD_RIGHT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 18.8,
+   "capture": "f2-right-a"
+  },
+  {
+   "at": 21,
+   "capture": "f2-right-b"
+  },
+  {
+   "at": 23,
+   "key": "DPAD_RIGHT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 24.8,
+   "capture": "f3-right-a"
+  },
+  {
+   "at": 27,
+   "capture": "f3-right-b"
+  },
+  {
+   "at": 29,
+   "key": "DPAD_LEFT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 30.8,
+   "capture": "f4-left-a"
+  },
+  {
+   "at": 33,
+   "capture": "f4-left-b"
+  },
+  {
+   "at": 35,
+   "key": "DPAD_LEFT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 36.8,
+   "capture": "f5-left-a"
+  },
+  {
+   "at": 39,
+   "capture": "f5-left-b"
+  },
+  {
+   "at": 41,
+   "key": "DPAD_RIGHT",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 42.8,
+   "capture": "f6-right-a"
+  },
+  {
+   "at": 45,
+   "capture": "f6-right-b"
+  },
+  {
+   "at": 47,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 48.8,
+   "capture": "f7-back-a"
+  },
+  {
+   "at": 51,
+   "capture": "f7-back-b"
+  },
+  {
+   "at": 53,
+   "key": "DPAD_CENTER",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 54.8,
+   "capture": "f8-ok-a"
+  },
+  {
+   "at": 57,
+   "capture": "f8-ok-b"
+  },
+  {
+   "at": 59,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 61,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 63,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 65,
+   "key": "BACK",
+   "action": "hold",
+   "ms": 80
+  },
+  {
+   "at": 68,
+   "capture": "99-home"
+  }
+ ]
+}

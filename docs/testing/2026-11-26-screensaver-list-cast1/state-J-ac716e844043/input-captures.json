@@ -1,0 +1,35 @@
+{
+  "score_sha256": "cbe68d435f7c8fb98728253f826c0ac4f8361b70b8ce7b0d8f9f2b4a97cdb65e",
+  "host_start_wall": 1795735187.373333,
+  "host_start_monotonic": 214907.993017289,
+  "captures": [
+    {
+      "label": "01-home",
+      "planned_ms": 4000,
+      "started": 1795735192.5677345,
+      "ended": 1795735194.3103101,
+      "file": "input-frame-001.png",
+      "bytes": 258343,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "02-screensaver-screen",
+      "planned_ms": 11000,
+      "started": 1795735199.5677214,
+      "ended": 1795735202.1879306,
+      "file": "input-frame-002.png",
+      "bytes": 259461,
+      "schedule_lateness_ms": 0
+    },
+    {
+      "label": "99-home",
+      "planned_ms": 18000,
+      "started": 1795735206.5677335,
+      "ended": 1795735208.4346776,
+      "file": "input-frame-003.png",
+      "bytes": 258707,
+      "schedule_lateness_ms": 0
+    }
+  ],
+  "result": "completed"
+}

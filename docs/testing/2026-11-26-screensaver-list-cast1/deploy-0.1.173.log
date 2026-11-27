@@ -1,0 +1,574 @@
+task: [bump] dev/container.sh run ./gradlew --no-daemon :app:bumpVersion
+time="2026-11-26T22:46:26+07:00" level=warning msg="volume \"homeboard-tv_gradle-cache\" already exists but was created for project \"timers-stage1\" (expected \"homeboard-tv\"). Use `external: true` to use an existing volume"
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=/cache/gradle
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.9/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :app:bumpVersion
+Next deployment: 0.1.173 (versionCode 173)
+
+BUILD SUCCESSFUL in 22s
+1 actionable task: 1 executed
+task: [calendar:check] dev/container.sh run python3 /workspace/dev/calendar/test_pipeline.py
+time="2026-11-26T22:46:50+07:00" level=warning msg="volume \"homeboard-tv_gradle-cache\" already exists but was created for project \"timers-stage1\" (expected \"homeboard-tv\"). Use `external: true` to use an existing volume"
+.......
+----------------------------------------------------------------------
+Ran 7 tests in 0.088s
+
+OK
+task: [cleanup:check] dev/container.sh run python3 /workspace/dev/test_cleanup.py
+time="2026-11-26T22:46:51+07:00" level=warning msg="volume \"homeboard-tv_gradle-cache\" already exists but was created for project \"timers-stage1\" (expected \"homeboard-tv\"). Use `external: true` to use an existing volume"
+test_csrf_dns_rebinding_and_missing_token_are_refused (cleanup.tests.test_companion.CompanionTest) ... ok
+test_hardware_only_scan_is_never_claimed_mutation_ready (cleanup.tests.test_companion.CompanionTest) ... ok
+test_no_mutation_routes (cleanup.tests.test_companion.CompanionTest) ... ok
+test_same_origin_authenticated_inspection (cleanup.tests.test_companion.CompanionTest) ... ok
+test_standalone_routes_require_confirmation_and_authorization (cleanup.tests.test_companion.CompanionTest) ... ok
+test_workflow_http_apply_restore_and_export_are_authenticated (cleanup.tests.test_companion.CompanionTest) ... ok
+test_wrong_or_failed_evidence_cannot_become_a_valid_scan (cleanup.tests.test_companion.CompanionTest) ... ok
+test_client_can_start_next_request_when_completion_is_sent (cleanup.tests.test_companion.CompletionLockTest)
+A response must not advertise completion while the next request is refused. ... ok
+test_apply_and_individual_then_complete_restore_preserve_exact_states (cleanup.tests.test_core.CleanupTest) ... ok
+test_cancellation_stops_before_next_package (cleanup.tests.test_core.CleanupTest) ... ok
+test_command_unknown_outcome_restores_after_process_restart (cleanup.tests.test_core.CleanupTest) ... ok
+test_confirmation_expiry_and_changed_inventory (cleanup.tests.test_core.CleanupTest) ... ok
+test_copied_guards_and_stricter_retained_services (cleanup.tests.test_core.CleanupTest) ... ok
+test_corrupt_or_mismatched_record_refuses (cleanup.tests.test_core.CleanupTest) ... ok
+test_every_candidate_starts_unselected_and_existing_disabled_is_kept (cleanup.tests.test_core.CleanupTest) ... ok
+test_external_home_package_or_enabled_state_changes_refuse_restore (cleanup.tests.test_core.CleanupTest) ... ok
+test_failure_before_effect_does_not_enable_or_disable_unattempted_apps (cleanup.tests.test_core.CleanupTest) ... ok
+test_no_missing_record_or_blanket_enable_fallback (cleanup.tests.test_core.CleanupTest) ... ok
+test_no_mutation_when_either_backup_fails (cleanup.tests.test_core.CleanupTest) ... ok
+test_source_files_match_pinned_hashes (cleanup.tests.test_core.CleanupTest) ... ok
+test_unknown_and_ambiguous_profiles_are_read_only (cleanup.tests.test_core.CleanupTest) ... ok
+test_complete_collection_retains_active_and_home_roles (cleanup.tests.test_inventory.CollectorTest) ... ok
+test_other_user_and_changed_identity_refused (cleanup.tests.test_inventory.CollectorTest) ... ok
+test_duplicate_and_malformed_reports_refused (cleanup.tests.test_inventory.InventoryTest) ... ok
+test_exact_states_and_unknown_dependencies (cleanup.tests.test_inventory.InventoryTest) ... ok
+test_missing_state_version_user_or_package_refused (cleanup.tests.test_inventory.InventoryTest) ... ok
+test_connect_inspect_and_targeted_disconnect (cleanup.tests.test_standalone.StandaloneTest) ... ok
+test_discovery_does_not_connect (cleanup.tests.test_standalone.StandaloneTest) ... ok
+test_failures_do_not_expose_subprocess_output (cleanup.tests.test_standalone.StandaloneTest) ... ok
+test_identity_change_rejected (cleanup.tests.test_standalone.StandaloneTest) ... ok
+test_inputs_and_pairing_secret (cleanup.tests.test_standalone.StandaloneTest) ... ok
+test_non_tv_rejected_and_disconnected (cleanup.tests.test_standalone.StandaloneTest) ... ok
+test_timeout_and_unknown_devices (cleanup.tests.test_standalone.StandaloneTest) ... ok
+test_lost_reply_is_reconciled_before_restore (cleanup.tests.test_workflow.WorkflowTest) ... ok
+test_review_apply_check_export_restart_restore (cleanup.tests.test_workflow.WorkflowTest) ... ok
+test_stop_before_dispatch_preserves_every_app (cleanup.tests.test_workflow.WorkflowTest) ... ok
+test_wrong_confirmation_and_unknown_profile_do_not_mutate (cleanup.tests.test_workflow.WorkflowTest) ... ok
+test_a_new_address_after_the_cleanup_names_the_old_record (test_recovery_address_change.AddressChangeWarningTest) ... ok
+test_a_record_that_cannot_be_read_does_not_stop_the_run (test_recovery_address_change.AddressChangeWarningTest) ... ok
+test_a_second_run_on_the_same_address_says_nothing (test_recovery_address_change.AddressChangeWarningTest) ... ok
+test_a_second_set_under_another_address_says_nothing (test_recovery_address_change.AddressChangeWarningTest) ... ok
+test_another_list_under_another_address_says_nothing (test_recovery_address_change.AddressChangeWarningTest) ... ok
+test_the_first_record_says_nothing_about_another_address (test_recovery_address_change.AddressChangeWarningTest) ... ok
+test_undo_at_the_new_address_is_what_the_warning_is_about (test_recovery_address_change.AddressChangeWarningTest) ... ok
+test_the_page_names_the_record_the_fresh_copy_and_the_way_out (test_recovery_address_change.ThePageAndTheCodeAgreeTest) ... ok
+test_the_warning_the_page_describes_is_the_one_save_prints (test_recovery_address_change.ThePageAndTheCodeAgreeTest) ... ok
+test_a_record_that_is_json_but_not_an_object_is_named_not_a_traceback (test_recovery_record.RecordShapeTest) ... ok
+test_a_list_that_is_a_folder_is_named_too (test_recovery_record.RecoveryRecordTest) ... ok
+test_a_list_that_is_not_there_is_named_not_a_traceback (test_recovery_record.RecoveryRecordTest) ... ok
+test_a_list_with_bad_names_is_still_refused_by_read_list (test_recovery_record.RecoveryRecordTest) ... ok
+test_corrupt_record_is_not_overwritten (test_recovery_record.RecoveryRecordTest) ... ok
+test_custom_launcher_home_restores_the_stock_launcher (test_recovery_record.RecoveryRecordTest) ... ok
+test_edited_list_leaves_new_names_alone (test_recovery_record.RecoveryRecordTest) ... ok
+test_edited_record_is_refused_and_left_alone (test_recovery_record.RecoveryRecordTest) ... ok
+test_failed_save_disables_nothing (test_recovery_record.RecoveryRecordTest) ... ok
+test_list_that_is_not_package_names_is_refused (test_recovery_record.RecoveryRecordTest) ... ok
+test_recovery_py_says_it_too_without_the_shell (test_recovery_record.RecoveryRecordTest) ... ok
+test_rerun_with_edited_list_records_the_new_names (test_recovery_record.RecoveryRecordTest) ... ok
+test_restore_replays_recorded_states (test_recovery_record.RecoveryRecordTest) ... ok
+test_restore_without_a_record_says_so_and_falls_back (test_recovery_record.RecoveryRecordTest) ... ok
+test_retry_keeps_the_original_record (test_recovery_record.RecoveryRecordTest) ... ok
+test_save_records_the_state_undo_needs (test_recovery_record.RecoveryRecordTest) ... ok
+test_stock_launcher_disabled_before_cleanup_stays_disabled (test_recovery_record.RecoveryRecordTest) ... ok
+test_stock_launcher_enabled_once_when_it_owned_home (test_recovery_record.RecoveryRecordTest) ... ok
+test_the_read_is_guarded_in_the_source (test_recovery_record.RecoveryRecordTest) ... ok
+test_valid_record_restores_the_same_batch (test_recovery_record.RecoveryRecordTest) ... ok
+test_a_record_under_the_old_name_with_the_port_is_still_used (test_recovery_record_lan_address.RecordPerLanAddressTest) ... ok
+test_a_relay_and_a_host_name_keep_the_name_as_typed (test_recovery_record_lan_address.RecordPerLanAddressTest) ... ok
+test_ipv6_with_and_without_brackets_is_one_record_and_not_another_address (test_recovery_record_lan_address.RecordPerLanAddressTest) ... ok
+test_records_under_both_names_stop_before_the_tv_is_changed (test_recovery_record_lan_address.RecordPerLanAddressTest) ... ok
+test_the_address_with_and_without_its_port_is_one_record (test_recovery_record_lan_address.RecordPerLanAddressTest) ... ok
+
+----------------------------------------------------------------------
+Ran 71 tests in 41.074s
+
+OK
+task: [check] dev/container.sh run python3 /workspace/dev/test_deploy.py
+time="2026-11-26T22:47:34+07:00" level=warning msg="volume \"homeboard-tv_gradle-cache\" already exists but was created for project \"timers-stage1\" (expected \"homeboard-tv\"). Use `external: true` to use an existing volume"
+..usage: deploy [-h] --device DEVICE --recipe RECIPE [--variant {debug,release}]
+deploy: error: Release verification does not match APK bytes
+...
+----------------------------------------------------------------------
+Ran 5 tests in 0.051s
+
+OK
+task: [check] dev/container.sh run ./gradlew --no-daemon :app:testDebugUnitTest :app:lintDebug
+time="2026-11-26T22:47:35+07:00" level=warning msg="volume \"homeboard-tv_gradle-cache\" already exists but was created for project \"timers-stage1\" (expected \"homeboard-tv\"). Use `external: true` to use an existing volume"
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=/cache/gradle
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.9/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :projectivy-api:preBuild UP-TO-DATE
+> Task :projectivy-api:preDebugBuild UP-TO-DATE
+> Task :projectivy-api:writeDebugAarMetadata UP-TO-DATE
+> Task :wallpaper-fixture:preBuild UP-TO-DATE
+> Task :wallpaper-fixture:preDebugBuild UP-TO-DATE
+> Task :wallpaper-fixture:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :projectivy-api:generateDebugResValues UP-TO-DATE
+> Task :projectivy-api:generateDebugResources UP-TO-DATE
+> Task :projectivy-api:packageDebugResources UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugResValues UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugResources UP-TO-DATE
+> Task :wallpaper-fixture:packageDebugResources UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :projectivy-api:extractDeepLinksDebug UP-TO-DATE
+> Task :projectivy-api:processDebugManifest UP-TO-DATE
+> Task :wallpaper-fixture:extractDeepLinksDebug UP-TO-DATE
+> Task :wallpaper-fixture:processDebugManifest UP-TO-DATE
+> Task :app:parseDebugLocalResources
+> Task :app:mergeDebugResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :projectivy-api:compileDebugLibraryResources UP-TO-DATE
+> Task :projectivy-api:parseDebugLocalResources UP-TO-DATE
+> Task :projectivy-api:generateDebugRFile UP-TO-DATE
+> Task :wallpaper-fixture:compileDebugLibraryResources UP-TO-DATE
+> Task :wallpaper-fixture:parseDebugLocalResources UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugRFile UP-TO-DATE
+> Task :projectivy-api:compileDebugAidl UP-TO-DATE
+> Task :projectivy-api:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :projectivy-api:compileDebugKotlin UP-TO-DATE
+> Task :projectivy-api:javaPreCompileDebug UP-TO-DATE
+> Task :projectivy-api:compileDebugJavaWithJavac UP-TO-DATE
+> Task :projectivy-api:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :wallpaper-fixture:javaPreCompileDebug UP-TO-DATE
+> Task :wallpaper-fixture:compileDebugJavaWithJavac UP-TO-DATE
+> Task :wallpaper-fixture:bundleLibCompileToJarDebug UP-TO-DATE
+
+> Task :app:checkTranslations
+Validated 936 English/Thai Homeboard resources
+
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :projectivy-api:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :projectivy-api:processDebugJavaRes UP-TO-DATE
+> Task :wallpaper-fixture:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :wallpaper-fixture:processDebugJavaRes NO-SOURCE
+> Task :wallpaper-fixture:mergeDebugJniLibFolders UP-TO-DATE
+> Task :wallpaper-fixture:mergeDebugNativeLibs NO-SOURCE
+> Task :wallpaper-fixture:stripDebugDebugSymbols NO-SOURCE
+> Task :wallpaper-fixture:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :wallpaper-fixture:extractDebugAnnotations UP-TO-DATE
+> Task :wallpaper-fixture:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :wallpaper-fixture:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :wallpaper-fixture:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :wallpaper-fixture:mergeDebugShaders UP-TO-DATE
+> Task :wallpaper-fixture:compileDebugShaders NO-SOURCE
+> Task :wallpaper-fixture:generateDebugAssets UP-TO-DATE
+> Task :wallpaper-fixture:packageDebugAssets UP-TO-DATE
+> Task :wallpaper-fixture:prepareDebugArtProfile UP-TO-DATE
+> Task :wallpaper-fixture:prepareLintJarForPublish UP-TO-DATE
+> Task :wallpaper-fixture:mergeDebugJavaResource UP-TO-DATE
+> Task :wallpaper-fixture:syncDebugLibJars UP-TO-DATE
+> Task :wallpaper-fixture:bundleDebugLocalLintAar UP-TO-DATE
+> Task :projectivy-api:mergeDebugJniLibFolders UP-TO-DATE
+> Task :projectivy-api:mergeDebugNativeLibs NO-SOURCE
+> Task :projectivy-api:stripDebugDebugSymbols NO-SOURCE
+> Task :projectivy-api:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :projectivy-api:extractDebugAnnotations UP-TO-DATE
+> Task :projectivy-api:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :projectivy-api:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :projectivy-api:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :projectivy-api:mergeDebugShaders UP-TO-DATE
+> Task :projectivy-api:compileDebugShaders NO-SOURCE
+> Task :projectivy-api:generateDebugAssets UP-TO-DATE
+> Task :projectivy-api:packageDebugAssets UP-TO-DATE
+> Task :projectivy-api:prepareDebugArtProfile UP-TO-DATE
+> Task :projectivy-api:prepareLintJarForPublish UP-TO-DATE
+> Task :projectivy-api:mergeDebugJavaResource UP-TO-DATE
+> Task :projectivy-api:syncDebugLibJars UP-TO-DATE
+> Task :projectivy-api:bundleDebugLocalLintAar UP-TO-DATE
+> Task :app:processDebugManifestForPackage
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :projectivy-api:createFullJarDebug UP-TO-DATE
+> Task :projectivy-api:writeDebugLintModelMetadata UP-TO-DATE
+> Task :wallpaper-fixture:createFullJarDebug UP-TO-DATE
+> Task :wallpaper-fixture:writeDebugLintModelMetadata UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :projectivy-api:extractProguardFiles UP-TO-DATE
+> Task :projectivy-api:generateDebugLintModel UP-TO-DATE
+> Task :wallpaper-fixture:extractProguardFiles UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugLintModel UP-TO-DATE
+> Task :projectivy-api:lintAnalyzeDebug UP-TO-DATE
+> Task :wallpaper-fixture:lintAnalyzeDebug UP-TO-DATE
+> Task :projectivy-api:preDebugAndroidTestBuild UP-TO-DATE
+> Task :projectivy-api:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :projectivy-api:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :projectivy-api:preDebugUnitTestBuild UP-TO-DATE
+> Task :projectivy-api:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :projectivy-api:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :projectivy-api:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :wallpaper-fixture:preDebugAndroidTestBuild UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :wallpaper-fixture:preDebugUnitTestBuild UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :wallpaper-fixture:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :wallpaper-fixture:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :app:processDebugResources
+
+> Task :app:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:generateDebugLintReportModel
+> Task :app:compileDebugUnitTestJavaWithJavac
+
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=/cache/gradle
+> Task :app:testDebugUnitTest
+
+> Task :app:generateDebugAndroidTestLintModel
+> Task :app:generateDebugUnitTestLintModel
+> Task :app:lintAnalyzeDebugAndroidTest
+> Task :app:lintAnalyzeDebugUnitTest
+> Task :app:lintAnalyzeDebug
+
+> Task :app:lintReportDebug
+Wrote HTML report to file:///workspace/launcher/app/build/reports/lint-results-debug.html
+
+> Task :app:lintDebug
+
+BUILD SUCCESSFUL in 1m 53s
+107 actionable tasks: 24 executed, 83 up-to-date
+task: [build] dev/container.sh run ./gradlew --no-daemon :app:assembleDebug
+time="2026-11-26T22:49:31+07:00" level=warning msg="volume \"homeboard-tv_gradle-cache\" already exists but was created for project \"timers-stage1\" (expected \"homeboard-tv\"). Use `external: true` to use an existing volume"
+Picked up JAVA_TOOL_OPTIONS: -Duser.home=/cache/gradle
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.9/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :app:checkTranslations
+Validated 936 English/Thai Homeboard resources
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :projectivy-api:preBuild UP-TO-DATE
+> Task :projectivy-api:preDebugBuild UP-TO-DATE
+> Task :projectivy-api:writeDebugAarMetadata UP-TO-DATE
+> Task :wallpaper-fixture:preBuild UP-TO-DATE
+> Task :wallpaper-fixture:preDebugBuild UP-TO-DATE
+> Task :wallpaper-fixture:writeDebugAarMetadata UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :projectivy-api:generateDebugResValues UP-TO-DATE
+> Task :projectivy-api:generateDebugResources UP-TO-DATE
+> Task :projectivy-api:packageDebugResources UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugResValues UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugResources UP-TO-DATE
+> Task :wallpaper-fixture:packageDebugResources UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :projectivy-api:extractDeepLinksDebug UP-TO-DATE
+> Task :projectivy-api:processDebugManifest UP-TO-DATE
+> Task :wallpaper-fixture:extractDeepLinksDebug UP-TO-DATE
+> Task :wallpaper-fixture:processDebugManifest UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :projectivy-api:compileDebugLibraryResources UP-TO-DATE
+> Task :projectivy-api:parseDebugLocalResources UP-TO-DATE
+> Task :projectivy-api:generateDebugRFile UP-TO-DATE
+> Task :wallpaper-fixture:compileDebugLibraryResources UP-TO-DATE
+> Task :wallpaper-fixture:parseDebugLocalResources UP-TO-DATE
+> Task :wallpaper-fixture:generateDebugRFile UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :projectivy-api:compileDebugAidl UP-TO-DATE
+> Task :projectivy-api:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :projectivy-api:compileDebugKotlin UP-TO-DATE
+> Task :projectivy-api:javaPreCompileDebug UP-TO-DATE
+> Task :projectivy-api:compileDebugJavaWithJavac UP-TO-DATE
+> Task :projectivy-api:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :wallpaper-fixture:javaPreCompileDebug UP-TO-DATE
+> Task :wallpaper-fixture:compileDebugJavaWithJavac UP-TO-DATE
+> Task :wallpaper-fixture:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :projectivy-api:mergeDebugShaders UP-TO-DATE
+> Task :projectivy-api:compileDebugShaders NO-SOURCE
+> Task :projectivy-api:generateDebugAssets UP-TO-DATE
+> Task :projectivy-api:packageDebugAssets UP-TO-DATE
+> Task :wallpaper-fixture:mergeDebugShaders UP-TO-DATE
+> Task :wallpaper-fixture:compileDebugShaders NO-SOURCE
+> Task :wallpaper-fixture:generateDebugAssets UP-TO-DATE
+> Task :wallpaper-fixture:packageDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :wallpaper-fixture:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :projectivy-api:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:dexBuilderDebug
+> Task :app:mergeDebugGlobalSynthetics UP-TO-DATE
+> Task :app:processDebugJavaRes NO-SOURCE
+> Task :projectivy-api:processDebugJavaRes UP-TO-DATE
+> Task :wallpaper-fixture:processDebugJavaRes NO-SOURCE
+> Task :app:mergeDebugJavaResource UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:mergeDebugStartupProfile UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :wallpaper-fixture:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :projectivy-api:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :projectivy-api:mergeDebugJniLibFolders UP-TO-DATE
+> Task :projectivy-api:mergeDebugNativeLibs NO-SOURCE
+> Task :projectivy-api:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :wallpaper-fixture:mergeDebugJniLibFolders UP-TO-DATE
+> Task :wallpaper-fixture:mergeDebugNativeLibs NO-SOURCE
+> Task :wallpaper-fixture:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :app:mergeProjectDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+BUILD SUCCESSFUL in 53s
+73 actionable tasks: 5 executed, 68 up-to-date
+task: [deploy] python3 dev/deploy.py --variant "debug" --device "chromecast-test-01" --recipe "dev/device/install-only.json"
+task: [chromecast:devices] "/opt/wf-device-coordinator/bin/chromecast" devices
+▭ chromecast-test-01: ready; Chromecast HD; serial 2628105GN0GT7C; Android 14; ABI armeabi-v7a,armeabi; endpoint 192.168.4.61:39843; pools chromecast-test
+  Display: not identified (EDID unreadable) · 1080p59.94 now · confirmed 22:40
+  4K: no — device max 1080p
+▭ chromecast-test-02: ready; Chromecast; serial 26031HFDD67QH7; Android 14; ABI armeabi-v7a,armeabi; endpoint 192.168.4.27:43981; pools chromecast-test
+  Display: LG TV SSCR2 · HDMI 2 · 4K60 now · max 4K · HDR10/HLG · confirmed 22:40
+  4K: yes
+▱ nest-14cbd06f-a0d2-a5e5-b826-0acf6c04a1e4: recovery-required; Google Nest Hub Max; serial 14cbd06f-a0d2-a5e5-b826-0acf6c04a1e4; Android None; ABI ; endpoint 192.168.4.39:8009; pools 
+▱ kitchen: Ambient display · Backdrop
+▱ kitchen: Volume 50% · Unmuted
+▱ kitchen: Checked 10021 minutes ago · needs refresh
+▱ kitchen: Camera · setup required
+▯ phone-pixel-8-pro: ready; Pixel 8 Pro; serial 3A131FDJG005WF; Android 17; ABI arm64-v8a; endpoint 192.168.4.35:33525; pools phone-review
+▢ tablet-lenovo-tab-p11-pro-19a57145: recovery-required · device unreachable: an administrator readd can connect; Lenovo TB-J706F; serial HA18YGGE; Android 11; ABI arm64-v8a,armeabi-v7a,armeabi; endpoint 192.168.4.50:45993; pools ; last connect device-not-found-on-network (J-61079d6b546e)
+  Recovery: Device unreachable (device-not-found-on-network): the last readd never reached it. Once it is awake and on the network, an administrator readd can connect and finish the cleanup.
+  Next: task chromecast:readd DEVICE=tablet-lenovo-tab-p11-pro-19a57145
+  Connection diagnosis: Battery depletion may explain the loss. Last battery 2%, discharging, 31 min before loss. (inferred; open)
+  Next: Charge the device, let it start and wait for automatic reconnect. If it stays unavailable after charging, check Wi-Fi and Wireless debugging.
+  Last advertised endpoint (unverified): 192.168.4.50:45993
+task: [chromecast:queue] "/opt/wf-device-coordinator/bin/chromecast" queue
+Snapshot 2026-11-26 22:50:28 +0700; revision 271681; connected
+
+Devices
+╔══════════════════╦══════════════════╦══════════════════╦═════════════════════╦═══════════════════╦═══════════════════╗
+║ Device           ║ Health           ║ Model            ║ Owner / reservation ║ Job / phase       ║ ABI               ║
+╠══════════════════╬══════════════════╬══════════════════╬═════════════════════╬═══════════════════╬═══════════════════╣
+║ ▭ chromecast-tes ║ ready            ║ Chromecast HD    ║ mcp:session         ║ J-7ba90b62659a    ║ armeabi-v7a,      ║
+║ t-01             ║                  ║                  ║                     ║ committing-instal ║ armeabi           ║
+║                  ║                  ║                  ║                     ║ ler-session       ║                   ║
+║                  ║                  ║                  ║                     ║ ends ≤ ⏲ 22:59    ║                   ║
+║                  ║                  ║                  ║                     ║ with cleanup      ║                   ║
+╠══════════════════╬══════════════════╬══════════════════╬═════════════════════╬═══════════════════╬═══════════════════╣
+║ ▭ chromecast-tes ║ ready            ║ Chromecast       ║ unowned             ║ —                 ║ armeabi-v7a,      ║
+║ t-02             ║                  ║                  ║                     ║                   ║ armeabi           ║
+╠══════════════════╬══════════════════╬══════════════════╬═════════════════════╬═══════════════════╬═══════════════════╣
+║ ▱ nest-14cbd06f- ║ recovery-require ║ Google Nest Hub  ║ unowned             ║ —                 ║ —                 ║
+║ a0d2-a5e5-b826-0 ║ d · automatic    ║ Max              ║                     ║                   ║                   ║
+║ acf6c04a1e4      ║ readd            ║                  ║                     ║                   ║                   ║
+║                  ║ J-cb886e3e6ea7   ║                  ║                     ║                   ║                   ║
+║                  ║ waiting:         ║                  ║                     ║                   ║                   ║
+║                  ║ transport-safety ║                  ║                     ║                   ║                   ║
+║                  ║ 0 s; next check  ║                  ║                     ║                   ║                   ║
+║                  ║ in 7 min         ║                  ║                     ║                   ║                   ║
+╠══════════════════╬══════════════════╬══════════════════╬═════════════════════╬═══════════════════╬═══════════════════╣
+║ ▯ phone-pixel-8- ║ ready            ║ Pixel 8 Pro      ║ unowned             ║ —                 ║ arm64-v8a         ║
+║ pro              ║                  ║                  ║                     ║                   ║                   ║
+╠══════════════════╬══════════════════╬══════════════════╬═════════════════════╬═══════════════════╬═══════════════════╣
+║ ▢ tablet-lenovo- ║ recovery-require ║ Lenovo TB-J706F  ║ unowned             ║ —                 ║ arm64-v8a,        ║
+║ tab-p11-pro-19a5 ║ d · device       ║                  ║                     ║                   ║ armeabi-v7a,      ║
+║ 7145             ║ unreachable: an  ║                  ║                     ║                   ║ armeabi           ║
+║                  ║ administrator    ║                  ║                     ║                   ║                   ║
+║                  ║ readd can        ║                  ║                     ║                   ║                   ║
+║                  ║ connect          ║                  ║                     ║                   ║                   ║
+╚══════════════════╩══════════════════╩══════════════════╩═════════════════════╩═══════════════════╩═══════════════════╝
+
+In words
+▭ chromecast-test-01: Lava Lamp Spike · Check · J-7ba90b62659a · committing-installer-session (ready)
+▭ chromecast-test-02: Idle · nothing queued (ready)
+▱ nest-14cbd06f-a0d2-a5e5-b826-0acf6c04a1e4: Automatic readd J-cb886e3e6ea7 · transport-safety 0 s; next check in 7 min (device-recovering)
+▯ phone-pixel-8-pro: Idle · nothing queued (ready)
+▢ tablet-lenovo-tab-p11-pro-19a57145: Offline. It needs attention. (device-not-found-on-network)
+  next step: readd · task chromecast:readd DEVICE=tablet-lenovo-tab-p11-pro-19a57145
+▱ kitchen: Ambient display · Backdrop
+▱ kitchen: Volume 50% · Unmuted
+▱ kitchen: Checked 10021 minutes ago · needs refresh
+▱ kitchen: Camera · setup required
+
+Pools
+▭ chromecast-test-01: manual chromecast-test · automatic auto.type.tv, auto.android.14, auto.api.34, auto.abi.armeabi, auto.abi.armeabi-v7a, auto.model.chromecast-hd, auto.manufacturer.google, auto.brand.google, auto.product.boreal, auto.workflow.app-diagnostics, auto.workflow.battery-sample, auto.workflow.capture, auto.workflow.check, auto.workflow.configure, auto.workflow.display-mode, auto.workflow.display-modes, auto.workflow.dream-check, auto.workflow.frame-rate, auto.workflow.inspect, auto.workflow.install, auto.workflow.keep-awake, auto.workflow.media-detail-check, auto.workflow.media-state, auto.workflow.pair, auto.workflow.platform-facts, auto.workflow.platform-settings, auto.workflow.press, auto.workflow.preview-video, auto.workflow.profile, auto.workflow.reactivate-package, auto.workflow.readd, auto.workflow.record, auto.workflow.record-live, auto.workflow.remote, auto.workflow.replace-apk, auto.workflow.screensaver-configure, auto.workflow.screensaver-list, auto.workflow.screensaver-select, auto.workflow.screensaver-setting-set, auto.workflow.screensaver-show, auto.workflow.screensaver-trigger, auto.workflow.secure-settings-grant, auto.workflow.simpleperf, auto.workflow.sleep, auto.workflow.uninstall-package, auto.workflow.variant-benchmark, auto.workflow.verify-launch, auto.workflow.widget-binding, auto.platform.android
+▭ chromecast-test-02: manual chromecast-test · automatic auto.type.tv, auto.android.14, auto.api.34, auto.abi.armeabi, auto.abi.armeabi-v7a, auto.model.chromecast, auto.manufacturer.google, auto.brand.google, auto.product.sabrina-prod-stable, auto.workflow.app-diagnostics, auto.workflow.battery-sample, auto.workflow.capture, auto.workflow.check, auto.workflow.configure, auto.workflow.display-mode, auto.workflow.display-modes, auto.workflow.dream-check, auto.workflow.frame-rate, auto.workflow.inspect, auto.workflow.install, auto.workflow.keep-awake, auto.workflow.media-detail-check, auto.workflow.media-state, auto.workflow.pair, auto.workflow.platform-facts, auto.workflow.platform-settings, auto.workflow.press, auto.workflow.preview-video, auto.workflow.profile, auto.workflow.reactivate-package, auto.workflow.readd, auto.workflow.record, auto.workflow.record-live, auto.workflow.remote, auto.workflow.replace-apk, auto.workflow.screensaver-configure, auto.workflow.screensaver-list, auto.workflow.screensaver-select, auto.workflow.screensaver-setting-set, auto.workflow.screensaver-show, auto.workflow.screensaver-trigger, auto.workflow.secure-settings-grant, auto.workflow.simpleperf, auto.workflow.sleep, auto.workflow.uninstall-package, auto.workflow.variant-benchmark, auto.workflow.verify-launch, auto.workflow.widget-binding, auto.platform.android
+▱ nest-14cbd06f-a0d2-a5e5-b826-0acf6c04a1e4: automatic auto.type.smart-display, auto.workflow.cast-session, auto.workflow.cast-status, auto.workflow.readd, auto.platform.cast
+▯ phone-pixel-8-pro: manual phone-review · automatic auto.type.phone, auto.android.17, auto.api.37, auto.abi.arm64-v8a, auto.model.pixel-8-pro, auto.manufacturer.google, auto.brand.google, auto.product.husky, auto.workflow.battery-history-probe, auto.workflow.battery-sample, auto.workflow.capture, auto.workflow.check, auto.workflow.inspect, auto.workflow.install, auto.workflow.keep-awake, auto.workflow.media-state, auto.workflow.pair, auto.workflow.phone-input, auto.workflow.platform-facts, auto.workflow.preview-video, auto.workflow.profile, auto.workflow.reactivate-package, auto.workflow.readd, auto.workflow.record, auto.workflow.record-live, auto.workflow.replace-apk, auto.workflow.screensaver-configure, auto.workflow.screensaver-list, auto.workflow.screensaver-select, auto.workflow.screensaver-setting-set, auto.workflow.screensaver-show, auto.workflow.screensaver-trigger, auto.workflow.simpleperf, auto.workflow.test-session-close, auto.workflow.test-session-open, auto.workflow.uninstall-package, auto.workflow.variant-benchmark, auto.workflow.verify-launch, auto.workflow.widget-binding, auto.platform.android
+▢ tablet-lenovo-tab-p11-pro-19a57145: automatic auto.type.tablet, auto.workflow.battery-history-probe, auto.workflow.battery-sample, auto.workflow.capture, auto.workflow.inspect, auto.workflow.install, auto.workflow.preview-video, auto.workflow.readd, auto.workflow.record-live, auto.workflow.screensaver-configure, auto.workflow.screensaver-list, auto.workflow.screensaver-select, auto.workflow.verify-launch, auto.platform.android
+
+Connection diagnosis
+▢ tablet-lenovo-tab-p11-pro-19a57145: Battery depletion may explain the loss. Last battery 2%, discharging, 31 min before loss. (inferred; open)
+
+Connection endpoints
+▢ tablet-lenovo-tab-p11-pro-19a57145: configured 192.168.4.50:45993; last advertised 192.168.4.50:45993 (unverified)
+
+Attached display
+▭ chromecast-test-01: Display: not identified (EDID unreadable) · 1080p59.94 now · confirmed 22:40
+                      4K: no — device max 1080p
+▭ chromecast-test-02: Display: LG TV SSCR2 · HDMI 2 · 4K60 now · max 4K · HDR10/HLG · confirmed 22:40
+                      4K: yes
+
+Pending cleanup (last known coordinator effects; current screen unverified)
+╔════════════════════════════╦════════════════╦═════════════╦═════════════════════════════╦════════════════════════════╗
+║ Device                     ║ Origin job     ║ Session     ║ Request                     ║ Effects                    ║
+╠════════════════════════════╬════════════════╬═════════════╬═════════════════════════════╬════════════════════════════╣
+║ ▭ chromecast-test-01       ║ J-7ba90b62659a ║ mcp:session ║ requested app               ║ foreground, remote, remote ║
+║                            ║                ║             ║ lava-lamp-spike             ║                            ║
+╠════════════════════════════╬════════════════╬═════════════╬═════════════════════════════╬════════════════════════════╣
+║ ▢ tablet-lenovo-tab-p11-pr ║ J-a34988462268 ║ mcp:session ║ requested app clocks        ║ foreground                 ║
+║ o-19a57145                 ║                ║             ║                             ║                            ║
+╚════════════════════════════╩════════════════╩═════════════╩═════════════════════════════╩════════════════════════════╝
+
+Waiting jobs
+╔════════════════╦═════════════════════╦═════════════════════╦═════════════════════╦═════════════╦═════════════════════╗
+║ Job            ║ Owner               ║ Target              ║ Eligible            ║ Queued      ║ Reason              ║
+╠════════════════╬═════════════════════╬═════════════════════╬═════════════════════╬═════════════╬═════════════════════╣
+║ J-ca8bad06b4c8 ║ 01a20649-29b5-7ff1- ║ ▢ tablet-lenovo-tab ║ ▢ tablet-lenovo-tab ║ 77 h 14 min ║ device              ║
+║ install        ║ bbf2-9bb11e636d6a   ║ -p11-pro-19a57145   ║ -p11-pro-19a57145   ║             ║ recovery-required:  ║
+║                ║                     ║                     ║                     ║             ║ automatic readd     ║
+║                ║                     ║                     ║                     ║             ║ J-61079d6b546e devi ║
+║                ║                     ║                     ║                     ║             ║ ce-not-found-on-net ║
+║                ║                     ║                     ║                     ║             ║ work; device        ║
+║                ║                     ║                     ║                     ║             ║ unreachable; an     ║
+║                ║                     ║                     ║                     ║             ║ administrator readd ║
+║                ║                     ║                     ║                     ║             ║ can connect         ║
+╠════════════════╬═════════════════════╬═════════════════════╬═════════════════════╬═════════════╬═════════════════════╣
+║ J-3682055684ea ║ 01a20649-29b5-7ff1- ║ ▢ tablet-lenovo-tab ║ ▢ tablet-lenovo-tab ║ 77 h 11 min ║ device              ║
+║ install        ║ bbf2-9bb11e636d6a   ║ -p11-pro-19a57145   ║ -p11-pro-19a57145   ║             ║ recovery-required:  ║
+║                ║                     ║                     ║                     ║             ║ automatic readd     ║
+║                ║                     ║                     ║                     ║             ║ J-61079d6b546e devi ║
+║                ║                     ║                     ║                     ║             ║ ce-not-found-on-net ║
+║                ║                     ║                     ║                     ║             ║ work; device        ║
+║                ║                     ║                     ║                     ║             ║ unreachable; an     ║
+║                ║                     ║                     ║                     ║             ║ administrator readd ║
+║                ║                     ║                     ║                     ║             ║ can connect         ║
+╠════════════════╬═════════════════════╬═════════════════════╬═════════════════════╬═════════════╬═════════════════════╣
+║ J-fd776c69d0d7 ║ 01a1f972-e85f-7e32- ║ ▢ tablet-lenovo-tab ║ ▢ tablet-lenovo-tab ║ 73 h 03 min ║ device              ║
+║ install        ║ 8324-da8e8a140d41   ║ -p11-pro-19a57145   ║ -p11-pro-19a57145   ║             ║ recovery-required:  ║
+║                ║                     ║                     ║                     ║             ║ automatic readd     ║
+║                ║                     ║                     ║                     ║             ║ J-61079d6b546e devi ║
+║                ║                     ║                     ║                     ║             ║ ce-not-found-on-net ║
+║                ║                     ║                     ║                     ║             ║ work; device        ║
+║                ║                     ║                     ║                     ║             ║ unreachable; an     ║
+║                ║                     ║                     ║                     ║             ║ administrator readd ║
+║                ║                     ║                     ║                     ║             ║ can connect         ║
+╠════════════════╬═════════════════════╬═════════════════════╬═════════════════════╬═════════════╬═════════════════════╣
+║ J-4d6d4eb51b60 ║ 01a206fe-c9ee-74b2- ║ ▢ tablet-lenovo-tab ║ ▢ tablet-lenovo-tab ║ 62 h 06 min ║ device              ║
+║ install        ║ 9e80-158b3337b6de   ║ -p11-pro-19a57145   ║ -p11-pro-19a57145   ║             ║ recovery-required:  ║
+║                ║                     ║                     ║                     ║             ║ automatic readd     ║
+║                ║                     ║                     ║                     ║             ║ J-61079d6b546e devi ║
+║                ║                     ║                     ║                     ║             ║ ce-not-found-on-net ║
+║                ║                     ║                     ║                     ║             ║ work; device        ║
+║                ║                     ║                     ║                     ║             ║ unreachable; an     ║
+║                ║                     ║                     ║                     ║             ║ administrator readd ║
+║                ║                     ║                     ║                     ║             ║ can connect         ║
+╠════════════════╬═════════════════════╬═════════════════════╬═════════════════════╬═════════════╬═════════════════════╣
+║ J-f161e5600393 ║ 01a20df1-7380-7080- ║ ▢ tablet-lenovo-tab ║ ▢ tablet-lenovo-tab ║ 28 h 49 min ║ device              ║
+║ install        ║ b250-cd3bddb8d5a9   ║ -p11-pro-19a57145   ║ -p11-pro-19a57145   ║             ║ recovery-required:  ║
+║                ║                     ║                     ║                     ║             ║ automatic readd     ║
+║                ║                     ║                     ║                     ║             ║ J-61079d6b546e devi ║
+║                ║                     ║                     ║                     ║             ║ ce-not-found-on-net ║
+║                ║                     ║                     ║                     ║             ║ work; device        ║
+║                ║                     ║                     ║                     ║             ║ unreachable; an     ║
+║                ║                     ║                     ║                     ║             ║ administrator readd ║
+║                ║                     ║                     ║                     ║             ║ can connect         ║
+╠════════════════╬═════════════════════╬═════════════════════╬═════════════════════╬═════════════╬═════════════════════╣
+║ J-44176022e431 ║ 01a20df1-7380-7080- ║ ▢ tablet-lenovo-tab ║ ▢ tablet-lenovo-tab ║ 1 h 18 min  ║ device              ║
+║ install        ║ b250-cd3bddb8d5a9   ║ -p11-pro-19a57145   ║ -p11-pro-19a57145   ║             ║ recovery-required:  ║
+║                ║                     ║                     ║                     ║             ║ automatic readd     ║
+║                ║                     ║                     ║                     ║             ║ J-61079d6b546e devi ║
+║                ║                     ║                     ║                     ║             ║ ce-not-found-on-net ║
+║                ║                     ║                     ║                     ║             ║ work; device        ║
+║                ║                     ║                     ║                     ║             ║ unreachable; an     ║
+║                ║                     ║                     ║                     ║             ║ administrator readd ║
+║                ║                     ║                     ║                     ║             ║ can connect         ║
+╠════════════════╬═════════════════════╬═════════════════════╬═════════════════════╬═════════════╬═════════════════════╣
+║ J-a1c00a039664 ║ mcp:session         ║ ▭                   ║ ▭                   ║ 9 min       ║ device busy with    ║
+║ profile        ║                     ║ chromecast-test-01  ║ chromecast-test-01  ║             ║ J-7ba90b62659a      ║
+║                ║                     ║                     ║                     ║             ║ waiting for         ║
+║                ║                     ║                     ║                     ║             ║ J-7ba90b62659a;     ║
+║                ║                     ║                     ║                     ║             ║ est. ⏲ 22:59        ║
+╚════════════════╩═════════════════════╩═════════════════════╩═════════════════════╩═════════════╩═════════════════════╝
+Pool positions depend on eligibility and release order.
+task: [chromecast:app-register] "/opt/wf-device-coordinator/bin/chromecast" app-register
+{
+  "registered": true,
+  "replaced": true,
+  "app": "homeboard-tv",
+  "descriptor": {
+    "package": "net.biohack.homeboard.debug",
+    "activity": "net.biohack.homeboard.debug/com.gathin.tvhome.MainActivity",
+    "native": false,
+    "scenes": [],
+    "apk_sha256": "3e69130201519656e30e2e7620c77bbf487153b276ecde27603cbc024dabc256"
+  }
+}
+task: [chromecast:submit] "/opt/wf-device-coordinator/bin/chromecast" submit
+Accepted J-faa4eebdd197: queued; install — waiting: device busy with J-7ba90b62659a
+Follow: task chromecast:watch JOB=J-faa4eebdd197
+task: [chromecast:watch] "/opt/wf-device-coordinator/bin/chromecast" watch
+J-faa4eebdd197: accepted {"device": "chromecast-test-01", "app": "homeboard-tv", "apk": "3e69130201519656e30e2e7620c77bbf487153b276ecde27603cbc024dabc256.apk", "workflow": "install"}
+J-faa4eebdd197: granted {"device": "chromecast-test-01", "generation": 10295}
+J-faa4eebdd197: phase {"phase": "android-transport-prepare"}
+J-faa4eebdd197: phase {"phase": "connecting"}
+J-faa4eebdd197: phase {"phase": "checking-installed-apk"}
+J-faa4eebdd197: phase {"phase": "installing"}
+J-faa4eebdd197: phase {"phase": "checking-installer-capability"}
+J-faa4eebdd197: phase {"phase": "creating-installer-session"}
+J-faa4eebdd197: phase {"phase": "writing-installer-session"}
+J-faa4eebdd197: phase {"phase": "committing-installer-session"}
+J-faa4eebdd197: phase {"phase": "awaiting-supervision"}
+J-faa4eebdd197: continuation-pending {"source": "install", "workflow": "verify-launch", "device": "chromecast-test-01"}
+J-faa4eebdd197: device-endpoint-advertised {"device": "chromecast-test-01", "endpoint": "192.168.4.61:39843", "verified": false}
+J-faa4eebdd197: granted {"device": "chromecast-test-01", "generation": 10296}
+J-faa4eebdd197: phase {"phase": "android-transport-prepare"}
+J-faa4eebdd197: phase {"phase": "connecting"}
+J-faa4eebdd197: phase {"phase": "verifying-launcher"}
+J-faa4eebdd197: phase {"phase": "awaiting-supervision"}
+J-faa4eebdd197: device-endpoint-advertised {"device": "chromecast-test-01", "endpoint": "192.168.4.61:39843", "verified": false}
+J-faa4eebdd197: completed {"error": null, "health": "ready"}
+J-faa4eebdd197: completed
+task: [chromecast:evidence] "/opt/wf-device-coordinator/bin/chromecast" evidence
+J-faa4eebdd197: completed; verified 19 artifacts -> /home/will/homeboard-tv/artifacts/deployments/0.1.173/chromecast-test-01/evidence
+Deployment 0.1.173 on chromecast-test-01: succeeded; J-faa4eebdd197
+Evidence: /home/will/homeboard-tv/artifacts/deployments/0.1.173/chromecast-test-01/evidence
+EXIT 0
