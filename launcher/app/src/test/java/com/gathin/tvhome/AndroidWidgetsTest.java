@@ -72,4 +72,33 @@ public class AndroidWidgetsTest {
         assertThrows(IllegalStateException.class,()->AndroidWidgetPending.write(prefs,new JSONObject().put("id",53)));assertEquals(original,values.get(AndroidWidgetPending.KEY));
     }
 
+    /** A tile whose content area collapsed must still say Too small: in the label row, since a placeholder inside a zero-height view is never seen (Cast2, 27 November). */
+    @Test public void collapsedContentAreaPutsTooSmallInTheLabelRow(){
+        AndroidWidgetSpec s=spec(1);
+        assertEquals(AndroidWidgetGeometry.Presentation.TOO_SMALL_IN_LABEL,AndroidWidgetGeometry.presentation(s,300,0));
+        assertEquals(AndroidWidgetGeometry.Presentation.TOO_SMALL_IN_LABEL,AndroidWidgetGeometry.presentation(s,0,200));
+        assertEquals(AndroidWidgetGeometry.Presentation.TOO_SMALL,AndroidWidgetGeometry.presentation(s,179,200));
+        assertEquals(AndroidWidgetGeometry.Presentation.LIVE,AndroidWidgetGeometry.presentation(s,180,100));
+        // 24 rows over 452 dp leave 18 dp per cell: a 2-row span has no content height below the 50 dp chrome.
+        assertEquals(0,AndroidWidgetGeometry.content(452,2,24,AppGridSizing.ROW_GAP,AndroidWidgetGeometry.CHROME_HEIGHT,0));
+    }
+    /**
+     * Cast2's native 4K renderer gives Homeboard density 4 while AppWidgetManager reports a
+     * 240×100 dp provider as 480×200 px at the display's density 2. Reading those pixels with
+     * the renderer's density chose a 3×3 span and handed the provider 168×78 dp (27 November).
+     */
+    @Test public void providerMinimumUsesTheDensityItWasReportedIn(){
+        int grid=960-2*AppGridSizing.SIDE_MARGIN,height=540-AppGridSizing.HOME_TOP-AppGridSizing.BOTTOM_MARGIN,pad=16;
+        int minW=AndroidWidgetGeometry.providerDp(480,2f),minH=AndroidWidgetGeometry.providerDp(200,2f);
+        assertEquals(240,minW);assertEquals(100,minH);
+        int spanW=AndroidWidgetGeometry.minimumSpan(grid,12,AppGridSizing.COLUMN_GAP,AndroidWidgetGeometry.CHROME_WIDTH,pad,minW);
+        int spanH=AndroidWidgetGeometry.minimumSpan(height,8,AppGridSizing.ROW_GAP,AndroidWidgetGeometry.CHROME_HEIGHT,pad,minH);
+        assertEquals(4,spanW);assertEquals(4,spanH);
+        assertTrue(AndroidWidgetGeometry.content(grid,spanW,12,AppGridSizing.COLUMN_GAP,AndroidWidgetGeometry.CHROME_WIDTH,pad)>=240);
+        assertTrue(AndroidWidgetGeometry.content(height,spanH,8,AppGridSizing.ROW_GAP,AndroidWidgetGeometry.CHROME_HEIGHT,pad)>=100);
+        // The defect: the renderer's density halves the minimum and a 3-column span (168 dp) is accepted.
+        int wrong=AndroidWidgetGeometry.providerDp(480,4f);
+        assertEquals(3,AndroidWidgetGeometry.minimumSpan(grid,12,AppGridSizing.COLUMN_GAP,AndroidWidgetGeometry.CHROME_WIDTH,pad,wrong));
+        assertEquals(168,AndroidWidgetGeometry.content(grid,3,12,AppGridSizing.COLUMN_GAP,AndroidWidgetGeometry.CHROME_WIDTH,pad));
+    }
 }

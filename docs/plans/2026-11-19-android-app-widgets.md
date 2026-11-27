@@ -1,6 +1,6 @@
 # Android app widgets on Homeboard
 
-Status: **host accepted on Cast1 (0.1.179); two sizing defects open on Cast2's native 4K renderer**, November 27, 2026. Cast1 passes lifecycle, survivor, provider update/reinstall, two configured instances, app return and the resource budgets; Cast2 passes the resource budgets but fails the minimum-span and collapsed-placeholder checks. 24-hour exposure, Pixel/tablet and real-provider configured data are separate items. See the [Close-out](#close-out--november-27) and the [testing record](../testing/2026-11-19-android-app-widgets.md).
+Status: **host accepted on Cast1 and on Cast2's native 4K renderer (0.1.181)**, November 27, 2026. Lifecycle passes on both TVs after the provider-density and collapsed-placeholder fixes; Cast1 also passes survivor, provider update/reinstall, two configured instances, app return; resource budgets pass on both. Fossify with a real event, 24-hour exposure and Pixel/tablet remain. See the [Close-out](#close-out--november-27) and the [testing record](../testing/2026-11-19-android-app-widgets.md).
 
 Host widgets supplied by other installed Android apps alongside Homeboard's own
 Groceries, Timers & alarms, Rain, Calendar, Air quality, Favorites and World clock. Start with one working
@@ -783,19 +783,19 @@ sequenceDiagram
 
 | Check | Cast1 (ordinary renderer) | Cast2 (native 4K) |
 |---|---|---|
-| Lifecycle probe | PASS · J‑1df41b2106dd | FAIL at the grid step · J‑ad7a532771e6 |
+| Lifecycle probe | PASS · J‑1df41b2106dd; 0.1.181 control J‑76a157e4a2a7 | FAIL on 0.1.179 · J‑ad7a532771e6; **PASS on 0.1.181** · J‑61c3773a4911 |
 | New process, uninstall, Set up again | PASS · J‑5ae4f9261f26, J‑db56eabc4e8f, J‑546da9bc8853 | not run |
 | Provider update in place (0.0.3 → 0.0.4) | PASS · J‑5174b5e17cdc, J‑76a0ae41efe7 | not run |
 | Two configured instances, Open app and return | PASS · Remote J‑919da3fc0ebb | passed on 0.1.97 (J‑5201a9261061) |
 | Four views, 50 cycles (coordinator PSS) | PASS: +5.1 MiB, no retained growth · J‑613ee0faa715 | PASS: +8.6 MiB, no retained growth · J‑4fa6f903aca7 |
 
-Cast2 defects, both in the host's sizing, recorded in the
-[testing record](../testing/2026-11-19-android-app-widgets.md#cast2--native-4k-renderer--01179):
-the minimum span computed for the native surface gives the provider 168×78 dp against
-its 240×100 dp minimum, and when the provider area collapses to zero height the
-**Too small** placeholder never appears because it lives inside that zero-height view.
-The second is a renderer-independent code path; the first needs the dashboard root's
-pixel size, density and the provider view's measured size logged before a fix.
+Cast2 defects, both fixed in 0.1.181
+([testing record](../testing/2026-11-19-android-app-widgets.md#cast2-sizing-defects-fixed--01181--27-november)):
+`AppWidgetProviderInfo` bounds arrive in pixels at the base context's density (2), while
+the native renderer gives the Activity density 4, so every provider minimum was halved;
+they are now converted with the base density. And a tile below its provider's minimum
+no longer inflates a view: it shows **Too small** where the view would be, or in the label
+row when no content area is left, decided from the same arithmetic as Add and resize.
 
 ## References
 

@@ -47,8 +47,15 @@ final class AndroidWidgetHostController {
     int dip(int pixels){return (int)Math.ceil(pixels/activity.getResources().getDisplayMetrics().density);}
     private AndroidWidgetSpec spec(int id,AppWidgetProviderInfo p){
         String label=String.valueOf(p.loadLabel(activity.getPackageManager()));if(label.length()>512)label=label.substring(0,512);
-        return new AndroidWidgetSpec(id,p.provider.flattenToString(),label,dip(p.minWidth),dip(p.minHeight),dip(p.minResizeWidth>0?p.minResizeWidth:p.minWidth),dip(p.minResizeHeight>0?p.minResizeHeight:p.minHeight),Build.VERSION.SDK_INT>=31?dip(p.maxResizeWidth):0,Build.VERSION.SDK_INT>=31?dip(p.maxResizeHeight):0,p.resizeMode);
+        return new AndroidWidgetSpec(id,p.provider.flattenToString(),label,pdp(p.minWidth),pdp(p.minHeight),pdp(p.minResizeWidth>0?p.minResizeWidth:p.minWidth),pdp(p.minResizeHeight>0?p.minResizeHeight:p.minHeight),Build.VERSION.SDK_INT>=31?pdp(p.maxResizeWidth):0,Build.VERSION.SDK_INT>=31?pdp(p.maxResizeHeight):0,p.resizeMode);
     }
+    /**
+     * AppWidgetManager reports provider bounds in pixels at its own context's density: the base
+     * context, which the native 4K renderer's doubled Activity resources do not change. Dividing
+     * by the Activity's density halved every provider minimum on Cast2 (240 dp read as 120).
+     */
+    private float providerDensity(){return activity.getBaseContext().getResources().getDisplayMetrics().density;}
+    private int pdp(int pixels){return AndroidWidgetGeometry.providerDp(pixels,providerDensity());}
     private AppWidgetProviderInfo info(AndroidWidgetSpec s){
         if(manager==null||s==null)return null;
         AppWidgetProviderInfo p=manager.getAppWidgetInfo(s.id);
@@ -59,8 +66,8 @@ final class AndroidWidgetHostController {
         return p!=null&&Build.VERSION.SDK_INT>=28&&(p.widgetFeatures&AppWidgetProviderInfo.WIDGET_FEATURE_RECONFIGURABLE)!=0&&p.configure!=null;
     }
     private Rect padding(AndroidWidgetSpec s){return AppWidgetHostView.getDefaultPaddingForWidget(activity,ComponentName.unflattenFromString(s.provider),null);}
-    int contentWidth(AndroidWidgetSpec s,int span){Rect p=padding(s);return Math.max(0,ui.gridWidth()*span/ui.columns()-AppGridSizing.COLUMN_GAP-32-dip(p.left+p.right));}
-    int contentHeight(AndroidWidgetSpec s,int span){Rect p=padding(s);return Math.max(0,ui.gridHeight()*span/ui.rows()-AppGridSizing.ROW_GAP-50-dip(p.top+p.bottom));}
+    int contentWidth(AndroidWidgetSpec s,int span){Rect p=padding(s);return AndroidWidgetGeometry.content(ui.gridWidth(),span,ui.columns(),AppGridSizing.COLUMN_GAP,AndroidWidgetGeometry.CHROME_WIDTH,dip(p.left+p.right));}
+    int contentHeight(AndroidWidgetSpec s,int span){Rect p=padding(s);return AndroidWidgetGeometry.content(ui.gridHeight(),span,ui.rows(),AppGridSizing.ROW_GAP,AndroidWidgetGeometry.CHROME_HEIGHT,dip(p.top+p.bottom));}
     int[] minimum(AndroidWidgetSpec s){
         int w=1,h=1;
         while(w<=ui.columns()&&contentWidth(s,w)<s.minWidth)w++;
@@ -206,7 +213,12 @@ final class AndroidWidgetHostController {
         wrapper.setOrientation(LinearLayout.VERTICAL);wrapper.setDescendantFocusability(android.view.ViewGroup.FOCUS_BLOCK_DESCENDANTS);
         wrapper.setClipChildren(true);wrapper.setContentDescription(s==null?text(R.string.hb_aw_unavailable):s.label);
         TextView label=new TextView(activity);label.setText(s==null?text(R.string.hb_aw_unavailable):s.label);label.setTextColor(-1);label.setTextSize(13);label.setMaxLines(1);label.setEllipsize(android.text.TextUtils.TruncateAt.END);wrapper.addView(label,new LinearLayout.LayoutParams(-1,dp(26)));
+        HomeLayout.PanelSpan span=s==null?null:ui.layout().panelSpan(key);
+        AndroidWidgetGeometry.Presentation fit=span==null?AndroidWidgetGeometry.Presentation.LIVE:AndroidWidgetGeometry.presentation(s,contentWidth(s,span.width),contentHeight(s,span.height));
         if(s==null||info(s)==null)placeholder(wrapper,text(R.string.hb_aw_unavailable));
+        // A tile below the provider's minimum never inflates a view; with no content area left the label row carries the message.
+        else if(fit==AndroidWidgetGeometry.Presentation.TOO_SMALL_IN_LABEL){label.setText(text(R.string.hb_aw_too_small));wrapper.setContentDescription(s.label+". "+text(R.string.hb_aw_too_small));}
+        else if(fit==AndroidWidgetGeometry.Presentation.TOO_SMALL)placeholder(wrapper,text(R.string.hb_aw_too_small));
         else if(preview||key.equals(expandedKey)||shown.size()>=4)placeholder(wrapper,text(R.string.hb_aw_open));
         else{shown.add(key);SizedView view=view(key,s);detach(view);wrapper.addView(view,new LinearLayout.LayoutParams(-1,0,1));}
         return wrapper;
@@ -240,7 +252,9 @@ final class AndroidWidgetHostController {
         private void size(int width,int height){
             if(closed||width<=0||height<=0)return;
             Rect pad=AppWidgetHostView.getDefaultPaddingForWidget(activity,provider.provider,null);
-            AndroidWidgetSpec s=spec(id,provider);boolean bad=!s.fits((int)Math.floor((width-pad.left-pad.right)/activity.getResources().getDisplayMetrics().density),(int)Math.floor((height-pad.top-pad.bottom)/activity.getResources().getDisplayMetrics().density));
+            AndroidWidgetSpec s=spec(id,provider);
+            trace("size id="+id+" px="+width+"x"+height+" density="+activity.getResources().getDisplayMetrics().density+" viewDensity="+getResources().getDisplayMetrics().density+" pad="+pad.toShortString()+" reportDp="+dip(width)+"x"+dip(height)+" min="+s.minWidth+"x"+s.minHeight);
+            boolean bad=!s.fits((int)Math.floor((width-pad.left-pad.right)/activity.getResources().getDisplayMetrics().density),(int)Math.floor((height-pad.top-pad.bottom)/activity.getResources().getDisplayMetrics().density));
             if(bad){if(!tooSmall){tooSmall=true;super.updateAppWidget(null);TextView message=new TextView(activity);message.setText(text(R.string.hb_aw_too_small));message.setTextSize(16);message.setTextColor(-1);message.setGravity(Gravity.CENTER);message.setBackgroundColor(0xff182332);addView(message,new LayoutParams(-1,-1));error=message;}return;}
             if(tooSmall){tooSmall=false;if(error!=null){removeView(error);error=null;}// Re-registering obtains the actual provider view, not invented content.
                 host.createView(activity,id,provider);

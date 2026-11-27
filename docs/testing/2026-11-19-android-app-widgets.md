@@ -1,15 +1,6 @@
 # Android app widgets: implementation and testing
 
-**Current (27 November):** both TVs run **0.1.179** with fixture provider **0.0.4**.
-On Cast1 the full lifecycle, survivor (new process, provider update, uninstall and Set up
-again), two configured instances, Open app and return, and the resource budgets all
-pass. On Cast2's native 4K renderer the resource budgets pass but the lifecycle probe
-fails: the minimum span hands the provider less than its declared minimum, and a
-collapsed provider area shows no **Too small** placeholder. Still open: those two
-defects, 24-hour exposure, Pixel and tablet hosting, and configured data from the real
-providers. See [Close-out on Cast1](#close-out-on-cast1--01179--27-november) and the
-[verification record](#verification-record--27-november). Everything above the
-close-out is historical.
+**Current (27 November):** both TVs run **0.1.181** with fixture provider **0.0.4**. The host passes the full lifecycle probe on Cast1 and on Cast2's native 4K renderer after two sizing fixes ([below](#cast2-sizing-defects-fixed--01181--27-november)); Cast1 also passes the survivor, provider update, two configured instances, app return and resource checks, and the resource budgets pass on both TVs. Still open: Fossify Calendar with a real event, 24-hour exposure, and Pixel and tablet hosting. See the [verification record](#verification-record--27-november). Everything above the close-out is historical.
 
 
 November 19, 2026. **The developer-grant route successfully bound and rendered a separate app’s Android widget on both Cast1 and Cast2.** Both TVs still lack the ordinary binding-consent screen. At that experiment stage, product integration was still pending; those results came from the disposable host/provider. The current implementation and acceptance results follow below.
@@ -820,10 +811,10 @@ Steps verbatim from the plan; evidence and verdict below each.
 
     ```text
     Cast1: lifecycle J‑1df41b2106dd pass; survivor J‑5ae4f9261f26 / J‑db56eabc4e8f / J‑546da9bc8853 pass; update J‑5174b5e17cdc / J‑76a0ae41efe7 pass; Remote J‑919da3fc0ebb (two configured instances, Open app and return, Undo) pass.
-    Cast2: lifecycle J‑ad7a532771e6 FAIL at the grid placeholder; minimum span gives the provider 168×78 dp
+    Cast2: lifecycle J‑ad7a532771e6 FAIL on 0.1.179 (minimum span gave 168×78 dp); J‑61c3773a4911 PASS on 0.1.181 (4×4, 243×128 dp)
     ```
 
-    **FAIL** overall: Cast1 PASS; Cast2 FAIL (two defects, see Cast2 section). Denial: not testable (no consent screen on either TV).
+    **PASS** on Cast1 (0.1.179, control again on 0.1.181 J‑76a157e4a2a7) and Cast2 after the 0.1.181 sizing fixes (J‑61c3773a4911; the 0.1.179 failure J‑ad7a532771e6 is kept above). Denial: not testable (no consent screen on either TV).
 
 7. Run `task android-widgets:phone-check` (deliverable). Expected: host-backed tile
    representation, legal resize, lost-draft prevention, Cancel/Update TV/Undo and
@@ -859,3 +850,58 @@ Steps verbatim from the plan; evidence and verdict below each.
 
     **PASS** (historical).
 
+
+## Cast2 sizing defects fixed · 0.1.181 · 27 November
+
+**Diagnostic, 0.1.180** (SHA-256 `1a693f0d…`, Cast1 J‑1aa9214176c0, Cast2 J‑46bcc58dcb99).
+The lifecycle probe now records the host's arithmetic next to what the provider view got,
+and `SizedView.size()` logs each measurement (debug builds only). Cast2, J‑dd1f9a8f8871:
+
+```text
+"geometry":{"density":4,"screenPx":"1920x1080","rootPx":"3840x2160","pagePx":"3840x2160",
+ "gridDp":"896x400","cells":"12x8","scale":100,"span":"3x3","hostContentDp":"168x78",
+ "padPx":"[32,32][32,32]","viewPx":"736x376","viewDensity":4,"wrapperPx":"864x576",
+ "optionsDp":"168x78 max 168x78","providerMinDp":"120x50",
+ "chain":"SizedView 736x376 scale 1.0;  864x576 scale 1.0; TileGrid 3584x1600 scale 1.0; FrameLayout 3840x2160 scale 1.0; "}
+HomeboardWidgets: size id=11 px=736x376 density=4.0 viewDensity=4.0 pad=[32,32][32,32] reportDp=184x94 min=120x50
+```
+
+**Root cause (first hypothesis, confirmed by these numbers).** The host's grid arithmetic
+and the measured view agree (168×78 dp both ways; Android subtracts the 16 dp default
+padding from the 184×94 reported). What is wrong is the provider's minimum: **120×50 dp**
+for a provider declaring 240×100. `AppWidgetManager` reports `AppWidgetProviderInfo`
+bounds in pixels at the density of its own context, the Activity's base context:
+the display's density 2, so 240 dp arrives as 480 px. The native renderer gives
+Homeboard's Activity resources density 4 (`NativeDashboardHost` doubles `densityDpi` for
+the 3840-pixel surface), and the host divided those pixels by 4. Every provider minimum
+was halved, so a 3×3 span passed. On Cast1 both densities are 2, which is why it never
+showed there.
+
+**Fixes** (`AndroidWidgetHostController`, new pure `AndroidWidgetGeometry`):
+
+1. Provider bounds are converted with the base context's density
+   (`activity.getBaseContext().getResources()`), the one they were reported in.
+   JVM regression test `providerMinimumUsesTheDensityItWasReportedIn`: 480×200 px at
+   density 2 gives 240×100 dp and a 4×4 span on the 12×8 native grid; the old density 4
+   gives the observed 3-column, 168 dp result.
+2. A tile below its provider's minimum no longer inflates a provider view at all. The
+   decision is made when the tile is built, from the same arithmetic used to add and
+   resize: a **Too small** placeholder where the provider view would be, or, when no
+   content height or width is left, the message in the tile's label row. JVM test
+   `collapsedContentAreaPutsTooSmallInTheLabelRow`. The view's own measured check
+   stays as a backstop.
+
+**Verification, 0.1.181** (SHA-256 `5db93ecc…`, base `f4195e8` plus my uncommitted fix and
+the tree's other sessions' work; installed Cast1 J‑3a9e3e08aff4, Cast2 J‑1007e92511fe):
+
+| Run | Job | Minimum span · options | Result |
+|---|---|---|---|
+| Cast2 lifecycle | J‑61c3773a4911 | 4×4 · 243×128 dp (provider minimum read as 240×100) | **PASS**, 24×24 shows the message in the label row (`TOO_SMALL_IN_LABEL`), four live views |
+| Cast1 control | J‑76a157e4a2a7 | 4×4 · 243×128 dp | **PASS**, same |
+
+Clean worktree of `f4195e8` plus these changes only: 747 JVM tests, 0 failures, 0 errors;
+`lintDebug`, calendar 7, cleanup 71 and deployment 5 tests OK. The 0.1.180 diagnostic run
+on Cast2 already passed the grid step with fix 2 alone, still at the halved 3×3 minimum.
+The scheduled captures fell after the grid step both times, so the label-row message is
+established by the probe's assertion (text present, no live provider view), not by a frame.
+Registration was restored to `MainActivity` after each run.

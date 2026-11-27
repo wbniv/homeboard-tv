@@ -86,8 +86,26 @@ public final class AndroidWidgetLifecycleProbeActivity extends MainActivity {
             else if(k.equals(keyB))o.put("page",0).put("column",0).put("row",min[1]).put("width",min[0]).put("height",min[1]);}
         apply(s,d);show(keyA);
     }
+    /** Host arithmetic beside what the provider view actually got, at the minimum span. */
+    private JSONObject geometry(String key)throws Exception{
+        AndroidWidgetSpec s=spec(key);HomeLayout.PanelSpan span=layout().panelSpan(key);AndroidWidgetHostController c=controller();
+        AppWidgetHostView v=host(dashboard(),s.id);View page=(View)field("surface");
+        android.graphics.Rect pad=AppWidgetHostView.getDefaultPaddingForWidget(this,ComponentName.unflattenFromString(s.provider),null);
+        Bundle o=manager().getAppWidgetOptions(s.id);
+        JSONObject g=new JSONObject().put("density",getResources().getDisplayMetrics().density).put("screenPx",getResources().getDisplayMetrics().widthPixels+"x"+getResources().getDisplayMetrics().heightPixels)
+            .put("rootPx",call("dashboardWidthPixels",new Class<?>[0])+"x"+call("dashboardHeightPixels",new Class<?>[0])).put("pagePx",page==null?"none":page.getWidth()+"x"+page.getHeight())
+            .put("gridDp",call("androidGridWidth",new Class<?>[0])+"x"+call("androidGridHeight",new Class<?>[0])).put("cells",controllerColumns()+"x"+controllerRows()).put("scale",call("dashboardScale",new Class<?>[0]))
+            .put("span",span.width+"x"+span.height).put("hostContentDp",c.contentWidth(s,span.width)+"x"+c.contentHeight(s,span.height)).put("padPx",pad.toShortString())
+            .put("viewPx",v==null?"none":v.getWidth()+"x"+v.getHeight()).put("viewDensity",v==null?0:v.getResources().getDisplayMetrics().density)
+            .put("wrapperPx",v==null||v.getParent()==null?"none":((View)v.getParent()).getWidth()+"x"+((View)v.getParent()).getHeight())
+            .put("optionsDp",o.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)+"x"+o.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)+" max "+o.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH)+"x"+o.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT))
+            .put("providerMinDp",s.minWidth+"x"+s.minHeight);
+        View t=v;String chain="";for(int i=0;i<4&&t!=null;i++){chain+=t.getClass().getSimpleName()+" "+t.getWidth()+"x"+t.getHeight()+" scale "+t.getScaleX()+"; ";t=t.getParent() instanceof View?(View)t.getParent():null;}
+        return g.put("chain",chain);
+    }
     private void sizeResponse(){
         step(()->{
+            put("geometry",geometry(keyA));
             String before=hostText(dashboard(),idA);int updates=number(before,"Updates ");String size=sizeOf(before);put("beforeResize",line(before));
             HomeLayout.PanelSpan span=layout().panelSpan(keyA);
             JSONObject s=phoneState(),d=s.getJSONObject("draft");widget(d,keyA).put("width",span.width+2);apply(s,d);show(keyA);
@@ -130,7 +148,9 @@ public final class AndroidWidgetLifecycleProbeActivity extends MainActivity {
             AndroidWidgetSpec a=spec(keyA);
             require(a.id==idA&&layout().panelSpan(keyA).width==span.width&&layout().panelSpan(keyA).height==span.height,"Grid change moved, resized or rebound the widget");
             require(!a.fits(controller().contentWidth(a,span.width),controller().contentHeight(a,span.height)),"Precondition: 24×24 still fits the provider minimum");
-            awaitText(()->hostText(dashboard(),idA),getString(R.string.hb_aw_too_small),()->{
+            // Too small is decided per tile: either a placeholder where the provider view would be, or the message in the label row.
+            awaitTrue("Too small in A's tile, no live view",()->host(dashboard(),idA)==null&&text(dashboard()).contains(getString(R.string.hb_aw_too_small)),()->{
+                put("gridPlaceholder",AndroidWidgetGeometry.presentation(a,controller().contentWidth(a,span.width),controller().contentHeight(a,span.height)).name());
                 JSONObject s2=phoneState(),d2=s2.getJSONObject("draft");d2.put("columns",COLUMNS).put("rows",ROWS);apply(s2,d2);show(keyA);
                 awaitTrue("live provider view after the grid is legal again",()->{String t=hostText(dashboard(),idA);return t.contains("id "+idA)&&!t.contains(getString(R.string.hb_aw_too_small));},this::lostBinding);
             });
