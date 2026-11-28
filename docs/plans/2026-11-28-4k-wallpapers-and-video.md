@@ -340,3 +340,8 @@ re-entered on `stop()` and scrambled its stage order. Raw evidence is kept local
     put Homeboard back in front right after replacing its APK; its recovery jobs
     (`J‑082699142eb6`, `J‑e4eabdd42930`) restored `MainActivity` and ended `health: ready`. The
     Pixel install also needed recovery (`J‑40265972b69d`, completed).
+
+## Decisions after verification
+
+- **4K video wallpaper memory: leave as is** (Will, 2026‑11‑28). Cast2's decoder holds about 200&nbsp;MiB of system memory while a 4K video wallpaper plays; free memory stayed near 330&nbsp;MiB, above Android's 144&nbsp;MiB threshold.
+- **Animated wallpapers from large sources: own TODO item** (Will, 2026‑11‑28), "Animated wallpapers from large sources" [T3].
