@@ -32,7 +32,6 @@ Repository consolidation is complete. Archived worktree drafts are described in 
 
 - [T4] **4K wallpapers and video**: on the native 4K path, lift the 1080p decode target for wallpaper and provider images within a measured memory budget, and prove actual 4K video output rather than assume TextureView is 4K. Test static images, animated assets and video separately on Cast2; 1080p devices keep today's behaviour. Split from the 4K dashboard's engineering gate 4 (Will, 2026‑11‑27). T4: memory limits and video output cut across the app. [Plan, gate 4](docs/plans/2026-11-23-native-4k-dashboard.md).
 
-- [wip T4] <!-- agent:a7dad0c3f5b320d54 --> **Android app widget hosting**: host accepted on Cast1 and on Cast2's native 4K renderer at 0.1.181 (lifecycle, new process, provider update/reinstall, two configured instances, app return, PSS budgets). Left: a Fossify Calendar event shown as a list row — attempted 28 Nov with Will's OK, not possible by remote (Fossify shows no focus on TV, add button unreachable, no coordinator text entry); needs a decision on input method. Also fix the removal banner reading "Removed app shortcut from Home" for an Android widget. [Plan](docs/plans/2026-11-19-android-app-widgets.md#close-out--november-27), [testing](docs/testing/2026-11-19-android-app-widgets.md#fossify-calendar-real-event--cast2--28-november--not-completed).
 - [T3] **Android widgets on the Pixel and the tablet**: local launch without a Home change, normal consent and denial, touch, provider configuration, return from portrait setup, insets, on Android 17 and 11, with the lifecycle and resource probes. Blocked on a person: the Pixel stopped advertising Wireless debugging and the tablet went flat (2% on 26 November). Tier T3: probes and plan exist. [Plan](docs/plans/2026-11-19-android-app-widgets.md#close-out--november-27).
 - [T4] **24-hour Android widget exposure on Cast1**: four live widgets on screen for a day with periodic PSS and update counts. Coordinator check/profile jobs stop at 900 s and an interactive RECORD=false session at 7,200 s, so this needs a coordinator long-exposure capability and Will's call to hold Cast1 for a day; a 2-hour soak fits today. Tier T4: coordinator design. [Plan](docs/plans/2026-11-19-android-app-widgets.md#resource-budget-and-long-running-check).
 
@@ -81,6 +80,7 @@ trigger that promotes it back to Open._
 
 ## Done
 
+- ✅ 2026‑11‑28 — [android-app-widgets] Android widget host passes Cast1 and Cast2 native 4K; real Fossify event row (0.1.183). See [plan](docs/plans/2026-11-19-android-app-widgets.md).
 - ✅ 2026‑11‑27 — [native-4k-dashboard] Automatic native 4K; Cast2 output transition and native provider probe pass (0.1.179). See [plan](docs/plans/2026-11-23-native-4k-dashboard.md#closing-round--27-november).
 - ✅ 2026‑11‑27 — [screensaver-list] One scrolling Screensaver list; Cast1 1×/1.3×/2×, Cast2 4K and Pixel pass (0.1.177). See [record](docs/testing/2026-11-26-screensaver-list-cast1.md).
 - ✅ 2026‑11‑26 — [top-row-start-screensaver] Start screensaver + Homeboard settings only; Cast1 steps 1–7 pass, Thai partial. See [record](docs/testing/2026-11-26-top-row-cast1.md).

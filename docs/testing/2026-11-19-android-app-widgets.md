@@ -1,6 +1,6 @@
 # Android app widgets: implementation and testing
 
-**Current (27 November):** both TVs run **0.1.181** with fixture provider **0.0.4**. The host passes the full lifecycle probe on Cast1 and on Cast2's native 4K renderer after two sizing fixes ([below](#cast2-sizing-defects-fixed--01181--27-november)); Cast1 also passes the survivor, provider update, two configured instances, app return and resource checks, and the resource budgets pass on both TVs. Still open: Fossify Calendar with a real event, 24-hour exposure, and Pixel and tablet hosting. See the [verification record](#verification-record--27-november). Everything above the close-out is historical.
+**Current (28 November):** both TVs run **0.1.183** with fixture provider **0.0.4**. The host passes the full lifecycle probe on Cast1 and on Cast2's native 4K renderer, a real Fossify Calendar event renders as a list row and clears on deletion, and the resource budgets pass on both TVs. Separate items: 24-hour exposure, and Pixel and tablet hosting. See the [verification record](#verification-record--27-november). Everything above the close-out is historical.
 
 
 November 19, 2026. **The developer-grant route successfully bound and rendered a separate app’s Android widget on both Cast1 and Cast2.** Both TVs still lack the ordinary binding-consent screen. At that experiment stage, product integration was still pending; those results came from the disposable host/provider. The current implementation and acceptance results follow below.
@@ -944,3 +944,43 @@ untouched. Two findings: the removal banner reads **Removed app shortcut from Ho
 an Android widget (wrong label), and Fossify's add-event path is not remote-operable here.
 Making the event needs either a coordinator text-entry capability with a way to focus
 Fossify's add button, or a non-remote input (Will declined a mouse for Breezy earlier).
+
+## Fossify Calendar real event · Cast2 · 28 November · passed (0.1.183)
+
+Will's go-ahead: use the remote and the on-screen keyboard, and open Fossify's new-event
+screen by intent. Fossify's manifest shows `EventActivity` handling `ACTION_INSERT` for
+`vnd.android.cursor.dir/event`, so the debug-only `FossifyEventProbeActivity` sends
+`ACTION_INSERT` on `CalendarContract.Events.CONTENT_URI` to `org.fossify.calendar` with
+`Events.TITLE` "Homeboard test event" and today's 15:00–15:30.
+
+- **0.1.182** (Cast1 J‑0512f26f78f0, Cast2 J‑d54459312800): hashes verified, but both
+  launcher-artwork checks failed: the probe had a launcher entry with Homeboard's banner,
+  and Google TV showed it **in place of** Homeboard's own tile. **0.1.183** removed that
+  entry (Cast1 J‑dd0f94850c56, Cast2 J‑ba0a7a34ac44, both launcher-verified).
+- Remote **J‑f505da983852** (0.1.182, 31 artifacts): the probe tile opened Fossify's
+  **New Event** with the title already filled in. The toolbar ✓ is not reachable by
+  D-pad: Up in the title field only moves the cursor, Up from the location pin returns to
+  the title, and Menu does nothing. **Back** brings up "You have unsaved changes. Save
+  before exit?"; Down gives the dialog focus (barely visible), Right moves to **Save**,
+  OK saved. Fossify then showed its one-time reminders disclaimer; Down, Right, OK.
+- Remote **J‑87662d36b1b0** (0.1.183, 32 artifacts): Homeboard → Add widget → Android
+  app widgets → **Calendar event list** → Fossify's configuration → OK → 3×4 tile. The
+  widget first rendered **No upcoming events**; after Fossify was opened once from the
+  full-screen **Open** action and Back pressed, it showed **NOVEMBER · 28 Saturday ·
+  Homeboard test event · 15:00 - 15:30**, a real row from Fossify's list adapter inside
+  Homeboard on the native renderer. Why the first render was empty is not established;
+  opening Fossify refreshes its widgets, which points at the provider's update timing.
+- Delete: in Fossify's day view, Down to the event, **Hold OK** opens selection mode;
+  from the date title, Right reaches the selection bar's **Delete**; OK, then Down,
+  Right, OK on **Yes**. Fossify's day view is empty, and Homeboard's widget returned to
+  **No upcoming events** without any input.
+- The tile was removed with Hold OK → **Delete widget**; the banner now reads
+  **Removed Calendar event list from Home** (the 0.1.183 wording fix, JVM test
+  `removalBannerNamesTheWidgetNotAnAppShortcut`).
+
+![Real Fossify event row inside Homeboard, Cast2 native 4K, 0.1.183](2026-11-19-android-app-widgets/v183-fossify-event-row.png)
+
+![Removal banner names the widget](2026-11-19-android-app-widgets/v183-removed-banner.png)
+
+Final Cast2 state: no Fossify events, Homeboard's dashboard as it started with the
+Calendar tile removed, `homeboard-tv` registered with `MainActivity` (0.1.183), idle.

@@ -1,6 +1,6 @@
 # Android app widgets on Homeboard
 
-Status: **host accepted on Cast1 and on Cast2's native 4K renderer (0.1.181)**, November 27, 2026. Lifecycle passes on both TVs after the provider-density and collapsed-placeholder fixes; Cast1 also passes survivor, provider update/reinstall, two configured instances, app return; resource budgets pass on both. Fossify with a real event, 24-hour exposure and Pixel/tablet remain. See the [Close-out](#close-out--november-27) and the [testing record](../testing/2026-11-19-android-app-widgets.md).
+Status: **done**, November 28, 2026: host accepted on Cast1 and Cast2's native 4K renderer (0.1.183), including a real Fossify Calendar event as a list row. 24-hour exposure and Pixel/tablet hosting continue as their own TODO items. See the [Close-out](#close-out--november-27) and the [testing record](../testing/2026-11-19-android-app-widgets.md).
 
 Host widgets supplied by other installed Android apps alongside Homeboard's own
 Groceries, Timers & alarms, Rain, Calendar, Air quality, Favorites and World clock. Start with one working
