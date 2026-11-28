@@ -737,7 +737,7 @@ person or a device that is not reachable, and what is blocked outside this host.
 | Required configuration twice, Open app and return on Cast1 | **Cast1 owned Remote session** through ordinary menus | Cross-app activity transitions are outside a `check` job's foreground guard. |
 | Cast2 repeat | **Cast2 device check** when the coordinator shows it idle | Will relaxed the Cast2 rule on November 27. |
 | 24-hour exposure | **Own TODO item** | Coordinator jobs end at 900 s at most; a 24-hour on-screen session is a coordinator capability and a decision to hold Cast1 for a day. |
-| Pixel and tablet hosting | **Own TODO item** | Both unreachable on November 27 (Pixel wireless debugging off, tablet battery 2%); each needs a person's step first. |
+| Pixel and tablet hosting | **Own TODO item** | Both unreachable on November 27: flat batteries (the Pixel's wireless debugging stays on; tablet at 2%). Each needs charging first. |
 | Breezy Weather configured data | **Watch item** | 6.2.2's Add location is not reachable with the TV remote (J‑5c70d8486393) and Will declined a mouse; recheck on a new Breezy release. |
 
 The probe is debug-only (`AndroidWidgetLifecycleProbeActivity`, activity aliases select

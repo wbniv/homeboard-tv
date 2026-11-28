@@ -1,0 +1,22 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 360,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 140,
+      "capture": "resource-four-views"
+    },
+    {
+      "at": 340,
+      "capture": "resource-end"
+    },
+    {
+      "at": 355,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    }
+  ]
+}

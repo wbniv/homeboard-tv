@@ -984,3 +984,52 @@ screen by intent. Fossify's manifest shows `EventActivity` handling `ACTION_INSE
 
 Final Cast2 state: no Fossify events, Homeboard's dashboard as it started with the
 Calendar tile removed, `homeboard-tv` registered with `MainActivity` (0.1.183), idle.
+
+## HB_WIDGET_STATS for the 24-hour sampler · 28 November (0.1.186)
+
+`a2fa796` counts every RemoteViews update a hosted Android widget receives
+(`AndroidWidgetHostController.SizedView.updateAppWidget`, before the Too small check)
+per widget id since process start, and logs, in release and debug builds:
+
+```text
+tag HB_WIDGET_STATS
+{"event":"widget_updates","id":<appWidgetId>,"updates":<count>}
+```
+
+The first update of each widget is always logged; afterwards at most one line per widget
+per 60 s while updates continue (`WidgetUpdateStats`, JVM test
+`widgetUpdateStatsFormatAndRateLimit` with an injected clock). 755 JVM tests and lint
+passed on a clean worktree.
+
+Cast2, lifecycle probe J‑1e282c3fc0fb on 0.1.186 (pass; minimum span 4×4), from the job's
+logcat evidence:
+
+```text
+11-28 21:16:20.482 30069 30069 I HB_WIDGET_STATS: {"event":"widget_updates","id":28,"updates":1}
+11-28 21:16:21.765 30069 30069 I HB_WIDGET_STATS: {"event":"widget_updates","id":29,"updates":1}
+11-28 21:16:45.343 30069 30069 I HB_WIDGET_STATS: {"event":"widget_updates","id":30,"updates":1}
+11-28 21:16:46.633 30069 30069 I HB_WIDGET_STATS: {"event":"widget_updates","id":31,"updates":1}
+11-28 21:16:47.951 30069 30069 I HB_WIDGET_STATS: {"event":"widget_updates","id":32,"updates":1}
+11-28 21:16:49.328 30069 30069 I HB_WIDGET_STATS: {"event":"widget_updates","id":33,"updates":1}
+```
+
+## Breezy Weather Add location · Cast2 · 28 November · blocked at the result list
+
+Coordinator 0.1.248's `remote:launch` and `remote:text` were used in Remote
+J‑64ec396775f1 (23 artifacts): `ACTION_MANAGEMENT` opened Breezy's Locations panel;
+Left then Down moved focus from the list button to **Add a new location**; OK opened the
+search screen with the keyboard; `remote:text "Bangkok"` filled the field; the keyboard's
+search key returned results, first **Bangkok · Thailand, Bangkok**. The result list could
+not be focused: Down (three presses) only blinked the field's cursor, Right then Down
+did the same, and Back left the search screen entirely. No location was added and Breezy
+is unchanged; no widget was added. Breezy stays on Watch.
+
+Cast1 confirmation was not run. Its check (J‑6bf634e30107) was cancelled while still
+queued, and the registration restored to `MainActivity` at 21:27:31, because the
+coordinator asked that no one swap the global `homeboard-tv` activity while an exposure
+run is open or about to open, and the 24-hour run on Cast1 starts next; that run reads
+these lines itself. Registration swaps in this session on 28 November: 21:15:09–21:17:59
+(Cast2 lifecycle check J‑1e282c3fc0fb, during the coordinator's LX‑063a74 run on Cast1)
+and 21:26:26–21:27:31 (the cancelled Cast1 check). Nothing was started on Cast1 between
+21:03 and 21:08. `dev/device/android-widgets-resource-check.json` is the 360 s check that
+holds four live widgets, for use once no exposure run is open.
