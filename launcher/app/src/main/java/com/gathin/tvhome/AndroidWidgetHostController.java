@@ -261,6 +261,10 @@ final class AndroidWidgetHostController {
             }
             updateAppWidgetSize(new Bundle(),dip(width),dip(height),dip(width),dip(height));
         }
-        @Override public void updateAppWidget(RemoteViews views){if(!tooSmall)super.updateAppWidget(views);}
+        @Override public void updateAppWidget(RemoteViews views){
+            // Every provider update counts, shown or not; the coordinator's long-exposure sampler reads these lines.
+            if(views!=null){String line=WidgetUpdateStats.PROCESS.record(id);if(line!=null)android.util.Log.i(WidgetUpdateStats.TAG,line);}
+            if(!tooSmall)super.updateAppWidget(views);
+        }
     }
 }

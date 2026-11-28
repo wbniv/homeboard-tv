@@ -108,4 +108,15 @@ public class AndroidWidgetsTest {
         assertEquals("Android widget",AndroidWidgetSpec.removalLabel(l,"widget:android:00000000-0000-0000-0000-000000000000","Android widget"));
         assertEquals("Android widget",AndroidWidgetSpec.removalLabel(null,KEY,"Android widget"));
     }
+    /** HB_WIDGET_STATS lines: exact JSON, first update always, then at most one per widget per 60 s. */
+    @Test public void widgetUpdateStatsFormatAndRateLimit(){
+        long[] now={1_000};WidgetUpdateStats stats=new WidgetUpdateStats(()->now[0]);
+        assertEquals("{\"event\":\"widget_updates\",\"id\":7,\"updates\":1}",stats.record(7));
+        now[0]+=10_000;assertNull(stats.record(7));
+        assertEquals("{\"event\":\"widget_updates\",\"id\":9,\"updates\":1}",stats.record(9));
+        now[0]+=49_999;assertNull(stats.record(7));
+        now[0]+=1;assertEquals("{\"event\":\"widget_updates\",\"id\":7,\"updates\":4}",stats.record(7));
+        now[0]+=59_999;assertNull(stats.record(7));
+        now[0]+=1;assertEquals(WidgetUpdateStats.line(7,6),stats.record(7));
+    }
 }
