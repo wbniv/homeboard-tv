@@ -1105,3 +1105,36 @@ Verification step 7, as written in the plan:
     ```
 
     **PENDING.** Pixel local launch passed. The lifecycle probe failed on its own TV-shaped layout; the 0.1.187 fix is not yet run. Touch, consent/denial and configuration are not run. Tablet not run.
+
+## Cast1 prepared for the 24-hour exposure run · 28 November (0.1.186)
+
+`homeboard-tv` registered with `MainActivity` on 0.1.186 (Cast1's installed build; 0.1.187
+reached only the Pixel). No exposure run or reservation was open. Remote J‑9f6ffa947820
+added four widgets through Home settings › Widgets & restore › Add widget › Android app
+widgets. Page 1 of Cast1's dashboard is full, so Homeboard placed them together on
+**Home page 2**, which is the page Homeboard opens on:
+
+| Widget | Provider | Id |
+|---|---|---|
+| Homeboard Widget Provider Test | fixture 0.0.6, `ProbeProvider` | 33 |
+| Homeboard Widget Provider Test | fixture 0.0.6, `ProbeProvider` | 34 |
+| Required configuration test | fixture 0.0.6, `ConfiguredProvider` (Save) | 35 |
+| VLC Dark Widget | VLC (already installed) | 36 |
+
+Fossify Calendar is not installed on Cast1, and no installed provider updates on a timer:
+the fixture re-renders on size changes and Press, VLC on playback.
+
+Check J‑56ea56226bf1 (150 s, `MainActivity`, no activity swap,
+`dev/device/cast1-lx-widgets-check.json`) launched Homeboard in a new process on page 2
+with all four visible, and its logcat evidence shows:
+
+```text
+11-28 21:39:41.453  5478  5478 I HB_WIDGET_STATS: {"event":"widget_updates","id":33,"updates":1}
+11-28 21:39:41.554  5478  5478 I HB_WIDGET_STATS: {"event":"widget_updates","id":34,"updates":1}
+11-28 21:39:41.608  5478  5478 I HB_WIDGET_STATS: {"event":"widget_updates","id":35,"updates":1}
+11-28 21:39:41.666  5478  5478 I HB_WIDGET_STATS: {"event":"widget_updates","id":36,"updates":1}
+```
+
+![Cast1 page 2 with the four widgets for the exposure run](2026-11-19-android-app-widgets/v186-cast1-lx-widgets.png)
+
+The widgets stay in place for the run and are removed when it ends.

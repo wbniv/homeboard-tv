@@ -1,0 +1,22 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 150,
+  "panel": "require-hidden",
+  "input_script": [
+    {
+      "at": 20,
+      "capture": "lx-widgets-page"
+    },
+    {
+      "at": 140,
+      "capture": "lx-widgets-end"
+    },
+    {
+      "at": 145,
+      "key": "DPAD_UP",
+      "action": "hold",
+      "ms": 80
+    }
+  ]
+}
