@@ -1033,3 +1033,75 @@ these lines itself. Registration swaps in this session on 28 November: 21:15:09�
 and 21:26:26–21:27:31 (the cancelled Cast1 check). Nothing was started on Cast1 between
 21:03 and 21:08. `dev/device/android-widgets-resource-check.json` is the 360 s check that
 holds four live widgets, for use once no exposure run is open.
+
+## Pixel 8 Pro and Lenovo tablet · 28 November · partial
+
+Pixel 8 Pro (`phone-pixel-8-pro`, Android 17, Will's daily phone): Homeboard and fixture
+installs only. Homeboard was never made the default Home app. Lenovo Tab P11 Pro
+(`tablet-lenovo-tab-p11-pro-19a57145`, Android 11): came back at about 21:05 (readd
+J‑8994ddd1130c). Its queued backlog then failed `transport-unavailable` (J‑ca8bad06b4c8,
+J‑3682055684ea), and it went offline again, so nothing ran on it.
+
+**What the coordinator offers on the phone** (`task chromecast:support
+DEVICE=phone-pixel-8-pro`, 0.1.249): check, record, profile, capture, install,
+phone-input, keep-awake and `widget-binding` are ready. `app-diagnostics` and
+`tv-remote` are not offered. Timed key `input_script` is refused on a phone ("Owned
+timed input requires a TV profile with held-key support"); phones use `touch_script`.
+Touch is refused outside the launched app's package: the foreground guard fails closed
+on a different focused package. So neither Android's binding-consent dialog (Settings)
+nor the fixture's configuration activity (another package) can be operated by a
+coordinator job. Foreground jobs need the phone unlocked: a locked Pixel fails them with
+`device-locked` or holds them waiting.
+
+| Step | Job | Result |
+|---|---|---|
+| Install Homeboard 0.1.186 (`355cc391…`) | J‑bd46a4d753eb | **PASS**: installed hash verified (before: `5cc735a3…`) |
+| Install fixture 0.0.6 (`be32f8c4…`) | J‑0887f335619f | **PASS**: installed hash verified, new install |
+| Local launch, no Home change: `check` of `MainActivity` | J‑d8b8176a517e | **PASS**: Pixel Launcher (`NexusLauncherActivity`) was in front before and was restored after (journal `restored: 1`). Homeboard rendered its dashboard in landscape. |
+| `widget-binding` on (for the probe) | J‑561110dc0d8c | before `false`, after `true`, verified |
+| Lifecycle probe, 0.1.186 | J‑773568dcd32f | **FAIL (probe)**: `Grid too small for the stacked layout: 5x5 on 12x8`. All probe IDs released (`idsAfterRelease 0`). |
+| Homeboard 0.1.187 (probe fix, `b30c6b5f…`) | J‑e72e9d356d27, J‑0817600aa465 | installed, hash verified; both launch checks ended `device-locked` |
+| Lifecycle probe, 0.1.187 | J‑6859f37cba71 | not run: waited on `device-locked`, then cancelled so the registration could go back to `MainActivity` |
+| `widget-binding` off | J‑6fdf5ce8e357, J‑166d097c0439 | **not restored**: `plugin-error` (the registered APK is 0.1.186, the installed one 0.1.187). Reinstalling 0.1.186 was refused with `INSTALL_FAILED_VERSION_DOWNGRADE` (J‑edc42855b813). A coordinated restore is scheduled. |
+
+![Homeboard launched locally on the Pixel 8 Pro, 0.1.186](2026-11-19-android-app-widgets/v186-pixel-local-launch.png)
+
+**Insets, from that capture.** The capture is 2244×1008. Content starts to the right of
+the camera cutout band (about 113 px), stops above the gesture bar, and nothing is
+clipped. The status bar is hidden. Large text and portrait were not tried, because
+`MainActivity` is landscape-locked. The on-screen hints are written for the TV remote:
+"Right → All Apps" and "Hold OK → menu" on a touch screen.
+
+**Lifecycle probe on a phone.** The fixture's 240×100 dp minimum needs 5×5 cells of the
+12×8 grid on the Pixel's landscape dashboard (Cast1: 4×4). Two minimum tiles cannot
+stack in 8 rows. A denser grid does not help, because the label row and padding are fixed
+dp, so two stacked minimum tiles need more height than the phone has. The probe was
+TV-shaped, not the host. In 0.1.187 the probe places A and B side by side when stacking
+does not fit (A still has two columns to widen into). It also records the five-tile
+four-view cap as not reachable when one page holds fewer than five minimum tiles, rather
+than failing. TV behaviour is unchanged: stacking fits there and is still chosen.
+
+**Still open on the Pixel:** the lifecycle probe on 0.1.187 and a touch session (tap a
+tile, full screen, Interact, the provider's **Press**, Back, Back, Undo). Both need the
+phone unlocked and the registration free. Normal consent, denial and provider
+configuration need a person: their screens belong to other packages. Return from portrait
+setup cannot be exercised with fixture 0.0.6, whose `ConfigureActivity` is
+landscape-locked. Resource numbers: `app-diagnostics` is not offered on phones. Whether
+`input:sample` works in a phone `RECORD=false` session is untested.
+
+Verification step 7, as written in the plan:
+
+7. Run `task android-widgets:phone-check` (deliverable). Expected: host-backed tile
+   representation, legal resize, lost-draft prevention, Cancel/Update TV/Undo and
+   forged-ID rejection pass. Then use supported coordinator jobs on Pixel/tablet
+   for local launch/touch/configuration acceptance; report either result or pending.
+
+    ```text
+    Pixel 0.1.186: install J-bd46a4d753eb verified; fixture 0.0.6 J-0887f335619f verified
+    local launch J-d8b8176a517e succeeded; foreground before/after com.google.android.apps.nexuslauncher/.NexusLauncherActivity, restored 1
+    lifecycle J-773568dcd32f {"minimumSpan":"5x5","grid":"12x8","idsAfterRelease":0,"status":"fail","detail":"java.lang.IllegalStateException: Grid too small for the stacked layout: 5x5 on 12x8","homeboardVersion":"0.1.186","provider":"0.0.6"}
+    lifecycle 0.1.187 J-6859f37cba71 cancelled (device-locked)
+    tablet: offline (transport-unavailable after readd J-8994ddd1130c)
+    ```
+
+    **PENDING.** Pixel local launch passed. The lifecycle probe failed on its own TV-shaped layout; the 0.1.187 fix is not yet run. Touch, consent/denial and configuration are not run. Tablet not run.

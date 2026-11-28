@@ -789,6 +789,16 @@ sequenceDiagram
 | Two configured instances, Open app and return | PASS · Remote J‑919da3fc0ebb | passed on 0.1.97 (J‑5201a9261061) |
 | Four views, 50 cycles (coordinator PSS) | PASS: +5.1 MiB, no retained growth · J‑613ee0faa715 | PASS: +8.6 MiB, no retained growth · J‑4fa6f903aca7 |
 
+Pixel and tablet, November 28
+([testing record](../testing/2026-11-19-android-app-widgets.md#pixel-8-pro-and-lenovo-tablet--28-november--partial)).
+On the Pixel, local launch without a Home change passed (J‑d8b8176a517e). The lifecycle
+probe failed on its own TV-shaped layout: a 5×5 minimum on 12×8 cannot stack
+(J‑773568dcd32f). 0.1.187 places A and B side by side on short screens, and that run is
+pending an unlocked phone. Consent, denial and configuration screens belong to other
+packages, which coordinator touch refuses, so they need a person. Fixture 0.0.6's
+landscape-locked configuration cannot show return from portrait setup. The tablet was
+offline.
+
 Cast2 defects, both fixed in 0.1.181
 ([testing record](../testing/2026-11-19-android-app-widgets.md#cast2-sizing-defects-fixed--01181--27-november)):
 `AppWidgetProviderInfo` bounds arrive in pixels at the base context's density (2), while

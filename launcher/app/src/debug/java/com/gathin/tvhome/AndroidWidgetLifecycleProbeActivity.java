@@ -76,14 +76,16 @@ public final class AndroidWidgetLifecycleProbeActivity extends MainActivity {
                 require(idB!=idA,"Second instance reused the first ID");place();
                 awaitTrue("both instances painted",()->hostText(dashboard(),idA).contains("id "+idA)&&hostText(dashboard(),idB).contains("id "+idB),this::sizeResponse);}));}));
     }
-    /** Stack A over B at the minimum span so A can widen, then prove both paint their own content. */
+    /** Place A and B at the minimum span (stacked, or side by side on a short screen) so A can widen, then prove both paint their own content. */
     private void place()throws Exception{
         int[] min=controller().minimum(spec(keyA));put("minimumSpan",min[0]+"x"+min[1]);put("grid",controllerColumns()+"x"+controllerRows());
-        require(2*min[1]<=controllerRows()&&min[0]+2<=controllerColumns(),"Grid too small for the stacked layout: "+min[0]+"x"+min[1]+" on "+controllerColumns()+"x"+controllerRows());
+        // A phone in landscape is too short to stack two minimum tiles, so A and B sit side by side there; either way A has two columns to widen into.
+        int cols=controllerColumns(),rows=controllerRows();boolean stacked=2*min[1]<=rows&&min[0]+2<=cols;
+        require(stacked||2*min[0]+2<=cols&&min[1]<=rows,"Grid too small for two minimum tiles: "+min[0]+"x"+min[1]+" on "+cols+"x"+rows);put("layout",stacked?"stacked":"side by side");
         JSONObject s=phoneState(),d=s.getJSONObject("draft");JSONArray w=d.getJSONArray("widgets");
         for(int i=0;i<w.length();i++){JSONObject o=w.getJSONObject(i);String k=o.getString("key");
             if(k.equals(keyA))o.put("page",0).put("column",0).put("row",0).put("width",min[0]).put("height",min[1]);
-            else if(k.equals(keyB))o.put("page",0).put("column",0).put("row",min[1]).put("width",min[0]).put("height",min[1]);}
+            else if(k.equals(keyB))o.put("page",0).put("column",stacked?0:cols-min[0]).put("row",stacked?min[1]:0).put("width",min[0]).put("height",min[1]);}
         apply(s,d);show(keyA);
     }
     /** Host arithmetic beside what the provider view actually got, at the minimum span. */
@@ -194,7 +196,9 @@ public final class AndroidWidgetLifecycleProbeActivity extends MainActivity {
         List<String> keys=new ArrayList<>();
         addMany(5,keys,()->{
             int[] min=controller().minimum(spec(keys.get(0)));
-            require(3*min[0]<=controllerColumns()&&2*min[1]<=controllerRows(),"Grid cannot hold five minimum tiles on one page");
+            int fit=(controllerColumns()/min[0])*(controllerRows()/min[1]);
+            if(fit<5){put("capNotReachable","one page holds "+fit+" minimum tiles");
+                finish("pass","two instances; provider update and size response; Interact Press and nested Back; illegal resize rejected; 24×24 placeholder and recovery; lost binding placeholder, Remove/Undo; recreation keeps ID; Remove/Undo same ID; release after history eviction; four-view cap not reachable on this screen ("+fit+" minimum tiles per page)");return;}
             JSONObject s=phoneState(),d=s.getJSONObject("draft");
             for(int i=0;i<5;i++)widget(d,keys.get(i)).put("page",0).put("column",(i%3)*min[0]).put("row",(i/3)*min[1]).put("width",min[0]).put("height",min[1]);
             apply(s,d);show(keys.get(0));

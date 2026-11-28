@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-28](https://github.com/wbniv/homeboard-tv/commit/3f7b881) | test: HB_WIDGET_STATS confirmed on Cast2 (0.1.186); Breezy result list not remote-focusable; Pixel unreachability was a flat battery |
 | [2026-11-28](https://github.com/wbniv/homeboard-tv/commit/06b7d1f) | test: real Fossify event renders as a widget row on Cast2 and clears on deletion; Android app widget hosting done |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/10feae2) | fix: Android widget minimums on the native 4K renderer, and Too small when a tile collapses |
 | [2026-11-27](https://github.com/wbniv/homeboard-tv/commit/f4195e8) | test: Android widget close-out: Cast1 accepted at 0.1.179, two native 4K sizing defects on Cast2 |
@@ -9,6 +10,11 @@
 | [2026-11-19](https://github.com/wbniv/homeboard-tv/commit/e44944d) | Host Android app widgets with TV setup, full-screen controls and Undo |
 
 <!--history-meta v1
+3f7b881	author	Will Norris
+3f7b881	added	1
+3f7b881	deleted	1
+3f7b881	files	1
+3f7b881	body	Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqP8zNDXFEqEEztS56o
 06b7d1f	author	Will Norris
 06b7d1f	added	1
 06b7d1f	deleted	1
