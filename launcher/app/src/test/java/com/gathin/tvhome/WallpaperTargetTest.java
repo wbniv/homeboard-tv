@@ -65,4 +65,39 @@ public class WallpaperTargetTest {
     @Test public void lowRamDevicesNeverDecodeAt4k() {
         assertFalse(WallpaperTarget.uhdAffordable(true, 4096 * MIB, 0));
     }
+
+    @Test public void animatedSourcesAtTheBudgetPlayAndOnePixelMoreShowTheFirstFrame() {
+        long budget = WallpaperTarget.ANIMATED_MAX_SOURCE_PIXELS;
+        assertTrue(WallpaperTarget.animates((int) budget, 1));
+        assertFalse(WallpaperTarget.animates((int) budget + 1, 1));
+        assertTrue(WallpaperTarget.animates(1280, 720));
+        // The measured 4K source (5x slow on Cast2, 6.7x on Cast1) never animates.
+        assertFalse(WallpaperTarget.animates(3840, 2160));
+        assertFalse(WallpaperTarget.animates(65535, 65535));   // no int overflow
+        assertTrue(WallpaperTarget.animates(0, -3));           // degenerate headers count as one pixel
+    }
+
+    @Test public void animatedDecisionDependsOnPixelsNotOrientation() {
+        for (int[] s : new int[][]{{1920, 1080}, {2560, 1440}, {1280, 720}, {3840, 2160}, {1440, 1440}})
+            assertEquals(WallpaperTarget.animates(s[0], s[1]), WallpaperTarget.animates(s[1], s[0]));
+    }
+
+    @Test public void animatedTargetFitsTheCapAndThe1080pBoundAndNeverUses4k() {
+        int[] tv = WallpaperTarget.bound(false, 1920, 1080), small = WallpaperTarget.bound(false, 1280, 720);
+        int capW = WallpaperTarget.ANIMATED_WIDTH, capH = WallpaperTarget.ANIMATED_HEIGHT;
+        assertTrue(capW <= WallpaperTarget.HD_WIDTH && capH <= WallpaperTarget.HD_HEIGHT);
+        int[][] sources = {{3840, 2160}, {1920, 1080}, {1280, 720}, {1080, 1920}, {640, 360}, {1, 1}};
+        for (int[] s : sources) {
+            assertArrayEquals(WallpaperTarget.size(s[0], s[1], Math.min(capW, tv[0]), Math.min(capH, tv[1])),
+                    WallpaperTarget.animatedSize(s[0], s[1], tv));
+            assertArrayEquals(WallpaperTarget.size(s[0], s[1], Math.min(capW, small[0]), Math.min(capH, small[1])),
+                    WallpaperTarget.animatedSize(s[0], s[1], small));
+        }
+        // Even with the native renderer's 4K bound passed in, the animated cap holds.
+        int[] uhd = WallpaperTarget.bound(true, 3840, 2160);
+        int[] size = WallpaperTarget.animatedSize(3840, 2160, uhd);
+        assertTrue(size[0] <= capW && size[1] <= capH);
+        // A source smaller than the cap is never enlarged.
+        assertArrayEquals(new int[]{640, 360}, WallpaperTarget.animatedSize(640, 360, tv));
+    }
 }

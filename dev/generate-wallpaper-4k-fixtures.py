@@ -52,13 +52,20 @@ def main():
     frames = [picture((18 + 6 * i, 38, 72), (12, 92 - 4 * i, 104), 200 + i * 280) for i in range(12)]
     frames[0].save(RAW / 'uhd_animated.webp', save_all=True, append_images=frames[1:], duration=100,
                    loop=0, lossless=True, method=4)
+    # The same animation at smaller source sizes, for the animated-source matrix
+    # (docs/plans/2026-11-28-animated-wallpapers-from-large-sources.md); the stripes do not survive, nor need to.
+    for name, size in (('animated_1440', (2560, 1440)), ('animated_1080', (1920, 1080)), ('animated_720', (1280, 720))):
+        small = [frame.resize(size, Image.LANCZOS) for frame in frames]
+        small[0].save(RAW / f'{name}.webp', save_all=True, append_images=small[1:], duration=100,
+                      loop=0, lossless=True, method=4)
     with tempfile.TemporaryDirectory() as tmp:
         for i in range(30):
             picture((18, 38, 72), (12, 92, 104), 200 + i * 110).save(f'{tmp}/f{i:03d}.png')
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-framerate', '30', '-i', f'{tmp}/f%03d.png',
                         '-c:v', 'libx265', '-preset', 'medium', '-x265-params', 'log-level=error:qp=4',
                         '-pix_fmt', 'yuv420p', '-tag:v', 'hvc1', '-an', str(RAW / 'uhd_video.mp4')], check=True)
-    for name in ('uhd_stripes.png', 'uhd_stripes_b.png', 'uhd_animated.webp', 'uhd_video.mp4'):
+    for name in ('uhd_stripes.png', 'uhd_stripes_b.png', 'uhd_animated.webp', 'animated_1440.webp',
+                 'animated_1080.webp', 'animated_720.webp', 'uhd_video.mp4'):
         print(f'{name}: {(RAW / name).stat().st_size:,} bytes')
 
 

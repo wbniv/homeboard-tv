@@ -39,6 +39,8 @@ import tv.projectivy.plugin.wallpaperprovider.api.Wallpaper;
  * renderer when the TV qualifies, shows the debug fixture's 3840 x 2160 media through the real WallpaperSurface,
  * and reads the pixels back: a one-pixel stripe pattern survives only a full-resolution path. Holds each stage
  * for a fixed window so coordinator PSS samples can be lined up with it. Never touches the household layout.
+ * The .AnimatedWallpaperProbe alias (meta-data mode=animated) runs the animated-source matrix instead
+ * (docs/plans/2026-11-28-animated-wallpapers-from-large-sources.md).
  */
 @android.annotation.TargetApi(30)
 public final class WallpaperResolutionProbeActivity extends NativeDashboardActivity {
@@ -55,9 +57,16 @@ public final class WallpaperResolutionProbeActivity extends NativeDashboardActiv
     private boolean finished;
     private boolean nativeRenderer;
     private Runnable deadline;
+    /** "resolution" (the 4K plan's stages) or "animated" (the animated-source matrix), from the alias's meta-data. */
+    private String mode = "resolution";
 
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
+        try {
+            Bundle meta = getPackageManager().getActivityInfo(getComponentName(), android.content.pm.PackageManager.GET_META_DATA).metaData;
+            if (meta != null) mode = meta.getString("mode", mode);
+        } catch (Exception ignored) { }
+        if ("animated".equals(mode)) lines = "ANIMATED WALLPAPER PROBE\n";
         root = new FrameLayout(this); root.setBackgroundColor(Color.rgb(16, 24, 40));
         report = new TextView(this); report.setTextColor(Color.WHITE); report.setTextSize(13);
         report.setBackgroundColor(0xCC000000); report.setPadding(16, 12, 16, 12);
@@ -71,19 +80,52 @@ public final class WallpaperResolutionProbeActivity extends NativeDashboardActiv
 
     // ---- stages ---------------------------------------------------------------------------------------------
 
+    /** Animated fixtures: the same 12 frames at 10 frames/s, every frame repainting the whole canvas. */
+    private static final String[] ANIMATED_FIXTURES = {"uhd_animated", "animated_1440", "animated_1080", "animated_720"};
+    private static final int[][] ANIMATED_SOURCES = {{3840, 2160}, {2560, 1440}, {1920, 1080}, {1280, 720}};
+    private static final int[][] ANIMATED_TARGETS = {{1920, 1080}, {1280, 720}, {960, 540}};
+
     private void queue() {
+        if ("animated".equals(mode)) { queueAnimated(); return; }
         steps.add(this::environment);
         steps.add(() -> measure("baseline"));
         steps.add(() -> image("hd-control", false, "uhd_stripes"));
         steps.add(() -> image("uhd-image", true, "uhd_stripes"));
         steps.add(this::rotation);
-        steps.add(() -> animatedDirect("animated-hd", WallpaperTarget.HD_WIDTH, WallpaperTarget.HD_HEIGHT));
-        steps.add(() -> animatedDirect("animated-uhd", WallpaperTarget.UHD_WIDTH, WallpaperTarget.UHD_HEIGHT));
-        steps.add(this::animatedProduction);
+        steps.add(() -> animatedDirect("animated-hd", "uhd_animated", WallpaperTarget.HD_WIDTH, WallpaperTarget.HD_HEIGHT, true));
+        steps.add(() -> animatedDirect("animated-uhd", "uhd_animated", WallpaperTarget.UHD_WIDTH, WallpaperTarget.UHD_HEIGHT, true));
+        steps.add(() -> animatedProduction("animated-production", "uhd_animated", 3840, 2160));
         steps.add(this::lottie);
         steps.add(() -> video("video-1080", "light", false));
         steps.add(() -> video("uhd-video", "uhd_video", true));
         steps.add(this::fallback);
+        steps.add(() -> { replaceSurface(null); measure("baseline-after"); });
+        steps.add(this::complete);
+    }
+
+    /**
+     * docs/plans/2026-11-28-animated-wallpapers-from-large-sources.md: every animated source at its own size and at
+     * each smaller target (pace over three loops, PSS while running, no hold), then each through the production
+     * WallpaperSurface against the current WallpaperTarget policy.
+     */
+    private void queueAnimated() {
+        steps.add(this::environment);
+        steps.add(() -> measure("baseline"));
+        for (int i = 0; i < ANIMATED_FIXTURES.length; i++) {
+            String raw = ANIMATED_FIXTURES[i]; int[] source = ANIMATED_SOURCES[i];
+            java.util.List<int[]> targets = new java.util.ArrayList<>();
+            targets.add(source);
+            for (int[] t : ANIMATED_TARGETS) if (t[0] < source[0] && t[1] < source[1]) targets.add(t);
+            for (int[] t : targets) {
+                String stage = "matrix-" + source[1] + "p-" + t[0] + "x" + t[1];
+                steps.add(() -> animatedDirect(stage, raw, t[0], t[1], false));
+            }
+        }
+        steps.add(() -> measure("baseline-mid"));
+        for (int i = 0; i < ANIMATED_FIXTURES.length; i++) {
+            String raw = ANIMATED_FIXTURES[i]; int[] source = ANIMATED_SOURCES[i];
+            steps.add(() -> animatedProduction("production-" + source[1] + "p", raw, source[0], source[1]));
+        }
         steps.add(() -> { replaceSurface(null); measure("baseline-after"); });
         steps.add(this::complete);
     }
@@ -164,13 +206,16 @@ public final class WallpaperResolutionProbeActivity extends NativeDashboardActiv
         swap[0].run();
     }
 
-    /** The 4K animated fixture decoded straight through ImageDecoder at a chosen size: pace and memory. */
-    private void animatedDirect(String stage, int width, int height) {
+    /**
+     * An animated fixture decoded straight through ImageDecoder at a chosen size: pace over three loops and memory,
+     * the memory either after the 20 s hold (resolution mode) or straight after the loops (the animated matrix).
+     */
+    private void animatedDirect(String stage, String raw, int width, int height, boolean holdForMemory) {
         replaceSurface(null);
         try {
             // Bytes, as WallpaperSurface decodes them: a Resources source would also apply density scaling.
             byte[] bytes;
-            try (java.io.InputStream in = getResources().openRawResource(resource("uhd_animated"));
+            try (java.io.InputStream in = getResources().openRawResource(resource(raw));
                  java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream()) {
                 byte[] buffer = new byte[65536]; int count;
                 while ((count = in.read(buffer)) != -1) out.write(buffer, 0, count);
@@ -196,30 +241,72 @@ public final class WallpaperResolutionProbeActivity extends NativeDashboardActiv
                                 .put("loopsMs", elapsed).put("nominalMs", 3 * 12 * 100).put("paceRatio", Math.round(elapsed / 36.0) / 100.0)
                                 .put("stripesH", animatedStripes(animated));
                         animated.setRepeatCount(AnimatedImageDrawable.REPEAT_INFINITE); animated.start();
-                        hold(stage, () -> {
+                        Runnable finish = () -> {
                             try { record(stage, result.put("memory", memory())); } catch (Exception e) { fail(stage, e.toString()); return; }
                             animated.stop(); root.removeView(view); next();
-                        });
+                        };
+                        if (holdForMemory) hold(stage, finish); else finish.run();
                     } catch (Exception e) { fail(stage, e.toString()); }
                 }
             });
-            arm(stage);
+            // Cast1 took about 24 s for three loops of the 4K source at 1080p; smaller targets may be slower still.
+            arm(stage, holdForMemory ? STAGE_DEADLINE_MS : 90_000);
             animated.start();
         } catch (Exception e) { fail(stage, e.toString()); }
     }
 
-    private void animatedProduction() {
-        String stage = "animated-production";
+    /**
+     * An animated fixture through the production WallpaperSurface: it must animate at WallpaperTarget.animatedSize
+     * when the source is within the animated budget, or show its first frame at the still bound when it is not (4K
+     * hardware on the native renderer when admitted). An animation's own pace is timed over three loops.
+     */
+    private void animatedProduction(String stage, String raw, int sourceWidth, int sourceHeight) {
         replaceSurface(new WallpaperSurface(this));
-        show(stage, wallpaper("uhd_animated", 0), () -> frames(5, () -> {
+        show(stage, wallpaper(raw, 0), () -> frames(5, () -> {
             try {
                 View view = media(ImageView.class);
                 Drawable drawable = view == null ? null : ((ImageView) view).getDrawable();
                 String decoded = drawable == null ? "none" : drawable.getIntrinsicWidth() + "x" + drawable.getIntrinsicHeight();
-                String expected = nativeRenderer && WallpaperSurface.ANIMATED_UHD ? "3840x2160" : "1920x1080";
+                int[] hd = WallpaperTarget.bound(false, getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels);
+                boolean animates = WallpaperTarget.animates(sourceWidth, sourceHeight);
+                ActivityManager manager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+                ActivityManager.MemoryInfo memory = new ActivityManager.MemoryInfo(); manager.getMemoryInfo(memory);
+                boolean uhdStill = nativeRenderer && WallpaperTarget.uhdAffordable(manager.isLowRamDevice(), memory.availMem, memory.threshold);
+                int[] size = animates ? WallpaperTarget.animatedSize(sourceWidth, sourceHeight, hd)
+                        : uhdStill ? WallpaperTarget.size(sourceWidth, sourceHeight, WallpaperTarget.UHD_WIDTH, WallpaperTarget.UHD_HEIGHT)
+                        : WallpaperTarget.size(sourceWidth, sourceHeight, hd[0], hd[1]);
+                String expected = size[0] + "x" + size[1];
+                boolean isAnimated = drawable instanceof AnimatedImageDrawable;
+                JSONObject result = new JSONObject().put("source", sourceWidth + "x" + sourceHeight).put("decoded", decoded)
+                        .put("expected", expected).put("animated", isAnimated).put("policyAnimates", animates)
+                        .put("maxSourcePixels", WallpaperTarget.ANIMATED_MAX_SOURCE_PIXELS)
+                        .put("animatedCap", WallpaperTarget.ANIMATED_WIDTH + "x" + WallpaperTarget.ANIMATED_HEIGHT);
                 if (!expected.equals(decoded)) failures.put(stage + ": decoded " + decoded + ", policy expects " + expected);
-                holdThenRecord(stage, new JSONObject().put("decoded", decoded).put("animatedUhdPolicy", WallpaperSurface.ANIMATED_UHD)
-                        .put("animated", drawable instanceof AnimatedImageDrawable));
+                if (isAnimated != animates) failures.put(stage + ": animated " + isAnimated + ", policy expects " + animates);
+                if (!animates && drawable instanceof BitmapDrawable) {
+                    Bitmap bitmap = ((BitmapDrawable) drawable).getBitmap();
+                    result.put("hardware", bitmap.getConfig() == Bitmap.Config.HARDWARE);
+                    if (uhdStill && bitmap.getConfig() != Bitmap.Config.HARDWARE) failures.put(stage + ": first frame is not a hardware bitmap");
+                }
+                if (!isAnimated) { holdThenRecord(stage, result); return; }
+                AnimatedImageDrawable animated = (AnimatedImageDrawable) drawable;
+                animated.stop(); animated.setRepeatCount(2);
+                long[] started = {0};
+                animated.registerAnimationCallback(new Animatable2.AnimationCallback() {
+                    @Override public void onAnimationStart(Drawable d) { started[0] = SystemClock.elapsedRealtime(); }
+                    @Override public void onAnimationEnd(Drawable d) {
+                        animated.unregisterAnimationCallback(this);
+                        disarm();
+                        long elapsed = SystemClock.elapsedRealtime() - started[0];
+                        try {
+                            result.put("loopsMs", elapsed).put("nominalMs", 3 * 12 * 100).put("paceRatio", Math.round(elapsed / 36.0) / 100.0);
+                            animated.setRepeatCount(AnimatedImageDrawable.REPEAT_INFINITE); animated.start();
+                            holdThenRecord(stage, result);
+                        } catch (Exception e) { fail(stage, e.toString()); }
+                    }
+                });
+                arm(stage, 90_000);
+                animated.start();
             } catch (Exception e) { fail(stage, e.toString()); }
         }));
     }
@@ -411,7 +498,8 @@ public final class WallpaperResolutionProbeActivity extends NativeDashboardActiv
             next();
         });
     }
-    private void arm(String stage) { disarm(); deadline = () -> fail(stage, "no result within " + STAGE_DEADLINE_MS + " ms"); main.postDelayed(deadline, STAGE_DEADLINE_MS); }
+    private void arm(String stage) { arm(stage, STAGE_DEADLINE_MS); }
+    private void arm(String stage, long ms) { disarm(); deadline = () -> fail(stage, "no result within " + ms + " ms"); main.postDelayed(deadline, ms); }
     private void disarm() { if (deadline != null) main.removeCallbacks(deadline); deadline = null; }
 
     private void next() {

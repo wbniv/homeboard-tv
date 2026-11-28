@@ -11,6 +11,15 @@ final class WallpaperTarget {
     static final int PEAK_COPIES = 3;
     /** Headroom kept above Android's own low-memory threshold after that peak. */
     static final long MARGIN_BYTES = 64L * 1024 * 1024;
+    /**
+     * Animated pictures decode every frame on the CPU at their source size, so cost follows the source's pixels:
+     * a 3840 x 2160 source ran 5x slow on Cast2 and 6.7x on Cast1 at the 1080p target. Above this many source
+     * pixels only the first frame is shown, as a still. Provisional until the animated probe matrix sets it
+     * (docs/plans/2026-11-28-animated-wallpapers-from-large-sources.md).
+     */
+    static final long ANIMATED_MAX_SOURCE_PIXELS = 1920L * 1080;
+    /** The largest decode size for an animated picture; never the 4K bound. Provisional, as above. */
+    static final int ANIMATED_WIDTH = 1920, ANIMATED_HEIGHT = 1080;
 
     private WallpaperTarget() { }
 
@@ -24,6 +33,16 @@ final class WallpaperTarget {
     static int[] size(int width, int height, int boundWidth, int boundHeight) {
         double scale = Math.min(1, Math.min((double) boundWidth / width, (double) boundHeight / height));
         return new int[]{Math.max(1, (int) (width * scale)), Math.max(1, (int) (height * scale))};
+    }
+
+    /** Whether an animated source is small enough to play; otherwise its first frame is shown as a still. */
+    static boolean animates(int sourceWidth, int sourceHeight) {
+        return (long) Math.max(1, sourceWidth) * Math.max(1, sourceHeight) <= ANIMATED_MAX_SOURCE_PIXELS;
+    }
+
+    /** The decode size of an animated source that plays: fit inside the animated cap and the 1080p metric bound. */
+    static int[] animatedSize(int sourceWidth, int sourceHeight, int[] hdBound) {
+        return size(sourceWidth, sourceHeight, Math.min(ANIMATED_WIDTH, hdBound[0]), Math.min(ANIMATED_HEIGHT, hdBound[1]));
     }
 
     /** ARGB_8888 bytes of a picture. */

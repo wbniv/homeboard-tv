@@ -40,11 +40,6 @@ import tv.projectivy.plugin.wallpaperprovider.api.Wallpaper;
 final class WallpaperSurface extends FrameLayout implements AutoCloseable {
     private static final int MAX_BYTES = 16 * 1024 * 1024;
     private static final String TAG = "HomeboardWallpaper";
-    /**
-     * Animated pictures decode every frame on the CPU, four times the work at 4K; they keep the 1080p bound
-     * (measured on Cast2, docs/plans/2026-11-28-4k-wallpapers-and-video.md).
-     */
-    static final boolean ANIMATED_UHD = false;
     /** Debug probe only: the next 4K decode attempt throws, to exercise the 1080p fallback. */
     static volatile boolean failNextUhdDecode;
     /** The native 4K renderer draws this view: still pictures may decode at up to 3840 x 2160. */
@@ -149,12 +144,11 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
                                 Log.w(TAG, "4K decode failed; decoding at " + width + "x" + height, failure);
                             }
                         }
-                        if (drawable == null) drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(bytes)), (d, info, source) -> {
-                            int w = info.getSize().getWidth(), h = info.getSize().getHeight();
-                            double scale = Math.min(1, Math.min((double) width / w, (double) height / h));
-                            d.setTargetSize(Math.max(1, (int)(w * scale)), Math.max(1, (int)(h * scale)));
-                            d.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE);
-                        });
+                        if (drawable == null) {
+                            int[] facts = new int[5];
+                            drawable = decodePicture(bytes, hd, hd, facts);
+                            logAnimated(facts);
+                        }
                     } else {
                         BitmapFactory.Options options = new BitmapFactory.Options(); options.inJustDecodeBounds = true;
                         BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
@@ -211,25 +205,56 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
                 + (memory.threshold >> 20) + " MiB, low-RAM " + manager.isLowRamDevice());
         return affordable;
     }
+    /** Thrown from a header callback to stop an animated decode before any pixels: only its first frame is wanted. */
+    private static final class FirstFrameOnly extends RuntimeException {
+        FirstFrameOnly() { super(null, null, false, false); }
+    }
+    static final int STILL = 0, ANIMATED = 1, FIRST_FRAME = 2;
+    /**
+     * Decodes a provider picture in software. A still fits inside stillBound; an animated source within
+     * WallpaperTarget's budget plays at WallpaperTarget.animatedSize (never the 4K bound, measured on Cast2); a larger
+     * one is decoded as its first frame and then treated as a still. facts receives {source width, source height,
+     * decoded width, decoded height, STILL / ANIMATED / FIRST_FRAME}.
+     */
+    @android.annotation.TargetApi(28)
+    static Drawable decodePicture(byte[] bytes, int[] stillBound, int[] hd, int[] facts) throws java.io.IOException {
+        try {
+            return ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(bytes)), (d, info, s) -> {
+                facts[0] = info.getSize().getWidth(); facts[1] = info.getSize().getHeight();
+                facts[4] = info.isAnimated() ? ANIMATED : STILL;
+                if (facts[4] == ANIMATED && !WallpaperTarget.animates(facts[0], facts[1])) throw new FirstFrameOnly();
+                int[] size = facts[4] == ANIMATED ? WallpaperTarget.animatedSize(facts[0], facts[1], hd)
+                        : WallpaperTarget.size(facts[0], facts[1], stillBound[0], stillBound[1]);
+                facts[2] = size[0]; facts[3] = size[1];
+                d.setTargetSize(size[0], size[1]);
+                d.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE);
+            });
+        } catch (FirstFrameOnly firstFrame) {
+            // decodeBitmap of an animated source returns frame 0; a fresh source, so nothing from the aborted decode is reused.
+            Bitmap still = ImageDecoder.decodeBitmap(ImageDecoder.createSource(ByteBuffer.wrap(bytes)), (d, info, s) -> {
+                int[] size = WallpaperTarget.size(info.getSize().getWidth(), info.getSize().getHeight(), stillBound[0], stillBound[1]);
+                facts[2] = size[0]; facts[3] = size[1]; facts[4] = FIRST_FRAME;
+                d.setTargetSize(size[0], size[1]);
+                d.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE);
+            });
+            return new BitmapDrawable(null, still);
+        }
+    }
+    private static void logAnimated(int[] facts) {
+        if (facts[4] == ANIMATED) Log.i(TAG, "animated source " + facts[0] + "x" + facts[1] + " animated " + facts[2] + "x" + facts[3]);
+        else if (facts[4] == FIRST_FRAME) Log.i(TAG, "animated source " + facts[0] + "x" + facts[1] + " over budget; first frame " + facts[2] + "x" + facts[3]);
+    }
     /**
      * A still picture for the native 4K renderer: decoded in software up to the 4K bound, its blur thumbnail drawn
      * from those pixels, then moved to one hardware bitmap so it is not held twice (software plus texture).
-     * Returns {drawable, thumbnail or null}. Animated pictures keep the 1080p bound unless ANIMATED_UHD.
+     * Returns {drawable, thumbnail or null}. An animated source that plays keeps its animated size; one over the
+     * animated budget becomes its first frame and is handled here as a still.
      */
     @android.annotation.TargetApi(28)
     private Object[] decodeUhd(byte[] bytes, int[] bound, int[] hd, boolean needsThumbnail) throws java.io.IOException {
         if (failNextUhdDecode) { failNextUhdDecode = false; throw new OutOfMemoryError("Debug probe: injected 4K decode failure"); }
-        int[] source = new int[2], target = new int[2];
-        boolean[] animatedSource = new boolean[1];
-        Drawable drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(bytes)), (d, info, s) -> {
-            source[0] = info.getSize().getWidth(); source[1] = info.getSize().getHeight();
-            animatedSource[0] = info.isAnimated();
-            int[] limit = animatedSource[0] && !ANIMATED_UHD ? hd : bound;
-            int[] size = WallpaperTarget.size(source[0], source[1], limit[0], limit[1]);
-            target[0] = size[0]; target[1] = size[1];
-            d.setTargetSize(size[0], size[1]);
-            d.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE);
-        });
+        int[] facts = new int[5];
+        Drawable drawable = decodePicture(bytes, bound, hd, facts);
         Bitmap thumbnail = null;
         boolean hardware = false;
         if (drawable instanceof BitmapDrawable) {
@@ -238,8 +263,9 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
             Bitmap gpu = software.copy(Bitmap.Config.HARDWARE, false);
             if (gpu != null) { software.recycle(); drawable = new BitmapDrawable(getResources(), gpu); hardware = true; }
         }
-        Log.i(TAG, "source " + source[0] + "x" + source[1] + " bound " + bound[0] + "x" + bound[1] + " decoded "
-                + target[0] + "x" + target[1] + (animatedSource[0] ? " animated" : "") + " hardware=" + hardware);
+        Log.i(TAG, "source " + facts[0] + "x" + facts[1] + " bound " + bound[0] + "x" + bound[1] + " decoded "
+                + facts[2] + "x" + facts[3] + (facts[4] == ANIMATED ? " animated" : facts[4] == FIRST_FRAME ? " first frame" : "")
+                + " hardware=" + hardware);
         return new Object[]{drawable, thumbnail};
     }
     /** The 32 x 18 picture the blurred display modes stretch behind the image. */

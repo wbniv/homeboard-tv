@@ -1,0 +1,14 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 420,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 10, "capture": "wallpaper-animated-baseline"},
+    {"at": 40, "capture": "wallpaper-animated-matrix-4k"},
+    {"at": 150, "capture": "wallpaper-animated-matrix-small"},
+    {"at": 300, "capture": "wallpaper-animated-production"},
+    {"at": 405, "capture": "wallpaper-animated-result"},
+    {"at": 412, "key": "DPAD_UP", "action": "hold", "ms": 80}
+  ]
+}
