@@ -1062,7 +1062,7 @@ coordinator job. Foreground jobs need the phone unlocked: a locked Pixel fails t
 | Lifecycle probe, 0.1.186 | J‑773568dcd32f | **FAIL (probe)**: `Grid too small for the stacked layout: 5x5 on 12x8`. All probe IDs released (`idsAfterRelease 0`). |
 | Homeboard 0.1.187 (probe fix, `b30c6b5f…`) | J‑e72e9d356d27, J‑0817600aa465 | installed, hash verified; both launch checks ended `device-locked` |
 | Lifecycle probe, 0.1.187 | J‑6859f37cba71 | not run: waited on `device-locked`, then cancelled so the registration could go back to `MainActivity` |
-| `widget-binding` off | J‑6fdf5ce8e357, J‑166d097c0439 | **not restored**: `plugin-error` (the registered APK is 0.1.186, the installed one 0.1.187). Reinstalling 0.1.186 was refused with `INSTALL_FAILED_VERSION_DOWNGRADE` (J‑edc42855b813). A coordinated restore is scheduled. |
+| `widget-binding` off | J‑6fdf5ce8e357, J‑166d097c0439, **J‑bf8cb155bbfb** | the first two ended `plugin-error` (the registered APK was 0.1.186, the installed one 0.1.187), and reinstalling 0.1.186 was refused with `INSTALL_FAILED_VERSION_DOWNGRADE` (J‑edc42855b813). With the coordinator's go, `homeboard-tv` was registered as 0.1.187 + `MainActivity` at 21:44:09 and J‑bf8cb155bbfb **restored** the grant: before `true`, after `false`, verified. Re-registered as 0.1.186 (`355cc391…`) + `MainActivity` at 21:44:35 and read back. |
 
 ![Homeboard launched locally on the Pixel 8 Pro, 0.1.186](2026-11-19-android-app-widgets/v186-pixel-local-launch.png)
 
