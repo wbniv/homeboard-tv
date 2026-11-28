@@ -1089,6 +1089,27 @@ setup cannot be exercised with fixture 0.0.6, whose `ConfigureActivity` is
 landscape-locked. Resource numbers: `app-diagnostics` is not offered on phones. Whether
 `input:sample` works in a phone `RECORD=false` session is untested.
 
+**Tablet, 23:54–23:57** (back after readd J‑504443a7367e, endpoint 192.168.4.56:45903).
+Only steps that need no registration change were run, because the 24-hour run LX‑837191
+was queued on Cast1. The tablet's enrollment offers no `check`, `record` or touch
+workflow (`task chromecast:support`: install, launch, capture, inspect, record-live), so
+the launch was verified with `verify-launch`.
+
+| Step | Job | Result |
+|---|---|---|
+| Install Homeboard 0.1.186 (`355cc391…`) | J‑f27ffbb832f4 | **PASS**: installed hash verified (before: `2111463d…`) |
+| Install fixture 0.0.6 (`be32f8c4…`) | J‑badd93e21bef | **PASS**: installed hash verified, new install |
+| Local launch, no Home change: `verify-launch` of `MainActivity` | J‑e8833e2d7c8b | **PASS**: `am start -W` of `MainActivity`, then foreground and PID checks. The Lenovo launcher (`com.tblenovo.launcher/…SearchLauncher`) was in front before and was restored after (journal `restored: 1`). |
+
+Insets on the tablet: **not captured**. `verify-launch` keeps no screenshot, and the
+tablet has no workflow that captures while Homeboard is in front. The tablet stayed
+reachable through all three jobs (ready at 23:57). The two earlier drops were at 21:05
+(J‑ca8bad06b4c8 failed `transport-unavailable` minutes after readd J‑8994ddd1130c) and
+again before 21:30, both while it was charging from 2%. The endpoint changed from
+192.168.4.50 to .56 between them, which points at a Wi‑Fi rejoin rather than Wireless
+debugging switching off: it kept advertising throughout. That is an inference, not a
+proven cause.
+
 Verification step 7, as written in the plan:
 
 7. Run `task android-widgets:phone-check` (deliverable). Expected: host-backed tile
@@ -1101,10 +1122,11 @@ Verification step 7, as written in the plan:
     local launch J-d8b8176a517e succeeded; foreground before/after com.google.android.apps.nexuslauncher/.NexusLauncherActivity, restored 1
     lifecycle J-773568dcd32f {"minimumSpan":"5x5","grid":"12x8","idsAfterRelease":0,"status":"fail","detail":"java.lang.IllegalStateException: Grid too small for the stacked layout: 5x5 on 12x8","homeboardVersion":"0.1.186","provider":"0.0.6"}
     lifecycle 0.1.187 J-6859f37cba71 cancelled (device-locked)
-    tablet: offline (transport-unavailable after readd J-8994ddd1130c)
+    tablet 0.1.186: install J-f27ffbb832f4 verified; fixture 0.0.6 J-badd93e21bef verified
+    local launch J-e8833e2d7c8b succeeded (verify-launch); foreground before/after com.tblenovo.launcher/com.android.searchlauncher.SearchLauncher, restored 1
     ```
 
-    **PENDING.** Pixel local launch passed. The lifecycle probe failed on its own TV-shaped layout; the 0.1.187 fix is not yet run. Touch, consent/denial and configuration are not run. Tablet not run.
+    **PENDING.** Pixel local launch passed. The lifecycle probe failed on its own TV-shaped layout; the 0.1.187 fix is not yet run. Touch, consent/denial and configuration are not run. Tablet: install and local launch passed; its enrollment has no check/record/touch workflow, so insets, the probes and touch cannot run there through the coordinator.
 
 ## Cast1 prepared for the 24-hour exposure run · 28 November (0.1.186)
 
