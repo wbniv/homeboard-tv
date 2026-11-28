@@ -28,6 +28,12 @@ env:
   WF_CC_RETRY: '{{.RETRY | default ""}}'
   WF_CC_SCENE: '{{.SCENE | default ""}}'
   WF_CC_REINSTALL: '{{.REINSTALL | default ""}}'
+  # uninstall-package; USER is the Android user number, so the shell's $USER is ignored
+  WF_CC_USER: '{{if eq (.USER | default "") (env "USER")}}{{else}}{{.USER}}{{end}}'
+  WF_CC_YES: '{{.YES | default ""}}'
+  WF_CC_PACKAGE: '{{.PACKAGE | default ""}}'
+  WF_CC_CONFIRM: '{{.CONFIRM | default ""}}'
+  WF_CC_ASYNC: '{{.ASYNC | default ""}}'
   WF_CC_APK_ARGS: '{{.CLI_ARGS | default ""}}'
 tasks:
   verify-evidence:
@@ -84,6 +90,9 @@ tasks:
   cancel:
     desc: 'Coordinator cancel'
     cmds: ['"{{.CC_CLIENT}}" cancel']
+  uninstall-package:
+    desc: "Remove an app's package from one device (DEVICE=id APP=key [USER=n] [YES=1], or PACKAGE=name CONFIRM=name for an unregistered package); previews and asks for typed confirmation; removes its data"
+    cmds: ['"{{.CC_CLIENT}}" uninstall-package']
 
   remote-start:
     desc: Start a coordinator-owned Remote session
@@ -94,6 +103,9 @@ tasks:
   remote-hold:
     desc: Hold a key through the owned coordinator Remote session
     cmds: ['"{{.CC_CLIENT}}" remote-hold']
+  remote-sequence:
+    desc: Send a key sequence through the owned Remote session (JOB=… KEYS="DPAD_DOWN*3,DPAD_CENTER"; at most 20 keys)
+    cmds: ['"{{.CC_CLIENT}}" remote-sequence']
   remote-frame:
     desc: Capture the owned Remote session without direct device transport
     cmds: ['"{{.CC_CLIENT}}" remote-frame']

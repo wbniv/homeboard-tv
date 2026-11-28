@@ -80,6 +80,7 @@ trigger that promotes it back to Open._
 
 ## Done
 
+- ✅ 2026‑11‑28 — [chromecast-wrapper-gaps] `task chromecast:remote-sequence` and `uninstall-package` (with USER/YES/PACKAGE/CONFIRM/ASYNC) in Homeboard's wrapper.
 - ✅ 2026‑11‑28 — [android-app-widgets] Android widget host passes Cast1 and Cast2 native 4K; real Fossify event row (0.1.183). See [plan](docs/plans/2026-11-19-android-app-widgets.md).
 - ✅ 2026‑11‑27 — [native-4k-dashboard] Automatic native 4K; Cast2 output transition and native provider probe pass (0.1.179). See [plan](docs/plans/2026-11-23-native-4k-dashboard.md#closing-round--27-november).
 - ✅ 2026‑11‑27 — [screensaver-list] One scrolling Screensaver list; Cast1 1×/1.3×/2×, Cast2 4K and Pixel pass (0.1.177). See [record](docs/testing/2026-11-26-screensaver-list-cast1.md).
