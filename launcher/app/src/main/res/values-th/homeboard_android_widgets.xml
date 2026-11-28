@@ -24,4 +24,7 @@
  <string name="hb_aw_unknown">Homeboard เวอร์ชันนี้ไม่รองรับวิดเจ็ตนี้</string>
  <string name="hb_aw_newer_layout">แดชบอร์ดนี้บันทึกด้วย Homeboard เวอร์ชันใหม่กว่า โปรดอัปเดตเพื่อแก้ไข แดชบอร์ดที่บันทึกไว้ยังคงอยู่</string>
  <string name="hb_configuration_save_failed">บันทึกการเปลี่ยนแปลงไม่สำเร็จ โปรดลองอีกครั้ง</string>
+ <string name="hb_aw_widget">วิดเจ็ต Android</string>
+ <string name="hb_app_shortcut">ทางลัดแอป</string>
+ <string name="hb_calendar_widget">วิดเจ็ตปฏิทิน</string>
 </resources>

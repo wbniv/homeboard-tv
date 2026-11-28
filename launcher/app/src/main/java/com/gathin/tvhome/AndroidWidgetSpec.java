@@ -22,4 +22,6 @@ final class AndroidWidgetSpec {
     boolean fits(int width,int height){return width>=minimumWidth()&&height>=minimumHeight();}
     boolean legalResize(int beforeW,int beforeH,int w,int h){return ((resizeMode&1)!=0||w==beforeW)&&((resizeMode&2)!=0||h==beforeH);}
     static boolean key(String key){return key!=null&&key.matches("widget:android:[a-f0-9-]{36}");}
+    /** The provider's widget name for a removal banner; {@code fallback} when the record is missing or unreadable. */
+    static String removalLabel(HomeLayout layout,String key,String fallback){AndroidWidgetSpec s=layout==null?null:layout.androidWidget(key);return s==null?fallback:s.label;}
 }

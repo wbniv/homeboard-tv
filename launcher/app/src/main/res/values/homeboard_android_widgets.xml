@@ -24,4 +24,7 @@
  <string name="hb_aw_unknown">Widget not supported by this version</string>
  <string name="hb_aw_newer_layout">This dashboard was saved by a newer Homeboard version. Update Homeboard to edit it. The saved dashboard has been preserved.</string>
  <string name="hb_configuration_save_failed">Could not save this change. Please try again.</string>
+ <string name="hb_aw_widget">Android widget</string>
+ <string name="hb_app_shortcut">app shortcut</string>
+ <string name="hb_calendar_widget">calendar widget</string>
 </resources>

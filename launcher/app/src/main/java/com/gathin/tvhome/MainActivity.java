@@ -2247,7 +2247,7 @@ public class MainActivity extends NativeDashboardActivity {
     private void deleteTile(String key) {
         boolean dashboard = !allApps;
         App app = apps.get(key);
-        String label = HomeLayout.TIMER.equals(key) ? getString(R.string.hb_timer_title) : HomeLayout.FAVORITES.equals(key) ? getString(R.string.hb_fav_title) : HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_rain) : HomeLayout.isCalendarWidget(key) ? "calendar widget" : isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : HomeLayout.isWorldClockWidget(key) ? getString(R.string.hb_wc_title) : HomeLayout.isGroceryWidget(key) ? getString(R.string.hb_grocery_title) : app == null ? "app shortcut" : app.label;
+        String label = HomeLayout.TIMER.equals(key) ? getString(R.string.hb_timer_title) : HomeLayout.FAVORITES.equals(key) ? getString(R.string.hb_fav_title) : HomeLayout.isRainWidget(key) ? getString(R.string.hb_rain_rain) : HomeLayout.isCalendarWidget(key) ? getString(R.string.hb_calendar_widget) : AndroidWidgetSpec.key(key) ? AndroidWidgetSpec.removalLabel(layout,key,getString(R.string.hb_aw_widget)) : isAirWidgetKey(key) ? getString(R.string.hb_air_quality_panel) : HomeLayout.isWorldClockWidget(key) ? getString(R.string.hb_wc_title) : HomeLayout.isGroceryWidget(key) ? getString(R.string.hb_grocery_title) : app == null ? getString(R.string.hb_app_shortcut) : app.label;
         layout.delete(key, dashboard);
         save(dashboard ? getString(R.string.hb_hint_removed) + label + getString(R.string.hb_hint_from_home) : getString(R.string.hb_hint_hid) + label + getString(R.string.hb_hint_from_all_apps));
         if (dashboard && !layout.widgets.isEmpty()) {

@@ -101,4 +101,11 @@ public class AndroidWidgetsTest {
         assertEquals(3,AndroidWidgetGeometry.minimumSpan(grid,12,AppGridSizing.COLUMN_GAP,AndroidWidgetGeometry.CHROME_WIDTH,pad,wrong));
         assertEquals(168,AndroidWidgetGeometry.content(grid,3,12,AppGridSizing.COLUMN_GAP,AndroidWidgetGeometry.CHROME_WIDTH,pad));
     }
+    /** Deleting an Android widget said "Removed app shortcut from Home" (Cast2, 28 November): the banner names the provider's widget. */
+    @Test public void removalBannerNamesTheWidgetNotAnAppShortcut()throws Exception{
+        HomeLayout l=layout();
+        assertEquals("Agenda",AndroidWidgetSpec.removalLabel(l,KEY,"Android widget"));
+        assertEquals("Android widget",AndroidWidgetSpec.removalLabel(l,"widget:android:00000000-0000-0000-0000-000000000000","Android widget"));
+        assertEquals("Android widget",AndroidWidgetSpec.removalLabel(null,KEY,"Android widget"));
+    }
 }
