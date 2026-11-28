@@ -1,0 +1,5 @@
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+ android:minWidth="240dp" android:minHeight="100dp" android:initialLayout="@layout/probe_widget"
+ android:updatePeriodMillis="0" android:resizeMode="horizontal|vertical"
+ android:widgetCategory="home_screen"
+ android:configure="net.biohack.homeboard.widgetprovider.PortraitConfigureActivity" />

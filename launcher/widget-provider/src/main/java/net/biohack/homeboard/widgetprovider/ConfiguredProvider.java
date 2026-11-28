@@ -6,7 +6,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-public final class ConfiguredProvider extends AppWidgetProvider {
+public class ConfiguredProvider extends AppWidgetProvider {
     static final String TAG = "WidgetConfigTest";
     static void update(Context context, int id) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.probe_widget);

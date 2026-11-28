@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /** Disposable public-API configuration target; has no household data or network. */
-public final class ConfigureActivity extends Activity {
+public class ConfigureActivity extends Activity {
     private int widgetId;
     private boolean saved;
     @Override public void onCreate(Bundle state) {
