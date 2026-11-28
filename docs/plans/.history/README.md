@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/952dcb5) | Refresh stale 4K and screensaver documentation status |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/f9c8f2d) | Index the screensaver browsing proposal |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/6219170) | docs: index the top-row plan; triage its captured deferrals |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/4fbccca) | docs: index the companion contract and drop its duplicate inbox item |
@@ -54,6 +55,10 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+952dcb5	author	Will Norris
+952dcb5	added	5
+952dcb5	deleted	5
+952dcb5	files	1
 f9c8f2d	author	Will Norris
 f9c8f2d	added	2
 f9c8f2d	deleted	0
