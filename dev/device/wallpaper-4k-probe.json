@@ -1,0 +1,18 @@
+{
+  "workflow": "check",
+  "app": "homeboard-tv",
+  "duration": 300,
+  "panel": "require-hidden",
+  "input_script": [
+    {"at": 10, "capture": "wallpaper-4k-baseline"},
+    {"at": 32, "capture": "wallpaper-4k-hd-control"},
+    {"at": 54, "capture": "wallpaper-4k-uhd-image"},
+    {"at": 100, "capture": "wallpaper-4k-animated-hd"},
+    {"at": 125, "capture": "wallpaper-4k-animated-uhd"},
+    {"at": 168, "capture": "wallpaper-4k-lottie"},
+    {"at": 214, "capture": "wallpaper-4k-uhd-video"},
+    {"at": 235, "capture": "wallpaper-4k-fallback"},
+    {"at": 285, "capture": "wallpaper-4k-result"},
+    {"at": 292, "key": "DPAD_UP", "action": "hold", "ms": 80}
+  ]
+}

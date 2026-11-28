@@ -247,7 +247,11 @@ One 3840 × 2160 four-byte pixel buffer is about 31.6 MiB. Multiple buffers, dec
 images, transitions and compositor allocations increase the total. Budget for
 those explicitly. Package PSS alone does not account for every graphics buffer.
 Keep image decode targets bounded; test animation and video separately before
-raising asset limits. Homeboard's provider-image target remains capped at 1080p.
+raising asset limits. Under the native renderer Homeboard decodes still provider images for
+up to 3840 × 2160 (one hardware buffer, about +10 MiB PSS over the 1080p path on Cast2) when
+`ActivityManager` memory admits it, and falls back to 1080p on refusal or failure; animated images
+stay at 1080p and 4K video plays at its stream size. Measurements and the readback method are in
+[4K wallpapers and video](../plans/2026-11-28-4k-wallpapers-and-video.md).
 
 Measure frame timing, input response, memory and thermal behavior against the
 ordinary renderer on the same hardware and comparable state. A missing windowless

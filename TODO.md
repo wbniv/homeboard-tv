@@ -30,8 +30,6 @@ Check conformance with the shared `python-tui-lib/scripts/todo-lint.py` in the b
 Repository consolidation is complete. Archived worktree drafts are described in [the worktree guide](docs/how-to/worktrees.md). Historical coordinator branch/version notes below need a current coordinator check before resuming; they are not live ownership or deployment claims.
 
 
-- [wip T4] <!-- agent:a4024650af0ddf25c --> **4K wallpapers and video**: on the native 4K path, lift the 1080p decode target for wallpaper and provider images within a measured memory budget, and prove actual 4K video output rather than assume TextureView is 4K. Test static images, animated assets and video separately on Cast2; 1080p devices keep today's behaviour. Split from the 4K dashboard's engineering gate 4 (Will, 2026‑11‑27). T4: memory limits and video output cut across the app. [Plan, gate 4](docs/plans/2026-11-23-native-4k-dashboard.md).
-
 - [T3] **Android widgets on the Pixel and the tablet**: local launch without a Home change, normal consent and denial, touch, provider configuration, return from portrait setup, insets, on Android 17 and 11, with the lifecycle and resource probes. Blocked on a person: the Pixel stopped advertising Wireless debugging and the tablet went flat (2% on 26 November). Tier T3: probes and plan exist. [Plan](docs/plans/2026-11-19-android-app-widgets.md#close-out--november-27).
 - [T4] **24-hour Android widget exposure on Cast1**: four live widgets on screen for a day with periodic PSS and update counts. Coordinator check/profile jobs stop at 900 s and an interactive RECORD=false session at 7,200 s, so this needs a coordinator long-exposure capability and Will's call to hold Cast1 for a day; a 2-hour soak fits today. Tier T4: coordinator design. [Plan](docs/plans/2026-11-19-android-app-widgets.md#resource-budget-and-long-running-check).
 
@@ -80,6 +78,7 @@ trigger that promotes it back to Open._
 
 ## Done
 
+- ✅ 2026‑11‑28 — [4k-wallpapers] Native 4K decodes still wallpapers at 3840×2160 (+10 MiB); 4K video proven; animated stays 1080p. See [plan](docs/plans/2026-11-28-4k-wallpapers-and-video.md).
 - ✅ 2026‑11‑28 — [chromecast-wrapper-gaps] `task chromecast:remote-sequence` and `uninstall-package` (with USER/YES/PACKAGE/CONFIRM/ASYNC) in Homeboard's wrapper.
 - ✅ 2026‑11‑28 — [android-app-widgets] Android widget host passes Cast1 and Cast2 native 4K; real Fossify event row (0.1.183). See [plan](docs/plans/2026-11-19-android-app-widgets.md).
 - ✅ 2026‑11‑27 — [native-4k-dashboard] Automatic native 4K; Cast2 output transition and native provider probe pass (0.1.179). See [plan](docs/plans/2026-11-23-native-4k-dashboard.md#closing-round--27-november).

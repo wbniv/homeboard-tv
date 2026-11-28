@@ -94,7 +94,9 @@ retry. Providers are not force-stopped.
 
 The host accepts up to 1,000 descriptors per batch, matching Overflight's published
 maximum, and loads one item at a time. Byte-backed images/animations have a 16 MiB
-input limit and images are decoded for at most a 1920 × 1080 target. Unsupported
+input limit and images are decoded for at most a 1920 × 1080 target; under the native 4K
+renderer a still image is decoded for up to 3840 × 2160 into one hardware bitmap, while animated
+images keep the 1080p target (see [4K wallpapers and video](../plans/2026-11-28-4k-wallpapers-and-video.md)). Unsupported
 or failing items are tried in order until a usable one is found. Empty lists retain
 the previous wallpaper. No disk media cache or background wallpaper service runs
 while Homeboard is hidden. Package changes and refresh hints invalidate selection

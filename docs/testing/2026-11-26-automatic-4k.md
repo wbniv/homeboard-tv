@@ -28,6 +28,8 @@ Workspace scale remains independent and preserves the ordinary package's saved
 value. The separate proof package's 50% layout is not copied into the ordinary
 package. Wallpaper image decode limits remain bounded at their existing 1080p
 target; native UI rendering is not a claim of higher-resolution wallpaper/video.
+(Superseded 2026‑11‑28: still provider images now decode at 3840 × 2160 on the native
+renderer; see [4K wallpapers and video](../plans/2026-11-28-4k-wallpapers-and-video.md).)
 
 **Native percentage baseline, corrected by Will:** on a UHD-capable TV, the full
 16×8 workspace is now labelled **100%**, with 150% and 200% for larger widgets.

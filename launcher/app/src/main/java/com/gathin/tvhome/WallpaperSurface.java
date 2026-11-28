@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
@@ -38,6 +39,16 @@ import tv.projectivy.plugin.wallpaperprovider.api.Wallpaper;
 /** A non-focusable wallpaper layer below the independent colored UI backdrops. */
 final class WallpaperSurface extends FrameLayout implements AutoCloseable {
     private static final int MAX_BYTES = 16 * 1024 * 1024;
+    private static final String TAG = "HomeboardWallpaper";
+    /**
+     * Animated pictures decode every frame on the CPU, four times the work at 4K; they keep the 1080p bound
+     * (measured on Cast2, docs/plans/2026-11-28-4k-wallpapers-and-video.md).
+     */
+    static final boolean ANIMATED_UHD = false;
+    /** Debug probe only: the next 4K decode attempt throws, to exercise the 1080p fallback. */
+    static volatile boolean failNextUhdDecode;
+    /** The native 4K renderer draws this view: still pictures may decode at up to 3840 x 2160. */
+    private final boolean uhd;
     private final Handler main = new Handler(Looper.getMainLooper());
     private static final ThreadPoolExecutor DECODER = new ThreadPoolExecutor(1, 1, 10, TimeUnit.SECONDS,
             new ArrayBlockingQueue<>(1), new ThreadPoolExecutor.DiscardOldestPolicy());
@@ -56,7 +67,10 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
     private BiConsumer<Boolean, String> result;
 
     WallpaperSurface(Context context) {
-        super(context); setFocusable(false); setClickable(false);
+        this(context, context instanceof NativeDashboardActivity && ((NativeDashboardActivity) context).nativeDashboardRendering());
+    }
+    WallpaperSurface(Context context, boolean nativeRenderer) {
+        super(context); uhd = nativeRenderer; setFocusable(false); setClickable(false);
         setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         dim = new View(context); dim.setBackgroundColor(Color.BLACK);
         addView(dim, new LayoutParams(-1, -1));
@@ -97,8 +111,14 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
             callback.accept(false, getContext().getString(R.string.hb_status_this_animation_display_mode_is_unsupported_on_this_device)); return;
         }
         if (wallpaper.getType() == 4) { video(wallpaper, token, callback); return; }
-        int width = Math.min(1920, Math.max(1, getResources().getDisplayMetrics().widthPixels));
-        int height = Math.min(1080, Math.max(1, getResources().getDisplayMetrics().heightPixels));
+        int metricsWidth = getResources().getDisplayMetrics().widthPixels, metricsHeight = getResources().getDisplayMetrics().heightPixels;
+        int[] hd = WallpaperTarget.bound(false, metricsWidth, metricsHeight);
+        int width = hd[0], height = hd[1];
+        int[] uhdBound = uhd && wallpaper.getType() == 0 && Build.VERSION.SDK_INT >= 28 && uhdAffordable()
+                // The native surface is always 3840 x 2160 (NativeDashboardHost); its Resources still report the
+                // 1920 x 1080 display metrics (measured on Cast2, J-3013ac80ec0f), so they cannot size this bound.
+                ? WallpaperTarget.bound(true, WallpaperTarget.UHD_WIDTH, WallpaperTarget.UHD_HEIGHT) : null;
+        boolean needsThumbnail = wallpaper.getDisplayMode() == 3 || wallpaper.getDisplayMode() == 5;
         main.postDelayed(() -> {
             if (token == generation && !closed) {
                 generation++; callback.accept(false, getContext().getString(R.string.hb_status_wallpaper_decoding_timed_out_retaining_previous_background));
@@ -107,7 +127,7 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
         DECODER.execute(() -> {
             try {
                 Uri uri = Uri.parse(MediaUris.secure(wallpaper.getUri()));
-                Drawable drawable = null; LottieComposition composition = null;
+                Drawable drawable = null; LottieComposition composition = null; Bitmap thumbnail = null;
                 if (wallpaper.getType() == 1 || wallpaper.getType() == 2) {
                     if (!"android.resource".equals(uri.getScheme())) throw new IllegalArgumentException();
                     android.content.res.Resources resources = getContext().getPackageManager().getResourcesForApplication(uri.getAuthority());
@@ -121,7 +141,15 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
                         LottieResult<LottieComposition> parsed = LottieCompositionFactory.fromJsonInputStreamSync(new java.io.ByteArrayInputStream(bytes), null);
                         composition = parsed.getValue(); if (composition == null) throw new IllegalArgumentException();
                     } else if (Build.VERSION.SDK_INT >= 28) {
-                        drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(bytes)), (d, info, source) -> {
+                        if (uhdBound != null) {
+                            try {
+                                Object[] decoded = decodeUhd(bytes, uhdBound, hd, needsThumbnail);
+                                drawable = (Drawable) decoded[0]; thumbnail = (Bitmap) decoded[1];
+                            } catch (Exception | OutOfMemoryError failure) {
+                                Log.w(TAG, "4K decode failed; decoding at " + width + "x" + height, failure);
+                            }
+                        }
+                        if (drawable == null) drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(bytes)), (d, info, source) -> {
                             int w = info.getSize().getWidth(), h = info.getSize().getHeight();
                             double scale = Math.min(1, Math.min((double) width / w, (double) height / h));
                             d.setTargetSize(Math.max(1, (int)(w * scale)), Math.max(1, (int)(h * scale)));
@@ -138,15 +166,14 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
                         drawable = new BitmapDrawable(getResources(), bitmap);
                     }
                 }
-                Drawable image = drawable; LottieComposition animation = composition;
+                Drawable image = drawable; LottieComposition animation = composition; Bitmap decodedThumbnail = thumbnail;
                 main.post(() -> {
                     if (token != generation || closed) return;
                     FrameLayout next = new FrameLayout(getContext());
                     int mode = wallpaper.getDisplayMode();
                     if (image != null) {
                         if (mode == 3 || mode == 5) {
-                            Bitmap tiny = Bitmap.createBitmap(32, 18, Bitmap.Config.ARGB_8888);
-                            image.setBounds(0, 0, 32, 18); image.draw(new android.graphics.Canvas(tiny));
+                            Bitmap tiny = decodedThumbnail != null ? decodedThumbnail : thumbnail(image);
                             ImageView blur = new ImageView(getContext());
                             BitmapDrawable softened = new BitmapDrawable(getResources(), tiny); softened.setFilterBitmap(true);
                             blur.setImageDrawable(softened); blur.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -173,6 +200,53 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
                 main.post(() -> { if (token == generation && !closed) { generation++; callback.accept(false, "Cannot load wallpaper; check its format, URI or permissions"); } });
             }
         });
+    }
+    private boolean uhdAffordable() {
+        android.app.ActivityManager manager = (android.app.ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        if (manager == null) return false;
+        android.app.ActivityManager.MemoryInfo memory = new android.app.ActivityManager.MemoryInfo();
+        manager.getMemoryInfo(memory);
+        boolean affordable = WallpaperTarget.uhdAffordable(manager.isLowRamDevice(), memory.availMem, memory.threshold);
+        if (!affordable) Log.i(TAG, "4K decode declined: available " + (memory.availMem >> 20) + " MiB, threshold "
+                + (memory.threshold >> 20) + " MiB, low-RAM " + manager.isLowRamDevice());
+        return affordable;
+    }
+    /**
+     * A still picture for the native 4K renderer: decoded in software up to the 4K bound, its blur thumbnail drawn
+     * from those pixels, then moved to one hardware bitmap so it is not held twice (software plus texture).
+     * Returns {drawable, thumbnail or null}. Animated pictures keep the 1080p bound unless ANIMATED_UHD.
+     */
+    @android.annotation.TargetApi(28)
+    private Object[] decodeUhd(byte[] bytes, int[] bound, int[] hd, boolean needsThumbnail) throws java.io.IOException {
+        if (failNextUhdDecode) { failNextUhdDecode = false; throw new OutOfMemoryError("Debug probe: injected 4K decode failure"); }
+        int[] source = new int[2], target = new int[2];
+        boolean[] animatedSource = new boolean[1];
+        Drawable drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(ByteBuffer.wrap(bytes)), (d, info, s) -> {
+            source[0] = info.getSize().getWidth(); source[1] = info.getSize().getHeight();
+            animatedSource[0] = info.isAnimated();
+            int[] limit = animatedSource[0] && !ANIMATED_UHD ? hd : bound;
+            int[] size = WallpaperTarget.size(source[0], source[1], limit[0], limit[1]);
+            target[0] = size[0]; target[1] = size[1];
+            d.setTargetSize(size[0], size[1]);
+            d.setAllocator(ImageDecoder.ALLOCATOR_SOFTWARE);
+        });
+        Bitmap thumbnail = null;
+        boolean hardware = false;
+        if (drawable instanceof BitmapDrawable) {
+            Bitmap software = ((BitmapDrawable) drawable).getBitmap();
+            if (needsThumbnail) thumbnail = thumbnail(drawable);
+            Bitmap gpu = software.copy(Bitmap.Config.HARDWARE, false);
+            if (gpu != null) { software.recycle(); drawable = new BitmapDrawable(getResources(), gpu); hardware = true; }
+        }
+        Log.i(TAG, "source " + source[0] + "x" + source[1] + " bound " + bound[0] + "x" + bound[1] + " decoded "
+                + target[0] + "x" + target[1] + (animatedSource[0] ? " animated" : "") + " hardware=" + hardware);
+        return new Object[]{drawable, thumbnail};
+    }
+    /** The 32 x 18 picture the blurred display modes stretch behind the image. */
+    private static Bitmap thumbnail(Drawable image) {
+        Bitmap tiny = Bitmap.createBitmap(32, 18, Bitmap.Config.ARGB_8888);
+        image.setBounds(0, 0, 32, 18); image.draw(new android.graphics.Canvas(tiny));
+        return tiny;
     }
     private static ImageView.ScaleType scaleType(int mode) {
         return mode == 2 ? ImageView.ScaleType.FIT_XY : mode == 4 || mode == 5 ? ImageView.ScaleType.FIT_CENTER : ImageView.ScaleType.CENTER_CROP;
@@ -247,6 +321,7 @@ final class WallpaperSurface extends FrameLayout implements AutoCloseable {
                     pendingPlayer.setOnPreparedListener(mp -> {
                         if (token != generation || closed || preparing != mp) return;
                         float vw = mp.getVideoWidth(), vh = mp.getVideoHeight();
+                        if (uhd) Log.i(TAG, "video " + mp.getVideoWidth() + "x" + mp.getVideoHeight() + " view " + width + "x" + height);
                         if (vw > 0 && vh > 0 && w.getDisplayMode() != 2) {
                             boolean fit = w.getDisplayMode() == 4;
                             float scale = fit ? Math.min(width / vw, height / vh) : Math.max(width / vw, height / vh);

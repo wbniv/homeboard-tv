@@ -57,6 +57,8 @@ public abstract class NativeDashboardActivity extends Activity {
     protected FrameLayout dashboardOverlayRoot() { return nativeHost != null ? nativeHost.root() : null; }
     protected void configureDashboardDialog(Dialog dialog) { if (nativeHost != null) nativeHost.dialog(dialog); }
     protected int[] dashboardRenderingSurface() { return nativeHost != null ? nativeHost.surfaceSize() : null; }
+    /** True while this activity draws through the native 4K surface; media can then use 4K-sized assets. */
+    boolean nativeDashboardRendering() { return nativeHost != null; }
     protected boolean dispatchDashboardWindowKey(KeyEvent event) {
         return nativeHost != null ? nativeHost.dispatchLocal(event) : super.dispatchKeyEvent(event);
     }

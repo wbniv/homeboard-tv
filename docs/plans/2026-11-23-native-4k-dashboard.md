@@ -589,6 +589,9 @@ results follow each.
     video resolution. This is an enhancement, not a defect, and is proposed as
     its own item. **Split to its own TODO item (Will, 2026‑11‑27):**
     "4K wallpapers and video". It does not count against closing this item.
+    **Done 2026‑11‑28** in [4K wallpapers and video](2026-11-28-4k-wallpapers-and-video.md):
+    still images decode at 3840 × 2160 on the native renderer, 4K video output is proven by
+    readback, and animated images keep the 1080p target on measured memory grounds.
 
 5. **Acceptance:** Cast2 4K pixel-detail evidence and actual user interactions (Home, All Apps, focus, menus, live Android widgets, widget expansions, screensaver, Back and Undo); Cast1 1080p regression; text scale, Thai, screen changes, idle and memory/frame pacing. Install one numbered build on the standard fleet via coordinator. Cast2 is justified for this 4K-specific check; let the coordinator admit or defer foreground work.
 
