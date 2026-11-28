@@ -8,7 +8,7 @@ import android.util.Log;
 import java.util.Calendar;
 
 /**
- * Debug-only launcher entry for the Fossify real-event check (docs/plans/2026-11-19-android-app-widgets.md):
+ * Debug-only entry (launched through the homeboard-tv registration) for the Fossify real-event check (docs/plans/2026-11-19-android-app-widgets.md):
  * asks Fossify Calendar to open its new-event screen with a clearly labelled test title for today,
  * so the remote only has to Save. Homeboard reads and writes no calendar data itself.
  */

@@ -916,10 +916,13 @@ deleting it. **No event was created.** What happened, with job IDs:
   J‑a0718d558056, both failed `panel-not-verified-hidden` before any input: the
   coordinator's panel check no longer admits this non-WF app. Fossify is not in Google
   TV's app row on Cast2, so a Remote session cannot launch it directly.
-- Remote J‑e53da1f99f30 ended at once when Cast2 dropped off the network
-  (`device-not-found-on-network`, Wireless debugging not advertised); the coordinator
-  reconnected it about 13 minutes later. Remote J‑a983b5917c32 before it only browsed
-  Google TV's Apps tab.
+- Remote J‑e53da1f99f30 failed `device-not-found-on-network` before any input. Cast2
+  did not sleep or leave the network: the coordinator's own 0.1.246 upgrade had
+  restarted it about 2 minutes earlier, killing the adb server, and for about 16 s the
+  new server did not see Cast2's mDNS advertisement (coordinator's investigation).
+  Cast2 reconnected at 01:25:06 UTC on the same port, without a reboot; the outage was at
+  most 2 minutes. The earlier "may be asleep" text was the diagnosis boilerplate, not a
+  finding. Remote J‑a983b5917c32 before it only browsed Google TV's Apps tab.
 - Remote **J‑27a3ba897c62** (42 verified artifacts): Homeboard → Add widget → Android app
   widgets → **Calendar event list** → Fossify's configuration → OK → 3×4 Add review →
   added, showing **No upcoming events**. In full screen, **Interact with widget** and OK
