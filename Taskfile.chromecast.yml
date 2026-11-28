@@ -34,6 +34,11 @@ env:
   WF_CC_PACKAGE: '{{.PACKAGE | default ""}}'
   WF_CC_CONFIRM: '{{.CONFIRM | default ""}}'
   WF_CC_ASYNC: '{{.ASYNC | default ""}}'
+  # remote-launch intent fields
+  WF_CC_ACTION: '{{.ACTION | default ""}}'
+  WF_CC_DATA: '{{.DATA | default ""}}'
+  WF_CC_MIME_TYPE: '{{.MIME_TYPE | default ""}}'
+  WF_CC_EXTRAS: '{{.EXTRAS | default ""}}'
   WF_CC_APK_ARGS: '{{.CLI_ARGS | default ""}}'
 tasks:
   verify-evidence:
@@ -106,6 +111,12 @@ tasks:
   remote-sequence:
     desc: Send a key sequence through the owned Remote session (JOB=… KEYS="DPAD_DOWN*3,DPAD_CENTER"; at most 20 keys)
     cmds: ['"{{.CC_CLIENT}}" remote-sequence']
+  remote-launch:
+    desc: "Open one registered APP in the owned Remote session (JOB=… APP=… [ACTIVITY=…] or an intent: ACTION DATA MIME_TYPE EXTRAS='{\"k\":\"v\"}'); one app per session"
+    cmds: ['"{{.CC_CLIENT}}" app-launch']
+  remote-text:
+    desc: Type printable ASCII (1–256 chars) into the focused non-password field of the owned Remote session (JOB=… TEXT="…")
+    cmds: ['"{{.CC_CLIENT}}" remote-text']
   remote-frame:
     desc: Capture the owned Remote session without direct device transport
     cmds: ['"{{.CC_CLIENT}}" remote-frame']
