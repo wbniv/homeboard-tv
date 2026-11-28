@@ -905,3 +905,39 @@ on Cast2 already passed the grid step with fix 2 alone, still at the halved 3×3
 The scheduled captures fell after the grid step both times, so the label-row message is
 established by the probe's assertion (text present, no live provider view), not by a frame.
 Registration was restored to `MainActivity` after each run.
+
+## Fossify Calendar real event · Cast2 · 28 November · not completed
+
+Will approved one test event in Fossify Calendar's local calendar on Cast2 (no
+accounts), checking it as a row in the event-list widget inside Homeboard 0.1.181, then
+deleting it. **No event was created.** What happened, with job IDs:
+
+- Interactive `RECORD=false` jobs on the registered Fossify app, J‑fc9e291dfa99 and
+  J‑a0718d558056, both failed `panel-not-verified-hidden` before any input: the
+  coordinator's panel check no longer admits this non-WF app. Fossify is not in Google
+  TV's app row on Cast2, so a Remote session cannot launch it directly.
+- Remote J‑e53da1f99f30 ended at once when Cast2 dropped off the network
+  (`device-not-found-on-network`, Wireless debugging not advertised); the coordinator
+  reconnected it about 13 minutes later. Remote J‑a983b5917c32 before it only browsed
+  Google TV's Apps tab.
+- Remote **J‑27a3ba897c62** (42 verified artifacts): Homeboard → Add widget → Android app
+  widgets → **Calendar event list** → Fossify's configuration → OK → 3×4 Add review →
+  added, showing **No upcoming events**. In full screen, **Interact with widget** and OK
+  on the provider's header opened Fossify's day view, and Back returned to the same
+  full-screen view: provider interaction and app return work on the native renderer.
+  Creating the event failed at Fossify itself: on the TV it shows no focus highlight,
+  D-pad Right pages days, the add button could not be reached, and the coordinator has
+  no text entry for a title. A stray key sequence opened an unidentified widget
+  configuration screen (Background colour, Opacity, Text colour); its dropdown was closed
+  without a selection and Home left it, with nothing saved.
+- Cleanup: the Calendar tile was removed with Hold OK → **Delete widget**. Undo history
+  then reads, newest first, the removal, the Android-widget addition and the pre-existing
+  **Dashboard scale**; no other setting changed. The dashboard matches its starting
+  capture. `homeboard-tv` is registered with `MainActivity` (0.1.181). Cast2 was left
+  idle.
+
+Final Cast2 state: no Fossify event exists, the test widget is removed, Fossify settings
+untouched. Two findings: the removal banner reads **Removed app shortcut from Home** for
+an Android widget (wrong label), and Fossify's add-event path is not remote-operable here.
+Making the event needs either a coordinator text-entry capability with a way to focus
+Fossify's add button, or a non-remote input (Will declined a mouse for Breezy earlier).
