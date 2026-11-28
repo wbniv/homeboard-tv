@@ -1,5 +1,6 @@
 | Date | Change |
 |------|--------|
+| [2026-11-28](https://github.com/wbniv/homeboard-tv/commit/3719d75) | docs: index the 4K wallpapers and video plan |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/952dcb5) | Refresh stale 4K and screensaver documentation status |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/f9c8f2d) | Index the screensaver browsing proposal |
 | [2026-11-26](https://github.com/wbniv/homeboard-tv/commit/6219170) | docs: index the top-row plan; triage its captured deferrals |
@@ -55,6 +56,11 @@
 | [2026-11-16](https://github.com/wbniv/homeboard-tv/commit/8e2d390) | docs: update project and device testing status |
 
 <!--history-meta v1
+3719d75	author	Will Norris
+3719d75	added	1
+3719d75	deleted	0
+3719d75	files	1
+3719d75	body	Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01YEenqP8zNDXFEqEEztS56o
 952dcb5	author	Will Norris
 952dcb5	added	5
 952dcb5	deleted	5
